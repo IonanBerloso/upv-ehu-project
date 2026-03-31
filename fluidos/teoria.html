@@ -376,6 +376,24 @@ code{
 /* ───────────────── FOOTER ───────────────── */
 .footer{text-align:center;padding:40px 20px;color:var(--text3);font-size:.78em}
 .footer a{color:var(--text3);opacity:.6}
+
+/* ───────────────── DIAGRAMS ───────────────── */
+.diagram{
+  background:var(--surface3);
+  border:1px solid var(--border2);
+  border-radius:var(--radius);
+  padding:16px 12px 10px;
+  margin:14px 0;
+  overflow-x:auto;
+  text-align:center;
+}
+.diagram svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.diagram figcaption{
+  font-size:.72em;
+  color:var(--text3);
+  margin-top:8px;
+  letter-spacing:.02em;
+}
 </style>
 </head>
 <body>
@@ -714,6 +732,53 @@ code{
         </table>
       </div>
       <div class="prose"><p>Para conductos no circulares: $D_h = 4A/P$ (diámetro hidráulico).</p></div>
+
+      <!-- DIAGRAM: velocity profiles -->
+      <div class="diagram">
+        <svg viewBox="0 0 540 170" xmlns="http://www.w3.org/2000/svg" font-family="Inter,system-ui,sans-serif">
+          <!-- ── LAMINAR ── -->
+          <text x="130" y="14" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="600">LAMINAR</text>
+          <!-- pipe walls -->
+          <rect x="30" y="28" width="200" height="3" rx="1.5" fill="#38bdf8"/>
+          <rect x="30" y="139" width="200" height="3" rx="1.5" fill="#38bdf8"/>
+          <!-- parabolic profile fill -->
+          <path d="M 30,30 Q 140,30 140,85 Q 140,140 30,140 Z" fill="rgba(56,189,248,0.12)" stroke="#38bdf8" stroke-width="2"/>
+          <!-- v_max arrow -->
+          <line x1="30" y1="85" x2="138" y2="85" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <polygon points="138,82 145,85 138,88" fill="#f59e0b"/>
+          <text x="83" y="78" text-anchor="middle" fill="#f59e0b" font-size="10">v_max</text>
+          <!-- v_media arrow -->
+          <line x1="30" y1="85" x2="80" y2="85" stroke="#10b981" stroke-width="2"/>
+          <polygon points="80,82 87,85 80,88" fill="#10b981"/>
+          <text x="53" y="100" text-anchor="middle" fill="#10b981" font-size="10">v_med = v_max/2</text>
+          <!-- labels -->
+          <text x="18" y="88" text-anchor="middle" fill="#64748b" font-size="10">0</text>
+          <line x1="22" y1="30" x2="22" y2="140" stroke="#475569" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="130" y="160" text-anchor="middle" fill="#64748b" font-size="10">Re ≤ 2000 · perfil parabólico (Poiseuille)</text>
+
+          <!-- ── TURBULENTO ── -->
+          <text x="400" y="14" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="600">TURBULENTO</text>
+          <!-- pipe walls -->
+          <rect x="290" y="28" width="220" height="3" rx="1.5" fill="#fb923c"/>
+          <rect x="290" y="139" width="220" height="3" rx="1.5" fill="#fb923c"/>
+          <!-- turbulent flat profile fill -->
+          <path d="M 290,31 C 340,31 395,40 398,85 C 395,130 340,139 290,139 Z" fill="rgba(251,146,60,0.12)" stroke="#fb923c" stroke-width="2"/>
+          <!-- v_max arrow -->
+          <line x1="290" y1="85" x2="396" y2="85" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <polygon points="396,82 403,85 396,88" fill="#f59e0b"/>
+          <text x="342" y="78" text-anchor="middle" fill="#f59e0b" font-size="10">v_max</text>
+          <!-- v_media arrow -->
+          <line x1="290" y1="85" x2="358" y2="85" stroke="#10b981" stroke-width="2"/>
+          <polygon points="358,82 365,85 358,88" fill="#10b981"/>
+          <text x="332" y="100" text-anchor="middle" fill="#10b981" font-size="10">v_med ≈ 0,8 v_max</text>
+          <!-- subcapa viscosa label -->
+          <text x="300" y="45" fill="#64748b" font-size="9">subcapa</text>
+          <text x="300" y="55" fill="#64748b" font-size="9">viscosa</text>
+          <line x1="315" y1="57" x2="310" y2="38" stroke="#475569" stroke-width="1"/>
+          <text x="400" y="160" text-anchor="middle" fill="#64748b" font-size="10">Re ≥ 4000 · perfil plano con gradiente en pared</text>
+        </svg>
+        <figcaption>Perfiles de velocidad en conducto circular — Laminar (parabólico) vs Turbulento (plano)</figcaption>
+      </div>
     </div>
 
     <div class="section">
@@ -772,6 +837,60 @@ code{
           <li><b>Línea Piezométrica (LP):</b> $P/\gamma + z$. Siempre debajo de la LET a distancia $v^2/2g$. Si LP < cota del conducto → presión subatmosférica (sifón).</li>
         </ul>
       </div>
+
+      <!-- DIAGRAM: energy lines -->
+      <div class="diagram">
+        <svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg" font-family="Inter,system-ui,sans-serif">
+          <!-- datum line -->
+          <line x1="20" y1="195" x2="540" y2="195" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+          <text x="530" y="192" fill="#475569" font-size="9">datum z=0</text>
+
+          <!-- pipe (slightly descending, narrowing at right) -->
+          <path d="M 60,100 L 340,90 L 340,72 L 380,72 L 380,90 L 480,85 L 480,105 L 380,110 L 380,92 L 340,92 L 340,120 L 60,120 Z" fill="rgba(30,41,59,0.8)" stroke="#38bdf8" stroke-width="1.5"/>
+          <!-- section labels -->
+          <text x="100" y="145" text-anchor="middle" fill="#94a3b8" font-size="10">① (grande)</text>
+          <text x="450" y="145" text-anchor="middle" fill="#94a3b8" font-size="10">② (pequeño)</text>
+
+          <!-- z1 vertical -->
+          <line x1="100" y1="120" x2="100" y2="195" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="106" y="162" fill="#a78bfa" font-size="10">z₁</text>
+          <!-- z2 vertical -->
+          <line x1="450" y1="105" x2="450" y2="195" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="456" y="155" fill="#a78bfa" font-size="10">z₂</text>
+
+          <!-- LET (energy grade line) -->
+          <line x1="60" y1="28" x2="500" y2="38" stroke="#10b981" stroke-width="2.5"/>
+          <text x="510" y="36" fill="#10b981" font-size="11" font-weight="600">LET</text>
+          <text x="510" y="47" fill="#10b981" font-size="8">P/γ+z+v²/2g</text>
+          <!-- h_f drop arrow on LET -->
+          <line x1="330" y1="30" x2="330" y2="38" stroke="#f43f5e" stroke-width="1.5"/>
+          <polygon points="327,38 330,44 333,38" fill="#f43f5e"/>
+          <text x="335" y="45" fill="#f43f5e" font-size="9">h_f</text>
+
+          <!-- LP (piezometric line) -->
+          <line x1="60" y1="55" x2="500" y2="62" stroke="#38bdf8" stroke-width="2" stroke-dasharray="7,4"/>
+          <text x="510" y="62" fill="#38bdf8" font-size="11" font-weight="600">LP</text>
+          <text x="510" y="73" fill="#38bdf8" font-size="8">P/γ+z</text>
+
+          <!-- v²/2g bracket at section 1 -->
+          <line x1="92" y1="28" x2="92" y2="55" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="89" y1="28" x2="95" y2="28" stroke="#f59e0b" stroke-width="1"/>
+          <line x1="89" y1="55" x2="95" y2="55" stroke="#f59e0b" stroke-width="1"/>
+          <text x="70" y="44" fill="#f59e0b" font-size="9">v²/2g</text>
+
+          <!-- v²/2g bracket at section 2 (smaller section = higher velocity) -->
+          <line x1="442" y1="36" x2="442" y2="62" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="439" y1="36" x2="445" y2="36" stroke="#f59e0b" stroke-width="1"/>
+          <line x1="439" y1="62" x2="445" y2="62" stroke="#f59e0b" stroke-width="1"/>
+          <text x="416" y="52" fill="#f59e0b" font-size="9">v²/2g</text>
+
+          <!-- flow arrow inside pipe -->
+          <line x1="150" y1="110" x2="290" y2="105" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <polygon points="290,102 297,105 290,108" fill="#38bdf8"/>
+          <text x="220" y="100" text-anchor="middle" fill="#64748b" font-size="9">Q = cte</text>
+        </svg>
+        <figcaption>Líneas energéticas — LET (Línea de Energía Total) y LP (Línea Piezométrica) a lo largo de un conducto</figcaption>
+      </div>
     </div>
 
   </div>
@@ -806,6 +925,54 @@ code{
       <div class="section-label"><span>Venturímetro</span></div>
       <div class="fblock"><div class="flabel">Caudal</div>$$Q_r = C_v A_2 \sqrt{\dfrac{2gR\!\left(\frac{s_0}{s}-1\right)}{1-\!\left(\frac{A_2}{A_1}\right)^{\!2}}}$$</div>
       <div class="prose"><p>$C_v \approx 0{,}97$–$0{,}99$. La garganta de área $A_2$ provoca caída de presión que se mide con manómetro diferencial.</p></div>
+
+      <!-- DIAGRAM: venturi -->
+      <div class="diagram">
+        <svg viewBox="0 0 540 160" xmlns="http://www.w3.org/2000/svg" font-family="Inter,system-ui,sans-serif">
+          <!-- ── venturi profile (top wall) ── -->
+          <!-- pipe top: y=40 at left, narrows to y=68 at throat (x=270), widens to y=40 at right -->
+          <path d="M 30,40 L 160,40 Q 220,40 250,68 L 290,68 Q 320,68 380,40 L 520,40" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          <!-- pipe bottom: y=100 narrows to y=92 -->
+          <path d="M 30,100 L 160,100 Q 220,100 250,92 L 290,92 Q 320,92 380,100 L 520,100" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          <!-- fluid fill -->
+          <path d="M 30,40 L 160,40 Q 220,40 250,68 L 290,68 Q 320,68 380,40 L 520,40 L 520,100 L 380,100 Q 320,92 290,92 L 250,92 Q 220,100 160,100 L 30,100 Z" fill="rgba(56,189,248,0.08)"/>
+
+          <!-- section labels -->
+          <text x="80" y="32" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="500">① entrada  A₁</text>
+          <text x="270" y="62" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="600">garganta A₂</text>
+          <text x="450" y="32" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="500">salida</text>
+
+          <!-- pressure taps + manometer -->
+          <!-- tap 1 at x=90 -->
+          <line x1="90" y1="100" x2="90" y2="130" stroke="#38bdf8" stroke-width="1.5"/>
+          <!-- tap 2 at x=270 -->
+          <line x1="270" y1="92" x2="270" y2="130" stroke="#f59e0b" stroke-width="1.5"/>
+          <!-- U-tube manometer -->
+          <line x1="90" y1="130" x2="90" y2="148" stroke="#38bdf8" stroke-width="2"/>
+          <line x1="270" y1="130" x2="270" y2="148" stroke="#f59e0b" stroke-width="2"/>
+          <line x1="90" y1="148" x2="270" y2="148" stroke="#94a3b8" stroke-width="1.5"/>
+          <!-- manometric liquid level difference R -->
+          <rect x="142" y="140" width="20" height="8" rx="2" fill="rgba(245,158,11,0.5)" stroke="#f59e0b" stroke-width="1"/>
+          <text x="152" y="136" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600">R</text>
+
+          <!-- velocity arrows inside pipe -->
+          <line x1="40" y1="70" x2="110" y2="70" stroke="#10b981" stroke-width="1.5"/>
+          <polygon points="110,67 118,70 110,73" fill="#10b981"/>
+          <text x="75" y="64" text-anchor="middle" fill="#10b981" font-size="9">v₁</text>
+          <line x1="245" y1="80" x2="295" y2="80" stroke="#10b981" stroke-width="2"/>
+          <polygon points="295,77 303,80 295,83" fill="#10b981"/>
+          <text x="270" y="78" text-anchor="middle" fill="#10b981" font-size="9">v₂↑↑</text>
+
+          <!-- P1 > P2 note -->
+          <text x="90" y="125" text-anchor="middle" fill="#38bdf8" font-size="9">P₁↑</text>
+          <text x="270" y="125" text-anchor="middle" fill="#f59e0b" font-size="9">P₂↓</text>
+
+          <!-- flow direction -->
+          <text x="30" y="80" fill="#475569" font-size="10">→</text>
+          <text x="510" y="80" fill="#475569" font-size="10">→</text>
+        </svg>
+        <figcaption>Venturímetro — la contracción en la garganta aumenta v₂ y reduce P₂; el manómetro diferencial mide la caída de presión R</figcaption>
+      </div>
     </div>
 
     <div class="section">
@@ -1189,6 +1356,56 @@ code{
 
     <div class="section">
       <div class="section-label"><span>Canal circular parcialmente lleno — Tablas 27 y 28</span></div>
+      <!-- DIAGRAM: canal circular parcialmente lleno -->
+      <div class="diagram">
+        <svg viewBox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" font-family="Inter,system-ui,sans-serif">
+          <!-- pipe circle: center (190,120), r=90 -->
+          <circle cx="190" cy="120" r="90" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+          <!-- water fill: circle arc clipped at h_c from bottom -->
+          <!-- h_c/D ≈ 0.75 → center to water surface: y_surface = 120 + 90 - 0.75*180 = 120 + 90 - 135 = 75 -->
+          <!-- water surface at y=75, center at y=120, r=90 -->
+          <!-- clip the bottom arc for water -->
+          <clipPath id="waterClip">
+            <rect x="100" y="75" width="180" height="135"/>
+          </clipPath>
+          <circle cx="190" cy="120" r="88" fill="rgba(56,189,248,0.18)" stroke="none" clip-path="url(#waterClip)"/>
+          <!-- water surface line -->
+          <line x1="129" y1="75" x2="251" y2="75" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6,3"/>
+          <text x="260" y="79" fill="#38bdf8" font-size="11">superficie libre</text>
+
+          <!-- D diameter horizontal -->
+          <line x1="100" y1="120" x2="280" y2="120" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="100" y1="116" x2="100" y2="124" stroke="#94a3b8" stroke-width="1"/>
+          <line x1="280" y1="116" x2="280" y2="124" stroke="#94a3b8" stroke-width="1"/>
+          <text x="190" y="115" text-anchor="middle" fill="#94a3b8" font-size="12" font-weight="600">D</text>
+
+          <!-- h_c vertical: from bottom (y=210) to water surface (y=75) -->
+          <line x1="330" y1="210" x2="330" y2="75" stroke="#f59e0b" stroke-width="2"/>
+          <line x1="325" y1="210" x2="335" y2="210" stroke="#f59e0b" stroke-width="1.5"/>
+          <line x1="325" y1="75" x2="335" y2="75" stroke="#f59e0b" stroke-width="1.5"/>
+          <polygon points="327,80 330,73 333,80" fill="#f59e0b"/>
+          <polygon points="327,205 330,212 333,205" fill="#f59e0b"/>
+          <text x="345" y="148" fill="#f59e0b" font-size="13" font-weight="700">h_c</text>
+
+          <!-- center point -->
+          <circle cx="190" cy="120" r="3" fill="#64748b"/>
+          <!-- angle theta: half-angle of water surface -->
+          <line x1="190" y1="120" x2="129" y2="75" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <line x1="190" y1="120" x2="251" y2="75" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <path d="M 190,120 m -20,0 a 20,20 0 0,1 40,0" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="190" y="108" text-anchor="middle" fill="#a78bfa" font-size="10">2θ</text>
+
+          <!-- bottom center marker -->
+          <line x1="187" y1="207" x2="193" y2="213" stroke="#64748b" stroke-width="1"/>
+          <line x1="193" y1="207" x2="187" y2="213" stroke="#64748b" stroke-width="1"/>
+
+          <!-- formula reference -->
+          <text x="190" y="15" text-anchor="middle" fill="#64748b" font-size="10">A = R²(θ − sinθcosθ) · P = 2Rθ · Rh = R(1 − sinθcosθ/θ)/2</text>
+          <text x="190" y="230" text-anchor="middle" fill="#f59e0b" font-size="10">h_c/D ≈ 0,94 → Q_max = 1,076·Q_ll  |  h_c/D ≈ 0,81 → V_max ≈ 1,14·V_ll</text>
+        </svg>
+        <figcaption>Canal circular parcialmente lleno — geometría, ángulo 2θ, calado h_c y relaciones adimensionales con sección llena</figcaption>
+      </div>
+
       <div class="prose"><p>Para tuberías circulares funcionando parcialmente llenas se usan relaciones adimensionales. <b>Tabla 27</b> (Thorman y Franke): dado $Q_c/Q_{ll}$ → obtener $V_c/V_{ll}$ y $h_c/D$. <b>Tabla 28</b>: dado $h_c/D$ → obtener $Q_c/Q_{ll}$ y $V_c/V_{ll}$.</p></div>
       <div class="box warn">
         <div class="box-title">Importante — Sección circular no llena al máximo cuando está llena</div>
@@ -1248,6 +1465,66 @@ code{
           <li>Cierre parcial de válvula → CCI más empinada → $Q_P$ disminuye.</li>
           <li>Mayor diferencia de cota ($\Delta z$) → CCI desplazada arriba → $Q_P$ disminuye.</li>
         </ul>
+      </div>
+
+      <!-- DIAGRAM: CCI / CCTB pump curves -->
+      <div class="diagram">
+        <svg viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg" font-family="Inter,system-ui,sans-serif">
+          <!-- axes -->
+          <line x1="60" y1="20" x2="60" y2="200" stroke="#475569" stroke-width="1.5"/>
+          <line x1="60" y1="200" x2="440" y2="200" stroke="#475569" stroke-width="1.5"/>
+          <!-- axis arrows -->
+          <polygon points="57,22 60,14 63,22" fill="#475569"/>
+          <polygon points="438,197 446,200 438,203" fill="#475569"/>
+          <!-- axis labels -->
+          <text x="50" y="12" text-anchor="middle" fill="#94a3b8" font-size="12" font-weight="600">H</text>
+          <text x="447" y="204" fill="#94a3b8" font-size="12" font-weight="600">Q</text>
+          <text x="52" y="203" fill="#64748b" font-size="9">0</text>
+
+          <!-- CCI (parabola, starts at H_mi0 on y-axis, rises with Q²) -->
+          <!-- H_mi0 = 100 (y=100 in svg coords where y_axis_top=20, y_bottom=200) -->
+          <!-- CCI: H = H0 + k*Q^2. At Q=0, H=H0 (y=100). At Q=350, H=175 (y=175). -->
+          <!-- svg_y = 200 - (H/200)*180 scaled -->
+          <!-- Let H range 0-200, Q range 0-350 in arbitrary units -->
+          <!-- CCI: y_svg = 200 - (60 + 0.00122*q^2)*(180/200) -->
+          <!-- At q=0: y=200-54=146. At q=350: y=200-(60+150)*0.9=200-189=11 -->
+          <!-- Let me use: at q=0, y=145 (H=61); at q=380, y=25 (H=175) -->
+          <path d="M 60,145 Q 200,148 380,28" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+          <text x="385" y="26" fill="#38bdf8" font-size="12" font-weight="600">CCI</text>
+          <text x="385" y="37" fill="#38bdf8" font-size="9">H_mi = H₀ + kQ²</text>
+
+          <!-- H_mi0 label on y-axis -->
+          <line x1="55" y1="145" x2="65" y2="145" stroke="#38bdf8" stroke-width="1.5"/>
+          <text x="50" y="149" text-anchor="end" fill="#38bdf8" font-size="10">H₀</text>
+          <text x="50" y="160" text-anchor="end" fill="#64748b" font-size="8">(Δz)</text>
+
+          <!-- CCTB (pump curve, starts high, decreases) -->
+          <!-- At q=0: y=45 (H=175). At q=380: y=160 (H=45). -->
+          <path d="M 60,40 Q 180,50 380,165" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+          <text x="385" y="163" fill="#f59e0b" font-size="12" font-weight="600">CCTB</text>
+          <text x="385" y="174" fill="#f59e0b" font-size="9">curva bomba</text>
+
+          <!-- Intersection point P -->
+          <!-- Approximate intersection: roughly at q=220, midpoint -->
+          <!-- CCI at q=220: y=200-(61+0.00122*220^2)*0.9 = 200-(61+59)*0.9=200-108=92 -->
+          <!-- CCTB at q=220: roughly y=40+(165-40)*(220/380)=40+72=112 -->
+          <!-- Let me estimate visually: crossing around q=230, H=100 → x=60+230=290, y=200-100*0.9=110 -->
+          <circle cx="240" cy="100" r="7" fill="none" stroke="#10b981" stroke-width="2"/>
+          <circle cx="240" cy="100" r="3" fill="#10b981"/>
+          <text x="250" y="95" fill="#10b981" font-size="12" font-weight="700">P</text>
+          <text x="250" y="107" fill="#10b981" font-size="9">(Q_P, H_P)</text>
+
+          <!-- dashed drop lines from P -->
+          <line x1="240" y1="100" x2="240" y2="200" stroke="#10b981" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="60" y1="100" x2="240" y2="100" stroke="#10b981" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="240" y="213" text-anchor="middle" fill="#10b981" font-size="10">Q_P</text>
+          <text x="50" y="104" text-anchor="end" fill="#10b981" font-size="10">H_P</text>
+
+          <!-- valve effect: CCI2 (more steep) -->
+          <path d="M 60,145 Q 160,160 260,30" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.5"/>
+          <text x="265" y="28" fill="#38bdf8" font-size="8" opacity="0.7">CCI (válvula cerrada)</text>
+        </svg>
+        <figcaption>Curvas bomba — CCTB (curva característica bomba) e CCI (curva de la instalación). El punto P es la intersección de operación</figcaption>
       </div>
     </div>
 
@@ -1356,6 +1633,9 @@ var observer = new IntersectionObserver(function(entries){
   });
 }, {rootMargin:'-56px 0px -70% 0px'});
 document.querySelectorAll('.tema').forEach(function(t){ observer.observe(t); });
+
+/* ── Nav activa por defecto ── */
+updateNav('t1');
 </script>
 </body>
 </html>
