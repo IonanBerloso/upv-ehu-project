@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0e1a">
+<title>Teoría · Mecánica de Fluidos e Hidráulica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+
+<style>
+/* ───────────────── RESET & BASE ───────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;
+  --surface:#111827;
+  --surface2:#1a2235;
+  --surface3:#1e293b;
+  --border:#1e2d42;
+  --border2:#263548;
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#38bdf8;
+  --accent2:#0ea5e9;
+  --gold:#f59e0b;
+  --gold2:#fbbf24;
+  --green:#10b981;
+  --red:#f43f5e;
+  --purple:#a78bfa;
+  --orange:#fb923c;
+  --formula-bg:#0d1929;
+  --formula-border:#1d4ed8;
+  --key-bg:#1a1500;
+  --key-border:#d97706;
+  --radius:10px;
+  --radius-sm:6px;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+  --transition:.22s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.6;
+  font-size:15px;
+  overflow-x:hidden;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+
+/* ───────────────── SCROLLBAR ───────────────── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#2563eb}
+
+/* ───────────────── TOP BAR ───────────────── */
+.topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(10,14,26,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:0;
+  height:56px;
+}
+.topbar-back{
+  display:flex;align-items:center;gap:8px;
+  padding:0 20px;height:100%;
+  color:var(--text2);font-size:.83em;font-weight:500;
+  border-right:1px solid var(--border);
+  transition:color var(--transition);
+  white-space:nowrap;
+  text-decoration:none;
+}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-back svg{opacity:.6;flex-shrink:0}
+.topbar-title{
+  padding:0 20px;flex:1;
+  font-size:.92em;font-weight:600;
+  color:#f1f5f9;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.topbar-meta{
+  padding:0 20px;
+  font-size:.75em;color:var(--text3);
+  white-space:nowrap;
+  display:flex;gap:12px;align-items:center;
+}
+.topbar-meta .chip{
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  color:var(--green);
+  padding:3px 10px;border-radius:20px;
+  font-size:.85em;font-weight:600;
+}
+
+/* ───────────────── NAV TABS ───────────────── */
+.nav-tabs{
+  position:sticky;top:56px;z-index:190;
+  background:rgba(10,14,26,.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 16px;
+  overflow-x:auto;
+  display:flex;gap:2px;
+  align-items:center;
+  height:44px;
+  white-space:nowrap;
+}
+.nav-tabs::-webkit-scrollbar{height:2px}
+.nav-tab{
+  display:inline-flex;align-items:center;
+  padding:6px 14px;
+  border-radius:var(--radius-sm);
+  font-size:.78em;font-weight:500;
+  color:var(--text3);
+  cursor:pointer;
+  transition:all var(--transition);
+  user-select:none;
+  flex-shrink:0;
+}
+.nav-tab:hover{color:var(--text2);background:var(--surface2)}
+.nav-tab.active{color:var(--accent);background:rgba(56,189,248,.1)}
+
+/* ───────────────── MAIN CONTENT ───────────────── */
+.content{max-width:900px;margin:0 auto;padding:20px 16px 60px}
+
+/* ───────────────── TEMA ACCORDION ───────────────── */
+.tema{
+  margin-bottom:10px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transition:border-color var(--transition);
+}
+.tema:has(.tema-body.open){border-color:var(--border2)}
+
+.tema-trigger{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;
+  background:var(--surface);
+  cursor:pointer;
+  user-select:none;
+  transition:background var(--transition);
+}
+.tema-trigger:hover{background:var(--surface2)}
+.tema-trigger.open{background:var(--surface2)}
+
+.tema-tag{
+  font-size:.68em;font-weight:700;
+  padding:3px 9px;
+  border-radius:20px;
+  background:rgba(245,158,11,.12);
+  color:var(--gold);
+  border:1px solid rgba(245,158,11,.25);
+  white-space:nowrap;
+  letter-spacing:.3px;
+}
+.tema-name{flex:1;font-size:.95em;font-weight:600;color:#f1f5f9}
+.tema-icon{
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+  color:var(--text3);font-size:.75em;
+  transition:transform var(--transition);
+  flex-shrink:0;
+}
+.tema-trigger.open .tema-icon{transform:rotate(90deg)}
+
+.tema-body{
+  display:none;
+  background:var(--bg);
+  border-top:1px solid var(--border);
+  padding:24px 24px 20px;
+}
+.tema-body.open{display:block}
+
+/* ───────────────── SECTIONS WITHIN TEMA ───────────────── */
+.section{margin-bottom:28px}
+.section:last-child{margin-bottom:0}
+
+.section-label{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.section-label::before{
+  content:'';display:block;
+  width:3px;height:18px;
+  background:var(--orange);
+  border-radius:2px;
+  flex-shrink:0;
+}
+.section-label span{
+  font-size:.76em;font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--orange);
+}
+
+.prose{font-size:.9em;line-height:1.8;color:#cbd5e1}
+.prose p{margin-bottom:10px}
+.prose ul,.prose ol{padding-left:20px;margin-bottom:10px}
+.prose li{margin-bottom:5px}
+.prose li::marker{color:var(--text3)}
+
+/* ───────────────── FORMULA BLOCKS ───────────────── */
+.fblock{
+  background:var(--formula-bg);
+  border:1px solid rgba(29,78,216,.35);
+  border-left:3px solid var(--formula-border);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:12px 16px;
+  margin:10px 0;
+  overflow-x:auto;
+}
+.fblock .flabel{
+  font-size:.68em;font-weight:600;
+  text-transform:uppercase;letter-spacing:.8px;
+  color:rgba(56,189,248,.7);
+  margin-bottom:6px;
+  font-family:'JetBrains Mono',monospace;
+}
+.fblock .katex-display{margin:4px 0}
+
+/* Key formula — highlighted */
+.fkey{
+  background:rgba(245,158,11,.06);
+  border:1px solid rgba(245,158,11,.25);
+  border-left:3px solid var(--gold);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:12px 16px;
+  margin:10px 0;
+  overflow-x:auto;
+}
+.fkey .flabel{
+  font-size:.68em;font-weight:600;
+  text-transform:uppercase;letter-spacing:.8px;
+  color:rgba(245,158,11,.8);
+  margin-bottom:6px;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* ───────────────── INFO / WARN / TIP BOXES ───────────────── */
+.box{
+  border-radius:var(--radius-sm);
+  padding:14px 16px;
+  margin:12px 0;
+  font-size:.87em;line-height:1.7;
+}
+.box .box-title{
+  font-weight:700;font-size:.85em;
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:8px;
+}
+.box ul{padding-left:18px}
+.box li{margin-bottom:4px}
+.box.info{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);color:#a7f3d0}
+.box.info .box-title{color:var(--green)}
+.box.warn{background:rgba(251,146,60,.06);border:1px solid rgba(251,146,60,.2);color:#fed7aa}
+.box.warn .box-title{color:var(--orange)}
+.box.danger{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);color:#fecdd3}
+.box.danger .box-title{color:var(--red)}
+.box.note{background:var(--surface2);border:1px solid var(--border2);color:#94a3b8}
+.box.note .box-title{color:var(--accent)}
+
+/* ───────────────── TABLES ───────────────── */
+.table-wrap{overflow-x:auto;margin:12px 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.83em}
+th{
+  background:var(--surface2);
+  color:var(--accent);
+  padding:9px 14px;
+  text-align:left;
+  font-weight:600;
+  font-size:.8em;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  border-bottom:1px solid var(--border2);
+}
+td{
+  padding:8px 14px;
+  border-bottom:1px solid rgba(30,45,66,.5);
+  color:#cbd5e1;
+  vertical-align:top;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.td-accent{color:var(--accent);font-weight:600}
+.td-gold{color:var(--gold);font-weight:600}
+.td-green{color:var(--green)}
+
+/* ───────────────── TWO-COL ───────────────── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+
+/* ───────────────── TAGS / BADGES ───────────────── */
+.badge{
+  display:inline-block;font-size:.72em;font-weight:600;
+  padding:2px 8px;border-radius:20px;
+}
+.badge-lam{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.badge-turb{background:rgba(244,63,94,.12);color:var(--red);border:1px solid rgba(244,63,94,.25)}
+.badge-crit{background:rgba(245,158,11,.12);color:var(--gold);border:1px solid rgba(245,158,11,.25)}
+
+/* ───────────────── STEPS / ALGORITHM ───────────────── */
+.steps{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin:10px 0}
+.step{display:flex;gap:12px;padding:5px 0;font-size:.87em;color:#94a3b8;align-items:baseline}
+.step-n{
+  min-width:22px;height:22px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:50%;font-size:.75em;font-weight:700;
+  color:var(--orange);flex-shrink:0;
+}
+.step b{color:#e2e8f0}
+
+/* ───────────────── COMPARISON TABLE SPECIAL ───────────────── */
+.cmp-table th{background:rgba(245,158,11,.08);color:var(--gold2)}
+.cmp-best td{background:rgba(16,185,129,.05);font-weight:600;color:#a7f3d0}
+
+/* ───────────────── INLINE HIGHLIGHTS ───────────────── */
+.hi{color:var(--accent);font-weight:600}
+.hi-g{color:var(--green);font-weight:600}
+.hi-y{color:var(--gold);font-weight:600}
+.hi-r{color:var(--red);font-weight:600}
+
+code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.85em;
+  background:var(--surface2);
+  padding:1px 5px;border-radius:3px;
+  color:#93c5fd;
+}
+
+/* ───────────────── SEARCH BAR ───────────────── */
+.search-wrap{
+  max-width:900px;margin:0 auto;
+  padding:18px 16px 8px;
+}
+.search-input{
+  width:100%;
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:var(--radius);
+  padding:11px 16px 11px 44px;
+  color:var(--text);
+  font-size:.9em;
+  font-family:inherit;
+  outline:none;
+  transition:border-color var(--transition);
+}
+.search-input::placeholder{color:var(--text3)}
+.search-input:focus{border-color:var(--accent)}
+.search-wrap-inner{position:relative}
+.search-icon{
+  position:absolute;left:15px;top:50%;transform:translateY(-50%);
+  color:var(--text3);pointer-events:none;
+}
+
+/* ───────────────── PROGRESS INDICATOR ───────────────── */
+.progress-bar{
+  position:fixed;top:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--accent2),var(--purple));
+  z-index:999;
+  transition:width .1s;
+  width:0%;
+}
+
+/* ───────────────── FOOTER ───────────────── */
+.footer{text-align:center;padding:40px 20px;color:var(--text3);font-size:.78em}
+.footer a{color:var(--text3);opacity:.6}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a class="topbar-back" href="../index.html">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
+    Inicio
+  </a>
+  <span class="topbar-title">Mecánica de Fluidos e Hidráulica — Teoría</span>
+  <div class="topbar-meta">
+    <span class="chip">17 temas</span>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs" id="navTabs">
+  <span class="nav-tab" onclick="goTo('t1')">T1</span>
+  <span class="nav-tab" onclick="goTo('t2')">T2 Propiedades</span>
+  <span class="nav-tab" onclick="goTo('t3')">T3 Estática</span>
+  <span class="nav-tab" onclick="goTo('t4')">T4 Hidrostática</span>
+  <span class="nav-tab" onclick="goTo('t7')">T7 Fuerzas sup.</span>
+  <span class="nav-tab" onclick="goTo('t8')">T8 Cuerpos cerr.</span>
+  <span class="nav-tab" onclick="goTo('t911')">T9-11 Cinemática</span>
+  <span class="nav-tab" onclick="goTo('t12')">T12 Bernoulli</span>
+  <span class="nav-tab" onclick="goTo('t13')">T13 Medidores</span>
+  <span class="nav-tab" onclick="goTo('t14')">T14 QDM</span>
+  <span class="nav-tab" onclick="goTo('t15')">T15 Aplic. QDM</span>
+  <span class="nav-tab" onclick="goTo('t16')">T16 Dim. análisis</span>
+  <span class="nav-tab" onclick="goTo('t17')">T17 Viscosidad</span>
+  <span class="nav-tab" onclick="goTo('t18')">T18 Pérdidas</span>
+  <span class="nav-tab" onclick="goTo('t19')">T19 Conducciones</span>
+  <span class="nav-tab" onclick="goTo('t21')">T21 Canales</span>
+  <span class="nav-tab" onclick="goTo('t25')">T25 Bombeo</span>
+</nav>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <div class="search-wrap-inner">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z"/></svg>
+    <input type="text" class="search-input" id="searchInput" placeholder="Buscar tema, fórmula o concepto…" oninput="searchTemas(this.value)">
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="content" id="mainContent">
+
+<!-- ══════════════════════════════════════════════════════ T1 ══ -->
+<div class="tema" id="t1">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T1</span>
+    <span class="tema-name">Introducción a la Mecánica de Fluidos</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Definición de fluido</span></div>
+      <div class="prose">
+        <p>Un <b>fluido</b> es una sustancia que se deforma continuamente bajo la acción de cualquier tensión tangencial (de cizalladura), por pequeña que sea. Incluye líquidos y gases.</p>
+        <ul>
+          <li><b>Líquido:</b> volumen propio, incompresible en la práctica, adopta la forma del recipiente.</li>
+          <li><b>Gas:</b> sin volumen ni forma propios, compresible, llena todo el espacio disponible.</li>
+        </ul>
+        <p>La diferencia clave con un sólido: un sólido resiste tensiones tangenciales estáticas; un fluido no puede hacerlo.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Hipótesis de continuo</span></div>
+      <div class="prose">
+        <p>El fluido se trata como un medio continuo: sus propiedades (densidad, presión, velocidad…) varían de forma continua y diferenciable en el espacio y el tiempo. Válida cuando la escala del problema $L \gg \lambda$ (recorrido libre medio molecular). Número de Knudsen $Kn = \lambda/L \ll 1$.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Ramas de la MF</span></div>
+      <div class="prose">
+        <ul>
+          <li><b>Estática:</b> fluido en reposo — distribución de presiones, fuerzas sobre superficies.</li>
+          <li><b>Cinemática:</b> movimiento del fluido sin considerar fuerzas — continuidad, perfiles de velocidad.</li>
+          <li><b>Dinámica:</b> relación fuerzas ↔ movimiento — Bernoulli, cantidad de movimiento.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T2 ══ -->
+<div class="tema" id="t2">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T2</span>
+    <span class="tema-name">Propiedades físicas de los fluidos</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Densidad, peso específico y densidad relativa</span></div>
+      <div class="fblock"><div class="flabel">Densidad</div>$$\rho = \frac{m}{V} \quad [\text{kg/m}^3]$$</div>
+      <div class="fblock"><div class="flabel">Peso específico</div>$$\gamma = \rho \cdot g \quad [\text{N/m}^3], \qquad g = 9{,}81\ \text{m/s}^2$$</div>
+      <div class="fblock"><div class="flabel">Densidad relativa (adimensional)</div>$$s = \frac{\rho}{\rho_0}, \qquad \rho_0 = 1000\ \text{kg/m}^3 \text{ (agua 4°C)}$$</div>
+      <div class="prose"><p>Valores de referencia: agua $\rho \approx 1000\ \text{kg/m}^3$, mercurio $\approx 13\,600$, aire $\approx 1{,}2$.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Gas perfecto</span></div>
+      <div class="fkey"><div class="flabel">Ecuación de estado</div>$$p = \rho R^* T \qquad R^*_{\text{aire}} = 287\ \text{J/(kg·K)}$$</div>
+      <div class="prose"><p>$T$ en Kelvin. A presión atmosférica, $\rho_{\text{aire}} \approx 1{,}2\ \text{kg/m}^3$ a 20°C.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Compresibilidad</span></div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Módulo de compresibilidad volumétrica</div>$$K = -V\frac{dp}{dV} \quad [\text{Pa}]$$</div>
+        <div class="fblock"><div class="flabel">Compresibilidad</div>$$\alpha = \frac{1}{K} \quad [\text{Pa}^{-1}]$$</div>
+      </div>
+      <div class="prose"><p>Agua: $K \approx 2{,}1 \times 10^9\ \text{Pa}$. Los líquidos son prácticamente incompresibles.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Viscosidad</span></div>
+      <div class="fkey"><div class="flabel">Ley de Newton de la viscosidad (fluido newtoniano)</div>$$\tau = \mu \frac{dv}{dy} \quad [\text{Pa}]$$</div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Viscosidad dinámica</div>$$\mu \quad [\text{Pa·s}] \quad \text{o} \quad [\text{cP}]$$</div>
+        <div class="fblock"><div class="flabel">Viscosidad cinemática</div>$$\nu = \frac{\mu}{\rho} \quad [\text{m}^2/\text{s}]$$</div>
+      </div>
+      <div class="box note">
+        <div class="box-title">Referencia</div>
+        Agua 20°C: $\mu \approx 10^{-3}$ Pa·s, $\nu \approx 10^{-6}$ m²/s (1 cSt).
+        Viscosidad líquidos <b>decrece</b> con T; gases <b>aumenta</b> con T.
+      </div>
+      <div class="grid2">
+        <div class="box note"><div class="box-title">Fluidos newtonianos</div>$\tau$ proporcional a $\dot\gamma$. Agua, aceites ligeros, gases.</div>
+        <div class="box note"><div class="box-title">No newtonianos</div>Relación no lineal. Sangre, pasta de cemento, pinturas (tixotrópicos, plásticos de Bingham…).</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Tensión superficial y capilaridad</span></div>
+      <div class="prose">
+        <p>La <b>tensión superficial</b> $\sigma$ [N/m] actúa en la interfase líquido–gas. Si $F_{\text{adh}} > F_{\text{coh}}$ → menisco cóncavo → <b>ascenso capilar</b> (agua–vidrio). Si $F_{\text{adh}} < F_{\text{coh}}$ → menisco convexo → <b>descenso capilar</b> (mercurio–vidrio).</p>
+      </div>
+      <div class="fkey"><div class="flabel">Altura capilar en tubo circular (Jurin)</div>$$h = \frac{4\sigma\cos\theta}{\gamma D} = \frac{2\sigma\cos\theta}{\rho g R}$$</div>
+      <div class="fblock"><div class="flabel">Ley de Jurin</div>$$h \cdot D = \text{cte} \quad \text{(par líquido–sólido, T constante)}$$</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Presión de vapor y cavitación</span></div>
+      <div class="prose">
+        <p><b>Presión de vapor</b> $P_v$: presión a la que un líquido entra en ebullición a temperatura $T$. Es <b>absoluta</b> y <b>creciente con T</b>. (Tabla 8 de ábacos.)</p>
+      </div>
+      <div class="box danger">
+        <div class="box-title">⚠ Cavitación</div>
+        Cuando $P_{\text{local}} \leq P_v$, el líquido se evapora localmente formando burbujas. Al alcanzar zonas de mayor presión, las burbujas <b>colapsan</b> generando microchorros (hasta $10^6$ bar puntual) que erosionan el material. Efectos observables: ruido, vibraciones, picaduras en rodetes y paredes.
+        <br><br>Para evitarla: asegurar $P_{\text{local}} > P_v$ en todos los puntos del sistema.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T3 ══ -->
+<div class="tema" id="t3">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T3</span>
+    <span class="tema-name">Leyes generales de la estática de fluidos</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Ecuación fundamental de la estática</span></div>
+      <div class="fkey"><div class="flabel">Fluido en reposo — campo gravitatorio</div>$$p + \rho g z = \text{cte} \qquad \Leftrightarrow \qquad \frac{dp}{dz} = -\rho g$$</div>
+      <div class="prose">
+        <p>Las superficies de igual presión (<b>superficies isobáricas</b>) son horizontales para fluido homogéneo en reposo. La presión <b>aumenta con la profundidad</b>.</p>
+        <p>Forma vectorial general (con cualquier campo de fuerzas): $\nabla p = \rho\,\vec{g}$.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Fluido incompresible ($\rho$ = cte)</span></div>
+      <div class="fblock"><div class="flabel">Diferencia de presión entre dos puntos</div>$$p_2 - p_1 = -\rho g(z_2 - z_1) = \rho g h \qquad (h = z_1 - z_2 > 0)$$</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T4 ══ -->
+<div class="tema" id="t4">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T4</span>
+    <span class="tema-name">Hidrostática — Fluido incompresible en campo gravitatorio</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Distribución de presiones</span></div>
+      <div class="fkey"><div class="flabel">Presión a profundidad h desde la superficie libre</div>$$p = p_0 + \rho g h$$</div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Presión absoluta</div>$$p_{\text{abs}} = p_{\text{atm}} + p_{\text{man}}$$</div>
+        <div class="fblock"><div class="flabel">Presión de vacío</div>$$p_{\text{vac}} = p_{\text{atm}} - p_{\text{abs}}$$</div>
+      </div>
+      <div class="box note">
+        <div class="box-title">Equivalencias presión atmosférica</div>
+        $p_{\text{atm}} \approx 101\,325\ \text{Pa} \approx 1{,}033\ \text{kgf/cm}^2 \approx 10{,}33\ \text{m.c.a.} \approx 760\ \text{mmHg}$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Manómetros</span></div>
+      <div class="fblock"><div class="flabel">Manómetro diferencial (tubo en U, líquido manométrico $\rho_m$)</div>$$\Delta P = P_A - P_B = \rho_m g\,\Delta h - \rho_f g\,\Delta z$$</div>
+      <div class="box info">
+        <div class="box-title">Regla práctica</div>
+        Recorrer el manómetro desde A hasta B: <b>sumar</b> al bajar (presión sube), <b>restar</b> al subir (presión baja).
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Principio de Pascal</span></div>
+      <div class="prose"><p>La presión ejercida sobre un fluido confinado en reposo se transmite íntegramente a todos los puntos del fluido y a las paredes.</p></div>
+      <div class="fblock"><div class="flabel">Prensa hidráulica</div>$$\frac{F_2}{F_1} = \frac{A_2}{A_1}$$</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T7 ══ -->
+<div class="tema" id="t7">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T7</span>
+    <span class="tema-name">Fuerzas sobre superficies</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Superficies planas sumergidas</span></div>
+      <div class="fkey"><div class="flabel">Fuerza total resultante</div>$$F = P_G \cdot A$$</div>
+      <div class="prose"><p>$P_G$ = presión manométrica en el <b>centro de gravedad G</b> de la superficie. $A$ = área total.</p></div>
+      <div class="fkey"><div class="flabel">Centro de presiones $Y_P$ (punto de aplicación de F)</div>$$Y_P = \frac{I_G}{Y_G \cdot A} + Y_G \qquad Y_P > Y_G \ \text{siempre}$$</div>
+      <div class="prose"><p>$Y_G$ = distancia desde la superficie libre al c.d.g., medida sobre el plano inclinado. $I_G$ = momento de inercia central de la sección.</p></div>
+      <div class="box note">
+        <div class="box-title">Momentos de inercia $I_G$ habituales</div>
+        <ul>
+          <li>Rectángulo ($b \times a$): $I_G = ba^3/12$</li>
+          <li>Círculo (radio $R$): $I_G = \pi R^4/4$</li>
+          <li>Triángulo ($b$, $h$): $I_G = bh^3/36$</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Superficies curvas sumergidas</span></div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Componente horizontal</div>$$F_H = P_G \cdot A'$$<div style="font-size:.78em;color:#64748b;margin-top:4px">$A'$ = proyección vertical de la curva</div></div>
+        <div class="fblock"><div class="flabel">Componente vertical</div>$$F_V = \gamma \cdot V$$<div style="font-size:.78em;color:#64748b;margin-top:4px">$V$ = volumen fluido sobre la curva</div></div>
+      </div>
+      <div class="fblock"><div class="flabel">Resultante</div>$$F = \sqrt{F_H^2 + F_V^2} \qquad \tan\alpha = \frac{F_V}{F_H}$$</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Empuje de Arquímedes</span></div>
+      <div class="fkey"><div class="flabel">Empuje (fuerza hidrostática sobre cuerpo sumergido)</div>$$E = \gamma_{\text{fluido}} \cdot V_{\text{desalojado}}$$</div>
+      <div class="prose"><p>Actúa verticalmente hacia arriba, en el <b>centro de carena</b> (c.d.g. del volumen desalojado). Si $E > W$ → flota; si $E < W$ → se hunde.</p></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T8 ══ -->
+<div class="tema" id="t8">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T8</span>
+    <span class="tema-name">Fuerzas sobre cuerpos cerrados — Barlow y flotación</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Fórmula de Barlow — Paredes a presión</span></div>
+      <div class="grid2">
+        <div class="fkey"><div class="flabel">Cilindro (diámetro D)</div>$$e = \frac{P \cdot D}{2\,\sigma_t}$$</div>
+        <div class="fkey"><div class="flabel">Esfera (diámetro D)</div>$$e = \frac{P \cdot D}{4\,\sigma_t}$$</div>
+      </div>
+      <div class="prose"><p>$e$ = espesor mínimo de pared, $\sigma_t$ = tensión admisible del material. La esfera soporta el doble de presión que el cilindro con igual espesor.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Estabilidad en flotación</span></div>
+      <div class="prose">
+        <ul>
+          <li><b>Metacentro M</b>: punto de aplicación de la resultante del empuje al inclinar el cuerpo.</li>
+          <li>Si $M$ está <b>por encima</b> de G → flotación estable (par restaurador).</li>
+          <li>Si $M$ está <b>por debajo</b> de G → flotación inestable (el cuerpo vuelca).</li>
+          <li>Altura metacéntrica: $\overline{GM} = I_{\text{flot}}/V_{\text{desaloj}} - \overline{GC}$</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T9-11 ══ -->
+<div class="tema" id="t911">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T9–11</span>
+    <span class="tema-name">Fundamentos del movimiento de fluidos — Cinemática</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Caudal y continuidad</span></div>
+      <div class="grid2">
+        <div class="fkey"><div class="flabel">Caudal volumétrico</div>$$Q = v \cdot A \quad [\text{m}^3/\text{s}]$$</div>
+        <div class="fblock"><div class="flabel">Caudal másico</div>$$\dot{m} = \rho \cdot Q \quad [\text{kg/s}]$$</div>
+      </div>
+      <div class="fkey"><div class="flabel">Continuidad (fluido incompresible, conducto)</div>$$A_1 v_1 = A_2 v_2 = Q = \text{cte}$$</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Número de Reynolds y tipos de flujo</span></div>
+      <div class="fkey"><div class="flabel">Número de Reynolds</div>$$Re = \frac{v D}{\nu} = \frac{\rho v D}{\mu}$$</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Régimen</th><th>Condición</th><th>Perfil</th><th>Factor $f$</th></tr>
+          <tr><td><span class="badge badge-lam">Laminar</span></td><td>$Re \leq 2000$</td><td>Parabólico (Poiseuille)</td><td class="td-green">$64/Re$</td></tr>
+          <tr><td><span class="badge badge-crit">Crítico</span></td><td>$2000 < Re < 4000$</td><td>Inestable</td><td>—</td></tr>
+          <tr><td><span class="badge badge-turb">Turbulento</span></td><td>$Re \geq 4000$</td><td>Plano con gradiente en pared</td><td>Moody / Colebrook</td></tr>
+        </table>
+      </div>
+      <div class="prose"><p>Para conductos no circulares: $D_h = 4A/P$ (diámetro hidráulico).</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Aceleración y descripción del movimiento</span></div>
+      <div class="fblock"><div class="flabel">Aceleración de una partícula fluida</div>$$a = \underbrace{v\frac{\partial v}{\partial s}}_{\text{convectiva}} + \underbrace{\frac{\partial v}{\partial t}}_{\text{local}}$$</div>
+      <div class="prose">
+        <p><b>Flujo estacionario:</b> $\partial/\partial t = 0$, propiedades constantes en cada punto. Las líneas de corriente coinciden con las trayectorias.</p>
+        <p><b>Perfil laminar:</b> $v(r) = v_{\max}(1-r^2/R^2)$, $v_{\text{media}} = v_{\max}/2$.</p>
+        <p><b>Perfil turbulento:</b> más uniforme, $v_{\text{media}} \approx 0{,}8\, v_{\max}$.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T12 ══ -->
+<div class="tema" id="t12">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T12</span>
+    <span class="tema-name">Ecuación de Bernoulli</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Ecuación de Bernoulli</span></div>
+      <div class="fkey"><div class="flabel">Bernoulli — fluido ideal, flujo estacionario [m.c.a.]</div>$$\frac{P}{\gamma} + z + \frac{v^2}{2g} = B = \text{cte}$$</div>
+      <div class="prose">
+        <ul>
+          <li>$P/\gamma$ = altura de presión</li>
+          <li>$z$ = altura potencial (geodésica)</li>
+          <li>$v^2/(2g)$ = altura cinética</li>
+          <li>$B$ = energía específica total [m]</li>
+        </ul>
+      </div>
+      <div class="fkey"><div class="flabel">Con pérdidas de carga $h_f$</div>$$B_1 - h_f = B_2 \qquad \Leftrightarrow \qquad \frac{P_1}{\gamma}+z_1+\frac{v_1^2}{2g} - h_f = \frac{P_2}{\gamma}+z_2+\frac{v_2^2}{2g}$$</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Bernoulli con máquinas hidráulicas</span></div>
+      <div class="grid2">
+        <div class="fkey"><div class="flabel">Bomba (añade energía)</div>$$B_E + H_m = B_S$$</div>
+        <div class="fkey"><div class="flabel">Turbina (extrae energía)</div>$$B_E - H_T = B_S$$</div>
+      </div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Potencia hidráulica</div>$$P = H \cdot \gamma \cdot Q \quad [\text{W}]$$</div>
+        <div class="fblock"><div class="flabel">Rendimiento</div>$$\eta = P_{\text{útil}} / P_{\text{bruta}}$$</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Líneas energéticas</span></div>
+      <div class="prose">
+        <ul>
+          <li><b>Línea de Energía Total (LET):</b> $P/\gamma + z + v^2/2g$. Desciende con las pérdidas; sube en bombas, baja en turbinas.</li>
+          <li><b>Línea Piezométrica (LP):</b> $P/\gamma + z$. Siempre debajo de la LET a distancia $v^2/2g$. Si LP < cota del conducto → presión subatmosférica (sifón).</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T13 ══ -->
+<div class="tema" id="t13">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T13</span>
+    <span class="tema-name">Medidores de flujo</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Tubo de Pitot-Prandtl</span></div>
+      <div class="fkey"><div class="flabel">Velocidad (con manómetro diferencial)</div>$$v = \sqrt{2g R\!\left(\frac{s_0}{s} - 1\right)}$$</div>
+      <div class="prose"><p>$R$ = lectura manométrica [m], $s_0$ = densidad relativa del líquido manométrico, $s$ = densidad relativa del fluido.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Teorema de Torricelli — Orificio en depósito</span></div>
+      <div class="fkey"><div class="flabel">Velocidad de salida (nivel h sobre el orificio)</div>$$v_t = \sqrt{2g h}$$</div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Caudal real</div>$$Q_r = C_d \cdot A_0 \cdot \sqrt{2gh}$$</div>
+        <div class="fblock"><div class="flabel">Vaciado de depósito</div>$$t = \frac{\sqrt{2}\,A_{\text{dep}}}{C_d\,A_{\text{or}}\sqrt{g}}\!\left(\sqrt{h_i} - \sqrt{h_f}\right)$$</div>
+      </div>
+      <div class="prose"><p>$C_d \approx 0{,}61$–$0{,}65$ para orificio circular en pared delgada.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Venturímetro</span></div>
+      <div class="fblock"><div class="flabel">Caudal</div>$$Q_r = C_v A_2 \sqrt{\dfrac{2gR\!\left(\frac{s_0}{s}-1\right)}{1-\!\left(\frac{A_2}{A_1}\right)^{\!2}}}$$</div>
+      <div class="prose"><p>$C_v \approx 0{,}97$–$0{,}99$. La garganta de área $A_2$ provoca caída de presión que se mide con manómetro diferencial.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Vertederos</span></div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Rectangular (longitud L)</div>$$Q = \tfrac{2}{3} C_d L\sqrt{2g}\, h^{3/2}$$</div>
+        <div class="fblock"><div class="flabel">Triangular (ángulo 2α)</div>$$Q = \tfrac{8}{15} C_d \tan\!\alpha\sqrt{2g}\, h^{5/2}$$</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T14 ══ -->
+<div class="tema" id="t14">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T14</span>
+    <span class="tema-name">Teorema de la Cantidad de Movimiento</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Ecuación de la QDM (Reynolds)</span></div>
+      <div class="fkey"><div class="flabel">Flujo estacionario e incompresible</div>$$\sum \vec{F} = \rho Q\,(\vec{v}_2 - \vec{v}_1) = \dot{m}\,(\vec{v}_2 - \vec{v}_1)$$</div>
+      <div class="prose"><p>$\sum \vec{F}$ incluye: fuerzas de presión en las secciones del VC, peso del fluido en el VC, y la <b>reacción</b> de la estructura $\vec{R}$. Proyectar en x e y por separado.</p></div>
+      <div class="steps">
+        <div class="step"><span class="step-n">1</span>Definir el volumen de control (VC).</div>
+        <div class="step"><span class="step-n">2</span>Aplicar continuidad: $Q_1 = Q_2$ (incompresible).</div>
+        <div class="step"><span class="step-n">3</span>Aplicar Bernoulli para obtener presiones en las secciones del VC.</div>
+        <div class="step"><span class="step-n">4</span>Proyectar $\sum F = \rho Q\,\Delta v$ en ejes x e y.</div>
+        <div class="step"><span class="step-n">5</span>Despejar la reacción $R_x$, $R_y$.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T15 ══ -->
+<div class="tema" id="t15">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T15</span>
+    <span class="tema-name">Aplicaciones del Teorema de la QDM</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Casos habituales</span></div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Caso</th><th>Fórmula principal</th></tr>
+          <tr><td>Chorro sobre placa perpendicular</td><td>$F = \rho Q v = \rho A v^2$</td></tr>
+          <tr><td>Chorro sobre placa inclinada $\theta$</td><td>$F_\perp = \rho Q v\sin\theta$; $Q_1 = Q(1+\cos\theta)/2$; $Q_2 = Q(1-\cos\theta)/2$</td></tr>
+          <tr><td>Codo en tubería</td><td>Proyectar en x e y: $F_x = P_1A_1 + \rho Qv_1 - P_2A_2\cos\theta - \rho Qv_2\cos\theta$</td></tr>
+          <tr><td>Álabe Pelton (móvil, velocidad $u$)</td><td>$P = \rho Q(v_j-u)(1-\cos\beta)\,u$ — máx. a $u = v_j/2$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Pérdida de Borda-Carnot (ensanchamiento brusco)</span></div>
+      <div class="fkey"><div class="flabel">Pérdida de carga</div>$$h_f = \frac{(v_1 - v_2)^2}{2g}$$</div>
+      <div class="prose"><p>Si $A_2 \gg A_1$: $h_f = v_1^2/(2g)$ (toda la energía cinética se disipa).</p></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T16 ══ -->
+<div class="tema" id="t16">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T16</span>
+    <span class="tema-name">Análisis dimensional y Teoría de modelos</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Teorema de Buckingham ($\Pi$)</span></div>
+      <div class="fkey"><div class="flabel">Número de grupos adimensionales independientes</div>$$k = n - r$$</div>
+      <div class="prose"><p>$n$ = variables del problema, $r$ = rango de la matriz dimensional (= nº de dimensiones fundamentales implicadas, típicamente $r \leq 3$ en MF: M, L, T).</p></div>
+      <div class="steps">
+        <div class="step"><span class="step-n">1</span>Identificar las $n$ variables.</div>
+        <div class="step"><span class="step-n">2</span>Determinar dimensiones fundamentales.</div>
+        <div class="step"><span class="step-n">3</span>Elegir $r$ variables repetidoras (no deben formar grupo $\Pi$ entre sí).</div>
+        <div class="step"><span class="step-n">4</span>Combinar cada variable restante con las repetidoras hasta hacer adimensional.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Grupos adimensionales principales</span></div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Nombre</th><th>Símbolo</th><th>Definición</th><th>Ratio físico</th></tr>
+          <tr><td>Reynolds</td><td class="td-accent">$Re$</td><td>$\rho v L/\mu = vL/\nu$</td><td>Inercia / Viscosidad</td></tr>
+          <tr><td>Froude</td><td class="td-accent">$Fr$</td><td>$v/\sqrt{gL}$</td><td>Inercia / Gravedad</td></tr>
+          <tr><td>Mach</td><td class="td-accent">$Ma$</td><td>$v/c$</td><td>Inercia / Compresibilidad</td></tr>
+          <tr><td>Weber</td><td class="td-accent">$We$</td><td>$\rho v^2 L/\sigma$</td><td>Inercia / Tensión sup.</td></tr>
+          <tr><td>Euler</td><td class="td-accent">$Eu$</td><td>$\Delta P/(\rho v^2)$</td><td>Presión / Inercia</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Semejanza en modelos</span></div>
+      <div class="prose">
+        <ul>
+          <li><b>Geométrica:</b> razón de escalas constante en todas las dimensiones.</li>
+          <li><b>Cinemática:</b> campos de velocidades geométricamente semejantes.</li>
+          <li><b>Dinámica (completa):</b> todos los $\Pi$ iguales en modelo y prototipo — en la práctica se elige el grupo dominante (<b>Re</b> para flujo viscoso, <b>Fr</b> para superficie libre).</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T17 ══ -->
+<div class="tema" id="t17">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T17</span>
+    <span class="tema-name">Efectos de la viscosidad — Capa límite</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Capa límite sobre placa plana</span></div>
+      <div class="prose"><p>Región próxima a la pared donde dominan los efectos viscosos. El espesor $\delta(x)$ crece con la distancia $x$ al borde de ataque.</p></div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Laminar (Blasius)</div>$$\delta = \frac{5x}{\sqrt{Re_x}}, \qquad Re_x = \frac{v_\infty x}{\nu}$$</div>
+        <div class="fblock"><div class="flabel">Turbulenta (aprox.)</div>$$\delta \approx \frac{0{,}37\,x}{Re_x^{1/5}}$$</div>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Transición laminar → turbulenta</div>
+        En placa plana: $Re_x \approx 5 \times 10^5$. En tubería: $Re_D \approx 2000$–$4000$.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Ley logarítmica de pared (turbulento plenamente desarrollado)</span></div>
+      <div class="fblock"><div class="flabel">Zona logarítmica ($30 < y^+ < 300$)</div>$$\frac{v}{v^*} = \frac{1}{\kappa}\ln\frac{y\,v^*}{\nu} + C, \qquad v^* = \sqrt{\frac{\tau_w}{\rho}}, \quad \kappa \approx 0{,}41, \quad C \approx 5$$</div>
+      <div class="prose">
+        <ul>
+          <li>Subcapa viscosa ($y^+ < 5$): $v/v^* = y^+$ (perfil lineal).</li>
+          <li>Zona buffer ($5 < y^+ < 30$): transición.</li>
+          <li>Zona logarítmica: ley de pared válida.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T18 ══ -->
+<div class="tema" id="t18">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T18</span>
+    <span class="tema-name">Pérdidas de carga en conductos cerrados</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Ecuación de Darcy-Weisbach</span></div>
+      <div class="fkey"><div class="flabel">Pérdida de carga por fricción en conducto circular</div>$$h_f = f \cdot \frac{L}{D} \cdot \frac{v^2}{2g} \quad [\text{m}]$$</div>
+      <div class="prose"><p>Para conducto no circular: usar $D_h = 4\,R_h = 4A/P$.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Fronteras liso / semirrugoso / rugoso</span></div>
+      <div class="fkey"><div class="flabel">Límites de comportamiento (Cuadro 21)</div>$$Re' = \frac{23}{\varepsilon/D} \qquad Re'' = \frac{560}{\varepsilon/D}$$</div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Régimen</th><th>Comportamiento</th><th>Condición</th><th>Fórmula $f$</th></tr>
+          <tr>
+            <td><span class="badge badge-lam">Laminar $Re \leq 2000$</span></td>
+            <td>—</td><td>—</td>
+            <td class="td-green"><b>$f = 64/Re$</b> (Hagen-Poiseuille)</td>
+          </tr>
+          <tr>
+            <td colspan="4" style="text-align:center;color:#64748b;font-style:italic;font-size:.8em">$2000 < Re < 4000$: zona crítica — no trabajar en esta zona</td>
+          </tr>
+          <tr>
+            <td rowspan="2"><span class="badge badge-turb">Turbulento</span> — Lisa<br>$Re < Re'$</td>
+            <td>$Re \leq 10^5$</td><td>Blasius</td>
+            <td class="td-accent"><b>$f = 0{,}316/Re^{0{,}25}$</b></td>
+          </tr>
+          <tr>
+            <td>$Re > 10^5$</td><td>Karman-Prandtl liso</td>
+            <td class="td-accent">$1/\sqrt{f} = 2\log(Re\sqrt{f}/2{,}51)$</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-turb">Turbulento</span> — Semirrugosa<br>$Re' \leq Re \leq Re''$</td>
+            <td colspan="2">Colebrook-White</td>
+            <td class="td-accent"><b>$\dfrac{1}{\sqrt{f}} = -2\log\!\left[\dfrac{2{,}51}{Re\sqrt{f}} + \dfrac{\varepsilon/D}{3{,}71}\right]$</b>
+            <br><span style="font-size:.78em;color:#94a3b8">PSAK: $f = \dfrac{0{,}25}{\left[\log_{10}\!\left(\frac{\varepsilon/D}{3{,}71} + \frac{5{,}74}{Re^{0{,}9}}\right)\right]^2}$</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-turb">Turbulento</span> — Rugosa<br>$Re > Re''$</td>
+            <td colspan="2">Karman-Prandtl rugoso</td>
+            <td class="td-accent"><b>$f = \dfrac{0{,}25}{\left[\log_{10}\!\dfrac{3{,}71}{\varepsilon/D}\right]^2}$</b></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Rugosidades absolutas típicas (Cuadro 20)</span></div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Material</th><th>$\varepsilon$ (mm)</th></tr>
+          <tr><td>PVC / Vidrio / Cobre</td><td class="td-green">0,0015</td></tr>
+          <tr><td>Acero comercial / Galvanizado</td><td>0,046</td></tr>
+          <tr><td>Hierro fundido</td><td>0,26</td></tr>
+          <tr><td>Hormigón liso</td><td>0,3</td></tr>
+          <tr><td>Hormigón rugoso</td><td>1,0 – 3,0</td></tr>
+          <tr><td>Mampostería</td><td>1,0 – 10</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Tipos de problemas con el Ábaco de Moody</span></div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Tipo</th><th>Datos</th><th>Incógnita</th><th>Método</th></tr>
+          <tr><td class="td-gold"><b>Tipo I</b></td><td>$D, L, v, \varepsilon$</td><td>$h_f$</td><td>$Re + \varepsilon/D$ → Moody → $f$ → Darcy-Weisbach</td></tr>
+          <tr><td class="td-gold"><b>Tipo II</b></td><td>$D, L, h_f, \varepsilon$</td><td>$v$</td><td>Iterar: $f_0$ → $v$ → nuevo $Re$ → nuevo $f$ → convergencia</td></tr>
+          <tr><td class="td-gold"><b>Tipo III</b></td><td>$Q, L, h_f, \varepsilon$</td><td>$D$</td><td>Iterar sobre $D$ hasta convergencia</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Pérdidas menores (accesorios)</span></div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Con coeficiente K</div>$$h_f = K \cdot \frac{v^2}{2g}$$</div>
+        <div class="fblock"><div class="flabel">Con longitud equivalente</div>$$h_f = f \cdot \frac{L_{eq}}{D} \cdot \frac{v^2}{2g}$$</div>
+      </div>
+      <div class="box note">
+        <div class="box-title">Valores K típicos (Cuadros 23–24)</div>
+        <ul>
+          <li>Válvula de globo (abierta): $K \approx 10$</li>
+          <li>Válvula de compuerta (abierta): $K \approx 0{,}1$–$0{,}2$</li>
+          <li>Codo 90° (radio largo): $K \approx 0{,}3$</li>
+          <li>Codo 90° (radio corto): $K \approx 0{,}9$</li>
+          <li>Ensanchamiento brusco: $K = (1 - A_1/A_2)^2$</li>
+          <li>Entrada brusca al conducto: $K = 0{,}5$</li>
+          <li>Salida: $K = 1{,}0$</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T19 ══ -->
+<div class="tema" id="t19">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T19</span>
+    <span class="tema-name">Flujo permanente en conductos cerrados — Cálculo práctico</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Hazen-Williams</span></div>
+      <div class="fkey"><div class="flabel">Pérdida de carga (SI)</div>$$h_f = J_1 \cdot L \cdot Q^{1{,}852}$$</div>
+      <div class="prose"><p>$J_1$ depende de $C_{HW}$ (coeficiente de rugosidad) y $D$ — obtenido de tablas. Válida para agua a temperatura ordinaria. PVC nuevo: $C_{HW} = 150$; hierro fundido nuevo: $130$; usado: $\sim 100$.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Envejecimiento de tuberías</span></div>
+      <div class="fblock"><div class="flabel">Pérdida de carga en función del tiempo de servicio</div>$$h_f(t) = h_f(0) \cdot \left(1 + \frac{t}{100}\right)$$</div>
+      <div class="prose"><p>$t$ = años en servicio. La rugosidad crece por depósitos y corrosión.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Tuberías en serie y en paralelo</span></div>
+      <div class="grid2">
+        <div class="box info">
+          <div class="box-title">Serie</div>
+          $$Q_1 = Q_2 = \cdots = Q$$
+          $$h_{f,\text{total}} = \sum h_{f,i}$$
+          <p>Mismo caudal, pérdidas se suman.</p>
+        </div>
+        <div class="box info">
+          <div class="box-title">Paralelo</div>
+          $$h_{f,1} = h_{f,2} = \cdots$$
+          $$Q_{\text{total}} = \sum Q_i$$
+          <p>Misma pérdida, caudales se suman.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T21 ══ -->
+<div class="tema" id="t21">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T21</span>
+    <span class="tema-name">Flujo en conductos abiertos — Canales</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Terminología básica</span></div>
+      <div class="prose">
+        <ul>
+          <li><b>Calado $h_c$:</b> altura de la lámina de agua en la sección.</li>
+          <li><b>Sección mojada $A$:</b> área de fluido en la sección transversal.</li>
+          <li><b>Perímetro mojado $P$:</b> longitud del contorno en contacto con el fluido (sin superficie libre).</li>
+          <li><b>Radio hidráulico:</b> $R_h = A/P$</li>
+          <li><b>Pendiente $J$:</b> caída de cota por unidad de longitud (adimensional o en milésimas).</li>
+        </ul>
+      </div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Número de Froude</div>$$Fr = \frac{v}{\sqrt{g\,h_c}}$$</div>
+        <div class="box note" style="font-size:.85em;margin:0">
+          <ul style="list-style:none;padding:0">
+            <li>$Fr < 1$ → Fluvial (subcrítico)</li>
+            <li>$Fr = 1$ → Crítico</li>
+            <li>$Fr > 1$ → Torrencial (supercrítico)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Fórmulas de flujo uniforme</span></div>
+      <div class="fblock"><div class="flabel">Chezy</div>$$V = C\sqrt{R_h \cdot J}$$</div>
+      <div class="fkey"><div class="flabel">Manning (la más usada en práctica)</div>$$V = \frac{1}{n} R_h^{2/3} J^{1/2} \qquad Q = \frac{1}{n} A\, R_h^{2/3} J^{1/2}$$</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Coeficiente de Manning n (Cuadro 26)</span></div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Material</th><th>$n$ [m$^{-1/3}$·s]</th></tr>
+          <tr><td>PVC</td><td class="td-green"><b>0,009</b></td></tr>
+          <tr><td>Madera cepillada / Hormigón acabado</td><td>0,012</td></tr>
+          <tr><td>Hormigón en bruto</td><td class="td-gold"><b>0,015</b></td></tr>
+          <tr><td>Hierro fundido / Ladrillo / Acero roblonado</td><td>0,016</td></tr>
+          <tr><td>Arena / Metal con arrugas / Grava fina</td><td>0,020–0,022</td></tr>
+          <tr><td>Grava media (25 mm)</td><td>0,025</td></tr>
+          <tr><td>Tierra / Mampostería</td><td>0,026</td></tr>
+          <tr><td>Tierra con piedras / Grava gruesa</td><td>0,029–0,030</td></tr>
+          <tr><td>Piedras / Rocas medias</td><td>0,037–0,042</td></tr>
+          <tr><td>Rocas grandes</td><td class="td-accent">0,060</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Secciones hidráulicamente óptimas</span></div>
+      <div class="prose"><p>La sección óptima tiene el <b>mínimo perímetro mojado $P$</b> para un área dada, lo que maximiza $R_h$ y por tanto $Q$.</p></div>
+      <div class="table-wrap">
+        <table class="cmp-table">
+          <tr><th>Sección</th><th>Condición óptima</th><th>$A$</th><th>$P$</th><th>$R_h$</th></tr>
+          <tr class="cmp-best"><td><b>Semicircular</b> (radio $R$)</td><td>✓ <b>La mejor de todas</b></td><td>$\pi R^2/2$</td><td>$\pi R$</td><td>$R/2$</td></tr>
+          <tr><td>Rectangular ($b \times h$)</td><td>$b = 2h$</td><td>$2h^2$</td><td>$4h$</td><td>$h/2$</td></tr>
+          <tr><td>Triangular</td><td>$\alpha = 45°$ (isósceles recto)</td><td>$h^2$</td><td>$2h\sqrt{2}$</td><td>$h/(2\sqrt{2})$</td></tr>
+          <tr><td>Trapezoidal</td><td>$\alpha = 60°$, talud $1:\frac{1}{\sqrt{3}}$</td><td>$\sqrt{3}\,h^2$</td><td>$2\sqrt{3}\,h$</td><td>$h/2$</td></tr>
+        </table>
+      </div>
+      <div class="box info">
+        <div class="box-title">Comparativa para Q = 12 m³/s, J = 0,0005, n = 0,015</div>
+        <table style="width:100%;font-size:.8em;border-collapse:collapse">
+          <tr><th style="text-align:left;padding:4px 8px;background:rgba(16,185,129,.1)">Tipo</th><th style="padding:4px 8px;background:rgba(16,185,129,.1)">A (m²)</th><th style="padding:4px 8px;background:rgba(16,185,129,.1)">P (m)</th><th style="padding:4px 8px;background:rgba(16,185,129,.1)">Rh (m)</th><th style="padding:4px 8px;background:rgba(16,185,129,.1)">v (m/s)</th></tr>
+          <tr><td style="padding:3px 8px">Rectangular</td><td style="padding:3px 8px;text-align:center">8,0</td><td style="padding:3px 8px;text-align:center">8,0</td><td style="padding:3px 8px;text-align:center">1,0</td><td style="padding:3px 8px;text-align:center">1,5</td></tr>
+          <tr><td style="padding:3px 8px">Triangular</td><td style="padding:3px 8px;text-align:center">8,0</td><td style="padding:3px 8px;text-align:center">8,0</td><td style="padding:3px 8px;text-align:center">1,0</td><td style="padding:3px 8px;text-align:center">1,5</td></tr>
+          <tr style="background:rgba(16,185,129,.08);font-weight:600;color:#a7f3d0"><td style="padding:3px 8px">Semicircular</td><td style="padding:3px 8px;text-align:center">7,57</td><td style="padding:3px 8px;text-align:center"><b>6,89</b></td><td style="padding:3px 8px;text-align:center">1,10</td><td style="padding:3px 8px;text-align:center">1,58</td></tr>
+          <tr><td style="padding:3px 8px">Trapezoidal</td><td style="padding:3px 8px;text-align:center">7,75</td><td style="padding:3px 8px;text-align:center">7,32</td><td style="padding:3px 8px;text-align:center">1,06</td><td style="padding:3px 8px;text-align:center">1,55</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Canal circular parcialmente lleno — Tablas 27 y 28</span></div>
+      <div class="prose"><p>Para tuberías circulares funcionando parcialmente llenas se usan relaciones adimensionales. <b>Tabla 27</b> (Thorman y Franke): dado $Q_c/Q_{ll}$ → obtener $V_c/V_{ll}$ y $h_c/D$. <b>Tabla 28</b>: dado $h_c/D$ → obtener $Q_c/Q_{ll}$ y $V_c/V_{ll}$.</p></div>
+      <div class="box warn">
+        <div class="box-title">Importante — Sección circular no llena al máximo cuando está llena</div>
+        <ul>
+          <li>$Q_{\max} = 1{,}076 \cdot Q_{ll}$ se alcanza a $h_c/D = 0{,}94$ (no a sección llena)</li>
+          <li>$V_{\max} \approx 1{,}14 \cdot V_{ll}$ a $h_c/D \approx 0{,}81$</li>
+          <li>$Q_{ll}$ y $V_{ll}$ se calculan con Manning, sección llena: $A = \pi D^2/4$, $R_h = D/4$</li>
+        </ul>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Tipo</th><th>Datos</th><th>Incógnitas</th><th>Procedimiento</th></tr>
+          <tr><td class="td-gold"><b>I</b></td><td>$D, n, J, Q_c$</td><td>$h_c, V_c$</td><td>Manning → $Q_{ll}$ → ratio $Q_c/Q_{ll}$ → Tabla 27 → $h_c/D$, $V_c/V_{ll}$</td></tr>
+          <tr><td class="td-gold"><b>II</b></td><td>$n, J, Q_c$</td><td>$D, h_c, V_c$</td><td>Suponer $Q_{ll}=Q_c$ → Manning → $D_{teo}$ → redondear a $D_{com}$ → Tipo I</td></tr>
+          <tr><td class="td-gold"><b>III</b></td><td>$n, D, Q_c$</td><td>$J, h_c, V_c$</td><td>Suponer $Q_{ll}=Q_c$ → Manning → $J_{teo}$ → redondear J → Tipo I</td></tr>
+          <tr><td class="td-gold"><b>IV</b></td><td>$h_c/D, n, J, Q_c$</td><td>$D, h_c, V_c$</td><td>Tabla 28 → $Q_c/Q_{ll}$ → $Q_{ll}$ → Manning → $D$ → ciclo completo</td></tr>
+        </table>
+      </div>
+      <div class="prose"><p>Extracto Tabla 27 para referencia rápida:</p></div>
+      <div class="table-wrap">
+        <table style="font-size:.78em">
+          <tr><th>$Q_c/Q_{ll}$</th><th>$V_c/V_{ll}$</th><th>$h_c/D$</th><th>$Q_c/Q_{ll}$</th><th>$V_c/V_{ll}$</th><th>$h_c/D$</th></tr>
+          <tr><td>0,20</td><td>0,780</td><td>0,303</td><td>0,67</td><td>1,072</td><td>0,599</td></tr>
+          <tr><td>0,30</td><td>0,875</td><td>0,376</td><td>0,79</td><td>1,108</td><td>0,670</td></tr>
+          <tr><td>0,40</td><td>0,944</td><td>0,440</td><td>0,90</td><td>1,132</td><td>0,742</td></tr>
+          <tr><td>0,50</td><td>1,000</td><td>0,500</td><td>0,97</td><td>1,139</td><td>0,794</td></tr>
+          <tr><td>0,60</td><td>1,045</td><td>0,558</td><td>1,00</td><td>1,140</td><td>0,829</td></tr>
+          <tr style="background:rgba(16,185,129,.06);color:#a7f3d0;font-weight:600"><td><b>1,076</b></td><td>1,140</td><td><b>0,940</b></td><td colspan="3">← $Q_{\max}$</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ T25 ══ -->
+<div class="tema" id="t25">
+  <div class="tema-trigger" onclick="toggle(this)">
+    <span class="tema-tag">T25</span>
+    <span class="tema-name">Instalaciones de bombeo</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Altura manométrica de la instalación (CCI)</span></div>
+      <div class="fkey"><div class="flabel">Altura manométrica de la instalación</div>$$H_{mi} = (z_B - z_A) + \frac{P_B - P_A}{\gamma} + \frac{v_B^2 - v_A^2}{2g} + h_{f_{A\to B}}$$</div>
+      <div class="fblock"><div class="flabel">Cota piezométrica (depósitos con superficie libre)</div>$$H_{mi,0} = \Delta z + \frac{\Delta P}{\gamma} \quad \text{(ordenada al origen — caudal nulo)}$$</div>
+      <div class="prose"><p>La <b>CCI</b> es una parábola: $H_{mi} = H_{mi,0} + k\,Q^2$ donde $k$ recoge todas las pérdidas. La <b>CCTB</b> (curva bomba) decrece con $Q$ según catálogo.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Punto de funcionamiento</span></div>
+      <div class="prose">
+        <p>El <b>punto de funcionamiento P</b> es la intersección entre la CCI y la CCTB: único par $(Q_P, H_P)$ en equilibrio.</p>
+        <ul>
+          <li>Cierre parcial de válvula → CCI más empinada → $Q_P$ disminuye.</li>
+          <li>Mayor diferencia de cota ($\Delta z$) → CCI desplazada arriba → $Q_P$ disminuye.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Bombas en serie y en paralelo</span></div>
+      <div class="grid2">
+        <div class="box info">
+          <div class="box-title">Serie (mayor altura)</div>
+          $$H_{\text{total}} = \sum H_i, \quad Q_{\text{total}} = Q$$
+        </div>
+        <div class="box info">
+          <div class="box-title">Paralelo (mayor caudal)</div>
+          $$H_{\text{total}} = H, \quad Q_{\text{total}} = \sum Q_i$$
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Cavitación — Método NPSH</span></div>
+      <div class="fkey"><div class="flabel">NPSH disponible (Bernoulli A→E, presiones absolutas)</div>$$NPSH_{\text{disp}} = \left(\frac{P_A}{\gamma} - \frac{P_v}{\gamma}\right) + (Z_A - Z_{E,\text{eje}}) - h_{f,\text{asp}}$$</div>
+      <div class="box danger">
+        <div class="box-title">⚠ Criterios anti-cavitación</div>
+        <p><b>Funcionamiento:</b> $NPSH_{\text{disp}} > NPSH_{\text{req}}$ → sin cavitación.</p>
+        <p><b>Diseño con margen de seguridad:</b></p>
+        $$NPSH_{\text{disp}} \geq 1{,}3 \cdot NPSH_{\text{req}}$$
+        <p>$NPSH_{\text{req}}$ = dato del fabricante, aumenta con $Q$. $NPSH_{\text{disp}}$ decrece con $Q$ (más pérdidas de aspiración).</p>
+      </div>
+      <div class="fkey"><div class="flabel">Cota máxima del eje de la bomba (criterio diseño)</div>$$Z_E \leq Z_A + \left(\frac{P_A}{\gamma} - \frac{P_v}{\gamma}\right) - h_{f,\text{asp}} - 1{,}3\cdot NPSH_{\text{req}}$$</div>
+      <div class="prose">
+        <ul>
+          <li>$P_A$ = presión atmosférica absoluta [m.c.a.]</li>
+          <li>$P_v$ = presión de vapor absoluta [m.c.a.] — depende de $T$</li>
+          <li>$Z_A$ = cota del pelo de agua en el depósito de aspiración</li>
+          <li>$Z_E$ = cota del eje de la turbobomba</li>
+          <li>$h_{f,\text{asp}}$ = pérdidas en la línea de aspiración</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">UPV/EHU · Mecánica de Fluidos e Hidráulica 2025–26 · 17 temas</div>
+
+</main>
+
+<script>
+/* ── Acordeón ── */
+function toggle(trigger) {
+  var body = trigger.nextElementSibling;
+  trigger.classList.toggle('open');
+  body.classList.toggle('open');
+  updateNav(trigger.closest('.tema').id);
+}
+
+/* ── Navegación ── */
+function goTo(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var trigger = el.querySelector('.tema-trigger');
+  var body = el.querySelector('.tema-body');
+  if (!body.classList.contains('open')) {
+    trigger.classList.add('open');
+    body.classList.add('open');
+  }
+  setTimeout(function(){
+    var top = el.getBoundingClientRect().top + window.scrollY - 108;
+    window.scrollTo({top: top, behavior: 'smooth'});
+  }, 10);
+  updateNav(id);
+}
+
+function updateNav(activeId) {
+  document.querySelectorAll('.nav-tab').forEach(function(t){
+    var cb = t.getAttribute('onclick') || '';
+    t.classList.toggle('active', cb.indexOf("'"+activeId+"'") !== -1);
+  });
+}
+
+/* ── Barra de progreso ── */
+window.addEventListener('scroll', function(){
+  var scrolled = window.scrollY;
+  var total = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = total > 0 ? (scrolled/total)*100 : 0;
+  document.getElementById('progress').style.width = pct + '%';
+});
+
+/* ── Búsqueda ── */
+function searchTemas(q) {
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('.tema').forEach(function(tema){
+    if (!q) { tema.style.display = ''; return; }
+    var text = tema.textContent.toLowerCase();
+    tema.style.display = text.includes(q) ? '' : 'none';
+    if (text.includes(q) && !tema.querySelector('.tema-body').classList.contains('open')) {
+      tema.querySelector('.tema-trigger').classList.add('open');
+      tema.querySelector('.tema-body').classList.add('open');
+    }
+  });
+}
+
+/* ── Highlight nav al hacer scroll ── */
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if (e.isIntersecting) updateNav(e.target.id);
+  });
+}, {rootMargin:'-56px 0px -70% 0px'});
+document.querySelectorAll('.tema').forEach(function(t){ observer.observe(t); });
+</script>
+</body>
+</html>
