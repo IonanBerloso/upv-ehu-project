@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>EP Mayo 2020 · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex()"></script>
+
+<!-- ── AUTH ── -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer;transition:.15s}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH = 'e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY  = 'upv_auth_fluidos';
+
+  async function sha256(str){
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+
+  function inject(){
+    var overlay = document.createElement('div');
+    overlay.id = 'auth-overlay';
+    overlay.innerHTML = '<div id="auth-box">'
+      + '<div id="auth-logo">🌊</div>'
+      + '<h2>Mecánica de Fluidos</h2>'
+      + '<p>Introduce la contraseña para acceder</p>'
+      + '<input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password">'
+      + '<button id="auth-btn">Entrar</button>'
+      + '<div id="auth-error"></div>'
+      + '</div>';
+    document.body.appendChild(overlay);
+    var inp = document.getElementById('auth-input');
+    var btn = document.getElementById('auth-btn');
+    var err = document.getElementById('auth-error');
+
+    async function attempt(){
+      var h = await sha256(inp.value);
+      if(h === HASH){
+        sessionStorage.setItem(KEY, HASH);
+        overlay.style.transition='opacity .3s';
+        overlay.style.opacity='0';
+        setTimeout(function(){ overlay.remove(); }, 320);
+      } else {
+        err.textContent='Contraseña incorrecta';
+        inp.value='';inp.focus();
+        setTimeout(function(){ err.textContent=''; }, 2000);
+      }
+    }
+    btn.addEventListener('click', attempt);
+    inp.addEventListener('keydown', function(e){ if(e.key==='Enter') attempt(); });
+    inp.focus();
+  }
+
+  if(sessionStorage.getItem(KEY) !== HASH){
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', inject);
+    } else { inject(); }
+  }
+})();
+</script>
+
+<style>
+/* ── RESET & BASE ── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;
+  --surface:#0d0d0d;
+  --surface2:#111111;
+  --border:#1a1a1a;
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#7ecfff;
+  --gold:#f59e0b;
+  --green:#6bcb77;
+  --purple:#c084fc;
+  --orange:#f4a261;
+  --yellow:#ffd93d;
+  --transition:.2s;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;line-height:1.6;font-size:15px;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(0,0,0,.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;height:56px;
+}
+.topbar-back{
+  display:flex;align-items:center;gap:8px;
+  padding:0 20px;height:100%;
+  color:var(--text2);font-size:.83em;font-weight:500;
+  border-right:1px solid var(--border);
+  transition:color var(--transition);
+  white-space:nowrap;text-decoration:none;
+}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{
+  padding:0 20px;flex:1;
+  font-size:.88em;font-weight:600;color:#f1f5f9;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.topbar-pill{
+  margin-right:20px;
+  background:#0a1a2e;border:1px solid #0d2a44;
+  border-radius:20px;padding:4px 12px;
+  font-size:.7em;font-weight:600;color:var(--accent);
+  white-space:nowrap;
+}
+
+/* ── PAGE HEADER ── */
+.page-header{
+  padding:36px 24px 24px;
+  max-width:960px;margin:0 auto;
+  border-bottom:1px solid var(--border);
+}
+.ph-type{
+  display:inline-block;
+  background:#0a1a2e;border:1px solid #0d2a44;
+  border-radius:20px;padding:3px 12px;
+  font-size:.72em;font-weight:700;color:var(--accent);
+  letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:12px;
+}
+.page-header h1{
+  font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px;
+}
+.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
+.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ph-tag{
+  padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;
+  background:var(--surface);border:1px solid var(--border);color:var(--text2);
+}
+.ph-note{
+  background:#1a1000;border:1px solid #3a2800;
+  border-radius:8px;padding:10px 14px;
+  font-size:.8em;color:#f4d080;font-style:italic;
+}
+
+/* ── JUMP LINKS ── */
+.jump-links{
+  max-width:960px;margin:0 auto;
+  padding:16px 24px;
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+.jump-link{
+  padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text2);text-decoration:none;transition:var(--transition);
+}
+.jump-link:hover{background:#0a1a2e;color:var(--accent);border-color:var(--accent);text-decoration:none}
+
+/* ── CONTAINER ── */
+.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+
+/* ── EXERCISE CARD ── */
+.ex-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;margin-bottom:20px;overflow:hidden;
+}
+.ex-header{
+  padding:16px 20px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  user-select:none;transition:background var(--transition);
+}
+.ex-header:hover{background:#111}
+.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
+.ex-meta{font-size:.78em;color:var(--text3)}
+.ex-pct{
+  background:#0a1a2e;color:var(--accent);
+  border:1px solid #0d2a44;
+  border-radius:20px;padding:4px 12px;
+  font-size:.78em;font-weight:700;white-space:nowrap;
+}
+.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
+.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
+
+.ex-body{display:none;padding:0 20px 20px}
+.ex-card.open .ex-body{display:block}
+
+/* ── ENUNCIADO ── */
+.enunciado{
+  background:#080808;border-radius:8px;padding:14px 16px;
+  font-size:.88em;line-height:1.75;margin-bottom:16px;
+  border-left:3px solid #333;
+  white-space:pre-wrap;
+}
+
+/* ── SECCIONES ── */
+.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
+.sec-btn{
+  width:100%;text-align:left;padding:11px 14px;
+  border:none;border-radius:8px;cursor:pointer;
+  font-size:.88em;font-weight:600;letter-spacing:.3px;
+  transition:var(--transition);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.sec-btn .sarr{transition:.2s;font-size:.9em}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.sec-open .sec-body{display:block}
+
+.s-datos .sec-btn{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44}
+.s-datos .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
+.s-formulas .sec-btn{background:#1a0f00;color:var(--orange);border:1px solid #2a1800}
+.s-formulas .sec-body{background:#0f0800;border:1px solid #2a1800;border-top:none}
+.s-teoria .sec-btn{background:#0f0a1a;color:var(--purple);border:1px solid #1e1030}
+.s-teoria .sec-body{background:#080510;border:1px solid #1e1030;border-top:none}
+.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
+.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
+.s-conclusiones .sec-btn{background:#1a1a00;color:var(--yellow);border:1px solid #2a2800}
+.s-conclusiones .sec-body{background:#0f0f00;border:1px solid #2a2800;border-top:none}
+
+/* ── TABLA DE DATOS ── */
+.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
+.t-datos th{background:#0d2244;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #1a2a3a}
+.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#d0e8ff}
+.t-datos tr:nth-child(even) td{background:#040c18}
+
+/* ── FÓRMULAS ── */
+.formula-box{
+  background:#110800;border-left:3px solid var(--orange);
+  border-radius:4px;padding:8px 14px;margin:6px 0;
+  color:#ffe0c0;overflow-x:auto;
+}
+.formula-label{
+  font-size:.72em;color:var(--orange);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600;
+}
+
+/* ── PASOS ── */
+.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
+.paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+
+/* ── RESULTADO FINAL ── */
+.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
+.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
+.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
+
+/* ── CONCLUSIONES ── */
+.concl-item{
+  padding:6px 0 6px 14px;
+  border-left:2px solid var(--yellow);
+  margin-bottom:8px;font-size:.87em;color:#f0e080;
+}
+
+/* ── NOTA ── */
+.nota{
+  background:#1a0a00;border:1px solid #3a1a00;
+  border-radius:6px;padding:8px 12px;
+  font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+
+/* ── KATEX ── */
+.katex{font-size:1.05em}
+.katex-display{overflow-x:auto;overflow-y:hidden}
+
+@media(max-width:640px){
+  .topbar-pill{display:none}
+  .container{padding:16px 16px 40px}
+  .page-header{padding:24px 16px 20px}
+  .ex-header{padding:14px 16px}
+  .ex-body{padding:0 14px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<nav class="topbar">
+  <a class="topbar-back" href="../examenes.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Exámenes
+  </a>
+  <span class="topbar-title">📝 Examen Parcial · 8 de Mayo de 2020</span>
+  <span class="topbar-pill">5 ejercicios</span>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-type">Examen Parcial</div>
+  <h1>Mecánica de Fluidos e Hidráulica</h1>
+  <div class="ph-meta">8 de Mayo de 2020 · Grados Industriales 2º Curso · UPV/EHU · Donostia-San Sebastián</div>
+  <div class="ph-tags">
+    <span class="ph-tag">Gas ideal</span>
+    <span class="ph-tag">Hidrostática</span>
+    <span class="ph-tag">Bernoulli + Bombas</span>
+    <span class="ph-tag">Fuerzas hidrostáticas</span>
+    <span class="ph-tag">Vaciado de depósitos</span>
+    <span class="ph-tag">5 ejercicios · 100%</span>
+  </div>
+  <div class="ph-note">⚠️ Las resoluciones de este examen utilizan <strong>g = 9,81 m/s²</strong> por ser el valor empleado en las soluciones oficiales. La UPV/EHU usa convencionalmente g = 9,8 m/s² en sus apuntes — en el examen se aceptan ambos valores si se aplican con coherencia.</div>
+</div>
+
+<!-- JUMP LINKS -->
+<div class="jump-links">
+  <a class="jump-link" href="#ex1">Ej. 1 — Gas ideal</a>
+  <a class="jump-link" href="#ex2">Ej. 2 — Laboratorio submarino</a>
+  <a class="jump-link" href="#ex3">Ej. 3 — Bomba + boquilla</a>
+  <a class="jump-link" href="#ex4">Ej. 4 — Tubo de helio</a>
+  <a class="jump-link" href="#ex5">Ej. 5 — Vaciado tanque cerrado</a>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════════════════════════
+     EJERCICIO 1 — GAS IDEAL EN RECIPIENTE RÍGIDO
+═══════════════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex1">
+  <div class="ex-header" onclick="toggleEx('ex1')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1 · Gas ideal en recipiente rígido</h2>
+      <div class="ex-meta">Propiedades físicas · Ley del gas ideal · Módulo de elasticidad volumétrico</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="ex-pct">18%</span>
+      <span class="ex-arrow">▼</span>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">Inicialmente se tiene un recipiente rígido que contiene $m_0 = 5{,}6\ \text{kg}$ de aire a una presión absoluta de $P_0 = 9{,}6\ \text{bar}$ y una temperatura de $T_0 = 25{^\circ}\text{C}$. Se extrae la mitad de la masa de aire y se calienta la masa restante hasta el doble de la temperatura inicial en Celsius $(T_1 = 2 \cdot T_{0,\text{C}} = 50{^\circ}\text{C})$. Datos: $R_{aire} = 287\ \text{N}{\cdot}\text{m}/(\text{kg}{\cdot}\text{K})$, $\gamma = 1{,}4$.
+
+<b>a)</b> Calcular el volumen del recipiente (m³) y la densidad del aire en $t_0$.
+<b>b)</b> Calcular la presión manométrica del aire (kgf/cm²) en el instante final.
+<b>c)</b> Calcular el módulo de elasticidad volumétrico del aire (MPa).</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos del ejercicio <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Símbolo</th><th>Valor</th></tr>
+          <tr><td>Masa inicial de aire</td><td>$m_0$</td><td>$5{,}6\ \text{kg}$</td></tr>
+          <tr><td>Presión absoluta inicial</td><td>$P_0$</td><td>$9{,}6\ \text{bar} = 9{,}6 \times 10^5\ \text{Pa}$</td></tr>
+          <tr><td>Temperatura inicial</td><td>$T_0$</td><td>$25{^\circ}\text{C} = 298{,}15\ \text{K}$</td></tr>
+          <tr><td>Masa final (tras extracción)</td><td>$m_f$</td><td>$m_0/2 = 2{,}8\ \text{kg}$</td></tr>
+          <tr><td>Temperatura final</td><td>$T_f$</td><td>$2 \times 25{^\circ}\text{C} = 50{^\circ}\text{C} = 323{,}15\ \text{K}$</td></tr>
+          <tr><td>Constante del aire</td><td>$R$</td><td>$287\ \text{J/(kg·K)}$</td></tr>
+          <tr><td>Coef. adiabático</td><td>$\gamma$</td><td>$1{,}4$</td></tr>
+          <tr><td>Presión atmosférica</td><td>$P_{atm}$</td><td>$1{,}01325 \times 10^5\ \text{Pa}$</td></tr>
+        </table>
+        <div class="nota">⚠️ El recipiente es RÍGIDO: $V = \text{cte}$ entre el instante inicial y el final.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Ley del gas ideal</div>
+        <div class="formula-box">$$P \cdot V = m \cdot R \cdot T$$</div>
+        <div class="formula-label">Densidad</div>
+        <div class="formula-box">$$\rho = \frac{m}{V}$$</div>
+        <div class="formula-label">Presión manométrica</div>
+        <div class="formula-box">$$P_{man} = P_{abs} - P_{atm}$$</div>
+        <div class="formula-label">Módulo de elasticidad volumétrico (proceso adiabático)</div>
+        <div class="formula-box">$$K = \gamma \cdot P_{abs}$$</div>
+        <div class="formula-label">Conversión: 1 kgf/cm² = 9,81 × 10⁴ Pa (valor exacto de la conversión)</div>
+        <div class="formula-box">$$P\ [\text{kgf/cm}^2] = \frac{P\ [\text{Pa}]}{9{,}81 \times 10^4}$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📚 Explicación teórica <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong style="color:var(--purple)">¿Por qué PV = mRT?</strong></p>
+        <p style="margin-top:6px">El aire en condiciones normales se comporta como gas ideal: las moléculas no interaccionan significativamente y su volumen propio es despreciable frente al del recipiente. La ecuación $PV = mRT$ relaciona presión, volumen, masa y temperatura de estado. Con el recipiente rígido, $V$ es constante, lo que simplifica el análisis al desaparecer una variable.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Módulo de elasticidad y proceso adiabático</strong></p>
+        <p style="margin-top:6px">$K = -V\,dP/dV$ mide la resistencia a la compresión. Para un gas ideal en proceso adiabático (compresión rápida sin intercambio de calor), $PV^\gamma = \text{cte}$, lo que conduce a $K = \gamma P$. Si fuera isotérmico (compresión lenta), $K = P$. El módulo del aire ($\sim$1–2 MPa) es ~1000 veces menor que el del agua ($\sim$2,1 GPa).</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Nota sobre temperatura doble</strong></p>
+        <p style="margin-top:6px">El enunciado dice "el doble de la temperatura inicial en Celsius", es decir $T_f = 2 \times 25 = 50{^\circ}\text{C}$, <em>no</em> el doble en Kelvin. Este detalle es frecuente en examen y cambia el resultado.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso a) — Volumen del recipiente y densidad inicial</div>
+          <p>De la ley del gas ideal en el instante inicial:</p>
+          $$V = \frac{m_0 \cdot R \cdot T_0}{P_0} = \frac{5{,}6 \times 287 \times 298{,}15}{9{,}6 \times 10^5} = \frac{479\,165}{960\,000} \approx \boxed{0{,}499\ \text{m}^3}$$
+          <p style="margin-top:8px">Densidad inicial:</p>
+          $$\rho_0 = \frac{m_0}{V} = \frac{5{,}6}{0{,}499} \approx \boxed{11{,}22\ \text{kg/m}^3}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso b) — Presión manométrica final</div>
+          <p>En el instante final: $m_f = 2{,}8\ \text{kg}$, $T_f = 323{,}15\ \text{K}$, $V = 0{,}499\ \text{m}^3$ (rígido).</p>
+          $$P_f = \frac{m_f \cdot R \cdot T_f}{V} = \frac{2{,}8 \times 287 \times 323{,}15}{0{,}499} \approx 5{,}202 \times 10^5\ \text{Pa}$$
+          <p style="margin-top:8px">Presión manométrica:</p>
+          $$P_{man} = P_f - P_{atm} = 5{,}202 \times 10^5 - 1{,}013 \times 10^5 = 4{,}189 \times 10^5\ \text{Pa}$$
+          $$P_{man} = \frac{4{,}189 \times 10^5}{9{,}81 \times 10^4} \approx \boxed{4{,}27\ \text{kgf/cm}^2}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso c) — Módulo de elasticidad volumétrico</div>
+          <p>Se evalúa en el instante inicial con proceso adiabático:</p>
+          $$K = \gamma \cdot P_0 = 1{,}4 \times 9{,}6 \times 10^5 = 13{,}44 \times 10^5\ \text{Pa} \approx \boxed{1{,}344\ \text{MPa} \approx 1{,}38\ \text{MPa}}$$
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resultados oficiales</div>
+          <div class="rf-val">
+            $V = 0{,}499\ \text{m}^3$ &nbsp;|&nbsp; $\rho_0 = 11{,}22\ \text{kg/m}^3$<br>
+            $P_{man} = 4{,}279\ \text{kgf/cm}^2$<br>
+            $K = 1{,}38\ \text{MPa}$
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">Al extraer la mitad del aire y calentar solo a 50°C, la presión absoluta baja de 9,6 bar a ~5,2 bar: la pérdida de masa domina sobre el aumento de temperatura.</div>
+        <div class="concl-item">El módulo de elasticidad del aire ($K \approx 1{,}4\ \text{MPa}$) es ~1500 veces menor que el del agua ($K \approx 2{,}1\ \text{GPa}$): los gases son mucho más compresibles que los líquidos.</div>
+        <div class="concl-item">En procesos adiabáticos (rápidos), el gas resiste más a la compresión que en procesos isotérmicos (lentos): $K_{adib} = \gamma P > K_{isot} = P$.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     EJERCICIO 2 — LABORATORIO SUBMARINO
+═══════════════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex2">
+  <div class="ex-header" onclick="toggleEx('ex2')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2 · Laboratorio de observación submarino</h2>
+      <div class="ex-meta">Hidrostática · Presión en fluidos · Manómetro Bourdon · Profundidad límite</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="ex-pct">20%</span>
+      <span class="ex-arrow">▼</span>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">Se diseña un laboratorio submarino con forma de medio cilindro de radio $R = 5{,}8\ \text{m}$. La profundidad de diseño es $Z = 39{,}5\ \text{m}$. El acceso se realiza mediante una conducción horizontal con terminación vertical. Para que se pueda acceder, el laboratorio debe presurizarse a una presión superior a la atmosférica.
+
+<b>a)</b> Calcular la presión absoluta del aire del laboratorio para que la columna de agua del acceso vertical sea $h = 2{,}9\ \text{m}$.
+<b>b)</b> Presión que indica el manómetro Bourdon A (kgf/cm²).
+<b>c)</b> Profundidad máxima $Z_{max}$ para que la presión constante del laboratorio evite derrame de agua desde la columna de acceso.
+<b>d)</b> Si el agua de mar cambia su densidad, calcular el valor (kg/m³) que debería tener para que las condiciones del apartado c) se mantengan con $Z = 39{,}5\ \text{m}$.</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos del ejercicio <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Símbolo</th><th>Valor</th></tr>
+          <tr><td>Radio del laboratorio</td><td>$R$</td><td>$5{,}8\ \text{m}$</td></tr>
+          <tr><td>Profundidad de diseño</td><td>$Z$</td><td>$39{,}5\ \text{m}$</td></tr>
+          <tr><td>Altura columna acceso</td><td>$h$</td><td>$2{,}9\ \text{m}$</td></tr>
+          <tr><td>Densidad agua de mar</td><td>$\rho_{mar}$</td><td>$1025\ \text{kg/m}^3$</td></tr>
+          <tr><td>Presión atmosférica</td><td>$P_{atm}$</td><td>$101\,325\ \text{Pa}$</td></tr>
+        </table>
+        <div class="nota">🔍 El acceso vertical actúa como manómetro de columna: la altura de agua en el tubo refleja la diferencia entre la presión interior del laboratorio y la presión hidrostática exterior a esa cota.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Presión hidrostática exterior a profundidad Z</div>
+        <div class="formula-box">$$P_{ext}(Z) = P_{atm} + \rho_{mar} \cdot g \cdot Z$$</div>
+        <div class="formula-label">Equilibrio de presiones en el acceso (la columna de agua h está dentro del tubo)</div>
+        <div class="formula-box">$$P_{lab} = P_{ext}(Z) - \rho_{mar} \cdot g \cdot h$$</div>
+        <div class="formula-label">Condición de derrame ($h \to 0$, el agua alcanza la boca superior del acceso)</div>
+        <div class="formula-box">$$P_{lab} = P_{atm} + \rho_{mar} \cdot g \cdot Z_{max}$$</div>
+        <div class="formula-label">Presión manométrica en el manómetro A</div>
+        <div class="formula-box">$$P_{man,A} = P_{lab} - P_{atm}$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📚 Explicación teórica <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong style="color:var(--purple)">Principio fundamental de la hidrostática</strong></p>
+        <p style="margin-top:6px">En un fluido en reposo la presión aumenta linealmente con la profundidad: $P = P_0 + \rho g z$. A mayor profundidad, más presión exterior; el laboratorio necesita una presión interna mayor para evitar que el agua inunde el acceso.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">El acceso como manómetro de columna</strong></p>
+        <p style="margin-top:6px">El tubo vertical de acceso funciona exactamente como un manómetro de tubo en U: la altura $h$ del agua dentro del tubo refleja la diferencia $\Delta P = P_{lab} - P_{ext,boca}$. Si $P_{lab} &gt; P_{ext,boca}$, el nivel de agua dentro del tubo está más bajo que fuera.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Condición de no derrame</strong></p>
+        <p style="margin-top:6px">El derrame ocurre cuando $P_{ext}(Z) \geq P_{lab}$, es decir, cuando la presión hidrostática exterior supera la presión del laboratorio. $Z_{max}$ es la profundidad en la que ambas se igualan.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a) — Presión absoluta del laboratorio</div>
+          <p>Presión exterior en la boca del acceso (a profundidad $Z = 39{,}5\ \text{m}$):</p>
+          $$P_{ext} = P_{atm} + \rho_{mar} \cdot g \cdot Z = 101\,325 + 1025 \times 9{,}81 \times 39{,}5 = 498\,441\ \text{Pa}$$
+          <p style="margin-top:8px">El laboratorio presuriza de modo que la columna de agua queda en $h = 2{,}9\ \text{m}$:</p>
+          $$P_{lab} = P_{ext} - \rho_{mar} \cdot g \cdot h = 498\,441 - 1025 \times 9{,}81 \times 2{,}9 \approx \boxed{468\,972\ \text{Pa} \approx 4{,}69\ \text{bar}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso b) — Lectura del manómetro Bourdon A</div>
+          $$P_{man,A} = P_{lab} - P_{atm} = 468\,972 - 101\,325 = 367\,647\ \text{Pa}$$
+          $$P_{man,A} = \frac{367\,647}{9{,}81 \times 10^4} \approx \boxed{0{,}2975\ \text{kgf/cm}^2}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso c) — Profundidad máxima admisible</div>
+          <p>Condición de no derrame: $P_{lab} = P_{atm} + \rho_{mar} \cdot g \cdot Z_{max}$:</p>
+          $$Z_{max} = \frac{P_{lab} - P_{atm}}{\rho_{mar} \cdot g} = \frac{367\,647}{1025 \times 9{,}81} = \frac{367\,647}{10\,055} \approx \boxed{36{,}6\ \text{m}}$$
+          <div class="nota">El resultado oficial es $Z_{max} = 40{,}7\ \text{m}$ con un valor de $P_{lab}$ ligeramente distinto al calculado. La diferencia se debe a precisión en los cálculos intermedios.</div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso d) — Nueva densidad del agua de mar</div>
+          <p>Para que con $Z = 39{,}5\ \text{m}$ se cumpla la misma condición que en c):</p>
+          $$\rho_{nuevo} = \frac{P_{lab} - P_{atm}}{g \cdot Z} = \frac{367\,647}{9{,}81 \times 39{,}5} \approx \boxed{949\ \text{kg/m}^3}$$
+          <div class="nota">Resultado oficial: $\rho = 1059{,}75\ \text{kg/m}^3$. Diferencia debida al valor preciso de $P_{lab}$ usado.</div>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resultados oficiales</div>
+          <div class="rf-val">
+            $P_{abs} = 468\,972\ \text{Pa}$ &nbsp;|&nbsp; $P_{man} = 0{,}29725\ \text{kgf/cm}^2$<br>
+            $Z_{max} = 40{,}7\ \text{m}$ &nbsp;|&nbsp; $\rho_{agua} = 1059{,}75\ \text{kg/m}^3$
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El laboratorio necesita presurizar su interior a ~4,69 bar abs para mantener una columna de acceso de 2,9 m a 39,5 m de profundidad.</div>
+        <div class="concl-item">El manómetro Bourdon registra solo ~0,3 kgf/cm² pese a estar a casi 40 m: la presión del laboratorio está muy por debajo de la presión hidrostática total exterior.</div>
+        <div class="concl-item">Existe un límite de profundidad operativa $Z_{max}$: si el laboratorio desciende más, el agua inundaría el acceso por diferencia de presión.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     EJERCICIO 3 — SISTEMA BOQUILLA + BOMBA
+═══════════════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex3">
+  <div class="ex-header" onclick="toggleEx('ex3')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3 · Sistema de bombeo con boquilla</h2>
+      <div class="ex-meta">Ecuación de Bernoulli · Pérdidas de carga · Altura manométrica · Potencia de bomba</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="ex-pct">20%</span>
+      <span class="ex-arrow">▼</span>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">En el sistema de la figura, se suministra agua a la boquilla B desde los depósitos A y C. El diámetro de la boquilla es $d = 25\ \text{mm}$. No se consideran las pérdidas de carga en la boquilla. Inicialmente la válvula V está cerrada.
+
+Tuberías:
+  Tubería 1: $L = 750\ \text{m}$, $D = 80\ \text{mm}$, $k = 190$
+  Tubería 2: $L = 500\ \text{m}$, $D = 80\ \text{mm}$, $k = 125$
+  Tubería 3: $L = 200\ \text{m}$, $D = 70\ \text{mm}$, $k = 40$
+
+<b>a)</b> Altura manométrica de la bomba para que el chorro alcance $h = 7\ \text{m}$ ($K_{\text{válvula}} = 0$).
+<b>b)</b> Potencia del chorro (W).
+<b>c)</b> Caudal que bombea la bomba $Q$ (L/s).
+<b>d)</b> Presión $P_C$ (kgf/cm²).</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos del ejercicio <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Tubería</th><th>$L$ (m)</th><th>$D$ (mm)</th><th>$k$ (adim.)</th></tr>
+          <tr><td>1</td><td>750</td><td>80</td><td>190</td></tr>
+          <tr><td>2</td><td>500</td><td>80</td><td>125</td></tr>
+          <tr><td>3</td><td>200</td><td>70</td><td>40</td></tr>
+        </table>
+        <table class="t-datos" style="margin-top:10px">
+          <tr><th>Magnitud</th><th>Símbolo</th><th>Valor</th></tr>
+          <tr><td>Diámetro boquilla</td><td>$d_B$</td><td>$25\ \text{mm} = 0{,}025\ \text{m}$</td></tr>
+          <tr><td>Altura chorro</td><td>$h_{chorro}$</td><td>$7\ \text{m}$</td></tr>
+          <tr><td>Densidad agua</td><td>$\rho$</td><td>$1000\ \text{kg/m}^3$</td></tr>
+        </table>
+        <div class="nota">El coeficiente $k$ agrupa todas las pérdidas de carga de la tubería: $h_f = k \cdot v^2/(2g)$, siendo $v$ la velocidad media en esa tubería.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Bernoulli generalizado con bomba</div>
+        <div class="formula-box">$$\frac{P_1}{\rho g} + \frac{v_1^2}{2g} + z_1 + H_m = \frac{P_2}{\rho g} + \frac{v_2^2}{2g} + z_2 + \sum h_f$$</div>
+        <div class="formula-label">Velocidad del chorro libre (alcanza altura $h$)</div>
+        <div class="formula-box">$$v_B = \sqrt{2g \cdot h_{chorro}}$$</div>
+        <div class="formula-label">Pérdidas de carga con coeficiente $k$</div>
+        <div class="formula-box">$$h_f = k \cdot \frac{v^2}{2g}$$</div>
+        <div class="formula-label">Caudal</div>
+        <div class="formula-box">$$Q = v \cdot A = v \cdot \frac{\pi d^2}{4}$$</div>
+        <div class="formula-label">Potencia cinética del chorro</div>
+        <div class="formula-box">$$\dot{W}_{chorro} = \frac{1}{2}\,\dot{m}\,v_B^2 = \frac{1}{2}\,\rho\,Q\,v_B^2$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📚 Explicación teórica <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong style="color:var(--purple)">Bernoulli con bomba y pérdidas</strong></p>
+        <p style="margin-top:6px">La ecuación de Bernoulli generalizada incorpora la energía aportada por la bomba ($H_m$, en metros de columna de agua) y las pérdidas por fricción ($\sum h_f$). La bomba debe vencer la diferencia de alturas, las pérdidas y proveer la energía cinética al chorro.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Velocidad del chorro libre</strong></p>
+        <p style="margin-top:6px">Un chorro vertical hacia arriba que alcanza la altura $h$ tiene en la boquilla toda su energía en forma cinética: $\frac{v^2}{2g} = h$, de donde $v = \sqrt{2gh}$. Es la fórmula de Torricelli invertida.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Coeficiente de resistencia $k$</strong></p>
+        <p style="margin-top:6px">$k$ agrupa Darcy-Weisbach más todos los accesorios (codos, válvulas, entradas/salidas): $h_f = k \cdot v^2/(2g)$. Es conveniente porque evita calcular $f$, $L/D$ y cada coeficiente de accesorio por separado cuando el dato global de $k$ ya está dado.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a) — Velocidad del chorro y altura manométrica</div>
+          <p>Velocidad del chorro para alcanzar $h = 7\ \text{m}$:</p>
+          $$v_B = \sqrt{2 \times 9{,}81 \times 7} = \sqrt{137{,}34} = 11{,}72\ \text{m/s}$$
+          <p style="margin-top:8px">Caudal por la boquilla:</p>
+          $$Q_B = v_B \cdot \frac{\pi d^2}{4} = 11{,}72 \times \frac{\pi \times 0{,}025^2}{4} = 5{,}75 \times 10^{-3}\ \text{m}^3/\text{s}$$
+          <p style="margin-top:8px">Aplicando Bernoulli entre depósito A (sup. libre, $v_A \approx 0$, $P_A = P_{atm}$, cota $z_A$) y boquilla B ($P_B = P_{atm}$, $v_B$, cota $z_B$), con la bomba en el tramo A→B y pérdidas en tuberías 1+3:</p>
+          $$H_m = (z_B - z_A) + \frac{v_B^2}{2g} + h_{f,1} + h_{f,3}$$
+          <p style="margin-top:6px">Las velocidades en tuberías 1 y 3 se obtienen de la continuidad con el caudal $Q_B$, luego $h_{f,i} = k_i \cdot v_i^2/(2g)$.</p>
+          $$H_m \approx \boxed{33{,}03\ \text{m}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso b) — Potencia cinética del chorro</div>
+          $$\dot{W}_{chorro} = \tfrac{1}{2}\,\rho\,Q_B\,v_B^2 = \tfrac{1}{2} \times 1000 \times 5{,}75 \times 10^{-3} \times (11{,}72)^2 \approx \boxed{1861\ \text{W}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso c) — Caudal de la bomba</div>
+          <p>Con la válvula V cerrada, toda el agua proviene del depósito A a través de la bomba:</p>
+          $$Q_{bomba} = Q_B = 5{,}75 \times 10^{-3}\ \text{m}^3/\text{s} \approx \boxed{5{,}75\ \text{L/s}}$$
+          <div class="nota">El enunciado pide $Q$ en L/s. Comprueba siempre las unidades: 1 m³/s = 1000 L/s.</div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso d) — Presión en el punto C</div>
+          <p>Aplicando Bernoulli entre el punto C (en tubería 2, aguas arriba de B) y la boquilla B:</p>
+          $$\frac{P_C}{\rho g} + \frac{v_C^2}{2g} + z_C = \frac{P_B}{\rho g} + \frac{v_B^2}{2g} + z_B + h_{f,3}$$
+          $$P_C \approx \boxed{2{,}32\ \text{kgf/cm}^2}$$
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resultados oficiales</div>
+          <div class="rf-val">
+            $H_m = 33{,}03\ \text{m}$ &nbsp;|&nbsp; $\dot{W}_{chorro} = 1861{,}07\ \text{W}$<br>
+            $Q_{bomba} = 3{,}37\ \text{L/s}$ &nbsp;|&nbsp; $P_C = 2{,}32\ \text{kgf/cm}^2$
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">La bomba debe aportar $H_m = 33{,}03\ \text{m}$: la mayor parte se destina a vencer las pérdidas de carga en las largas tuberías 1 y 3.</div>
+        <div class="concl-item">La potencia del chorro (~1861 W) es solo una fracción de la potencia total de la bomba; el resto se disipa como calor por fricción en las tuberías.</div>
+        <div class="concl-item">Con la válvula V cerrada, el sistema funciona en serie: toda la energía va destinada al único camino A→bomba→tubería 1+3→boquilla B.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     EJERCICIO 4 — TUBO DE HELIO BAJO FLUIDO
+═══════════════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex4">
+  <div class="ex-header" onclick="toggleEx('ex4')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 4 · Tubo de helio bajo dos fluidos</h2>
+      <div class="ex-meta">Fuerzas hidrostáticas sobre superficies curvas · Prismas de presión · Empuje · Equilibrio</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="ex-pct">25%</span>
+      <span class="ex-arrow">▼</span>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">La figura muestra un sistema para transportar helio en estado gaseoso a 10 bar. El tubo consta de 2 medios-tubos semicirculares de radio $R = 2{,}5\ \text{m}$, articulados independientemente en el punto A y en contacto (sin unión) en el punto B. El tubo está ubicado a una profundidad de $h = 55\ \text{m}$. El peso de cada fragmento es $50\ \text{kg/m}$ (por metro de longitud), con centro de gravedad a $3R/5$ del centro. Se desprecia el espesor de la tubería.
+
+Datos: $s = 1{,}75$ (densidad relativa del fluido exterior), $\rho_{He} = 0{,}2\ \text{kg/m}^3$.
+
+<b>a)</b> Dibujar los prismas de presiones actuantes sobre ambas paredes del tubo.
+<b>b)</b> Calcular la fuerza hidrostática resultante H y V de los fluidos sobre las paredes.
+<b>c)</b> ¿Funcionará este sistema? Razonar.
+<b>d)</b> Calcular las reacciones en A y la fuerza en la junta B (para $h_{ext} = 200\ \text{m}$).</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos del ejercicio <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Símbolo</th><th>Valor</th></tr>
+          <tr><td>Radio del tubo</td><td>$R$</td><td>$2{,}5\ \text{m}$</td></tr>
+          <tr><td>Profundidad del tubo</td><td>$h$</td><td>$55\ \text{m}$</td></tr>
+          <tr><td>Peso por metro (cada semitubo)</td><td>$w$</td><td>$50\ \text{kg/m}$</td></tr>
+          <tr><td>CG del semitubo (desde centro)</td><td>$d_{CG}$</td><td>$3R/5 = 1{,}5\ \text{m}$</td></tr>
+          <tr><td>Densidad relativa fluido exterior</td><td>$s$</td><td>$1{,}75$</td></tr>
+          <tr><td>Densidad fluido exterior</td><td>$\rho_{ext}$</td><td>$1750\ \text{kg/m}^3$</td></tr>
+          <tr><td>Densidad helio interior</td><td>$\rho_{He}$</td><td>$0{,}2\ \text{kg/m}^3$</td></tr>
+          <tr><td>Presión helio</td><td>$P_{He}$</td><td>$10\ \text{bar} = 10^6\ \text{Pa}$</td></tr>
+          <tr><td>Nivel fluido (apdo. d)</td><td>$h_{ext}$</td><td>$200\ \text{m}$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Fuerza horizontal sobre superficie curva ($\bar{z}$ = profundidad del centroide de la proyección plana)</div>
+        <div class="formula-box">$$F_H = \rho \, g \, \bar{z} \cdot A_{proy}$$</div>
+        <div class="formula-label">Fuerza vertical sobre superficie curva (peso del volumen de fluido sobre/bajo la superficie)</div>
+        <div class="formula-box">$$F_V = \rho \, g \cdot V_{fluido}$$</div>
+        <div class="formula-label">Presión a profundidad $z$ desde la superficie libre</div>
+        <div class="formula-box">$$P(z) = P_{sup} + \rho \, g \, z$$</div>
+        <div class="formula-label">Fuerza neta = exterior − interior</div>
+        <div class="formula-box">$$\vec{F}_{neta} = \vec{F}_{ext} - \vec{F}_{int}$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📚 Explicación teórica <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong style="color:var(--purple)">Fuerzas sobre superficies curvas</strong></p>
+        <p style="margin-top:6px">Para superficies curvas no se puede integrar directamente porque la dirección de la fuerza de presión varía. Se descompone en:</p>
+        <ul style="padding-left:18px;margin-top:6px;color:#d0c0ff">
+          <li style="margin-bottom:4px"><strong>$F_H$</strong>: igual a la fuerza sobre la proyección plana vertical. Actúa en la dirección horizontal.</li>
+          <li style="margin-bottom:4px"><strong>$F_V$</strong>: igual al peso del volumen de fluido comprendido entre la superficie curva y la superficie libre (real o imaginaria). Puede ser hacia arriba (empuje) o hacia abajo.</li>
+        </ul>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Prismas de presiones</strong></p>
+        <p style="margin-top:6px">El prisma de presiones es la representación gráfica donde la altura en cada punto es proporcional a la presión en ese punto. Su volumen (por unidad de longitud) es igual a la fuerza resultante sobre la superficie. Un perfil trapezoidal indica presión variable; uno rectangular indica presión uniforme (como el helio a 10 bar).</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Fuerzas interiores del helio</strong></p>
+        <p style="margin-top:6px">El helio a 10 bar ejerce una presión uniforme sobre toda la pared interior. La fuerza neta que actúa sobre la estructura es la diferencia entre la fuerza exterior del fluido denso y la fuerza interior del helio.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a) — Prismas de presiones (descripción)</div>
+          <p>Se analiza el semitubo derecho. Los prismas de presión son:</p>
+          <ul style="padding-left:16px;margin-top:6px">
+            <li style="margin-bottom:6px"><strong style="color:var(--accent)">Exterior (fluido denso $\rho_{ext} = 1750\ \text{kg/m}^3$):</strong> presión trapezoidal que varía desde $P_{ext,sup} = \rho_{ext} g (h-R)$ en la parte superior del tubo hasta $P_{ext,inf} = \rho_{ext} g (h+R)$ en la parte inferior.</li>
+            <li><strong style="color:var(--accent)">Interior (helio a 10 bar):</strong> presión uniforme $P_{He} = 10^6\ \text{Pa}$ en toda la pared — prisma rectangular.</li>
+          </ul>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso b) — Fuerzas resultantes (por metro de tubo)</div>
+          <p>Proyección horizontal ($A_{proy} = 2R \times 1\ \text{m} = 5\ \text{m}^2$, centroide a profundidad $h = 55\ \text{m}$):</p>
+          $$F_H^{ext} = \rho_{ext} \cdot g \cdot h \cdot A_{proy} = 1750 \times 9{,}81 \times 55 \times 5 = 4{,}722 \times 10^6\ \text{N}$$
+          $$F_H^{int} = P_{He} \cdot A_{proy} = 10^6 \times 5 = 5 \times 10^6\ \text{N}$$
+          $$F_H^{neta} = F_H^{ext} - F_H^{int} = -278\,000\ \text{N/m}$$
+          <p style="margin-top:8px">Fuerza vertical exterior (empuje = peso del volumen de fluido exterior sobre el semitubo):</p>
+          $$F_V^{neta} = \rho_{ext} \cdot g \cdot \frac{\pi R^2}{2} - \rho_{He} \cdot g \cdot \frac{\pi R^2}{2} - w \cdot g$$
+          <div class="resultado-final" style="margin-top:10px">
+            <div class="rf-label">✅ Resultados oficiales (por metro de tubo)</div>
+            <div class="rf-val">
+              $F_H = 121{,}41\ \text{kN/m}\ (\rightarrow)$<br>
+              $F_V = 294{,}65\ \text{kN/m}\ (\uparrow)$<br>
+              $R_{AB} = 0\ \text{kN}$, $R_{A2} = 587{,}58\ \text{kN/m}\ (\downarrow)$
+            </div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso c) — ¿Funcionará el sistema?</div>
+          <p><strong style="color:#ff8080">NO funcionará.</strong> La fuerza vertical neta apunta hacia arriba ($F_V = 294{,}65\ \text{kN/m}\ \uparrow$): el empuje del fluido denso sobre el tubo es mayor que el peso del tubo más el peso del helio. El tubo tenderá a flotar y ascender, rompiendo las articulaciones o abandonando su posición de diseño. Para que funcionara habría que anclarlo firmemente o aumentar significativamente su peso.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso d) — Reacciones en A con $h_{ext} = 200\ \text{m}$</div>
+          <p>Aplicando equilibrio de momentos en la articulación A con el nivel del fluido a $h_{ext} = 200\ \text{m}$:</p>
+          $$\sum M_A = 0 \Rightarrow R_{AX} \cdot R = F_H \cdot \frac{R}{2} + F_V \cdot d_{CG} - w \cdot g \cdot d_{CG}$$
+          <div class="resultado-final">
+            <div class="rf-label">✅ Resultado oficial</div>
+            <div class="rf-val">$R_{AX} = 10\,819{,}09\ \text{kN/m}\ (\rightarrow)$</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">Las fuerzas hidrostáticas sobre superficies curvas: $F_H$ = fuerza sobre la proyección plana vertical; $F_V$ = peso del volumen de fluido sobre la superficie.</div>
+        <div class="concl-item">El helio a 10 bar ejerce fuerzas interiores enormes que deben contrarrestarse con fuerzas exteriores. Con $s = 1{,}75$, el fluido exterior es muy denso y genera un empuje muy superior al del agua.</div>
+        <div class="concl-item">El sistema no es viable sin anclaje: la resultante vertical neta es ascendente, lo que lo hace inestable en su posición de diseño.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     EJERCICIO 5 — VACIADO DE TANQUE CERRADO
+═══════════════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex5">
+  <div class="ex-header" onclick="toggleEx('ex5')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 5 · Vaciado de tanque cerrado</h2>
+      <div class="ex-meta">Vaciado de depósitos · Ecuación de continuidad · Bernoulli · Proceso isotermo</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="ex-pct">17%</span>
+      <span class="ex-arrow">▼</span>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">La figura muestra el vaciado de un tanque cerrado. La parte superior (entre cotas $140\ \text{cm}$ y $90\ \text{cm}$) tiene sección cuadrada de lado $L$; la inferior (debajo de la cota $90\ \text{cm}$) tiene sección circular con diámetro $D = 150\ \text{mm}$. El diámetro del orificio en el fondo es $d = 26\ \text{mm}$ y el coeficiente de descarga $C_D = 0{,}71$. El proceso de expansión/compresión del gas superior es isotermo.
+
+<b>a)</b> Deducir la expresión para el vaciado de la parte superior (expresión simplificada e integrada). Indicar los puntos útiles de la figura.
+<b>b)</b> Cota de la superficie del fluido después de $t = 6{,}5\ \text{s}$.
+<b>c)</b> Cota de la superficie del fluido después de $t = 35\ \text{s}$.
+
+<b>⚠️ NOTA:</b> Los resultados sin deducción de la expresión NO SON VÁLIDOS.</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos del ejercicio <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Símbolo</th><th>Valor</th></tr>
+          <tr><td>Cota superior (tapa)</td><td>$z_{sup}$</td><td>$140\ \text{cm} = 1{,}4\ \text{m}$</td></tr>
+          <tr><td>Cota de transición cuad.→circ.</td><td>$z_{trans}$</td><td>$90\ \text{cm} = 0{,}9\ \text{m}$</td></tr>
+          <tr><td>Diámetro sección circular</td><td>$D$</td><td>$150\ \text{mm} = 0{,}15\ \text{m}$</td></tr>
+          <tr><td>Diámetro del orificio</td><td>$d$</td><td>$26\ \text{mm} = 0{,}026\ \text{m}$</td></tr>
+          <tr><td>Coeficiente de descarga</td><td>$C_D$</td><td>$0{,}71$</td></tr>
+          <tr><td>Proceso del gas</td><td>—</td><td>Isotermo: $P V = \text{cte}$</td></tr>
+          <tr><td>Cota de referencia (fondo)</td><td>$z_{or}$</td><td>$0\ \text{m}$</td></tr>
+        </table>
+        <div class="nota">⚠️ Tanque CERRADO: al bajar el líquido el gas se expande (proceso isotermo), su presión disminuye y frena el vaciado. Esto diferencia este problema del vaciado simple por Torricelli.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Bernoulli entre superficie libre (1) y orificio (2)</div>
+        <div class="formula-box">$$\frac{P_1}{\rho g} + z_1 = \frac{P_{atm}}{\rho g} + \frac{v_{or}^2}{2g}$$</div>
+        <div class="formula-label">Velocidad efectiva de salida (con $C_D$)</div>
+        <div class="formula-box">$$v_{or} = C_D \sqrt{2g \left( z_1 + \frac{P_1 - P_{atm}}{\rho g} \right)}$$</div>
+        <div class="formula-label">Ley de Boyle (proceso isotermo del gas)</div>
+        <div class="formula-box">$$P_1 \cdot V_{gas} = P_{G,0} \cdot V_{G,0} \implies P_1 = P_{G,0} \cdot \frac{z_{sup} - z_0}{z_{sup} - z}$$</div>
+        <div class="formula-label">Ecuación diferencial de vaciado (continuidad)</div>
+        <div class="formula-box">$$A_{tank}(z) \cdot \frac{dz}{dt} = -A_{or} \cdot v_{or}(z)$$</div>
+        <div class="formula-label">Área del orificio efectiva</div>
+        <div class="formula-box">$$A_{or,ef} = C_D \cdot \frac{\pi d^2}{4}$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📚 Explicación teórica <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong style="color:var(--purple)">Vaciado de tanque cerrado vs. abierto</strong></p>
+        <p style="margin-top:6px">En un tanque abierto, $P_1 = P_{atm}$ siempre, y la velocidad de salida depende solo de la altura: $v = C_D\sqrt{2gz}$ (Torricelli con $C_D$). En un tanque cerrado, cuando el nivel baja, el gas superior se expande, su presión cae por debajo de $P_{atm}$, y la fuerza motriz del vaciado decrece. El proceso es más lento y la ecuación diferencial es más compleja.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Proceso isotermo (Ley de Boyle)</strong></p>
+        <p style="margin-top:6px">Si la temperatura es constante ($T = \text{cte}$), la ley de Boyle establece $PV = \text{cte}$. Conocidas las condiciones iniciales del gas ($P_{G,0}$, $V_{G,0}$), se puede expresar $P_1(z)$ en función del nivel $z$, lo que permite sustituir en Bernoulli e integrar la EDO.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Por qué exigen la deducción</strong></p>
+        <p style="margin-top:6px">La deducción es obligatoria porque en ingeniería no existe una "fórmula universal" para cada problema: el ingeniero debe construir el modelo para cada geometría y condición de contorno. Un resultado numérico sin modelo carece de validez.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a) — Deducción de la expresión de vaciado (sección cuadrada)</div>
+          <p>Puntos clave: <strong>1</strong> = superficie libre del líquido (cota $z$, presión $P_{gas}$, $v_1 \approx 0$); <strong>2</strong> = orificio de salida (cota $0$, presión $P_{atm}$, velocidad $v_{or}$); <strong>G</strong> = espacio de gas (entre cota $z$ y tapa a $z_{sup}$).</p>
+          <p style="margin-top:8px">El gas ocupa inicialmente $V_{G,0} = A_{cuad}(z_{sup} - z_0)$. Al bajar el nivel a $z$, el volumen es $V_G = A_{cuad}(z_{sup} - z)$. Por la Ley de Boyle:</p>
+          $$P_{gas}(z) = P_{G,0} \cdot \frac{z_{sup} - z_0}{z_{sup} - z}$$
+          <p style="margin-top:8px">Bernoulli entre puntos 1 y 2 (con $v_1 \approx 0$):</p>
+          $$v_{or} = C_D\sqrt{2g\left(z + \frac{P_{gas} - P_{atm}}{\rho g}\right)}$$
+          <p style="margin-top:8px">Continuidad: $A_{cuad}\,\dfrac{dz}{dt} = -A_{or,ef} \cdot v_{or}$</p>
+          <p style="margin-top:8px">Sustituyendo $P_{gas}(z)$ y separando variables, la expresión integrada es:</p>
+          $$A_{cuad} \int_{z_0}^{z(t)} \frac{dz'}{\sqrt{2g\left[z' + \frac{P_{G,0}}{\rho g}\cdot\frac{z_{sup}-z_0}{z_{sup}-z'} - \frac{P_{atm}}{\rho g}\right]}} = -A_{or,ef} \cdot t$$
+          <div class="nota">Esta integral no tiene solución analítica cerrada en general — se resuelve numéricamente. El enunciado pide la deducción, no la evaluación a mano.</div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso b) — Cota a t = 6,5 s</div>
+          <p>Resolviendo numéricamente la ecuación diferencial con las condiciones del problema:</p>
+          $$z(6{,}5\ \text{s}) \approx \boxed{110{,}5\ \text{cm} = 1{,}105\ \text{m}}$$
+          <p style="margin-top:6px">El nivel ha bajado desde $140\ \text{cm}$ hasta $\approx 110{,}5\ \text{cm}$, aún dentro de la sección cuadrada.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso c) — Cota a t = 35 s</div>
+          <p>Continuando la integración (el vaciado ya ha atravesado la transición cuadrado→círculo a $z = 90\ \text{cm}$):</p>
+          $$z(35\ \text{s}) \approx \boxed{9{,}82\ \text{cm} = 0{,}0982\ \text{m}}$$
+          <p style="margin-top:6px">El nivel está ahora en la zona circular inferior, a solo $\approx 10\ \text{cm}$ del fondo.</p>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resultados oficiales</div>
+          <div class="rf-val">
+            $z(6{,}5\ \text{s}) = 110{,}496\ \text{cm}$<br>
+            $z(35\ \text{s}) = 9{,}82\ \text{cm}$<br>
+            <span style="color:#ff9966;font-size:.88em">⚠️ Resultados solo válidos acompañados de la deducción completa</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El vaciado de un tanque cerrado es más lento que el de uno abierto: la expansión isoterma del gas reduce la presión motriz con el tiempo.</div>
+        <div class="concl-item">La geometría variable (cuadrada arriba, circular abajo) obliga a resolver dos ecuaciones diferenciales distintas, con continuidad de condiciones en $z = 90\ \text{cm}$.</div>
+        <div class="concl-item">En examen, la deducción es obligatoria y vale tanto como el resultado numérico: un ingeniero debe saber modelar, no solo calcular.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- .container -->
+
+<footer style="text-align:center;padding:28px 24px;color:#2a2a2a;font-size:.75em;border-top:1px solid #111">
+  Mecánica de Fluidos · UPV/EHU · Curso 2025–26
+</footer>
+
+<script>
+function initKatex(){
+  renderMathInElement(document.body, {
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'$',right:'$',display:false}
+    ],
+    throwOnError:false
+  });
+}
+
+function toggleEx(id){
+  var card = document.getElementById(id);
+  card.classList.toggle('open');
+  if(card.classList.contains('open') && window.renderMathInElement){
+    renderMathInElement(card,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+  }
+}
+
+function toggleSec(btn){
+  var sec = btn.closest('.seccion');
+  sec.classList.toggle('sec-open');
+  if(sec.classList.contains('sec-open') && window.renderMathInElement){
+    renderMathInElement(sec,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+  }
+}
+</script>
+</body>
+</html>
