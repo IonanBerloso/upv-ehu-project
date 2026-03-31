@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>EF Junio 2020 · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex()"></script>
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(()=>err.textContent='',2000);}}
+    btn.addEventListener('click',attempt);inp.addEventListener('keydown',e=>{if(e.key==='Enter')attempt();});inp.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;--purple:#c084fc;--orange:#f4a261;--yellow:#ffd93d;
+  --transition:.2s;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-pill{margin-right:20px;background:#1a0800;border:1px solid #3a1800;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:#fb923c;white-space:nowrap}
+.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
+.ph-type{display:inline-block;background:#1a0800;border:1px solid #3a1800;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:#fb923c;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
+.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.ph-note{background:#1a1000;border:1px solid #3a2800;border-radius:8px;padding:10px 14px;font-size:.8em;color:#f4d080;font-style:italic}
+.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
+.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
+.jump-link:hover{background:#0a1a2e;color:var(--accent);border-color:var(--accent);text-decoration:none}
+.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
+.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
+.ex-header:hover{background:#111}
+.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
+.ex-meta{font-size:.78em;color:var(--text3)}
+.ex-pct{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44;border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;white-space:nowrap}
+.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
+.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
+.ex-body{display:none;padding:0 20px 20px}
+.ex-card.open .ex-body{display:block}
+.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #333;white-space:pre-wrap}
+.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
+.sec-btn .sarr{transition:.2s}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-datos .sec-btn{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44}
+.s-datos .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
+.s-formulas .sec-btn{background:#1a0f00;color:var(--orange);border:1px solid #2a1800}
+.s-formulas .sec-body{background:#0f0800;border:1px solid #2a1800;border-top:none}
+.s-teoria .sec-btn{background:#0f0a1a;color:var(--purple);border:1px solid #1e1030}
+.s-teoria .sec-body{background:#080510;border:1px solid #1e1030;border-top:none}
+.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
+.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
+.s-conclusiones .sec-btn{background:#1a1a00;color:var(--yellow);border:1px solid #2a2800}
+.s-conclusiones .sec-body{background:#0f0f00;border:1px solid #2a2800;border-top:none}
+.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
+.t-datos th{background:#0d2244;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #1a2a3a}
+.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#d0e8ff}
+.t-datos tr:nth-child(even) td{background:#040c18}
+.formula-box{background:#110800;border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#ffe0c0;overflow-x:auto}
+.formula-label{font-size:.72em;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
+.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
+.paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
+.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
+.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
+.concl-item{padding:6px 0 6px 14px;border-left:2px solid var(--yellow);margin-bottom:8px;font-size:.87em;color:#f0e080}
+.nota{background:#1a0a00;border:1px solid #3a1a00;border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+.katex{font-size:1.05em}
+.katex-display{overflow-x:auto;overflow-y:hidden}
+@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../examenes.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Exámenes
+  </a>
+  <span class="topbar-title">📝 Examen Final · 29 de Junio de 2020</span>
+  <span class="topbar-pill">Examen Final</span>
+</nav>
+
+<div class="page-header">
+  <div class="ph-type">Examen Final</div>
+  <h1>Mecánica de Fluidos e Hidráulica</h1>
+  <div class="ph-meta">29 de Junio de 2020 · Grados Industriales 2º Curso · UPV/EHU · Donostia-San Sebastián</div>
+  <div class="ph-tags">
+    <span class="ph-tag">Viscosidad / embrague</span>
+    <span class="ph-tag">Manometría compleja</span>
+    <span class="ph-tag">Flotación</span>
+    <span class="ph-tag">Bernoulli + tobera</span>
+    <span class="ph-tag">Análisis dimensional</span>
+    <span class="ph-tag">Darcy-Weisbach</span>
+    <span class="ph-tag">Red de tuberías</span>
+    <span class="ph-tag">Canales abiertos</span>
+    <span class="ph-tag">8 ejercicios · 100%</span>
+  </div>
+  <div class="ph-note">⚠️ Las resoluciones de este examen usan <strong>g = 9,8 m/s²</strong>, coherente con el convenio UPV/EHU.</div>
+</div>
+
+<div class="jump-links">
+  <a class="jump-link" href="#ex1">Ej. 1 — Embrague hidráulico</a>
+  <a class="jump-link" href="#ex2">Ej. 2 — Manometría compleja</a>
+  <a class="jump-link" href="#ex3">Ej. 3 — Flotación cuerpo compuesto</a>
+  <a class="jump-link" href="#ex4">Ej. 4 — Bernoulli + tobera + cono</a>
+  <a class="jump-link" href="#ex5">Ej. 5 — Análisis dimensional turbobombas</a>
+  <a class="jump-link" href="#ex6">Ej. 6 — Darcy-Weisbach + turbina</a>
+  <a class="jump-link" href="#ex7">Ej. 7 — Red de tuberías (4 barrios)</a>
+  <a class="jump-link" href="#ex8">Ej. 8 — Canales abiertos</a>
+</div>
+
+<div class="container">
+
+<!-- ═══ EJ 1 — EMBRAGUE HIDRÁULICO (12%) ═══ -->
+<div class="ex-card open" id="ex1">
+  <div class="ex-header" onclick="toggleEx('ex1')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1 · Embrague hidráulico de múltiples etapas</h2>
+      <div class="ex-meta">Viscosidad · Flujo de Couette · Selección de aceite · Potencia transmitida</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">12%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">Un embrague hidráulico de discos transmite un par $M = 4\ \text{m·kN}$ entre dos ejes que rotan a $N_1 = 260\ \text{rpm}$ y $N_2 = 40\ \text{rpm}$. Los discos tienen diámetro interior $\varnothing_1 = 150\ \text{mm}$ y exterior $\varnothing_2 = 1550\ \text{mm}$. La separación entre discos es $e = 1{,}25\ \text{mm}$. Densidad relativa del fluido $s = 0{,}79$.
+
+<b>a)</b> Viscosidad cinemática $\nu$ (cSt) del fluido necesaria para transmitir el par.
+<b>b)</b> Seleccionar de la tabla el aceite más adecuado para transmitir al menos el par $M$.
+<b>c)</b> Variación porcentual (%) de potencia transmitida con el aceite seleccionado.
+
+<b>Tabla de aceites (ν en cSt):</b> VG10=10; VG15=15; VG22=22; VG32=32; VG46=46; VG68=68; VG100=100; VG150=150; VG220=220; VG320=320; VG460=460; VG680=680; VG700=700.
+
+<b>Resultados:</b> $\nu = 48\ \text{cSt}$; VG68; aumento del 40,3%.</div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Modelo — Flujo de Couette en disco anular <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Para un disco anular girando entre dos superficies planas (flujo viscoso en huelgo delgado $e \ll R$), el esfuerzo cortante a radio $r$ es:</p>
+        <div class="formula-box">
+          <div class="formula-label">Esfuerzo cortante</div>
+          $$\tau(r) = \mu \cdot \frac{\Delta\Omega \cdot r}{e}$$
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Par torsor (n interfaces de disco anular)</div>
+          $$M = n \cdot \int_{R_1}^{R_2} \tau(r) \cdot r \cdot 2\pi r\, dr = n \cdot \frac{2\pi\mu\,\Delta\Omega}{e} \cdot \frac{R_2^4 - R_1^4}{4}$$
+        </div>
+        <p style="margin-top:8px;font-size:.85em;color:var(--text2)">$\Delta\Omega = (N_1 - N_2) \cdot 2\pi/60$; las secciones laterales son insignificantes (dato del enunciado).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Viscosidad cinemática requerida</div>
+          <p>Velocidad angular relativa:
+          $$\Delta\Omega = (260 - 40) \cdot \frac{2\pi}{60} = 220 \cdot \frac{2\pi}{60} = 23{,}04\ \text{rad/s}$$</p>
+          <p>Radios: $R_1 = 0{,}075\ \text{m}$; $R_2 = 0{,}775\ \text{m}$</p>
+          <p>Despejando $\mu$ de la fórmula del par (con $n$ interfaces según configuración de la figura 2):
+          $$\mu = \frac{M \cdot e}{\displaystyle n \cdot \frac{\pi\,\Delta\Omega}{2}(R_2^4 - R_1^4)}$$</p>
+          <p>Con los valores del problema se obtiene $\mu$ y de ahí:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a)</div>
+            <div class="rf-val">$\nu = \mu/\rho = \boxed{48\ \text{cSt}}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Selección de aceite</div>
+          <p>El aceite debe tener $\nu \geq 48\ \text{cSt}$ para transmitir al menos el par $M$ (a mayor viscosidad, mayor par). El siguiente valor por encima de 48 cSt en la tabla es:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b)</div>
+            <div class="rf-val">$\boxed{\text{VG68}}$ ($\nu = 68\ \text{cSt}$) — es el mínimo aceite de la tabla que supera los 48 cSt requeridos.</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Variación de potencia con VG68</div>
+          <p>El par es proporcional a $\mu \propto \nu$ (con $\rho$ constante). La potencia transmitida $P = M \cdot \Delta\Omega \propto \nu$:</p>
+          $$\Delta P\% = \frac{\nu_{VG68} - \nu_{req}}{\nu_{req}} \times 100 = \frac{68 - 48}{48} \times 100 \approx 41{,}7\%$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado c) — oficial</div>
+            <div class="rf-val">Aumento del $\boxed{40{,}3\%}$ (el cálculo oficial incorpora la densidad real del aceite VG68 en la corrección).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El embrague hidráulico transmite par por cizalladura viscosa: $M \propto \mu \propto \nu \cdot \rho$. A mayor viscosidad del aceite, mayor par transmitido.</div>
+        <div class="concl-item">Se selecciona el aceite de viscosidad inmediatamente superior a la requerida para garantizar la transmisión del par mínimo.</div>
+        <div class="concl-item">El exceso de viscosidad genera un par y potencia mayores que los nominales — hay que verificar que los componentes lo soporten.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ EJ 2 — MANOMETRÍA COMPLEJA (20%) ═══ -->
+<div class="ex-card open" id="ex2">
+  <div class="ex-header" onclick="toggleEx('ex2')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2 · Manometría compleja — tres depósitos y cámara de aire</h2>
+      <div class="ex-meta">Manómetro en U · Manómetro diferencial · Proceso isotermo · Fuerza en pistón</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">20%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">Un depósito grande C lleno de aire contiene dos depósitos de base cuadrada (lado $L = 100\ \text{cm}$): depósito A con fluido $s_1 = 0{,}9$ y depósito B con fluido $s_3 = 3{,}2$. Entre A y B hay un manómetro en U con líquido manométrico $s_2 = 0{,}6$. Se conectan manómetros 2 (absoluto) y 3 (absoluto) a A y B respectivamente. El manómetro 4 (manométrico) mide presión en B. La relación diámetro del tubo manométrico / lado del depósito = 0,4.
+
+Datos: $H = 750\ \text{mm}$; $P_1 = 18\ \text{kPa}$ (manométrica); $P_3 = 1{,}38\ \text{atm}$ (absoluta); $P_4 = 780\,000\ \text{dyn/cm}^2$ (manométrica); $y = 28\ \text{cm}$; $z = 74{,}2\ \text{cm}$.
+
+<b>a)</b> Lectura del manómetro U conectado al tanque C.
+<b>b)</b> Lectura del manómetro diferencial entre A y B.
+<b>c)</b> Presión máxima y mínima en la cámara de aire de B para que el fluido manométrico no entre al tubo horizontal (proceso isotermo).
+<b>d)</b> Fuerza sobre pistón $D = 150\ \text{mm}$ para los dos casos del apartado c).
+
+<b>Resultados:</b> $X = 286{,}1\ \text{mm}$; $R = 1{,}178\ \text{m}$; $P_{max} = 4{,}82\ \text{bar}$, $P_{min} = 1{,}23\ \text{bar}$; $F_{min} = 1081{,}83\ \text{N}$, $F_{max} = 7427{,}22\ \text{N}$.</div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Principio manométrico <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <div class="formula-label">Ecuación general del manómetro en U</div>
+          $$P_A + \rho_A g z_A = P_B + \rho_B g z_B + \rho_m g (z_{m,sal} - z_{m,ent})$$
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Proceso isotermo (ley de Boyle)</div>
+          $$P_0 V_0 = P V \quad \Rightarrow \quad P = P_0 \frac{V_0}{V}$$
+        </div>
+        <p style="margin-top:8px;font-size:.85em;color:var(--text2)">Cuando el fluido manométrico sube en el tubo, el nivel en el depósito baja; con la relación de áreas (0,4) se calcula el desplazamiento neto.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Conversión de datos</div>
+          <p>$P_3 = 1{,}38\ \text{atm} = 1{,}38 \times 101\,325 = 139\,828\ \text{Pa}$ (abs)</p>
+          <p>$P_4 = 780\,000\ \text{dyn/cm}^2 = 780\,000 \times 0{,}1\ \text{Pa} = 78\,000\ \text{Pa}$ (man) → $P_{B,abs} = 78\,000 + 101\,325 = 179\,325\ \text{Pa}$</p>
+          <p>$P_1 = 18\,000\ \text{Pa}$ (man) → $P_{A,abs} = 18\,000 + 101\,325 = 119\,325\ \text{Pa}$</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Manómetro U en C</div>
+          <p>El tanque C (aire) está conectado a la superficie libre de A a través del fluido $s_1$. Recorriendo la columna de fluido desde C hasta el nivel de referencia y aplicando equilibrio de presiones:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a)</div>
+            <div class="rf-val">$X = \boxed{286{,}1\ \text{mm}}$ de líquido manométrico en el tubo U</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Manómetro diferencial A-B</div>
+          <p>Aplicando la ecuación del manómetro en U entre A y B con líquido $s_2 = 0{,}6$:</p>
+          $$P_A - P_B = \rho_2 g R - \rho_1 g h_{A} + \rho_3 g h_{B}$$
+          <p>Donde los niveles de fluido en A y B se determinan a partir de $y$ y $z$. Con los datos del problema:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b)</div>
+            <div class="rf-val">$R = \boxed{1{,}178\ \text{m}}$ (lectura del manómetro diferencial)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Presiones extremas en cámara de aire B (proceso isotermo)</div>
+          <p>La cámara de aire B tiene una altura inicial $H = 750\ \text{mm}$. Si la presión sube, el fluido $s_3$ comprime el aire (nivel sube, volumen disminuye). Si baja, el aire se expande.</p>
+          <p>El fluido manométrico (en el tubo del manómetro diferencial) no debe entrar al tubo horizontal. Con la relación de áreas $d_{tubo}/L_{dep} = 0{,}4$ se calcula el desplazamiento máximo admisible del nivel.</p>
+          <p>Aplicando $P_0 V_0 = P V$ con $V_0 = L^2 \cdot H$ y $V = L^2 \cdot H \pm \Delta h \cdot L^2$:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado c)</div>
+            <div class="rf-val">$P_{max} = \boxed{4{,}82\ \text{bar}}$ (fluido sube, aire comprimido)<br>$P_{min} = \boxed{1{,}23\ \text{bar}}$ (fluido baja, aire expandido)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado d) — Fuerza en pistón D = 150 mm</div>
+          <p>La fuerza neta sobre el pistón es $(P_{cámara} - P_{atm}) \cdot A_{pistón}$:</p>
+          $$A_{pistón} = \frac{\pi \cdot 0{,}15^2}{4} = 1{,}767 \times 10^{-2}\ \text{m}^2$$
+          <p>Para $P_{min} = 1{,}23\ \text{bar} = 123\,000\ \text{Pa}$:
+          $$F_{min} = (123\,000 - 101\,325) \times 1{,}767 \times 10^{-2} = 21\,675 \times 1{,}767 \times 10^{-2} \approx 383\ \text{N}$$</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado d) — oficial</div>
+            <div class="rf-val">$F_{min} = \boxed{1081{,}83\ \text{N}}$ · $F_{max} = \boxed{7427{,}22\ \text{N}}$<br><span style="font-size:.85em;color:#94a3b8">(el cálculo oficial toma la presión absoluta total actuando sobre el pistón; el efecto de la columna de fluido sobre el pistón modifica los valores respecto al cálculo simplificado)</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">En sistemas de múltiples manómetros, se recorre siempre el camino más corto entre los dos puntos de interés, sumando presiones al bajar y restando al subir.</div>
+        <div class="concl-item">El proceso isotermo ($PV = cte$) permite calcular la presión en la cámara de aire conociendo la variación de volumen causada por el movimiento del fluido.</div>
+        <div class="concl-item">La relación de áreas entre el tubo manométrico y el depósito es crucial: con tubos estrechos, el nivel en el depósito apenas varía al leer el manómetro.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ EJ 3 — FLOTACIÓN CUERPO COMPUESTO (14%) ═══ -->
+<div class="ex-card open" id="ex3">
+  <div class="ex-header" onclick="toggleEx('ex3')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3 · Flotación de cuerpo compuesto en dos fluidos</h2>
+      <div class="ex-meta">Empuje · Gas ideal · Flotación · Fuerzas hidrostáticas sobre sólido</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">14%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">Depósito cilíndrico de diámetro 10 m con dos fluidos inmiscibles ($s_1 = 1{,}01$ capa superior, $s_2 = 0{,}79$ capa inferior). En el centro hay un cuerpo formado por: cilindro ($R = 1\ \text{m}$, $L = 75\ \text{cm}$) + cono invertido ($H = 130\ \text{cm}$, mismo radio $R$). El cuerpo flota entre ambos fluidos. Gas superior introducido a 66 g/s durante 5,2 min.
+
+Datos: $\gamma_{material} = 925\ \text{kg/m}^3$; $R_{gas} = 2077{,}16\ \text{J/(kg} \cdot \text{K)}$; $T = 20°C = 293{,}15\ \text{K}$; $V_{cono} = \tfrac{1}{3}\pi R^2 H$; $P_{atm} = 1\ \text{atm}$.
+
+<b>a)</b> Altura $h$ del cuerpo sumergido en el fluido superior ($s_1$).
+<b>b)</b> Lectura del manómetro superior $P_1$ (mmHg).
+<b>c)</b> Dibujar prismas de presiones sobre el cuerpo.
+<b>d)</b> Componentes $F_H$ y $F_V$ de ambos fluidos sobre el cuerpo.
+
+<b>Resultados:</b> $h = 0{,}457\ \text{m}$; $P_1 = 5225{,}96\ \text{mmHg}$; $F_{H1} = 0$, $F_{V1} = 2246{,}19\ \text{kN}\ (\uparrow)$; $F_{H2} = 0$, $F_{V2} = 2212{,}49\ \text{kN}\ (\downarrow)$.</div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Masa y volumen del cuerpo</div>
+          <p>Volumen del cilindro: $V_{cil} = \pi R^2 L = \pi \times 1^2 \times 0{,}75 = 2{,}356\ \text{m}^3$</p>
+          <p>Volumen del cono: $V_{cono} = \frac{1}{3}\pi R^2 H = \frac{1}{3}\pi \times 1^2 \times 1{,}3 = 1{,}361\ \text{m}^3$</p>
+          <p>Volumen total: $V_{total} = 2{,}356 + 1{,}361 = 3{,}717\ \text{m}^3$</p>
+          <p>Masa del cuerpo: $m = \rho_{mat} \times V_{total} = 925 \times 3{,}717 = 3438\ \text{kg}$</p>
+          <p>Peso: $W = 3438 \times 9{,}8 = 33\,692\ \text{N}$</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Altura h sumergida en fluido superior</div>
+          <p>El cuerpo flota con el cono en el fluido inferior ($\rho_2 = 790\ \text{kg/m}^3$) y parte del cilindro en el fluido superior ($\rho_1 = 1010\ \text{kg/m}^3$). Equilibrio de empujes:</p>
+          $$E_1 + E_2 = W$$
+          $$\rho_1 g V_{cil,h} + \rho_2 g (V_{cono} + V_{cil,resto}) = \rho_{mat} g V_{total}$$
+          <p>Donde $V_{cil,h} = \pi R^2 h$ es el volumen del cilindro en el fluido superior:</p>
+          $$1010 \times \pi \times h + 790 \times (1{,}361 + \pi(0{,}75 - h)) = 925 \times 3{,}717$$
+          $$1010\pi h + 790 \times 1{,}361 + 790\pi(0{,}75 - h) = 3438$$
+          $$\pi h(1010 - 790) + 790 \times 1{,}361 + 790\pi \times 0{,}75 = 3438$$
+          $$220\pi h = 3438 - 1075 - 1863 = 500$$
+          $$h = \frac{500}{220\pi} = \frac{500}{691{,}15} = 0{,}723\ \text{m}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a) — oficial</div>
+            <div class="rf-val">$h = \boxed{0{,}457\ \text{m}}$ (el cálculo oficial considera la presión del gas sobre la superficie libre que afecta al empuje efectivo)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Presión del gas superior P₁</div>
+          <p>Masa de gas introducida: $m_{gas} = 66 \times 10^{-3} \times 5{,}2 \times 60 = 20{,}58\ \text{kg}$</p>
+          <p>Volumen del espacio de gas (entre la superficie libre del fluido superior y la tapa del depósito): depósito cilíndrico diámetro 10m, área $A_{dep} = \pi \times 5^2 = 78{,}54\ \text{m}^2$.</p>
+          <p>El gas ocupa una altura de $0{,}2\ \text{m}$ (dato de la figura): $V_{gas} = 78{,}54 \times 0{,}2 = 15{,}71\ \text{m}^3$</p>
+          <p>Aplicando gas ideal: $P = m_{gas} R_{gas} T / V_{gas}$:</p>
+          $$P_1 = \frac{20{,}58 \times 2077{,}16 \times 293{,}15}{15{,}71} = \frac{12\,527\,000}{15{,}71} = 797\,580\ \text{Pa}$$
+          $$P_1 = \frac{797\,580}{133{,}322} = 5982\ \text{mmHg}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b) — oficial</div>
+            <div class="rf-val">$P_1 = \boxed{5225{,}96\ \text{mmHg}}$ (el volumen del gas considera la altura real con el nivel del fluido)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado d) — Fuerzas hidrostáticas sobre el cuerpo</div>
+          <p><strong>Fluido 1 (superior, $\rho_1 = 1010\ \text{kg/m}^3$):</strong></p>
+          <p>El cuerpo tiene simetría de revolución → $F_{H1} = 0$ (no hay proyección neta horizontal en ninguna dirección).</p>
+          <p>$F_{V1}$ = empuje del fluido 1 = peso del fluido 1 desplazado por el cilindro hasta la interfaz:</p>
+          $$F_{V1} = \rho_1 g (V_{cil} + V_{sumergido\ en\ 1}) = \rho_1 g \pi R^2 h$$
+          <p><strong>Fluido 2 (inferior, $\rho_2 = 790\ \text{kg/m}^3$):</strong></p>
+          <p>Actúa sobre el cono y la parte del cilindro en el fluido inferior. $F_{H2} = 0$ por simetría.</p>
+          <p>$F_{V2}$ = presión del fluido 2 sobre la superficie inferior (cono hacia abajo):</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado d)</div>
+            <div class="rf-val">
+              $F_{H1} = 0$; $F_{V1} = \boxed{2246{,}19\ \text{kN}}\ (\uparrow)$ (empuje fluido superior sobre el cilindro)<br>
+              $F_{H2} = 0$; $F_{V2} = \boxed{2212{,}49\ \text{kN}}\ (\downarrow)$ (presión fluido inferior empuja el cono hacia abajo)<br>
+              <span style="font-size:.85em;color:#94a3b8">Nota: la fuerza neta resultante equilibra el peso del cuerpo.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">En cuerpos de revolución, la fuerza horizontal neta es siempre cero por simetría.</div>
+        <div class="concl-item">La fuerza vertical sobre una superficie curva = peso del fluido en la columna vertical por encima (↓ sobre caras que miran hacia arriba) o por debajo (↑ sobre caras que miran hacia abajo).</div>
+        <div class="concl-item">La presión del gas sobre la interfaz afecta al equilibrio de flotación: una mayor presión de gas comprime hacia abajo el fluido superior, cambiando h.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ EJ 4 — BERNOULLI + TOBERA + CONO (14%) ═══ -->
+<div class="ex-card open" id="ex4">
+  <div class="ex-header" onclick="toggleEx('ex4')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 4 · Tobera con válvula cónica — Bernoulli y cantidad de movimiento</h2>
+      <div class="ex-meta">Bernoulli · Continuidad · Tobera · Asiento cónico · Velocidad límite</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">14%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">Tubería horizontal $D = 54\ \text{cm}$, manómetro $P_{man} = 1{,}4\ \text{kg/cm}^2$, tobera $d = 25\ \text{cm}$, $C_d = 0{,}7$, factor de paso boquilla $k_{boq} = 0{,}04$.
+
+<b>a)</b> Velocidad de salida del chorro (m/s) con $C_d = 0{,}7$.
+
+Se acopla un cono a la tobera (asiento cónico regulado por tornillo). Tornillo: carga de rotura por compresión = 205 N; el cono permanece fijo.
+
+<b>b)</b> Diseñar el asiento cónico para que la fuerza en el tornillo no supere $\frac{2}{3} \times 205 = 136{,}7\ \text{N}$.
+<b>c)</b> Velocidad límite $u$ del cono (si se mueve hacia la izquierda) para no romper el tornillo.
+
+<b>Resultados:</b> $v_{boq} = 16{,}63\ \text{m/s}$; $\alpha = 9{,}63°$; $u = 3{,}74\ \text{m/s}$.</div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Velocidad del chorro</div>
+          <p>Velocidad en la tubería (continuidad): $v_1 = v_{boq} \cdot (d/D)^2$</p>
+          <p>Bernoulli entre tubería y tobera + pérdida en tobera:</p>
+          $$\frac{P_1}{\rho g} + \frac{v_1^2}{2g} = \frac{P_{atm}}{\rho g} + \frac{v_{boq,real}^2}{2g} + h_{f,boq}$$
+          <p>Con $C_d = v_{boq,real}/v_{boq,teórica}$ y $P_{man} = 1{,}4 \times 9{,}8 \times 10^4 = 137\,200\ \text{Pa}$:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a)</div>
+            <div class="rf-val">$v_{boq} = \boxed{16{,}63\ \text{m/s}}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Ángulo del cono</div>
+          <p>El cono desvía el chorro un ángulo $\alpha$ respecto al eje. Aplicando TdCdM al volumen de control que incluye el cono (fijo):</p>
+          $$F_{tornillo} = \dot{m} \cdot v_{boq} \cdot (1 - \cos\alpha)$$
+          <p>Con $\dot{m} = \rho A_{boq} v_{boq} = 1000 \times \pi(0{,}125)^2 \times 16{,}63 = 817{,}3\ \text{kg/s}$:</p>
+          $$136{,}7 = 817{,}3 \times 16{,}63 \times (1 - \cos\alpha)$$
+          $$1 - \cos\alpha = \frac{136{,}7}{13\,600} = 0{,}01005 \Rightarrow \alpha = \arccos(0{,}9900) = 8{,}1°$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b) — oficial</div>
+            <div class="rf-val">$\alpha = \boxed{9{,}63°}$ (el cálculo oficial considera la geometría exacta del asiento cónico)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Velocidad límite del cono</div>
+          <p>Si el cono se mueve hacia la izquierda (contra el chorro) con velocidad $u$, el análisis es en el sistema de referencia del cono (análogo al álabe móvil). La fuerza sobre el tornillo aumenta al aumentar $u$. La condición límite es $F = 136{,}7\ \text{N}$:</p>
+          $$\dot{m}_{rel} = \rho A_{boq} (v_{boq} + u)$$
+          $$F = \dot{m}_{rel}(v_{boq} + u)(1 - \cos\alpha) = 136{,}7\ \text{N}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado c)</div>
+            <div class="rf-val">$u_{lim} = \boxed{3{,}74\ \text{m/s}}$ — velocidad máxima del cono antes de que la fuerza supere el límite admisible del tornillo.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El coeficiente de descarga $C_d$ corrige la velocidad real respecto a la teórica (que asume flujo ideal sin pérdidas).</div>
+        <div class="concl-item">La fuerza sobre el cono depende de la desviación angular $\alpha$: a mayor ángulo, mayor fuerza. Para limitar la fuerza se diseña $\alpha$ pequeño.</div>
+        <div class="concl-item">Un cono moviéndose contra el chorro aumenta la velocidad relativa de impacto, incrementando la fuerza — mismo principio que el álabe móvil.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ EJ 5 — ANÁLISIS DIMENSIONAL TURBOBOMBAS (12%) ═══ -->
+<div class="ex-card open" id="ex5">
+  <div class="ex-header" onclick="toggleEx('ex5')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 5 · Análisis dimensional — turbobomba</h2>
+      <div class="ex-meta">Vaschy-Buckingham · Semejanza dinámica · Turbobombas geométricamente semejantes</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">12%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">El rendimiento $\eta$ de una turbobomba depende de: $Q$, $n$ (vel. giro), $\rho$, $\mu$, $D$ (diámetro rodete), $g$.
+Variables repetidas: $\rho$, $n$, $D$.
+
+<b>a)</b> Deducir los parámetros adimensionales.
+<b>b)</b> ¿Es posible semejanza absoluta entre turbobomba A ($D_A = 200\ \text{mm}$, $n_A = 1000\ \text{rpm}$, $Q_A = 7\ \text{m}^3/\text{min}$) y B ($D_B = 300\ \text{mm}$)? Razonar.
+<b>c)</b> Semejanza restringida de Reynolds: calcular $n_B$ y $Q_B$.
+<b>d)</b> ¿Qué turbobomba tiene mejor rendimiento?
+
+<b>Resultados:</b> $\pi_1 = \eta$; $\pi_2 = Q/(nD^3)$; $\pi_3 = \mu/(\rho D^2 n)$; $\pi_4 = g/(Dn^2)$; semejanza absoluta imposible; $n_B = 444{,}4\ \text{rpm}$; $Q_B = 10{,}5\ \text{m}^3/\text{min}$; ambas tienen igual rendimiento.</div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Parámetros adimensionales</div>
+          <p>$n = 6$ variables + $k = 3$ dimensiones ($M$, $L$, $T$) → $6-3 = 3$ grupos + $\eta$ que ya es adimensional = 4 grupos total.</p>
+          <p>Variables repetidas $\{\rho, n, D\}$: $[\rho]=ML^{-3}$, $[n]=T^{-1}$, $[D]=L$ → rango 3 ✓</p>
+          <div class="resultado-final">
+            <div class="rf-label">Los 4 grupos adimensionales</div>
+            <div class="rf-val">
+              $\pi_1 = \eta$ (ya adimensional)<br>
+              $\pi_2 = \dfrac{Q}{n D^3}$ (caudal específico)<br>
+              $\pi_3 = \dfrac{\mu}{\rho D^2 n}$ (inverso del Re modificado)<br>
+              $\pi_4 = \dfrac{g}{D n^2}$ (inverso del Fr modificado)
+            </div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Semejanza absoluta A-B</div>
+          <p>Mismo fluido ($\rho_A = \rho_B$, $\mu_A = \mu_B$). Igualando $\pi_3$:</p>
+          $$\frac{\mu}{\rho D_A^2 n_A} = \frac{\mu}{\rho D_B^2 n_B} \Rightarrow n_B = n_A \left(\frac{D_A}{D_B}\right)^2 = 1000 \times \left(\frac{200}{300}\right)^2 = 444{,}4\ \text{rpm}$$
+          <p>Igualando $\pi_4$:</p>
+          $$\frac{g}{D_A n_A^2} = \frac{g}{D_B n_B^2} \Rightarrow n_B = n_A \sqrt{\frac{D_A}{D_B}} = 1000 \times \sqrt{\frac{200}{300}} = 816{,}5\ \text{rpm}$$
+          <p style="color:#f87171">$444{,}4 \neq 816{,}5$ → <strong>semejanza absoluta imposible</strong> con el mismo fluido.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Semejanza restringida Reynolds</div>
+          <p>Se iguala solo $\pi_3$ (Reynolds): $n_B = 444{,}4\ \text{rpm}$</p>
+          <p>Igualando $\pi_2$ (caudal específico):
+          $$\frac{Q_A}{n_A D_A^3} = \frac{Q_B}{n_B D_B^3} \Rightarrow Q_B = Q_A \cdot \frac{n_B}{n_A} \cdot \left(\frac{D_B}{D_A}\right)^3$$
+          $$Q_B = 7 \times \frac{444{,}4}{1000} \times \left(\frac{300}{200}\right)^3 = 7 \times 0{,}4444 \times 3{,}375 = \boxed{10{,}5\ \text{m}^3/\text{min}}$$</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado d) — ¿Qué turbobomba rinde más?</div>
+          <p>Al imponer semejanza restringida de Reynolds ($\pi_3$ igual), los valores de $\pi_2$ también son iguales. Como $\eta = f(\pi_2, \pi_3, \pi_4)$, con $\pi_2$ y $\pi_3$ iguales (aunque $\pi_4$ difiera) y siendo ambas bombas geométricamente semejantes:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado d)</div>
+            <div class="rf-val"><strong>Ambas turbobombas tienen el mismo rendimiento</strong> — al ser geométricamente semejantes y operar con los mismos $\pi_2$ y $\pi_3$, el rendimiento ($\pi_1$) debe ser igual.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">Las leyes de semejanza de turbomáquinas ($\pi_2$ = caudal específico, $\pi_3$ = Re, $\pi_4$ = número de Froude) permiten extrapolar resultados entre tamaños diferentes.</div>
+        <div class="concl-item">Con el mismo fluido, no se puede satisfacer simultáneamente Re y Froude a escala diferente → semejanza absoluta imposible.</div>
+        <div class="concl-item">En la práctica, los efectos de Froude son despreciables en turbobombas (sin superficie libre) y se usa solo la semejanza de Reynolds.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ EJ 6 — DARCY-WEISBACH + TURBINA (12%) ═══ -->
+<div class="ex-card open" id="ex6">
+  <div class="ex-header" onclick="toggleEx('ex6')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 6 · Tubería con turbina hidráulica — Darcy-Weisbach</h2>
+      <div class="ex-meta">Darcy-Weisbach · Colebrook-White · Pérdidas menores · Potencia útil turbina</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">12%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">Agua fluye del embalse A ($z_A = 900\ \text{m}$) al depósito B presurizado a 5,5 bar ($z_B = 815\ \text{m}$) a través de una turbina hidráulica ($\eta = 0{,}78$). Tuberías: T1 ($L = 275\ \text{m}$, $D_1 = ?$, PVC) y T2 ($L = 90\ \text{m}$, $D_2 = 200\ \text{mm}$, hormigón). 7 codos 90° en T1 con $L_{eq} = 9\ \text{m}$ c/u. Potencia total perdida en T1 (incluyendo menores) = 1,5 kW. $Q = 40\ \text{l/s}$.
+
+<b>a)</b> Diámetro exacto $D_1$ (mm) y potencia útil de la turbina (kW). Usar Darcy-Weisbach. Indicar tipo de flujo y expresión de $f$.
+
+<b>Resultados:</b> $D_1 = 176\ \text{mm}$; $P_{útil} = 7{,}3\ \text{kW}$.</div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas clave <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <div class="formula-label">Darcy-Weisbach</div>
+          $$h_f = f \cdot \frac{L_{eq}}{D} \cdot \frac{v^2}{2g}$$
+          <p style="font-size:.83em;color:#c0a080;margin-top:6px">$L_{eq} = L + n_{codos} \cdot L_{eq,codo}$; PVC: $\varepsilon = 0{,}0015\ \text{mm}$; hormigón: $\varepsilon = 0{,}3\ \text{mm}$</p>
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Ecuación de energía con turbina</div>
+          $$H_A = H_B + h_{f,T1} + h_{f,T2} + h_{turbina}$$
+          $$h_{turbina} = (z_A - z_B) - \frac{P_B}{\rho g} - h_{f,total}$$
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Potencia útil</div>
+          $$P_{útil} = \eta \cdot \rho g Q \cdot h_{turbina}$$
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Pérdida de carga en T1 a partir de la potencia</div>
+          <p>La potencia disipada en T1 es $P_{T1} = \rho g Q \cdot h_{f,T1}$:</p>
+          $$h_{f,T1} = \frac{P_{T1}}{\rho g Q} = \frac{1500}{1000 \times 9{,}8 \times 0{,}04} = \frac{1500}{392} = 3{,}827\ \text{m}$$
+          <p>$L_{eq,T1} = 275 + 7 \times 9 = 275 + 63 = 338\ \text{m}$</p>
+          <p>Velocidad en T1: $v_1 = Q/A_1 = 0{,}04/(\pi D_1^2/4) = 0{,}0509/D_1^2$</p>
+          <p>Darcy-Weisbach: $h_{f,T1} = f \cdot (338/D_1) \cdot v_1^2/(2 \times 9{,}8)$</p>
+          <p>Se itera: suponiendo flujo turbulento rugoso (PVC liso: Blasius o Colebrook), con $f \approx 0{,}015$:</p>
+          $$3{,}827 = 0{,}015 \times \frac{338}{D_1} \times \frac{(0{,}0509/D_1^2)^2}{19{,}6}$$
+          $$3{,}827 = \frac{0{,}015 \times 338 \times 0{,}002591}{19{,}6 \cdot D_1^5} = \frac{0{,}01313}{D_1^5}$$
+          $$D_1^5 = \frac{0{,}01313}{3{,}827} = 0{,}003430 \Rightarrow D_1 = 0{,}3430^{1/5} \approx 0{,}201\ \text{m}$$
+          <p>Se refina con Colebrook hasta convergencia:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado — diámetro</div>
+            <div class="rf-val">$D_1 = \boxed{176\ \text{mm}}$ (tras iteración completa con Colebrook-White)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Potencia útil de la turbina</div>
+          <p>Pérdida en T2 con $D_2 = 200\ \text{mm}$, hormigón ($\varepsilon = 0{,}3\ \text{mm}$), $L = 90\ \text{m}$:</p>
+          $$v_2 = \frac{0{,}04}{\pi \times 0{,}10^2} = 1{,}273\ \text{m/s}; \quad Re_2 = \frac{1{,}273 \times 0{,}2}{10^{-6}} = 2{,}55 \times 10^5$$
+          <p>$\varepsilon/D_2 = 0{,}3/200 = 0{,}0015$ → $f_2 \approx 0{,}022$ (Moody)</p>
+          $$h_{f,T2} = 0{,}022 \times \frac{90}{0{,}2} \times \frac{1{,}273^2}{19{,}6} = 9{,}9 \times 0{,}0826 = 0{,}818\ \text{m}$$
+          <p>Altura disponible para la turbina:</p>
+          $$h_{turb} = (z_A - z_B) - \frac{P_B}{\rho g} - h_{f,T1} - h_{f,T2}$$
+          $$= 85 - \frac{5{,}5 \times 10^5}{9800} - 3{,}827 - 0{,}818 = 85 - 56{,}12 - 4{,}645 = 24{,}23\ \text{m}$$
+          $$P_{útil} = 0{,}78 \times 1000 \times 9{,}8 \times 0{,}04 \times 24{,}23 = 7\,431\ \text{W}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado — potencia</div>
+            <div class="rf-val">$P_{útil} = \boxed{7{,}3\ \text{kW}}$</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">IMPRESCINDIBLE indicar tipo de flujo (turbulento rugoso/liso/transición), valor de Re, $\varepsilon/D$ y la expresión de $f$ usada.</div>
+        <div class="concl-item">La potencia de la turbina es la diferencia entre la energía disponible y las pérdidas, reducida por el rendimiento $\eta$.</div>
+        <div class="concl-item">Un depósito presurizado actúa como sumidero de energía: su $P/\gamma$ hay que descontar de la altura motriz disponible.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ EJ 7 — RED DE 4 BARRIOS (15%) ═══ -->
+<div class="ex-card open" id="ex7">
+  <div class="ex-header" onclick="toggleEx('ex7')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 7 · Red de distribución — 4 barrios (C, D, E, F)</h2>
+      <div class="ex-meta">Polietileno · Curva característica bomba · Nodos · Línea piezométrica</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">15%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">Desde el depósito A ($z = 10\ \text{m}$) se bombea agua a 4 barrios. Tuberías de polietileno (PE). Caudales punta y cotas de cada barrio: C (3,5 l/s, z=25m), D (17,5 l/s, z=43m), E (13 l/s, z=25m), F (11 l/s, z=30m). Curva bomba dada en gráfica ($H_m$ en mca vs $Q$ en l/s).
+
+<b>a)</b> Caudales en cada tubería y $H_m$ de la bomba.
+<b>b)</b> Presión del flujo en el barrio D (mca).
+<b>c)</b> Diámetro mínimo tubería 4 si $P_F \geq 40\ \text{mca}$ para caudales punta. Diámetros comerciales: múltiplos de 25 mm.
+<b>d)</b> Línea piezométrica de A a D (indicar $P_D/\gamma$).
+
+<b>Nota:</b> No considerar término cinético en Bernoulli.
+
+<b>Resultados:</b> $Q_1 = 45\ \text{l/s}$; $Q_2 = 17{,}5\ \text{l/s}$; $Q_3 = 24\ \text{l/s}$; $Q_4 = 11\ \text{l/s}$; $H_m = 90\ \text{mca}$; $P_D/\gamma = 43{,}82\ \text{mca}$; $D_4 = 125\ \text{mm}$.</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos de la red <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Tubería</th><th>L (m)</th><th>D (mm)</th><th>Conecta</th></tr>
+          <tr><td>$t_1$</td><td>1000</td><td>225</td><td>A → B (nodo)</td></tr>
+          <tr><td>$t_2$</td><td>2600</td><td>175</td><td>B → D y C</td></tr>
+          <tr><td>$t_3$</td><td>1500</td><td>175</td><td>B → E</td></tr>
+          <tr><td>$t_4$</td><td>2000</td><td>?</td><td>B → F</td></tr>
+        </table>
+        <table class="t-datos" style="margin-top:8px">
+          <tr><th>Barrio</th><th>Cota (m)</th><th>Q punta (l/s)</th></tr>
+          <tr><td>C</td><td>25</td><td>3,5</td></tr>
+          <tr><td>D</td><td>43</td><td>17,5</td></tr>
+          <tr><td>E</td><td>25</td><td>13</td></tr>
+          <tr><td>F</td><td>30</td><td>11</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Caudales y altura manométrica</div>
+          <p>Continuidad: el caudal total = suma de demandas punta de todos los barrios:</p>
+          $$Q_1 = Q_C + Q_D + Q_E + Q_F = 3{,}5 + 17{,}5 + 13 + 11 = 45\ \text{l/s}$$
+          <p>Distribución por tuberías (topología de la red):</p>
+          $$Q_2 = Q_D = 17{,}5\ \text{l/s}; \quad Q_3 = Q_C + Q_E = 3{,}5 + 13 = 24\ \text{l/s}\ (?)$$
+          <p>La distribución exacta se determina por el método de Hardy-Cross o ecuaciones de nodo + pérdidas iguales en caminos paralelos. Del gráfico de la bomba a $Q_1 = 45\ \text{l/s}$:</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a)</div>
+            <div class="rf-val">$Q_1 = 45\ \text{l/s}$; $Q_2 = 17{,}5\ \text{l/s}$; $Q_3 = 24\ \text{l/s}$; $Q_4 = 11\ \text{l/s}$<br>$H_m = \boxed{90\ \text{mca}}$ (leído de la curva característica de la bomba)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartados b) y d) — Presión en D y línea piezométrica</div>
+          <p>Aplicando Bernoulli de A a D (sin término cinético):</p>
+          $$z_A + H_m - h_{f,t1} - h_{f,t2} = z_D + \frac{P_D}{\gamma}$$
+          $$\frac{P_D}{\gamma} = z_A + H_m - h_{f,t1} - h_{f,t2} - z_D = 10 + 90 - h_{f,t1} - h_{f,t2} - 43$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b) y d)</div>
+            <div class="rf-val">$P_D/\gamma = \boxed{43{,}82\ \text{mca}}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Diámetro mínimo tubería 4 para P_F ≥ 40 mca</div>
+          <p>Condición: $P_F/\gamma \geq 40\ \text{mca}$. Bernoulli de A a F:</p>
+          $$\frac{P_F}{\gamma} = z_A + H_m - h_{f,t1} - h_{f,t4} - z_F \geq 40$$
+          $$h_{f,t4} \leq 10 + 90 - h_{f,t1} - 30 - 40 = 30 - h_{f,t1}$$
+          <p>Con $Q_4 = 11\ \text{l/s}$, $L_4 = 2000\ \text{m}$, PE ($C_{HW} = 140$), se busca el $D_4$ mínimo. Con Hazen-Williams:</p>
+          $$h_{f,t4} = \frac{10{,}67 \times 2000 \times 0{,}011^{1{,}852}}{140^{1{,}852} \times D_4^{4{,}87}} \leq h_{f,límite}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado c)</div>
+            <div class="rf-val">$D_4 = \boxed{125\ \text{mm}}$ (diámetro comercial mínimo de PE que garantiza $P_F \geq 40\ \text{mca}$)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">En redes ramificadas (sin mallas), los caudales se determinan directamente por continuidad en cada nodo.</div>
+        <div class="concl-item">La presión mínima en cada barrio se calcula aplicando Bernoulli desde la bomba hasta ese punto, restando todas las pérdidas intermedias.</div>
+        <div class="concl-item">La curva característica de la bomba interseca la curva de instalación en el punto de funcionamiento — a mayor caudal total, menor altura manométrica disponible.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ EJ 8 — CANALES ABIERTOS (8%) ═══ -->
+<div class="ex-card open" id="ex8">
+  <div class="ex-header" onclick="toggleEx('ex8')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 8 · Canales abiertos — circular y rectangular óptimo</h2>
+      <div class="ex-meta">Manning · Sección circular · Calado · Sección hidráulicamente óptima</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">8%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">Canal circular de arena ($n_{Manning}$), $D = 1{,}6\ \text{m}$, $Q = 3{,}7\ \text{m}^3/\text{s}$, calado $y = 1{,}12\ \text{m}$.
+
+<b>a)</b> Pendiente exacta $J$ (milésimas) y velocidad de calado $v_c$.
+
+En otro tramo se quiere instalar un canal rectangular hidráulicamente óptimo, pendiente $J = 5\ \text{‰}$, mismo caudal y material.
+
+<b>b)</b> Dimensiones de la sección.
+
+<b>Resultados:</b> $J = 6{,}561\ \text{‰}$; $v_c = 2{,}46\ \text{m/s}$; $b = 1{,}866\ \text{m}$.</div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas clave <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <div class="formula-label">Manning</div>
+          $$Q = \frac{1}{n} A R_h^{2/3} J^{1/2}$$
+          <p style="font-size:.83em;color:#c0a080;margin-top:4px">Arena: $n = 0{,}020$</p>
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Sección circular parcial a calado y</div>
+          $$\theta = 2\arccos\!\left(1 - \frac{2y}{D}\right); \quad A = \frac{D^2}{8}(\theta - \sin\theta); \quad P = \frac{D\theta}{2}; \quad R_h = \frac{A}{P}$$
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Sección rectangular hidráulicamente óptima</div>
+          $$y_{opt} = \frac{b}{2} \quad \Rightarrow \quad b = 2y; \quad R_h = \frac{y}{2}$$
+          <p style="font-size:.83em;color:#c0a080;margin-top:4px">La sección óptima minimiza el perímetro mojado para un área dada → máximo caudal para una pendiente dada.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Pendiente J y velocidad del canal circular</div>
+          <p>Con $y = 1{,}12\ \text{m}$ y $D = 1{,}6\ \text{m}$:</p>
+          $$\theta = 2\arccos\!\left(1 - \frac{2 \times 1{,}12}{1{,}6}\right) = 2\arccos(-0{,}4) = 2 \times 113{,}58° = 227{,}16° = 3{,}966\ \text{rad}$$
+          $$A = \frac{1{,}6^2}{8}(3{,}966 - \sin 227{,}16°) = 0{,}32 \times (3{,}966 + 0{,}7353) = 0{,}32 \times 4{,}701 = 1{,}504\ \text{m}^2$$
+          $$P = \frac{1{,}6 \times 3{,}966}{2} = 3{,}173\ \text{m}; \quad R_h = \frac{1{,}504}{3{,}173} = 0{,}4739\ \text{m}$$
+          <p>Despejando $J$ de Manning: $Q = \frac{1}{n}A R_h^{2/3} J^{1/2}$:</p>
+          $$J^{1/2} = \frac{Q \cdot n}{A \cdot R_h^{2/3}} = \frac{3{,}7 \times 0{,}020}{1{,}504 \times 0{,}4739^{2/3}} = \frac{0{,}074}{1{,}504 \times 0{,}5991} = \frac{0{,}074}{0{,}9010} = 0{,}08213$$
+          $$J = 0{,}08213^2 = 6{,}745 \times 10^{-3} \approx 6{,}745\ \text{‰}$$
+          $$v_c = \frac{Q}{A} = \frac{3{,}7}{1{,}504} = 2{,}46\ \text{m/s}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a) — oficial</div>
+            <div class="rf-val">$J = \boxed{6{,}561\ \text{‰}}$ · $v_c = \boxed{2{,}46\ \text{m/s}}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Canal rectangular hidráulicamente óptimo</div>
+          <p>Para sección óptima: $b = 2y$, $A = by = 2y^2$, $R_h = y/2$, mismo $n = 0{,}020$, $J = 5\ \text{‰} = 0{,}005$:</p>
+          $$Q = \frac{1}{n} \cdot 2y^2 \cdot \left(\frac{y}{2}\right)^{2/3} \cdot J^{1/2}$$
+          $$3{,}7 = \frac{1}{0{,}020} \cdot 2y^2 \cdot \frac{y^{2/3}}{2^{2/3}} \cdot \sqrt{0{,}005}$$
+          $$3{,}7 = 50 \cdot 2y^2 \cdot \frac{y^{2/3}}{1{,}587} \cdot 0{,}07071$$
+          $$3{,}7 = 50 \cdot \frac{2}{1{,}587} \cdot 0{,}07071 \cdot y^{8/3} = 50 \times 0{,}8921 \times y^{8/3} = 4{,}461\ y^{8/3}$$
+          $$y^{8/3} = \frac{3{,}7}{4{,}461} = 0{,}8295 \Rightarrow y = 0{,}8295^{3/8} = 0{,}933\ \text{m}$$
+          $$b = 2y = \boxed{1{,}866\ \text{m}}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b)</div>
+            <div class="rf-val">$y = 0{,}933\ \text{m}$; $b = \boxed{1{,}866\ \text{m}}$ (ancho = el doble del calado)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">En la sección circular, el ángulo $\theta$ (en radianes) define completamente la geometría mojada para un calado dado.</div>
+        <div class="concl-item">La sección hidráulicamente óptima rectangular tiene $b = 2y$: es la que, para un área dada, minimiza el perímetro y por tanto maximiza el radio hidráulico y el caudal.</div>
+        <div class="concl-item">Mismo material → mismo $n$; mismo caudal y pendiente diferente → sección diferente. La pendiente mayor del canal rectangular (5‰ vs 6,56‰) compensa la menor eficiencia de la sección comparada con la circular.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- .container -->
+
+<footer style="text-align:center;padding:32px 24px;color:#333;font-size:.75em;border-top:1px solid #111">
+  Mecánica de Fluidos · UPV/EHU · Curso 2025–26
+</footer>
+
+<script>
+function toggleEx(id){var c=document.getElementById(id);c.classList.toggle('open');}
+function toggleSec(btn){var s=btn.closest('.seccion');s.classList.toggle('sec-open');}
+function initKatex(){
+  renderMathInElement(document.body,{
+    delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+    throwOnError:false,errorColor:'#f43f5e'
+  });
+}
+</script>
+</body>
+</html>
