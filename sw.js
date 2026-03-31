@@ -1,4 +1,4 @@
-const CACHE = 'upv-study-hub-v9';
+const CACHE = 'upv-study-hub-v10';
 
 const PRECACHE = [
   '/upv-ehu-project/',
@@ -13,6 +13,7 @@ const PRECACHE = [
   '/upv-ehu-project/fluidos/examenes/junio2022.html',
   '/upv-ehu-project/fluidos/examenes/junio2022ef.html',
   '/upv-ehu-project/fluidos/examenes/junio2023.html',
+  '/upv-ehu-project/fluidos/examenes/junio2023ef.html',
   '/upv-ehu-project/mecanica/teoria.html',
   '/upv-ehu-project/mecanica/ejercicios.html',
   'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css',
