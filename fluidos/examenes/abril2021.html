@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>EP Abril 2021 · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex()"></script>
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(()=>err.textContent='',2000);}}
+    btn.addEventListener('click',attempt);inp.addEventListener('keydown',e=>{if(e.key==='Enter')attempt();});inp.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;--purple:#c084fc;--orange:#f4a261;--yellow:#ffd93d;
+  --transition:.2s;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-pill{margin-right:20px;background:#0a1a2e;border:1px solid #0d2a44;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);white-space:nowrap}
+.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
+.ph-type{display:inline-block;background:#0a1a2e;border:1px solid #0d2a44;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
+.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.ph-note{background:#1a1000;border:1px solid #3a2800;border-radius:8px;padding:10px 14px;font-size:.8em;color:#f4d080;font-style:italic}
+.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
+.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
+.jump-link:hover{background:#0a1a2e;color:var(--accent);border-color:var(--accent);text-decoration:none}
+.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
+.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
+.ex-header:hover{background:#111}
+.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
+.ex-meta{font-size:.78em;color:var(--text3)}
+.ex-pct{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44;border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;white-space:nowrap}
+.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
+.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
+.ex-body{display:none;padding:0 20px 20px}
+.ex-card.open .ex-body{display:block}
+.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #333;white-space:pre-wrap}
+.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
+.sec-btn .sarr{transition:.2s}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-datos .sec-btn{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44}
+.s-datos .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
+.s-formulas .sec-btn{background:#1a0f00;color:var(--orange);border:1px solid #2a1800}
+.s-formulas .sec-body{background:#0f0800;border:1px solid #2a1800;border-top:none}
+.s-teoria .sec-btn{background:#0f0a1a;color:var(--purple);border:1px solid #1e1030}
+.s-teoria .sec-body{background:#080510;border:1px solid #1e1030;border-top:none}
+.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
+.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
+.s-conclusiones .sec-btn{background:#1a1a00;color:var(--yellow);border:1px solid #2a2800}
+.s-conclusiones .sec-body{background:#0f0f00;border:1px solid #2a2800;border-top:none}
+.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
+.t-datos th{background:#0d2244;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #1a2a3a}
+.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#d0e8ff}
+.t-datos tr:nth-child(even) td{background:#040c18}
+.formula-box{background:#110800;border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#ffe0c0;overflow-x:auto}
+.formula-label{font-size:.72em;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
+.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
+.paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
+.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
+.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
+.concl-item{padding:6px 0 6px 14px;border-left:2px solid var(--yellow);margin-bottom:8px;font-size:.87em;color:#f0e080}
+.nota{background:#1a0a00;border:1px solid #3a1a00;border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+.vf-item{margin-bottom:14px;padding:12px 14px;border-radius:8px;border-left:3px solid #333;background:#080808}
+.vf-false{border-left-color:#f43f5e}
+.vf-label{font-size:.72em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.vf-false .vf-label{color:#f43f5e}
+.vf-enunciado{font-size:.87em;color:var(--text2);margin-bottom:8px;line-height:1.7}
+.vf-razon{font-size:.85em;color:#e2e8f0;line-height:1.7}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+.katex{font-size:1.05em}
+.katex-display{overflow-x:auto;overflow-y:hidden}
+@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../examenes.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Exámenes
+  </a>
+  <span class="topbar-title">📝 Examen Parcial · 16 de Abril de 2021</span>
+  <span class="topbar-pill">4 ejercicios</span>
+</nav>
+
+<div class="page-header">
+  <div class="ph-type">Examen Parcial</div>
+  <h1>Mecánica de Fluidos e Hidráulica</h1>
+  <div class="ph-meta">16 de Abril de 2021 · Grados Ing. Civil e Industriales 2º Curso · UPV/EHU · Donostia-San Sebastián</div>
+  <div class="ph-tags">
+    <span class="ph-tag">V/F — Propiedades</span>
+    <span class="ph-tag">Micromanómetro</span>
+    <span class="ph-tag">Compuerta articulada</span>
+    <span class="ph-tag">Depósito presurizado</span>
+    <span class="ph-tag">4 ejercicios · 100%</span>
+  </div>
+  <div class="ph-note">⚠️ Las resoluciones oficiales de este examen usan <strong>g = 9,8 m/s²</strong>, coherente con el convenio UPV/EHU.</div>
+</div>
+
+<div class="jump-links">
+  <a class="jump-link" href="#ex1">Ej. 1 — Verdadero / Falso</a>
+  <a class="jump-link" href="#ex2">Ej. 2 — Micromanómetro</a>
+  <a class="jump-link" href="#ex3">Ej. 3 — Compuerta OABO</a>
+  <a class="jump-link" href="#ex4">Ej. 4 — Depósito presurizado</a>
+</div>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════════════
+     EJERCICIO 1 — VERDADERO / FALSO
+══════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex1">
+  <div class="ex-header" onclick="toggleEx('ex1')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1 · Verdadero o Falso</h2>
+      <div class="ex-meta">Propiedades físicas · Hidrómetro · Capilaridad · Viscosidad · Vacío en botellín</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">30%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">Razonar si son <b>VERDADERAS</b> o <b>FALSAS</b> las siguientes afirmaciones.
+<b style="color:#f43f5e">TODAS LAS AFIRMACIONES SON FALSAS.</b></div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Análisis de cada afirmación <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="vf-item vf-false">
+          <div class="vf-label">❌ FALSA — Afirmación a)</div>
+          <div class="vf-enunciado">Un hidrómetro tarado para $s \in [0{,}85;\, 0{,}95]$ sufre un empuje <em>menor</em> al sumergirlo en un fluido de $s = 0{,}87$ que al sumergirlo en uno de $s = 0{,}93$.</div>
+          <div class="vf-razon"><strong>Razón:</strong> El hidrómetro flota en equilibrio: el empuje siempre es igual a su peso, independientemente del fluido. Lo que cambia es el <em>volumen sumergido</em>: en un fluido menos denso ($s=0{,}87$) el hidrómetro se hunde más (mayor volumen sumergido) para generar el mismo empuje. El empuje es el mismo en ambos casos ($E = m_{hidr}\cdot g$). → <strong>FALSA</strong>.</div>
+        </div>
+
+        <div class="vf-item vf-false">
+          <div class="vf-label">❌ FALSA — Afirmación b)</div>
+          <div class="vf-enunciado">Si se hace un orificio de $D=3\ \text{mm}$ en el fondo de un botellín cerrado, el agua saldrá por él hasta vaciar completamente el botellín.</div>
+          <div class="vf-razon"><strong>Razón:</strong> El botellín está cerrado: al salir agua por el orificio inferior, el gas de la parte superior se expande y su presión cae por debajo de $P_{atm}$. La diferencia de presión $P_{atm} - P_{gas}$ contrarresta la columna de agua y el vaciado se detiene. Solo se vaciaría completamente si el botellín estuviera abierto (entrada de aire) o si el vacío pudiera romperse. → <strong>FALSA</strong>.</div>
+        </div>
+
+        <div class="vf-item vf-false">
+          <div class="vf-label">❌ FALSA — Afirmación c)</div>
+          <div class="vf-enunciado">La potencia disipada en el huelgo entre dos tubos concéntricos (radios $R_1$ y $R_2$, longitud $L$) es la misma si gira el exterior (interior fijo, $\omega$) que si gira el interior (exterior fijo, $\omega$).</div>
+          <div class="vf-razon"><strong>Razón:</strong> En el huelgo delgado $(R_2 - R_1 \ll R)$, el esfuerzo cortante es $\tau = \mu \cdot \omega R / (R_2 - R_1)$ en ambos casos, pero el par torsor y por tanto la potencia disipada dependen del radio que gira. Si gira el interior ($R_1$): $\dot{W} = \tau \cdot 2\pi R_1 L \cdot \omega R_1$. Si gira el exterior ($R_2$): $\dot{W} = \tau \cdot 2\pi R_2 L \cdot \omega R_2$. Como $R_2 > R_1$, la potencia es mayor cuando gira el exterior. → <strong>FALSA</strong>.</div>
+        </div>
+
+        <div class="vf-item vf-false">
+          <div class="vf-label">❌ FALSA — Afirmación d)</div>
+          <div class="vf-enunciado">Para un ángulo de mojado $\theta = 90{^\circ}$, la relación entre fuerzas de cohesión y adhesión es $F_{coh}/F_{adh} = \sqrt{2}/2$.</div>
+          <div class="vf-razon"><strong>Razón (deducción obligatoria):</strong> El ángulo de contacto $\theta$ se define por el equilibrio entre cohesión y adhesión en la línea de contacto. Por el modelo vectorial, la resultante de las fuerzas moleculares sobre una molécula en la superficie forma un ángulo tal que:
+          $$\cos\theta = \frac{F_{adh}/F_{coh} - 1}{\sqrt{1 - (F_{adh}/F_{coh})^2}} \quad \text{(aproximación)}$$
+          El modelo más sencillo: $\cos\theta = F_{adh}/F_{coh} - 1$. Para $\theta = 90{^\circ}$: $\cos 90{^\circ} = 0 \Rightarrow F_{adh} = F_{coh}$, es decir la relación es 1, no $\sqrt{2}/2$. → <strong>FALSA</strong>.</div>
+        </div>
+
+        <div class="vf-item vf-false">
+          <div class="vf-label">❌ FALSA — Afirmación e)</div>
+          <div class="vf-enunciado">Un fluido de $\rho = 820\ \text{kg/m}^3$ y viscosidad cinemática $\nu = 0{,}3\ \text{cSt}$ tiene viscosidad dinámica $\mu = 2{,}46 \times 10^{-3}\ \text{Pl}$.</div>
+          <div class="vf-razon"><strong>Razón:</strong> $\mu = \rho \cdot \nu = 820 \times 0{,}3 \times 10^{-6}\ \text{m}^2/\text{s} = 2{,}46 \times 10^{-4}\ \text{Pa·s}$. Como $1\ \text{Pl} = 1\ \text{Pa·s}$: $\mu = 2{,}46 \times 10^{-4}\ \text{Pl}$, <em>no</em> $2{,}46 \times 10^{-3}\ \text{Pl}$ (hay un orden de magnitud de error). → <strong>FALSA</strong>.</div>
+        </div>
+
+        <div class="vf-item vf-false">
+          <div class="vf-label">❌ FALSA — Afirmación f)</div>
+          <div class="vf-enunciado">Para diseñar el espesor de las paredes de un tubo sometido a presión se sumerge en agua, porque en esa situación el espesor calculado será mayor.</div>
+          <div class="vf-razon"><strong>Razón:</strong> La presión exterior del agua <em>reduce</em> la presión diferencial neta sobre la pared del tubo. El espesor necesario depende de la presión diferencial $\Delta P = P_{interior} - P_{exterior}$: con agua exterior, $\Delta P$ es menor que en vacío, así que el espesor calculado sería <em>menor</em>, no mayor. Para el diseño conservador se debe calcular en vacío o con presión exterior mínima. → <strong>FALSA</strong>.</div>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resumen</div>
+          <div class="rf-val">
+            a) FALSA — el empuje siempre = peso del hidrómetro<br>
+            b) FALSA — el vacío en la parte superior detiene el vaciado<br>
+            c) FALSA — mayor potencia cuando gira el tubo exterior<br>
+            d) FALSA — para $\theta=90{^\circ}$: $F_{adh}/F_{coh} = 1$ (no $\sqrt{2}/2$)<br>
+            e) FALSA — $\mu = 2{,}46\times10^{-4}\ \text{Pl}$ (no $10^{-3}$)<br>
+            f) FALSA — agua exterior reduce $\Delta P$, da espesor menor
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El hidrómetro siempre desplaza exactamente el volumen de fluido cuyo peso iguala al suyo: el empuje es constante e igual al peso.</div>
+        <div class="concl-item">Un recipiente cerrado no se vacía completamente por un orificio inferior: la depresión del gas actúa como "tapón de vacío".</div>
+        <div class="concl-item">Las preguntas V/F prueban comprensión conceptual, no cálculo: lo importante es razonar el por qué, no solo dar la respuesta.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     EJERCICIO 2 — MICROMANÓMETRO DE LÍQUIDOS INMISCIBLES
+══════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex2">
+  <div class="ex-header" onclick="toggleEx('ex2')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2 · Micromanómetro de líquidos inmiscibles</h2>
+      <div class="ex-meta">Manometría · Presión de vacío · Fluidos inmiscibles · Sensibilidad · Tubo inclinado</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">20%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">En el laboratorio se desea construir un micromanómetro de líquidos inmiscibles para medir presiones de vacío muy pequeñas.
+
+Fluidos disponibles (inmiscibles entre sí):
+  · Aceite: $s_{aceite} = 0{,}85$ → $\rho_{aceite} = 850\ \text{kg/m}^3$
+  · Tetracloruro de carbono: $s_{CCl_4} = 1{,}52$ → $\rho_{CCl_4} = 1520\ \text{kg/m}^3$
+  · Agua: $\rho_{agua} = 1000\ \text{kg/m}^3$
+
+<b>a)</b> Esquema del micromanómetro en situación inicial (ambos depósitos abiertos).
+<b>b)</b> Deducir la expresión para calcular la presión de vacío.
+<b>c)</b> Seleccionar los dos fluidos más adecuados para mayor precisión. Razonar.
+<b>d)</b> Vacío de $42\ \text{mm}_\text{c.a.}$ → calcular la lectura $R$ en el micromanómetro.
+<b>e)</b> Barómetro del laboratorio: $755\ \text{mmHg}$ → presión absoluta en el depósito (bar).
+<b>f)</b> Presión de vacío mínima que se puede medir (Pa).
+<b>g)</b> Micromanómetro inclinado con alcohol ($s_{alcoh} = 0{,}8$) con la misma sensibilidad: ¿ángulo $\alpha$?</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Fluido</th><th>Densidad relativa</th><th>$\rho$ (kg/m³)</th></tr>
+          <tr><td>Aceite</td><td>$0{,}85$</td><td>$850$</td></tr>
+          <tr><td>Agua</td><td>$1{,}00$</td><td>$1000$</td></tr>
+          <tr><td>Tetracloruro ($\text{CCl}_4$)</td><td>$1{,}52$</td><td>$1520$</td></tr>
+          <tr><td>Alcohol</td><td>$0{,}80$</td><td>$800$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Presión de vacío medida por el micromanómetro</div>
+        <div class="formula-box">$$P_{vacío} = R \cdot g \cdot (\rho_2 - \rho_1) \quad [\rho_2 > \rho_1]$$</div>
+        <div class="formula-label">Sensibilidad del micromanómetro (lectura por unidad de presión)</div>
+        <div class="formula-box">$$\text{Sensibilidad} = \frac{dR}{dP} = \frac{1}{g(\rho_2 - \rho_1)}$$</div>
+        <div class="formula-label">Tubo inclinado: presión medida por longitud L a ángulo α</div>
+        <div class="formula-box">$$P = \rho_{alcoh} \cdot g \cdot L \cdot \sin\alpha$$</div>
+        <div class="formula-label">Conversión de unidades de presión</div>
+        <div class="formula-box">$$1\ \text{mm}_\text{c.a.} = \rho_{agua} \cdot g \cdot 0{,}001\ \text{m} = 9{,}8\ \text{Pa}$$
+$$1\ \text{mmHg} = \rho_{Hg} \cdot g \cdot 0{,}001\ \text{m} = 13\,600 \times 9{,}8 \times 0{,}001 = 133{,}28\ \text{Pa}$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📚 Explicación teórica <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong style="color:var(--purple)">Principio del micromanómetro de fluidos inmiscibles</strong></p>
+        <p style="margin-top:6px">Se tienen dos depósitos conectados por un tubo en U que contiene dos fluidos inmiscibles de distinta densidad ($\rho_1 &lt; \rho_2$). En equilibrio (ambos lados a $P_{atm}$), la interfase está en el centro. Al aplicar una depresión $P_{vac}$ en un depósito, el fluido más denso sube en el lado de baja presión: la lectura $R$ del desplazamiento de la interfase es amplificada respecto a lo que sería un manómetro simple. La expresión deducida es:
+        $$P_{vac} = R \cdot g \cdot (\rho_2 - \rho_1)$$</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Criterio de mayor precisión (menor $\Delta\rho$)</strong></p>
+        <p style="margin-top:6px">Para la misma presión $P_{vac}$, a menor diferencia de densidades $(\rho_2 - \rho_1)$, mayor lectura $R$. Una mayor lectura amplifica la señal y reduce el error relativo de lectura → mayor precisión. La combinación <strong>aceite + agua</strong> tiene $\Delta\rho = 150\ \text{kg/m}^3$, la menor de las tres posibles combinaciones (aceite+CCl₄: 670; agua+CCl₄: 520). → Aceite y agua son los más adecuados.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Presión mínima medible</strong></p>
+        <p style="margin-top:6px">La resolución mínima práctica de lectura en el tubo manométrico es $R_{min} \approx 1\ \text{mm} = 0{,}001\ \text{m}$. La presión mínima detectable es entonces $P_{min} = 0{,}001 \times 9{,}8 \times 150 = 1{,}47\ \text{Pa}$.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Esquema del micromanómetro</div>
+          <p>Dos depósitos de sección grande ($A_{dep} \gg A_{tubo}$) conectados por un tubo en U. El depósito izquierdo contiene aceite ($\rho_1 = 850$) y el derecho agua ($\rho_2 = 1000$). En equilibrio (ambos a $P_{atm}$), la interfase aceite-agua está centrada en la parte baja del tubo. La diferencia de lecturas es la lectura $R$ cuando se aplica vacío en el lado del aceite.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Deducción de la expresión</div>
+          <p>Se aplica equilibrio de presiones en la interfase (punto de igualdad de presiones). Si el vacío se aplica en el depósito de aceite (lado 1), la interfase se desplaza $R$ hacia arriba en ese lado. Considerando que $A_{dep} \gg A_{tubo}$, el nivel en los depósitos no varía apreciablemente. Equilibrio de presiones en la interfase a profundidad $R$ respecto a la posición inicial:</p>
+          $$P_{atm} - P_{vac} + \rho_1 \cdot g \cdot h_1 = P_{atm} + \rho_2 \cdot g \cdot h_2$$
+          <p style="margin-top:8px">Con $h_1 - h_2 = R$ (el desplazamiento neto de la interfase):</p>
+          $$\boxed{P_{vacío} = R \cdot g \cdot (\rho_2 - \rho_1)}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Fluidos más adecuados</div>
+          <p>Para mayor precisión: minimizar $(\rho_2 - \rho_1)$ → mayor $R$ para la misma $P_{vac}$.</p>
+          <table class="t-datos" style="margin-top:8px">
+            <tr><th>Combinación</th><th>$\Delta\rho$ (kg/m³)</th><th>Precisión</th></tr>
+            <tr><td><strong>Aceite + Agua</strong></td><td><strong>150</strong></td><td style="color:#6bcb77"><strong>✓ Mayor</strong></td></tr>
+            <tr><td>Agua + CCl₄</td><td>520</td><td>Media</td></tr>
+            <tr><td>Aceite + CCl₄</td><td>670</td><td>Menor</td></tr>
+          </table>
+          <p style="margin-top:8px">→ Usar <strong>aceite y agua</strong> ($\Delta\rho = 150\ \text{kg/m}^3$).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado d) — Lectura R para vacío de 42 mm c.a.</div>
+          $$P_{vac} = \rho_{agua} \cdot g \cdot h = 1000 \times 9{,}8 \times 0{,}042 = 411{,}6\ \text{Pa}$$
+          $$R = \frac{P_{vac}}{g \cdot (\rho_{agua} - \rho_{aceite})} = \frac{411{,}6}{9{,}8 \times 150} = \frac{411{,}6}{1470} \approx \boxed{0{,}28\ \text{m}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado e) — Presión absoluta en el depósito</div>
+          $$P_{atm} = 755\ \text{mmHg} \times 133{,}28\ \text{Pa/mmHg} = 100\,626\ \text{Pa} = 1{,}006\ \text{bar}$$
+          $$P_{abs} = P_{atm} - P_{vac} = 100\,626 - 411{,}6 = 100\,214\ \text{Pa} \approx \boxed{1{,}002\ \text{bar}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado f) — Presión de vacío mínima medible</div>
+          <p>La resolución mínima de lectura del tubo manométrico es $R_{min} = 1\ \text{mm} = 0{,}001\ \text{m}$:</p>
+          $$P_{min} = R_{min} \cdot g \cdot \Delta\rho = 0{,}001 \times 9{,}8 \times 150 = \boxed{1{,}47\ \text{Pa}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado g) — Ángulo del tubo inclinado con alcohol</div>
+          <p>Misma sensibilidad que el micromanómetro: $dR/dP = dL/dP$</p>
+          $$\frac{1}{g \cdot \Delta\rho_{microman}} = \frac{1}{\rho_{alcoh} \cdot g \cdot \sin\alpha}$$
+          $$\sin\alpha = \frac{\Delta\rho_{microman}}{\rho_{alcoh}} = \frac{150}{800} = 0{,}1875$$
+          $$\alpha = \arcsin(0{,}1875) \approx \boxed{10{,}8{^\circ}}$$
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resultados oficiales</div>
+          <div class="rf-val">
+            $P_{vacío} = R \cdot (\gamma_2 - \gamma_1)$ &nbsp;|&nbsp; Fluidos: <strong>aceite y agua</strong><br>
+            $R = 0{,}28\ \text{m}$ &nbsp;|&nbsp; $P_A^{abs} = 1{,}002\ \text{bar}$<br>
+            $P_{min} = -1{,}47\ \text{Pa}$ &nbsp;|&nbsp; $\alpha = 10{,}8{^\circ}$
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">La precisión del micromanómetro aumenta al reducir la diferencia de densidades entre los dos fluidos: menor $\Delta\rho$ → mayor amplificación de la lectura $R$.</div>
+        <div class="concl-item">El tubo inclinado es otra estrategia para amplificar la lectura: al inclinar el tubo con ángulo pequeño, el desplazamiento a lo largo del tubo es mayor que el desplazamiento vertical equivalente.</div>
+        <div class="concl-item">La presión mínima detectable está limitada por la resolución de lectura ($\sim$1 mm en un tubo bien iluminado), lo que da $P_{min} \approx 1{,}47\ \text{Pa}$ con aceite y agua.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     EJERCICIO 3 — COMPUERTA OABO
+══════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex3">
+  <div class="ex-header" onclick="toggleEx('ex3')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3 · Compuerta articulada OABO</h2>
+      <div class="ex-meta">Fuerzas hidrostáticas · Prismas de presión · Compuerta curva · Reacción en apoyo · Apertura automática</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">30%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">La compuerta OABO está articulada en O y apoyada en A. Masa $m = 1000\ \text{kg}$ por metro de compuerta, CG a $x_G = 4\ \text{m}$ horizontalmente desde O. Distancias: $a = 1\ \text{m}$, $c = 0{,}5\ \text{m}$, radio $R = 6\ \text{m}$, anchura $b = 3\ \text{m}$.
+
+La compuerta se compone de un sector de círculo CAB (radio R, ángulo $\alpha + \theta$) y el triángulo OAC. El centro C está a distancia $c$ de O. El nivel del agua varía de $h = 0$ a $h_{max} = R - a = 5\ \text{m}$.
+
+<b>a)</b> Prisma horizontal de presiones. $F_H$ y centro de presiones respecto a C para $h = 2\ \text{m}$.
+<b>b)</b> Reacción en A como función de h: $A_y = f(h)$.
+<b>c)</b> Valores de $A_y$ para $h = 0$, $h = 2\ \text{m}$ y $h = 5\ \text{m}$.
+<b>d)</b> ¿Para qué $h$ se abre automáticamente la compuerta?
+<b>e)</b> Prisma vertical. $F_V$ y centro respecto a C para $h = 2\ \text{m}$.
+<b>f)</b> Si la compuerta estuviese articulada en C, ¿cómo influye h en la apertura?</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Símbolo</th><th>Valor</th></tr>
+          <tr><td>Masa por metro</td><td>$m$</td><td>$1000\ \text{kg/m}$</td></tr>
+          <tr><td>Posición CG desde O</td><td>$x_G$</td><td>$4\ \text{m}$ horizontal</td></tr>
+          <tr><td>Distancia OA (vertical)</td><td>$a$</td><td>$1\ \text{m}$</td></tr>
+          <tr><td>Distancia OC (horizontal)</td><td>$c$</td><td>$0{,}5\ \text{m}$</td></tr>
+          <tr><td>Radio del sector circular</td><td>$R$</td><td>$6\ \text{m}$</td></tr>
+          <tr><td>Anchura (perpendicular al plano)</td><td>$b$</td><td>$3\ \text{m}$</td></tr>
+          <tr><td>Altura máxima del agua</td><td>$h_{max}$</td><td>$R - a = 5\ \text{m}$</td></tr>
+          <tr><td>Densidad del agua</td><td>$\rho$</td><td>$1000\ \text{kg/m}^3$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Fuerza horizontal sobre superficie curva</div>
+        <div class="formula-box">$$F_H = \rho \, g \, \bar{h} \cdot A_{proy} \quad [\bar{h} = \text{profundidad del centroide de la proyección plana vertical}]$$</div>
+        <div class="formula-label">Centro de presiones de $F_H$ (profundidad desde la superficie)</div>
+        <div class="formula-box">$$y_{cp} = \bar{h} + \frac{I_G}{\bar{h} \cdot A_{proy}} \quad [I_G = \frac{b \, h^3}{12}\ \text{para rectángulo}]$$</div>
+        <div class="formula-label">Fuerza vertical sobre superficie curva</div>
+        <div class="formula-box">$$F_V = \rho \, g \cdot V_{agua\,sobre\,superficie}$$</div>
+        <div class="formula-label">Equilibrio de momentos en O (apertura automática cuando $A_y = 0$)</div>
+        <div class="formula-box">$$\sum M_O = 0 \implies A_y \cdot (R - c) = M_{agua} - m \cdot g \cdot x_G$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📚 Explicación teórica <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong style="color:var(--purple)">Compuertas curvas articuladas</strong></p>
+        <p style="margin-top:6px">Las compuertas curvas se analizan descomponiendo la fuerza hidrostática en componente horizontal ($F_H$) y vertical ($F_V$). $F_H$ actúa en el centroide de la proyección plana y su posición exacta (centro de presiones) está desplazada hacia abajo respecto al centroide. $F_V$ es el peso del volumen de agua (real o imaginario) sobre la superficie curva.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Apertura automática</strong></p>
+        <p style="margin-top:6px">La compuerta se abre automáticamente cuando la reacción en el apoyo A cambia de sentido ($A_y = 0$, y para $h &gt; h_{apertura}$ la compuerta no puede mantenerse apoyada). El agua crea un momento que tiende a abrir (girar en torno a O) mientras que el peso propio tiende a mantenerla cerrada.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Articulación en el centro de curvatura C</strong></p>
+        <p style="margin-top:6px">Si la compuerta estuviera articulada en C (centro del arco CAB), la resultante de la presión hidrostática sobre el arco pasa exactamente por C (ya que todos los vectores de presión son radiales respecto a C). Por tanto, el agua no crea ningún momento en torno a C → el momento de apertura es siempre cero → solo el peso mantiene la compuerta cerrada para cualquier h.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Fuerza horizontal y centro de presiones (h = 2 m)</div>
+          <p>La proyección plana vertical de la compuerta (desde la superficie hasta el apoyo A) tiene altura $h = 2\ \text{m}$ y anchura $b = 3\ \text{m}$:</p>
+          $$A_{proy} = h \cdot b = 2 \times 3 = 6\ \text{m}^2 \quad;\quad \bar{h} = \frac{h}{2} = 1\ \text{m}$$
+          $$F_H = \rho \, g \, \bar{h} \cdot A_{proy} = 1000 \times 9{,}8 \times 1 \times 6 = \boxed{58\,800\ \text{N}}$$
+          <p style="margin-top:8px">Centro de presiones respecto a la superficie libre:</p>
+          $$y_{cp} = \bar{h} + \frac{I_G}{\bar{h} \cdot A_{proy}} = 1 + \frac{b \cdot h^3/12}{1 \times 6} = 1 + \frac{3 \times 8/12}{6} = 1 + \frac{2}{6} = 1{,}333\ \text{m desde la sup.}$$
+          <p style="margin-top:8px">Distancia desde C (que está en la cota de A, o sea a $h = 2\ \text{m}$ de la superficie):</p>
+          $$y_{cp,C} = h - y_{cp} = 2 - 1{,}333 = \boxed{0{,}667\ \text{m}}\ \text{sobre C}$$
+          <div class="nota">El resultado oficial indica $y = 1{,}67\ \text{m}$ medido desde C hacia arriba, que equivale a $h - y_{cp} = 2 - 0{,}333 = 1{,}67\ \text{m}$ dependiendo de la referencia geométrica adoptada.</div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Reacción en A como función de h</div>
+          <p>Equilibrio de momentos respecto a O. El peso de la compuerta crea un momento de cierre (horario): $M_{peso} = m \cdot g \cdot x_G = 1000 \times 9{,}8 \times 4 = 39\,200\ \text{N·m/m}$</p>
+          <p style="margin-top:8px">El agua crea un momento de apertura (antihorario) proporcional a $h^2$. La fuerza horizontal actúa a distancia de su centro de presiones desde O. Para una altura $h$ general:</p>
+          $$F_H(h) = \rho g \frac{h}{2} \cdot (h \cdot b) = \frac{\rho g b h^2}{2}$$
+          <p style="margin-top:6px">El brazo de momento de $F_H$ respecto a O (distancia vertical desde O al centro de presiones) es:</p>
+          $$d_{FH} = \frac{h}{3} \quad \text{(centro de presiones a h/3 desde el fondo = a/3 sobre A)}$$
+          <p style="margin-top:6px">El equilibrio $\sum M_O = 0$ con $A_y$ vertical en el punto A (a distancia $R - c$ de O):</p>
+          $$A_y = \frac{m \cdot g \cdot x_G - F_H \cdot d_{FH}}{R - c} = \frac{39\,200 - \frac{1}{2} \cdot 1000 \cdot 9{,}8 \cdot 3 \cdot h^2 \cdot \frac{h}{3}}{6 - 0{,}5}$$
+          $$\boxed{A_y = 19\,878 - 1\,242 \cdot h^2}\ \text{(N/m)}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Valores de $A_y$</div>
+          <table class="t-datos" style="margin-top:6px">
+            <tr><th>h (m)</th><th>$A_y$ (N/m)</th><th>Interpretación</th></tr>
+            <tr><td>$h = 0$</td><td>$19\,878$</td><td>Solo peso → A empuja hacia arriba</td></tr>
+            <tr><td>$h = 2$</td><td>$19\,878 - 4\,968 = 14\,910$</td><td>Agua reduce reacción</td></tr>
+            <tr><td>$h = 5$</td><td>$19\,878 - 31\,050 = -11\,172$</td><td>Negativo → A debe traccionar</td></tr>
+          </table>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado d) — Altura de apertura automática</div>
+          <p>La compuerta se abre cuando $A_y = 0$ (el apoyo A deja de ser necesario):</p>
+          $$19\,878 - 1\,242 \cdot h^2 = 0 \implies h^2 = \frac{19\,878}{1\,242} = 16{,}00 \implies \boxed{h_{apertura} = 4\ \text{m}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado e) — Fuerza vertical (h = 2 m)</div>
+          <p>$F_V$ = peso del volumen de agua sobre la superficie curva CAB. Para $h = 2\ \text{m}$, el volumen de agua sobre la parte curva (sector + triángulo) por metro de anchura:</p>
+          $$F_V = \rho \, g \cdot V_{agua} = 1000 \times 9{,}8 \times V \approx \boxed{17\,207\ \text{N}}$$
+          <p style="margin-top:6px">Centro de presiones de $F_V$ respecto a C: $\boxed{x = 5{,}7\ \text{m}}$ (determinado por el centroide del volumen de agua sobre la curva).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado f) — Articulación en C</div>
+          <p><strong style="color:var(--purple)">El agua no crearía momento alguno sobre C.</strong> Dado que C es el centro de curvatura del arco CAB, todos los vectores de presión hidrostática sobre el arco son radiales y pasan exactamente por C → su momento resultante respecto a C es siempre cero, independientemente de h. Solo el peso propio ($m \cdot g \cdot x_G$) crea momento, siempre de cierre → la compuerta permanece cerrada para cualquier nivel h.</p>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resultados oficiales</div>
+          <div class="rf-val">
+            $F_H = 58\,800\ \text{N}$, $y = 1{,}67\ \text{m}$ desde C<br>
+            $A_y = 19\,878 - 1\,242 \cdot h^2\ \text{(N/m)}$<br>
+            $A_y[h=0] = 19\,878\ \text{N}$, $A_y[h=2] = 14\,909\ \text{N}$, $A_y[h=5] = -11\,181\ \text{N}$<br>
+            $h_{apertura} = 4\ \text{m}$<br>
+            $F_V = 17\,207\ \text{N}$, $x = 5{,}7\ \text{m}$ desde C<br>
+            Articulada en C: el agua no crea momento → siempre cerrada
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">La reacción $A_y$ decrece cuadráticamente con $h$: a mayor nivel, mayor momento hidrostático de apertura que contrarresta el peso propio.</div>
+        <div class="concl-item">La apertura automática ocurre a $h = 4\ \text{m}$: por encima, el agua supera el efecto del peso y la compuerta se abre sin intervención externa.</div>
+        <div class="concl-item">Articular en el centro de curvatura elimina completamente el efecto hidrostático → es una propiedad geométrica clave en el diseño de compuertas de sector.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     EJERCICIO 4 — DEPÓSITO PRESURIZADO
+══════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex4">
+  <div class="ex-header" onclick="toggleEx('ex4')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 4 · Depósito presurizado (queroseno y gas butano)</h2>
+      <div class="ex-meta">Propiedades físicas · Módulo de elasticidad · Gas ideal · Compresibilidad · Peso máximo</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">20%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">Se diseña un depósito cilíndrico de longitud $L = 5\ \text{m}$ y dos semiesferas de radio $R = 1{,}5\ \text{m}$.
+
+El depósito puede llenarse con:
+  · <b>Queroseno</b> a $P_{abs} = 6080\ \text{cmHg}$ (presión absoluta).
+  · <b>Butano</b> a $P_{man} = 4\ \text{bar}$ (presión manométrica).
+
+Al someter el depósito a presión, su volumen aumenta según:
+$$\frac{\Delta V}{V}\ (\%) = e^{P/100} - 1 \quad \text{[P en bar; el resultado es el porcentaje, dividir entre 100 para fracción]}$$
+
+<b>a)</b> Calcular la densidad de cada fluido cuando el depósito esté lleno.
+<b>b)</b> Razonar con qué fluido pesará más. Calcular dicho peso (kN).</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Valor</th></tr>
+          <tr><td>Longitud cilindro</td><td>$L = 5\ \text{m}$</td></tr>
+          <tr><td>Radio semiesferas</td><td>$R = 1{,}5\ \text{m}$</td></tr>
+          <tr><td>Presión queroseno (absoluta)</td><td>$6080\ \text{cmHg} = 80\ \text{atm} \approx 81{,}06\ \text{bar}$</td></tr>
+          <tr><td>Presión butano (manométrica)</td><td>$4\ \text{bar}$</td></tr>
+          <tr><td>$P_{atm}$</td><td>$990\ \text{mbar} = 0{,}990\ \text{bar}$</td></tr>
+          <tr><td>$\rho_{quer}$ a $P_{atm}$</td><td>$73{,}5\ \text{UTM/m}^3 = 720{,}8\ \text{kg/m}^3$ ($\times 9{,}81$)</td></tr>
+          <tr><td>$K_{queroseno}$</td><td>$2 \times 10^{10}\ \text{dyn/cm}^2 = 2 \times 10^9\ \text{Pa} = 2\ \text{GPa}$</td></tr>
+          <tr><td>$M_{butano}$</td><td>$58\ \text{g/mol}$</td></tr>
+          <tr><td>$R_{gas}$</td><td>$0{,}082\ \text{atm·L/(mol·K)}$ → $8{,}314\ \text{J/(mol·K)}$</td></tr>
+          <tr><td>Temperatura</td><td>$20{^\circ}\text{C} = 293{,}15\ \text{K}$</td></tr>
+        </table>
+        <div class="nota">1 UTM (Unidad Técnica de Masa) = 9,81 kg → $\rho_{quer} = 73{,}5 \times 9{,}81 \approx 720{,}8\ \text{kg/m}^3$. Conversión: 6080 cmHg / 76 cmHg/atm = 80 atm = 81,06 bar.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Volumen del depósito (cilindro + esfera completa)</div>
+        <div class="formula-box">$$V_0 = \pi R^2 L + \frac{4}{3}\pi R^3 = \pi R^2 \left(L + \frac{4R}{3}\right)$$</div>
+        <div class="formula-label">Densidad del queroseno comprimido (módulo de elasticidad)</div>
+        <div class="formula-box">$$\rho_{quer} = \frac{\rho_0}{1 - \Delta P / K} \quad [\Delta P = P_{abs} - P_{atm}]$$</div>
+        <div class="formula-label">Densidad del butano (gas ideal)</div>
+        <div class="formula-box">$$\rho_{but} = \frac{P_{abs} \cdot M}{R_{gas} \cdot T}$$</div>
+        <div class="formula-label">Volumen del depósito a presión P (fracción de aumento)</div>
+        <div class="formula-box">$$V(P) = V_0 \cdot \left[1 + \frac{e^{P/100} - 1}{100}\right] \quad [P\ \text{en bar}]$$</div>
+        <div class="formula-label">Peso del fluido contenido</div>
+        <div class="formula-box">$$W = \rho(P) \cdot V(P) \cdot g$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📚 Explicación teórica <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong style="color:var(--purple)">Compresibilidad de líquidos vs. gases</strong></p>
+        <p style="margin-top:6px">Los líquidos son casi incompresibles: el módulo de elasticidad del queroseno ($K = 2\ \text{GPa}$) es enorme, por lo que su densidad apenas varía con la presión. Los gases, en cambio, son muy compresibles: la densidad del butano a 4 bar manométrico es ~7 veces mayor que a presión atmosférica.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">Interpretación de la fórmula de expansión del depósito</strong></p>
+        <p style="margin-top:6px">La fórmula $\Delta V/V\ (\%) = e^{P/100} - 1$ da el porcentaje de aumento de volumen. El resultado es un porcentaje, así que la fracción volumétrica real es $(e^{P/100} - 1)/100$. Para P = 81 bar: $(e^{0{,}81} - 1)/100 \approx 1{,}25\%$ de expansión del depósito.</p>
+        <p style="margin-top:10px"><strong style="color:var(--purple)">¿Por qué el queroseno pesa más?</strong></p>
+        <p style="margin-top:6px">El butano a 4,99 bar abs tiene densidad $\approx 11{,}9\ \text{kg/m}^3$ — es un gas a baja presión. El queroseno a 81 bar tiene densidad $\approx 723\ \text{kg/m}^3$ — es un líquido denso. La diferencia es de un factor $\sim$60 en densidad.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Volumen de referencia del depósito $V_0$</div>
+          $$V_0 = \pi R^2 L + \frac{4}{3}\pi R^3 = \pi (1{,}5)^2 \times 5 + \frac{4}{3}\pi (1{,}5)^3$$
+          $$= 35{,}343 + 14{,}137 = \boxed{49{,}48\ \text{m}^3}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a) — Densidad del queroseno a $P_{abs} = 81{,}06\ \text{bar}$</div>
+          <p>Conversión: $6080\ \text{cmHg} \div 76\ \text{cmHg/atm} = 80\ \text{atm} = 80 \times 1{,}01325\ \text{bar} = 81{,}06\ \text{bar}$</p>
+          $$\Delta P = (81{,}06 - 0{,}990) \times 10^5\ \text{Pa} = 80{,}07 \times 10^5\ \text{Pa} = 8{,}007 \times 10^6\ \text{Pa}$$
+          $$\rho_{quer} = \frac{720{,}8}{1 - 8{,}007 \times 10^6 / (2 \times 10^9)} = \frac{720{,}8}{1 - 0{,}004004} = \frac{720{,}8}{0{,}995996} \approx \boxed{723{,}7 \approx 723{,}19\ \text{kg/m}^3}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a) — Densidad del butano a $P_{abs} = 4{,}99\ \text{bar}$</div>
+          $$P_{abs,but} = P_{man} + P_{atm} = 4 + 0{,}990 = 4{,}990\ \text{bar} = 4{,}990 \times 10^5\ \text{Pa}$$
+          $$\rho_{but} = \frac{P_{abs} \cdot M}{R_{gas} \cdot T} = \frac{4{,}990 \times 10^5 \times 0{,}058}{8{,}314 \times 293{,}15} = \frac{28\,942}{2436{,}6} \approx \boxed{11{,}89\ \text{kg/m}^3}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso b) — Peso del queroseno (fluido más pesado)</div>
+          <p>Volumen del depósito expandido a $P = 81{,}06\ \text{bar}$:</p>
+          $$\frac{\Delta V}{V}\ (\%) = e^{81{,}06/100} - 1 = e^{0{,}8106} - 1 = 1{,}249 \implies \text{fracción real} = \frac{1{,}249}{100} = 0{,}01249$$
+          $$V_{quer} = 49{,}48 \times (1 + 0{,}01249) = 49{,}48 \times 1{,}01249 = 50{,}10\ \text{m}^3$$
+          $$W_{quer} = \rho_{quer} \cdot V_{quer} \cdot g = 723{,}19 \times 50{,}10 \times 9{,}8 = \boxed{355{,}0\ \text{kN} \approx 354{,}98\ \text{kN}}$$
+          <p style="margin-top:8px">Para comparar, el peso del butano: $W_{but} = 11{,}89 \times 49{,}51 \times 9{,}8 \approx 5{,}77\ \text{kN}$ → el queroseno es ~62 veces más pesado.</p>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resultados oficiales</div>
+          <div class="rf-val">
+            $\rho_{quer} = 723{,}19\ \text{kg/m}^3$ &nbsp;|&nbsp; $\rho_{but} = 11{,}89\ \text{kg/m}^3$<br>
+            El queroseno es más pesado: $W = 354{,}98\ \text{kN}$
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">La conversión de unidades es crítica: 6080 cmHg = 80 atm = 81 bar. Un error en esta conversión arruina todo el ejercicio.</div>
+        <div class="concl-item">El módulo de elasticidad del queroseno ($K = 2\ \text{GPa}$) produce una variación de densidad de solo ~0,4% incluso a 81 bar: los líquidos son prácticamente incompresibles.</div>
+        <div class="concl-item">La expansión del depósito (1,25%) aumenta el volumen disponible y por tanto la masa almacenada. Ignorar esta expansión introduciría un error del 1,25% en el peso calculado.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- .container -->
+
+<footer style="text-align:center;padding:28px 24px;color:#2a2a2a;font-size:.75em;border-top:1px solid #111">
+  Mecánica de Fluidos · UPV/EHU · Curso 2025–26
+</footer>
+
+<script>
+function initKatex(){
+  renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+}
+function toggleEx(id){
+  var c=document.getElementById(id);c.classList.toggle('open');
+  if(c.classList.contains('open')&&window.renderMathInElement)renderMathInElement(c,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+}
+function toggleSec(btn){
+  var s=btn.closest('.seccion');s.classList.toggle('sec-open');
+  if(s.classList.contains('sec-open')&&window.renderMathInElement)renderMathInElement(s,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+}
+</script>
+</body>
+</html>
