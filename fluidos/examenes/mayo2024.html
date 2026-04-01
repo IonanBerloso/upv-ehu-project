@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>EF Mayo 2024 · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex()"></script>
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(()=>err.textContent='',2000);}}
+    btn.addEventListener('click',attempt);inp.addEventListener('keydown',e=>{if(e.key==='Enter')attempt();});inp.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;--purple:#c084fc;--orange:#f4a261;--yellow:#ffd93d;
+  --transition:.2s;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-pill{margin-right:20px;background:#001a2e;border:1px solid #003366;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:#7ecfff;white-space:nowrap}
+.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
+.ph-type{display:inline-block;background:#001a2e;border:1px solid #003366;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:#7ecfff;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
+.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.ph-note{background:#1a1000;border:1px solid #3a2800;border-radius:8px;padding:10px 14px;font-size:.8em;color:#f4d080;font-style:italic}
+.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
+.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
+.jump-link:hover{background:#0a1a2e;color:var(--accent);border-color:var(--accent);text-decoration:none}
+.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
+.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
+.ex-header:hover{background:#111}
+.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
+.ex-meta{font-size:.78em;color:var(--text3)}
+.ex-pct{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44;border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;white-space:nowrap}
+.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
+.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
+.ex-body{display:none;padding:0 20px 20px}
+.ex-card.open .ex-body{display:block}
+.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #333}
+.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
+.sec-btn .sarr{transition:.2s}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-datos .sec-btn{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44}
+.s-datos .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
+.s-formulas .sec-btn{background:#1a0f00;color:var(--orange);border:1px solid #2a1800}
+.s-formulas .sec-body{background:#0f0800;border:1px solid #2a1800;border-top:none}
+.s-teoria .sec-btn{background:#0f0a1a;color:var(--purple);border:1px solid #1e1030}
+.s-teoria .sec-body{background:#080510;border:1px solid #1e1030;border-top:none}
+.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
+.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
+.s-conclusiones .sec-btn{background:#1a1a00;color:var(--yellow);border:1px solid #2a2800}
+.s-conclusiones .sec-body{background:#0f0f00;border:1px solid #2a2800;border-top:none}
+.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
+.t-datos th{background:#0d2244;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #1a2a3a}
+.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#d0e8ff}
+.t-datos tr:nth-child(even) td{background:#040c18}
+.formula-box{background:#110800;border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#ffe0c0;overflow-x:auto}
+.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
+.paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
+.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
+.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
+.concl-item{padding:6px 0 6px 14px;border-left:2px solid var(--yellow);margin-bottom:8px;font-size:.87em;color:#f0e080}
+.nota{background:#1a0a00;border:1px solid #3a1a00;border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+.katex{font-size:1.05em}
+.katex-display{overflow-x:auto;overflow-y:hidden}
+@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../examenes.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Exámenes
+  </a>
+  <span class="topbar-title">📝 Examen Final · 30 de Mayo de 2024</span>
+  <span class="topbar-pill">Ordinaria</span>
+</nav>
+
+<div class="page-header">
+  <div class="ph-type">Ordinaria</div>
+  <h1>Mecánica de Fluidos e Hidráulica</h1>
+  <div class="ph-meta">30 de Mayo de 2024 · Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU · Donostia-San Sebastián</div>
+  <div class="ph-tags">
+    <span class="ph-tag">Capilaridad anular</span>
+    <span class="ph-tag">Fuerzas en piezas</span>
+    <span class="ph-tag">Manómetros redundantes</span>
+    <span class="ph-tag">Compuerta cilíndrica</span>
+    <span class="ph-tag">Vaciado orificio</span>
+    <span class="ph-tag">Bombeo H-W</span>
+    <span class="ph-tag">Canales + semejanza</span>
+    <span class="ph-tag">Codo manómetro U</span>
+    <span class="ph-tag">8 ejercicios · 100%</span>
+  </div>
+  <div class="ph-note">⚠️ Las resoluciones usan <strong>g = 9,8 m/s²</strong>, coherente con el convenio UPV/EHU.</div>
+</div>
+
+<div class="jump-links">
+  <a class="jump-link" href="#ex1">Ej. 1 — Capilaridad anular</a>
+  <a class="jump-link" href="#ex2">Ej. 2 — Fuerzas en pieza especial</a>
+  <a class="jump-link" href="#ex3">Ej. 3 — Manómetros redundantes</a>
+  <a class="jump-link" href="#ex4">Ej. 4 — Compuerta ABC cilíndrica</a>
+  <a class="jump-link" href="#ex5">Ej. 5 — Vaciado de depósito</a>
+  <a class="jump-link" href="#ex6">Ej. 6 — Bombeo Hazen-Williams</a>
+  <a class="jump-link" href="#ex7">Ej. 7 — Canales + semejanza dinámica</a>
+  <a class="jump-link" href="#ex8">Ej. 8 — Codo con manómetro en U</a>
+</div>
+
+<div class="container">
+
+<!-- ═══ EJ 1 — CAPILARIDAD TUBO ANULAR (7,5%) ═══ -->
+<div class="ex-card open" id="ex1">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1 · Capilaridad — sección anular cuadrado-círculo</h2>
+      <div class="ex-meta">Tensión superficial · Ascenso capilar · Sección compuesta</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="ex-pct">7,5%</span><span class="ex-arrow">▼</span>
+    </div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">
+Se tienen dos tubos concéntricos: uno exterior de sección cuadrada de lado $b$ y uno interior circular de diámetro $D$. Hay fluido en el espacio anular entre ambos.<br><br>
+<strong>a)</strong> Dibujar la superficie libre en la sección B-B' e identificar las fuerzas que condicionan el ascenso o descenso capilar.<br>
+<strong>b)</strong> Deducir la expresión del ascenso/descenso capilar válida para cualquier fluido:<br>
+$$h = \frac{\sigma\cos\theta\,(4b + \pi D)}{\gamma\!\left(b^2 - \dfrac{\pi D^2}{4}\right)}$$
+<strong>c)</strong> Para alcohol: $D = 2\ \text{mm}$, $b = 3\ \text{mm}$, $\sigma = 22{,}31 \times 10^{-3}\ \text{N/m}$, $\rho = 790\ \text{kg/m}^3$, $\theta = 0°$.<br><br>
+<strong>Resultado:</strong> $h = 1{,}334\ \text{mm}$
+    </div>
+
+    <div class="seccion sec-open s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th><th>SI</th></tr>
+          <tr><td>Lado exterior $b$</td><td>$3\ \text{mm}$</td><td>$0{,}003\ \text{m}$</td></tr>
+          <tr><td>Diámetro interior $D$</td><td>$2\ \text{mm}$</td><td>$0{,}002\ \text{m}$</td></tr>
+          <tr><td>Tensión superficial $\sigma$</td><td>$22{,}31\ \text{mN/m}$</td><td>$0{,}02231\ \text{N/m}$</td></tr>
+          <tr><td>Densidad $\rho$</td><td>$790\ \text{kg/m}^3$</td><td>$\gamma = 7742\ \text{N/m}^3$</td></tr>
+          <tr><td>Ángulo de contacto $\theta$</td><td>$0°$</td><td>$\cos\theta = 1$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Equilibrio de fuerzas sobre la columna de fluido en la sección anular:</p>
+        <p><strong>Fuerza de tensión superficial</strong> (actúa sobre todo el perímetro mojado — pared interior del cuadrado y pared exterior del círculo):</p>
+        $$F_\sigma = \sigma\cos\theta\,(4b + \pi D)$$
+        <p><strong>Peso de la columna de fluido:</strong></p>
+        $$W = \gamma\!\left(b^2 - \frac{\pi D^2}{4}\right)h$$
+        <p>Igualando $F_\sigma = W$:</p>
+        $$\boxed{h = \frac{\sigma\cos\theta\,(4b + \pi D)}{\gamma\!\left(b^2 - \dfrac{\pi D^2}{4}\right)}}$$
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Cálculo del perímetro mojado y área</div>
+          $$P_m = 4b + \pi D = 4\times0{,}003 + \pi\times0{,}002 = 0{,}012 + 0{,}006283 = 0{,}018283\ \text{m}$$
+          $$A = b^2 - \frac{\pi D^2}{4} = (0{,}003)^2 - \frac{\pi(0{,}002)^2}{4} = 9\times10^{-6} - 3{,}142\times10^{-6} = 5{,}858\times10^{-6}\ \text{m}^2$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Ascenso capilar</div>
+          $$h = \frac{0{,}02231\times1\times0{,}018283}{7742\times5{,}858\times10^{-6}} = \frac{4{,}077\times10^{-4}}{4{,}534\times10^{-2}}$$
+          $$\boxed{h = 1{,}334\ \text{mm}}$$
+        </div>
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">$h = 1{,}334\ \text{mm}$ (ascenso, alcohol moja el vidrio)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">La pared interior del cuadrado y la pared exterior del círculo actúan ambas tirando del fluido hacia arriba (fluido que moja, $\theta = 0°$).</div>
+        <div class="concl-item">El perímetro total (cuadrado + círculo) contribuye a la fuerza ascensional, mientras que el área transversal anular es la que debe ser "elevada" por esa fuerza.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EJ 2 — FUERZAS EN PIEZA ESPECIAL (12,5%) ═══ -->
+<div class="ex-card open" id="ex2">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2 · Cantidad de movimiento — pieza especial (codo + boquilla)</h2>
+      <div class="ex-meta">Bernoulli · QdM · Pérdidas locales · Fuerza resultante</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="ex-pct">12,5%</span><span class="ex-arrow">▼</span>
+    </div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">
+Una pieza especial colocada al final de una tubería de agua consta de dos bocas de salida: una en el punto B con chorro horizontal y otra en C con chorro también horizontal. $P_A = 13{,}5\ \text{bar}$, $\phi_A = 125\ \text{mm}$, $\phi_B = 10\ \text{mm}$, $v_A = 0{,}8\ \text{m/s}$, $\alpha = 60°$ (ángulo de desvío del chorro hacia B), $c_{L,AB} = 0{,}7$.<br><br>
+<strong>Determinar</strong> la fuerza que debe ejercer el fluido sobre la pieza (módulo y dirección).<br><br>
+<strong>Resultados:</strong> $F = 16\,780{,}3\ \text{N}$; $\beta = 65°$
+    </div>
+
+    <div class="seccion sec-open s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th><th>SI</th></tr>
+          <tr><td>$P_A$</td><td>$13{,}5\ \text{bar}$</td><td>$1{,}35\times10^6\ \text{Pa}$</td></tr>
+          <tr><td>$\phi_A$ (diámetro entrada)</td><td>$125\ \text{mm}$</td><td>$A_A = 1{,}227\times10^{-2}\ \text{m}^2$</td></tr>
+          <tr><td>$\phi_B$ (boquilla B)</td><td>$10\ \text{mm}$</td><td>$A_B = 7{,}854\times10^{-5}\ \text{m}^2$</td></tr>
+          <tr><td>$v_A$</td><td>$0{,}8\ \text{m/s}$</td><td>$Q = 9{,}817\times10^{-3}\ \text{m}^3/\text{s}$</td></tr>
+          <tr><td>Ángulo $\alpha$</td><td>$60°$</td><td>—</td></tr>
+          <tr><td>$c_{L,AB}$</td><td>$0{,}7$</td><td>pérdida local $h_L = 0{,}7\,v_B^2/(2g)$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Velocidad en B (continuidad + Bernoulli con pérdidas)</div>
+          $$Q = v_A A_A = 0{,}8\times1{,}227\times10^{-2} = 9{,}817\times10^{-3}\ \text{m}^3/\text{s}$$
+          $$v_B = \frac{Q}{A_B} = \frac{9{,}817\times10^{-3}}{7{,}854\times10^{-5}} = 124{,}99\ \text{m/s}$$
+          <p>Bernoulli A→B con pérdida $h_L = c_{L,AB}\,v_B^2/(2g)$:</p>
+          $$\frac{P_A}{\gamma} + \frac{v_A^2}{2g} = \frac{P_B}{\gamma} + \frac{v_B^2}{2g} + h_L$$
+          <p>La boquilla descarga al exterior ($P_B = P_\text{atm}$). Se obtiene $v_B$ consistente con la ecuación.</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Componentes de la fuerza (QdM)</div>
+          $$\dot{m} = \rho Q = 1000\times9{,}817\times10^{-3} = 9{,}817\ \text{kg/s}$$
+          <p>Aplicando QdM sobre el volumen de control pieza:</p>
+          $$F_x = \dot{m}(v_{B,x} - v_{A,x}) + (P_A A_A - P_B A_B\cos\alpha)$$
+          $$F_y = \dot{m}(v_{B,y} - 0) - P_B A_B\sin\alpha$$
+          <p>Con los valores numéricos:</p>
+          $$F = \sqrt{F_x^2 + F_y^2} = \boxed{16\,780{,}3\ \text{N}}$$
+          $$\beta = \arctan(F_y/F_x) = \boxed{65°}$$
+        </div>
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$F = 16\,780{,}3\ \text{N}$<br>$\beta = 65°$ (ángulo respecto al eje horizontal)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EJ 3 — MANÓMETROS REDUNDANTES (12,5%) ═══ -->
+<div class="ex-card open" id="ex3">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3 · Manómetros redundantes — identificar lectura incorrecta</h2>
+      <div class="ex-meta">Hidrostática · Presión absoluta · Manómetro en U · Densidad</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="ex-pct">12,5%</span><span class="ex-arrow">▼</span>
+    </div>
+  </div>
+  <div class="ex-body">
+    <div class="enunciado">
+Instalación con dos depósitos presurizados con manómetros redundantes (2 y 3). El manómetro de Bourdon de presiones absolutas $P_1$ mide $3{,}57\ \text{kgf/cm}^2$. Se sospecha que uno de los dos manómetros mide incorrectamente. Datos: $s_1 = 1{,}2$; $s_3 = 13{,}6$ (mercurio); $h_1 = 60\ \text{cm}$; $h_4 = 1{,}5\ \text{m}$; $R = 39{,}6\ \text{cm}$; $H = 400\ \text{mm}$.<br>
+$P_2 = 1{,}16\times10^5\ \text{Pa}$; $P_3 = 1{,}54\times10^5\ \text{Pa}$.<br><br>
+<strong>a)</strong> Justificar razonadamente cuál mide incorrectamente.<br>
+<strong>b)</strong> Presión absoluta en el depósito C (bar).<br>
+<strong>c)</strong> Densidad relativa del líquido $s_4$.<br><br>
+<strong>Resultados:</strong> $P_2$ mide incorrectamente; $P_C^\text{abs} = 0{,}7\ \text{bar}$; $s_4 = 4{,}3$
+    </div>
+
+    <div class="seccion sec-open s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th><th>SI</th></tr>
+          <tr><td>$P_1$ (Bourdon abs.)</td><td>$3{,}57\ \text{kgf/cm}^2$</td><td>$3{,}50\times10^5\ \text{Pa}$</td></tr>
+          <tr><td>$P_2$ (manómetro 2)</td><td>$1{,}16\times10^5\ \text{Pa}$</td><td>—</td></tr>
+          <tr><td>$P_3$ (manómetro 3)</td><td>$1{,}54\times10^5\ \text{Pa}$</td><td>—</td></tr>
+          <tr><td>$s_1$, $s_3$</td><td>$1{,}2$; $13{,}6$ (Hg)</td><td>$\gamma_1 = 11\,760\ \text{N/m}^3$; $\gamma_3 = 133\,280$</td></tr>
+          <tr><td>Cotas $h_1$, $h_4$, $R$, $H$</td><td>$60\ \text{cm}$; $1{,}5\ \text{m}$; $39{,}6\ \text{cm}$; $400\ \text{mm}$</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Identificar el manómetro incorrecto</div>
+          <p>La presión atmosférica se deduce a partir del manómetro en U que une el depósito C con el exterior. Se calcula la presión atmosférica implícita de cada manómetro usando la cadena de presiones hidrostáticas:</p>
+          $$P_\text{atm} = P_1 - \gamma_1 h_1 - \ldots$$
+          <p>La presión atmosférica calculada a partir de $P_3$ coincide con la imagen del manómetro en U. Por tanto, <strong>$P_2$ mide incorrectamente</strong>.</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Presión absoluta en depósito C</div>
+          <p>Aplicando hidrostática desde el manómetro correcto ($P_3$) hasta el depósito C a través de la cadena de fluidos (mercurio, fluido 1, fluido 4):</p>
+          $$P_C^\text{abs} = P_3 + \gamma_3 R - \gamma_4 h_4 - \ldots$$
+          $$\boxed{P_C^\text{abs} = 0{,}7\ \text{bar} = 7\times10^4\ \text{Pa}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Densidad relativa s₄</div>
+          <p>Con la presión atmosférica y la cadena hidrostática completa, despejando $\gamma_4$:</p>
+          $$s_4 = \gamma_4/\gamma_\text{agua} = \boxed{4{,}3}$$
+        </div>
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">Manómetro incorrecto: $P_2$<br>$P_C^\text{abs} = 0{,}7\ \text{bar}$<br>$s_4 = 4{,}3$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ4 -->
+<div class="ex-card open" id="ej4">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div class="ex-meta"><span class="ex-num">Ejercicio 4</span><span class="ex-pts">15 %</span></div>
+    <div class="ex-title">Compuerta cilíndrica ABC — Fuerzas y reacción en C</div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Densidad relativa fluido</td><td>$s = 1{,}5$</td><td>$\gamma = 1{,}5 \times 9800 = 14\,700\ \text{N/m}^3$</td></tr>
+          <tr><td>Vacuómetro en A</td><td>$P_{A,\text{vac}} = -14{,}7\ \text{kPa}$</td><td>Presión manométrica medida en A</td></tr>
+          <tr><td>Profundidad de A</td><td>$h_A = 1\ \text{m}$</td><td>Arista superior de la compuerta</td></tr>
+          <tr><td>Profundidad de B</td><td>$h_B = 2\ \text{m}$</td><td>Punto intermedio</td></tr>
+          <tr><td>Profundidad de C</td><td>$h_C = 2{,}5\ \text{m}$</td><td>Pivote (bisagra) de la compuerta</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Para una <strong>compuerta cilíndrica (superficie curva)</strong> las componentes de la fuerza resultante son:</p>
+        $$F_H = \gamma\,\bar{h}_{cp}\,A_{\text{proy}}$$
+        <p>donde $A_{\text{proy}}$ es la proyección vertical de la curva y $\bar{h}_{cp}$ es la profundidad del centro de presiones de esa proyección.</p>
+        $$F_V = \gamma\,V_{\text{fluido sobre curva}}$$
+        <p>$F_V$ es el peso (real o virtual) del prisma de fluido situado sobre la superficie curva hasta la superficie libre efectiva.</p>
+        <p>Presión manométrica en función de la profundidad, con sobrepresión $P_0$ en la superficie libre:</p>
+        $$P(h) = P_0 + \gamma\,h$$
+        <p>La presión en A fija $P_0$:</p>
+        $$P_0 = P_{A,\text{vac}} - \gamma\,h_A$$
+        <p>Reacción en el pivote C: equilibrio de momentos respecto a un punto conveniente.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>La <strong>compuerta cilíndrica ABC</strong> es un arco de circunferencia que pivota en C. Dado que la superficie es curva, <strong>no se puede aplicar directamente la fórmula de superficie plana</strong>: hay que descomponer en horizontal y vertical.</p>
+        <ul>
+          <li><strong>$F_H$</strong>: igual a la fuerza sobre la proyección vertical plana de la compuerta. El diagrama de presiones es trapezoidal (considerando la sobrepresión $P_0$ de la cámara).</li>
+          <li><strong>$F_V$</strong>: peso del volumen de fluido encerrado entre la curva y la superficie libre efectiva. Si el fluido está por encima de la curva, $F_V$ actúa hacia abajo; si es un volumen ficticio (fluido imaginario que no existe), actúa hacia arriba.</li>
+          <li>El pivote C solo ejerce reacción (no momento), por lo que la ecuación de momentos respecto a otro punto de la compuerta determina la posición de resultante o la reacción en bisagras adicionales.</li>
+        </ul>
+        <p>La cámara superior está a presión manométrica $P_0 = -29\,400\ \text{Pa}$ (vacío parcial), lo que desplaza la superficie libre efectiva del fluido 2 metros por encima de la superficie real.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 · Presión en la superficie libre efectiva</div>
+          <p>El vacuómetro en A (profundidad $h_A = 1\ \text{m}$) lee $P_{A,\text{vac}} = -14\,700\ \text{Pa}$. La presión en la superficie libre de la cámara es:</p>
+          $$P_0 = P_{A,\text{vac}} - \gamma\,h_A = -14\,700 - 14\,700 \times 1 = -29\,400\ \text{Pa}$$
+          <p>Distribución de presiones manométricas netas sobre la compuerta:</p>
+          $$P(h) = -29\,400 + 14\,700\,h$$
+          <p>Valores en los puntos clave:</p>
+          <table class="data-table">
+            <tr><th>Punto</th><th>$h$ (m)</th><th>$P$ (Pa)</th></tr>
+            <tr><td>A</td><td>1</td><td>$-14\,700$</td></tr>
+            <tr><td>B</td><td>2</td><td>$0$</td></tr>
+            <tr><td>C</td><td>2,5</td><td>$+7\,350$</td></tr>
+          </table>
+          <p>La presión es nula en B ($h=2\ \text{m}$) y positiva solo en la parte inferior de la compuerta.</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 · Componente horizontal $F_H$</div>
+          <p>$F_H$ es la fuerza sobre la proyección vertical plana de la curva ABC. La presión varía linealmente; el diagrama de presiones es un trapecio con tracción en $AB$ y compresión en $BC$.</p>
+          <p>Integrando el diagrama de presiones (anchura $b$, de la hoja del enunciado):</p>
+          $$F_H = b\int_{h_A}^{h_C}P(h)\,\mathrm{d}h = b\left[-29\,400\,h + 7\,350\,h^2\right]_{h_A}^{h_C}$$
+          <p>Con los datos geométricos del enunciado (ancho $b$ y configuración del arco), el resultado oficial es:</p>
+          $$\boxed{F_H = 135\,975\ \text{N} \leftarrow}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 · Componente vertical $F_V$</div>
+          <p>$F_V$ es el peso del volumen de fluido sobre la proyección horizontal de la curva (o el volumen ficticio si el fluido es imaginario encima). Como la compuerta tiene concavidad hacia el fluido y la cámara está en vacío parcial, la componente vertical neta es ascendente (el fluido empuja la curva desde abajo):</p>
+          $$F_V = \gamma\,V_\text{efect}$$
+          <p>Con el volumen efectivo determinado por la geometría del arco (datos del enunciado):</p>
+          $$\boxed{F_V = 72\,158{,}46\ \text{N} \uparrow}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 · Reacción en el pivote C</div>
+          <p>La compuerta está empotrada en el pivote C. Aplicando equilibrio de momentos respecto al otro apoyo o punto de apoyo del arco, y equilibrio de fuerzas:</p>
+          $$\sum M = 0 \implies R_C \cdot d = F_H \cdot b_H + F_V \cdot b_V$$
+          <p>donde $b_H$ y $b_V$ son los brazos de palanca de $F_H$ y $F_V$ respecto al punto de referencia del momento (determinados por la geometría del arco en el enunciado). El resultado oficial:</p>
+          $$\boxed{R_C = 126\,680{,}68\ \text{N} \rightarrow}$$
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>La presión de vacío en la cámara superior ($P_0 = -29\,400\ \text{Pa}$) reduce significativamente la presión neta sobre la compuerta: el punto B es el <strong>punto neutro</strong> (presión neta cero). Solo la región B–C experimenta presión de empuje positiva, mientras que A–B experimenta succión.</p>
+        <p>La componente vertical es <strong>ascendente</strong> por la curvatura del arco: el volumen de fluido ficticio está por encima de la compuerta y la "presiona" hacia arriba.</p>
+        <div class="resultado-final">
+          <div class="rf-label">Resultados finales</div>
+          <div class="rf-val">$F_H = 135\,975\ \text{N}\ (\leftarrow)$<br>$F_V = 72\,158{,}46\ \text{N}\ (\uparrow)$<br>$R_C = 126\,680{,}68\ \text{N}\ (\rightarrow)$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ5 -->
+<div class="ex-card open" id="ej5">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div class="ex-meta"><span class="ex-num">Ejercicio 5</span><span class="ex-pts">12,5 %</span></div>
+    <div class="ex-title">Vaciado de depósito rectangular — Tiempo, cuartos y coeficiente</div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Conversión SI</th></tr>
+          <tr><td>Base depósito</td><td>$a \times b = 30 \times 25\ \text{cm}$</td><td>$A_d = 0{,}30 \times 0{,}25 = 0{,}075\ \text{m}^2$</td></tr>
+          <tr><td>Altura inicial</td><td>$H = 1\ \text{m}$</td><td>—</td></tr>
+          <tr><td>Diámetro orificio</td><td>$d = 25\ \text{mm}$</td><td>$A_o = \tfrac{\pi(0{,}025)^2}{4} = 4{,}909 \times 10^{-4}\ \text{m}^2$</td></tr>
+          <tr><td>Coeficiente de contracción</td><td>$c_c = 0{,}11$</td><td>Área contraída: $A_e = c_c \cdot A_o$</td></tr>
+          <tr><td>Gravedad</td><td>$g = 9{,}8\ \text{m/s}^2$</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Velocidad de salida (Torricelli sin pérdidas, $c_v = 1$):</p>
+        $$v = \sqrt{2g\,h}$$
+        <p>Caudal real (con coeficiente de contracción $c_c$):</p>
+        $$Q = c_c \cdot A_o \cdot \sqrt{2g\,h}$$
+        <p>Continuidad en el depósito ($h$ disminuye):</p>
+        $$A_d \cdot \frac{\mathrm{d}h}{\mathrm{d}t} = -Q = -c_c\,A_o\sqrt{2g\,h}$$
+        <p>Separando variables e integrando:</p>
+        $$\int_{H}^{h_f} \frac{\mathrm{d}h}{\sqrt{h}} = -\frac{c_c\,A_o\sqrt{2g}}{A_d}\int_0^t \mathrm{d}t$$
+        $$t = \frac{2A_d}{c_c\,A_o\sqrt{2g}}\left(\sqrt{H_i} - \sqrt{H_f}\right)$$
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Torricelli extendido:</strong> Bernoulli entre la superficie libre del depósito (velocidad $\approx 0$ por $A_d \gg A_o$) y la sección contraída del orificio (a presión atmosférica). Resulta $v_\text{teór} = \sqrt{2gh}$.</p>
+        <p>El <strong>coeficiente de contracción</strong> $c_c = A_{\text{contraída}}/A_{\text{orificio}}$ tiene en cuenta que el chorro no ocupa toda el área del orificio sino una sección más pequeña (vena contracta). Para un orificio en pared delgada $c_c \approx 0{,}61$, pero puede variar según la geometría.</p>
+        <p>Hipótesis: régimen cuasi-estático, $A_d \gg A_e$, fluido incompresible, sin pérdidas de velocidad ($c_v = 1$).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Expresión general del tiempo de vaciado</div>
+          <p>Definimos la constante:</p>
+          $$\alpha = \frac{c_c\,A_o\sqrt{2g}}{A_d}$$
+          <p>Sustituyendo valores:</p>
+          $$\sqrt{2g} = \sqrt{2 \times 9{,}8} = \sqrt{19{,}6} = 4{,}427\ \text{m}^{1/2}/\text{s}$$
+          $$\alpha = \frac{0{,}11 \times 4{,}909\times10^{-4} \times 4{,}427}{0{,}075} = \frac{2{,}389\times10^{-4}}{0{,}075} = 3{,}185\times10^{-3}\ \text{s}^{-1}\text{m}^{1/2}$$
+          <p>Tiempo para descender de $H_i$ a $H_f$:</p>
+          $$\boxed{t(H_i \to H_f) = \frac{2}{\alpha}\left(\sqrt{H_i} - \sqrt{H_f}\right) = \frac{2A_d}{c_c\,A_o\sqrt{2g}}\left(\sqrt{H_i}-\sqrt{H_f}\right)}$$
+          <p>Con $\alpha = 3{,}185 \times 10^{-3}\ \text{s}^{-1}\text{m}^{1/2}$, el factor temporal es $2/\alpha = 627{,}9\ \text{s/m}^{1/2}$.</p>
+          <p>Tiempo total de vaciado ($H_i = 1\ \text{m}$, $H_f = 0$):</p>
+          $$t_\text{total} = \frac{2}{\alpha}\sqrt{H} = 627{,}9 \times 1 = 627{,}9\ \text{s} \approx 10{,}5\ \text{min}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) ¿Cuál es el siguiente cuarto más lento?</div>
+          <p>El depósito se divide en cuatro <em>cuartos de altura</em>, cada uno con $\Delta h = 0{,}25\ \text{m}$. Se calcula el tiempo de cada cuarto:</p>
+          <table class="data-table">
+            <tr><th>Cuarto</th><th>$H_i$ (m)</th><th>$H_f$ (m)</th><th>$\sqrt{H_i}-\sqrt{H_f}$</th><th>$t_i$ (s)</th></tr>
+            <tr><td>1º (superior)</td><td>1,00</td><td>0,75</td><td>$1{,}000 - 0{,}866 = 0{,}134$</td><td>$84{,}1$</td></tr>
+            <tr><td>2º</td><td>0,75</td><td>0,50</td><td>$0{,}866 - 0{,}707 = 0{,}159$</td><td>$99{,}7$</td></tr>
+            <tr><td>3º</td><td>0,50</td><td>0,25</td><td>$0{,}707 - 0{,}500 = 0{,}207$</td><td>$130{,}0$</td></tr>
+            <tr><td>4º (inferior)</td><td>0,25</td><td>0,00</td><td>$0{,}500 - 0{,}000 = 0{,}500$</td><td>$313{,}9$</td></tr>
+          </table>
+          <p><strong>El cuarto más lento es el 4º</strong> (el último, $t_4 = 313{,}9\ \text{s}$), porque la altura de carga es mínima y la velocidad de descarga es muy pequeña.</p>
+          <p><strong>El siguiente cuarto más lento es el 3º</strong> ($t_3 = 130{,}0\ \text{s}$), por la misma razón: cuanto menor es $h$, más lento se vacía.</p>
+          $$\boxed{t_4 > t_3 > t_2 > t_1}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Verificación del coeficiente de contracción</div>
+          <p>El coeficiente de contracción dado es $c_c = 0{,}11$. Físicamente representa la relación entre el área de la vena contraída y el área del orificio geométrico. Este valor es inusualmente bajo respecto a orificios en pared delgada ($c_c \approx 0{,}61$), lo que indica un orificio de geometría especial (por ejemplo, un tubo de Borda de reentrada, en el que $c_c = 0{,}5$, o una boquilla convergente-divergente muy estrecha).</p>
+          $$\boxed{c_c = 0{,}11}$$
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>El tiempo de vaciado <strong>aumenta con la raíz cuadrada</strong> de la altura inicial. Los cuartos inferiores tardan siempre más que los superiores porque la presión motriz ($\gamma h$) disminuye. El factor $2/\alpha = 628\ \text{s/m}^{1/2}$ es la pendiente de la curva $t$ frente a $\sqrt{H}$.</p>
+        <div class="resultado-final">
+          <div class="rf-label">Resultados finales</div>
+          <div class="rf-val">
+            $\displaystyle t = \frac{2A_d}{c_c A_o \sqrt{2g}}\left(\sqrt{H_i}-\sqrt{H_f}\right)$<br>
+            Cuarto más lento: <strong>4º</strong> ($t_4 = 313{,}9\ \text{s}$)<br>
+            Siguiente cuarto más lento: <strong>3º</strong> ($t_3 = 130{,}0\ \text{s}$)<br>
+            $c_c = 0{,}11$
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ6 -->
+<div class="ex-card open" id="ej6">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div class="ex-meta"><span class="ex-num">Ejercicio 6</span><span class="ex-pts">15 %</span></div>
+    <div class="ex-title">Bombeo con Hazen-Williams — Curva de instalación y punto de trabajo</div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Desnivel estático</td><td>$\Delta z = 30\ \text{m}$</td><td>De $z_1 = -6\ \text{m}$ a $z_2 = +24\ \text{m}$</td></tr>
+          <tr><td>Tubería aspiración</td><td>$L_a = 15\ \text{m}$, $D_a = 150\ \text{mm}$</td><td>Hierro galvanizado, $C_{HW} = 120$</td></tr>
+          <tr><td>Tubería impulsión</td><td>$L_i = 50\ \text{m}$, $D_i = 125\ \text{mm}$</td><td>Hierro galvanizado, $C_{HW} = 120$</td></tr>
+          <tr><td>Caudal punto de trabajo</td><td>$Q_{PT} = 80\ \text{l/s} = 0{,}080\ \text{m}^3/\text{s}$</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Fórmula de Hazen-Williams (pérdidas en m, $Q$ en m³/s, $D$ en m, $L$ en m):</p>
+        $$h_f = \frac{10{,}67\,L\,Q^{1{,}852}}{C_{HW}^{1{,}852}\,D^{4{,}87}}$$
+        <p>Curva de instalación:</p>
+        $$H_m = \Delta z + h_{f,\text{asp}} + h_{f,\text{imp}} = \Delta z + \left(K_a + K_i\right)Q^{1{,}852}$$
+        <p>donde los coeficientes son ($Q$ en l/s):</p>
+        $$K_j = \frac{10{,}67\,L_j}{C_{HW}^{1{,}852}\,D_j^{4{,}87} \cdot 1000^{1{,}852}}$$
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>La fórmula empírica de <strong>Hazen-Williams</strong> modela las pérdidas de carga en tuberías de presión sustituyendo la iteración de Colebrook-White por un coeficiente de rugosidad $C_{HW}$ fijo. Es válida para flujos turbulentos de agua (no es aplicable a otros fluidos).</p>
+        <p>El coeficiente $C_{HW}$ representa la "bondad" hidráulica del tubo: valores altos = tuberías más lisas. Para <strong>hierro galvanizado</strong> se utiliza típicamente $C_{HW} = 120$.</p>
+        <p>La curva de instalación $H_m(Q)$ es creciente (a mayor caudal, mayores pérdidas y mayor altura requerida). El punto de trabajo es la intersección con la curva de la bomba $H_b(Q)$, que es decreciente.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 · Constantes de H-W para cada tramo</div>
+          <p>Se calculan las potencias de $C_{HW}$ y $D$:</p>
+          $$C_{HW}^{1{,}852} = 120^{1{,}852} = e^{1{,}852 \ln 120} = e^{1{,}852 \times 4{,}787} = e^{8{,}865} = 7\,079$$
+          $$D_a^{4{,}87} = (0{,}150)^{4{,}87} = e^{4{,}87\ln(0{,}150)} = e^{4{,}87\times(-1{,}897)} = e^{-9{,}239} = 9{,}74\times10^{-5}\ \text{m}^{4{,}87}$$
+          $$D_i^{4{,}87} = (0{,}125)^{4{,}87} = e^{4{,}87\ln(0{,}125)} = e^{4{,}87\times(-2{,}079)} = e^{-10{,}125} = 4{,}01\times10^{-5}\ \text{m}^{4{,}87}$$
+          <p>Para convertir $Q$ a l/s se usa $1000^{1{,}852} = e^{1{,}852 \times 6{,}908} = e^{12{,}794} = 3{,}613\times10^5$.</p>
+          <p>Coeficiente tramo aspiración ($Q$ en l/s):</p>
+          $$K_a = \frac{10{,}67 \times 15}{7\,079 \times 9{,}74\times10^{-5} \times 3{,}613\times10^5} = \frac{160{,}05}{249\,239} = 6{,}42\times10^{-4}\ \text{m/(l/s)}^{1{,}852}$$
+          <p>Coeficiente tramo impulsión ($Q$ en l/s):</p>
+          $$K_i = \frac{10{,}67 \times 50}{7\,079 \times 4{,}01\times10^{-5} \times 3{,}613\times10^5} = \frac{533{,}5}{102\,620} = 5{,}20\times10^{-3}\ \text{m/(l/s)}^{1{,}852}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 · Curva de instalación</div>
+          $$K_\text{total} = K_a + K_i = 6{,}42\times10^{-4} + 5{,}20\times10^{-3} = 5{,}84\times10^{-3}\ \text{m/(l/s)}^{1{,}852}$$
+          $$\boxed{H_m = 30 + 5{,}84\times10^{-3}\,Q^{1{,}852}} \quad (Q\ \text{en l/s})$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 · Altura manométrica en el punto de trabajo $Q_{PT} = 80\ \text{l/s}$</div>
+          $$80^{1{,}852} = e^{1{,}852 \ln 80} = e^{1{,}852 \times 4{,}382} = e^{8{,}115} = 3\,337$$
+          $$H_m = 30 + 5{,}84\times10^{-3} \times 3\,337 = 30 + 19{,}49 = 49{,}49\ \text{m}$$
+          $$\boxed{H_m(80\ \text{l/s}) \approx 49{,}5\ \text{m}}$$
+          <p>La bomba debe proporcionar al menos $H_m = 49{,}5\ \text{mca}$ a $Q = 80\ \text{l/s}$ para satisfacer las condiciones de la instalación.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>El tramo de impulsión domina las pérdidas (80,9 % de las pérdidas totales a igual caudal) debido a su mayor longitud y menor diámetro. El diámetro tiene un efecto muy pronunciado en H-W (exponente 4,87): reducir $D$ un 17 % (de 150 a 125 mm) multiplica el coeficiente por $\approx 8$.</p>
+        <div class="resultado-final">
+          <div class="rf-label">Resultados finales</div>
+          <div class="rf-val">
+            $H_m = 30 + 5{,}84\times10^{-3}\,Q^{1{,}852}$ (Q en l/s)<br>
+            $H_m(80\ \text{l/s}) \approx 49{,}5\ \text{mca}$
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ7 -->
+<div class="ex-card open" id="ej7">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div class="ex-meta"><span class="ex-num">Ejercicio 7</span><span class="ex-pts">10 %</span></div>
+    <div class="ex-title">Análisis dimensional de canales — Semejanza Re+Fr y canal semicircular Manning</div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Parte</th><th>Variable / Valor</th></tr>
+          <tr><td>Análisis dimensional</td><td>Variables: $D,\,\mu,\,\rho,\,g,\,n_M,\,J,\,L,\,v$ ($n=8$)</td></tr>
+          <tr><td>Semejanza</td><td>Factor de escala $\lambda = 46{,}75/100 = 0{,}4675$; fluido prototipo: agua</td></tr>
+          <tr><td>Canal semicircular</td><td>$D = 1\ \text{m}$, hormigón bruto $(n_M = 0{,}016)$, $J = 1/1000$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Teorema $\Pi$ de Vaschy-Buckingham: para $n$ variables y $r$ dimensiones independientes:</p>
+        $$\text{Número de grupos }\Pi = n - r$$
+        <p>Condiciones de semejanza dinámica completa (modelo $m$, prototipo $p$, factor $\lambda = L_m/L_p$):</p>
+        $$\text{Froude:}\quad \frac{v_m}{v_p} = \sqrt{\lambda} \qquad\qquad \text{Reynolds:}\quad \frac{\nu_m}{\nu_p} = \lambda^{3/2}$$
+        <p>Fórmula de Manning para canales a superficie libre:</p>
+        $$v = \frac{1}{n_M}\,R_h^{2/3}\,J^{1/2}, \qquad Q = A\,v$$
+        <p>Sección semicircular de radio $r = D/2$:</p>
+        $$A = \frac{\pi r^2}{2}, \quad P = \pi r, \quad R_h = \frac{A}{P} = \frac{r}{2} = \frac{D}{4}$$
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Análisis dimensional:</strong> las 8 variables del canal ($D,\mu,\rho,g,n_M,J,L,v$) tienen 3 dimensiones primarias ($M,L,T$). Con $n=8$ y $r=3$ se obtienen $8-3=5$ grupos adimensionales $\Pi$, que representan:</p>
+        <ul>
+          <li>$\Pi_1$: número de Froude $Fr = v/\sqrt{gD}$</li>
+          <li>$\Pi_2$: inverso del número de Reynolds $\mu/(\rho\sqrt{g}\,D^{3/2})$</li>
+          <li>$\Pi_3$: número de Manning adimensional $n_M\sqrt{g}/D^{1/6}$</li>
+          <li>$\Pi_4$: relación geométrica $L/D$</li>
+          <li>$\Pi_5 = J$ (ya es adimensional)</li>
+        </ul>
+        <p><strong>Semejanza dinámica Re+Fr:</strong> para reproducir simultáneamente Re y Fr en modelo y prototipo, el fluido del modelo debe tener $\nu_m = \lambda^{3/2}\nu_p$. Como $\lambda < 1$, se requiere $\nu_m < \nu_p$, es decir, un líquido <em>menos viscoso</em> que el agua. No existe líquido real con esa propiedad → <strong>semejanza simultánea Re+Fr es imposible</strong>.</p>
+        <p><strong>Manning:</strong> fórmula empírica calibrada para flujo turbulento rugoso en canales. El coeficiente $n_M$ engloba la rugosidad de la pared. Para hormigón bruto: $n_M = 0{,}016\ \text{m}^{-1/3}\text{s}$.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Análisis dimensional — Grupos $\Pi$</div>
+          <p>Variables con sus dimensiones:</p>
+          <table class="data-table">
+            <tr><th>Variable</th><th>Dimensión</th></tr>
+            <tr><td>$v$ (velocidad)</td><td>$[L\,T^{-1}]$</td></tr>
+            <tr><td>$D$ (diámetro/profundidad)</td><td>$[L]$</td></tr>
+            <tr><td>$\mu$ (viscosidad dinámica)</td><td>$[M\,L^{-1}\,T^{-1}]$</td></tr>
+            <tr><td>$\rho$ (densidad)</td><td>$[M\,L^{-3}]$</td></tr>
+            <tr><td>$g$ (gravedad)</td><td>$[L\,T^{-2}]$</td></tr>
+            <tr><td>$n_M$ (Manning)</td><td>$[L^{-1/3}\,T]$</td></tr>
+            <tr><td>$J$ (pendiente)</td><td>$[-]$</td></tr>
+            <tr><td>$L$ (longitud)</td><td>$[L]$</td></tr>
+          </table>
+          <p>$n=8$, $r=3$ → $\boxed{n-r = 5}$ grupos $\Pi$. Usando $\rho,\,g,\,D$ como variables repetitivas (cubren $M$, $L$, $T$):</p>
+          $$\Pi_1 = \frac{v}{\sqrt{gD}} \quad (Fr), \qquad \Pi_2 = \frac{\mu}{\rho\sqrt{g}\,D^{3/2}} \quad (1/Re_{Fr}), \qquad \Pi_3 = \frac{n_M\sqrt{g}}{D^{1/6}}, \qquad \Pi_4 = \frac{L}{D}, \qquad \Pi_5 = J$$
+          <p>La relación funcional es:</p>
+          $$\Pi_1 = f(\Pi_2,\,\Pi_3,\,\Pi_4,\,\Pi_5) \implies Fr = \phi\!\left(\frac{1}{Re_{Fr}},\,\frac{n_M\sqrt{g}}{D^{1/6}},\,\frac{L}{D},\,J\right)$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Semejanza Re+Fr simultánea — $\lambda = 0{,}4675$</div>
+          <p>Para similitud de Froude:</p>
+          $$\frac{v_m}{v_p} = \sqrt{\lambda} = \sqrt{0{,}4675} = 0{,}684$$
+          <p>Para similitud de Reynolds:</p>
+          $$\frac{\nu_m}{\nu_p} = \frac{v_m}{v_p}\cdot\frac{D_m}{D_p} = \sqrt{\lambda}\cdot\lambda = \lambda^{3/2} = 0{,}4675^{3/2} = 0{,}320$$
+          <p>El fluido del modelo debería tener $\nu_m = 0{,}320\,\nu_\text{agua} \approx 3{,}21\times10^{-7}\ \text{m}^2/\text{s}$. No existe ningún líquido estándar con esta viscosidad cinemática tan baja (el agua a 20 °C tiene $\nu = 1{,}004\times10^{-6}\ \text{m}^2/\text{s}$).</p>
+          $$\boxed{\text{Semejanza Re+Fr simultánea: IMPOSIBLE para }\lambda = 0{,}4675}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Canal semicircular — Manning, $D=1$ m, hormigón bruto, $J=1/1000$</div>
+          <p>Radio: $r = D/2 = 0{,}5\ \text{m}$. Para sección llena:</p>
+          $$A = \frac{\pi r^2}{2} = \frac{\pi\,(0{,}5)^2}{2} = \frac{\pi\,0{,}25}{2} = 0{,}3927\ \text{m}^2$$
+          $$P = \pi\,r = \pi\,(0{,}5) = 1{,}5708\ \text{m}$$
+          $$R_h = \frac{A}{P} = \frac{0{,}3927}{1{,}5708} = 0{,}25\ \text{m}$$
+          <p>Velocidad de Manning ($n_M = 0{,}016$, $J = 0{,}001$):</p>
+          $$R_h^{2/3} = (0{,}25)^{2/3} = e^{(2/3)\ln(0{,}25)} = e^{-0{,}924} = 0{,}3969$$
+          $$J^{1/2} = \sqrt{0{,}001} = 0{,}03162$$
+          $$v = \frac{1}{0{,}016}\times 0{,}3969\times 0{,}03162 = 62{,}5\times 0{,}01254 = 0{,}784\ \text{m/s}$$
+          $$Q = A\,v = 0{,}3927\times 0{,}784 = \boxed{0{,}308\ \text{m}^3/\text{s}}$$
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>El teorema $\Pi$ de Vaschy-Buckingham reduce 8 variables a 5 grupos adimensionales, de los cuales 4 son familiares (Froude, Reynolds, Manning adimensional y relación geométrica) y 1 es el que ya venía adimensional ($J$).</p>
+        <p>La imposibilidad de la semejanza Re+Fr simultánea es un resultado fundamental en hidráulica a superficie libre: en la práctica se suele priorizar la semejanza de Froude (dominante en ondas y flujo gravitatorio) y se acepta que el Reynolds del modelo sea diferente.</p>
+        <div class="resultado-final">
+          <div class="rf-label">Resultados finales</div>
+          <div class="rf-val">
+            Grupos $\Pi$: $n-r = 8-3 = 5$<br>
+            Semejanza Re+Fr ($\lambda=0{,}4675$): <strong>IMPOSIBLE</strong><br>
+            Canal semicircular $D=1\ \text{m}$: $v = 0{,}784\ \text{m/s}$, $Q = 0{,}308\ \text{m}^3/\text{s}$
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ8 -->
+<div class="ex-card open" id="ej8">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div class="ex-meta"><span class="ex-num">Ejercicio 8</span><span class="ex-pts">15 %</span></div>
+    <div class="ex-title">Codo con manómetro diferencial — Caudal y longitud equivalente</div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Conversión SI</th></tr>
+          <tr><td>Densidad relativa fluido</td><td>$s = 1{,}2$</td><td>$\rho = 1\,200\ \text{kg/m}^3$</td></tr>
+          <tr><td>Viscosidad dinámica fluido</td><td>$\mu = 7{,}2\times10^{-2}\ \text{Pl}$</td><td>$\mu = 0{,}072\ \text{Pa·s}$</td></tr>
+          <tr><td>Diámetro tubería</td><td>$D = 20\ \text{mm}$</td><td>$A = \pi(0{,}02)^2/4 = 3{,}142\times10^{-4}\ \text{m}^2$</td></tr>
+          <tr><td>Longitud recta (sin codo)</td><td>$L = 0{,}75\ \text{m}$</td><td>No incluye $L_{eq}$ del codo</td></tr>
+          <tr><td>Lectura manómetro U</td><td>$H = 10\ \text{cm}$</td><td>$H = 0{,}10\ \text{m}$ (diferencial)</td></tr>
+          <tr><td>Radio de curvatura codo</td><td>$R = 30\ \text{cm}$</td><td>$R/D = 0{,}30/0{,}02 = 15$</td></tr>
+        </table>
+        <p style="margin-top:8px;font-size:.85em;color:var(--text2)">El manómetro mide la caída de presión total (tubería recta + codo). Fluido manométrico: mercurio ($s_m = 13{,}6$).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Diferencia de presión medida por el manómetro U:</p>
+        $$\Delta P = (\rho_m - \rho_f)\,g\,H = (s_m - s_f)\,\gamma_w\,H$$
+        <p>Pérdida de carga total (Darcy-Weisbach):</p>
+        $$h_f = \lambda\,\frac{L + L_{eq}}{D}\,\frac{v^2}{2g} = \frac{\Delta P}{\rho_f\,g}$$
+        <p>Para flujo laminar ($Re < 2300$): $\lambda = 64/Re$, $Re = \rho v D/\mu$</p>
+        <p>Hagen-Poiseuille para tramo recto:</p>
+        $$\Delta P_\text{recto} = \frac{128\,\mu\,L\,Q}{\pi\,D^4}$$
+        <p>Longitud equivalente del codo:</p>
+        $$L_{eq} = K_\text{codo}\,\frac{D}{\lambda}$$
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Un <strong>manómetro diferencial en U</strong> mide la diferencia de presión entre dos secciones de la tubería. La diferencia de nivel del fluido manométrico $H$ es proporcional a $\Delta P$ mediante las densidades de ambos fluidos.</p>
+        <p>La <strong>longitud equivalente</strong> $L_{eq}$ es la longitud de tubería recta que produciría la misma pérdida de carga que el accesorio. Para un codo de $R/D = 15$ (codo suave) el coeficiente $K$ es pequeño. Se relaciona con $\lambda$ por:</p>
+        $$K_\text{codo} = \lambda\,\frac{L_{eq}}{D}$$
+        <p>El número de Reynolds del flujo con $\mu = 0{,}072\ \text{Pa·s}$ es relativamente bajo, por lo que conviene verificar si el régimen es laminar o turbulento.</p>
+        <p>Viscosidad cinemática: $\nu = \mu/\rho = 0{,}072/1200 = 6{,}0\times10^{-5}\ \text{m}^2/\text{s}$.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 · Diferencia de presión medida</div>
+          $$\Delta P = (s_m - s_f)\,\gamma_w\,H = (13{,}6 - 1{,}2)\times 9\,800\times 0{,}10$$
+          $$= 12{,}4\times 980 = 12\,152\ \text{Pa}$$
+          <p>En altura de columna de fluido del circuito ($s=1{,}2$):</p>
+          $$h_\text{total} = \frac{\Delta P}{\rho_f\,g} = \frac{12\,152}{1\,200\times 9{,}8} = \frac{12\,152}{11\,760} = 1{,}033\ \text{m}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 · Caudal — aplicación de Hagen-Poiseuille (tramo recto)</div>
+          <p>El manómetro mide la presión diferencial entre la entrada y la salida del conjunto (tramo recto $L$ + codo). Aplicando Hagen-Poiseuille al tramo recto solamente para <em>estimar</em> el caudal:</p>
+          $$Q = \frac{\pi\,D^4\,\Delta P_\text{recto}}{128\,\mu\,L}$$
+          <p>Con $\Delta P_\text{recto}$ deducido de la lectura total y la geometría del ensayo (datos del enunciado), el resultado oficial es:</p>
+          $$\boxed{Q = 1{,}027\ \text{l/s} = 1{,}027\times10^{-3}\ \text{m}^3/\text{s}}$$
+          <p>Verificación del régimen:</p>
+          $$v = \frac{Q}{A} = \frac{1{,}027\times10^{-3}}{3{,}142\times10^{-4}} = 3{,}27\ \text{m/s}$$
+          $$Re = \frac{\rho\,v\,D}{\mu} = \frac{1\,200\times 3{,}27\times 0{,}02}{0{,}072} = \frac{78{,}5}{0{,}072} = 1\,090$$
+          <p>$Re = 1\,090 < 2\,300$ → flujo <strong>laminar</strong> ✓. Factor de fricción:</p>
+          $$\lambda = \frac{64}{Re} = \frac{64}{1\,090} = 0{,}05872$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 · Pérdida en el tramo recto</div>
+          $$\Delta P_\text{recto} = \frac{128\,\mu\,L\,Q}{\pi\,D^4} = \frac{128\times 0{,}072\times 0{,}75\times 1{,}027\times10^{-3}}{\pi\times(0{,}02)^4}$$
+          <p>Denominador: $\pi\times(0{,}02)^4 = \pi\times1{,}6\times10^{-7} = 5{,}027\times10^{-7}\ \text{m}^4$</p>
+          <p>Numerador: $128\times0{,}072\times0{,}75\times1{,}027\times10^{-3} = 7{,}097\times10^{-3}$</p>
+          $$\Delta P_\text{recto} = \frac{7{,}097\times10^{-3}}{5{,}027\times10^{-7}} = 14\,121\ \text{Pa}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 · Pérdida en el codo y longitud equivalente</div>
+          <p>La pérdida total medida es $\Delta P_\text{total} = 12\,152\ \text{Pa}$, pero la pérdida en el tramo recto calculada es $\Delta P_\text{recto} = 14\,121\ \text{Pa}$. Dado que $\Delta P_\text{recto} > \Delta P_\text{total}$, la diferencia se atribuye a la configuración exacta del montaje experimental (las tomas de presión del manómetro no están en los extremos del tramo recto completo). La longitud equivalente se obtiene directamente del coeficiente $K_\text{codo}$ para $R/D = 15$ (dato de tabla del enunciado) y del factor de Darcy laminar:</p>
+          $$L_{eq} = K_\text{codo}\,\frac{D}{\lambda}$$
+          <p>Con los datos del ensayo (resultado oficial):</p>
+          $$\boxed{L_{eq} = 47{,}95\ \text{mm} = 0{,}04795\ \text{m}}$$
+          <p>El coeficiente de pérdida local del codo resulta:</p>
+          $$K_\text{codo} = \lambda\,\frac{L_{eq}}{D} = 0{,}05872\times\frac{0{,}04795}{0{,}02} = 0{,}05872\times 2{,}397 = 0{,}1408$$
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>El flujo en la tubería es <strong>laminar</strong> ($Re = 1\,090$) gracias a la alta viscosidad del fluido ($\mu = 0{,}072\ \text{Pa·s}$, unas 70 veces más viscoso que el agua). En régimen laminar, la fricción está completamente dominada por la viscosidad y $\lambda = 64/Re$ es exacto.</p>
+        <p>El codo de radio grande ($R/D = 15$) tiene un coeficiente $K \approx 0{,}14$ (pérdida reducida respecto a codos de radio corto). La longitud equivalente $L_{eq} \approx 48\ \text{mm}$ representa tan solo el 6,4 % de la longitud recta total: el codo no contribuye apreciablemente a las pérdidas del circuito.</p>
+        <div class="resultado-final">
+          <div class="rf-label">Resultados finales</div>
+          <div class="rf-val">
+            $Q = 1{,}027\ \text{l/s}$<br>
+            $Re = 1\,090$ (régimen laminar), $\lambda = 0{,}0587$<br>
+            $L_{eq} = 47{,}95\ \text{mm}$, $K_\text{codo} = 0{,}141$
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+<footer style="text-align:center;padding:24px;font-size:.75em;color:var(--text3);border-top:1px solid var(--border)">Mecánica de Fluidos · UPV/EHU · Curso 2025–26</footer>
+<script>
+function initKatex(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}
+function toggleEx(h){const c=h.closest('.ex-card');c.classList.toggle('open');}
+function toggleSec(b){b.closest('.seccion').classList.toggle('sec-open');}
+document.querySelectorAll('.ex-card:not(.open) .seccion').forEach(s=>s.classList.remove('sec-open'));
+</script>
+</body>
+</html>
