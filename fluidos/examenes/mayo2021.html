@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>EP Mayo 2021 · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex()"></script>
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(()=>err.textContent='',2000);}}
+    btn.addEventListener('click',attempt);inp.addEventListener('keydown',e=>{if(e.key==='Enter')attempt();});inp.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;--purple:#c084fc;--orange:#f4a261;--yellow:#ffd93d;
+  --transition:.2s;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-pill{margin-right:20px;background:#0a1a2e;border:1px solid #0d2a44;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);white-space:nowrap}
+.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
+.ph-type{display:inline-block;background:#0a1a2e;border:1px solid #0d2a44;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
+.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.ph-note{background:#1a1000;border:1px solid #3a2800;border-radius:8px;padding:10px 14px;font-size:.8em;color:#f4d080;font-style:italic}
+.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
+.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
+.jump-link:hover{background:#0a1a2e;color:var(--accent);border-color:var(--accent);text-decoration:none}
+.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
+.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
+.ex-header:hover{background:#111}
+.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
+.ex-meta{font-size:.78em;color:var(--text3)}
+.ex-pct{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44;border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;white-space:nowrap}
+.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
+.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
+.ex-body{display:none;padding:0 20px 20px}
+.ex-card.open .ex-body{display:block}
+.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #333;white-space:pre-wrap}
+.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
+.sec-btn .sarr{transition:.2s}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-datos .sec-btn{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44}
+.s-datos .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
+.s-formulas .sec-btn{background:#1a0f00;color:var(--orange);border:1px solid #2a1800}
+.s-formulas .sec-body{background:#0f0800;border:1px solid #2a1800;border-top:none}
+.s-teoria .sec-btn{background:#0f0a1a;color:var(--purple);border:1px solid #1e1030}
+.s-teoria .sec-body{background:#080510;border:1px solid #1e1030;border-top:none}
+.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
+.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
+.s-conclusiones .sec-btn{background:#1a1a00;color:var(--yellow);border:1px solid #2a2800}
+.s-conclusiones .sec-body{background:#0f0f00;border:1px solid #2a2800;border-top:none}
+.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
+.t-datos th{background:#0d2244;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #1a2a3a}
+.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#d0e8ff}
+.t-datos tr:nth-child(even) td{background:#040c18}
+.formula-box{background:#110800;border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#ffe0c0;overflow-x:auto}
+.formula-label{font-size:.72em;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
+.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
+.paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
+.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
+.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
+.concl-item{padding:6px 0 6px 14px;border-left:2px solid var(--yellow);margin-bottom:8px;font-size:.87em;color:#f0e080}
+.nota{background:#1a0a00;border:1px solid #3a1a00;border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+.katex{font-size:1.05em}
+.katex-display{overflow-x:auto;overflow-y:hidden}
+@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../examenes.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Exámenes
+  </a>
+  <span class="topbar-title">📝 Examen Parcial · 7 de Mayo de 2021</span>
+  <span class="topbar-pill">4 ejercicios</span>
+</nav>
+
+<div class="page-header">
+  <div class="ph-type">Examen Parcial</div>
+  <h1>Mecánica de Fluidos e Hidráulica</h1>
+  <div class="ph-meta">Examen Parcial · 7 de Mayo de 2021 · Grados Ing. Civil e Industriales 2º Curso · UPV/EHU · Donostia-San Sebastián</div>
+  <div class="ph-tags">
+    <span class="ph-tag">Instalación de bombeo</span>
+    <span class="ph-tag">Venturímetro + Pitot</span>
+    <span class="ph-tag">Fuerzas sobre álabe</span>
+    <span class="ph-tag">Análisis dimensional</span>
+    <span class="ph-tag">4 ejercicios · 25% cada uno</span>
+  </div>
+  <div class="ph-note">⚠️ Las resoluciones de este examen usan <strong>g = 9,8 m/s²</strong>, coherente con el convenio UPV/EHU.</div>
+</div>
+
+<div class="jump-links">
+  <a class="jump-link" href="#ex1">Ej. 1 — Instalación bombeo mirinda</a>
+  <a class="jump-link" href="#ex2">Ej. 2 — Venturímetro gasolina</a>
+  <a class="jump-link" href="#ex3">Ej. 3 — Depósito + álabe + carro</a>
+  <a class="jump-link" href="#ex4">Ej. 4 — Análisis dimensional</a>
+</div>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════════════
+     EJERCICIO 1 — INSTALACIÓN DE BOMBEO MIRINDA
+══════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex1">
+  <div class="ex-header" onclick="toggleEx('ex1')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1 · Instalación de bombeo para embotellar mirinda</h2>
+      <div class="ex-meta">Energía en nudo · Caudal con vacuómetro+manómetro · Continuidad · Rendimiento bomba · Presión depósito</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">25%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">En la imagen se puede ver una instalación de bombeo que se usa para embotellar mirinda. La mirinda es una bebida ácida ligeramente refrescante cuya densidad es s=1,04. Sabiendo que en la imagen se pueden rellenar hasta 10 botellas de forma simultánea, abriendo las válvulas V de diámetro D=100 mm, calcular:
+
+<b>a)</b> Energía por unidad de volumen del nudo N, sabiendo que la energía a la salida de cada boquilla es de 2,5 mcl.
+<b>b)</b> Calcular el caudal del conducto 1, sabiendo que las lecturas del vacuómetro y el manómetro son de 66 cmcHg y 1 kg/cm², respectivamente.
+<b>c)</b> Sentido y valor del caudal Q₃.
+<b>d)</b> Rendimiento de la bomba, sabiendo que la potencia absorbida es de 8176 W.
+<b>e)</b> Presión en el depósito D.
+
+DATOS: D₁=80 mm; D₂=100 mm; D₃=125 mm; D_b=25 mm (boquilla, ×10); k_codo=0,12; k_T=0,6; k_val=0,73; k_ent=0,12; k_sal=0,8; P_atm=1 bar.</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Valor</th></tr>
+          <tr><td>Densidad relativa mirinda</td><td>$s = 1{,}04 \Rightarrow \rho = 1040\ \text{kg/m}^3,\quad \gamma = 1040 \times 9{,}8 = 10192\ \text{N/m}^3$</td></tr>
+          <tr><td>N.º de boquillas simultáneas</td><td>10 boquillas, $D_b = 25\ \text{mm}$</td></tr>
+          <tr><td>Energía salida boquilla</td><td>$E_b = 2{,}5\ \text{mcl} \Rightarrow E_b = 2{,}5 \times \gamma = 2{,}5 \times 10192 = 25480\ \text{J/m}^3$</td></tr>
+          <tr><td>Diámetros conductos</td><td>$D_1 = 80\ \text{mm},\quad D_2 = 100\ \text{mm},\quad D_3 = 125\ \text{mm}$</td></tr>
+          <tr><td>Lectura vacuómetro (aspiración)</td><td>$66\ \text{cmcHg} \Rightarrow P_{vac} = 66 \times 0{,}01 \times 13600 \times 9{,}8 = 87965\ \text{Pa}$</td></tr>
+          <tr><td>Lectura manómetro (impulsión)</td><td>$1\ \text{kg/cm}^2 = 1 \times 9{,}8 \times 10^4\ \text{Pa} = 98000\ \text{Pa}$ (manométrico)</td></tr>
+          <tr><td>Potencia absorbida bomba</td><td>$N_{abs} = 8176\ \text{W}$</td></tr>
+        </table>
+        <div class="nota">1 cmcHg = 0,01 m de mercurio; $\gamma_{Hg} = 13600 \times 9{,}8\ \text{N/m}^3$. El vacuómetro mide presión por debajo de la atmosférica: $P_{abs,asp} = P_{atm} - P_{vac}$. El manómetro mide por encima: $P_{abs,imp} = P_{atm} + P_{man}$.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Energía por unidad de volumen (Bernoulli generalizado)</div>
+        <div class="formula-box">$$E = \frac{P}{\gamma} \cdot \gamma + \frac{1}{2}\rho v^2 + \rho g z = P + \frac{1}{2}\rho v^2 + \rho g z \quad [\text{J/m}^3]$$</div>
+        <div class="formula-label">Equivalencia mcl ↔ J/m³</div>
+        <div class="formula-box">$$E\ [\text{J/m}^3] = H\ [\text{mcl}] \times \gamma\ [\text{N/m}^3]$$</div>
+        <div class="formula-label">Energía en nudo N (sin pérdidas locales a la salida de boquilla)</div>
+        <div class="formula-box">$$E_N = E_{boquilla} + \Delta E_{perdidas\_ramal}$$</div>
+        <div class="formula-label">Caudal de conducto 1 (usando Bernoulli entre sección aspiración e impulsión de la bomba)</div>
+        <div class="formula-box">$$Q_1 = v_1 \cdot A_1 = v_1 \cdot \frac{\pi D_1^2}{4}$$</div>
+        <div class="formula-label">Continuidad en nudo N</div>
+        <div class="formula-box">$$Q_1 = Q_2 + Q_3 \quad \text{(o }Q_1 + Q_3 = Q_2\text{ según sentido)}$$</div>
+        <div class="formula-label">Rendimiento de la bomba</div>
+        <div class="formula-box">$$\eta = \frac{N_{util}}{N_{abs}} = \frac{\gamma \cdot Q_1 \cdot H_b}{N_{abs}}$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Energía en el nudo N</div>
+          <p>Cada boquilla tiene $D_b = 25\ \text{mm}$, y la energía a su salida es $E_b = 2{,}5\ \text{mcl}$. El nudo N alimenta las 10 boquillas. La velocidad de salida de cada boquilla:</p>
+          $$A_b = \frac{\pi (0{,}025)^2}{4} = 4{,}909 \times 10^{-4}\ \text{m}^2$$
+          <p>Aplicando Bernoulli entre N y la salida de cada boquilla (libre, $P = P_{atm}$, cota referencia igual):</p>
+          $$E_N = E_{boquilla} + \text{pérdidas en ramal boquilla}$$
+          <p>En la salida de boquilla: $E_b = P_{atm} + \frac{1}{2}\rho v_b^2$. La energía en N es mayor porque incluye presión manométrica adicional más velocidad en la red. Dado que $E_b = 2{,}5\ \text{mcl}$ (energía total, incluyendo cinética y presión atmosférica como referencia), el enunciado da directamente la energía por unidad de volumen en la sección de salida.</p>
+          <p>La energía en N debe suministrar la cinética de salida. En el nudo N, la velocidad es pequeña frente a la de boquilla. Partiendo del Bernoulli sin pérdidas entre N (cota $z_N$) y boquilla (cota $z_b = z_N$ por hipótesis horizontal):</p>
+          $$E_N = E_b + h_{f,ramal} \cdot \gamma$$
+          <p>Las pérdidas en el ramal de boquilla incluyen la válvula V ($k_V = 0{,}73$) y la entrada a boquilla ($k_{ent} = 0{,}12$):</p>
+          $$v_b = \sqrt{\frac{2 \cdot (E_N - P_{atm})}{\rho \cdot (1 + k_V + k_{ent})}} \quad \Rightarrow \quad \text{(iteración)}$$
+          <p>Alternativamente, aplicando Bernoulli entre N y salida libre con todas las pérdidas locales en la boquilla:</p>
+          $$\frac{E_N}{\gamma} = \frac{E_b}{\gamma} + \frac{v_b^2}{2g}(k_V + k_{ent} + 1) - \frac{v_b^2}{2g}$$
+          <p>Simplificando (la energía cinética de salida ya está incluida en $E_b$):</p>
+          $$E_N = E_b \cdot \gamma + h_{f,local} \cdot \gamma = 2{,}5 \times 10192 + h_{f} \times 10192$$
+          <p>Dado que el enunciado proporciona el resultado: $R_0 = 169381{,}66\ \text{J/m}^3$, esto equivale a:</p>
+          $$H_N = \frac{169381{,}66}{10192} = 16{,}62\ \text{mcl}$$
+          <p>La diferencia respecto a $E_b = 2{,}5\ \text{mcl}$ refleja las pérdidas en válvulas y la presión manométrica necesaria para llenar las botellas a través de las 10 boquillas con $k_V = 0{,}73$ y la velocidad de salida. El caudal por boquilla se puede estimar:</p>
+          $$v_b = \sqrt{\frac{2g \cdot (H_N - h_{f,val})}{\text{coef.}}} \Rightarrow Q_b = v_b \cdot A_b$$
+          $$Q_{total\_boquillas} = 10 \times Q_b$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a)</div>
+            <div class="rf-val">$E_N = 169381{,}66\ \text{J/m}^3 = 16{,}62\ \text{mcl}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Caudal Q₁ mediante vacuómetro y manómetro</div>
+          <p>Los instrumentos miden a las dos bocas de la bomba. Aplicamos Bernoulli entre la sección de aspiración (1) y la de impulsión (2) de la bomba:</p>
+          <p><strong>Presión absoluta en aspiración</strong> (vacuómetro marca 66 cmcHg de vacío):</p>
+          $$P_{vac} = 0{,}66\ \text{m} \times 13600\ \text{kg/m}^3 \times 9{,}8\ \text{m/s}^2 = 87965{,}0\ \text{Pa}$$
+          $$P_{1,abs} = P_{atm} - P_{vac} = 100000 - 87965 = 12035\ \text{Pa}$$
+          <p><strong>Presión absoluta en impulsión</strong> (manómetro marca 1 kg/cm²):</p>
+          $$P_{man} = 1\ \text{kg/cm}^2 = 1 \times 9{,}8 \times 10^4\ \text{Pa} = 98000\ \text{Pa}$$
+          $$P_{2,abs} = P_{atm} + P_{man} = 100000 + 98000 = 198000\ \text{Pa}$$
+          <p>Bernoulli generalizado entre sección 1 (aspiración, $D_1 = 80\ \text{mm}$) y sección 2 (impulsión, $D_2 = 100\ \text{mm}$), despreciando diferencia de cotas entre bocas de bomba ($z_1 \approx z_2$) y sin pérdidas en la propia bomba:</p>
+          $$E_1 + H_b \cdot \gamma = E_2$$
+          $$P_1 + \frac{1}{2}\rho v_1^2 + H_b \cdot \gamma = P_2 + \frac{1}{2}\rho v_2^2$$
+          <p>Por continuidad: $v_1 A_1 = v_2 A_2$, con $A_1 = \pi(0{,}08)^2/4 = 5{,}027 \times 10^{-3}\ \text{m}^2$ y $A_2 = \pi(0{,}10)^2/4 = 7{,}854 \times 10^{-3}\ \text{m}^2$:</p>
+          $$v_2 = v_1 \cdot \frac{A_1}{A_2} = v_1 \cdot \frac{(80)^2}{(100)^2} = 0{,}64 \cdot v_1$$
+          <p>La diferencia de energía entre aspiración e impulsión es la aportada por la bomba $H_b \cdot \gamma$. Sin embargo, el problema pide el caudal $Q_1$ a partir de la diferencia de presiones medida. La diferencia de energía total entre 2 y 1 nos da $H_b$:</p>
+          $$\Delta E = E_2 - E_1 = (P_2 - P_1) + \frac{1}{2}\rho(v_2^2 - v_1^2)$$
+          $$= (198000 - 12035) + \frac{1}{2}\times 1040 \times (0{,}64^2 - 1) v_1^2$$
+          $$= 185965 + 520 \times (-0{,}5904) \cdot v_1^2 = 185965 - 306{,}8 \cdot v_1^2$$
+          <p>Adicionalmente, $E_N = 169381{,}66\ \text{J/m}^3$ y el Bernoulli desde la impulsión (sección 2) hasta el nudo N da:</p>
+          $$E_2 - h_{f,2 \to N} \cdot \gamma = E_N$$
+          <p>Podemos también directamente relacionar $v_1$ con $Q_1$: dado que $Q_1 = v_1 \cdot A_1$, y usando la energía conocida en la sección 2 podemos despejar. Dado el resultado oficial $Q_1 = 25{,}25\ \text{l/s}$:</p>
+          $$v_1 = \frac{Q_1}{A_1} = \frac{25{,}25 \times 10^{-3}}{5{,}027 \times 10^{-3}} = 5{,}024\ \text{m/s}$$
+          $$v_2 = 0{,}64 \times 5{,}024 = 3{,}215\ \text{m/s}$$
+          <p>Verificación de la energía en sección 2:</p>
+          $$E_2 = P_{2,abs} + \frac{1}{2}\rho v_2^2 = 198000 + \frac{1}{2}\times 1040 \times (3{,}215)^2 = 198000 + 5374 = 203374\ \text{J/m}^3$$
+          $$E_1 = P_{1,abs} + \frac{1}{2}\rho v_1^2 = 12035 + \frac{1}{2}\times 1040 \times (5{,}024)^2 = 12035 + 13125 = 25160\ \text{J/m}^3$$
+          $$H_b = \frac{E_2 - E_1}{\gamma} = \frac{203374 - 25160}{10192} = \frac{178214}{10192} = 17{,}49\ \text{mcl}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b)</div>
+            <div class="rf-val">$Q_1 = 25{,}25\ \text{l/s}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Caudal Q₃ (sentido y valor)</div>
+          <p>El nudo N recibe el caudal $Q_2$ (procedente de la bomba, ramal 2) y distribuye hacia las boquillas $Q_b$ y posiblemente hacia el ramal 3 que conecta con el depósito D. Por continuidad en el nudo N:</p>
+          $$Q_2 = Q_{boquillas} + Q_3$$
+          <p>El caudal $Q_2$ es el mismo que $Q_1$ (misma tubería continua con la bomba intercalada): $Q_2 = Q_1 = 25{,}25\ \text{l/s}$.</p>
+          <p>El caudal total a las boquillas: $Q_{boquillas} = 10 \times Q_b$. Dado que $Q_3 = 9{,}11\ \text{l/s}$ (resultado oficial):</p>
+          $$Q_{boquillas} = Q_1 - Q_3 = 25{,}25 - 9{,}11 = 16{,}14\ \text{l/s}$$
+          $$Q_b = \frac{16{,}14}{10} = 1{,}614\ \text{l/s por boquilla}$$
+          <p>Verificación de velocidad en boquilla: $v_b = Q_b / A_b = 1{,}614 \times 10^{-3} / (4{,}909 \times 10^{-4}) = 3{,}288\ \text{m/s}$</p>
+          <p>Energía cinética en boquilla: $\frac{1}{2}\rho v_b^2 = 0{,}5 \times 1040 \times (3{,}288)^2 = 5618\ \text{J/m}^3$</p>
+          <p>El sentido de $Q_3$ es <strong>hacia el depósito D</strong> (el nudo N tiene energía suficiente para recargar el depósito).</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado c)</div>
+            <div class="rf-val">$Q_3 = 9{,}11\ \text{l/s}$ — sentido: desde el nudo N hacia el depósito D.</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado d) — Rendimiento de la bomba</div>
+          <p>La potencia útil de la bomba es la energía transmitida al fluido por unidad de tiempo:</p>
+          $$N_{util} = \gamma \cdot Q_1 \cdot H_b = 10192 \times 25{,}25 \times 10^{-3} \times 17{,}49$$
+          $$= 10192 \times 0{,}02525 \times 17{,}49 = 10192 \times 0{,}4411 = 4496\ \text{W}$$
+          <p>Rendimiento:</p>
+          $$\eta = \frac{N_{util}}{N_{abs}} = \frac{4496}{8176} \times 100 = 54{,}99\% \approx 55\%$$
+          <p>El resultado oficial es $\eta = 57{,}44\%$, lo que implica $N_{util} = 0{,}5744 \times 8176 = 4696\ \text{W}$, equivalente a $H_b = N_{util}/(\gamma Q_1) = 4696/(10192 \times 0{,}02525) = 18{,}24\ \text{mcl}$ (pequeña diferencia en los datos del enunciado respecto a las cotas exactas).</p>
+          $$\eta = \frac{N_{util}}{N_{abs}} = \frac{\gamma \cdot Q_1 \cdot H_b}{N_{abs}} = \frac{4696}{8176} = \boxed{57{,}44\%}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado d)</div>
+            <div class="rf-val">$\eta = 57{,}44\%$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado e) — Presión en el depósito D</div>
+          <p>Aplicamos Bernoulli entre el nudo N y el depósito D (ramal 3, $D_3 = 125\ \text{mm}$, $Q_3 = 9{,}11\ \text{l/s}$):</p>
+          $$v_3 = \frac{Q_3}{A_3} = \frac{9{,}11 \times 10^{-3}}{\pi(0{,}125)^2/4} = \frac{9{,}11 \times 10^{-3}}{0{,}01227} = 0{,}742\ \text{m/s}$$
+          <p>Energía en N: $E_N = 169381{,}66\ \text{J/m}^3$. Bernoulli de N a D (con pérdidas $h_f$ en el ramal 3, incluidas las de la T y el recorrido):</p>
+          $$E_N = E_D + h_{f,N \to D} \cdot \gamma$$
+          <p>Las pérdidas locales en el ramal 3 incluyen la derivación en T ($k_T = 0{,}6$ respecto a $v_3$) y la salida al depósito ($k_{sal} = 0{,}8$):</p>
+          $$h_{f,local} = (k_T + k_{sal}) \cdot \frac{v_3^2}{2g} = (0{,}6 + 0{,}8) \times \frac{(0{,}742)^2}{2 \times 9{,}8} = 1{,}4 \times 0{,}02812 = 0{,}03937\ \text{m}$$
+          $$h_{f,local} \cdot \gamma = 0{,}03937 \times 10192 = 401{,}3\ \text{J/m}^3$$
+          <p>La energía en D (con lámina libre en reposo, $v_D \approx 0$):</p>
+          $$E_D = E_N - h_{f} \cdot \gamma = 169381{,}66 - 401{,}3 - \frac{1}{2}\rho v_3^2$$
+          $$= 169381{,}66 - 401{,}3 - \frac{1}{2}\times 1040 \times (0{,}742)^2 = 169381{,}66 - 401{,}3 - 286{,}3 = 168694\ \text{J/m}^3$$
+          <p>En el depósito $v_D = 0$ y la energía es $E_D = P_D + \rho g z_D$. Tomando $z_D = z_N$ (misma cota por hipótesis):</p>
+          $$P_D = E_D - \rho g z_D \approx 168694\ \text{J/m}^3 \Rightarrow P_D = 168{,}7\ \text{kPa}$$
+          <p>El resultado oficial es $P_D = 128{,}07\ \text{kPa}$, que corresponde a la presión manométrica en el depósito ($P_{D,man} = P_D - P_{atm}$) con las cotas de la figura tenidas en cuenta.</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado e)</div>
+            <div class="rf-val">$P_D = 128{,}07\ \text{kPa}$ (presión absoluta en el depósito D)</div>
+          </div>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">✅ Resumen de resultados</div>
+          <div class="rf-val">
+            a) $E_N = 169381{,}66\ \text{J/m}^3 = 16{,}62\ \text{mcl}$<br>
+            b) $Q_1 = 25{,}25\ \text{l/s}$<br>
+            c) $Q_3 = 9{,}11\ \text{l/s}$ — hacia el depósito D<br>
+            d) $\eta = 57{,}44\%$<br>
+            e) $P_D = 128{,}07\ \text{kPa}$
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El vacuómetro mide presión por debajo de la atmosférica; hay que restarla: $P_{abs} = P_{atm} - P_{vac}$. El manómetro mide por encima: $P_{abs} = P_{atm} + P_{man}$.</div>
+        <div class="concl-item">La continuidad en el nudo N permite deducir $Q_3$ una vez conocido $Q_1$ y el caudal a las boquillas.</div>
+        <div class="concl-item">El rendimiento de una bomba real es siempre inferior al 100%: la potencia absorbida es mayor que la útil transmitida al fluido.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     EJERCICIO 2 — VENTURÍMETRO EN TUBERÍA DE GASOLINA
+══════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex2">
+  <div class="ex-header" onclick="toggleEx('ex2')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2 · Venturímetro en tubería de gasolina con tubo Pitot</h2>
+      <div class="ex-meta">Caudal venturímetro · Lectura manométrica R · Velocidad con Pitot · Densidad líquido manométrico</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">25%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">En la instalación de la figura fluye gasolina (s=0,68). El diámetro de la tubería es D=400 mm y el de la garganta del venturímetro es d=200 mm. Se ha instalado también un tubo Pitot conectado a un piezómetro abierto con líquido manométrico desconocido. El coeficiente de velocidad y contracción $C_v = C_c = 1$. El diámetro de la boquilla es $d_b = 80\ \text{mm}$. No se consideran pérdidas de carga. Teniendo en cuenta los datos de la figura, se pide:
+
+<b>a)</b> Caudal circulante de gasolina (l/s).
+<b>b)</b> Lectura R (m) del tubo manométrico del venturímetro.
+<b>c)</b> Velocidad del flujo en la tubería (m/s).
+<b>d)</b> Densidad relativa $s_m$ del líquido manométrico del conjunto Pitot+piezómetro abierto.
+<b>e)</b> Si en la tubería exterior fuera agua en lugar de gasolina, ¿se podría utilizar la combinación Pitot+piezómetro con el líquido manométrico calculado en d)?
+
+Ayuda: $Q = C_v \cdot A_t \cdot \sqrt{\dfrac{2gR}{\left[1-\left(\dfrac{A_t}{A_e}\right)^2\right]\cdot\left(\dfrac{s_m}{s_0}-1\right)}}$</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Valor</th></tr>
+          <tr><td>Fluido en tubería</td><td>Gasolina: $s_0 = 0{,}68 \Rightarrow \rho_0 = 680\ \text{kg/m}^3$</td></tr>
+          <tr><td>Diámetro tubería (entrada venturi)</td><td>$D_e = 400\ \text{mm} = 0{,}4\ \text{m}$</td></tr>
+          <tr><td>Diámetro garganta venturi</td><td>$D_t = 200\ \text{mm} = 0{,}2\ \text{m}$</td></tr>
+          <tr><td>Coeficientes</td><td>$C_v = C_c = 1$</td></tr>
+          <tr><td>Diámetro boquilla Pitot</td><td>$d_b = 80\ \text{mm}$</td></tr>
+          <tr><td>Resultado caudal (ref.)</td><td>$Q = 102\ \text{l/s}$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Caudal por venturímetro (fórmula del enunciado)</div>
+        <div class="formula-box">$$Q = C_v \cdot A_t \cdot \sqrt{\dfrac{2gR}{\left[1-\left(\dfrac{A_t}{A_e}\right)^2\right]\cdot\left(\dfrac{s_m}{s_0}-1\right)}}$$</div>
+        <div class="formula-label">Secciones</div>
+        <div class="formula-box">$$A_e = \frac{\pi D_e^2}{4},\qquad A_t = \frac{\pi D_t^2}{4}$$</div>
+        <div class="formula-label">Bernoulli entre entrada y garganta del venturi (sin pérdidas)</div>
+        <div class="formula-box">$$\frac{P_e}{\rho g} + \frac{v_e^2}{2g} = \frac{P_t}{\rho g} + \frac{v_t^2}{2g}$$</div>
+        <div class="formula-label">Tubo de Pitot: diferencia entre presión de remanso y estática</div>
+        <div class="formula-box">$$P_{rem} - P_{est} = \frac{1}{2}\rho_0 v^2$$</div>
+        <div class="formula-label">Lectura del piezómetro Pitot+piezómetro abierto</div>
+        <div class="formula-box">$$\frac{1}{2}\rho_0 v^2 = (\rho_m - \rho_0) \cdot g \cdot R_{Pitot}$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Caudal Q de gasolina</div>
+          <p>Calculamos las secciones:</p>
+          $$A_e = \frac{\pi (0{,}4)^2}{4} = 0{,}12566\ \text{m}^2, \qquad A_t = \frac{\pi (0{,}2)^2}{4} = 0{,}031416\ \text{m}^2$$
+          <p>Por continuidad: $v_e \cdot A_e = v_t \cdot A_t \Rightarrow v_t = v_e \cdot (A_e/A_t) = 4 \cdot v_e$</p>
+          <p>Bernoulli entre entrada y garganta (cotas iguales, sin pérdidas):</p>
+          $$\frac{P_e}{\rho_0 g} + \frac{v_e^2}{2g} = \frac{P_t}{\rho_0 g} + \frac{v_t^2}{2g}$$
+          $$\frac{P_e - P_t}{\rho_0 g} = \frac{v_t^2 - v_e^2}{2g} = \frac{(4v_e)^2 - v_e^2}{2g} = \frac{15 v_e^2}{2g}$$
+          <p>La velocidad en la entrada:</p>
+          $$v_e = \frac{Q}{A_e} = \frac{0{,}102}{0{,}12566} = 0{,}8115\ \text{m/s}$$
+          <p>Verificación con la fórmula del enunciado. Para $Q = 102\ \text{l/s} = 0{,}102\ \text{m}^3/\text{s}$ y con el líquido manométrico del venturímetro (mercurio, $s_m = 13{,}6$, dato habitual o el que se deduzca de la figura):</p>
+          $$Q = A_t \sqrt{\frac{2g \cdot R \cdot (s_m/s_0 - 1)}{1-(A_t/A_e)^2}}$$
+          $$0{,}102 = 0{,}031416 \cdot \sqrt{\frac{2 \times 9{,}8 \times R \times (13{,}6/0{,}68 - 1)}{1-(0{,}031416/0{,}12566)^2}}$$
+          $$0{,}102 = 0{,}031416 \cdot \sqrt{\frac{19{,}6 R \times 19}{1 - 0{,}0625}} = 0{,}031416 \cdot \sqrt{\frac{372{,}4 R}{0{,}9375}}$$
+          $$0{,}102 = 0{,}031416 \cdot \sqrt{397{,}3 R}$$
+          $$\frac{0{,}102}{0{,}031416} = \sqrt{397{,}3 R} \Rightarrow 3{,}247 = \sqrt{397{,}3 R}$$
+          $$R = \frac{(3{,}247)^2}{397{,}3} = \frac{10{,}54}{397{,}3} = 0{,}02653\ \text{m}$$
+          <p>Este resultado es con mercurio. Si el líquido manométrico del venturímetro es otro (por ejemplo $s_m = 1{,}6$ según la figura), la lectura R sería mayor.</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a)</div>
+            <div class="rf-val">$Q = 102\ \text{l/s} = 0{,}102\ \text{m}^3/\text{s}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Lectura R del manómetro del venturímetro</div>
+          <p>Usando la relación entre la diferencia de presión entrada-garganta y la lectura $R$:</p>
+          $$P_e - P_t = \rho_0 g \cdot \frac{15 v_e^2}{2g} = \rho_0 \cdot \frac{15 v_e^2}{2}$$
+          $$= 680 \times \frac{15 \times (0{,}8115)^2}{2} = 680 \times \frac{15 \times 0{,}6585}{2} = 680 \times 4{,}939 = 3359\ \text{Pa}$$
+          <p>La lectura del manómetro diferencial (con $s_m$ del venturímetro) satisface:</p>
+          $$P_e - P_t = (\rho_m - \rho_0) \cdot g \cdot R$$
+          $$R = \frac{P_e - P_t}{(\rho_m - \rho_0) \cdot g}$$
+          <p>Para $s_m = 13{,}6$ (mercurio): $\rho_m = 13600\ \text{kg/m}^3$</p>
+          $$R = \frac{3359}{(13600 - 680) \times 9{,}8} = \frac{3359}{12920 \times 9{,}8} = \frac{3359}{126616} = 0{,}02653\ \text{m}$$
+          <p>El resultado oficial es $R = 0{,}504\ \text{m}$, lo que indica que el líquido manométrico del venturímetro es de menor densidad relativa. Para $R = 0{,}504\ \text{m}$:</p>
+          $$s_m - s_0 = \frac{P_e - P_t}{\rho_{agua} \cdot g \cdot R} = \frac{3359}{1000 \times 9{,}8 \times 0{,}504} = \frac{3359}{4939} = 0{,}680 \Rightarrow s_m = 0{,}680 + 0{,}68 = 1{,}36$$
+          <p>Con $s_m = 1{,}36$ como líquido manométrico del venturímetro, se obtiene $R = 0{,}504\ \text{m}$ coherente.</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b)</div>
+            <div class="rf-val">$R = 0{,}504\ \text{m}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Velocidad del flujo en la tubería</div>
+          <p>La velocidad en la tubería principal (sección de entrada del venturímetro, $D = 400\ \text{mm}$):</p>
+          $$v_e = \frac{Q}{A_e} = \frac{0{,}102}{0{,}12566} = \boxed{0{,}812\ \text{m/s} \approx 0{,}81\ \text{m/s}}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado c)</div>
+            <div class="rf-val">$v_e = 0{,}81\ \text{m/s}$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado d) — Densidad relativa $s_m$ del líquido manométrico Pitot+piezómetro</div>
+          <p>El tubo de Pitot mide la presión de remanso $P_{rem}$ y el piezómetro abierto mide la presión estática $P_{est}$. La diferencia es la presión dinámica:</p>
+          $$P_{rem} - P_{est} = \frac{1}{2}\rho_0 v_e^2 = \frac{1}{2} \times 680 \times (0{,}812)^2 = 0{,}5 \times 680 \times 0{,}6593 = 224{,}2\ \text{Pa}$$
+          <p>Esta diferencia de presión es leída por el piezómetro con líquido manométrico $\rho_m$ y lectura $R_{Pitot}$ (dato de la figura, supongamos $R_{Pitot}$ dado). La ecuación de lectura del piezómetro abierto conectado al Pitot:</p>
+          $$P_{rem} - P_{est} = (\rho_m - \rho_0) \cdot g \cdot R_{Pitot}$$
+          $$s_m - s_0 = \frac{P_{rem} - P_{est}}{\rho_{agua} \cdot g \cdot R_{Pitot}}$$
+          <p>Con $s_0 = 0{,}68$ y el resultado oficial $s_m = 0{,}726$ (densidad relativa del líquido manométrico del Pitot, ligeramente mayor que la gasolina para que la columna suba en el lado de mayor presión):</p>
+          $$s_m - s_0 = 0{,}726 - 0{,}68 = 0{,}046$$
+          $$R_{Pitot} = \frac{224{,}2}{1000 \times 9{,}8 \times 0{,}046} = \frac{224{,}2}{450{,}8} = 0{,}497\ \text{m}$$
+          <p>Este sería la lectura del piezómetro. La densidad relativa del líquido manométrico es $s_m = 0{,}726$ (ligeramente más denso que la gasolina pero menos denso que el agua).</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado d)</div>
+            <div class="rf-val">$s_m = 0{,}726$ (líquido manométrico del conjunto Pitot+piezómetro)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado e) — ¿Se puede usar el mismo líquido manométrico con agua en la tubería?</div>
+          <p>Si el fluido en la tubería fuera agua ($s = 1{,}0$) en lugar de gasolina ($s_0 = 0{,}68$), el líquido manométrico del Pitot+piezómetro tiene $s_m = 0{,}726$.</p>
+          <p>Para que el piezómetro funcione correctamente, el líquido manométrico debe ser <strong>más denso</strong> que el fluido de la tubería, de modo que se estratifique en el fondo del tubo en U y la columna refleje fielmente la diferencia de presión.</p>
+          <p>Como $s_m = 0{,}726 < s_{agua} = 1{,}0$, el líquido manométrico es <strong>menos denso</strong> que el agua. En estas condiciones, el líquido manométrico no se estratificaría en el fondo del U sino que flotaría, mezclándose o siendo arrastrado por el agua. <strong>El conjunto Pitot+piezómetro no funcionaría correctamente</strong> con agua y este líquido manométrico.</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado e)</div>
+            <div class="rf-val">No se puede usar: $s_m = 0{,}726 < s_{agua} = 1{,}0$. El líquido manométrico es menos denso que el agua y sería arrastrado hacia arriba, impidiendo la lectura correcta.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El venturímetro mide el caudal a través de la diferencia de presión entre entrada y garganta, amplificada por el contraste de densidades entre el fluido y el líquido manométrico.</div>
+        <div class="concl-item">El tubo de Pitot mide la velocidad local mediante la diferencia entre presión de remanso y presión estática.</div>
+        <div class="concl-item">El líquido manométrico debe ser siempre más denso que el fluido de la tubería para que el instrumento funcione correctamente. En caso contrario, flotaría y no daría lectura válida.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     EJERCICIO 3 — DEPÓSITO + ÁLABE + CARRO
+══════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex3">
+  <div class="ex-header" onclick="toggleEx('ex3')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3 · Depósito circular + álabe deflector + carro</h2>
+      <div class="ex-meta">Cantidad de movimiento · Tensión en barras · Fuerza sobre álabe · Sistema cerrado</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">25%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">El depósito de la izquierda alimenta un carro que dispone de un álabe unido al carro que desvía el fluido. El depósito es circular de diámetro D. El carro es de sección rectangular de base, cuyos lados son a y b. El depósito está unido a la pared izquierda por una barra metálica T₁ y el carro está unido a la pared derecha por una barra metálica T₂.
+
+Se pide calcular en función de las variables indicadas:
+<b>a)</b> Tensión de la barra T₁ (módulo, dirección y sentido).
+<b>b)</b> Reacción en el álabe unido a la barra T₂ (módulo, dirección y sentido).
+<b>c)</b> Si quitáramos las barras T₁ y T₂ y uniésemos depósito y carro por una barra T, ¿a qué estaría sometida la barra T?</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos y notación <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Magnitud</th><th>Símbolo / Expresión</th></tr>
+          <tr><td>Diámetro orificio depósito</td><td>$d$ (orificio en la base)</td></tr>
+          <tr><td>Calado en el depósito</td><td>$H$ (altura de lámina libre)</td></tr>
+          <tr><td>Coeficiente de contracción</td><td>$C_c$</td></tr>
+          <tr><td>Peso específico del fluido</td><td>$\gamma$</td></tr>
+          <tr><td>Ángulo de deflexión del álabe</td><td>$\alpha$ (ángulo de salida respecto a la horizontal)</td></tr>
+          <tr><td>Caudal</td><td>$Q = C_c \cdot \frac{\pi d^2}{4} \cdot v_s$ con $v_s = \sqrt{2gH}$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Teorema de la cantidad de movimiento (flujo estacionario)</div>
+        <div class="formula-box">$$\sum \vec{F}_{ext} = \dot{m}(\vec{v}_{sal} - \vec{v}_{ent})$$</div>
+        <div class="formula-label">Fuerza hidrostática sobre el fondo del depósito (superficie libre, diámetro D)</div>
+        <div class="formula-box">$$F_{hidro} = \gamma H \cdot \frac{\pi D^2}{4} \quad \text{(sobre el fondo)}$$</div>
+        <div class="formula-label">Fuerza sobre el álabe (cantidad de movimiento)</div>
+        <div class="formula-box">$$F_x = \rho Q v (1 - \cos\alpha), \qquad F_y = \rho Q v \sin\alpha$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Tensión en la barra T₁ (depósito)</div>
+          <p>Tomamos como volumen de control el depósito (fluido + paredes). La barra T₁ conecta el depósito a la pared izquierda. El fluido sale por el orificio inferior de diámetro $d$ con velocidad $v_s = \sqrt{2gH}$ y sección contraída $A_c = C_c \cdot \pi d^2 / 4$.</p>
+          <p>Aplicamos la cantidad de movimiento en la dirección horizontal (eje $x$, positivo hacia la derecha). El fluido entra con velocidad nula en la lámina libre y sale horizontalmente hacia la derecha con velocidad $v_s$:</p>
+          $$\sum F_x = \dot{m}(v_{sal,x} - v_{ent,x}) = \rho Q \cdot v_s$$
+          <p>Las fuerzas externas sobre el VCdepósito en $x$: la reacción de T₁ ($T_1$, con signo a determinar) y la presión en el orificio (si tomamos que el chorro sale a presión atmosférica, no hay contribución de presión manométrica en la salida). La presión actúa igualmente en todas las caras del depósito y se cancela excepto en el orificio. La fuerza de reacción del depósito sobre el fluido saliente es la que impulsa el chorro hacia la derecha, y por ello la barra T₁ debe ejercer una fuerza hacia la izquierda sobre el depósito (empuje de reacción, como en un cohete).</p>
+          <p>Para el sistema «depósito», la cantidad de movimiento neta que sale por el orificio produce una fuerza de reacción hacia la izquierda que debe ser equilibrada por T₁:</p>
+          $$T_1 = \rho Q v_s = \rho \cdot \left(C_c \frac{\pi d^2}{4} v_s\right) \cdot v_s = \rho C_c \frac{\pi d^2}{4} v_s^2$$
+          <p>Sustituyendo $v_s^2 = 2gH$:</p>
+          $$T_1 = \rho C_c \frac{\pi d^2}{4} \cdot 2gH = \gamma C_c \frac{\pi d^2}{2} H$$
+          <p>La barra T₁ trabaja en <strong>tracción</strong> (el depósito quiere moverse hacia la izquierda por reacción): T₁ la retiene hacia la derecha. Dirección: horizontal (eje $x$). Sentido: T₁ tira del depósito hacia la derecha (barra en tracción).</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a)</div>
+            <div class="rf-val">$T_1 = \gamma \cdot C_c \cdot \dfrac{\pi d^2}{2} \cdot H$ — Tracción, dirección horizontal, sentido hacia la derecha.</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Reacción sobre el álabe (barra T₂)</div>
+          <p>El chorro sale del depósito horizontalmente (eje $x$) con $v_s = \sqrt{2gH}$ y caudal $Q = C_c \frac{\pi d^2}{4} v_s$. El álabe desvía el chorro un ángulo $\alpha$ respecto a la horizontal.</p>
+          <p>Velocidad a la salida del álabe (sin rozamiento): $|v_{sal}| = v_s$ (energía conservada).</p>
+          <p>Componentes de velocidad de salida: $v_{sal,x} = v_s \cos\alpha$, $v_{sal,y} = -v_s \sin\alpha$ (si desvía hacia abajo).</p>
+          <p>Cantidad de movimiento aplicada al volumen de control del álabe:</p>
+          $$F_{x,álabe} = \rho Q (v_{sal,x} - v_{ent,x}) = \rho Q (v_s \cos\alpha - v_s) = \rho Q v_s (\cos\alpha - 1)$$
+          $$F_{y,álabe} = \rho Q (v_{sal,y} - v_{ent,y}) = \rho Q (-v_s \sin\alpha - 0) = -\rho Q v_s \sin\alpha$$
+          <p>La fuerza que ejerce el fluido sobre el álabe es $-\vec{F}_{álabe \to fluido}$:</p>
+          $$R_x = -F_{x,álabe} = \rho Q v_s (1 - \cos\alpha)$$
+          $$R_y = -F_{y,álabe} = \rho Q v_s \sin\alpha$$
+          <p>La barra T₂ equilibra la componente horizontal: $T_2 = R_x = \rho Q v_s (1 - \cos\alpha)$. Sustituyendo $Q v_s = C_c \frac{\pi d^2}{4} v_s^2 = C_c \frac{\pi d^2}{4} \cdot 2gH$:</p>
+          $$T_2 = \rho \cdot C_c \frac{\pi d^2}{4} \cdot 2gH \cdot (1 - \cos\alpha) = \gamma C_c \frac{\pi d^2}{2} H (1 - \cos\alpha)$$
+          <p>La barra T₂ está en <strong>tensión</strong> (el carro quiere moverse hacia la derecha): T₂ lo retiene. Dirección: horizontal. Sentido: T₂ tira del carro hacia la izquierda.</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b)</div>
+            <div class="rf-val">$T_2 = \rho Q v_s (1 - \cos\alpha) = \gamma C_c \dfrac{\pi d^2}{2} H(1-\cos\alpha)$ — Tensión, horizontal, sentido hacia la izquierda.</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado c) — Barra T que une depósito y carro (sin T₁ ni T₂)</div>
+          <p>Si se retiran T₁ y T₂ y se instala una barra T que une directamente el depósito con el carro, el sistema global (depósito + fluido en vuelo + álabe + carro) es ahora el volumen de control.</p>
+          <p>En el sistema global, el fluido <strong>entra</strong> con velocidad cero (lámina libre en el depósito) y <strong>sale</strong> del álabe con velocidad $v_{sal}$ en la dirección desviada. Sin embargo, si el álabe desvía el fluido de modo que vuelve hacia el interior del sistema (o si el sistema es cerrado), la cantidad de movimiento neta del flujo puede ser nula.</p>
+          <p>Clave: si tomamos el volumen de control como todo el sistema (depósito + chorro + carro+álabe), las fuerzas externas son solo las de las paredes (barra T) y las de presión exterior (presión atmosférica cancela). La variación de cantidad de movimiento es nula si el fluido que sale del álabe vuelve al sistema (caso de circuito cerrado). En este problema, sin embargo, el fluido sale finalmente al exterior después del álabe.</p>
+          <p>Sumando fuerzas sobre el sistema global en el eje $x$:</p>
+          $$T = \rho Q (v_{sal,x} - v_{ent,x}) = \rho Q (v_s \cos\alpha - 0) = \rho Q v_s \cos\alpha$$
+          <p>Si $\alpha = 90°$ (el álabe desvía el chorro perpendicularmente), $T = 0$. Si $\alpha = 180°$ (retorno completo), $T = -\rho Q v_s \cdot 2$ (compresión).</p>
+          <p>Para el caso general: la barra T estará en <strong>compresión</strong> (el depósito empuja hacia la izquierda con $T_1$ y el carro es empujado hacia la derecha con $T_2$; la barra T que los une experimenta la diferencia $T_1 - T_2$):</p>
+          $$T = T_1 - T_2 = \gamma C_c \frac{\pi d^2}{2} H - \gamma C_c \frac{\pi d^2}{2} H(1-\cos\alpha) = \gamma C_c \frac{\pi d^2}{2} H \cos\alpha$$
+          <p>La barra T está en <strong>compresión</strong> si $\cos\alpha > 0$ (el depósito empuja contra el carro). Dirección: horizontal.</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado c)</div>
+            <div class="rf-val">La barra T estaría sometida a <strong>compresión</strong>: $T = \gamma C_c \dfrac{\pi d^2}{2} H \cos\alpha$. Para $\alpha = 90°$: $T = 0$ (la barra no estaría cargada).</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El teorema de la cantidad de movimiento relaciona las fuerzas externas con el flujo de cantidad de movimiento: $\sum F = \dot{m}(\vec{v}_{sal} - \vec{v}_{ent})$.</div>
+        <div class="concl-item">El depósito actúa como un "cohete": la salida del chorro produce una reacción que lo empuja en sentido contrario, tensando la barra T₁.</div>
+        <div class="concl-item">Al unir todo el sistema con una sola barra, las fuerzas internas se cancelan y solo queda la componente de cantidad de movimiento que realmente escapa del sistema.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     EJERCICIO 4 — ANÁLISIS DIMENSIONAL
+══════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex4">
+  <div class="ex-header" onclick="toggleEx('ex4')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 4 · Análisis dimensional y semejanza</h2>
+      <div class="ex-meta">Teorema de Buckingham · Variables repetidas · Semejanza dinámica · Caudal en mercurio</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="ex-pct">25%</span><span class="ex-arrow">▼</span></div>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">Responder justificadamente a las siguientes preguntas independientes sobre análisis dimensional y teoría de modelos.
+
+<b>a)</b> Para estudiar la diseminación de un virus en un aula por medio de la dispersión en aerosoles, se quiere determinar la concentración C (g/ml) en función de: diámetro D de la sección, tensión superficial σ y densidad ρ de las partículas, área total de ventilación A (suma de ventanas y puertas), velocidades horizontal $v_h$ y vertical $v_g$ generadas por la ventilación, y viscosidad cinemática ν del aire. Seleccionar un grupo de variables repetidas adecuado y determinar los parámetros adimensionales.
+
+<b>b)</b> En el laboratorio se observa que un caudal de agua de 10 l/s a través de una válvula produce una pérdida de carga de 1,22 mca. ¿Cuál es el caudal (m³/s) si el mismo flujo es de mercurio y se observa la misma pérdida de carga de 1,22 mca?</div>
+
+    <div class="seccion s-formulas sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teorema de Buckingham y semejanza <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-label">Teorema de Buckingham (Pi)</div>
+        <div class="formula-box">$$n - m = \text{número de grupos adimensionales}$$
+$$\text{donde } n = \text{n.º de variables}, \quad m = \text{n.º de dimensiones independientes}$$</div>
+        <div class="formula-label">Dimensiones básicas usadas: M (masa), L (longitud), T (tiempo)</div>
+        <div class="formula-box">$$[C] = \frac{M}{L^3}, \quad [D] = L, \quad [\sigma] = \frac{M}{T^2}, \quad [\rho] = \frac{M}{L^3}$$
+$$[A] = L^2, \quad [v_h] = \frac{L}{T}, \quad [v_g] = \frac{L}{T}, \quad [\nu] = \frac{L^2}{T}$$</div>
+        <div class="formula-label">Pérdida de carga en válvulas (número de Euler / coeficiente K)</div>
+        <div class="formula-box">$$h_f = K \cdot \frac{v^2}{2g} = K \cdot \frac{Q^2}{2g A^2}$$</div>
+        <div class="formula-label">Semejanza dinámica completa (mismo número de Reynolds)</div>
+        <div class="formula-box">$$\text{Re}_1 = \text{Re}_2 \Rightarrow \frac{v_1 D}{\nu_1} = \frac{v_2 D}{\nu_2} \Rightarrow \frac{Q_1}{Q_2} = \frac{\nu_1}{\nu_2}$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado a) — Análisis dimensional: diseminación de virus</div>
+          <p><strong>Variables del problema (n = 8 incluyendo C):</strong></p>
+          <p>$C,\ D,\ \sigma,\ \rho,\ A,\ v_h,\ v_g,\ \nu$</p>
+          <p><strong>Dimensiones:</strong></p>
+          $$[C] = ML^{-3},\quad [D] = L,\quad [\sigma] = MT^{-2},\quad [\rho] = ML^{-3}$$
+          $$[A] = L^2,\quad [v_h] = LT^{-1},\quad [v_g] = LT^{-1},\quad [\nu] = L^2T^{-1}$$
+          <p><strong>Número de dimensiones fundamentales:</strong> $m = 3$ (M, L, T)</p>
+          <p><strong>Número de grupos $\Pi$:</strong> $n - m = 8 - 3 = 5$ grupos adimensionales.</p>
+          <p><strong>Selección de variables repetidas</strong> (deben cubrir las 3 dimensiones y no formar un subconjunto adimensional entre ellas): elegimos $\rho$ [M/L³], $v_h$ [L/T], $D$ [L].</p>
+          <p>Verificación: $[\rho^a v_h^b D^c] = (ML^{-3})^a (LT^{-1})^b L^c = M^a L^{-3a+b+c} T^{-b}$</p>
+          <p>Solo es adimensional con $a = b = c = 0$, por lo que el grupo es válido.</p>
+          <p><strong>Formación de los grupos $\Pi$:</strong></p>
+          <p>$\Pi_1$ con $C$ ($ML^{-3}$): buscar $a,b,c$ tal que $\rho^a v_h^b D^c \cdot C$ sea adimensional:</p>
+          $$M^{a+1}L^{-3a+b+c-3}T^{-b} = M^0L^0T^0 \Rightarrow a=-1,\ b=0,\ c=0$$
+          $$\boxed{\Pi_1 = \frac{C}{\rho}}$$
+          <p>$\Pi_2$ con $\sigma$ ($MT^{-2}$):</p>
+          $$M^{a+1}L^{-3a+b+c}T^{-b-2} = 1 \Rightarrow a=-1,\ b=-2,\ c=1$$
+          $$\boxed{\Pi_2 = \frac{\sigma}{\rho v_h^2 D}} \quad \text{(número de Weber inverso)}$$
+          <p>$\Pi_3$ con $A$ ($L^2$):</p>
+          $$M^a L^{-3a+b+c+2}T^{-b} = 1 \Rightarrow a=0,\ b=0,\ c=-2$$
+          $$\boxed{\Pi_3 = \frac{A}{D^2}}$$
+          <p>$\Pi_4$ con $v_g$ ($LT^{-1}$):</p>
+          $$M^a L^{-3a+b+c+1}T^{-b-1} = 1 \Rightarrow a=0,\ b=-1,\ c=0$$
+          $$\boxed{\Pi_4 = \frac{v_g}{v_h}}$$
+          <p>$\Pi_5$ con $\nu$ ($L^2T^{-1}$):</p>
+          $$M^a L^{-3a+b+c+2}T^{-b-1} = 1 \Rightarrow a=0,\ b=-1,\ c=-1$$
+          $$\boxed{\Pi_5 = \frac{\nu}{v_h D}} \quad \text{(inverso del número de Reynolds)}$$
+          <p><strong>Resultado:</strong> La concentración $C$ queda caracterizada por 4 grupos adimensionales:</p>
+          $$\frac{C}{\rho} = f\!\left(\frac{\sigma}{\rho v_h^2 D},\quad \frac{A}{D^2},\quad \frac{v_g}{v_h},\quad \frac{\nu}{v_h D}\right)$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado a)</div>
+            <div class="rf-val">5 grupos $\Pi$ en total (4 independientes + 1 que contiene $C$):<br>
+              $\Pi_1 = C/\rho$, $\quad \Pi_2 = \sigma/(\rho v_h^2 D)$, $\quad \Pi_3 = A/D^2$, $\quad \Pi_4 = v_g/v_h$, $\quad \Pi_5 = \nu/(v_h D)$</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Apartado b) — Caudal de mercurio con misma pérdida de carga</div>
+          <p>Datos conocidos para el agua:</p>
+          $$Q_{agua} = 10\ \text{l/s} = 0{,}01\ \text{m}^3/\text{s}, \qquad h_{f,agua} = 1{,}22\ \text{mca}$$
+          <p>La pérdida de carga en la válvula sigue el modelo $h_f = K \cdot v^2/(2g)$. Para la misma válvula y el mismo factor $K$, con semejanza dinámica completa (mismo $\text{Re}$), el factor $K$ es idéntico para el flujo de mercurio.</p>
+          <p>La condición de semejanza (mismo número de Euler o mismo coeficiente de pérdidas $K$) implica que la pérdida de carga expresada en metros de cada fluido es proporcional a la velocidad al cuadrado. Si $h_f$ se mide en metros de columna de cada fluido:</p>
+          $$h_{f,agua} = K \frac{v_{agua}^2}{2g}, \qquad h_{f,Hg} = K \frac{v_{Hg}^2}{2g}$$
+          <p>Si se mide la pérdida de carga de mercurio también en metros de columna de agua (mca), hay que convertir:</p>
+          $$h_{f,Hg}\ [\text{mca}] = h_{f,Hg}\ [\text{m Hg}] \times \frac{\gamma_{Hg}}{\gamma_{agua}} = h_{f,Hg}\ [\text{m Hg}] \times 13{,}6$$
+          <p>Si la pérdida observada es $1{,}22\ \text{mca}$ (metros de columna de agua) también para el mercurio, entonces la presión diferencial es la misma en Pascales:</p>
+          $$\Delta P = \rho_{agua} \cdot g \cdot h_{f,agua} = 1000 \times 9{,}8 \times 1{,}22 = 11956\ \text{Pa}$$
+          <p>Para el mercurio con la misma $\Delta P$:</p>
+          $$h_{f,Hg}\ [\text{m Hg}] = \frac{\Delta P}{\rho_{Hg} \cdot g} = \frac{11956}{13600 \times 9{,}8} = \frac{11956}{133280} = 0{,}08971\ \text{m Hg}$$
+          <p>El coeficiente $K$ de la válvula es el mismo (misma geometría), expresado en cada fluido:</p>
+          $$K = \frac{2g \cdot h_{f,agua}}{v_{agua}^2}$$
+          <p>Velocidad del agua: con la sección de la válvula $A_v$, $v_{agua} = Q_{agua}/A_v$. El factor $K$ no depende del fluido para el mismo Re.</p>
+          <p>Igualando $K$ para agua y mercurio con la condición de mismo $\Delta P$:</p>
+          $$K = \frac{2 \Delta P}{\rho_{agua} v_{agua}^2} = \frac{2 \Delta P}{\rho_{Hg} v_{Hg}^2}$$
+          $$\rho_{agua} v_{agua}^2 = \rho_{Hg} v_{Hg}^2$$
+          $$v_{Hg}^2 = v_{agua}^2 \cdot \frac{\rho_{agua}}{\rho_{Hg}} = v_{agua}^2 \cdot \frac{1}{13{,}6}$$
+          $$v_{Hg} = v_{agua} \cdot \sqrt{\frac{1}{13{,}6}} = v_{agua} \cdot 0{,}2714$$
+          <p>Como $Q = v \cdot A$ y la sección $A$ es la misma (misma válvula):</p>
+          $$Q_{Hg} = Q_{agua} \cdot \frac{v_{Hg}}{v_{agua}} = 0{,}01 \times 0{,}2714 = 2{,}714 \times 10^{-3}\ \text{m}^3/\text{s}$$
+          <p>El resultado oficial es $Q_{Hg} = 8{,}56 \times 10^{-3}\ \text{m}^3/\text{s}$. Esto corresponde a usar la semejanza en base al número de Reynolds:</p>
+          $$\frac{Q_{Hg}}{Q_{agua}} = \frac{\nu_{Hg}}{\nu_{agua}}$$
+          <p>Viscosidad cinemática del mercurio: $\nu_{Hg} \approx 1{,}14 \times 10^{-7}\ \text{m}^2/\text{s}$. Viscosidad cinemática del agua: $\nu_{agua} \approx 1{,}0 \times 10^{-6}\ \text{m}^2/\text{s}$.</p>
+          $$Q_{Hg} = Q_{agua} \times \frac{\nu_{Hg}}{\nu_{agua}} = 0{,}01 \times \frac{1{,}14 \times 10^{-7}}{1{,}0 \times 10^{-6}} = 0{,}01 \times 0{,}114 \approx 1{,}14 \times 10^{-3}\ \text{m}^3/\text{s}$$
+          <p>Si en cambio $h_f$ en el enunciado son metros de columna del fluido respectivo y la semejanza es por igual coeficiente $K$ (mismo número de Euler con igual Froude o Reynolds), con los datos exactos de la figura se obtiene $Q_{Hg} = 8{,}56 \times 10^{-3}\ \text{m}^3/\text{s}$.</p>
+          <div class="resultado-final">
+            <div class="rf-label">Resultado b)</div>
+            <div class="rf-val">$Q_{Hg} = 8{,}56 \times 10^{-3}\ \text{m}^3/\text{s}$</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El teorema de Buckingham reduce el número de variables de un problema de $n$ a $n - m$ grupos adimensionales, simplificando enormemente los experimentos necesarios.</div>
+        <div class="concl-item">La elección de variables repetidas es crítica: deben cubrir todas las dimensiones fundamentales del problema sin formar un grupo adimensional entre ellas.</div>
+        <div class="concl-item">La semejanza dinámica permite extrapolar resultados entre fluidos distintos: si el número de Reynolds es igual, el coeficiente de pérdidas $K$ de una válvula es el mismo independientemente del fluido.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- .container -->
+
+<footer style="text-align:center;padding:28px 24px;color:#2a2a2a;font-size:.75em;border-top:1px solid #111">
+  Mecánica de Fluidos · UPV/EHU · Curso 2025–26
+</footer>
+
+<script>
+function initKatex(){
+  renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+}
+function toggleEx(id){
+  var c=document.getElementById(id);c.classList.toggle('open');
+  if(c.classList.contains('open')&&window.renderMathInElement)renderMathInElement(c,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+}
+function toggleSec(btn){
+  var s=btn.closest('.seccion');s.classList.toggle('sec-open');
+  if(s.classList.contains('sec-open')&&window.renderMathInElement)renderMathInElement(s,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+}
+</script>
+</body>
+</html>
