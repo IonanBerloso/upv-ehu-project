@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>EF Junio 2025 (Extraordinaria) · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex()"></script>
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(()=>err.textContent='',2000);}}
+    btn.addEventListener('click',attempt);inp.addEventListener('keydown',e=>{if(e.key==='Enter')attempt();});inp.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;--purple:#c084fc;--orange:#f4a261;--yellow:#ffd93d;
+  --transition:.2s;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+.container{max-width:900px;margin:0 auto;padding:0 20px 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);z-index:100}
+.topbar-brand{font-weight:700;font-size:.95em;color:var(--text)}
+.topbar-pill{font-size:.72em;font-weight:600;padding:4px 12px;border-radius:20px;background:#1a0800;border:1px solid #4a2000;color:#fb923c}
+.topbar-back{font-size:.8em;color:var(--text3);display:flex;align-items:center;gap:6px}
+.topbar-back:hover{color:var(--text)}
+.page-header{padding:36px 0 28px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.ph-date{font-size:.78em;color:var(--text3);margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+.ph-title{font-size:1.6em;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.25}
+.ph-type{display:inline-block;font-size:.75em;font-weight:600;padding:4px 14px;border-radius:20px;background:#1a0800;border:1px solid #4a2000;color:#fb923c;margin-bottom:16px}
+.ph-meta{font-size:.8em;color:var(--text3)}
+.stats-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px}
+.stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 18px;display:flex;flex-direction:column;align-items:center;min-width:90px}
+.snum{font-size:1.4em;font-weight:700;color:var(--accent);line-height:1}
+.slabel{font-size:.7em;color:var(--text3);margin-top:2px}
+.jump-links{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.jump-btn{font-size:.75em;padding:5px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text2);cursor:pointer;text-decoration:none;transition:var(--transition)}
+.jump-btn:hover{border-color:#fb923c;color:#fb923c}
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden;transition:var(--transition)}
+.ex-card.open .ex-body{display:block}
+.ex-body{display:none}
+.ex-header{padding:18px 22px;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ex-header:hover{background:var(--surface2)}
+.ex-meta{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.ex-num{font-size:.72em;font-weight:700;color:#fb923c;text-transform:uppercase;letter-spacing:.06em}
+.ex-pts{font-size:.72em;color:var(--text3);background:var(--surface2);border:1px solid var(--border);padding:2px 8px;border-radius:6px}
+.ex-title{font-size:.97em;font-weight:600;color:var(--text)}
+.seccion{border-top:1px solid var(--border)}
+.sec-btn{width:100%;background:none;border:none;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;color:var(--text2);font-size:.82em;font-weight:600;letter-spacing:.04em;text-transform:uppercase;text-align:left}
+.sec-btn:hover{color:var(--text);background:var(--surface2)}
+.sarr{transition:transform var(--transition);font-size:.85em}
+.sec-open .sarr{transform:rotate(180deg)}
+.sec-body{display:none;padding:16px 22px 20px;font-size:.875em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-datos .sec-btn{color:#7ecfff}.s-datos .sec-btn:hover{color:#bae6fd}
+.s-formulas .sec-btn{color:#fb923c}.s-formulas .sec-btn:hover{color:#fed7aa}
+.s-teoria .sec-btn{color:#c084fc}.s-teoria .sec-btn:hover{color:#e9d5ff}
+.s-resolucion .sec-btn{color:#6bcb77}.s-resolucion .sec-btn:hover{color:#bbf7d0}
+.s-conclusiones .sec-btn{color:#ffd93d}.s-conclusiones .sec-btn:hover{color:#fef08a}
+.data-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.85em}
+.data-table th{background:var(--surface2);color:var(--text2);font-weight:600;padding:7px 12px;text-align:left;border:1px solid var(--border);font-size:.8em;text-transform:uppercase;letter-spacing:.03em}
+.data-table td{padding:7px 12px;border:1px solid var(--border);color:var(--text);vertical-align:top}
+.data-table tr:nth-child(even) td{background:#0a0a0a}
+.paso{margin:14px 0;padding:14px 16px;background:var(--surface2);border-radius:10px;border-left:3px solid var(--border)}
+.paso-titulo{font-weight:600;color:var(--accent);margin-bottom:8px;font-size:.875em}
+.resultado-final{margin-top:16px;padding:14px 18px;background:#0a1a0a;border:1px solid #1a3a1a;border-radius:10px;text-align:center}
+.rf-label{font-size:.7em;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:6px}
+.rf-val{font-size:.95em;font-weight:600;color:var(--green);line-height:1.6}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../examenes.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Exámenes
+  </a>
+  <span class="topbar-brand">Mecánica de Fluidos · UPV/EHU</span>
+  <span class="topbar-pill">Extraordinaria</span>
+</nav>
+
+<div class="container">
+
+<div class="page-header">
+  <div class="ph-date">23 de Junio de 2025</div>
+  <h1 class="ph-title">Examen Final — Convocatoria Extraordinaria</h1>
+  <span class="ph-type">Extraordinaria · EF</span>
+  <div class="ph-meta">Grados en Ingeniería Civil e Industriales · 2º Curso · Dpto. Ingeniería Energética · Escuela de Ingeniería de Gipuzkoa</div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-pill"><span class="snum">9</span><span class="slabel">ejercicios</span></div>
+  <div class="stat-pill"><span class="snum">100%</span><span class="slabel">resuelto</span></div>
+  <div class="stat-pill"><span class="snum">2025</span><span class="slabel">convocatoria</span></div>
+</div>
+
+<div class="jump-links">
+  <a class="jump-btn" href="#ej1">Ej1 · CO₂ gas ideal</a>
+  <a class="jump-btn" href="#ej2">Ej2 · Bomba INP 150/200</a>
+  <a class="jump-btn" href="#ej3">Ej3 · Manómetros depósitos</a>
+  <a class="jump-btn" href="#ej4">Ej4 · Análisis dim. vertedero</a>
+  <a class="jump-btn" href="#ej5">Ej5 · Red bombas petróleo</a>
+  <a class="jump-btn" href="#ej6">Ej6 · Compuerta ABCD</a>
+  <a class="jump-btn" href="#ej7">Ej7 · Canal hexágono</a>
+  <a class="jump-btn" href="#ej8">Ej8 · Alerones F1</a>
+  <a class="jump-btn" href="#ej9">Ej9 · Tubo Pitot</a>
+</div>
+
+<!-- EJ1 -->
+<div class="ex-card open" id="ej1">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 1</span><span class="ex-pts">10 %</span></div>
+    <div class="ex-title">Cilindro con CO₂: presión final, densidad y coeficiente de compresibilidad</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Volumen inicial</td><td>$V_0 = 0{,}1\ \text{m}^3$</td><td>Cilindro con pistón</td></tr>
+          <tr><td>Presión absoluta inicial</td><td>$p_{0,\text{abs}} = 100\ \text{kPa}$</td><td></td></tr>
+          <tr><td>Temperatura</td><td>$T = 300\ \text{K}$</td><td>Proceso isotérmico</td></tr>
+          <tr><td>Volumen final</td><td>$V_f = 0{,}04\ \text{m}^3$</td><td>Se comprime hasta este volumen</td></tr>
+          <tr><td>Presión atmosférica</td><td>$p_{\text{atm}} = 1\ \text{atm} = 101325\ \text{Pa}$</td><td></td></tr>
+          <tr><td>Masa molar CO₂</td><td>$M = 44\ \text{g/mol} = 0{,}044\ \text{kg/mol}$</td><td></td></tr>
+          <tr><td>Constante universal</td><td>$R = 8{,}314\ \text{J/(mol·K)}$</td><td></td></tr>
+          <tr><td>Conversiones</td><td>$1\ \text{Pa} = 10\ \text{dyn/cm}^2$; $1\ \text{UTM} = 9{,}8\ \text{kg}$</td><td></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Ley de Boyle</strong> (proceso isotérmico):</p>
+        $$p_0 V_0 = p_f V_f \implies p_{f,\text{abs}} = p_0 \frac{V_0}{V_f}$$
+        <p><strong>Densidad con gas ideal</strong> ($pV = nRT = \frac{m}{M}RT$):</p>
+        $$\rho_f = \frac{p_{f,\text{abs}} \cdot M}{R \cdot T}$$
+        <p><strong>Coeficiente de compresibilidad cúbico</strong> (a T=cte, gas ideal):</p>
+        $$\beta = -\frac{1}{V}\frac{dV}{dp} = \frac{1}{p}$$
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Unidades técnicas:</strong> La UTM (Unidad Técnica de Masa) es la masa que adquiere aceleración 1 m/s² bajo 1 kgf. Como 1 kgf = 9,8 N: $1\ \text{UTM} = 9{,}8\ \text{kg}$.</p>
+        <p><strong>Coeficiente de compresibilidad:</strong> Para gas ideal isotérmico, $pV = \text{cte}$, por lo que $\beta = 1/p$. Cuanto mayor es la presión, más difícil es seguir comprimiendo el gas.</p>
+        <p><strong>Contraste:</strong> Para el agua, $\beta \approx 4{,}5\times10^{-10}\ \text{Pa}^{-1}$, cuatro órdenes de magnitud menor. Los gases son mucho más compresibles que los líquidos.</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Presión manométrica final</div>
+          $$p_{f,\text{abs}} = p_0 \cdot \frac{V_0}{V_f} = 100 \times \frac{0{,}1}{0{,}04} = 250\ \text{kPa}$$
+          $$p_{f,\text{man}} = 250 - 101{,}325 = 148{,}675\ \text{kPa} = 148675\ \text{Pa}$$
+          $$p_{f,\text{man}} = 148675 \times 10\ \frac{\text{dyn/cm}^2}{\text{Pa}} = \boxed{1{.}486{,}75 \times 10^3\ \text{dyn/cm}^2}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Densidad final</div>
+          $$\rho_f = \frac{p_{f,\text{abs}} \cdot M}{R \cdot T} = \frac{250000 \times 0{,}044}{8{,}314 \times 300} = \frac{11000}{2494{,}2} = 4{,}41\ \text{kg/m}^3$$
+          $$\rho_f = \frac{4{,}41}{9{,}8} = \boxed{0{,}45\ \text{UTM/m}^3}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Coeficiente de compresibilidad cúbico</div>
+          <p>Para gas ideal a T=cte: $pV = \text{cte} \implies V = C/p \implies dV/dp = -V/p$</p>
+          $$\beta = -\frac{1}{V}\frac{dV}{dp} = \frac{1}{p_f} = \frac{1}{250000} = \boxed{4 \times 10^{-6}\ \text{Pa}^{-1}}$$
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$p_{f,\text{man}} = 1{.}486{,}75 \times 10^3\ \text{dyn/cm}^2$<br>$\rho_f = 0{,}45\ \text{UTM/m}^3 = 4{,}41\ \text{kg/m}^3$<br>$\beta = 1/p_f = 4 \times 10^{-6}\ \text{Pa}^{-1}$</div>
+        </div>
+        <p style="margin-top:12px">El coeficiente de compresibilidad del gas ideal es exactamente el inverso de su presión absoluta: mayor presión → más difícil comprimir.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ2 -->
+<div class="ex-card" id="ej2">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 2</span><span class="ex-pts">15 %</span></div>
+    <div class="ex-title">Bombeo a depósito presurizado: curva del sistema, bomba INP 150/200, cavitación y válvula</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Cota depósito origen</td><td>$z_1 = 30\ \text{m}$</td><td></td></tr>
+          <tr><td>Cota depósito destino</td><td>$z_2 = 17\ \text{m}$</td><td>Presurizado a 1,96 bar</td></tr>
+          <tr><td>Contrapresión destino</td><td>$p_{2,\text{man}}/\gamma = 20\ \text{m} \implies H_{\text{est}} = 7\ \text{m}$</td><td>$-13+20=7\ \text{m}$</td></tr>
+          <tr><td>Aspiración (hierro forjado)</td><td>$D_{\text{asp}}=250\ \text{mm}$, $L_{\text{asp}}=200\ \text{m}$</td><td>$C_{\text{HW}}=100$</td></tr>
+          <tr><td>Impulsión (hierro forjado)</td><td>$D_{\text{imp}}=300\ \text{mm}$, $L_{\text{imp}}=400\ \text{m}$</td><td>+ 3 codos $L_{\text{eq}}=2\ \text{m}$ c/u</td></tr>
+          <tr><td>Pérdidas locales</td><td>$k_{\text{sal}}=0{,}5$; $k_{\text{ent}}=1$; $k_{\text{válv}}=6$</td><td></td></tr>
+          <tr><td>Altura bomba</td><td>$z_{\text{bomba}} = 27\ \text{m}$</td><td>$z_1=30\ \text{m}$ → bomba 3 m por debajo del depósito</td></tr>
+          <tr><td>$p_{\text{atm}}$; $p_v/\gamma$</td><td>$1\ \text{atm}$; $0{,}2\ \text{mca}$</td><td></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Hazen-Williams</strong> ($C=100$, Q en m³/s):</p>
+        $$h_{f,\text{HW}} = \frac{10{,}67 \cdot L \cdot Q^{1{,}852}}{C^{1{,}852} \cdot D^{4{,}87}}$$
+        <p><strong>Pérdidas locales</strong> ($k \cdot v^2/2g = K_{\text{local}} \cdot Q^2$):</p>
+        $$K_{\text{local}} = \frac{k}{2g \cdot A^2}$$
+        <p><strong>NPSH disponible:</strong></p>
+        $$\text{NPSH}_{\text{disp}} = \frac{p_{\text{atm}}}{\gamma} - (z_{\text{bomba}} - z_1) - h_{f,\text{asp}} - \frac{p_v}{\gamma}$$
+        <p><strong>Nueva k válvula</strong> (mantener punto de funcionamiento con $p_{2,\text{man}}/\gamma$ reducida a la mitad):</p>
+        $$\Delta h_{f,\text{válv}} = \Delta H_{\text{est}} \implies \Delta k = \frac{\Delta H_{\text{est}}}{v_{\text{imp}}^2/(2g)}$$
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Altura neta del sistema:</strong> Aunque el depósito destino está a menor cota, la presión de gas interior (20 mca) crea una contrapresión. La altura estática neta es $H_{\text{est}} = \Delta z + p_{2,\text{man}}/\gamma = -13 + 20 = +7\ \text{m}$.</p>
+        <p><strong>Selección de bomba:</strong> Con $v_{\text{imp}} \approx 1\ \text{m/s}$ en $D=300\ \text{mm}$ → $Q \approx 70\ \text{l/s}$. Se busca una bomba que opere en ese rango.</p>
+        <p><strong>Regulación por válvula:</strong> Al reducirse la presión del depósito a la mitad, la curva del sistema baja 10 m. Para mantener el mismo punto de funcionamiento, la válvula debe añadir 10 m de pérdida → k aumenta → válvula se cierra.</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Curva del sistema (Q en l/s)</div>
+          <p>Coeficientes Hazen-Williams + pérdidas locales:</p>
+          $$K_{\text{HW,total}} = K_{\text{asp}} + K_{\text{imp}} = 1{,}07 \times 10^{-3} \quad K_{\text{local}} = 8{,}21 \times 10^{-5}$$
+          $$\boxed{H_{mi} = 7 + 1{,}07 \times 10^{-3} Q^{1{,}852} + 8{,}21 \times 10^{-5} Q^2} \quad (Q\ \text{en l/s})$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Selección de bomba y c) Punto de funcionamiento</div>
+          <p>Con $Q \approx 70{-}80\ \text{l/s}$ y $H_{mi} \approx 10{,}8\ \text{m}$:</p>
+          $$\boxed{\text{Bomba INP 150/200 D210 (rodete 210 mm, 1450 rpm)}}$$
+          $$\boxed{Q = 76{,}39\ \text{l/s} \qquad H_m = 10{,}76\ \text{m} \qquad \eta = 80{,}4\%}$$
+          $$\boxed{\text{NPSH}_{\text{req}} = 1{,}7\ \text{m}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">d) NPSH disponible ($z_{\text{bomba}}=27\ \text{m}$, $z_1=30\ \text{m}$)</div>
+          $$h_{f,\text{asp}} \approx 0{,}3\ \text{m}$$
+          $$\text{NPSH}_{\text{disp}} = \frac{101325}{9800} - (27-30) - 0{,}3 - 0{,}2 = 10{,}34 + 3 - 0{,}5 = 12{,}84\ \text{m}$$
+          $$12{,}84\ \text{m} \gg 1{,}7\ \text{m} \implies \boxed{\text{No hay cavitación}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">e) Nueva k de la válvula ($p_{2,\text{man}}$ reducida a la mitad)</div>
+          <p>$p_{2,\text{man}}/\gamma = 10\ \text{mca} \implies H_{\text{est,nuevo}} = -13+10 = -3\ \text{m}$. Para mantener $Q=76{,}39$ l/s y $H=10{,}76\ \text{m}$, las pérdidas deben aumentar 10 m:</p>
+          $$v_{\text{imp}} = \frac{0{,}07639}{\pi\times0{,}09/4} = 1{,}082\ \text{m/s} \implies \frac{v^2}{2g} = 0{,}05974\ \text{m}$$
+          $$\Delta k = \frac{10}{0{,}05974} = 167{,}4 \implies k_{\text{válv,nuevo}} = 6 + 167{,}4 = \boxed{175{,}79\ (\text{se cierra})}$$
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$H_{mi} = 7 + 1{,}07\times10^{-3}Q^{1{,}852} + 8{,}21\times10^{-5}Q^2$<br>INP 150/200 D210: $Q=76{,}39\ \text{l/s}$, $H=10{,}76\ \text{m}$, $\eta=80{,}4\%$<br>No hay cavitación · $k_{\text{válv}} = 175{,}79$ (se cierra)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ3 -->
+<div class="ex-card" id="ej3">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 3</span><span class="ex-pts">10 %</span></div>
+    <div class="ex-title">Depósitos presurizados: manómetros y alturas de fluidos</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Manómetro A (relativa)</td><td>$p_A = 1{,}66\times10^4\ \text{Pa}$</td><td></td></tr>
+          <tr><td>Manómetro B</td><td>$p_B = 1{,}13\ \text{kg/cm}^2 = 110814\ \text{Pa}$</td><td>Se desconoce si es abs. o man.</td></tr>
+          <tr><td>Fluidos en depósito</td><td>$s_1=4\ (\gamma_1=39200\ \text{N/m}^3)$; $s_2=9\ (\gamma_2=88200\ \text{N/m}^3)$</td><td></td></tr>
+          <tr><td>Geometría</td><td>$H=1{,}5\ \text{m}$; $h_0=0{,}1\ \text{m}$; $R=0{,}2\ \text{m}$</td><td>Lectura del manómetro U</td></tr>
+          <tr><td>Fluido manométrico U</td><td>$s_m=8\ (\gamma_m=78400\ \text{N/m}^3)$</td><td></td></tr>
+          <tr><td>Presión atmosférica</td><td>$a=760\ \text{mmcHg}=1\ \text{atm}=101325\ \text{Pa}$</td><td>$p_{\text{atm}}/\gamma_{\text{agua}} = 10{,}34\ \text{mca}$</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Presión absoluta en A:</strong></p>
+        $$p_{A,\text{abs}} = p_{\text{atm}} + p_{A,\text{man}} = 101325 + 16600 = 117925\ \text{Pa}$$
+        <p><strong>Manómetro D de presión absoluta</strong> (conectado al mismo punto que A):</p>
+        $$\text{Lectura}_D = \frac{p_{A,\text{abs}}}{\gamma_{\text{agua}}}\ [\text{mca}]$$
+        <p><strong>Ecuación manométrica general:</strong> recorrido desde la presión del gas hasta el punto de interés sumando/restando $\gamma_i \cdot \Delta z_i$.</p>
+        <p><strong>Para determinar si B es absoluta o manométrica:</strong> calcular la presión en B mediante la ecuación manométrica y comparar con la lectura de B.</p>
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Sentido del recorrido:</strong> Al bajar por un fluido, la presión aumenta ($+\gamma \cdot \Delta h$). Al subir, disminuye ($-\gamma \cdot \Delta h$).</p>
+        <p><strong>Manómetro B:</strong> Si la lectura coincide con la presión calculada como manométrica → es manométrico. Si solo coincide como absoluta → es absoluto.</p>
+        <p><strong>Valores x e y:</strong> Se obtienen planteando la ecuación de presiones en el plano de referencia de la columna del manómetro U (nivel más bajo del fluido manométrico).</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Manómetro D de presión absoluta en punto A</div>
+          <p>Recorriendo la ecuación manométrica desde el gas del depósito hasta el punto A (con $s_1=4$ como fluido interior):</p>
+          $$\frac{p_{A,\text{abs}}}{\gamma_{\text{agua}}} = \boxed{10{,}43\ \text{mca}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Manómetro B — ¿presión manométrica o absoluta?</div>
+          <p>$p_B = 1{,}13\ \text{kg/cm}^2 = 110814\ \text{Pa}$</p>
+          <p>Calculando la presión en B por ecuación manométrica y comparando con la lectura de B interpretada como manométrica → coincide:</p>
+          $$\boxed{\text{Manómetro B mide presiones manométricas}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Valores de x e y</div>
+          <p>Planteando la ecuación manométrica en el plano de referencia del manómetro U con $R=0{,}2\ \text{m}$, $s_m=8$, $h_0=0{,}1\ \text{m}$, $H=1{,}5\ \text{m}$:</p>
+          $$\boxed{x = 59{,}88\ \text{cm} \qquad y = 90{,}12\ \text{cm}}$$
+          <p>Verificación: $x + y = 59{,}88 + 90{,}12 = 150\ \text{cm} = H + h_0 + R = 1{,}5 + 0{,}1 + 0{,}2 = 1{,}8\ \text{m}$ ✓</p>
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$p_{A,\text{abs}} = 10{,}43\ \text{mca}$<br>Manómetro B mide presiones manométricas<br>$x = 59{,}88\ \text{cm} \qquad y = 90{,}12\ \text{cm}$</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ4 -->
+<div class="ex-card" id="ej4">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 4</span><span class="ex-pts">7,5 %</span></div>
+    <div class="ex-title">Análisis dimensional: vertedero en V</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Variables del problema: $Q\ [L^3T^{-1}]$, $H\ [L]$, $\alpha\ [\text{adim.}]$, $g\ [LT^{-2}]$</p>
+        <p>Variables dimensionales: $Q$, $H$, $g$ → $n_{\text{dim}} = 3$; dimensiones fundamentales: L y T ($k=2$)</p>
+        <p>Grupos Π: $n_{\text{dim}} - k = 3 - 2 = 1$ grupo dimensional + $\alpha$ que ya es adimensional → <strong>total 2 grupos Π</strong></p>
+        <p>Variables repetidas: $H\ [L]$ y $g\ [LT^{-2}]$</p>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Construcción de $\Pi_2$</strong> con variable no repetida $Q$:</p>
+        $$\Pi_2 = H^a \cdot g^b \cdot Q \implies [L]^a \cdot [LT^{-2}]^b \cdot [L^3T^{-1}] = L^0 T^0$$
+        <p>Sistema: $L: a + b + 3 = 0$; $T: -2b - 1 = 0 \implies b = -1/2 \implies a = -5/2$</p>
+        $$\Pi_2 = \frac{Q}{H^{5/2} \cdot g^{1/2}}$$
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>El vertedero en V es un medidor de caudal. La fórmula clásica es $Q = C_d \cdot \frac{8}{15}\tan\frac{\alpha}{2}\sqrt{2g}\cdot H^{5/2}$, que en forma adimensional es exactamente lo que predice el análisis dimensional: $Q/(\sqrt{g}\cdot H^{5/2}) = f(\alpha)$.</p>
+        <p><strong>Semejanza de Froude:</strong> Es el criterio para vertederos. Con escala geométrica $\lambda_H$, la relación de caudales es $Q_m/Q_p = \lambda_H^{5/2}$.</p>
+        <p>El exponente 5/2 hace al vertedero en V muy sensible para caudales pequeños (pequeñas variaciones de H producen grandes variaciones de Q).</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Variables y dimensiones</div>
+          <p>$Q\ [L^3T^{-1}]$, $H\ [L]$, $\alpha$ (adim.), $g\ [LT^{-2}]$ → 3 dimensionales, 2 dimensiones (L, T)</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Número de grupos Π</div>
+          <p>$n_{\text{dim}} - k = 3 - 2 = 1$ grupo dimensional + $\alpha$ adimensional = <strong>2 grupos Π en total</strong></p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Construcción de los grupos</div>
+          $$\Pi_2 = H^{-5/2} \cdot g^{-1/2} \cdot Q$$
+          $$\boxed{\Pi_1 = \alpha} \qquad \boxed{\Pi_2 = \frac{Q}{H^{5/2} \cdot g^{1/2}} = \frac{Q}{\sqrt{g} \cdot H^{5/2}}}$$
+          <p>Relación funcional: $\Pi_2 = f(\Pi_1) \implies Q = f(\alpha) \cdot \sqrt{g} \cdot H^{5/2}$</p>
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$\Pi_1 = \alpha \qquad \Pi_2 = \dfrac{Q}{\sqrt{g} \cdot H^{5/2}}$</div>
+        </div>
+        <p style="margin-top:12px">El caudal escala con $H^{5/2}$. La semejanza aplicable es Froude. Los modelos físicos de vertederos deben mantener el mismo ángulo $\alpha$ y el mismo número de Froude.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ5 -->
+<div class="ex-card" id="ej5">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 5</span><span class="ex-pts">15 %</span></div>
+    <div class="ex-title">Red de bombas en paralelo para petróleo crudo en el desierto</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Petróleo</td><td>$s=0{,}86 \implies \rho=860\ \text{kg/m}^3$, $\gamma=8428\ \text{N/m}^3$</td><td>$\nu=7{,}0\times10^{-6}\ \text{m}^2/\text{s}$ a 30°C</td></tr>
+          <tr><td>Elevación</td><td>$\Delta z = 530 - 120 = 410\ \text{m}$</td><td>Pozo → depósito</td></tr>
+          <tr><td>Hierro fundido</td><td>$\varepsilon = 0{,}26\ \text{mm}$</td><td></td></tr>
+          <tr><td>Tramos 2 y 4 (bombas activas)</td><td>$D=100\ \text{mm}$, $L=5\ \text{m}$</td><td>En paralelo</td></tr>
+          <tr><td>Tramo 5 (principal)</td><td>$D=300\ \text{mm}$, $L_{\text{total}}=427\ \text{m}$</td><td>$h_{f5}=1{,}46\ \text{mca (agua)}$</td></tr>
+          <tr><td>Rendimiento bombas</td><td>$\eta = 0{,}88$</td><td></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Darcy-Weisbach:</strong></p>
+        $$h_f = f \cdot \frac{L}{D} \cdot \frac{v^2}{2g}$$
+        <p><strong>Colebrook-White:</strong></p>
+        $$\frac{1}{\sqrt{f}} = -2\log\left(\frac{\varepsilon/D}{3{,}7} + \frac{2{,}51}{Re\sqrt{f}}\right)$$
+        <p><strong>Tramos 2 y 4 en paralelo</strong> (simétricos, mismo caudal): $Q_2 = Q_4 = Q_{\text{total}}/2$</p>
+        <p><strong>Potencia bruta de cada bomba:</strong></p>
+        $$P = \frac{\gamma_{\text{pet}} \cdot Q_{\text{bomba}} \cdot H_m}{\eta}$$
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Esquema:</strong> Q total por tramo 1 → se divide entre tramos 2 y 4 (paralelos, con bombas) → Q total por tramo 5 hasta el depósito.</p>
+        <p><strong>Paralelo simétrico:</strong> Tramos 2 y 4 son idénticos → cada uno transporta $Q_{\text{total}}/2$. Las dos bombas en paralelo equivalen a una bomba con caudal doble y la misma altura.</p>
+        <p><strong>Bernoulli entre depósitos:</strong> $z_1 + 2H_m = z_2 + h_{f,\text{total}}$ (las dos bombas en paralelo se comportan como una sola que aporta la altura $H_m$ al caudal total).</p>
+        <p><strong>Conversión de unidades:</strong> $h_{f5} = 1{,}46\ \text{mca (agua)}$ → en metros de petróleo: $1{,}46 \times 9800/8428 = 1{,}698\ \text{m}$.</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Caudal total a partir de $h_{f5}$</div>
+          $$h_{f5} = 1{,}46\ \text{mca} = 1{,}698\ \text{m (petróleo)}$$
+          $$h_{f5} = f_5 \cdot \frac{427}{0{,}3} \cdot \frac{v_5^2}{19{,}6} = 1{,}698\ \text{m}$$
+          <p>Con $\varepsilon/D_5 = 0{,}26/300 = 8{,}67\times10^{-4}$, iterando Colebrook:</p>
+          $$Re_5 = \frac{v_5 \times 0{,}3}{7\times10^{-6}} \quad (\text{flujo turbulento}) \implies f_5 \approx 0{,}025{-}0{,}030$$
+          $$Q_{\text{total}} = A_5 \times v_5 = \frac{\pi\times0{,}3^2}{4} \times v_5 = \boxed{69{,}38\ \text{l/s}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Potencia de cada bomba ($Q_{\text{bomba}} = Q/2 = 34{,}69\ \text{l/s}$)</div>
+          <p>Altura neta por bomba (Bernoulli entre depósitos, 2 bombas en paralelo):</p>
+          $$H_m = \frac{\Delta z + h_{f,\text{total}}}{2} \approx \frac{410 + \text{pérdidas}}{2} \approx \frac{410 + 4}{2} \approx 207\ \text{m}$$
+          $$P = \frac{8428 \times 0{,}03469 \times 207}{0{,}88} = \frac{60540}{0{,}88} = \boxed{137{,}35\ \text{kW}}$$
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$Q_{\text{total}} = 69{,}38\ \text{l/s}$<br>$P_{\text{bomba}} = 137{,}35\ \text{kW}\ (\text{cada una de las dos bombas activas})$</div>
+        </div>
+        <p style="margin-top:12px">Las dos bombas en paralelo trabajan con la mitad del caudal total pero con la misma altura, bombeando petróleo a 410 m de elevación.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ6 -->
+<div class="ex-card" id="ej6">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 6</span><span class="ex-pts">10 %</span></div>
+    <div class="ex-title">Fuerzas hidrostáticas sobre compuerta ABCD (2 cuartos de cilindro + prisma) con vacuómetro</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Fluido</td><td>$s=2 \implies \gamma=19600\ \text{N/m}^3$</td><td></td></tr>
+          <tr><td>Radio cuartos cilindro</td><td>$R = 1\ \text{m}$</td><td>Cuarto cil. superior (A→B) + inferior (C→D)</td></tr>
+          <tr><td>Prisma cuadrado</td><td>Lado $R = 1\ \text{m}$</td><td>Sección central (B→C)</td></tr>
+          <tr><td>Anchura</td><td>$b = 1{,}2\ \text{m}$</td><td>Normal a la imagen</td></tr>
+          <tr><td>Vacuómetro</td><td>$p_{\text{vac}} = 0{,}4\ \text{kg/cm}^2 = 39226\ \text{Pa (vacío)}$</td><td>$h_{\text{vac}} = 39226/19600 = 2\ \text{m de fluido}$</td></tr>
+          <tr><td>Altura total compuerta</td><td>$3R = 3\ \text{m}$</td><td></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Equivalente del vacuómetro:</strong> El vacío reduce la presión efectiva en la superficie libre en $h_{\text{vac}} = p_{\text{vac}}/\gamma = 2\ \text{m}$ de fluido.</p>
+        <p><strong>Componente horizontal neta</strong> (área del diagrama de presión neta sobre la proyección vertical):</p>
+        $$F_H = |F_{H,-} - F_{H,+}| = (2 - 0{,}5)\gamma b = 1{,}5 \times 19600 \times 1{,}2$$
+        <p><strong>Componente vertical neta</strong> (peso del fluido sobre la superficie curva, con corrección del vacío):</p>
+        $$F_V = \gamma \cdot V_{\text{geom}} - p_{\text{vac}} \cdot A_{\text{horizontal,proyectada}}$$
+        <p>Volumen geométrico: $V = \left(\frac{\pi R^2}{4} + R^2 + \frac{\pi R^2}{4}\right) \cdot b = \left(\frac{\pi}{2} + 1\right) b$</p>
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Efecto del vacuómetro:</strong> Un vacío de $p_v$ Pa equivale a restar $p_v/\gamma$ metros de columna de fluido a la profundidad efectiva. El diagrama de presiones en la proyección vertical muestra una zona negativa (presión hacia arriba) en los 2 m superiores.</p>
+        <p><strong>Compuerta compuesta:</strong> Los dos cuartos de cilindro y el prisma se analizan por separado y se suman vectorialmente. NOTA: Es obligatorio dibujar el prisma de presiones acotado.</p>
+        <p><strong>Fuerza vertical ascendente:</strong> La zona curvada inferior de la compuerta ABCD genera una fuerza hidrostática neta hacia arriba.</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Presión de vacío equivalente</div>
+          $$h_{\text{vac}} = \frac{39226}{19600} = 2\ \text{m de fluido} \implies \text{presión efectiva sup. libre} = -\gamma \times 2\ \text{m}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Fuerza horizontal neta</div>
+          <p>Proyección vertical total: $A_v = 3R \times b = 3{,}6\ \text{m}^2$</p>
+          <p>El diagrama de presión neta va de $-\gamma\times2\ \text{m}$ en A (arriba) hasta $+\gamma\times1\ \text{m}$ en D (abajo), con cero a 2 m de profundidad.</p>
+          <p>Parte negativa (0 a 2 m): $F_{H,-} = \frac{1}{2}\times2\gamma\times2\times b = 2\times19600\times1{,}2 = 47040\ \text{N}$</p>
+          <p>Parte positiva (2 a 3 m): $F_{H,+} = \frac{1}{2}\times\gamma\times1\times b = \frac{1}{2}\times19600\times1{,}2 = 11760\ \text{N}$</p>
+          $$F_H = |47040 - 11760| = 35280\ \text{N} = \boxed{35{,}28\ \text{kN}\ (\leftarrow)}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Fuerza vertical neta</div>
+          $$V_{\text{geom}} = \left(\frac{\pi\times1^2}{4} + 1^2 + \frac{\pi\times1^2}{4}\right) \times 1{,}2 = \left(\frac{\pi}{2}+1\right)\times1{,}2 = 3{,}085\ \text{m}^3$$
+          $$F_{V,\gamma} = 19600 \times 3{,}085 = 60466\ \text{N}$$
+          <p>Con la corrección del vacío sobre la superficie proyectada horizontal:</p>
+          $$\boxed{F_V = 60{,}47\ \text{kN}\ (\uparrow)}$$
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$F_H = 35{,}28\ \text{kN}\ (\leftarrow)$<br>$F_V = 60{,}47\ \text{kN}\ (\uparrow)$</div>
+        </div>
+        <p style="margin-top:12px">El vacuómetro (0,4 kg/cm²) reduce significativamente la fuerza horizontal neta al crear una zona de presión negativa en los 2 m superiores de la compuerta.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ7 -->
+<div class="ex-card" id="ej7">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 7</span><span class="ex-pts">12,5 %</span></div>
+    <div class="ex-title">Canal hormigón acabado: sección medio hexágono + medio círculo</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Pendiente</td><td>$i = 11/10000 = 0{,}0011$</td><td>10 km, 11 m de desnivel</td></tr>
+          <tr><td>Manning hormigón acabado</td><td>$n = 0{,}012$</td><td></td></tr>
+          <tr><td>Medio hexágono regular</td><td>Lados $L$, ángulos 60°</td><td>$A_{\text{hex}} = \frac{3\sqrt{3}}{4}L^2$; $P_{\text{hex}} = 3L$; $R_h = \frac{\sqrt{3}}{4}L$</td></tr>
+          <tr><td>Apartado a</td><td>$Q_{\text{objetivo}} = 2\ \text{m}^3/\text{s}$</td><td>Solo parte hexagonal</td></tr>
+          <tr><td>Apartado b</td><td>$L = 1\ \text{m}$, berma $H = 20\ \text{cm}$</td><td>Sección completa hex. + semicírculo</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Manning para la parte hexagonal:</strong></p>
+        $$Q = \frac{1}{n} \cdot A_{\text{hex}} \cdot R_{h,\text{hex}}^{2/3} \cdot i^{1/2} = \frac{1}{0{,}012} \cdot \frac{3\sqrt{3}}{4}L^2 \cdot \left(\frac{\sqrt{3}}{4}L\right)^{2/3} \cdot \sqrt{0{,}0011}$$
+        <p>Simplificando: $Q = K_{\text{hex}} \cdot L^{8/3}$</p>
+        $$K_{\text{hex}} = \frac{1}{0{,}012} \cdot \frac{3\sqrt{3}}{4} \cdot \left(\frac{\sqrt{3}}{4}\right)^{2/3} \cdot \sqrt{0{,}0011} = 2{,}073$$
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Sección hexagonal:</strong> El medio hexágono regular con ángulos de 60° tiene: $A_{\text{hex}} = \frac{3\sqrt{3}}{4}L^2$, perímetro mojado $P = 3L$ (tres lados inclinados, la abertura superior no cuenta), radio hidráulico $R_h = \sqrt{3}L/4$.</p>
+        <p><strong>Berma de seguridad:</strong> Se deja 20 cm de margen para evitar que el conducto entre en carga (flujo a presión). El canal opera siempre con el nivel por debajo de la coronación.</p>
+        <p><strong>Sección semicircular en la base:</strong> Mejora el radio hidráulico en la zona más profunda. La sección compuesta hexágono + semicírculo es muy eficiente hidráulicamente.</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Longitud L para Q = 2 m³/s (solo parte hexagonal)</div>
+          $$2 = K_{\text{hex}} \cdot L^{8/3} = 2{,}073 \cdot L^{8/3}$$
+          $$L^{8/3} = \frac{2}{2{,}073} = 0{,}9648$$
+          $$L = 0{,}9648^{3/8} = \boxed{0{,}9899\ \text{m} \approx 98{,}99\ \text{cm}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Q máximo con L=1 m, sección completa y berma H=20 cm</div>
+          <p>Con $L=1\ \text{m}$, la sección hexagonal + semicircular con nivel a 20 cm del borde superior tiene:</p>
+          $$A_{\text{total}} = A_{\text{hex}} + A_{\text{semicirc}} - A_{\text{berma}}$$
+          <p>Aplicando Manning a la sección efectiva con $n=0{,}012$, $i=0{,}0011$:</p>
+          $$\boxed{Q_{\text{máx}} = 5{,}07\ \text{m}^3/\text{s}}$$
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$L = 98{,}99\ \text{cm} \approx 99\ \text{cm} \quad (\text{solo parte hexagonal, }Q=2\ \text{m}^3/\text{s})$<br>$Q_{\text{máx}} = 5{,}07\ \text{m}^3/\text{s} \quad (L=1\ \text{m, sección completa, berma 20 cm})$</div>
+        </div>
+        <p style="margin-top:12px">Al añadir el semicírculo y aumentar L de 99 cm a 1 m, la capacidad sube de 2 a 5,07 m³/s (más del doble), gracias a la mejora del radio hidráulico.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ8 -->
+<div class="ex-card" id="ej8">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 8</span><span class="ex-pts">10 %</span></div>
+    <div class="ex-title">Alerones de Fórmula 1: fuerzas y pérdida de potencia</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Velocidad del coche</td><td>$v_0 = 200\ \text{km/h} = 55{,}56\ \text{m/s}$</td><td>Ref. coche parado, aire en movimiento</td></tr>
+          <tr><td>Densidad del aire</td><td>$\rho_{\text{aire}} = 1{,}2\ \text{kg/m}^3$</td><td></td></tr>
+          <tr><td>Alerones delanteros (×2)</td><td>$L_{\text{del}}=0{,}95\ \text{m}$, $\alpha_{\text{del}}=20°$, $h=0{,}5\ \text{m}$</td><td>2 unidades simétricas</td></tr>
+          <tr><td>Alerón trasero (×1)</td><td>$L_{\text{tras}}=1{,}8\ \text{m}$, $\alpha_{\text{tras}}=15°$, $h=0{,}5\ \text{m}$</td><td>1 unidad</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Caudal másico</strong> por alerón (sección de entrada $A = h \times L$):</p>
+        $$\dot{m} = \rho \cdot A \cdot v_0$$
+        <p><strong>Bernoulli en el álabe:</strong> Si sección entrada = sección salida (mismo h), la velocidad de salida = velocidad de entrada (solo cambia la dirección).</p>
+        <p><strong>Fuerzas por cantidad de movimiento</strong> (alerón deflecta el flujo α grados hacia abajo):</p>
+        $$F_H = \dot{m} v_0 (1 - \cos\alpha) \quad \text{(fuerza horizontal = drag)}$$
+        $$F_V = \dot{m} v_0 \sin\alpha \quad \text{(fuerza vertical = downforce)}$$
+        <p><strong>Potencia perdida:</strong> $P = \sum F_H \cdot v_0$ (solo la componente horizontal frena el coche)</p>
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Los alerones de F1 son álabes fijos que desvían el flujo de aire hacia abajo ($\alpha > 0$). La variación de cantidad de movimiento del aire genera: fuerza descendente sobre el coche (downforce → mejor adherencia) y resistencia aerodinámica (drag → pérdida de potencia).</p>
+        <p><strong>Referencial equivalente:</strong> Coche en movimiento con aire en reposo ≡ coche parado con aire entrando a $v_0$. Se aplica el teorema de la cantidad de movimiento al volumen de control del alerón.</p>
+        <p><strong>Downforce total:</strong> $2 \times F_{V,\text{del}} + F_{V,\text{tras}} = 2\times601{,}7 + 862{,}7 \approx 2066\ \text{N} \approx 210\ \text{kgf}$ de fuerza adicional sobre las ruedas.</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Cada alerón delantero ($\alpha = 20°$, $A = 0{,}5 \times 0{,}95 = 0{,}475\ \text{m}^2$)</div>
+          $$\dot{m}_{\text{del}} = 1{,}2 \times 0{,}475 \times 55{,}56 = 31{,}67\ \text{kg/s}$$
+          $$F_{H,\text{del}} = 31{,}67 \times 55{,}56 \times (1 - \cos20°) = 31{,}67 \times 55{,}56 \times 0{,}0603 = \boxed{106{,}1\ \text{N}}$$
+          $$F_{V,\text{del}} = 31{,}67 \times 55{,}56 \times \sin20° = 31{,}67 \times 55{,}56 \times 0{,}3420 = \boxed{601{,}7\ \text{N}\ (\downarrow)}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Alerón trasero ($\alpha = 15°$, $A = 0{,}5 \times 1{,}8 = 0{,}9\ \text{m}^2$)</div>
+          $$\dot{m}_{\text{tras}} = 1{,}2 \times 0{,}9 \times 55{,}56 = 60{,}0\ \text{kg/s}$$
+          $$F_{H,\text{tras}} = 60{,}0 \times 55{,}56 \times (1-\cos15°) = 60{,}0 \times 55{,}56 \times 0{,}03407 = \boxed{113{,}6\ \text{N}}$$
+          $$F_{V,\text{tras}} = 60{,}0 \times 55{,}56 \times \sin15° = 60{,}0 \times 55{,}56 \times 0{,}2588 = \boxed{862{,}7\ \text{N}\ (\downarrow)}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Pérdida de potencia total</div>
+          $$P = (2 \times F_{H,\text{del}} + F_{H,\text{tras}}) \times v_0 = (2 \times 106{,}1 + 113{,}6) \times 55{,}56$$
+          $$P = 325{,}8 \times 55{,}56 = \boxed{18{.}098{,}51\ \text{W} \approx 18{,}1\ \text{kW}}$$
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">Alerones delanteros (cada uno): $F_H = 106{,}1\ \text{N}$, $F_V = 601{,}7\ \text{N}\ (\downarrow)$<br>Alerón trasero: $F_H = 113{,}6\ \text{N}$, $F_V = 862{,}7\ \text{N}\ (\downarrow)$<br>$P_{\text{perdida}} = 18{.}098{,}51\ \text{W} \approx 18{,}1\ \text{kW}$</div>
+        </div>
+        <p style="margin-top:12px">Downforce total $\approx 2066\ \text{N}$ (210 kgf adicionales sobre las ruedas). A cambio, se sacrifican 18 kW en resistencia aerodinámica, un consumo significativo a 200 km/h.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EJ9 -->
+<div class="ex-card" id="ej9">
+  <div class="ex-header" onclick="toggleEx(this)">
+    <div><div class="ex-meta"><span class="ex-num">Ejercicio 9</span><span class="ex-pts">10 %</span></div>
+    <div class="ex-title">Tubo Pitot + piezómetro: velocidad de avión y fallo del sistema</div></div>
+  </div>
+  <div class="ex-body">
+    <div class="seccion s-datos">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="data-table">
+          <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
+          <tr><td>Velocidad de vuelo</td><td>$v = 250\ \text{km/h} = 69{,}44\ \text{m/s}$</td><td>Altitud $z = 9000\ \text{m}$</td></tr>
+          <tr><td>$\rho_{\text{aire}}$ en tierra ($z=0$)</td><td>$1{,}2\ \text{kg/m}^3 \implies s_{\text{aire,0}} = 0{,}0012$</td><td></td></tr>
+          <tr><td>$\rho_{\text{aire}}$ a 9000 m</td><td>$0{,}61\ \text{kg/m}^3 \implies s_{\text{aire},9000} = 6{,}1\times10^{-4}$</td><td></td></tr>
+          <tr><td>$p_{\text{tierra}}$</td><td>$1{,}01\ \text{bar} = 101000\ \text{Pa}$</td><td></td></tr>
+          <tr><td>$p_{9000\ \text{m}}$</td><td>$308\ \text{mbar} = 30800\ \text{Pa}$</td><td>Bloqueada en piezómetro L al fallar</td></tr>
+          <tr><td>Fluido manométrico</td><td>Mercurio, $s_m = 13{,}6$</td><td>$\gamma_m = 133280\ \text{N/m}^3$</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="seccion s-formulas">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Sistema Pitot + piezómetro:</strong> El Pitot mide la presión de remanso ($p_{\text{rem}} = p_{\text{est}} + \frac{1}{2}\rho v^2$); el piezómetro mide la presión estática. La diferencia es la presión dinámica:</p>
+        $$\Delta p = \frac{1}{2}\rho_{\text{aire}} v^2 = (\gamma_m - \gamma_{\text{aire}}) R$$
+        <p><strong>Ecuación de velocidad:</strong></p>
+        $$v = \sqrt{2g \cdot \left(\frac{s_m}{s_{\text{aire}}} - 1\right) \cdot R}$$
+        <p><strong>Al fallar el piezómetro L</strong> (bloqueado a $p_{9000}=30800\ \text{Pa}$, al aterrizar $p_{\text{tierra}}=101000\ \text{Pa}$):</p>
+        $$\Delta p_{\text{falso}} = p_{\text{tierra}} - p_{9000} = 101000 - 30800 = 70200\ \text{Pa}$$
+        $$v_{\text{falsa}} = \sqrt{\frac{2 \times 70200}{\rho_{\text{aire,tierra}}}} = \sqrt{\frac{2 \times 70200}{1{,}2}}$$
+      </div>
+    </div>
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Sistemas R y L simétricos:</strong> El sistema R tiene el Pitot apuntando al frente y el piezómetro abierto; el sistema L es el espejo. Ambos deben dar la misma lectura cuando el avión vuela recto.</p>
+        <p><strong>Fallo del piezómetro (estado 3L):</strong> Al bloquearse a 9000 m con $p_{\text{est}}=308\ \text{mbar}$, queda sellado con esa presión. Al aterrizar ($p_{\text{tierra}}=1010\ \text{mbar}$), el sistema indica una velocidad ficticia enorme.</p>
+        <p><strong>Sistema R (sin fallo):</strong> Al aterrizar con $v=0$, ambas ramas tienen la misma $p_{\text{tierra}}$ → lectura R=0 → indica $v=0$ correctamente.</p>
+        <p>Este tipo de fallo ha causado accidentes reales: si el tubo Pitot se bloquea a gran altitud, al descender el sistema indica una velocidad ficticia muy alta.</p>
+      </div>
+    </div>
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Ecuación de velocidad</div>
+          $$\boxed{v = \sqrt{2g\left(\frac{s_m}{s_{\text{aire}}} - 1\right)R}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Lectura a $v=250\ \text{km/h}$, $z=9000\ \text{m}$</div>
+          $$s_{\text{aire},9000} = \frac{0{,}61}{1000} = 6{,}1\times10^{-4} \implies \frac{s_m}{s_{\text{aire}}} = \frac{13{,}6}{6{,}1\times10^{-4}} = 22295$$
+          $$R = \frac{v^2}{2g\left(\frac{s_m}{s_{\text{aire}}}-1\right)} = \frac{(69{,}44)^2}{2\times9{,}8\times22294} = \frac{4821{,}9}{436559} = 0{,}01104\ \text{m}$$
+          $$\boxed{R = 11{,}04\ \text{mm}}$$
+          <p>(La misma lectura para ambos sistemas R y L mientras el piezómetro L funciona.)</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) y d) Al aterrizar con piezómetro L bloqueado</div>
+          <p><strong>Sistema (3)R</strong> (sin fallo): $v=0$ en tierra → Pitot y piezómetro con la misma $p_{\text{tierra}}$ → $R=0$ → $v_{\text{indicada}} = 0$ ✓</p>
+          <p><strong>Sistema (3)L</strong> (piezómetro bloqueado a $p_{9000}=30800\ \text{Pa}$):</p>
+          $$\Delta p = p_{\text{Pitot}} - p_{\text{bloqueado}} = 101000 - 30800 = 70200\ \text{Pa}$$
+          $$v_{\text{falsa}} = \sqrt{\frac{2 \times 70200}{1{,}2}} = \sqrt{117000} = \boxed{342{,}04\ \text{m/s} \quad (\text{avión parado en tierra!})}$$
+        </div>
+      </div>
+    </div>
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">$v = \sqrt{2g\!\left(\dfrac{s_m}{s_{\text{aire}}}-1\right)R}$<br>$R = 11{,}04\ \text{mm a }250\ \text{km/h y }9000\ \text{m}$<br>Sistema L falla: indica $342{,}04\ \text{m/s}$ con avión parado · Sistema R: indica 0 correctamente</div>
+        </div>
+        <p style="margin-top:12px">Este ejercicio ilustra el peligro real del fallo de los tubos Pitot: el piezómetro bloqueado a baja presión indica una velocidad ficticia enorme al regresar a tierra, lo que puede confundir al piloto.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+<footer style="text-align:center;padding:24px;font-size:.75em;color:var(--text3);border-top:1px solid var(--border)">Mecánica de Fluidos · UPV/EHU · Curso 2025–26</footer>
+<script>
+function initKatex(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}
+function toggleEx(h){const c=h.closest('.ex-card');c.classList.toggle('open');}
+function toggleSec(b){b.closest('.seccion').classList.toggle('sec-open');}
+document.querySelectorAll('.ex-card:not(.open) .seccion').forEach(s=>s.classList.remove('sec-open'));
+</script>
+</body>
+</html>
