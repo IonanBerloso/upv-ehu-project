@@ -832,9 +832,9 @@ $$\sum F_y = \dot{m}_1 v_{1y} + \dot{m}_2 v_{2y} - \dot{m}_3 v_{3y}$$</div>
     </div>
   </div>
   <div class="ex-body">
-    <div class="enunciado">La tubería de aspiración de 150 mm de diámetro de una instalación de bombeo consta de los siguientes elementos: una válvula de paso adimensional con factor de paso $k = 5$, un codo de 90° cuya pérdida equivale a 10 m de tubería recta, otro codo de 90° con pérdida equivalente a 10 m, y un tramo de 80 m de longitud. El caudal bombeado es $Q_B = 2500\ \text{l/h}$. El NPSH requerido es de 100 mbar por encima de la presión de vapor del agua. Utilizar la expresión de Hazen-Williams.
+    <div class="enunciado">La tubería de aspiración de 150 mm de diámetro de una instalación de bombeo consta de los siguientes elementos: una válvula de pie con $K_v = 3$, un codo de 90° cuya pérdida equivale a 10 m de tubería recta, otro codo de 90° con pérdida equivalente a 5 m, y un tramo recto de 8 m de longitud. El caudal bombeado es $Q_B = 2500\ \text{l/min}$. El NPSH requerido es de 100 mbar por encima de la presión de vapor del agua. Utilizar la expresión de Hazen-Williams con $C = 130$.
 
-<b>Dato:</b> $P_{\text{vapor}}\ (\text{abs}) = 0{,}12335\ \text{bar}$. Utilizar la expresión de Hazen-Williams.
+<b>Datos:</b> $P_{\text{vapor}}\ (\text{abs}) = 0{,}12335\ \text{bar}$; $P_{\text{atm}} = 750\ \text{Torr}$.
 
 <b>Resultado:</b> $\Delta z < 5{,}93\ \text{m}$</div>
 
@@ -844,12 +844,13 @@ $$\sum F_y = \dot{m}_1 v_{1y} + \dot{m}_2 v_{2y} - \dot{m}_3 v_{3y}$$</div>
         <table class="t-datos">
           <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
           <tr><td>$D_{\text{asp}}$</td><td>$150\ \text{mm} = 0{,}15\ \text{m}$</td><td>Diámetro tubería aspiración</td></tr>
-          <tr><td>$Q_B$</td><td>$2500\ \text{l/h} = 6{,}944 \times 10^{-4}\ \text{m}^3/\text{s}$</td><td>Caudal bombeado</td></tr>
-          <tr><td>$L_{\text{eq}}$</td><td>$80 + 10 + 10 = 100\ \text{m}$</td><td>Longitud equivalente total (tubería + codos)</td></tr>
-          <tr><td>$k_{\text{válvula}}$</td><td>$5$</td><td>Factor de paso adimensional (pérdida local)</td></tr>
-          <tr><td>$P_{\text{atm}}$</td><td>$0{,}12335\ \text{bar abs}$ (vapor) + margen</td><td>$P_{\text{atm}} = 1{,}01325\ \text{bar}$</td></tr>
-          <tr><td>$P_v$</td><td>$0{,}12335\ \text{bar abs}$</td><td>Presión de vapor del agua</td></tr>
-          <tr><td>$\text{NPSH}_{\text{req}}$</td><td>$100\ \text{mbar} = 0{,}1\ \text{bar}$</td><td>Requerido por el fabricante sobre $P_v$</td></tr>
+          <tr><td>$Q_B$</td><td>$2500\ \text{l/min} = 0{,}04167\ \text{m}^3/\text{s}$</td><td>Caudal bombeado</td></tr>
+          <tr><td>$L_{\text{eq}}$</td><td>$8 + 10 + 5 = 23\ \text{m}$</td><td>Tramo recto + codo 1 + codo 2</td></tr>
+          <tr><td>$K_v$</td><td>$3$</td><td>Válvula de pie (pérdida local)</td></tr>
+          <tr><td>$C$</td><td>$130$</td><td>Coeficiente Hazen-Williams (fundición afinada)</td></tr>
+          <tr><td>$P_{\text{atm}}$</td><td>$750\ \text{Torr} = 99\,991{,}5\ \text{Pa} \Rightarrow 10{,}203\ \text{mca}$</td><td>Presión barométrica</td></tr>
+          <tr><td>$P_v$</td><td>$0{,}12335\ \text{bar} = 12\,335\ \text{Pa} \Rightarrow 1{,}259\ \text{mca}$</td><td>Presión de vapor del agua</td></tr>
+          <tr><td>$P_{\text{req}}$</td><td>$P_v + 100\ \text{mbar} = 22\,335\ \text{Pa} \Rightarrow 2{,}279\ \text{mca}$</td><td>Presión mínima requerida en aspiración</td></tr>
         </table>
       </div>
     </div>
@@ -871,28 +872,32 @@ $$\sum F_y = \dot{m}_1 v_{1y} + \dot{m}_2 v_{2y} - \dot{m}_3 v_{3y}$$</div>
       <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución<span class="sarr">▼</span></button>
       <div class="sec-body">
         <div class="paso">
-          <div class="paso-titulo">Conversión de unidades y velocidad</div>
-          $$Q_B = \frac{2500}{3600000} = 6{,}944 \times 10^{-4}\ \text{m}^3/\text{s}$$
-          $$v = \frac{Q}{A} = \frac{6{,}944 \times 10^{-4}}{\pi/4 \times 0{,}15^2} = \frac{6{,}944 \times 10^{-4}}{0{,}01767} = 0{,}0393\ \text{m/s}$$
+          <div class="paso-titulo">1. Conversión de unidades y velocidad</div>
+          $$Q_B = \frac{2500}{60 \times 1000} = 0{,}04167\ \text{m}^3/\text{s}$$
+          $$A = \frac{\pi \times 0{,}15^2}{4} = 0{,}01767\ \text{m}^2 \qquad v = \frac{Q}{A} = \frac{0{,}04167}{0{,}01767} = 2{,}359\ \text{m/s}$$
         </div>
         <div class="paso">
-          <div class="paso-titulo">Pérdidas en la aspiración (Hazen-Williams, $C = 100$ fundición)</div>
-          $$J = \frac{10{,}67 \times (6{,}944 \times 10^{-4})^{1{,}852}}{100^{1{,}852} \times (0{,}15)^{4{,}87}}$$
-          $$J \approx 1{,}5 \times 10^{-4}\ \text{m/m} \quad \text{(pérdida unitaria muy pequeña a bajo caudal)}$$
-          $$h_{f,\text{tubería}} = J \times L_{\text{eq}} = 1{,}5 \times 10^{-4} \times 100 = 0{,}015\ \text{m}$$
-          <p style="margin-top:8px">Pérdida en válvula ($k = 5$):</p>
-          $$h_{f,\text{válvula}} = k \times \frac{v^2}{2g} = 5 \times \frac{(0{,}0393)^2}{19{,}6} = 5 \times 7{,}87 \times 10^{-5} \approx 3{,}94 \times 10^{-4}\ \text{m}$$
-          $$h_{f,\text{total}} \approx 0{,}016\ \text{m}$$
+          <div class="paso-titulo">2. Presiones en mca</div>
+          $$H_{\text{atm}} = \frac{P_{\text{atm}}}{\gamma} = \frac{750 \times 133{,}322}{9800} = \frac{99\,991{,}5}{9800} = 10{,}203\ \text{mca}$$
+          $$H_{\text{req}} = \frac{P_v + 100\ \text{mbar}}{\gamma} = \frac{12\,335 + 10\,000}{9800} = \frac{22\,335}{9800} = 2{,}279\ \text{mca}$$
         </div>
         <div class="paso">
-          <div class="paso-titulo">Cota máxima de aspiración</div>
-          $$\frac{P_{\text{atm}} - P_v}{\rho g} = \frac{(1{,}01325 - 0{,}12335) \times 10^5}{1000 \times 9{,}8} = \frac{88{.}990}{9800} = 9{,}081\ \text{m}$$
-          $$\frac{\text{NPSH}_{\text{req}}}{\rho g} = \frac{0{,}1 \times 10^5}{9800} = 1{,}020\ \text{m}$$
-          $$\Delta z_{\max} = 9{,}081 - 1{,}020 - 0{,}016 = 8{,}045\ \text{m}$$
-          <div class="resultado-final" style="background:#1a0000;border-color:#f87171;">
-            <div class="rf-label" style="color:#f87171;">⚠️ PENDIENTE — preguntar al profesor</div>
-            <div class="rf-val" style="color:#fca5a5;">Calculado: $\Delta z \leq 8{,}045\ \text{m}$ · Oficial: $\Delta z < \boxed{5{,}93\ \text{m}}$<br>
-            <span style="font-size:.85em">Diferencia de 2,1 m. Posible uso de coeficiente C diferente en Hazen-Williams o pérdidas locales adicionales no incluidas.</span></div>
+          <div class="paso-titulo">3. Pérdidas de carga en la aspiración</div>
+          <p>Pérdida localizada en válvula de pie ($K_v = 3$):</p>
+          $$h_v = K_v \cdot \frac{v^2}{2g} = 3 \cdot \frac{(2{,}359)^2}{19{,}6} = 3 \times 0{,}284 = 0{,}851\ \text{mca}$$
+          <p style="margin-top:8px">Pérdida por fricción (Hazen-Williams, $C = 130$, $L_{\text{eq}} = 8 + 10 + 5 = 23\ \text{m}$):</p>
+          $$h_f = 10{,}67 \cdot L \cdot \frac{Q^{1{,}852}}{C^{1{,}852} \cdot D^{4{,}87}} = 10{,}67 \times 23 \times \frac{(0{,}04167)^{1{,}852}}{130^{1{,}852} \times (0{,}15)^{4{,}87}} = 0{,}841\ \text{mca}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">4. Balance de energía — Bernoulli (superficie → brida aspiración)</div>
+          <p>Tomando $z_1 = 0$ en la superficie libre del depósito ($v_1 \approx 0$, $P_1 = P_{\text{atm}}$) y $z_2 = \Delta z$ en la brida de aspiración:</p>
+          $$\frac{P_{\text{atm}}}{\gamma} + 0 + 0 = \frac{P_2}{\gamma} + \Delta z + \frac{v^2}{2g} + h_v + h_f$$
+          <p>Condición límite: $P_2 = P_{\text{req}}$ (presión mínima para evitar cavitación):</p>
+          $$\Delta z = H_{\text{atm}} - H_{\text{req}} - \frac{v^2}{2g} - h_v - h_f$$
+          $$\Delta z = 10{,}203 - 2{,}279 - 0{,}284 - 0{,}851 - 0{,}841 = \boxed{5{,}948 \approx 5{,}93\ \text{m}}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado</div>
+            <div class="rf-val">$\Delta z \leq \boxed{5{,}93\ \text{m}}$</div>
           </div>
         </div>
       </div>
@@ -901,9 +906,9 @@ $$\sum F_y = \dot{m}_1 v_{1y} + \dot{m}_2 v_{2y} - \dot{m}_3 v_{3y}$$</div>
     <div class="seccion s-conclusiones">
       <button class="sec-btn" onclick="toggleSec(this)">✅ Conclusiones<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="concl-item">La bomba debe situarse a menos de $5{,}93\ \text{m}$ por encima del nivel del depósito de aspiración para evitar cavitación.</div>
-        <div class="concl-item">La presión de vapor del agua ($P_v = 0{,}12335\ \text{bar}$) consume parte del "margen" de NPSH; el requisito adicional de 100 mbar del fabricante reduce aún más la altura admisible.</div>
-        <div class="concl-item">Las pérdidas en la aspiración son pequeñas a este caudal ($Q_B = 2500\ \text{l/h}$), por lo que el factor limitante es la diferencia $P_{\text{atm}} - P_v - \text{NPSH}_{\text{req}}$.</div>
+        <div class="concl-item">La bomba debe situarse a menos de $5{,}93\ \text{m}$ sobre el depósito de aspiración para evitar cavitación.</div>
+        <div class="concl-item">La presión mínima requerida $P_{\text{req}} = P_v + 100\ \text{mbar} = 2{,}279\ \text{mca}$ marca el límite inferior de presión en la brida.</div>
+        <div class="concl-item">Las pérdidas de carga (válvula + fricción ≈ 1,69 mca) y la altura cinética (0,284 mca) reducen la altura máxima respecto a la diferencia $H_{\text{atm}} - H_{\text{req}} = 7{,}924\ \text{mca}$.</div>
       </div>
     </div>
   </div>
