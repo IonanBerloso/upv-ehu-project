@@ -335,7 +335,7 @@ body{
 <!-- FILTER BAR -->
 <div class="filter-bar">
   <span class="filter-label">Año:</span>
-  <button class="filter-btn year-btn active" onclick="filterYear('all',this)">Todos</button>
+  <button class="filter-btn year-btn" onclick="filterYear('all',this)">Todos</button>
   <button class="filter-btn year-btn" onclick="filterYear('2020',this)">2020</button>
   <button class="filter-btn year-btn" onclick="filterYear('2021',this)">2021</button>
   <button class="filter-btn year-btn" onclick="filterYear('2022',this)">2022</button>
@@ -932,16 +932,22 @@ body{
 </footer>
 
 <script>
-let activeYear = 'all';
+let activeYear = null;
 let activeType = 'all';
 
 function applyFilters(){
   document.querySelectorAll('#exam-grid .exam-card, #pending-grid .exam-card').forEach(card=>{
+    if(activeYear === null){
+      card.style.display = 'none';
+      return;
+    }
     const yearOk = activeYear==='all' || card.dataset.year===activeYear;
     const typeOk = activeType==='all' || card.dataset.type===activeType;
     card.style.display = (yearOk && typeOk) ? '' : 'none';
   });
 }
+
+applyFilters();
 
 function filterYear(year, btn){
   activeYear = year;
