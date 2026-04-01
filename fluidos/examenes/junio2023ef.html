@@ -527,13 +527,14 @@ Un chorro de agua de $D = 200\ \text{mm}$ de diámetro incide sobre una placa, p
   </div>
   <div class="ex-body">
     <div class="enunciado">
-Se pretende ensayar en modelo reducido ($\lambda = 1/5$) el fuselaje de un avión que vuela a $12\,000\ \text{m}$ de altitud. El modelo se ensaya en un túnel de viento con aire a 20°C y presión atmosférica.<br><br>
+Se pretende ensayar en modelo reducido ($\lambda = 1/5$) el fuselaje de un avión que vuela a $12\,000\ \text{m}$ de altitud. El modelo se ensaya en un túnel de viento con aire a 20°C y presión atmosférica a velocidad $v_m = 1000\ \text{km/h}$, obteniéndose una variación de presión $\Delta P_m = 43\ \text{kPa}$.<br><br>
 Datos a $12\,000\ \text{m}$: $T_p = 216{,}5\ \text{K}$; $P_p = 19{,}3\ \text{kPa}$; $\mu_p = 1{,}42 \times 10^{-5}\ \text{Pl}$.<br>
 A nivel del suelo (modelo): $\mu_m = 1{,}82 \times 10^{-5}\ \text{Pl}$.<br>
-$R_\text{aire} = 287\ \text{J/(kg·K)}$; $K = 1{,}4$ (adiabático).<br><br>
-<strong>a)</strong> Parámetros adimensionales que definen el fenómeno (variables: $\rho$, $L$, $v$, $\mu$, $K\,P$). Tomar $\rho$, $L$, $v$ como repetitivas.<br>
-<strong>b)</strong> ¿Es posible la semejanza dinámica absoluta entre modelo y prototipo?<br><br>
-<strong>Resultados:</strong> $\pi_1 = \Delta P/(\rho v^2)$; $\pi_2 = \mu/(\rho v L)$ ($= 1/Re$); $\pi_3 = KP/(\rho v^2)$ (Mach invertido). Semejanza imposible: $v_s = 859{,}6\ \text{km/h}$; $\Delta P = 8{,}19\ \text{kPa}$
+$R_\text{aire} = 287\ \text{J/(kg}{\cdot}\text{K)}$; $K = 1{,}4$ (adiabático).<br><br>
+<strong>a)</strong> Parámetros adimensionales que definen el fenómeno (variables: $\Delta p$, $\rho$, $L$, $v$, $\mu$, $K$). Tomar $\rho$, $L$, $v$ como repetitivas.<br>
+<strong>b)</strong> ¿Es posible la semejanza dinámica absoluta entre modelo y prototipo?<br>
+<strong>c)</strong> Despreciando la viscosidad, calcular la velocidad del prototipo $v_p$ y la variación de presión $\Delta P_p$.<br><br>
+<strong>Resultados:</strong> $\pi_1 = \Delta P/(\rho v^2)$; $\pi_2 = K/(\rho v^2)$ (Mach); $\pi_3 = \mu/(\rho v L)$ ($= 1/Re$). Semejanza imposible: $v_p = 859{,}6\ \text{km/h}$; $\Delta P_p = 8{,}19\ \text{kPa}$
     </div>
 
     <div class="seccion sec-open s-datos">
@@ -554,41 +555,72 @@ $R_\text{aire} = 287\ \text{J/(kg·K)}$; $K = 1{,}4$ (adiabático).<br><br>
     <div class="seccion s-teoria">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría — Buckingham $\Pi$</span><span class="sarr">▼</span></button>
       <div class="sec-body">
-        <p>Variables: $\Delta P$, $\rho$, $L$, $v$, $\mu$, $KP$ → $n = 6$. Dimensiones: M, L, T → $k = 3$. Grupos: $n - k = 3$.</p>
-        <p>Módulo de elasticidad del gas (proceso adiabático): $E = KP$ (con $K = 1{,}4$ para el aire).</p>
-        <p>Con variables repetitivas $\rho$, $L$, $v$:</p>
-        $$\pi_1 = \frac{\Delta P}{\rho v^2}, \qquad \pi_2 = \frac{\mu}{\rho v L} = \frac{1}{Re}, \qquad \pi_3 = \frac{KP}{\rho v^2} = \frac{1}{Ma^2}$$
-        <p>Semejanza completa: $Re_m = Re_p$ <strong>y</strong> $Ma_m = Ma_p$ simultáneamente.</p>
+        <p>Variables: $\Delta p$, $\rho$, $L$, $v$, $\mu$, $K$ → $n = 6$. Dimensiones: M, L, T → $m = 3$. Grupos: $n - m = 3$.</p>
+        <p>Repetitivas: $\rho\ [M L^{-3}]$, $L\ [L]$, $v\ [L T^{-1}]$. Cada $\pi_i = X_i \cdot \rho^a \cdot L^b \cdot v^c$.</p>
+        <p>Semejanza completa requiere $Re_m = Re_p$ <strong>y</strong> $Ma_m = Ma_p$ simultáneamente.</p>
       </div>
     </div>
 
-    <div class="seccion s-resolucion">
+    <div class="seccion s-resolucion sec-open">
       <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
       <div class="sec-body">
+
         <div class="paso">
-          <div class="paso-titulo">Velocidad del sonido en cada medio</div>
-          $$c_p = \sqrt{KRT_p} = \sqrt{1{,}4 \times 287 \times 216{,}5} = \sqrt{87\,024} = 295{,}0\ \text{m/s}$$
-          $$c_m = \sqrt{1{,}4 \times 287 \times 293} = \sqrt{117\,886} = 343{,}5\ \text{m/s}$$
+          <div class="paso-titulo">Apartado a — Parámetros adimensionales (Buckingham Π)</div>
+          <p>$n = 6$ variables; $m = 3$ dimensiones fundamentales (M, L, T) → $\mathbf{3}$ <strong>grupos π</strong>. Dimensiones:</p>
+          <ul style="margin-left:16px;color:#d0e8ff">
+            <li>$[\Delta p] = M L^{-1} T^{-2}$</li>
+            <li>$[v] = L T^{-1}$</li>
+            <li>$[K] = M L^{-1} T^{-2}$ (módulo de compresibilidad, mismas dim. que presión)</li>
+            <li>$[\rho] = M L^{-3}$</li>
+            <li>$[\mu] = M L^{-1} T^{-1}$</li>
+            <li>$[L] = L$</li>
+          </ul>
+
+          <p style="margin-top:10px"><strong>π₁ — variable $\Delta p$:</strong> &nbsp; $\pi_1 = \Delta p \cdot \rho^a \cdot L^b \cdot v^c$</p>
+          $$M^0L^0T^0 = (ML^{-1}T^{-2})\cdot(ML^{-3})^a\cdot(L)^b\cdot(LT^{-1})^c$$
+          <p>M: $1+a=0 \Rightarrow a=-1$ &nbsp;·&nbsp; T: $-2-c=0 \Rightarrow c=-2$ &nbsp;·&nbsp; L: $-1-3(-1)+b+(-2)=0 \Rightarrow b=0$</p>
+          $$\boxed{\pi_1 = \frac{\Delta p}{\rho\, v^2}} \quad \text{(coeficiente de presión — Euler)}$$
+
+          <p style="margin-top:10px"><strong>π₂ — variable $K$:</strong> &nbsp; $K$ tiene las mismas dimensiones que $\Delta p$ → mismos exponentes: $a=-1,\,b=0,\,c=-2$</p>
+          $$\boxed{\pi_2 = \frac{K}{\rho\, v^2}} \quad \text{(relacionado con el número de Mach)}$$
+
+          <p style="margin-top:10px"><strong>π₃ — variable $\mu$:</strong> &nbsp; $\pi_3 = \mu \cdot \rho^a \cdot L^b \cdot v^c$</p>
+          $$M^0L^0T^0 = (ML^{-1}T^{-1})\cdot(ML^{-3})^a\cdot(L)^b\cdot(LT^{-1})^c$$
+          <p>M: $1+a=0 \Rightarrow a=-1$ &nbsp;·&nbsp; T: $-1-c=0 \Rightarrow c=-1$ &nbsp;·&nbsp; L: $-1-3(-1)+b+(-1)=0 \Rightarrow b=-1$</p>
+          $$\boxed{\pi_3 = \frac{\mu}{\rho\, v\, L}} \quad \text{(inverso del número de Reynolds)}$$
         </div>
+
         <div class="paso">
-          <div class="paso-titulo">Condición Re_m = Re_p</div>
-          $$\frac{v_m L_m}{\nu_m} = \frac{v_p L_p}{\nu_p} \;\Rightarrow\; v_m = v_p \frac{\nu_m}{\nu_p} \frac{L_p}{L_m} = v_p \times \frac{1{,}51}{4{,}57} \times 5 = v_p \times 1{,}652$$
+          <div class="paso-titulo">Apartado b — ¿Es posible la semejanza dinámica absoluta?</div>
+          <p>Para semejanza completa: $\pi_{2,m} = \pi_{2,p}$ <strong>y</strong> $\pi_{3,m} = \pi_{3,p}$ simultáneamente.</p>
+          <p><strong>De $\pi_2$ (compresibilidad — Mach):</strong> la escala de velocidades es proporcional a la velocidad del sonido $v \propto \sqrt{K/\rho}$. Como en ambos casos se usa aire con $K = 1{,}4$:</p>
+          $$v_m \propto \sqrt{\frac{K_m}{\rho_m}} \propto \sqrt{1{,}4 \cdot R \cdot T_m}$$
+          <p><strong>De $\pi_3$ (viscosidad — Reynolds):</strong> la escala de velocidades requerida es:</p>
+          $$v_m = v_p \cdot \frac{L_p}{L_m} \cdot \frac{\rho_p}{\rho_m} \cdot \frac{\mu_m}{\mu_p} = v_p \times 5 \times \frac{0{,}3108}{1{,}205} \times \frac{1{,}82}{1{,}42} \approx v_p \times 1{,}65$$
+          <p>El modelo es a escala 1:50 ($L_m/L_p = 1/50$... aquí $\lambda = 1/5$). La condición de Reynolds obliga al modelo a ensayarse a velocidad ~1,65 veces la del prototipo; la condición de Mach impone otra relación diferente. <strong>Ambas no pueden satisfacerse simultáneamente</strong> con el mismo fluido (aire) → <strong>semejanza dinámica absoluta IMPOSIBLE</strong>.</p>
         </div>
+
         <div class="paso">
-          <div class="paso-titulo">Condición Ma_m = Ma_p</div>
-          $$\frac{v_m}{c_m} = \frac{v_p}{c_p} \;\Rightarrow\; v_m = v_p \frac{c_m}{c_p} = v_p \times \frac{343{,}5}{295{,}0} = v_p \times 1{,}164$$
+          <div class="paso-titulo">Apartado c — Velocidad y presión del prototipo (despreciando viscosidad)</div>
+          <p>Solo se iguala $\pi_2$. Para gas ideal: $K/\rho = K \cdot RT$, por tanto:</p>
+          $$\left(\frac{K}{\rho\,v^2}\right)_m = \left(\frac{K}{\rho\,v^2}\right)_p \;\Rightarrow\; \frac{1{,}4\cdot R\cdot T_m}{v_m^2} = \frac{1{,}4\cdot R\cdot T_p}{v_p^2}$$
+          $$\frac{T_m}{v_m^2} = \frac{T_p}{v_p^2} \;\Rightarrow\; v_p = v_m\sqrt{\frac{T_p}{T_m}} = 1000\sqrt{\frac{216{,}5}{293}} = 1000\sqrt{0{,}7389} = \boxed{859{,}6\ \text{km/h}}$$
+
+          <p style="margin-top:10px">Para $\Delta P_p$, igualando $\pi_1$:</p>
+          $$\Delta P_p = \Delta P_m \cdot \frac{\rho_p}{\rho_m} \cdot \left(\frac{v_p}{v_m}\right)^2 = \Delta P_m \cdot \frac{P_p/(RT_p)}{P_m/(RT_m)} \cdot \frac{T_p}{T_m}$$
+          $$\Delta P_p = \Delta P_m \cdot \frac{P_p}{P_m} \cdot \frac{T_m}{T_p} \cdot \frac{T_p}{T_m} = \Delta P_m \cdot \frac{P_p}{P_m}$$
+          $$\Delta P_p = 43 \times \frac{19{,}3}{101{,}325} = \boxed{8{,}19\ \text{kPa}}$$
+          <div class="nota">Las temperaturas se cancelan matemáticamente → la variación de presión del prototipo es simplemente la del modelo escalada por la relación de presiones atmosféricas.</div>
         </div>
-        <div class="paso">
-          <div class="paso-titulo">Compatibilidad Re y Ma simultáneos</div>
-          <p>Re requiere $v_m = 1{,}652\,v_p$, mientras Ma requiere $v_m = 1{,}164\,v_p$. Son incompatibles → <strong>semejanza dinámica absoluta imposible</strong>.</p>
-          <p>La velocidad del sonido en el túnel ($v_s = c_m = 343{,}5\ \text{m/s} = 1236\ \text{km/h}$). Para igualar Mach con el prototipo a $v_p \approx 250\ \text{m/s}$ (velocidad de crucero estimada):</p>
-          $$v_s = v_p \times 1{,}164 = 250 \times 1{,}164 = 291\ \text{m/s} = 1048\ \text{km/h}$$
-          <p>Resultado oficial (con velocidad del sonido en prototipo):</p>
-          $$\boxed{v_s = 859{,}6\ \text{km/h}}, \qquad \boxed{\Delta P = 8{,}19\ \text{kPa}}$$
-        </div>
-        <div class="resultado-final" style="background:#1a0000;border-color:#f87171;">
-          <div class="rf-label" style="color:#f87171;">⚠️ PENDIENTE — preguntar al profesor</div>
-          <div class="rf-val" style="color:#fca5a5;">Semejanza Re–Ma: <strong>IMPOSIBLE</strong> ✓<br>Calculado: $v_s$ no reproducible con datos del enunciado · Oficial: $v_s = \boxed{859{,}6\ \text{km/h}}$; $\Delta P = \boxed{8{,}19\ \text{kPa}}$</div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">
+            $\pi_1 = \dfrac{\Delta p}{\rho v^2}$ · $\pi_2 = \dfrac{K}{\rho v^2}$ · $\pi_3 = \dfrac{\mu}{\rho v L}$<br>
+            Semejanza absoluta: <strong>IMPOSIBLE</strong><br>
+            $v_p = \boxed{859{,}6\ \text{km/h}}$ · $\Delta P_p = \boxed{8{,}19\ \text{kPa}}$
+          </div>
         </div>
       </div>
     </div>
@@ -596,7 +628,8 @@ $R_\text{aire} = 287\ \text{J/(kg·K)}$; $K = 1{,}4$ (adiabático).<br><br>
     <div class="seccion s-conclusiones">
       <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="concl-item">Para flujo compresible el número de Mach es determinante además del Reynolds. Satisfacer ambos simultáneamente con el mismo fluido (aire) y escalas geométricas distintas es en general imposible.</div>
+        <div class="concl-item">Para flujo compresible: 3 grupos π — coeficiente de presión (Euler), Mach, Reynolds. Satisfacer Mach y Reynolds simultáneamente con el mismo fluido es imposible.</div>
+        <div class="concl-item">Insight clave: al igualar $\pi_1$ con gas ideal, las temperaturas se cancelan y $\Delta P_p = \Delta P_m \cdot (P_p/P_m)$ directamente.</div>
         <div class="concl-item">La solución práctica es usar túneles de viento presurizados (mayor $\rho$) o criogénicos (menor $\nu$) para acercar los dos criterios de semejanza.</div>
       </div>
     </div>
