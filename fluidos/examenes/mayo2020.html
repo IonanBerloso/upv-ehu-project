@@ -484,6 +484,7 @@ body{
           <tr><td>Radio del laboratorio</td><td>$R$</td><td>$5{,}8\ \text{m}$</td></tr>
           <tr><td>Profundidad de diseño</td><td>$Z$</td><td>$39{,}5\ \text{m}$</td></tr>
           <tr><td>Altura columna acceso</td><td>$h$</td><td>$2{,}9\ \text{m}$</td></tr>
+          <tr><td>Altura total acceso vertical</td><td>$H$</td><td>$4{,}1\ \text{m}$</td></tr>
           <tr><td>Densidad agua de mar</td><td>$\rho_{mar}$</td><td>$1025\ \text{kg/m}^3$</td></tr>
           <tr><td>Presión atmosférica</td><td>$P_{atm}$</td><td>$101\,325\ \text{Pa}$</td></tr>
         </table>
@@ -494,14 +495,12 @@ body{
     <div class="seccion s-formulas sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas a utilizar <span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="formula-label">Presión hidrostática exterior a profundidad Z</div>
-        <div class="formula-box">$$P_{ext}(Z) = P_{atm} + \rho_{mar} \cdot g \cdot Z$$</div>
-        <div class="formula-label">Equilibrio de presiones en el acceso (la columna de agua h está dentro del tubo)</div>
-        <div class="formula-box">$$P_{lab} = P_{ext}(Z) - \rho_{mar} \cdot g \cdot h$$</div>
-        <div class="formula-label">Condición de derrame ($h \to 0$, el agua alcanza la boca superior del acceso)</div>
-        <div class="formula-box">$$P_{lab} = P_{atm} + \rho_{mar} \cdot g \cdot Z_{max}$$</div>
-        <div class="formula-label">Presión manométrica en el manómetro A</div>
-        <div class="formula-box">$$P_{man,A} = P_{lab} - P_{atm}$$</div>
+        <div class="formula-label">Equilibrio de presiones en el acceso (interfaz agua-aire a profundidad $Z - h$)</div>
+        <div class="formula-box">$$P_{lab} = P_{atm} + \rho_{mar} \cdot g \cdot (Z - h)$$</div>
+        <div class="formula-label">Condición de derrame ($h \to H$, el agua llena el acceso hasta el borde superior)</div>
+        <div class="formula-box">$$P_{lab} = P_{atm} + \rho_{mar} \cdot g \cdot (Z_{max} - H) \quad \Rightarrow \quad Z_{max} = \frac{P_{lab} - P_{atm}}{\rho_{mar}\,g} + H$$</div>
+        <div class="formula-label">Manómetro A en la cima del domo (prof. $Z - R$): diferencia entre presión interior y exterior en ese punto</div>
+        <div class="formula-box">$$P_{man,A} = P_{lab} - P_{ext}(Z-R) = \rho_{mar}\,g\,(R - h)$$</div>
       </div>
     </div>
 
@@ -523,30 +522,36 @@ body{
 
         <div class="paso">
           <div class="paso-titulo">Paso a) — Presión absoluta del laboratorio</div>
-          <p>Presión exterior en la boca del acceso (a profundidad $Z = 39{,}5\ \text{m}$):</p>
-          $$P_{ext} = P_{atm} + \rho_{mar} \cdot g \cdot Z = 101\,325 + 1025 \times 9{,}81 \times 39{,}5 = 498\,441\ \text{Pa}$$
-          <p style="margin-top:8px">El laboratorio presuriza de modo que la columna de agua queda en $h = 2{,}9\ \text{m}$:</p>
-          $$P_{lab} = P_{ext} - \rho_{mar} \cdot g \cdot h = 498\,441 - 1025 \times 9{,}81 \times 2{,}9 \approx \boxed{468\,972\ \text{Pa} \approx 4{,}69\ \text{bar}}$$
+          <p>El laboratorio presuriza de modo que la interfaz agua-aire dentro del tubo de acceso queda a profundidad $z_{interfaz} = Z - h$:</p>
+          $$z_{interfaz} = Z - h = 39{,}5 - 2{,}9 = 36{,}6\ \text{m}$$
+          <p style="margin-top:8px">La presión del aire del laboratorio iguala la presión hidrostática a esa profundidad:</p>
+          $$P_{lab} = P_{atm} + \rho_{mar} \cdot g \cdot z_{interfaz} = 101\,325 + 1025 \times 9{,}8 \times 36{,}6$$
+          $$P_{lab} = 101\,325 + 367\,647 = \boxed{468\,972\ \text{Pa}}$$
         </div>
 
         <div class="paso">
           <div class="paso-titulo">Paso b) — Lectura del manómetro Bourdon A</div>
-          $$P_{man,A} = P_{lab} - P_{atm} = 468\,972 - 101\,325 = 367\,647\ \text{Pa}$$
-          $$P_{man,A} = \frac{367\,647}{9{,}81 \times 10^4} \approx \boxed{0{,}2975\ \text{kgf/cm}^2}$$
+          <p>El manómetro A está en la cima del domo (profundidad $Z - R = 39{,}5 - 5{,}8 = 33{,}7\ \text{m}$). Compara la presión interior del laboratorio con la presión exterior del agua en ese mismo punto:</p>
+          $$P_{ext,A} = P_{atm} + \rho_{mar} \cdot g \cdot (Z - R)$$
+          $$P_{man,A} = P_{lab} - P_{ext,A} = \rho_{mar} \cdot g \cdot (Z - h) - \rho_{mar} \cdot g \cdot (Z - R) = \rho_{mar} \cdot g \cdot (R - h)$$
+          $$P_{man,A} = 1025 \times (5{,}8 - 2{,}9) = 1025 \times 2{,}9 = 2972{,}5\ \text{kgf/m}^2$$
+          $$P_{man,A} = \frac{2972{,}5}{10\,000} = \boxed{0{,}29725\ \text{kgf/cm}^2}$$
         </div>
 
         <div class="paso">
           <div class="paso-titulo">Paso c) — Profundidad máxima admisible</div>
-          <p>Condición de no derrame: $P_{lab} = P_{atm} + \rho_{mar} \cdot g \cdot Z_{max}$:</p>
-          $$Z_{max} = \frac{P_{lab} - P_{atm}}{\rho_{mar} \cdot g} = \frac{367\,647}{1025 \times 9{,}81} = \frac{367\,647}{10\,055} \approx \boxed{36{,}6\ \text{m}}$$
-          <div class="nota">El resultado oficial es $Z_{max} = 40{,}7\ \text{m}$ con un valor de $P_{lab}$ ligeramente distinto al calculado. La diferencia se debe a precisión en los cálculos intermedios.</div>
+          <p>El "derrame" ocurre cuando el agua sube hasta el borde superior del acceso vertical, es decir, cuando $h \to H = 4{,}1\ \text{m}$. En ese límite la interfaz agua-aire está a profundidad $Z_{max} - H$:</p>
+          $$P_{lab} = P_{atm} + \rho_{mar} \cdot g \cdot (Z_{max} - H)$$
+          $$Z_{max} = \frac{P_{lab} - P_{atm}}{\rho_{mar} \cdot g} + H = \frac{367\,647}{1025 \times 9{,}8} + 4{,}1 = \frac{367\,647}{10\,045} + 4{,}1 = 36{,}6 + 4{,}1 = \boxed{40{,}7\ \text{m}}$$
         </div>
 
         <div class="paso">
-          <div class="paso-titulo">Paso d) — Nueva densidad del agua de mar</div>
-          <p>Para que con $Z = 39{,}5\ \text{m}$ se cumpla la misma condición que en c):</p>
-          $$\rho_{nuevo} = \frac{P_{lab} - P_{atm}}{g \cdot Z} = \frac{367\,647}{9{,}81 \times 39{,}5} \approx \boxed{949\ \text{kg/m}^3}$$
-          <div class="nota">Resultado oficial: $\rho = 1059{,}75\ \text{kg/m}^3$. Diferencia debida al valor preciso de $P_{lab}$ usado.</div>
+          <div class="paso-titulo">Paso d) — Nuevo peso específico del agua de mar</div>
+          <p>Con $Z = 39{,}5\ \text{m}$ y condición de derrame $h = H = 4{,}1\ \text{m}$, la ecuación de equilibrio queda:</p>
+          $$P_{lab} = P_{atm} + \gamma_0 \cdot (Z - H)$$
+          $$\gamma_0 = \frac{P_{lab} - P_{atm}}{Z - H} = \frac{367\,647}{39{,}5 - 4{,}1} = \frac{367\,647}{35{,}4} = 10\,385{,}5\ \text{N/m}^3$$
+          <p style="margin-top:8px">Densidad equivalente:</p>
+          $$\rho_0 = \frac{\gamma_0}{g} = \frac{10\,385{,}5}{9{,}8} = \boxed{1059{,}75\ \text{kg/m}^3}$$
         </div>
 
         <div class="resultado-final">
