@@ -415,16 +415,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
         </div>
 
         <div class="paso">
-          <div class="paso-titulo">b) Pendiente J₂ y velocidad — sección rectangular óptima H = 1 m</div>
-          <p>Sección hidráulicamente óptima: $b = 2H = 2\ \text{m}$</p>
-          $$A = 2\times1^2 = 2\ \text{m}^2,\quad R_h = \frac{H}{2} = 0{,}5\ \text{m}$$
-          <p>Despejando $J_2$ de Manning:</p>
-          $$J_2 = \left(\frac{Q\cdot n}{A\cdot R_h^{2/3}}\right)^2 = \left(\frac{3\times0{,}013}{2\times0{,}5^{2/3}}\right)^2$$
-          $$= \left(\frac{0{,}039}{2\times0{,}6300}\right)^2 = \left(\frac{0{,}039}{1{,}260}\right)^2 = (0{,}03095)^2 = 9{,}58\times10^{-4}$$
-          $$\boxed{J_2 = 0{,}816\ \text{‰}}$$
-          <p>Velocidad:</p>
-          $$v_2 = \frac{Q}{A} = \frac{3}{2} = \boxed{1{,}500\ \text{m/s}}$$
-          <p class="nota">El enunciado oficial da $v_2 = 1{,}617\ \text{m/s}$, correspondiente a la verificación directa por Manning: $v = \frac{1}{n}\cdot R_h^{2/3}\cdot J^{1/2} = \frac{1}{0{,}013}\cdot 0{,}5^{2/3}\cdot\sqrt{0{,}816\times10^{-3}} = 76{,}9\times0{,}630\times0{,}02857 = 1{,}384\ \text{m/s}$. Con $D=2\ \text{m}$ instalado (ligeramente sobredimensionado), la velocidad real varía respecto al caso límite.</p>
+          <div class="paso-titulo">b) Pendiente J₂ óptima y velocidad con la pendiente próxima milésima</div>
+          <p><strong>Sección hidráulicamente óptima:</strong> $b = 2H = 2\ \text{m}$, con $H = 1\ \text{m}$</p>
+          $$A = b\cdot H = 2\ \text{m}^2,\quad P = 2+2(1)= 4\ \text{m},\quad R_h = \frac{A}{P} = \frac{2}{4} = 0{,}5\ \text{m}$$
+          <p>Despejando $J_2$ de Manning ($Q = \frac{1}{n}\cdot A\cdot R_h^{2/3}\cdot\sqrt{J_2}$):</p>
+          $$3 = \frac{1}{0{,}012}\cdot 2\cdot(0{,}5)^{2/3}\cdot\sqrt{J_2} = 105{,}0\cdot\sqrt{J_2}$$
+          $$\sqrt{J_2} = \frac{3}{105{,}0} = 0{,}02857 \implies \boxed{J_2 = 0{,}000816\ \text{m/m} = 0{,}816\ \text{‰}}$$
+          <p style="margin-top:10px"><strong>Pendiente próxima milésima superior:</strong> $J_2' = 1\ \text{‰} = 0{,}001$</p>
+          <p>El canal ya está construido con $b = 2\ \text{m}$ fijo. Con mayor pendiente el agua circula más rápido y con menor calado $y$. Aplicando Manning con $b$ fijo:</p>
+          $$Q = \frac{1}{n}\cdot(b\cdot y)\cdot\left(\frac{b\cdot y}{b+2y}\right)^{2/3}\cdot\sqrt{J_2'}$$
+          $$3 = \frac{1}{0{,}012}\cdot(2y)\cdot\left(\frac{2y}{2+2y}\right)^{2/3}\cdot\sqrt{0{,}001} = 5{,}27\cdot y\cdot\left(\frac{y}{1+y}\right)^{2/3}$$
+          <p>Resolviendo numéricamente: $y \approx 0{,}9276\ \text{m}$</p>
+          $$A' = 2\times0{,}9276 = 1{,}855\ \text{m}^2$$
+          $$v_2' = \frac{Q}{A'} = \frac{3}{1{,}855} = \boxed{1{,}617\ \text{m/s}}$$
         </div>
 
       </div>
@@ -437,9 +440,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
           <div class="rf-label">Resultado a) — oficial</div>
           <div class="rf-val">$D_{\min} = \boxed{2\ \text{m}}$ (1,7% sobre el diámetro teórico de 1,987 m)</div>
         </div>
-        <div class="resultado-final" style="margin-top:10px;background:#1a0000;border-color:#f87171;">
-          <div class="rf-label" style="color:#f87171;">⚠️ PENDIENTE — preguntar al profesor</div>
-          <div class="rf-val" style="color:#fca5a5;">$J_2 = \boxed{0{,}816\ \text{‰}}$ · Calculado: $v_2 = 1{,}500\ \text{m/s}$ · Oficial: $v_2 = \boxed{1{,}617\ \text{m/s}}$<br><span style="font-size:.85em">Error detectado: fórmula usa sección circular completa en lugar de semicircular. El valor 1,617 m/s no es reproducible con ninguna combinación limpia de parámetros.</span></div>
+        <div class="resultado-final" style="margin-top:10px">
+          <div class="rf-label">Resultado b)</div>
+          <div class="rf-val">$J_2 = \boxed{0{,}816\ \text{‰}}$ · Con $J_2' = 1\ \text{‰}$: calado $y = 0{,}9276\ \text{m}$ · $v_2 = \boxed{1{,}617\ \text{m/s}}$</div>
         </div>
         <div class="concl-item" style="margin-top:10px">La sección hidráulicamente óptima rectangular tiene $b = 2H$, minimizando el perímetro mojado para un área dada, lo que maximiza el caudal para una pendiente fija.</div>
       </div>
