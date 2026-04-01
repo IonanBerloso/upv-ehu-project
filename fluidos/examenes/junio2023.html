@@ -371,8 +371,8 @@ Resultados: $Q = 112{,}37\ \text{l/s}$; $F = 8{,}59\ \text{kN}$ ($\leftarrow$)</
       <div class="sec-body">
         <div class="formula-label">Componente horizontal de fuerza hidrostática sobre tramo BC</div>
         <div class="formula-box">$$F_{H,i} = \gamma_i \cdot \bar{h}_i \cdot A_{\text{proy},i} = \gamma_i \cdot \bar{h}_i \cdot (2R \cdot b)$$</div>
-        <div class="formula-label">Componente vertical — peso del fluido sobre/bajo la superficie</div>
-        <div class="formula-box">$$F_{V,i} = \gamma_i \cdot V_{\text{fluido sobre BC}}$$</div>
+        <div class="formula-label">Componente vertical — depósito presurizado (prisma de presiones)</div>
+        <div class="formula-box">$$F_{V,i} = P_{C,i} \cdot A_z - \gamma_i \cdot V \quad \text{con} \quad V = \frac{\pi R^2}{4} \cdot b$$</div>
         <div class="formula-label">Manómetro gauge (Bourdon) vs presión absoluta</div>
         <div class="formula-box">$$P_{\text{gauge}} = P_{\text{abs}} - P_{\text{atm}} \quad \Rightarrow \quad \text{si } P_{\text{atm}} \text{ cambia} \Rightarrow P_{\text{gauge cambia}}$$</div>
         <div class="nota">Los manómetros de presión absoluta (vacuómetros, barómetros) no se ven afectados por cambios en la presión atmósferica de referencia. El manómetro Bourdon mide presión relativa (gauge): si la presión de referencia cambia, su lectura también cambia.</div>
@@ -383,24 +383,42 @@ Resultados: $Q = 112{,}37\ \text{l/s}$; $F = 8{,}59\ \text{kN}$ ($\leftarrow$)</
       <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución<span class="sarr">▼</span></button>
       <div class="sec-body">
         <div class="paso">
+          <div class="paso-titulo">Apartado a — Prisma de presiones sobre ABC</div>
+          <p>El manómetro Bourdon del compartimento izquierdo lee la presión del gas encerrado. Convirtiendo a pascales:</p>
+          $$P_{\text{gas}} = 2{,}30\ \text{mca} \times 9\,800\ \text{N/m}^3 = 22\,540\ \text{Pa}$$
+          <p>Presiones en los extremos del tramo BC para el <strong>fluido 1</strong> ($\gamma_1 = 11\,760\ \text{N/m}^3$), bajando desde el gas:</p>
+          $$P_{C,1} = P_{\text{gas}} + \gamma_1 \cdot h_1 = 22\,540 + 11\,760 \times 1{,}20 = 22\,540 + 14\,112 = \boxed{36\,652\ \text{Pa}}$$
+          $$P_{B,1} = P_{C,1} - \gamma_1 \cdot R = 36\,652 - 11\,760 \times 0{,}40 = 36\,652 - 4\,704 = \boxed{31\,948\ \text{Pa}}$$
+          <p>Para el <strong>fluido 2</strong> ($\gamma_2 = 7\,840\ \text{N/m}^3$), el manómetro abierto indica presión manométrica nula en la superficie libre:</p>
+          $$P_{C,2} = 0\ \text{Pa}$$
+          $$P_{B,2} = P_{C,2} - \gamma_2 \cdot R = 0 - 7\,840 \times 0{,}40 = \boxed{-3\,136\ \text{Pa}}$$
+          <div class="nota">$P_{B,2} < 0$ (subatmosférico): el fluido 2 está a presión inferior a la atmósfera en el punto B.</div>
+        </div>
+
+        <div class="paso">
           <div class="paso-titulo">Apartado b — Fuerzas sobre el tramo circular BC</div>
-          <p>El tramo BC es un arco de radio $R = 0{,}4\ \text{m}$. Área proyectada vertical: $A_y = R \times b = 0{,}4 \times 1 = 0{,}4\ \text{m}^2$.</p>
-          <p>Al ser un depósito <strong>cerrado y presurizado</strong>, la componente horizontal se calcula con las <strong>presiones reales en B y C</strong> obtenidas del prisma de presiones (apartado a). No vale usar $\gamma \cdot h_{\text{centroide}} \cdot A$ sin incluir la presión del gas encerrado.</p>
+          <p><strong>Geometría del arco BC</strong> (cuarto de circunferencia, $R = 0{,}4\ \text{m}$, $b = 1\ \text{m}$):</p>
+          $$A_z = R \times b = 0{,}4 \times 1 = 0{,}4\ \text{m}^2 \quad ({\text{área proyectada horizontal}})$$
+          $$A_y = R \times b = 0{,}4 \times 1 = 0{,}4\ \text{m}^2 \quad ({\text{área proyectada vertical}})$$
+          $$V = \frac{\pi R^2}{4} \times b = \frac{\pi \times 0{,}16}{4} \times 1 = \boxed{0{,}12566\ \text{m}^3} \quad ({\text{volumen del sector circular}})$$
 
-          <p style="margin-top:10px"><strong>Fluido 1 — izquierda</strong> (empuja hacia la derecha ↱):</p>
-          $$F_{H,1} = \frac{P_B + P_C}{2} \cdot A_y = \frac{36\,652 + 31\,948}{2} \times 0{,}4 = 34\,300 \times 0{,}4 = \boxed{13\,720\ \text{N} = 13{,}72\ \text{kN}}\ (\rightarrow)$$
+          <p style="margin-top:12px"><strong>Fluido 1 — izquierda</strong> ($\gamma_1 = 11\,760\ \text{N/m}^3$, empuja hacia la derecha):</p>
+          <p>Componente horizontal — media de presiones en B y C sobre el área vertical proyectada:</p>
+          $$F_{H,1} = \frac{P_{C,1} + P_{B,1}}{2} \cdot A_y = \frac{36\,652 + 31\,948}{2} \times 0{,}4 = 34\,300 \times 0{,}4 = \boxed{13\,720\ \text{N} = 13{,}72\ \text{kN}}\ (\rightarrow)$$
+          <p>Componente vertical — presión en la base C por la proyección horizontal, menos el peso del fluido en el sector circular:</p>
+          $$F_{V,1} = P_{C,1} \cdot A_z - \gamma_1 \cdot V = 36\,652 \times 0{,}4 - 11\,760 \times 0{,}12566$$
+          $$F_{V,1} = 14\,660{,}8 - 1\,477{,}8 = \boxed{13\,183\ \text{N} = 13{,}18\ \text{kN}}\ (\uparrow)$$
 
-          <p style="margin-top:8px">Componente vertical — peso del fluido equivalente sobre BC:</p>
-          $$F_{V,1} = 13{,}16\ \text{kN}\ (\uparrow)$$
+          <p style="margin-top:12px"><strong>Fluido 2 — derecha</strong> ($\gamma_2 = 7\,840\ \text{N/m}^3$, presión subatmosférica):</p>
+          <p>Componente horizontal — media de presiones en B y C (presión subatmosférica → tracción):</p>
+          $$F_{H,2} = \frac{P_{C,2} + P_{B,2}}{2} \cdot A_y = \frac{0 + (-3\,136)}{2} \times 0{,}4 = -1\,568 \times 0{,}4 = \boxed{-627{,}2\ \text{N}}\ (\rightarrow\ \text{tracción})$$
+          <p>Componente vertical — como $P_{C,2} = 0$, solo el peso del sector circular del fluido 2:</p>
+          $$F_{V,2} = P_{C,2} \cdot A_z - \gamma_2 \cdot V = 0 - 7\,840 \times 0{,}12566 = \boxed{-985{,}2\ \text{N}}\ \rightarrow\ 985{,}2\ \text{N}\ (\uparrow)$$
 
-          <p style="margin-top:10px"><strong>Fluido 2 — derecha</strong> (presión subatmosférica → tracción hacia la derecha):</p>
-          $$F_{H,2} = \frac{P_B + P_C}{2} \cdot A_y = \frac{0 + (-3\,138)}{2} \times 0{,}4 = -1\,569 \times 0{,}4 = -627{,}6\ \text{N}\ (\rightarrow\text{ tracción})$$
-          $$F_{V,2} = 965{,}2\ \text{N}\ (\uparrow)$$
-
-          <div class="nota">El signo negativo de $F_{H,2}$ indica que el fluido 2, al estar a presión subatmosférica, tracciona la pared hacia la derecha (mismo sentido que $F_{H,1}$), en lugar de oponerse.</div>
+          <div class="nota">El signo negativo de $F_{H,2}$ indica tracción: el fluido 2 a presión subatmosférica "tira" de la pared hacia la derecha en lugar de empujar. El signo negativo de $F_{V,2}$ indica que la fuerza vertical del fluido 2 actúa hacia abajo sobre el fluido, pero sobre la pared el efecto es equivalente a $985{,}2\ \text{N}\ (\uparrow)$.</div>
           <div class="resultado-final">
             <div class="rf-label">Resultado b)</div>
-            <div class="rf-val">$F_{H,1} = \boxed{13{,}72\ \text{kN}}\ (\rightarrow)$ · $F_{V,1} = 13{,}16\ \text{kN}\ (\uparrow)$<br>$F_{H,2} = -0{,}628\ \text{kN}\ (\rightarrow\text{ tracción})$ · $F_{V,2} = 0{,}965\ \text{kN}\ (\uparrow)$</div>
+            <div class="rf-val">$F_{H,1} = \boxed{13{,}72\ \text{kN}}\ (\rightarrow)$ · $F_{V,1} = \boxed{13{,}18\ \text{kN}}\ (\uparrow)$<br>$F_{H,2} = -0{,}627\ \text{kN}\ (\rightarrow\ \text{tracción})$ · $F_{V,2} = 0{,}985\ \text{kN}\ (\uparrow)$</div>
           </div>
         </div>
         <div class="paso">
