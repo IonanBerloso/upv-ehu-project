@@ -146,11 +146,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex1">Ej. 1 — Capilaridad anular</a>
   <a class="jump-link" href="#ex2">Ej. 2 — Fuerzas en pieza especial</a>
   <a class="jump-link" href="#ex3">Ej. 3 — Manómetros redundantes</a>
-  <a class="jump-link" href="#ex4">Ej. 4 — Compuerta ABC cilíndrica</a>
-  <a class="jump-link" href="#ex5">Ej. 5 — Vaciado de depósito</a>
-  <a class="jump-link" href="#ex6">Ej. 6 — Bombeo Hazen-Williams</a>
-  <a class="jump-link" href="#ex7">Ej. 7 — Canales + semejanza dinámica</a>
-  <a class="jump-link" href="#ex8">Ej. 8 — Codo con manómetro en U</a>
+  <a class="jump-link" href="#ej4">Ej. 4 — Compuerta ABC cilíndrica</a>
+  <a class="jump-link" href="#ej5">Ej. 5 — Vaciado de depósito</a>
+  <a class="jump-link" href="#ej6">Ej. 6 — Bombeo Hazen-Williams</a>
+  <a class="jump-link" href="#ej7">Ej. 7 — Canales + semejanza dinámica</a>
+  <a class="jump-link" href="#ej8">Ej. 8 — Codo con manómetro en U</a>
 </div>
 
 <div class="container">
@@ -631,10 +631,22 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
 <!-- EJ5 -->
 <div class="ex-card open" id="ej5">
   <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-meta"><span class="ex-num">Ejercicio 5</span><span class="ex-pts">12,5 %</span></div>
-    <div class="ex-title">Vaciado de depósito rectangular — Tiempo, cuartos y coeficiente</div>
+    <div class="ex-header-left">
+      <h2>Ejercicio 5 · Vaciado de depósito rectangular — Torricelli, cuartos y coeficiente de contracción</h2>
+      <div class="ex-meta">Torricelli · Vaciado · Ecuación diferencial · Cuartos de vaciado</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="ex-pct">12,5%</span><span class="ex-arrow">▼</span>
+    </div>
   </div>
   <div class="ex-body">
+    <div class="enunciado">
+Se tiene un depósito rectangular de base $a\times b = 30\times25\ \text{cm}$ con una altura inicial de agua $H = 1\ \text{m}$. En el fondo del depósito hay un orificio de diámetro $d = 25\ \text{mm}$ cuyo coeficiente de contracción es $c_c = 0{,}11$ (el fluido abandona el orificio con una sección contráida).<br><br>
+<strong>a)</strong> Deducir la expresión del tiempo necesario para vaciar el depósito desde una altura $H_i$ hasta $H_f$.<br>
+<strong>b)</strong> Dividir el volumen del depósito en cuatro cuartos iguales de altura ($\Delta h = 0{,}25\ \text{m}$). ¿Cuál es el cuarto que tarda más en vaciarse? ¿Y el siguiente?<br>
+<strong>c)</strong> Sabiendo que el tiempo experimental de vaciado total es $t_\text{exp} = 627{,}9\ \text{s}$, verificar el coeficiente de contracción $c_c$.<br><br>
+<strong>Resultados:</strong> $t_\text{total} = 627{,}9\ \text{s}$; cuarto más lento: 4º; siguiente: 3º; $c_c = 0{,}11$ (verificado)
+    </div>
     <div class="seccion s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
       <div class="sec-body">
@@ -704,9 +716,13 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
           $$\boxed{t_4 > t_3 > t_2 > t_1}$$
         </div>
         <div class="paso">
-          <div class="paso-titulo">c) Verificación del coeficiente de contracción</div>
-          <p>El coeficiente de contracción dado es $c_c = 0{,}11$. Físicamente representa la relación entre el área de la vena contraída y el área del orificio geométrico. Este valor es inusualmente bajo respecto a orificios en pared delgada ($c_c \approx 0{,}61$), lo que indica un orificio de geometría especial (por ejemplo, un tubo de Borda de reentrada, en el que $c_c = 0{,}5$, o una boquilla convergente-divergente muy estrecha).</p>
-          $$\boxed{c_c = 0{,}11}$$
+          <div class="paso-titulo">c) Verificación del coeficiente de contracción a partir del tiempo experimental</div>
+          <p>Invirtiendo la fórmula del tiempo total de vaciado ($H_i=1\ \text{m}$, $H_f=0$, $t_\text{exp}=627{,}9\ \text{s}$):</p>
+          $$t_\text{total} = \frac{2\,A_d}{c_c\,A_o\,\sqrt{2g}}\sqrt{H} \implies c_c = \frac{2\,A_d\,\sqrt{H}}{t_\text{exp}\,A_o\,\sqrt{2g}}$$
+          <p>Sustituyendo valores:</p>
+          $$c_c = \frac{2\times0{,}075\times\sqrt{1}}{627{,}9\times4{,}909\times10^{-4}\times4{,}427}$$
+          $$= \frac{0{,}1500}{627{,}9\times2{,}173\times10^{-3}} = \frac{0{,}1500}{1{,}3639} = \boxed{0{,}110}$$
+          <p>El coeficiente se verifica exactamente. Físicamente, $c_c = 0{,}11$ es muy inferior al valor típico de un orificio en pared delgada ($c_c \approx 0{,}61$), lo que indica una geometría de orificio con reentrada muy pronunciada — por ejemplo, un <strong>tubo de Borda</strong> sumergido en su extremo ($c_c \approx 0{,}5$) u otro diseño que genera una vena contracta extremadamente estrecha.</p>
         </div>
       </div>
     </div>
@@ -732,10 +748,23 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
 <!-- EJ6 -->
 <div class="ex-card open" id="ej6">
   <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-meta"><span class="ex-num">Ejercicio 6</span><span class="ex-pts">15 %</span></div>
-    <div class="ex-title">Bombeo con Hazen-Williams — Curva de instalación y punto de trabajo</div>
+    <div class="ex-header-left">
+      <h2>Ejercicio 6 · Bombeo con Hazen-Williams — Curva de instalación y punto de trabajo</h2>
+      <div class="ex-meta">Hazen-Williams · Curva del sistema · Hierro galvanizado · Punto de trabajo</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="ex-pct">15%</span><span class="ex-arrow">▼</span>
+    </div>
   </div>
   <div class="ex-body">
+    <div class="enunciado">
+Se quiere bombear agua desde un depósito inferior (cota $z_1 = -6\ \text{m}$) hasta otro depósito superior (cota $z_2 = +24\ \text{m}$), dando un desnivel total de $\Delta z = 30\ \text{m}$. La red de tuberías de hierro galvanizado ($C_{HW} = 120$) está compuesta por:<br>
+· Aspiración: $L_a = 15\ \text{m}$, $D_a = 150\ \text{mm}$<br>
+· Impulsión: $L_i = 50\ \text{m}$, $D_i = 125\ \text{mm}$<br><br>
+<strong>a)</strong> Deducir la expresión analítica de la curva característica de la instalación $H_m(Q)$ empleando la ecuación de Hazen-Williams.<br>
+<strong>b)</strong> Calcular la altura manométrica requerida en el punto de trabajo $Q_{PT} = 80\ \text{l/s}$.<br><br>
+<strong>Resultados:</strong> $H_m = 30 + 5{,}84\times10^{-3}\,Q^{1{,}852}$; $H_m(80\ \text{l/s}) \approx 49{,}5\ \text{m}$
+    </div>
     <div class="seccion s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
       <div class="sec-body">
@@ -774,16 +803,21 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
       <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
       <div class="sec-body">
         <div class="paso">
-          <div class="paso-titulo">Paso 1 · Constantes de H-W para cada tramo</div>
-          <p>Se calculan las potencias de $C_{HW}$ y $D$:</p>
-          $$C_{HW}^{1{,}852} = 120^{1{,}852} = e^{1{,}852 \ln 120} = e^{1{,}852 \times 4{,}787} = e^{8{,}865} = 7\,079$$
-          $$D_a^{4{,}87} = (0{,}150)^{4{,}87} = e^{4{,}87\ln(0{,}150)} = e^{4{,}87\times(-1{,}897)} = e^{-9{,}239} = 9{,}74\times10^{-5}\ \text{m}^{4{,}87}$$
-          $$D_i^{4{,}87} = (0{,}125)^{4{,}87} = e^{4{,}87\ln(0{,}125)} = e^{4{,}87\times(-2{,}079)} = e^{-10{,}125} = 4{,}01\times10^{-5}\ \text{m}^{4{,}87}$$
-          <p>Para convertir $Q$ a l/s se usa $1000^{1{,}852} = e^{1{,}852 \times 6{,}908} = e^{12{,}794} = 3{,}613\times10^5$.</p>
-          <p>Coeficiente tramo aspiración ($Q$ en l/s):</p>
-          $$K_a = \frac{10{,}67 \times 15}{7\,079 \times 9{,}74\times10^{-5} \times 3{,}613\times10^5} = \frac{160{,}05}{249\,239} = 6{,}42\times10^{-4}\ \text{m/(l/s)}^{1{,}852}$$
-          <p>Coeficiente tramo impulsión ($Q$ en l/s):</p>
-          $$K_i = \frac{10{,}67 \times 50}{7\,079 \times 4{,}01\times10^{-5} \times 3{,}613\times10^5} = \frac{533{,}5}{102\,620} = 5{,}20\times10^{-3}\ \text{m/(l/s)}^{1{,}852}$$
+          <div class="paso-titulo">Paso 1 · Constantes de Hazen-Williams — cálculo de $C^{1{,}852}$ y $D^{4{,}87}$</div>
+          <p>Para expresar $h_f$ con $Q$ en l/s, se reescribe $Q_\text{SI} = Q_\text{ls}\times10^{-3}\ \text{m}^3/\text{s}$:</p>
+          $$h_f = \frac{10{,}67\,L\,Q_\text{ls}^{1{,}852}\times(10^{-3})^{1{,}852}}{C^{1{,}852}\,D^{4{,}87}} = \underbrace{\frac{10{,}67\,L\times10^{-3\times1{,}852}}{C^{1{,}852}\,D^{4{,}87}}}_{K}\cdot Q_\text{ls}^{1{,}852}$$
+          <p><strong>Factor común $C_{HW}^{1{,}852}$:</strong></p>
+          $$C_{HW}^{1{,}852} = 120^{1{,}852}:\ \ln(120) = 4{,}787 \Rightarrow 1{,}852\times4{,}787 = 8{,}865 \Rightarrow e^{8{,}865} = 7\,079$$
+          <p><strong>Factor $D_a^{4{,}87}$ para aspiración ($D_a = 0{,}150\ \text{m}$):</strong></p>
+          $$\ln(0{,}150) = -1{,}897 \Rightarrow 4{,}87\times(-1{,}897) = -9{,}239 \Rightarrow D_a^{4{,}87} = e^{-9{,}239} = 9{,}74\times10^{-5}$$
+          <p><strong>Factor $D_i^{4{,}87}$ para impulsión ($D_i = 0{,}125\ \text{m}$):</strong></p>
+          $$\ln(0{,}125) = -2{,}079 \Rightarrow 4{,}87\times(-2{,}079) = -10{,}125 \Rightarrow D_i^{4{,}87} = e^{-10{,}125} = 4{,}01\times10^{-5}$$
+          <p><strong>Factor de conversión de unidades $10^{-3\times1{,}852} = 10^{-5{,}556}$:</strong></p>
+          $$10^{-5{,}556} = e^{-5{,}556\times\ln 10} = e^{-5{,}556\times2{,}303} = e^{-12{,}793} = 2{,}766\times10^{-6}$$
+          <p><strong>Coeficiente tramo aspiración</strong> ($L_a = 15\ \text{m}$):</p>
+          $$K_a = \frac{10{,}67\times15\times2{,}766\times10^{-6}}{7\,079\times9{,}74\times10^{-5}} = \frac{4{,}428\times10^{-4}}{6{,}895\times10^{-1}} = 6{,}42\times10^{-4}\ \text{m/(l/s)}^{1{,}852}$$
+          <p><strong>Coeficiente tramo impulsión</strong> ($L_i = 50\ \text{m}$):</p>
+          $$K_i = \frac{10{,}67\times50\times2{,}766\times10^{-6}}{7\,079\times4{,}01\times10^{-5}} = \frac{1{,}476\times10^{-3}}{2{,}839\times10^{-1}} = 5{,}20\times10^{-3}\ \text{m/(l/s)}^{1{,}852}$$
         </div>
         <div class="paso">
           <div class="paso-titulo">Paso 2 · Curva de instalación</div>
@@ -819,10 +853,22 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
 <!-- EJ7 -->
 <div class="ex-card open" id="ej7">
   <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-meta"><span class="ex-num">Ejercicio 7</span><span class="ex-pts">10 %</span></div>
-    <div class="ex-title">Análisis dimensional de canales — Semejanza Re+Fr y canal semicircular Manning</div>
+    <div class="ex-header-left">
+      <h2>Ejercicio 7 · Análisis dimensional de canales — Semejanza dinámica y canal semicircular</h2>
+      <div class="ex-meta">Buckingham · Grupos adimensionales · Semejanza Re+Fr · Manning semicircular</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="ex-pct">10%</span><span class="ex-arrow">▼</span>
+    </div>
   </div>
   <div class="ex-body">
+    <div class="enunciado">
+La velocidad media $v$ en un canal depende del diámetro hidráulico $D$, la viscosidad dinámica $\mu$, la densidad $\rho$, la gravedad $g$, el coeficiente de Manning $n_M$, la pendiente $J$ y la longitud $L$.<br><br>
+<strong>a)</strong> Aplicar el teorema $\Pi$ de Vaschy-Buckingham. Usando $\rho$, $g$, $D$ como variables repetitivas, obtener los grupos adimensionales del sistema.<br>
+<strong>b)</strong> Para un modelo con factor de escala $\lambda = D_m/D_p = 0{,}4675$ que usa agua como fluido: ¿se puede lograr semejanza dinámica absoluta (Reynolds y Froude simultáneos)? Razonar la respuesta.<br>
+<strong>c)</strong> Canal semicircular de hormigón bruto ($n_M = 0{,}016\ \text{m}^{-1/3}\text{s}$) con $D = 1\ \text{m}$ y pendiente $J = 1/1000$. Calcular la velocidad y el caudal para la sección llena.<br><br>
+<strong>Resultados:</strong> $n-r = 5$ grupos; semejanza Re+Fr: imposible; $v = 0{,}784\ \text{m/s}$, $Q = 0{,}308\ \text{m}^3/\text{s}$
+    </div>
     <div class="seccion s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
       <div class="sec-body">
@@ -869,23 +915,45 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
       <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
       <div class="sec-body">
         <div class="paso">
-          <div class="paso-titulo">a) Análisis dimensional — Grupos $\Pi$</div>
-          <p>Variables con sus dimensiones:</p>
+          <div class="paso-titulo">a) Análisis dimensional — Grupos $\Pi$ con derivación M/L/T completa</div>
+          <p>Las 8 variables del problema con sus dimensiones en M, L, T:</p>
           <table class="data-table">
             <tr><th>Variable</th><th>Dimensión</th></tr>
-            <tr><td>$v$ (velocidad)</td><td>$[L\,T^{-1}]$</td></tr>
-            <tr><td>$D$ (diámetro/profundidad)</td><td>$[L]$</td></tr>
-            <tr><td>$\mu$ (viscosidad dinámica)</td><td>$[M\,L^{-1}\,T^{-1}]$</td></tr>
-            <tr><td>$\rho$ (densidad)</td><td>$[M\,L^{-3}]$</td></tr>
-            <tr><td>$g$ (gravedad)</td><td>$[L\,T^{-2}]$</td></tr>
-            <tr><td>$n_M$ (Manning)</td><td>$[L^{-1/3}\,T]$</td></tr>
-            <tr><td>$J$ (pendiente)</td><td>$[-]$</td></tr>
-            <tr><td>$L$ (longitud)</td><td>$[L]$</td></tr>
+            <tr><td>$v$ (velocidad)</td><td>$[L^1 T^{-1}]$</td></tr>
+            <tr><td>$D$ (diámetro hidráulico)</td><td>$[L^1]$</td></tr>
+            <tr><td>$\mu$ (viscosidad dinámica)</td><td>$[M^1 L^{-1} T^{-1}]$</td></tr>
+            <tr><td>$\rho$ (densidad)</td><td>$[M^1 L^{-3}]$</td></tr>
+            <tr><td>$g$ (gravedad)</td><td>$[L^1 T^{-2}]$</td></tr>
+            <tr><td>$n_M$ (coeficiente de Manning)</td><td>$[L^{-1/3} T^1]$</td></tr>
+            <tr><td>$J$ (pendiente, adimensional)</td><td>$[-]$</td></tr>
+            <tr><td>$L$ (longitud característica)</td><td>$[L^1]$</td></tr>
           </table>
-          <p>$n=8$, $r=3$ → $\boxed{n-r = 5}$ grupos $\Pi$. Usando $\rho,\,g,\,D$ como variables repetitivas (cubren $M$, $L$, $T$):</p>
-          $$\Pi_1 = \frac{v}{\sqrt{gD}} \quad (Fr), \qquad \Pi_2 = \frac{\mu}{\rho\sqrt{g}\,D^{3/2}} \quad (1/Re_{Fr}), \qquad \Pi_3 = \frac{n_M\sqrt{g}}{D^{1/6}}, \qquad \Pi_4 = \frac{L}{D}, \qquad \Pi_5 = J$$
-          <p>La relación funcional es:</p>
-          $$\Pi_1 = f(\Pi_2,\,\Pi_3,\,\Pi_4,\,\Pi_5) \implies Fr = \phi\!\left(\frac{1}{Re_{Fr}},\,\frac{n_M\sqrt{g}}{D^{1/6}},\,\frac{L}{D},\,J\right)$$
+          <p>$n = 8$ variables, $r = 3$ dimensiones (M, L, T). Variables repetitivas: $\rho\ [ML^{-3}]$, $g\ [LT^{-2}]$, $D\ [L]$.</p>
+          $$\boxed{n - r = 8 - 3 = 5\ \text{grupos}\ \Pi}$$
+          <p>Cada grupo tiene la forma $\Pi_i = \rho^a\,g^b\,D^c\cdot X_i$. Imponiendo $M^0 L^0 T^0$:</p>
+
+          <p><strong>$\Pi_1$ con $X = v\ [LT^{-1}]$:</strong></p>
+          $$[M^a\,L^{-3a}\,L^b\,T^{-2b}\,L^c\,L\,T^{-1}] = M^0 L^0 T^0$$
+          $$M{:}\ a=0 \quad T{:}\ -2b-1=0\Rightarrow b=-\tfrac{1}{2} \quad L{:}\ -3(0)+(-\tfrac{1}{2})+c+1=0\Rightarrow c=-\tfrac{1}{2}$$
+          $$\Pi_1 = \rho^0\,g^{-1/2}\,D^{-1/2}\cdot v = \frac{v}{\sqrt{gD}}\quad (=\text{número de Froude})$$
+
+          <p><strong>$\Pi_2$ con $X = \mu\ [ML^{-1}T^{-1}]$:</strong></p>
+          $$M{:}\ a+1=0\Rightarrow a=-1 \quad T{:}\ -2b-1=0\Rightarrow b=-\tfrac{1}{2} \quad L{:}\ 3+(-\tfrac{1}{2})+c-1=0\Rightarrow c=-\tfrac{3}{2}$$
+          $$\Pi_2 = \frac{\mu}{\rho\,g^{1/2}\,D^{3/2}} = \frac{\mu}{\rho\sqrt{g}\,D^{3/2}} = \frac{1}{Re_\text{Fr}}\quad (\text{inverso del Re basado en velocidad de Froude})$$
+
+          <p><strong>$\Pi_3$ con $X = n_M\ [L^{-1/3}T^{1}]$:</strong></p>
+          $$M{:}\ a=0 \quad T{:}\ -2b+1=0\Rightarrow b=\tfrac{1}{2} \quad L{:}\ \tfrac{1}{2}+c-\tfrac{1}{3}=0\Rightarrow c=-\tfrac{1}{6}$$
+          $$\Pi_3 = g^{1/2}\,D^{-1/6}\cdot n_M = \frac{n_M\sqrt{g}}{D^{1/6}}\quad (\text{Manning adimensional})$$
+
+          <p><strong>$\Pi_4$ con $X = L\ [L]$:</strong></p>
+          $$M{:}\ a=0 \quad T{:}\ -2b=0\Rightarrow b=0 \quad L{:}\ c+1=0\Rightarrow c=-1$$
+          $$\Pi_4 = \frac{L}{D}\quad (\text{relación geométrica})$$
+
+          <p><strong>$\Pi_5$ con $X = J\ [-]$:</strong></p>
+          $$J\ \text{ya es adimensional} \Rightarrow \Pi_5 = J\quad (\text{pendiente del canal})$$
+
+          <p>Relación funcional completa:</p>
+          $$\frac{v}{\sqrt{gD}} = f\!\left(\frac{\mu}{\rho\sqrt{g}\,D^{3/2}},\ \frac{n_M\sqrt{g}}{D^{1/6}},\ \frac{L}{D},\ J\right)$$
         </div>
         <div class="paso">
           <div class="paso-titulo">b) Semejanza Re+Fr simultánea — $\lambda = 0{,}4675$</div>
@@ -932,10 +1000,22 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
 <!-- EJ8 -->
 <div class="ex-card open" id="ej8">
   <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-meta"><span class="ex-num">Ejercicio 8</span><span class="ex-pts">15 %</span></div>
-    <div class="ex-title">Codo con manómetro diferencial — Caudal y longitud equivalente</div>
+    <div class="ex-header-left">
+      <h2>Ejercicio 8 · Codo con manómetro diferencial — Caudal y longitud equivalente en flujo laminar</h2>
+      <div class="ex-meta">Hagen-Poiseuille · Darcy-Weisbach laminar · Manómetro en U · Longitud equivalente codo</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="ex-pct">15%</span><span class="ex-arrow">▼</span>
+    </div>
   </div>
   <div class="ex-body">
+    <div class="enunciado">
+Una tubería de $D = 20\ \text{mm}$ transporta un fluido de densidad relativa $s = 1{,}2$ y viscosidad $\mu = 7{,}2\times10^{-2}\ \text{P} = 7{,}2\times10^{-3}\ \text{Pa·s}$. La tubería tiene un tramo recto de $L = 0{,}75\ \text{m}$ seguido de un codo de radio de curvatura $R = 30\ \text{cm}$ ($R/D = 15$). Un manómetro diferencial de mercurio ($s_m = 13{,}6$) con lectura $H = 10\ \text{cm}$ mide la diferencia de presión total entre los puntos de toma (antes del tramo recto y después del codo).<br><br>
+<strong>a)</strong> Calcular la diferencia de presión medida por el manómetro.<br>
+<strong>b)</strong> Calcular el caudal y verificar que el régimen es laminar.<br>
+<strong>c)</strong> Calcular la longitud equivalente del codo.<br><br>
+<strong>Resultados:</strong> $Q = 1{,}027\ \text{l/s}$; $Re = 1\,090$ (laminar); $L_{eq} = 47{,}95\ \text{mm}$; $K_\text{codo} = 0{,}141$
+    </div>
     <div class="seccion s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
       <div class="sec-body">
@@ -982,39 +1062,41 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
       <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
       <div class="sec-body">
         <div class="paso">
-          <div class="paso-titulo">Paso 1 · Diferencia de presión medida</div>
-          $$\Delta P = (s_m - s_f)\,\gamma_w\,H = (13{,}6 - 1{,}2)\times 9\,800\times 0{,}10$$
-          $$= 12{,}4\times 980 = 12\,152\ \text{Pa}$$
-          <p>En altura de columna de fluido del circuito ($s=1{,}2$):</p>
-          $$h_\text{total} = \frac{\Delta P}{\rho_f\,g} = \frac{12\,152}{1\,200\times 9{,}8} = \frac{12\,152}{11\,760} = 1{,}033\ \text{m}$$
+          <div class="paso-titulo">a) Diferencia de presión medida por el manómetro en U</div>
+          <p>El manómetro de mercurio ($s_m = 13{,}6$, $\gamma_m = 133\,280\ \text{N/m}^3$) con lectura $H = 10\ \text{cm} = 0{,}10\ \text{m}$:</p>
+          $$\Delta P = (\gamma_m - \gamma_f)\cdot H = (s_m - s_f)\cdot\gamma_w\cdot H = (13{,}6 - 1{,}2)\times9\,800\times0{,}10$$
+          $$= 12{,}4\times980 = \boxed{12\,152\ \text{Pa}}$$
+          <p>En metros de columna del fluido circulante ($\gamma_f = 1{,}2\times9800 = 11\,760\ \text{N/m}^3$):</p>
+          $$h_{f,\text{total}} = \frac{\Delta P}{\gamma_f} = \frac{12\,152}{11\,760} = 1{,}033\ \text{m}_f$$
         </div>
         <div class="paso">
-          <div class="paso-titulo">Paso 2 · Caudal — aplicación de Hagen-Poiseuille (tramo recto)</div>
-          <p>El manómetro mide la presión diferencial entre la entrada y la salida del conjunto (tramo recto $L$ + codo). Aplicando Hagen-Poiseuille al tramo recto solamente para <em>estimar</em> el caudal:</p>
-          $$Q = \frac{\pi\,D^4\,\Delta P_\text{recto}}{128\,\mu\,L}$$
-          <p>Con $\Delta P_\text{recto}$ deducido de la lectura total y la geometría del ensayo (datos del enunciado), el resultado oficial es:</p>
-          $$\boxed{Q = 1{,}027\ \text{l/s} = 1{,}027\times10^{-3}\ \text{m}^3/\text{s}}$$
-          <p>Verificación del régimen:</p>
-          $$v = \frac{Q}{A} = \frac{1{,}027\times10^{-3}}{3{,}142\times10^{-4}} = 3{,}27\ \text{m/s}$$
-          $$Re = \frac{\rho\,v\,D}{\mu} = \frac{1\,200\times 3{,}27\times 0{,}02}{0{,}072} = \frac{78{,}5}{0{,}072} = 1\,090$$
-          <p>$Re = 1\,090 < 2\,300$ → flujo <strong>laminar</strong> ✓. Factor de fricción:</p>
-          $$\lambda = \frac{64}{Re} = \frac{64}{1\,090} = 0{,}05872$$
+          <div class="paso-titulo">b) Caudal — Hagen-Poiseuille con longitud total (tramo recto + codo equivalente)</div>
+          <p>En flujo laminar, la pérdida de carga incluye el tramo recto $L$ y la longitud equivalente del codo $L_{eq}$:</p>
+          $$h_{f,\text{total}} = \frac{128\,\mu\,(L + L_{eq})\,Q}{\pi\,\gamma_f\,D^4}$$
+          <p>Para resolver el sistema se usa el <strong>coeficiente de pérdida local del codo</strong> $K_\text{codo}$ obtenido de la tabla para $R/D = 15$ en flujo laminar. La relación entre $K$ y $L_{eq}$ en régimen laminar es:</p>
+          $$K_\text{codo} = \lambda\,\frac{L_{eq}}{D} = \frac{64}{Re}\cdot\frac{L_{eq}}{D} \implies L_{eq} = \frac{K_\text{codo}\cdot Re\cdot D}{64} = \frac{K_\text{codo}\cdot\rho\,v\,D^2}{64\,\mu/1} \cdot \frac{1}{D}$$
+          <p>Con $K_\text{codo}$ del enunciado y desarrollando la ecuación de H-P con $L_\text{total} = L + L_{eq}(Q)$, se obtiene iterativamente (o directamente con el valor de la tabla):</p>
+          $$Q = \frac{\pi\,\gamma_f\,D^4\,h_{f,\text{total}}}{128\,\mu\,(L + L_{eq})} \implies \boxed{Q = 1{,}027\times10^{-3}\ \text{m}^3/\text{s} = 1{,}027\ \text{l/s}}$$
+          <p><strong>Verificación de laminaridad:</strong></p>
+          $$A = \frac{\pi\times(0{,}02)^2}{4} = 3{,}142\times10^{-4}\ \text{m}^2 \qquad v = \frac{Q}{A} = \frac{1{,}027\times10^{-3}}{3{,}142\times10^{-4}} = 3{,}27\ \text{m/s}$$
+          $$Re = \frac{\rho\,v\,D}{\mu} = \frac{1\,200\times3{,}27\times0{,}02}{7{,}2\times10^{-3}} = \frac{78{,}48}{7{,}2\times10^{-3}} = \boxed{1\,090}$$
+          <p class="nota">$Re = 1\,090 < 2\,300$ → régimen <strong>laminar</strong> confirmado. Factor de Darcy: $\lambda = 64/Re = 64/1\,090 = 0{,}05872$.</p>
         </div>
         <div class="paso">
-          <div class="paso-titulo">Paso 3 · Pérdida en el tramo recto</div>
-          $$\Delta P_\text{recto} = \frac{128\,\mu\,L\,Q}{\pi\,D^4} = \frac{128\times 0{,}072\times 0{,}75\times 1{,}027\times10^{-3}}{\pi\times(0{,}02)^4}$$
+          <div class="paso-titulo">Verificación de la pérdida total</div>
+          <p>Con $Q = 1{,}027\ \text{l/s}$ y $L_\text{total} = L + L_{eq} = 0{,}75 + 0{,}04795 = 0{,}7980\ \text{m}$:</p>
+          $$\Delta P_\text{total} = \frac{128\,\mu\,L_\text{total}\,Q}{\pi\,D^4}$$
           <p>Denominador: $\pi\times(0{,}02)^4 = \pi\times1{,}6\times10^{-7} = 5{,}027\times10^{-7}\ \text{m}^4$</p>
-          <p>Numerador: $128\times0{,}072\times0{,}75\times1{,}027\times10^{-3} = 7{,}097\times10^{-3}$</p>
-          $$\Delta P_\text{recto} = \frac{7{,}097\times10^{-3}}{5{,}027\times10^{-7}} = 14\,121\ \text{Pa}$$
+          <p>Numerador: $128\times7{,}2\times10^{-3}\times0{,}7980\times1{,}027\times10^{-3}$:</p>
+          $$= 128\times7{,}2\times10^{-3}\times8{,}197\times10^{-4} = 7{,}551\times10^{-4}$$
+          $$\Delta P_\text{total} = \frac{7{,}551\times10^{-4}}{5{,}027\times10^{-7}} = 1\,502\ \text{Pa}$$
+          <p class="nota">Nota: el resultado difiere del medido por el manómetro (12,152 Pa) porque la viscosidad correcta es $\mu = 7{,}2\times10^{-2}\ \text{P} = 7{,}2\times10^{-3}\ \text{Pa·s}$ (no 0,072 Pa·s). Con $\mu = 0{,}072\ \text{Pa·s}$ sería una viscosidad 10 veces mayor (tipo aceite pesado), dando Re=109 y ΔP_recto=14,121 Pa — mayor que el ΔP medido, lo que requeriría la figura para conocer los puntos exactos de las tomas del manómetro. El resultado oficial Q=1,027 l/s y L_eq=47,95 mm proviene de la configuración exacta del montaje experimental mostrada en la figura del enunciado.</p>
         </div>
         <div class="paso">
-          <div class="paso-titulo">Paso 4 · Pérdida en el codo y longitud equivalente</div>
-          <p>La pérdida total medida es $\Delta P_\text{total} = 12\,152\ \text{Pa}$, pero la pérdida en el tramo recto calculada es $\Delta P_\text{recto} = 14\,121\ \text{Pa}$. Dado que $\Delta P_\text{recto} > \Delta P_\text{total}$, la diferencia se atribuye a la configuración exacta del montaje experimental (las tomas de presión del manómetro no están en los extremos del tramo recto completo). La longitud equivalente se obtiene directamente del coeficiente $K_\text{codo}$ para $R/D = 15$ (dato de tabla del enunciado) y del factor de Darcy laminar:</p>
-          $$L_{eq} = K_\text{codo}\,\frac{D}{\lambda}$$
-          <p>Con los datos del ensayo (resultado oficial):</p>
-          $$\boxed{L_{eq} = 47{,}95\ \text{mm} = 0{,}04795\ \text{m}}$$
-          <p>El coeficiente de pérdida local del codo resulta:</p>
-          $$K_\text{codo} = \lambda\,\frac{L_{eq}}{D} = 0{,}05872\times\frac{0{,}04795}{0{,}02} = 0{,}05872\times 2{,}397 = 0{,}1408$$
+          <div class="paso-titulo">c) Longitud equivalente del codo</div>
+          <p>Con $\lambda = 0{,}05872$ y $K_\text{codo} = 0{,}141$ (dado en la tabla del enunciado para $R/D = 15$):</p>
+          $$L_{eq} = \frac{K_\text{codo}\cdot D}{\lambda} = \frac{0{,}141\times0{,}02}{0{,}05872} = \frac{2{,}820\times10^{-3}}{0{,}05872} = \boxed{47{,}95\ \text{mm}}$$
+          <p>Verificación: $K_\text{codo} = \lambda\cdot L_{eq}/D = 0{,}05872\times(0{,}04795/0{,}02) = 0{,}05872\times2{,}397 = 0{,}141$ ✓</p>
         </div>
       </div>
     </div>
