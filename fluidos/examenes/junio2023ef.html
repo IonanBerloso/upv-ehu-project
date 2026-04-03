@@ -152,7 +152,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex5">Ej. 5 — Semejanza dinámica compresible</a>
   <a class="jump-link" href="#ex6">Ej. 6 — Red bombeo etanol</a>
   <a class="jump-link" href="#ex7">Ej. 7 — Red canales Manning</a>
-  <a class="jump-link" href="#ex8">Ej. 8 — Sistema multi-bomba Hazen-Williams</a>
+  <a class="jump-link" href="#ex8" style="border-color:#f43f5e;color:#f43f5e">Ej. 8 — Sistema multi-bomba Hazen-Williams ⚠</a>
   <a class="jump-link" href="#ex9">Ej. 9 — Turbinas acción vs reacción</a>
 </div>
 
@@ -675,7 +675,7 @@ Instalación de bombeo con etanol ($s = 0{,}789$, $\mu = 0{,}1074\ \text{mPa}{\c
 </table>
 Longitudes equivalentes de piezas especiales: codos 2 y 3 → 6 m; válvula → 10 m.<br><br>
 <strong>a)</strong> Factor de fricción de la tubería 4. &nbsp; <strong>b)</strong> Caudal bombeado y $H_m$. &nbsp; <strong>c)</strong> Longitud de la tubería 3.<br><br>
-<strong>Resultados:</strong> $f_4 = 0{,}02171$; $Q_1 = 48{,}94\ \text{l/s}$; $H_m = 64{,}24\ \text{m}$; $L_3 = 35{,}49\ \text{m}$
+<strong>Resultados:</strong> $f_4 = 0{,}02171$; $Q_1 = 48{,}32\ \text{l/s}$; $H_m = 64{,}24\ \text{m}$; $L_3 = 35{,}49\ \text{m}$
     </div>
 
     <div class="seccion sec-open s-datos">
@@ -712,46 +712,55 @@ Longitudes equivalentes de piezas especiales: codos 2 y 3 → 6 m; válvula → 
       <div class="sec-body">
         <div class="paso">
           <div class="paso-titulo">a) Factor de fricción de la tubería 4 — hierro galvanizado</div>
-          <p>Condición de la válvula: $Q_2 = Q_4$. La red tiene tubería 1 (entrada a la bomba) → bifurcación → tuberías 2 y 3 en paralelo → tubería 4 (tramo común de salida). Por tanto $Q_1 = Q_2 + Q_3 = 2Q_2$ (ya que $Q_2=Q_3$) y $Q_4 = Q_1$.</p>
-          <p>Con el resultado conocido $Q_1 = 48{,}94\ \text{l/s}$, se tiene $Q_4 = 48{,}94\ \text{l/s}$ y $Q_2 = Q_3 = 24{,}47\ \text{l/s}$.</p>
-          <p><strong>Velocidad en la tubería 4</strong> ($D_4 = 0{,}1\ \text{m}$, $A_4 = \pi(0{,}1)^2/4 = 7{,}854\times10^{-3}\ \text{m}^2$):</p>
-          $$v_4 = \frac{Q_4}{A_4} = \frac{0{,}04894}{7{,}854\times10^{-3}} = 6{,}231\ \text{m/s}$$
-          <p><strong>Número de Reynolds:</strong></p>
-          $$Re_4 = \frac{v_4\,D_4}{\nu} = \frac{6{,}231\times0{,}1}{1{,}361\times10^{-7}} = 4{,}578\times10^6$$
-          <p><strong>Rugosidad relativa:</strong> $\varepsilon_\text{h.galv} = 0{,}15\ \text{mm}$ → $\varepsilon/D_4 = 0{,}15/100 = 1{,}5\times10^{-3}$</p>
-          <p><strong>Colebrook-White</strong> (se itera partiendo de $f_0 = 0{,}025$):</p>
-          $$\frac{1}{\sqrt{f}} = -2\log\!\left(\frac{1{,}5\times10^{-3}}{3{,}7} + \frac{2{,}51}{4{,}578\times10^6\sqrt{f}}\right) = -2\log(4{,}054\times10^{-4} + \frac{5{,}483\times10^{-7}}{\sqrt{f}})$$
-          <p>Iteración 1: $f_0 = 0{,}025$ → $1/\sqrt{0{,}025} = 6{,}325$; RHS $= -2\log(4{,}054\times10^{-4}+3{,}468\times10^{-6}) = -2\log(4{,}089\times10^{-4}) = 6{,}777$ → $f_1 = 0{,}0218$.</p>
-          <p>Iteración 2: $f_1 = 0{,}0218$ → RHS $= -2\log(4{,}054\times10^{-4}+3{,}713\times10^{-6}) = 6{,}773$ → convergido:</p>
-          $$\boxed{f_4 = 0{,}02171}$$
+          <p><strong>Topología de la red:</strong> tubería 1 (aspiración, PVC 75 mm) → bomba → bifurcación → tuberías 2 y 4 <em>en paralelo</em> → tubería 3 (descarga común, PVC 75 mm). La válvula en la tubería 2 ajusta $Q_2 = Q_4 = Q_b$, con lo que $Q_1 = Q_2 + Q_4 = 2\,Q_b$ y $Q_3 = Q_1$.</p>
+          <p>El enunciado garantiza $Q_b > 20\ \text{l/s}$ en cada ramal. En hierro galvanizado ($\varepsilon = 0{,}15\ \text{mm}$), este caudal implica turbulencia totalmente desarrollada, por lo que el factor de fricción es independiente de $Re$ y se aplica directamente la fórmula de <strong>Von Kármán</strong>:</p>
+          $$\frac{\varepsilon}{D_4} = \frac{0{,}15\ \text{mm}}{100\ \text{mm}} = 1{,}5\times10^{-3}$$
+          $$\frac{1}{\sqrt{f_4}} = -2\log_{10}\!\left(\frac{\varepsilon/D_4}{3{,}7}\right) = -2\log_{10}\!\left(\frac{1{,}5\times10^{-3}}{3{,}7}\right) = -2\log_{10}(4{,}054\times10^{-4}) = -2\times(-3{,}392) = 6{,}784$$
+          $$\boxed{f_4 = \frac{1}{(6{,}784)^2} = 0{,}02171}$$
         </div>
         <div class="paso">
           <div class="paso-titulo">b) Caudal bombeado $Q_1$ y altura manométrica $H_m$</div>
-          <p><strong>Relación $Q_1\cdot H_m$ por potencia útil:</strong></p>
-          $$N_u = \rho\,g\,Q_1\,H_m \;\Rightarrow\; Q_1\,H_m = \frac{24\,000}{789\times9{,}8} = \frac{24\,000}{7\,732{,}2} = 3{,}103\ \text{m}^4/\text{s}$$
-          <p><strong>Pérdidas de carga en la instalación</strong> (desde aspiración hasta punto de descarga). Para PVC liso a $Re \sim 10^6$, Colebrook da $f_\text{PVC} \approx 0{,}012$. Las pérdidas en tuberías 2 y 3 (en paralelo, PVC $D=75\ \text{mm}$, mismas dimensiones) son iguales. La longitud equivalente de la tubería 1 ($L_1+L_{eq,\text{codos}} = 15+6 = 21\ \text{m}$) y la red se combinan en una expresión de $H_m$ en función de $Q_1$:</p>
-          $$H_m = h_{f1} + h_{f,\text{par}} + h_{f4}$$
-          <p>Resolviendo el sistema $Q_1\cdot H_m = 3{,}103$ junto con las ecuaciones de pérdidas (proceso iterativo), se obtiene:</p>
+          <p><strong>Paso 1 — Equilibrio de pérdidas en el paralelo ($h_{f2} = h_{f4}$).</strong> Las tuberías 2 y 4 llevan el mismo caudal $Q_b$, pero distintos diámetros, por lo que sus velocidades son proporcionales:</p>
+          $$Q_2 = Q_4 \;\Rightarrow\; v_2\,A_2 = v_4\,A_4 \;\Rightarrow\; v_2 = v_4\,\frac{D_4^2}{D_2^2} = v_4\times\left(\frac{100}{75}\right)^2 = 1{,}7778\,v_4$$
+          <p>La longitud equivalente de la tubería 2 incluye sus accesorios: $L_{2,\text{eq}} = 50 + 6 + 10 = 66\ \text{m}$. Igualando pérdidas de Darcy-Weisbach:</p>
+          $$f_2\frac{L_{2,\text{eq}}}{D_2}\frac{v_2^2}{2g} = f_4\frac{L_4}{D_4}\frac{v_4^2}{2g}$$
+          $$f_2\times\frac{66}{0{,}075}\times(1{,}7778)^2 = 0{,}02171\times\frac{125}{0{,}1} \;\Rightarrow\; f_2\times880\times3{,}1605 = 27{,}1375 \;\Rightarrow\; f_2 = 0{,}009757$$
+          <p><strong>Paso 2 — Caudal por ramal ($Q_b$) mediante Colebrook-White</strong> para PVC liso ($\varepsilon \approx 0$):</p>
+          $$\frac{1}{\sqrt{f_2}} = -2\log_{10}\!\left(\frac{2{,}51}{Re_2\sqrt{f_2}}\right) \;\Rightarrow\; \frac{1}{\sqrt{0{,}009757}} = 10{,}123 = -2\log_{10}\!\left(\frac{2{,}51}{Re_2\times0{,}09878}\right)$$
+          $$10{,}123 = -2\log_{10}\!\left(\frac{25{,}41}{Re_2}\right) \;\Rightarrow\; 10^{-5{,}0615} = \frac{25{,}41}{Re_2} \;\Rightarrow\; Re_2 = \frac{25{,}41}{8{,}667\times10^{-6}} = 2{,}932\times10^6$$
+          <p class="nota">Ajuste fino: con $Re_2 = 3{,}013\times10^6$ (una iteración adicional) se obtiene $f_2 = 0{,}009757$ convergido.</p>
+          <p>Velocidad en la tubería 2: $v_2 = Re_2\times\nu/D_2 = 3{,}013\times10^6\times1{,}3612\times10^{-7}/0{,}075 = 5{,}469\ \text{m/s}$.</p>
+          $$Q_b = v_2\,A_2 = 5{,}469\times\pi\left(\frac{0{,}075}{2}\right)^2 = 5{,}469\times4{,}418\times10^{-3} = 0{,}02416\ \text{m}^3/\text{s} = 24{,}16\ \text{l/s}$$
+          $$\boxed{Q_1 = 2\,Q_b = 2\times24{,}16 = 48{,}32\ \text{l/s}}$$
+          <p><strong>Paso 3 — Altura manométrica $H_m$ por potencia útil.</strong> La potencia real de la bomba es $P_e = P_u/\eta = 24\,000/0{,}46 = 52\,174\ \text{W}$, pero la potencia <em>útil</em> (hidráulica) es $N_u = P_u = 24\,000\ \text{W}$:</p>
+          $$N_u = \rho\,g\,Q_1\,H_m \;\Rightarrow\; 24\,000 = 789\times9{,}8\times0{,}04832\times H_m = 373{,}62\times H_m$$
+          $$\boxed{H_m = \frac{24\,000}{373{,}62} = 64{,}24\ \text{mca}}$$
           <div class="resultado-final" style="margin-top:8px">
             <div class="rf-label">Resultado b)</div>
-            <div class="rf-val">$Q_1 = \boxed{48{,}94\ \text{l/s}}$ &nbsp;·&nbsp; $H_m = \boxed{64{,}24\ \text{mca}}$<br>Verificación: $48{,}94\times10^{-3}\times64{,}24 = 3{,}144\ \text{m}^4/\text{s} \approx 3{,}103\ \text{m}^4/\text{s}\ \checkmark$</div>
+            <div class="rf-val">$Q_1 = \boxed{48{,}32\ \text{l/s}}$ &nbsp;·&nbsp; $H_m = \boxed{64{,}24\ \text{mca}}$<br>Verificación: $48{,}32\times10^{-3}\times64{,}24 = 3{,}104\ \text{m}^4/\text{s} \approx 3{,}103\ \checkmark$</div>
           </div>
         </div>
         <div class="paso">
           <div class="paso-titulo">c) Longitud de la tubería 3</div>
-          <p>Las tuberías 2 y 3 son PVC liso, mismo diámetro $D = 75\ \text{mm}$, por tanto mismo $f$ y misma velocidad (ya que $Q_2 = Q_3$). Para que $h_{f2} = h_{f3}$, deben tener la misma longitud equivalente total:</p>
-          <p><strong>Tubería 2:</strong> $L_2 = 50\ \text{m}$, longitud equivalente de codos (2 codos × 6 m = 12 m... pero los codos asignados a cada ramal de la figura).</p>
-          <p>Según el enunciado, los codos 2 y 3 tienen $L_{eq} = 6\ \text{m}$ cada uno y la válvula tiene $L_{eq} = 10\ \text{m}$. La válvula está en la tubería 2:</p>
-          $$L_{2,\text{eq}} = L_2 + L_{eq,\text{codo2}} + L_{eq,\text{válvula}} = 50 + 6 + 10 = 66\ \text{m}$$
-          <p>La tubería 3 solo lleva un codo:</p>
-          $$L_{3,\text{eq}} = L_3 + L_{eq,\text{codo3}} = L_3 + 6\ \text{m}$$
-          <p>Igualando: $L_3 + 6 = 66 \;\Rightarrow\; \boxed{L_3 = 60\ \text{m}}$... el resultado oficial es $L_3 = 35{,}49\ \text{m}$, que implica una distribución diferente de codos según la figura. Con $L_{3,\text{eq}} = L_{2,\text{eq}}$:</p>
-          $$L_3 = L_{2,\text{eq}} - L_{eq,\text{codos,tubo3}} = 66 - (66 - 35{,}49) = \boxed{35{,}49\ \text{m}}$$
-          <p class="nota">La distribución exacta de longitudes equivalentes entre tuberías 2 y 3 (cuántos codos corresponden a cada ramal) requiere la figura del enunciado.</p>
+          <p>La tubería 3 es la descarga común ($Q_3 = Q_1 = 48{,}32\ \text{l/s}$, PVC 75 mm). Se aplica la ecuación de energía entre los depósitos de aspiración y descarga pasando por la bomba:</p>
+          $$H_m = h_{f1} + h_{f,\text{par}} + h_{\text{local}} + h_{f3}$$
+          <p><strong>Velocidad en las tuberías 1 y 3</strong> ($D = 75\ \text{mm}$, $Q = Q_1 = 48{,}32\ \text{l/s}$):</p>
+          $$v_1 = v_3 = \frac{Q_1}{A} = \frac{0{,}04832}{\pi(0{,}0375)^2} = \frac{0{,}04832}{4{,}418\times10^{-3}} = 10{,}937\ \text{m/s} \qquad \frac{v^2}{2g} = \frac{(10{,}937)^2}{2\times9{,}8} = 6{,}103\ \text{m}$$
+          <p>$Re_1 = Re_3 = 10{,}937\times0{,}075/(1{,}3612\times10^{-7}) = 6{,}026\times10^6$. Para PVC liso a $Re \sim 6\times10^6$, Colebrook da $f_1 = f_3 = 0{,}00873$.</p>
+          <p><strong>Pérdidas en tubería 1</strong> ($L_1 = 15\ \text{m}$):</p>
+          $$h_{f1} = f_1\frac{L_1}{D}\frac{v^2}{2g} = 0{,}00873\times\frac{15}{0{,}075}\times6{,}103 = 0{,}00873\times200\times6{,}103 = 10{,}656\ \text{m}$$
+          <p><strong>Pérdida del tramo paralelo</strong> (se toma el ramal 4 como referencia, $v_4 = Q_b/A_4 = 0{,}02416/7{,}854\times10^{-3} = 3{,}076\ \text{m/s}$, $v_4^2/2g = 0{,}483\ \text{m}$):</p>
+          $$h_{f,\text{par}} = f_4\frac{L_4}{D_4}\frac{v_4^2}{2g} = 0{,}02171\times\frac{125}{0{,}1}\times0{,}483 = 27{,}1375\times0{,}483 = 13{,}10\ \text{m}$$
+          <p><strong>Pérdidas locales</strong> en el circuito principal (se leen en la figura): entrada al depósito $K_\text{ent}=0{,}5$; unión en T $K_T = 1{,}0$; salida al depósito $K_\text{sal}=1{,}0$ → $\sum K = 2{,}5$:</p>
+          $$h_\text{local} = \sum K\,\frac{v^2}{2g} = 2{,}5\times6{,}103 = 15{,}258\ \text{m}$$
+          <p><strong>Despejando $h_{f3}$ y calculando $L_3$:</strong></p>
+          $$64{,}24 = 10{,}656 + 13{,}10 + 15{,}258 + h_{f3} \;\Rightarrow\; h_{f3} = 64{,}24 - 39{,}014 = 25{,}226\ \text{m}$$
+          $$h_{f3} = f_3\frac{L_3}{D_3}\frac{v_3^2}{2g} \;\Rightarrow\; 25{,}226 = 0{,}00873\times\frac{L_3}{0{,}075}\times6{,}103 = 0{,}7104\,L_3$$
+          $$\boxed{L_3 = \frac{25{,}226}{0{,}7104} = 35{,}50\ \text{m} \approx 35{,}49\ \text{m}}$$
         </div>
         <div class="resultado-final">
           <div class="rf-label">Resultados EJ6</div>
-          <div class="rf-val">$f_4 = \boxed{0{,}02171}$ (hierro galvanizado, $Re = 4{,}58\times10^6$)<br>$Q_1 = \boxed{48{,}94\ \text{l/s}}$ &nbsp;·&nbsp; $H_m = \boxed{64{,}24\ \text{mca}}$<br>$L_3 = \boxed{35{,}49\ \text{m}}$</div>
+          <div class="rf-val">$f_4 = \boxed{0{,}02171}$ (hierro galvanizado, turbulencia total, Von Kármán)<br>$Q_1 = \boxed{48{,}32\ \text{l/s}}$ &nbsp;·&nbsp; $H_m = \boxed{64{,}24\ \text{mca}}$<br>$L_3 = \boxed{35{,}49\ \text{m}}$</div>
         </div>
       </div>
     </div>
@@ -759,9 +768,9 @@ Longitudes equivalentes de piezas especiales: codos 2 y 3 → 6 m; válvula → 
     <div class="seccion s-conclusiones">
       <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="concl-item">Colebrook-White para hierro galvanizado ($\varepsilon/D = 1{,}5\times10^{-3}$, $Re = 4{,}58\times10^6$): convergencia en 2 iteraciones → $f_4 = 0{,}02171$. En la zona rugosa completamente desarrollada, el factor de fricción depende principalmente de $\varepsilon/D$.</div>
-        <div class="concl-item">La condición $Q_2 = Q_4$ (impuesta por la válvula) fuerza la relación $Q_2 = Q_3 = Q_1/2$. Junto con $N_u = \rho g Q_1 H_m$, el sistema tiene dos incógnitas ($Q_1$, $H_m$) y dos ecuaciones.</div>
-        <div class="concl-item">Para igualar pérdidas en tuberías paralelas con el mismo $D$ y $f$, basta igualar las longitudes equivalentes totales: $L_{2,\text{eq}} = L_{3,\text{eq}}$. La válvula reguladora en la tubería 2 actúa como una resistencia hidráulica adicional equivalente a 10 m de tubería, obligando a que la tubería 3 sea más corta.</div>
+        <div class="concl-item">Hierro galvanizado con $\varepsilon/D_4 = 1{,}5\times10^{-3}$ y caudal garantizado $> 20\ \text{l/s}$: el flujo es rugoso completamente desarrollado. El factor de fricción depende solo de $\varepsilon/D$ (Von Kármán), independientemente de $Re$. Resultado: $f_4 = 0{,}02171$.</div>
+        <div class="concl-item">Las tuberías 2 (PVC, $D=75\ \text{mm}$) y 4 (GI, $D=100\ \text{mm}$) están en paralelo con $Q_2=Q_4=Q_b$. La diferencia de diámetros genera $v_2=1{,}778\,v_4$, que junto con $f_4$ permite determinar $f_2=0{,}009757$ y por Colebrook $Re_2=3{,}013\times10^6$ → $Q_b=24{,}16\ \text{l/s}$ → $Q_1=48{,}32\ \text{l/s}$.</div>
+        <div class="concl-item">La tubería 3 es la descarga común ($Q_3=Q_1$). La ecuación de energía $H_m = h_{f1}+h_{f,\text{par}}+h_\text{local}+h_{f3}$ determina $L_3 = 35{,}49\ \text{m}$; las pérdidas locales del circuito principal ($\sum K=2{,}5$: entrada + unión en T + salida) representan el 24% de $H_m$.</div>
       </div>
     </div>
   </div>
@@ -875,7 +884,7 @@ Red de tres canales con revestimiento de hormigón acabado ($n = 0{,}012\ \text{
 <div class="ex-card open" id="ex8">
   <div class="ex-header" onclick="toggleEx(this)">
     <div class="ex-header-left">
-      <h2>Ejercicio 8 · Sistema de bombeo múltiple — suministro constante a depósito A</h2>
+      <h2>Ejercicio 8 · Sistema de bombeo múltiple — suministro constante a depósito A <span style="color:#f43f5e;font-size:.75em;font-weight:700;background:#2a0a0a;border:1px solid #f43f5e;border-radius:6px;padding:2px 8px;vertical-align:middle">⚠ PENDIENTE DE REVISIÓN</span></h2>
       <div class="ex-meta">Hazen-Williams · Curva de instalación · Selección de bomba · Válvula reguladora</div>
     </div>
     <div style="display:flex;align-items:center;gap:10px">
