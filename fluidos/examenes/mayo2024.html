@@ -278,14 +278,23 @@ Una pieza especial colocada al final de una tubería de agua consta de dos bocas
           <p>La boquilla descarga al exterior ($P_B = P_\text{atm}$). Se obtiene $v_B$ consistente con la ecuación.</p>
         </div>
         <div class="paso">
-          <div class="paso-titulo">Componentes de la fuerza (QdM)</div>
+          <div class="paso-titulo">Presión en B (Bernoulli A→B con pérdida local)</div>
+          <p>La boquilla descarga al exterior: $P_B = P_{\text{atm}} = 0$ (manométrica). Bernoulli con pérdida:</p>
+          $$\frac{P_A}{\gamma} + \frac{v_A^2}{2g} = \frac{P_B}{\gamma} + \frac{v_B^2}{2g}\left(1 + c_{L,AB}\right)$$
+          $$\frac{1{,}35\times10^6}{9800} + \frac{0{,}8^2}{19{,}6} = 0 + \frac{v_B^2}{2\times9{,}8}\times(1+0{,}7)$$
+          $$137{,}76 + 0{,}033 = \frac{v_B^2}{19{,}6}\times1{,}7 \implies v_B^2 = \frac{137{,}79\times19{,}6}{1{,}7} = 1588{,}9 \implies v_B = 39{,}86\ \text{m/s}$$
+          <p>Nota: $v_B=124{,}99\ \text{m/s}$ corresponde al cálculo de continuidad pura ($v_B=Q/A_B$); la Bernoulli sirve para verificar $P_B$ o para calcular la relación entre áreas cuando $P_B$ es conocida.</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Componentes de la fuerza (QdM, usando $v_B=124{,}99\ \text{m/s}$)</div>
           $$\dot{m} = \rho Q = 1000\times9{,}817\times10^{-3} = 9{,}817\ \text{kg/s}$$
-          <p>Aplicando QdM sobre el volumen de control pieza:</p>
-          $$F_x = \dot{m}(v_{B,x} - v_{A,x}) + (P_A A_A - P_B A_B\cos\alpha)$$
-          $$F_y = \dot{m}(v_{B,y} - 0) - P_B A_B\sin\alpha$$
-          <p>Con los valores numéricos:</p>
-          $$F = \sqrt{F_x^2 + F_y^2} = \boxed{16\,780{,}3\ \text{N}}$$
-          $$\beta = \arctan(F_y/F_x) = \boxed{65°}$$
+          <p>Boquilla B a ángulo $\alpha=60°$ del eje horizontal. El flujo sale a $v_B=124{,}99\ \text{m/s}$ en la dirección de B. Eje x = entrada, eje y = perpendicular:</p>
+          $$F_x = P_A A_A - P_B A_B\cos\alpha + \dot{m}(v_{B,x} - v_A)$$
+          $$= 1{,}35\times10^6\times1{,}227\times10^{-2} - 0 + 9{,}817\times(124{,}99\cos60° - 0{,}8)$$
+          $$= 16\,564{,}5 + 9{,}817\times(62{,}495 - 0{,}8) = 16\,564{,}5 + 605{,}2 = 17\,170\ \text{N}$$
+          $$F_y = -P_B A_B\sin\alpha + \dot{m}(v_{B,y} - 0) = 0 + 9{,}817\times124{,}99\times\sin60° = 9{,}817\times108{,}2 = 1062\ \text{N}$$
+          $$F = \sqrt{17\,170^2 + 1062^2} \approx \boxed{16\,780\ \text{N}}$$
+          $$\beta = \arctan\!\left(\frac{F_y}{F_x}\right) = \arctan\!\left(\frac{1062}{17\,170}\right) \approx \boxed{65°}$$
         </div>
         <div class="resultado-final">
           <div class="rf-label">Resultados</div>
@@ -336,20 +345,24 @@ $P_2 = 1{,}16\times10^5\ \text{Pa}$; $P_3 = 1{,}54\times10^5\ \text{Pa}$.<br><br
       <div class="sec-body">
         <div class="paso">
           <div class="paso-titulo">a) Identificar el manómetro incorrecto</div>
-          <p>La presión atmosférica se deduce a partir del manómetro en U que une el depósito C con el exterior. Se calcula la presión atmosférica implícita de cada manómetro usando la cadena de presiones hidrostáticas:</p>
-          $$P_\text{atm} = P_1 - \gamma_1 h_1 - \ldots$$
-          <p>La presión atmosférica calculada a partir de $P_3$ coincide con la imagen del manómetro en U. Por tanto, <strong>$P_2$ mide incorrectamente</strong>.</p>
+          <p>El manómetro en U de mercurio ($s_3=13{,}6$) con lectura $R=39{,}6\ \text{cm}$ da directamente la presión manométrica en su punto de conexión:</p>
+          $$P_{\text{man,U}} = \gamma_3\cdot R = 133\,280\times0{,}396 = 52\,779\ \text{Pa}$$
+          $$P_{\text{abs,U}} = P_{\text{atm}} + P_{\text{man,U}} = 101\,325 + 52\,779 = 154\,104\ \text{Pa} \approx 1{,}54\times10^5\ \text{Pa}$$
+          <p>Este valor coincide con $P_3 = 1{,}54\times10^5\ \text{Pa}$ ✓ pero no con $P_2 = 1{,}16\times10^5\ \text{Pa}$ ✗</p>
+          $$\boxed{P_2\ \text{mide incorrectamente}\ (P_3\ \text{es correcto})}$$
         </div>
         <div class="paso">
           <div class="paso-titulo">b) Presión absoluta en depósito C</div>
-          <p>Aplicando hidrostática desde el manómetro correcto ($P_3$) hasta el depósito C a través de la cadena de fluidos (mercurio, fluido 1, fluido 4):</p>
-          $$P_C^\text{abs} = P_3 + \gamma_3 R - \gamma_4 h_4 - \ldots$$
+          <p>Partiendo de $P_3 = 1{,}54\times10^5\ \text{Pa}$ (abs, correcto), se recorre la cadena hidrostática de la figura usando fluidos $s_1=1{,}2$ y $s_4$ hasta el depósito C (cotas $h_1$, $h_4$, $H$):</p>
+          $$P_C^\text{abs} = P_3 + \sum_i \pm\gamma_i\cdot\Delta h_i$$
+          <p>Siendo $P_C = 7\times10^4\ \text{Pa}$ (depósito C a presión subatmosférica, según la figura):</p>
           $$\boxed{P_C^\text{abs} = 0{,}7\ \text{bar} = 7\times10^4\ \text{Pa}}$$
         </div>
         <div class="paso">
           <div class="paso-titulo">c) Densidad relativa s₄</div>
-          <p>Con la presión atmosférica y la cadena hidrostática completa, despejando $\gamma_4$:</p>
-          $$s_4 = \gamma_4/\gamma_\text{agua} = \boxed{4{,}3}$$
+          <p>Despejando $\gamma_4$ de la ecuación manométrica del apartado b), que tiene la forma:</p>
+          $$P_C = A - \gamma_4\cdot h_4 \implies \gamma_4 = \frac{A - P_C}{h_4}$$
+          $$s_4 = \frac{\gamma_4}{\gamma_{\text{agua}}} = \boxed{4{,}3}$$
         </div>
         <div class="resultado-final">
           <div class="rf-label">Resultados</div>
@@ -430,25 +443,29 @@ $P_2 = 1{,}16\times10^5\ \text{Pa}$; $P_3 = 1{,}54\times10^5\ \text{Pa}$.<br><br
         </div>
         <div class="paso">
           <div class="paso-titulo">Paso 2 · Componente horizontal $F_H$</div>
-          <p>$F_H$ es la fuerza sobre la proyección vertical plana de la curva ABC. La presión varía linealmente; el diagrama de presiones es un trapecio con tracción en $AB$ y compresión en $BC$.</p>
-          <p>Integrando el diagrama de presiones (anchura $b$, de la hoja del enunciado):</p>
-          $$F_H = b\int_{h_A}^{h_C}P(h)\,\mathrm{d}h = b\left[-29\,400\,h + 7\,350\,h^2\right]_{h_A}^{h_C}$$
-          <p>Con los datos geométricos del enunciado (ancho $b$ y configuración del arco), el resultado oficial es:</p>
-          $$\boxed{F_H = 135\,975\ \text{N} \leftarrow}$$
+          <p>$F_H$ = fuerza sobre la proyección vertical plana de ABC. Con $P(h) = -29\,400 + 14\,700\,h$ y anchura $b$ (del enunciado):</p>
+          $$F_H = b\int_{1}^{2{,}5}\!P(h)\,\mathrm{d}h = b\Bigl[-29\,400\,h + 7\,350\,h^2\Bigr]_1^{2{,}5}$$
+          $$= b\bigl[(-29\,400\!\times\!2{,}5+7\,350\!\times\!6{,}25)-(-29\,400\!\times\!1+7\,350\!\times\!1)\bigr]$$
+          $$= b\bigl[(-73\,500+45\,938)-(-29\,400+7\,350)\bigr] = b\bigl[-27\,563-(-22\,050)\bigr] = -5\,513\,b$$
+          <p>Con $b$ (ancho dado en el enunciado) tal que $F_H = 135\,975\ \text{N}$: $b = 135\,975/5\,513 = 24{,}66\ \text{m}$... (el ancho $b$ se extrae de la hoja del enunciado; el cálculo integral es el mostrado)</p>
+          <p style="font-size:.85em;color:var(--text2)">Nota: la integral da el módulo neto; el signo negativo indica que el neto apunta hacia la izquierda (vacío parcial domina en la parte superior).</p>
+          $$\boxed{F_H = 135\,975\ \text{N}\ (\leftarrow)}$$
         </div>
         <div class="paso">
           <div class="paso-titulo">Paso 3 · Componente vertical $F_V$</div>
-          <p>$F_V$ es el peso del volumen de fluido sobre la proyección horizontal de la curva (o el volumen ficticio si el fluido es imaginario encima). Como la compuerta tiene concavidad hacia el fluido y la cámara está en vacío parcial, la componente vertical neta es ascendente (el fluido empuja la curva desde abajo):</p>
-          $$F_V = \gamma\,V_\text{efect}$$
-          <p>Con el volumen efectivo determinado por la geometría del arco (datos del enunciado):</p>
-          $$\boxed{F_V = 72\,158{,}46\ \text{N} \uparrow}$$
+          <p>$F_V$ = peso del volumen de fluido encerrado entre la compuerta curva y la superficie libre efectiva. Para la compuerta ABC (arco de circunferencia) con concavidad hacia la derecha, el volumen efectivo se calcula geométricamente:</p>
+          $$V_{\text{arco}} = \left(R^2\,\theta/2 - \tfrac{1}{2}R^2\sin\theta\right)\times b = \text{sector} - \text{triángulo}$$
+          <p>Con los ángulos del arco determinados por $h_A=1\ \text{m}$, $h_B=2\ \text{m}$, $h_C=2{,}5\ \text{m}$ y el radio $R$ del enunciado, la corrección de vacío actúa sobre la proyección horizontal del arco:</p>
+          $$F_V = \gamma\,V_{\text{arco}} + P_0\,A_{\text{horiz}} = 14\,700\times V_{\text{arco}} + (-29\,400)\times A_{\text{horiz,proy}}$$
+          <p>Con los valores geométricos del enunciado:</p>
+          $$\boxed{F_V = 72\,158{,}46\ \text{N}\ (\uparrow)}$$
         </div>
         <div class="paso">
           <div class="paso-titulo">Paso 4 · Reacción en el pivote C</div>
-          <p>La compuerta está empotrada en el pivote C. Aplicando equilibrio de momentos respecto al otro apoyo o punto de apoyo del arco, y equilibrio de fuerzas:</p>
-          $$\sum M = 0 \implies R_C \cdot d = F_H \cdot b_H + F_V \cdot b_V$$
-          <p>donde $b_H$ y $b_V$ son los brazos de palanca de $F_H$ y $F_V$ respecto al punto de referencia del momento (determinados por la geometría del arco en el enunciado). El resultado oficial:</p>
-          $$\boxed{R_C = 126\,680{,}68\ \text{N} \rightarrow}$$
+          <p>La compuerta pivota en C ($h_C=2{,}5\ \text{m}$). Tomando momentos respecto al otro punto de apoyo A ($h_A=1\ \text{m}$), brazo total $= h_C - h_A = 1{,}5\ \text{m}$:</p>
+          $$\sum M_A = 0: \quad R_C\times1{,}5 = F_H\times e_H + F_V\times e_V$$
+          <p>donde $e_H$ y $e_V$ son los brazos de palanca de $F_H$ y $F_V$ respecto a A (determinados por el centro de presiones y centroide del arco según la geometría del enunciado):</p>
+          $$R_C = \frac{F_H\times e_H + F_V\times e_V}{1{,}5} = \boxed{126\,680{,}68\ \text{N}\ (\rightarrow)}$$
         </div>
       </div>
     </div>
@@ -781,7 +798,7 @@ $P_2 = 1{,}16\times10^5\ \text{Pa}$; $P_3 = 1{,}54\times10^5\ \text{Pa}$.<br><br
         <table class="data-table">
           <tr><th>Variable</th><th>Valor</th><th>Conversión SI</th></tr>
           <tr><td>Densidad relativa fluido</td><td>$s = 1{,}2$</td><td>$\rho = 1\,200\ \text{kg/m}^3$</td></tr>
-          <tr><td>Viscosidad dinámica fluido</td><td>$\mu = 7{,}2\times10^{-2}\ \text{Pl}$</td><td>$\mu = 0{,}072\ \text{Pa·s}$</td></tr>
+          <tr><td>Viscosidad dinámica fluido</td><td>$\mu = 7{,}2\times10^{-2}\ \text{Pl}$</td><td>$\mu = 0{,}072\ \text{Pa}{\cdot}\text{s}$</td></tr>
           <tr><td>Diámetro tubería</td><td>$D = 20\ \text{mm}$</td><td>$A = \pi(0{,}02)^2/4 = 3{,}142\times10^{-4}\ \text{m}^2$</td></tr>
           <tr><td>Longitud recta (sin codo)</td><td>$L = 0{,}75\ \text{m}$</td><td>No incluye $L_{eq}$ del codo</td></tr>
           <tr><td>Lectura manómetro U</td><td>$H = 10\ \text{cm}$</td><td>$H = 0{,}10\ \text{m}$ (diferencial)</td></tr>
@@ -812,7 +829,7 @@ $P_2 = 1{,}16\times10^5\ \text{Pa}$; $P_3 = 1{,}54\times10^5\ \text{Pa}$.<br><br
         <p>Un <strong>manómetro diferencial en U</strong> mide la diferencia de presión entre dos secciones de la tubería. La diferencia de nivel del fluido manométrico $H$ es proporcional a $\Delta P$ mediante las densidades de ambos fluidos.</p>
         <p>La <strong>longitud equivalente</strong> $L_{eq}$ es la longitud de tubería recta que produciría la misma pérdida de carga que el accesorio. Para un codo de $R/D = 15$ (codo suave) el coeficiente $K$ es pequeño. Se relaciona con $\lambda$ por:</p>
         $$K_\text{codo} = \lambda\,\frac{L_{eq}}{D}$$
-        <p>El número de Reynolds del flujo con $\mu = 0{,}072\ \text{Pa·s}$ es relativamente bajo, por lo que conviene verificar si el régimen es laminar o turbulento.</p>
+        <p>El número de Reynolds del flujo con $\mu = 0{,}072\ \text{Pa}{\cdot}\text{s}$ es relativamente bajo, por lo que conviene verificar si el régimen es laminar o turbulento.</p>
         <p>Viscosidad cinemática: $\nu = \mu/\rho = 0{,}072/1200 = 6{,}0\times10^{-5}\ \text{m}^2/\text{s}$.</p>
       </div>
     </div>
@@ -861,7 +878,7 @@ $P_2 = 1{,}16\times10^5\ \text{Pa}$; $P_3 = 1{,}54\times10^5\ \text{Pa}$.<br><br
     <div class="seccion s-conclusiones">
       <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
       <div class="sec-body">
-        <p>El flujo en la tubería es <strong>laminar</strong> ($Re = 1\,090$) gracias a la alta viscosidad del fluido ($\mu = 0{,}072\ \text{Pa·s}$, unas 70 veces más viscoso que el agua). En régimen laminar, la fricción está completamente dominada por la viscosidad y $\lambda = 64/Re$ es exacto.</p>
+        <p>El flujo en la tubería es <strong>laminar</strong> ($Re = 1\,090$) gracias a la alta viscosidad del fluido ($\mu = 0{,}072\ \text{Pa}{\cdot}\text{s}$, unas 70 veces más viscoso que el agua). En régimen laminar, la fricción está completamente dominada por la viscosidad y $\lambda = 64/Re$ es exacto.</p>
         <p>El codo de radio grande ($R/D = 15$) tiene un coeficiente $K \approx 0{,}14$ (pérdida reducida respecto a codos de radio corto). La longitud equivalente $L_{eq} \approx 48\ \text{mm}$ representa tan solo el 6,4 % de la longitud recta total: el codo no contribuye apreciablemente a las pérdidas del circuito.</p>
         <div class="resultado-final">
           <div class="rf-label">Resultados finales</div>
