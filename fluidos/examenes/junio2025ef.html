@@ -576,62 +576,110 @@ Datos: s₁=4; s₂=9; H=1,5 m; h₀=0,1 m; R=0,2 m; s_m=8; a=760 mmHg.</div>
     <div class="ex-title">Análisis dimensional: vertedero en V</div></div>
   </div>
   <div class="ex-body">
-    <div class="enunciado">Se realiza el análisis hidráulico de un vertedero en V de un río mediante un modelo a escala reducida. Se ha determinado que el caudal Q que pasa por el vertedero depende de las siguientes variables: nivel de agua en el vertedero H, ángulo del vertedero c, aceleración de la gravedad g.
+    <div class="enunciado">
+      <p>Se realiza el análisis hidráulico de un vertedero en V de un río mediante un modelo a escala reducida. Se ha determinado que el caudal Q que pasa por el vertedero depende de las siguientes variables: nivel de agua en el vertedero H, ángulo del vertedero α y aceleración de la gravedad g.</p>
+      <p>Determinar las variables adimensionales que describen el proceso. Indicar claramente el procedimiento empleado y los pasos seguidos.</p>
+      <p><strong>Soluciones:</strong> $\Pi_1 = \alpha$; $\Pi_2 = Q\,/\,(H^{5/2}\,g^{1/2})$</p>
+    </div>
 
-Determinar las variables adimensionales que describen el proceso. Indicar claramente el procedimiento empleado y los pasos seguidos.</div>
     <div class="seccion s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
       <div class="sec-body">
-        <p>Variables del problema: $Q\ [L^3T^{-1}]$, $H\ [L]$, $\alpha\ [\text{adim.}]$, $g\ [LT^{-2}]$</p>
-        <p>Variables dimensionales: $Q$, $H$, $g$ → $n_{\text{dim}} = 3$; dimensiones fundamentales: L y T ($k=2$)</p>
-        <p>Grupos Π: $n_{\text{dim}} - k = 3 - 2 = 1$ grupo dimensional + $\alpha$ que ya es adimensional → <strong>total 2 grupos Π</strong></p>
-        <p>Variables repetidas: $H\ [L]$ y $g\ [LT^{-2}]$</p>
+        <table class="data-table">
+          <tr><th>Variable</th><th>Dimensiones</th><th>Tipo</th></tr>
+          <tr><td>$Q$ — caudal</td><td>$[L^3 T^{-1}]$</td><td>Dimensional — variable de interés</td></tr>
+          <tr><td>$H$ — nivel de agua</td><td>$[L]$</td><td>Dimensional</td></tr>
+          <tr><td>$\alpha$ — ángulo del vertedero</td><td>Adimensional</td><td>Ya es un grupo $\Pi$ por sí mismo</td></tr>
+          <tr><td>$g$ — gravedad</td><td>$[L T^{-2}]$</td><td>Dimensional</td></tr>
+        </table>
+        <p style="margin-top:8px">Número total de variables: $n = 4$. Variables dimensionales: $n_{\text{dim}} = 3$ ($Q$, $H$, $g$). Dimensiones fundamentales: L y T → $k = 2$.</p>
       </div>
     </div>
-    <div class="seccion s-formulas">
-      <button class="sec-btn" onclick="toggleSec(this)"><span>📐 Fórmulas</span><span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <p><strong>Construcción de $\Pi_2$</strong> con variable no repetida $Q$:</p>
-        $$\Pi_2 = H^a \cdot g^b \cdot Q \implies [L]^a \cdot [LT^{-2}]^b \cdot [L^3T^{-1}] = L^0 T^0$$
-        <p>Sistema: $L: a + b + 3 = 0$; $T: -2b - 1 = 0 \implies b = -1/2 \implies a = -5/2$</p>
-        $$\Pi_2 = \frac{Q}{H^{5/2} \cdot g^{1/2}}$$
-      </div>
-    </div>
+
     <div class="seccion s-teoria">
-      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría e Hipótesis</span><span class="sarr">▼</span></button>
+      <button class="sec-btn" onclick="toggleSec(this)"><span>📖 Teoría — Teorema de Buckingham (Π)</span><span class="sarr">▼</span></button>
       <div class="sec-body">
-        <p>El vertedero en V es un medidor de caudal. La fórmula clásica es $Q = C_d \cdot \frac{8}{15}\tan\frac{\alpha}{2}\sqrt{2g}\cdot H^{5/2}$, que en forma adimensional es exactamente lo que predice el análisis dimensional: $Q/(\sqrt{g}\cdot H^{5/2}) = f(\alpha)$.</p>
-        <p><strong>Semejanza de Froude:</strong> Es el criterio para vertederos. Con escala geométrica $\lambda_H$, la relación de caudales es $Q_m/Q_p = \lambda_H^{5/2}$.</p>
-        <p>El exponente 5/2 hace al vertedero en V muy sensible para caudales pequeños (pequeñas variaciones de H producen grandes variaciones de Q).</p>
+        <p><strong>Enunciado del Teorema de Buckingham:</strong> Si un fenómeno físico depende de $n$ variables con $k$ dimensiones fundamentales independientes, puede describirse con $n - k$ grupos adimensionales independientes $\Pi_i$.</p>
+        <p><strong>Procedimiento estándar:</strong></p>
+        <ol>
+          <li>Identificar todas las variables del problema y sus dimensiones.</li>
+          <li>Contar las dimensiones fundamentales $k$ presentes.</li>
+          <li>Calcular el número de grupos $\Pi$: $n_\Pi = n - k$ (para las variables dimensionales) + las variables ya adimensionales.</li>
+          <li>Elegir $k$ <em>variables repetidas</em> que entre ellas contengan todas las dimensiones y no formen por sí solas un grupo adimensional.</li>
+          <li>Construir cada grupo $\Pi_i$ multiplicando las variables repetidas elevadas a exponentes desconocidos por cada variable no repetida, e imponer que el conjunto sea adimensional ($L^0 T^0$).</li>
+          <li>Resolver el sistema de ecuaciones para los exponentes.</li>
+        </ol>
+        <p><strong>Verificación física:</strong> La fórmula clásica del vertedero en V es $Q = C_d \cdot \tfrac{8}{15}\tan\tfrac{\alpha}{2}\sqrt{2g}\cdot H^{5/2}$, que en forma adimensional es exactamente $\Pi_2 = Q/(\sqrt{g}\cdot H^{5/2}) = f(\alpha)$, confirmando el resultado del análisis dimensional.</p>
       </div>
     </div>
+
     <div class="seccion s-resolucion">
       <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
       <div class="sec-body">
+
         <div class="paso">
-          <div class="paso-titulo">Paso 1 — Variables y dimensiones</div>
-          <p>$Q\ [L^3T^{-1}]$, $H\ [L]$, $\alpha$ (adim.), $g\ [LT^{-2}]$ → 3 dimensionales, 2 dimensiones (L, T)</p>
+          <div class="paso-titulo">Paso 1 — Identificación de variables y dimensiones</div>
+          <p>Se listan las variables con sus dimensiones en el sistema MLT (o LT, ya que no aparece masa):</p>
+          $$Q \sim [L^3 T^{-1}] \qquad H \sim [L] \qquad \alpha \sim [\text{adim.}] \qquad g \sim [L T^{-2}]$$
+          <p>Las dimensiones fundamentales presentes son únicamente <strong>L</strong> (longitud) y <strong>T</strong> (tiempo), por lo que $k = 2$.</p>
         </div>
+
         <div class="paso">
-          <div class="paso-titulo">Paso 2 — Número de grupos Π</div>
-          <p>$n_{\text{dim}} - k = 3 - 2 = 1$ grupo dimensional + $\alpha$ adimensional = <strong>2 grupos Π en total</strong></p>
+          <div class="paso-titulo">Paso 2 — Número de grupos adimensionales</div>
+          <p>El número de variables dimensionales es $n_{\text{dim}} = 3$ ($Q$, $H$, $g$). Aplicando el Teorema de Buckingham:</p>
+          $$\text{Grupos procedentes de variables dimensionales: } n_{\text{dim}} - k = 3 - 2 = 1$$
+          <p>Además, $\alpha$ es directamente adimensional, por lo que constituye por sí mismo un grupo $\Pi$ adicional sin necesidad de cálculo:</p>
+          $$\boxed{\Pi_1 = \alpha}$$
+          <p>En total se obtienen <strong>2 grupos adimensionales</strong>: $\Pi_1 = \alpha$ y $\Pi_2$ (a determinar).</p>
         </div>
+
         <div class="paso">
-          <div class="paso-titulo">Paso 3 — Construcción de los grupos</div>
-          $$\Pi_2 = H^{-5/2} \cdot g^{-1/2} \cdot Q$$
-          $$\boxed{\Pi_1 = \alpha} \qquad \boxed{\Pi_2 = \frac{Q}{H^{5/2} \cdot g^{1/2}} = \frac{Q}{\sqrt{g} \cdot H^{5/2}}}$$
-          <p>Relación funcional: $\Pi_2 = f(\Pi_1) \implies Q = f(\alpha) \cdot \sqrt{g} \cdot H^{5/2}$</p>
+          <div class="paso-titulo">Paso 3 — Elección de variables repetidas</div>
+          <p>Se eligen las $k = 2$ variables repetidas de entre las variables dimensionales. Se escogen $H$ y $g$ porque:</p>
+          <ul>
+            <li>Entre ambas cubren las dos dimensiones fundamentales: $H \sim [L]$ aporta L; $g \sim [LT^{-2}]$ aporta T.</li>
+            <li>No forman por sí solas ningún grupo adimensional (para ello necesitaríamos $H^a g^b = L^0 T^0$, que solo tiene solución $a = b = 0$).</li>
+          </ul>
+          <p>Las variables repetidas son: $\quad H \sim [L] \quad$ y $\quad g \sim [LT^{-2}]$.</p>
         </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Construcción de $\Pi_2$ (variable no repetida: Q)</div>
+          <p>Se plantea el grupo $\Pi_2$ como producto de las variables repetidas elevadas a exponentes desconocidos $a$ y $b$, multiplicado por la variable no repetida $Q$:</p>
+          $$\Pi_2 = H^a \cdot g^b \cdot Q^1$$
+          <p>Sustituyendo las dimensiones de cada variable:</p>
+          $$[\Pi_2] = [L]^a \cdot [LT^{-2}]^b \cdot [L^3T^{-1}] = L^{a+b+3} \cdot T^{-2b-1} = L^0 T^0$$
+          <p>Para que $\Pi_2$ sea adimensional, los exponentes de L y T deben ser cero por separado. Esto da el sistema de ecuaciones:</p>
+          $$\begin{cases} L: & a + b + 3 = 0 \\ T: & -2b - 1 = 0 \end{cases}$$
+          <p>Resolviendo el sistema:</p>
+          $$\text{De la ecuación T:} \quad -2b - 1 = 0 \implies b = -\frac{1}{2}$$
+          $$\text{Sustituyendo en la ecuación L:} \quad a + \left(-\frac{1}{2}\right) + 3 = 0 \implies a = -\frac{5}{2}$$
+          <p>Por tanto:</p>
+          $$\Pi_2 = H^{-5/2} \cdot g^{-1/2} \cdot Q = \boxed{\dfrac{Q}{H^{5/2} \cdot g^{1/2}} = \dfrac{Q}{\sqrt{g} \cdot H^{5/2}}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Relación funcional y resultado</div>
+          <p>El Teorema de Buckingham establece que la relación funcional entre los grupos adimensionales es:</p>
+          $$\Pi_2 = f(\Pi_1) \implies \frac{Q}{\sqrt{g} \cdot H^{5/2}} = f(\alpha)$$
+          <p>Despejando Q se obtiene la forma general de la ley del vertedero en V:</p>
+          $$\boxed{Q = f(\alpha) \cdot \sqrt{g} \cdot H^{5/2}}$$
+          <p>donde $f(\alpha)$ es una función del ángulo que debe determinarse experimentalmente (o teóricamente: $f(\alpha) = \tfrac{8}{15}C_d\tan\tfrac{\alpha}{2}\sqrt{2}$).</p>
+        </div>
+
       </div>
     </div>
+
     <div class="seccion s-conclusiones">
       <button class="sec-btn" onclick="toggleSec(this)"><span>✅ Conclusiones</span><span class="sarr">▼</span></button>
       <div class="sec-body">
         <div class="resultado-final">
-          <div class="rf-label">Resultados</div>
-          <div class="rf-val">$\Pi_1 = \alpha \qquad \Pi_2 = \dfrac{Q}{\sqrt{g} \cdot H^{5/2}}$</div>
+          <div class="rf-label">Grupos adimensionales</div>
+          <div class="rf-val">
+            $$\Pi_1 = \alpha \qquad \Pi_2 = \dfrac{Q}{\sqrt{g} \cdot H^{5/2}}$$
+          </div>
         </div>
-        <p style="margin-top:12px">El caudal escala con $H^{5/2}$. La semejanza aplicable es Froude. Los modelos físicos de vertederos deben mantener el mismo ángulo $\alpha$ y el mismo número de Froude.</p>
+        <p><strong>Clave física:</strong> El análisis dimensional reduce el problema de 4 variables a 2 grupos adimensionales. El resultado $Q \propto H^{5/2}$ es característico del vertedero en V: el caudal depende muy fuertemente del nivel H, lo que hace este tipo de vertedero muy preciso para medir caudales pequeños. La semejanza aplicable a los modelos hidráulicos de vertederos es la <strong>semejanza de Froude</strong> (ratio inercia/gravedad), que mantiene invariante el grupo $Q/(\sqrt{g}\cdot H^{5/2})$ entre el modelo y el prototipo.</p>
       </div>
     </div>
   </div>
