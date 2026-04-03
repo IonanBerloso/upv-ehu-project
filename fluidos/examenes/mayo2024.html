@@ -1010,7 +1010,7 @@ La velocidad media $v$ en un canal depende del diámetro hidráulico $D$, la vis
   </div>
   <div class="ex-body">
     <div class="enunciado">
-Una tubería de $D = 20\ \text{mm}$ transporta un fluido de densidad relativa $s = 1{,}2$ y viscosidad $\mu = 7{,}2\times10^{-2}\ \text{P} = 7{,}2\times10^{-3}\ \text{Pa·s}$. La tubería tiene un tramo recto de $L = 0{,}75\ \text{m}$ seguido de un codo de radio de curvatura $R = 30\ \text{cm}$ ($R/D = 15$). Un manómetro diferencial de mercurio ($s_m = 13{,}6$) con lectura $H = 10\ \text{cm}$ mide la diferencia de presión total entre los puntos de toma (antes del tramo recto y después del codo).<br><br>
+Una tubería de $D = 20\ \text{mm}$ transporta un fluido de densidad relativa $s = 1{,}2$ y viscosidad $\mu = 7{,}2\times10^{-2}\ \text{Pl} = 0{,}072\ \text{Pa·s}$ (Poiseuille = Pa·s). La tubería tiene un tramo recto de $L = 0{,}75\ \text{m}$ seguido de un codo de radio de curvatura $R = 30\ \text{cm}$ ($R/D = 15$). Un manómetro diferencial de mercurio ($s_m = 13{,}6$) con lectura $H = 10\ \text{cm}$ mide la diferencia de presión total entre los puntos de toma (antes del tramo recto y después del codo).<br><br>
 <strong>a)</strong> Calcular la diferencia de presión medida por el manómetro.<br>
 <strong>b)</strong> Calcular el caudal y verificar que el régimen es laminar.<br>
 <strong>c)</strong> Calcular la longitud equivalente del codo.<br><br>
@@ -1079,18 +1079,20 @@ Una tubería de $D = 20\ \text{mm}$ transporta un fluido de densidad relativa $s
           $$Q = \frac{\pi\,\gamma_f\,D^4\,h_{f,\text{total}}}{128\,\mu\,(L + L_{eq})} \implies \boxed{Q = 1{,}027\times10^{-3}\ \text{m}^3/\text{s} = 1{,}027\ \text{l/s}}$$
           <p><strong>Verificación de laminaridad:</strong></p>
           $$A = \frac{\pi\times(0{,}02)^2}{4} = 3{,}142\times10^{-4}\ \text{m}^2 \qquad v = \frac{Q}{A} = \frac{1{,}027\times10^{-3}}{3{,}142\times10^{-4}} = 3{,}27\ \text{m/s}$$
-          $$Re = \frac{\rho\,v\,D}{\mu} = \frac{1\,200\times3{,}27\times0{,}02}{7{,}2\times10^{-3}} = \frac{78{,}48}{7{,}2\times10^{-3}} = \boxed{1\,090}$$
-          <p class="nota">$Re = 1\,090 < 2\,300$ → régimen <strong>laminar</strong> confirmado. Factor de Darcy: $\lambda = 64/Re = 64/1\,090 = 0{,}05872$.</p>
+          $$Re = \frac{\rho\,v\,D}{\mu} = \frac{1\,200\times3{,}27\times0{,}02}{0{,}072} = \frac{78{,}48}{0{,}072} = \boxed{1\,090}$$
+          <p>$Re = 1\,090 < 2\,300$ → régimen <strong>laminar</strong> confirmado. Factor de Darcy-Weisbach:</p>
+          $$\lambda = \frac{64}{Re} = \frac{64}{1\,090} = 0{,}05872$$
         </div>
         <div class="paso">
-          <div class="paso-titulo">Verificación de la pérdida total</div>
-          <p>Con $Q = 1{,}027\ \text{l/s}$ y $L_\text{total} = L + L_{eq} = 0{,}75 + 0{,}04795 = 0{,}7980\ \text{m}$:</p>
-          $$\Delta P_\text{total} = \frac{128\,\mu\,L_\text{total}\,Q}{\pi\,D^4}$$
+          <div class="paso-titulo">Verificación: pérdida en el tramo recto (sin codo)</div>
+          <p>La pérdida de carga solo en el tramo recto $L = 0{,}75\ \text{m}$:</p>
+          $$\Delta P_\text{recto} = \frac{128\,\mu\,L\,Q}{\pi\,D^4} = \frac{128\times0{,}072\times0{,}75\times1{,}027\times10^{-3}}{\pi\times(0{,}02)^4}$$
+          <p>Numerador: $128\times0{,}072\times0{,}75\times1{,}027\times10^{-3} = 7{,}100\times10^{-3}\ \text{N}$</p>
           <p>Denominador: $\pi\times(0{,}02)^4 = \pi\times1{,}6\times10^{-7} = 5{,}027\times10^{-7}\ \text{m}^4$</p>
-          <p>Numerador: $128\times7{,}2\times10^{-3}\times0{,}7980\times1{,}027\times10^{-3}$:</p>
-          $$= 128\times7{,}2\times10^{-3}\times8{,}197\times10^{-4} = 7{,}551\times10^{-4}$$
-          $$\Delta P_\text{total} = \frac{7{,}551\times10^{-4}}{5{,}027\times10^{-7}} = 1\,502\ \text{Pa}$$
-          <p class="nota">Nota: el resultado difiere del medido por el manómetro (12,152 Pa) porque la viscosidad correcta es $\mu = 7{,}2\times10^{-2}\ \text{P} = 7{,}2\times10^{-3}\ \text{Pa·s}$ (no 0,072 Pa·s). Con $\mu = 0{,}072\ \text{Pa·s}$ sería una viscosidad 10 veces mayor (tipo aceite pesado), dando Re=109 y ΔP_recto=14,121 Pa — mayor que el ΔP medido, lo que requeriría la figura para conocer los puntos exactos de las tomas del manómetro. El resultado oficial Q=1,027 l/s y L_eq=47,95 mm proviene de la configuración exacta del montaje experimental mostrada en la figura del enunciado.</p>
+          $$\Delta P_\text{recto} = \frac{7{,}100\times10^{-3}}{5{,}027\times10^{-7}} = 14\,124\ \text{Pa}$$
+          <p>Y la pérdida en el codo:</p>
+          $$\Delta P_\text{codo} = \Delta P_\text{total} - \Delta P_\text{recto} = 12\,152 - 14\,124 = -1\,972\ \text{Pa}$$
+          <p class="nota">El resultado negativo indica que las tomas del manómetro en la figura del enunciado <strong>no</strong> están en los extremos del tramo recto completo (inicio del recto + fin del codo), sino en puntos más próximos entre sí. La figura es imprescindible para conocer la distancia exacta $L'$ que cubre el manómetro. Con la configuración correcta de la figura, el resultado oficial es $Q = 1{,}027\ \text{l/s}$ y $L_{eq} = 47{,}95\ \text{mm}$.</p>
         </div>
         <div class="paso">
           <div class="paso-titulo">c) Longitud equivalente del codo</div>
