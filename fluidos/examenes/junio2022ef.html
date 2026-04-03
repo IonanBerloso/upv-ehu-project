@@ -275,10 +275,11 @@ Si la respuesta es uno a uno:
         </table>
         <table class="t-datos" style="margin-top:8px">
           <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>$\gamma_{\text{aceite}}$</td><td>$0{,}85 \times 9810 = 8338{,}5\ \text{N/m}^3$</td></tr>
+          <tr><td>$\gamma_{\text{aceite}}$</td><td>$0{,}85 \times 9800 = 8330\ \text{N/m}^3$</td></tr>
           <tr><td>$z_E$ (manómetro)</td><td>$0{,}5\ \text{m}$</td></tr>
           <tr><td>$z_{\text{cilindros}}$</td><td>$1{,}5\ \text{m}$</td></tr>
-          <tr><td>$\Delta z = z_C - z_E$</td><td>$1{,}0\ \text{m}$</td></tr>
+          <tr><td>Carrera</td><td>$2\ \text{m}$</td></tr>
+          <tr><td>$\Delta z = z_{\text{cil}} - z_E$</td><td>$1{,}0\ \text{m}$</td></tr>
         </table>
       </div>
     </div>
@@ -288,9 +289,10 @@ Si la respuesta es uno a uno:
       <div class="sec-body">
         <div class="formula-label">Presión necesaria en el cilindro para elevar cada coche</div>
         <div class="formula-box">$$P_i = \frac{m_i \cdot g}{A_i}$$</div>
-        <div class="formula-label">Lectura del manómetro E (más alto que el cilindro)</div>
-        <div class="formula-box">$$P_E = P_i + \gamma_{\text{aceite}} \cdot (z_{\text{cil}} - z_E)$$</div>
-        <div class="nota">La bomba suministra la presión mínima necesaria. El cilindro que requiere <strong>menor presión</strong> sube primero, porque la bomba irá aumentando su presión hasta superar la de cada pistón.</div>
+        <div class="formula-label">Lectura del manómetro E al fin de carrera</div>
+        <div class="formula-box">$$P_E = \frac{m_i g}{A_i} + \gamma_{\text{aceite}} \cdot (\text{carrera} + z_{\text{cil}} - z_E)$$</div>
+        <div class="nota">Al llegar al fin de carrera, el cilindro contiene una columna de aceite de 2 m (la carrera recorrida). El manómetro E está 1 m por debajo de la base del cilindro. La columna hidrostática total es 2+1=3 m.</div>
+        <div class="nota">La bomba suministra la presión mínima necesaria. El cilindro que requiere <strong>menor presión</strong> sube primero.</div>
       </div>
     </div>
 
@@ -320,14 +322,15 @@ Si la respuesta es uno a uno:
         </div>
         <div class="paso">
           <div class="paso-titulo">Apartado d — Lectura del manómetro E al fin de carrera</div>
-          <p>El manómetro E está a $z_E = 0{,}5\ \text{m}$; los cilindros a $z = 1{,}5\ \text{m}$. Corrección hidrostática del aceite ($\Delta z = 1{,}0\ \text{m}$):</p>
-          $$\Delta P_{\text{hidrost}} = \gamma_{\text{aceite}} \times \Delta z = 8338{,}5 \times 1{,}0 = 8338{,}5\ \text{Pa} \approx 0{,}083\ \text{bar}$$
-          <p style="margin-top:8px">El manómetro E lee la presión en la línea más la columna de aceite entre E y el cilindro que se ha completado:</p>
-          <table class="t-datos" style="margin-top:8px">
-            <tr><th>Fin de carrera</th><th>$P_{\text{cil}}$</th><th>$P_E = P_{\text{cil}} + \Delta P$</th></tr>
-            <tr><td>Coche 3 (C)</td><td>$10{,}54\ \text{bar}$</td><td>$\approx \mathbf{10{,}79\ \text{bar}}$</td></tr>
-            <tr><td>Coche 1 (A)</td><td>$20{,}59\ \text{bar}$</td><td>$\approx \mathbf{20{,}84\ \text{bar}}$</td></tr>
-            <tr><td>Coche 2 (B)</td><td>$34{,}13\ \text{bar}$</td><td>$\approx \mathbf{34{,}37\ \text{bar}}$</td></tr>
+          <p>Al fin de carrera el pistón ha recorrido 2 m, por lo que el cilindro contiene una columna de aceite de 2 m. La presión en la base del cilindro debe soportar el peso del coche <strong>más</strong> el peso de esa columna interna:</p>
+          $$P_{\text{base}} = \frac{m_i g}{A_i} + \gamma_{\text{aceite}} \times \text{carrera} = \frac{m_i g}{A_i} + 8330 \times 2{,}0$$
+          <p>El manómetro E está $\Delta z = z_{\text{cil}} - z_E = 1{,}5 - 0{,}5 = 1{,}0\ \text{m}$ por debajo. La columna hidrostática total (interior cilindro + línea hasta E):</p>
+          $$\Delta P_{\text{total}} = \gamma_{\text{aceite}} \times (\text{carrera} + \Delta z) = 8330 \times (2{,}0 + 1{,}0) = 8330 \times 3{,}0 = 24\,990\ \text{Pa} \approx 0{,}250\ \text{bar}$$
+          <table class="t-datos" style="margin-top:10px">
+            <tr><th>Fin de carrera</th><th>$P_{\text{umbral}} = m_i g/A_i$</th><th>$P_E = P_{\text{umbral}} + 0{,}250\ \text{bar}$</th></tr>
+            <tr><td>Coche 3 (C) — 1º</td><td>$10{,}54\ \text{bar}$</td><td>$\mathbf{10{,}79\ \text{bar}}$</td></tr>
+            <tr><td>Coche 1 (A) — 2º</td><td>$20{,}59\ \text{bar}$</td><td>$\mathbf{20{,}84\ \text{bar}}$</td></tr>
+            <tr><td>Coche 2 (B) — 3º</td><td>$34{,}13\ \text{bar}$</td><td>$\mathbf{34{,}37\ \text{bar}}$</td></tr>
           </table>
         </div>
       </div>
