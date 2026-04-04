@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Estrategia de Examen · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+<!-- ── AUTH ── -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer;transition:.15s}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH = 'e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY  = 'upv_auth_fluidos';
+  async function sha256(str){
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function inject(){
+    var overlay = document.createElement('div');
+    overlay.id = 'auth-overlay';
+    overlay.innerHTML = '<div id="auth-box">'
+      + '<div id="auth-logo">🌊</div>'
+      + '<h2>Mecánica de Fluidos</h2>'
+      + '<p>Introduce la contraseña para acceder</p>'
+      + '<input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password">'
+      + '<button id="auth-btn">Entrar</button>'
+      + '<div id="auth-error"></div>'
+      + '</div>';
+    document.body.appendChild(overlay);
+    var inp = document.getElementById('auth-input');
+    var btn = document.getElementById('auth-btn');
+    var err = document.getElementById('auth-error');
+    async function attempt(){
+      var h = await sha256(inp.value);
+      if(h === HASH){
+        sessionStorage.setItem(KEY, HASH);
+        overlay.style.transition='opacity .3s';
+        overlay.style.opacity='0';
+        setTimeout(function(){ overlay.remove(); }, 320);
+      } else {
+        err.textContent='Contraseña incorrecta';
+        inp.value='';inp.focus();
+        setTimeout(function(){ err.textContent=''; }, 2000);
+      }
+    }
+    btn.addEventListener('click', attempt);
+    inp.addEventListener('keydown', function(e){ if(e.key==='Enter') attempt(); });
+    inp.focus();
+  }
+  if(sessionStorage.getItem(KEY) !== HASH){
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', inject);
+    } else { inject(); }
+  }
+})();
+</script>
+
+<style>
+/* ── RESET & BASE ── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;
+  --surface:#0d0d0d;
+  --surface2:#111111;
+  --surface3:#161616;
+  --border:#1a1a1a;
+  --border2:#222222;
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#38bdf8;
+  --gold:#f59e0b;
+  --gold2:#fbbf24;
+  --green:#10b981;
+  --purple:#a78bfa;
+  --red:#f43f5e;
+  --orange:#fb923c;
+  --yellow:#facc15;
+  --radius:12px;
+  --transition:.2s cubic-bezier(.4,0,.2,1);
+
+  /* Category colors */
+  --c-hidro:#38bdf8;
+  --c-tuberias:#fb923c;
+  --c-redes:#a78bfa;
+  --c-bernoulli:#10b981;
+  --c-bombas:#22d3ee;
+  --c-dimensional:#f43f5e;
+  --c-canales:#facc15;
+  --c-medida:#f59e0b;
+  --c-qdm:#e879f9;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.6;
+  font-size:15px;
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(0,0,0,.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  height:56px;
+}
+.topbar-back{
+  display:flex;align-items:center;gap:8px;
+  padding:0 20px;height:100%;
+  color:var(--text2);font-size:.83em;font-weight:500;
+  border-right:1px solid var(--border);
+  transition:color var(--transition);
+  white-space:nowrap;text-decoration:none;
+}
+.topbar-back:hover{color:var(--accent)}
+.topbar-title{
+  padding:0 20px;flex:1;
+  font-size:.92em;font-weight:600;
+  color:#f1f5f9;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.topbar-badge{
+  margin-right:20px;
+  background:#1a0a2e;border:1px solid #2d1a4e;
+  border-radius:20px;padding:4px 12px;
+  font-size:.72em;font-weight:600;color:var(--purple);
+  white-space:nowrap;
+}
+
+/* ── PAGE HEADER ── */
+.page-header{
+  padding:40px 24px 32px;
+  max-width:1200px;margin:0 auto;
+  border-bottom:1px solid var(--border);
+}
+.page-header h1{
+  font-size:1.8em;font-weight:700;
+  color:#f1f5f9;margin-bottom:8px;
+}
+.page-header p{
+  color:var(--text2);font-size:.9em;max-width:680px;line-height:1.7;
+}
+
+/* ── HOW TO USE BANNER ── */
+.how-to-use{
+  max-width:1200px;margin:0 auto;
+  padding:20px 24px 0;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:12px;
+}
+.htu-pill{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:10px;padding:12px 16px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.htu-num{
+  width:24px;height:24px;border-radius:50%;
+  background:#0a1a2e;border:1px solid var(--accent);
+  color:var(--accent);font-size:.75em;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.htu-text{font-size:.8em;color:var(--text2);line-height:1.5}
+.htu-text strong{color:var(--text);display:block;margin-bottom:2px}
+
+/* ── FILTER BAR ── */
+.filter-bar{
+  max-width:1200px;margin:0 auto;
+  padding:24px 24px 0;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  position:sticky;top:56px;z-index:100;
+  background:rgba(0,0,0,.92);
+  backdrop-filter:blur(16px);
+  padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+.filter-label{font-size:.78em;color:var(--text3);margin-right:4px;white-space:nowrap}
+.filter-btn{
+  padding:5px 14px;border-radius:20px;font-size:.78em;font-weight:600;
+  border:1px solid var(--border2);background:var(--surface);
+  color:var(--text2);cursor:pointer;transition:var(--transition);
+  white-space:nowrap;
+}
+.filter-btn.active,.filter-btn:hover{
+  background:#0a1a2e;color:var(--accent);border-color:var(--accent);
+}
+.filter-btn[data-cat="hidro"].active{ background:#001e2e;color:var(--c-hidro);border-color:var(--c-hidro); }
+.filter-btn[data-cat="tuberias"].active{ background:#2e1400;color:var(--c-tuberias);border-color:var(--c-tuberias); }
+.filter-btn[data-cat="redes"].active{ background:#1a0a2e;color:var(--c-redes);border-color:var(--c-redes); }
+.filter-btn[data-cat="bernoulli"].active{ background:#00251a;color:var(--c-bernoulli);border-color:var(--c-bernoulli); }
+.filter-btn[data-cat="bombas"].active{ background:#00252e;color:var(--c-bombas);border-color:var(--c-bombas); }
+.filter-btn[data-cat="dimensional"].active{ background:#2e0010;color:var(--c-dimensional);border-color:var(--c-dimensional); }
+.filter-btn[data-cat="canales"].active{ background:#2e2600;color:var(--c-canales);border-color:var(--c-canales); }
+.filter-btn[data-cat="medida"].active{ background:#2e1e00;color:var(--c-medida);border-color:var(--c-medida); }
+.filter-btn[data-cat="qdm"].active{ background:#2e0032;color:var(--c-qdm);border-color:var(--c-qdm); }
+
+/* ── STRATEGY GRID ── */
+.strategy-section{
+  max-width:1200px;margin:0 auto;
+  padding:28px 24px 8px;
+}
+.section-title{
+  font-size:.75em;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--text3);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-title::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:16px;
+  margin-bottom:28px;
+}
+
+/* ── STRATEGY CARD ── */
+.sc{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  transition:var(--transition);
+  border-top:3px solid var(--cat-color, var(--border));
+}
+.sc:hover{
+  transform:translateY(-2px);
+  border-color:var(--cat-color, var(--accent));
+  box-shadow:0 6px 28px rgba(0,0,0,.4);
+}
+.sc-head{
+  padding:16px 18px 12px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
+}
+.sc-title{
+  font-size:.97em;font-weight:700;color:#f1f5f9;
+  line-height:1.3;
+}
+.sc-cat{
+  font-size:.65em;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:3px 8px;border-radius:12px;white-space:nowrap;flex-shrink:0;
+  background:color-mix(in srgb, var(--cat-color, var(--accent)) 15%, transparent);
+  color:var(--cat-color, var(--accent));
+  border:1px solid color-mix(in srgb, var(--cat-color, var(--accent)) 40%, transparent);
+}
+.sc-body{padding:0 18px 18px;display:flex;flex-direction:column;gap:12px}
+
+/* Sections inside card */
+.sc-section{font-size:.82em}
+.sc-section-label{
+  font-size:.7em;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:5px;
+  display:flex;align-items:center;gap:6px;
+}
+.sc-section-label .icon{font-size:1em}
+
+.sc-recono .sc-section-label{ color:#60a5fa }
+.sc-pasos .sc-section-label{ color:#34d399 }
+.sc-formula .sc-section-label{ color:var(--purple) }
+.sc-error .sc-section-label{ color:#fb7185 }
+
+.sc-recono-list,.sc-pasos-list{
+  list-style:none;color:var(--text2);
+  display:flex;flex-direction:column;gap:3px;
+}
+.sc-recono-list li::before{content:'◈ ';color:#60a5fa;font-size:.8em}
+.sc-pasos-list li{display:flex;gap:6px}
+.sc-pasos-list .pnum{
+  width:18px;height:18px;border-radius:50%;
+  background:#00251a;border:1px solid #34d399;
+  color:#34d399;font-size:.65em;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+}
+.sc-pasos-list .ptxt{color:var(--text2);line-height:1.45}
+
+.sc-formula-box{
+  background:#0d0d1a;border:1px solid #1a1a33;
+  border-radius:8px;padding:10px 12px;
+  color:var(--purple);font-size:.9em;
+  line-height:1.5;
+  overflow-x:auto;
+}
+.sc-formula-box .katex{ color:var(--purple) }
+
+.sc-error-box{
+  background:#1a0008;border:1px solid #330015;
+  border-radius:8px;padding:8px 12px;
+  color:#fda4af;font-size:.82em;line-height:1.5;
+}
+.sc-error-box ul{list-style:none;display:flex;flex-direction:column;gap:2px}
+.sc-error-box li::before{content:'⚠ ';color:#fb7185}
+
+/* hidden by filter */
+.sc.hidden{display:none}
+
+/* ── DIVIDER ── */
+.divider{
+  max-width:1200px;margin:4px auto 0;
+  padding:0 24px;
+}
+.divider hr{border:none;border-top:1px solid var(--border)}
+
+/* ── FOOTER ── */
+.page-footer{
+  max-width:1200px;margin:0 auto;
+  padding:32px 24px 60px;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:16px;
+  border-top:1px solid var(--border);
+}
+.footer-links{display:flex;flex-wrap:wrap;gap:12px}
+.footer-link{
+  color:var(--text3);font-size:.8em;text-decoration:none;
+  display:flex;align-items:center;gap:5px;
+  transition:color var(--transition);
+}
+.footer-link:hover{color:var(--accent)}
+.footer-note{font-size:.75em;color:var(--text3)}
+
+/* ── KaTeX override ── */
+.katex{font-size:1em !important}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="examenes.html" class="topbar-back">← Exámenes</a>
+  <span class="topbar-title">Estrategia de Examen · Mecánica de Fluidos</span>
+  <span class="topbar-badge">25 tipos de problema</span>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <h1>🎯 Estrategia de Examen</h1>
+  <p>Para cada tipo de problema: cómo reconocerlo, pasos de resolución, fórmula clave y errores frecuentes. Úsala como árbol de decisión durante el examen.</p>
+</header>
+
+<!-- HOW TO USE -->
+<div class="how-to-use">
+  <div class="htu-pill">
+    <div class="htu-num">1</div>
+    <div class="htu-text"><strong>Identifica el tipo</strong>Lee el enunciado y usa la sección "¿Cómo lo reconozco?" para clasificar el problema.</div>
+  </div>
+  <div class="htu-pill">
+    <div class="htu-num">2</div>
+    <div class="htu-text"><strong>Sigue los pasos</strong>Ejecuta la resolución en el orden indicado: no te saltes pasos aunque parezcan obvios.</div>
+  </div>
+  <div class="htu-pill">
+    <div class="htu-num">3</div>
+    <div class="htu-text"><strong>Aplica la fórmula</strong>La fórmula clave ya está en la forma más útil. Sustituye directamente.</div>
+  </div>
+  <div class="htu-pill">
+    <div class="htu-num">4</div>
+    <div class="htu-text"><strong>Revisa el error típico</strong>Antes de dar la respuesta, comprueba el error frecuente de ese tipo de problema.</div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filter-bar">
+  <span class="filter-label">Filtrar por tema:</span>
+  <button class="filter-btn active" data-cat="all">Todos</button>
+  <button class="filter-btn" data-cat="hidro">Hidrostática</button>
+  <button class="filter-btn" data-cat="bernoulli">Bernoulli</button>
+  <button class="filter-btn" data-cat="qdm">Cantidad de movimiento</button>
+  <button class="filter-btn" data-cat="tuberias">Tuberías</button>
+  <button class="filter-btn" data-cat="redes">Redes</button>
+  <button class="filter-btn" data-cat="bombas">Bombas</button>
+  <button class="filter-btn" data-cat="medida">Medida de caudal</button>
+  <button class="filter-btn" data-cat="canales">Canales</button>
+  <button class="filter-btn" data-cat="dimensional">An. Dimensional</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     HIDROSTÁTICA
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-hidro">
+  <div class="section-title" style="color:var(--c-hidro)">💧 Hidrostática</div>
+  <div class="cards-grid">
+
+    <!-- CARD 1: Presión en un punto -->
+    <div class="sc" style="--cat-color:var(--c-hidro)" data-cat="hidro">
+      <div class="sc-head">
+        <div class="sc-title">Presión en un punto / Manometría</div>
+        <div class="sc-cat">Hidrostática</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Depósitos o tuberías conectadas con fluidos a distintas alturas</li>
+            <li>Manómetro de columna de mercurio o agua</li>
+            <li>Piden presión absoluta, relativa o diferencia de presiones</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Fijar el nivel de referencia (z = 0) en el punto más bajo</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Subir por el fluido: <em>+γz</em> (presión crece al bajar)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">En cada superficie libre: P = P₀ (presión impuesta)</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Aplicar continuidad de presión en interfaces horizontales del mismo fluido</span></li>
+            <li><span class="pnum">5</span><span class="ptxt">Si hay manómetro: recorrer el circuito de A a B sumando/restando γ·Δz de cada tramo</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-presion"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Confundir presión absoluta (P) con relativa (P − Patm)</li>
+            <li>Cambiar de signo al cruzar una interfaz: si subo en el fluido, la presión baja</li>
+            <li>Olvidar que 1 bar ≠ 1 atm (1 atm = 1,013 bar = 10,33 mca)</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Fuerza sobre superficie plana -->
+    <div class="sc" style="--cat-color:var(--c-hidro)" data-cat="hidro">
+      <div class="sc-head">
+        <div class="sc-title">Fuerza sobre superficie plana sumergida</div>
+        <div class="sc-cat">Hidrostática</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Compuerta, pared, fondo plano inclinado o vertical</li>
+            <li>Piden fuerza total y/o punto de aplicación (centro de presiones)</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Identificar el centroide G de la superficie (tabla o cálculo)</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Calcular la presión media: P̄ = γ·ȳ (ȳ = profundidad del centroide)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Fuerza total: F = P̄·A</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Centro de presiones: y_cp = ȳ + I_G/(ȳ·A)</span></li>
+            <li><span class="pnum">5</span><span class="ptxt">Si hay presión manométrica en superficie libre (P₀ ≠ 0): ȳ* = ȳ + P₀/(γ)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-plana"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Usar la profundidad de la base en lugar del centroide</li>
+            <li>Olvidar I_G para rectángulo: bh³/12 (eje horizontal)</li>
+            <li>No proyectar si la superficie está inclinada (ȳ se mide a lo largo del plano)</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Fuerza sobre superficie curva -->
+    <div class="sc" style="--cat-color:var(--c-hidro)" data-cat="hidro">
+      <div class="sc-head">
+        <div class="sc-title">Fuerza sobre superficie curva sumergida</div>
+        <div class="sc-cat">Hidrostática</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Compuerta cilíndrica, esférica, sector circular</li>
+            <li>Piden componentes horizontal y vertical de la fuerza</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">F_H = Fuerza sobre la proyección vertical plana (aplica la fórmula de superficie plana)</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">F_V = Peso del fluido en la columna vertical sobre la superficie (hacia abajo si el fluido está encima; hacia arriba si está debajo)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Si hay presión manométrica P₀ en la superficie libre: añadir P₀·A_proy en cada componente</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Resultante: F = √(F_H² + F_V²), ángulo = arctan(F_V/F_H)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-curva"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Invertir el signo de F_V según la posición del fluido</li>
+            <li>No incluir el volumen de fluido imaginario (cuando el fluido está debajo)</li>
+            <li>Usar F_H sobre la superficie curva en lugar de su proyección plana</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Flotación / Empuje -->
+    <div class="sc" style="--cat-color:var(--c-hidro)" data-cat="hidro">
+      <div class="sc-head">
+        <div class="sc-title">Flotación y empuje de Arquímedes</div>
+        <div class="sc-cat">Hidrostática</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Cuerpo total o parcialmente sumergido en un fluido</li>
+            <li>Equilibrio de fuerzas (peso + empuje + tensión de cable, etc.)</li>
+            <li>Piden calado, fracción sumergida o fuerza necesaria</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Identificar fuerzas verticales: peso W = γ_cuerpo·V_total, empuje E = γ_fluido·V_sumergido</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Equilibrio vertical: ΣF_z = 0 → despejar la incógnita (calado, fracción, fuerza)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Si hay cable o apoyo: añadir su fuerza al equilibrio</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Para estabilidad: comparar metacentro M con centro de gravedad G (M por encima de G = estable)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-flotacion"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Usar V_total en el empuje cuando el cuerpo no está completamente sumergido</li>
+            <li>Confundir densidad relativa con fracción sumergida (son iguales solo si ρ_fluido = ρ_agua)</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: Capilaridad y tensión superficial -->
+    <div class="sc" style="--cat-color:var(--c-hidro)" data-cat="hidro">
+      <div class="sc-head">
+        <div class="sc-title">Capilaridad y tensión superficial</div>
+        <div class="sc-cat">Hidrostática</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Tubo capilar, burbuja, gota, película de jabón</li>
+            <li>Ángulo de contacto θ dado</li>
+            <li>Piden altura de ascenso/descenso o presión interior de burbuja</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Equilibrio de fuerza de tensión (vertical) vs. peso de la columna</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Tubo circular: h = 4σcosθ/(γd)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Ranura plana (ancho b): h = 2σcosθ/(γb) — misma lógica, distinto perímetro</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Burbuja en líquido: ΔP = 2σ/R; gota libre o película de jabón: ΔP = 4σ/R</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-capilar"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Confundir burbuja en líquido (1 interfaz, ΔP = 2σ/R) con jabón (2 interfaces, ΔP = 4σ/R)</li>
+            <li>Olvidar el cosθ: θ > 90° → descenso capilar (mercurio en vidrio)</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid hidro -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     BERNOULLI + CONTINUIDAD
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-bernoulli">
+  <div class="section-title" style="color:var(--c-bernoulli)">🌀 Bernoulli + Continuidad</div>
+  <div class="cards-grid">
+
+    <!-- CARD 6: Bernoulli ideal -->
+    <div class="sc" style="--cat-color:var(--c-bernoulli)" data-cat="bernoulli">
+      <div class="sc-head">
+        <div class="sc-title">Bernoulli sin pérdidas (flujo ideal)</div>
+        <div class="sc-cat">Bernoulli</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Fluido ideal (no viscoso) o se indica "sin pérdidas"</li>
+            <li>Dos secciones del mismo conducto o entre dos puntos de una línea de corriente</li>
+            <li>Piden velocidad, presión, caudal o altura piezométrica</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Elegir dos secciones (1 → 2) en la misma línea de corriente</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Continuidad: Q = A₁v₁ = A₂v₂ → despejar v incógnita</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Bernoulli: P₁/γ + v₁²/2g + z₁ = P₂/γ + v₂²/2g + z₂</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Sustituir y despejar la incógnita</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-bernoulli"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Aplicar entre puntos que NO están en la misma línea de corriente</li>
+            <li>Olvidar las unidades: si γ en N/m³ y P en Pa → P/γ en metros</li>
+            <li>No usar continuidad antes de Bernoulli → dos incógnitas</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 7: Bernoulli con pérdidas -->
+    <div class="sc" style="--cat-color:var(--c-bernoulli)" data-cat="bernoulli">
+      <div class="sc-head">
+        <div class="sc-title">Bernoulli con pérdidas de carga</div>
+        <div class="sc-cat">Bernoulli</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Tuberías reales (viscosas), longitudes y rugosidades dadas</li>
+            <li>Valvulas, codos, ensanchamientos en el recorrido</li>
+            <li>Hay que incluir h_f en la ecuación</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Identificar todas las pérdidas: Darcy-Weisbach (continuas) + pérdidas locales</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">h_f,cont = f·(L/D)·v²/2g; h_f,loc = K·v²/2g</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Bernoulli extendido: E₁ = E₂ + h_f (h_f suma de todas las pérdidas)</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Si hay bomba: añadir H_m al lado de la energía de entrada</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-bernoulli-hf"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Sumar h_f al lado equivocado (siempre se resta a la energía en el sentido del flujo)</li>
+            <li>Olvidar que en depósitos grandes: v ≈ 0 y P = Patm en la superficie</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid bernoulli -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     CANTIDAD DE MOVIMIENTO
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-qdm">
+  <div class="section-title" style="color:var(--c-qdm)">💥 Cantidad de Movimiento (QdM)</div>
+  <div class="cards-grid">
+
+    <!-- CARD 8: QdM chorro sobre placa/álabe -->
+    <div class="sc" style="--cat-color:var(--c-qdm)" data-cat="qdm">
+      <div class="sc-head">
+        <div class="sc-title">Chorro libre sobre placa o álabe</div>
+        <div class="sc-cat">QdM</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Chorro que impacta sobre una superficie plana o curva</li>
+            <li>Velocidad de salida ≈ velocidad de entrada (fluido ideal)</li>
+            <li>Piden fuerza sobre la placa/álabe o fuerza de reacción</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Volumen de control: engloba la región donde cambia el momento</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">En chorro libre: P_entrada = P_salida = P_atm → no hay términos de presión</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">ΣF = ρQ(v_salida − v_entrada) — vectorialmente, por componentes</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Placa plana perpendicular: F = ρQv (solo componente normal)</span></li>
+            <li><span class="pnum">5</span><span class="ptxt">La fuerza sobre el fluido = −Fuerza sobre la placa</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-qdm-placa"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>No descomponer en componentes x e y cuando el chorro es oblicuo</li>
+            <li>Confundir la fuerza sobre el fluido con la fuerza sobre la placa (signos opuestos)</li>
+            <li>Olvidar que en álabe curvo la velocidad de salida tiene dirección diferente</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 9: QdM en tubería con codo/bifurcación -->
+    <div class="sc" style="--cat-color:var(--c-qdm)" data-cat="qdm">
+      <div class="sc-head">
+        <div class="sc-title">Fuerzas en codos, bifurcaciones y toberas</div>
+        <div class="sc-cat">QdM</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Tubería que cambia de dirección (codo) o de sección (tobera, difusor)</li>
+            <li>Fluido a presión (no chorro libre)</li>
+            <li>Piden fuerza sobre el accesorio o las bridas</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Calcular P₁ y P₂ mediante Bernoulli + continuidad</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Aplicar QdM: ΣF = ρQ(v₂ − v₁) — vectorialmente</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Incluir fuerzas de presión: +P₁A₁ en entrada, −P₂A₂ en salida (manométricas)</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">La fuerza R es la reacción del accesorio → aparece con signo cambiado</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-qdm-codo"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Olvidar los términos de presión (P·A) en la ecuación de QdM</li>
+            <li>No definir el sistema de referencia con sentido positivo claro antes de proyectar</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid qdm -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     TUBERÍAS
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-tuberias">
+  <div class="section-title" style="color:var(--c-tuberias)">🔧 Tuberías a presión</div>
+  <div class="cards-grid">
+
+    <!-- CARD 10: Darcy-Weisbach + Colebrook -->
+    <div class="sc" style="--cat-color:var(--c-tuberias)" data-cat="tuberias">
+      <div class="sc-head">
+        <div class="sc-title">Pérdida de carga continua (Darcy-Weisbach + Colebrook)</div>
+        <div class="sc-cat">Tuberías</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Tubería de longitud L, diámetro D, rugosidad ε/D</li>
+            <li>Se dan ν (viscosidad cinemática) y Q o v</li>
+            <li>Problema Tipo I (Q dado, busca h_f), Tipo II (h_f dado, busca Q), Tipo III (busca D)</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Calcular Re = vD/ν; si Re &lt; 2300 → flujo laminar, f = 64/Re</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Flujo turbulento: Colebrook-White iterativa (o Moody). Inicio con Swamee-Jain: f₀ = 0,25/[log(ε/3,7D + 5,74/Re⁰·⁹)]²</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">h_f = f·(L/D)·v²/2g</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Tipo II: suponer f y calcular Q, luego recalcular Re, iterar hasta convergencia (&lt;1%)</span></li>
+            <li><span class="pnum">5</span><span class="ptxt">Tipo III: despejar D⁵ = 8fLQ²/(π²g·h_f), iterar en f(D)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-darcy"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>No iterar en Tipo II/III: la f inicial raramente es exacta</li>
+            <li>Confundir ε (rugosidad absoluta, mm) con ε/D (relativa, adimensional)</li>
+            <li>Tipo III: redondear D al diámetro comercial superior, no inferior</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 11: Hazen-Williams -->
+    <div class="sc" style="--cat-color:var(--c-tuberias)" data-cat="tuberias">
+      <div class="sc-head">
+        <div class="sc-title">Hazen-Williams (agua a 20 °C)</div>
+        <div class="sc-cat">Tuberías</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Enunciado menciona coeficiente C de Hazen-Williams</li>
+            <li>Agua a temperatura próxima a 20 °C</li>
+            <li>Frecuente en abastecimiento urbano o redes de distribución</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Fórmula directa: J = 10,67·Q^1,852/(C^1,852·D^4,87)  [m/m, Q en m³/s, D en m]</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Pérdida: h_f = J·L</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">No requiere iteración (sin factor de fricción)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-hw"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Usar Hazen-Williams para fluidos distintos del agua o temperaturas muy altas</li>
+            <li>Confundir las unidades: Q en m³/s y D en m (no litros ni centímetros)</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 12: Pérdidas locales -->
+    <div class="sc" style="--cat-color:var(--c-tuberias)" data-cat="tuberias">
+      <div class="sc-head">
+        <div class="sc-title">Pérdidas locales (accesorios)</div>
+        <div class="sc-cat">Tuberías</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Válvulas, codos, tés, ensanchamientos bruscos o graduales</li>
+            <li>Se da coeficiente K o equivalencia en longitud (L_eq)</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">h_loc = K·v²/2g  (v = velocidad en la sección de referencia del accesorio)</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Ensanchamiento brusco (Borda-Carnot): h_e = (v₁ − v₂)²/2g</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">L_eq: h_loc = f·(L_eq/D)·v²/2g → equivale a añadir longitud ficticia</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Sumar todas las pérdidas locales de la instalación</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-locales"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>En ensanchamiento brusco: usar (v₁−v₂)² no v₁²−v₂²</li>
+            <li>Usar la velocidad de la sección incorrecta para K (suele ser la de mayor velocidad)</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid tuberias -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     REDES DE TUBERÍAS
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-redes">
+  <div class="section-title" style="color:var(--c-redes)">🕸️ Redes de tuberías</div>
+  <div class="cards-grid">
+
+    <!-- CARD 13: Tuberías en serie y paralelo -->
+    <div class="sc" style="--cat-color:var(--c-redes)" data-cat="redes">
+      <div class="sc-head">
+        <div class="sc-title">Tuberías en serie y en paralelo</div>
+        <div class="sc-cat">Redes</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Dos o más tuberías conectadas secuencialmente o en derivación</li>
+            <li>Mismo Q en serie; misma h_f en paralelo</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Serie: Q₁ = Q₂; h_f,total = Σh_f,i</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Paralelo: h_f,1 = h_f,2; Q_total = Q₁ + Q₂</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">En paralelo: expresar Q_i(h_f) con Darcy-Weisbach, sustituir en Q_total y resolver</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Iterar f si es necesario (Tipo II para cada ramal)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-paralelo"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>En paralelo: igualar pérdidas de carga, no caudales</li>
+            <li>Olvidar que las pérdidas locales en los nodos también se suman</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 14: Nodos y mallas (Hardy Cross simplificado) -->
+    <div class="sc" style="--cat-color:var(--c-redes)" data-cat="redes">
+      <div class="sc-head">
+        <div class="sc-title">Redes complejas: nodos y ley de mallas</div>
+        <div class="sc-cat">Redes</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Más de dos tuberías convergiendo en un nodo con demandas</li>
+            <li>Topología en malla o árbol con puntos intermedios</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Ley de nodos: ΣQ_entrada = ΣQ_salida en cada nodo</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Ley de mallas: Σh_f = 0 en cada malla cerrada (signos según sentido)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Sistema de ecuaciones con incógnitas = número de tuberías desconocidas</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">En exámenes UPV/EHU: la red suele simplificarse a 2–3 tuberías con datos suficientes para resolución directa</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-nodos"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>No asignar sentidos de circulación consistentes antes de escribir las ecuaciones</li>
+            <li>Olvidar convertir demandas (l/s → m³/s) antes de sustituir</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid redes -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     BOMBAS
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-bombas">
+  <div class="section-title" style="color:var(--c-bombas)">⚙️ Bombas y sistemas</div>
+  <div class="cards-grid">
+
+    <!-- CARD 15: Punto de funcionamiento -->
+    <div class="sc" style="--cat-color:var(--c-bombas)" data-cat="bombas">
+      <div class="sc-head">
+        <div class="sc-title">Punto de funcionamiento bomba–instalación</div>
+        <div class="sc-cat">Bombas</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Curva característica H_b(Q) de la bomba</li>
+            <li>Instalación con Δz, tuberías y pérdidas</li>
+            <li>Piden Q y H en el punto de operación</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Escribir curva de la instalación: H_inst = Δz + h_f(Q) = Δz + K·Q²</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Igualar H_b(Q) = H_inst(Q) y resolver (analítica o gráficamente)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Rendimiento: η = ρgQH_m / P_eje</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Potencia absorbida: N = ρgQH_m / η</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-bomba-pf"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Olvidar incluir Δz en la curva del sistema (puede ser negativa si la bomba aspira de un nivel superior)</li>
+            <li>Confundir H_m (altura manométrica) con la diferencia de cotas</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 16: NPSH y cavitación -->
+    <div class="sc" style="--cat-color:var(--c-bombas)" data-cat="bombas">
+      <div class="sc-head">
+        <div class="sc-title">NPSH y cavitación</div>
+        <div class="sc-cat">Bombas</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Mención de cavitación, presión de vapor P_v o NPSH</li>
+            <li>Bomba aspirando desde un depósito o lago</li>
+            <li>Piden altura máxima de aspiración o riesgo de cavitación</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">NPSH disponible: NPSH_d = (P_atm − P_v)/γ − z_bomba − h_f,asp</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Condición de no cavitación: NPSH_d ≥ NPSH_r (requerido, dato de fabricante)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Altura máxima: z_max = (P_atm − P_v)/γ − NPSH_r − h_f,asp</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Si preguntan qué ocurre al cerrar la válvula: Q→0, h_f→0, NPSH_d aumenta (más margen)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-npsh"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Tomar z_bomba positivo cuando la bomba está por encima del nivel del depósito (correcto) pero negativo si está por debajo (suma, no resta)</li>
+            <li>Olvidar h_f en la línea de aspiración</li>
+            <li>Usar Patm = 101325 Pa pero γ del fluido distinto del agua → resultado erróneo</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 17: Bombas en serie y paralelo -->
+    <div class="sc" style="--cat-color:var(--c-bombas)" data-cat="bombas">
+      <div class="sc-head">
+        <div class="sc-title">Bombas en serie y en paralelo</div>
+        <div class="sc-cat">Bombas</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Dos bombas idénticas (o distintas) trabajando juntas</li>
+            <li>Preguntan si es mejor serie o paralelo para cada instalación</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Serie (idénticas): nueva curva H_2b(Q) = 2·H_b(Q) — se duplica la altura a igual Q</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Paralelo (idénticas): nueva curva H_2b(Q) = H_b(Q/2) — se duplica el caudal a igual H</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Intersectar la curva combinada con la curva de la instalación</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Serie conviene para instalaciones con gran Δz; paralelo para instalaciones de baja resistencia</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-bombas-sp"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>En paralelo: el punto de trabajo de cada bomba NO es el mismo que en operación individual</li>
+            <li>Añadir curvas gráficamente con la transformación incorrecta (sumar H en paralelo en lugar de Q)</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 18: Selección de diámetro comercial con bomba -->
+    <div class="sc" style="--cat-color:var(--c-bombas)" data-cat="bombas">
+      <div class="sc-head">
+        <div class="sc-title">Diseño de instalación: selección de diámetro</div>
+        <div class="sc-cat">Bombas</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Altura manométrica H_m y caudal Q_d dados (de diseño)</li>
+            <li>Tubería de longitud y rugosidad conocidas</li>
+            <li>Piden diámetro comercial mínimo que permita el caudal</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Bernoulli entre depósitos: H_m = Δz + h_f(Q,D)</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Despejar h_f = H_m − Δz</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Tipo III: D⁵ = 8fLQ²/(π²g·h_f) — iniciar con f = 0,02</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Iterar: calcular v = Q/A, Re, nuevo f (Colebrook), nuevo D</span></li>
+            <li><span class="pnum">5</span><span class="ptxt">Escoger el diámetro comercial inmediatamente superior al calculado</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-diametro"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Redondear al diámetro comercial inferior (el caudal no llegaría al requerido)</li>
+            <li>No reiterar f después de cambiar D al valor comercial</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid bombas -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     MEDIDA DE CAUDAL
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-medida">
+  <div class="section-title" style="color:var(--c-medida)">📏 Medida de caudal</div>
+  <div class="cards-grid">
+
+    <!-- CARD 19: Venturimetro / Orificimetro -->
+    <div class="sc" style="--cat-color:var(--c-medida)" data-cat="medida">
+      <div class="sc-head">
+        <div class="sc-title">Venturímetro y Orificímetro</div>
+        <div class="sc-cat">Medida de caudal</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Sección de la tubería que se estrecha y recupera (venturi) o placa con orificio</li>
+            <li>Manómetro diferencial entre sección 1 y garganta</li>
+            <li>Coeficiente de descarga C_d o C_v dado</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Δh del manómetro: Δh = T·(s_m/s_f − 1)  [T = lectura del manómetro, s = densidades relativas]</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Q_teo = (A₁·A₂/√(A₁²−A₂²))·√(2gΔh)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Q_real = C_d·Q_teo</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-venturi"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Olvidar la corrección del manómetro: Δh ≠ T si el fluido del manómetro ≠ fluido de trabajo</li>
+            <li>Usar A en lugar de A₁·A₂/√(A₁²−A₂²) en la fórmula del caudal teórico</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 20: Vertedero -->
+    <div class="sc" style="--cat-color:var(--c-medida)" data-cat="medida">
+      <div class="sc-head">
+        <div class="sc-title">Vertederos de aforo (rectangular, triangular)</div>
+        <div class="sc-cat">Medida de caudal</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Canal abierto con un obstáculo sobre el que el fluido vierte libremente</li>
+            <li>Se mide la lámina de agua H sobre el umbral</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Rectangular: Q = C_d·(2/3)·b·√(2g)·H^(3/2)</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Triangular (θ): Q = C_d·(8/15)·tan(θ/2)·√(2g)·H^(5/2)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">C_d ≈ 0,611 para vertedero de pared delgada</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-vertedero"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Confundir el exponente: H^(3/2) para rectangular, H^(5/2) para triangular</li>
+            <li>Medir H desde el fondo del canal en vez de desde el umbral</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid medida -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     CANALES
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-canales">
+  <div class="section-title" style="color:var(--c-canales)">🌊 Canales a superficie libre</div>
+  <div class="cards-grid">
+
+    <!-- CARD 21: Manning -->
+    <div class="sc" style="--cat-color:var(--c-canales)" data-cat="canales">
+      <div class="sc-head">
+        <div class="sc-title">Flujo uniforme: Manning–Strickler</div>
+        <div class="sc-cat">Canales</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Canal de pendiente y geometría constante</li>
+            <li>Coeficiente de Manning n dado</li>
+            <li>Flujo uniforme (tirante normal y constante)</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Calcular sección mojada A y perímetro mojado P en función del tirante y</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Radio hidráulico: R_h = A/P</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Manning: Q = (1/n)·A·R_h^(2/3)·J^(1/2)  [J = pendiente, adimensional]</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Si la incógnita es y: iterar o resolver implícitamente (A y R_h dependen de y)</span></li>
+            <li><span class="pnum">5</span><span class="ptxt">Sección óptima rectangular: B = 2y; trapezoidal: B + 2Zy = 2y√(1+Z²)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-manning"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>J es la pendiente del fondo (sin/tan ≈ sin para ángulos pequeños), no en porcentaje</li>
+            <li>Usar R_h = D/4 solo para tubería circular llena; en canal calcular A/P</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 22: Número de Froude / flujo crítico -->
+    <div class="sc" style="--cat-color:var(--c-canales)" data-cat="canales">
+      <div class="sc-head">
+        <div class="sc-title">Flujo crítico y número de Froude</div>
+        <div class="sc-cat">Canales</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Piden tirante crítico y_c o pendiente crítica J_c</li>
+            <li>Resalto hidráulico, paso de subcrítico a supercrítico</li>
+            <li>Canal con cambio de pendiente o control en la descarga</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Fr = v/√(g·y) para canal rectangular; Fr = 1 → flujo crítico</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Tirante crítico rectangular: y_c = (Q²/(g·b²))^(1/3)</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Fr &lt; 1: subcrítico (lento, profundo); Fr &gt; 1: supercrítico (rápido, poco calado)</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Resalto: usar ecuación de momento + continuidad para y₂ dado y₁ y Fr₁</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-froude"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Para secciones no rectangulares: Fr = Q·√(T)/(A^(3/2)·√g) donde T es la anchura superficial</li>
+            <li>Confundir y_c (tirante crítico) con y_n (tirante normal de Manning)</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid canales -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     ANÁLISIS DIMENSIONAL
+═══════════════════════════════════════════════════════ -->
+<section class="strategy-section" id="sec-dimensional">
+  <div class="section-title" style="color:var(--c-dimensional)">🔢 Análisis Dimensional y Semejanza</div>
+  <div class="cards-grid">
+
+    <!-- CARD 23: Teorema Pi de Buckingham -->
+    <div class="sc" style="--cat-color:var(--c-dimensional)" data-cat="dimensional">
+      <div class="sc-head">
+        <div class="sc-title">Teorema Pi de Buckingham</div>
+        <div class="sc-cat">An. Dimensional</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Lista de variables físicas que intervienen en un fenómeno</li>
+            <li>Piden grupos adimensionales o relación funcional entre ellos</li>
+            <li>Modelo a escala reducida (semejanza)</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Contar n variables y k dimensiones básicas independientes (M, L, T)</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Número de grupos Pi: p = n − k</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Elegir k variables repetidas (no pueden formar un grupo Pi entre sí)</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Formar cada Πᵢ multiplicando las repetidas con exponentes incógnitos × la variable restante, imponer [Πᵢ] = 1</span></li>
+            <li><span class="pnum">5</span><span class="ptxt">Sistema de ecuaciones lineales → exponentes → expresión final</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-pi"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Elegir variables repetidas que ya forman un grupo adimensional (e.g., ρ, v, L es válido; ρ, v, ρv² no)</li>
+            <li>Contar mal las dimensiones básicas: a veces θ (temperatura) es una cuarta dimensión</li>
+            <li>No verificar que el resultado es efectivamente adimensional</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 24: Semejanza hidráulica -->
+    <div class="sc" style="--cat-color:var(--c-dimensional)" data-cat="dimensional">
+      <div class="sc-head">
+        <div class="sc-title">Semejanza hidráulica: modelos a escala</div>
+        <div class="sc-cat">An. Dimensional</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Modelo físico a escala λ = L_m/L_p</li>
+            <li>Misma geometría pero distintas dimensiones</li>
+            <li>Piden velocidad, caudal o fuerza en el prototipo/modelo</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">Identificar qué número adimensional domina: Re (viscosidad) o Fr (gravedad)</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Semejanza Froude (flujo con superficie libre): Fr_m = Fr_p → v_m/v_p = √λ</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Semejanza Reynolds (tuberías a presión): Re_m = Re_p → v_m/v_p = ν_m/(ν_p·λ)</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Escalar caudal: Q_m/Q_p = λ^(5/2) (Froude) o λ·(ν_m/ν_p) (Reynolds)</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-semejanza"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Aplicar semejanza Reynolds a canales abiertos (debe ser Froude)</li>
+            <li>Olvidar que si ν_m = ν_p (mismo fluido), la semejanza Reynolds exige v_m·D_m = v_p·D_p</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 25: Compresibilidad -->
+    <div class="sc" style="--cat-color:var(--c-dimensional)" data-cat="dimensional">
+      <div class="sc-head">
+        <div class="sc-title">Compresibilidad y módulo elástico</div>
+        <div class="sc-cat">An. Dimensional</div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-section sc-recono">
+          <div class="sc-section-label"><span class="icon">🔍</span> ¿Cómo lo reconozco?</div>
+          <ul class="sc-recono-list">
+            <li>Módulo de compresibilidad E o α = 1/E dados</li>
+            <li>Variación de volumen o presión en un fluido confinado</li>
+            <li>Cilindro hidráulico, depósito a presión, variación de densidad</li>
+          </ul>
+        </div>
+        <div class="sc-section sc-pasos">
+          <div class="sc-section-label"><span class="icon">📋</span> Pasos de resolución</div>
+          <ol class="sc-pasos-list">
+            <li><span class="pnum">1</span><span class="ptxt">ΔV/V₀ = −ΔP/E  (compresión: ΔP positivo → ΔV negativo)</span></li>
+            <li><span class="pnum">2</span><span class="ptxt">Cilindro: ΔP = F/A; luego ΔV = V₀·ΔP/E</span></li>
+            <li><span class="pnum">3</span><span class="ptxt">Velocidad del sonido: c = √(E/ρ)</span></li>
+            <li><span class="pnum">4</span><span class="ptxt">Golpe de ariete: ΔP = ρ·c·Δv</span></li>
+          </ol>
+        </div>
+        <div class="sc-section sc-formula">
+          <div class="sc-section-label"><span class="icon">⚡</span> Fórmula clave</div>
+          <div class="sc-formula-box" id="f-compress"></div>
+        </div>
+        <div class="sc-section sc-error">
+          <div class="sc-section-label"><span class="icon">⚠</span> Errores frecuentes</div>
+          <div class="sc-error-box"><ul>
+            <li>Confundir α (compresibilidad) con E (módulo elástico): α = 1/E</li>
+            <li>No considerar las deformaciones de la tubería en el golpe de ariete completo</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid dimensional -->
+</section>
+
+<!-- FOOTER -->
+<div class="divider"><hr></div>
+<footer class="page-footer">
+  <div class="footer-links">
+    <a href="examenes.html" class="footer-link">← Exámenes resueltos</a>
+    <a href="teoria.html" class="footer-link">📖 Teoría</a>
+  </div>
+  <div class="footer-note">UPV/EHU · Mecánica de Fluidos · 25 tipos de problema</div>
+</footer>
+
+<!-- KaTeX -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+
+<script>
+// ── FÓRMULAS KaTeX inline ──
+const formulas = {
+  'f-presion':    '$P_B = P_A + \\gamma_{f}\\,(z_A - z_B)$',
+  'f-plana':      '$F = \\bar{P}\\cdot A = \\gamma\\,\\bar{y}\\,A \\qquad y_{cp} = \\bar{y} + \\dfrac{I_G}{\\bar{y}\\,A}$',
+  'f-curva':      '$F_H = \\gamma\\,\\bar{y}_{proy}\\,A_{proy} \\qquad F_V = \\gamma\\,V_{fluido}$',
+  'f-flotacion':  '$E = \\gamma_{fluido}\\,V_{sumergido} \\qquad W = \\gamma_{cuerpo}\\,V_{total}$',
+  'f-capilar':    '$h = \\dfrac{4\\sigma\\cos\\theta}{\\gamma\\,d} \\quad (\\text{tubo circular}) \\qquad \\Delta P_{burbuja} = \\dfrac{2\\sigma}{R}$',
+  'f-bernoulli':  '$\\dfrac{P_1}{\\gamma}+\\dfrac{v_1^2}{2g}+z_1 = \\dfrac{P_2}{\\gamma}+\\dfrac{v_2^2}{2g}+z_2$',
+  'f-bernoulli-hf':'$\\dfrac{P_1}{\\gamma}+\\dfrac{v_1^2}{2g}+z_1+H_m = \\dfrac{P_2}{\\gamma}+\\dfrac{v_2^2}{2g}+z_2+h_f$',
+  'f-qdm-placa':  '$\\sum\\vec{F} = \\rho Q\\,(\\vec{v}_2 - \\vec{v}_1)$',
+  'f-qdm-codo':   '$R_x + P_1 A_1 - P_2 A_2\\cos\\theta = \\rho Q(v_2\\cos\\theta - v_1)$',
+  'f-darcy':      '$h_f = f\\,\\dfrac{L}{D}\\,\\dfrac{v^2}{2g} \\qquad \\dfrac{1}{\\sqrt{f}} = -2\\log\\!\\left(\\dfrac{\\varepsilon/D}{3{,}7}+\\dfrac{2{,}51}{Re\\sqrt{f}}\\right)$',
+  'f-hw':         '$J = \\dfrac{10{,}67\\,Q^{1{,}852}}{C^{1{,}852}\\,D^{4{,}87}}$',
+  'f-locales':    '$h_{loc} = K\\,\\dfrac{v^2}{2g} \\qquad h_{Borda} = \\dfrac{(v_1-v_2)^2}{2g}$',
+  'f-paralelo':   '$\\text{Serie: }h_{f,T}=\\sum h_{f,i},\\;Q=cte \\qquad \\text{Paralelo: }h_{f,1}=h_{f,2},\\;Q_T=Q_1+Q_2$',
+  'f-nodos':      '$\\sum Q_{entrada} = \\sum Q_{salida} \\qquad \\sum_{malla} h_f = 0$',
+  'f-bomba-pf':   '$H_{inst}(Q) = \\Delta z + K\\,Q^2 \\qquad N_u = \\dfrac{\\rho g Q H_m}{\\eta}$',
+  'f-npsh':       '$NPSH_d = \\dfrac{P_{atm}-P_v}{\\gamma} - z_{bomba} - h_{f,asp} \\geq NPSH_r$',
+  'f-bombas-sp':  '$\\text{Serie: }H_{2b}(Q)=2H_b(Q) \\qquad \\text{Paralelo: }Q_{2b}(H)=2Q_b(H)$',
+  'f-diametro':   '$D^5 = \\dfrac{8f L Q^2}{\\pi^2 g\\, h_f}$',
+  'f-venturi':    '$Q_{teo} = \\dfrac{A_1 A_2}{\\sqrt{A_1^2-A_2^2}}\\sqrt{2g\\Delta h} \\qquad \\Delta h = T\\left(\\dfrac{s_m}{s_f}-1\\right)$',
+  'f-vertedero':  '$Q = C_d\\,\\tfrac{2}{3}\\,b\\,\\sqrt{2g}\\,H^{3/2} \\quad (\\text{rectangular})$',
+  'f-manning':    '$Q = \\dfrac{1}{n}\\,A\\,R_h^{2/3}\\,J^{1/2}$',
+  'f-froude':     '$Fr = \\dfrac{v}{\\sqrt{g\\,y}} \\qquad y_c = \\left(\\dfrac{Q^2}{g\\,b^2}\\right)^{1/3}$',
+  'f-pi':         '$p = n - k \\qquad \\Pi_i = v_1^{a_i}\\,v_2^{b_i}\\,v_3^{c_i}\\,\\cdot\\,x_i$',
+  'f-semejanza':  '$\\lambda = L_m/L_p \\quad \\Rightarrow \\quad v_m/v_p = \\sqrt{\\lambda} \\;(Froude), \\quad Q_m/Q_p = \\lambda^{5/2}$',
+  'f-compress':   '$\\dfrac{\\Delta V}{V_0} = -\\dfrac{\\Delta P}{E} = -\\alpha\\,\\Delta P \\qquad c_{sonido} = \\sqrt{E/\\rho}$'
+};
+
+document.addEventListener('DOMContentLoaded', function(){
+  // Render formulas
+  Object.entries(formulas).forEach(([id, tex]) => {
+    var el = document.getElementById(id);
+    if(el) el.textContent = tex;
+  });
+
+  // After KaTeX auto-render fires, also render our manual placeholders
+  // (auto-render handles $...$ globally, but we need it on these specific elements)
+  function renderFormulas(){
+    Object.entries(formulas).forEach(([id, tex]) => {
+      var el = document.getElementById(id);
+      if(el && el.textContent === tex){
+        try {
+          katex.render(tex.replace(/^\$|\$$/g,''), el, {throwOnError:false, displayMode: tex.startsWith('$$')});
+        } catch(e){}
+      }
+    });
+  }
+
+  // Filter logic
+  var btns = document.querySelectorAll('.filter-btn');
+  var cards = document.querySelectorAll('.sc');
+
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var cat = btn.dataset.cat;
+      cards.forEach(function(card){
+        if(cat === 'all' || card.dataset.cat === cat){
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+});
+</script>
+
+</body>
+</html>
