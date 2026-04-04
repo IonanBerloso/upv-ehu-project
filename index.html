@@ -145,6 +145,21 @@ header p{color:#555;font-size:.85em}
 .link-ejercicios:hover{background:#002a10;color:#90e890}
 .link-disabled{background:#0d0d0d;color:#333;border:1px solid #1a1a1a;cursor:not-allowed}
 
+/* COUNTDOWN */
+.countdown{background:#050505;border-top:1px solid #111;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cd-label{font-size:.7em;color:#444;white-space:nowrap}
+.cd-units{display:flex;gap:6px}
+.cd-unit{text-align:center;min-width:36px}
+.cd-num{display:block;font-size:1.05em;font-weight:700;line-height:1}
+.cd-sub{display:block;font-size:.6em;color:#444;margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.cd-fluidos .cd-num{color:#7ecfff}
+.cd-mecanica .cd-num{color:#c084fc}
+.cd-sistemas .cd-num{color:#ffd93d}
+.cd-done{font-size:.8em;font-weight:700;padding:4px 0}
+.cd-fluidos.cd-done{color:#7ecfff}
+.cd-mecanica.cd-done{color:#c084fc}
+.cd-sistemas.cd-done{color:#ffd93d}
+
 /* STATS FOOTER */
 .stats-bar{display:flex;justify-content:center;gap:30px;padding:20px;background:#050505;border-top:1px solid #111}
 .stat{text-align:center}
@@ -180,6 +195,15 @@ footer a:hover{color:#555}
 
   <!-- FLUIDOS -->
   <div class="subject-card">
+    <div class="countdown cd-fluidos" id="cd-fluidos">
+      <span class="cd-label">Examen · 28 May 9:00</span>
+      <div class="cd-units">
+        <div class="cd-unit"><span class="cd-num" id="cd-f-d">--</span><span class="cd-sub">días</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-f-h">--</span><span class="cd-sub">horas</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-f-m">--</span><span class="cd-sub">min</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-f-s">--</span><span class="cd-sub">seg</span></div>
+      </div>
+    </div>
     <div class="card-header">
       <div class="card-icon">🌊</div>
       <h2>Mecánica de Fluidos</h2>
@@ -202,6 +226,15 @@ footer a:hover{color:#555}
 
   <!-- MECANICA -->
   <div class="subject-card">
+    <div class="countdown cd-mecanica" id="cd-mecanica">
+      <span class="cd-label">Examen · 5 Jun 9:00</span>
+      <div class="cd-units">
+        <div class="cd-unit"><span class="cd-num" id="cd-m-d">--</span><span class="cd-sub">días</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-m-h">--</span><span class="cd-sub">horas</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-m-m">--</span><span class="cd-sub">min</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-m-s">--</span><span class="cd-sub">seg</span></div>
+      </div>
+    </div>
     <div class="card-header">
       <div class="card-icon">⚙️</div>
       <h2>Mecánica Aplicada</h2>
@@ -224,6 +257,15 @@ footer a:hover{color:#555}
 
   <!-- SISTEMAS -->
   <div class="subject-card">
+    <div class="countdown cd-sistemas" id="cd-sistemas">
+      <span class="cd-label">Examen · 10 Jun 9:00</span>
+      <div class="cd-units">
+        <div class="cd-unit"><span class="cd-num" id="cd-s-d">--</span><span class="cd-sub">días</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-s-h">--</span><span class="cd-sub">horas</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-s-m">--</span><span class="cd-sub">min</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-s-s">--</span><span class="cd-sub">seg</span></div>
+      </div>
+    </div>
     <div class="card-header">
       <div class="card-icon">🏭</div>
       <h2>Sistemas de Producción</h2>
@@ -291,6 +333,39 @@ dismissBtn.addEventListener('click', () => {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
+
+// Countdown timers
+(function(){
+  var exams = [
+    { target: new Date('2026-05-28T09:00:00'), d:'cd-f-d', h:'cd-f-h', m:'cd-f-m', s:'cd-f-s', wrap:'cd-fluidos', cls:'cd-fluidos' },
+    { target: new Date('2026-06-05T09:00:00'), d:'cd-m-d', h:'cd-m-h', m:'cd-m-m', s:'cd-m-s', wrap:'cd-mecanica', cls:'cd-mecanica' },
+    { target: new Date('2026-06-10T09:00:00'), d:'cd-s-d', h:'cd-s-h', m:'cd-s-m', s:'cd-s-s', wrap:'cd-sistemas', cls:'cd-sistemas' }
+  ];
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function tick(){
+    var now = Date.now();
+    exams.forEach(function(e){
+      var diff = e.target - now;
+      var wrap = document.getElementById(e.wrap);
+      if(diff <= 0){
+        wrap.innerHTML = '<span class="cd-done '+e.cls+'">¡Día del examen!</span>';
+        return;
+      }
+      var td = Math.floor(diff/86400000);
+      var th = Math.floor((diff%86400000)/3600000);
+      var tm = Math.floor((diff%3600000)/60000);
+      var ts = Math.floor((diff%60000)/1000);
+      document.getElementById(e.d).textContent = pad(td);
+      document.getElementById(e.h).textContent = pad(th);
+      document.getElementById(e.m).textContent = pad(tm);
+      document.getElementById(e.s).textContent = pad(ts);
+    });
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
 </script>
 </body>
 </html>
