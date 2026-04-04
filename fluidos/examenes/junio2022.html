@@ -174,11 +174,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     </div>
   </div>
   <div class="ex-body">
-    <div class="enunciado">En una tubería circular horizontal de radio $R = 0{,}10\ \text{m}$ fluye un líquido en régimen laminar con viscosidad dinámica $\mu = 0{,}01\ \text{Pa} \cdot \text{s}$ y velocidad máxima en el eje $v_{\max} = 0{,}12\ \text{m/s}$.
+    <div class="enunciado">Un flujo de aceite de densidad relativa 0,80 y viscosidad dinámica $\mu = 0{,}010\ \text{Pa} \cdot \text{s}$ fluye en régimen laminar a través de un tubo de radio $R = 0{,}1\ \text{m}$ con distribución de velocidades parabólica. Tomando como variables $y\ (\text{m})$ y $v\ (\text{m/s})$, la función que relaciona ambas variables es $v = a + b \cdot y^2$, donde $y$ es la distancia al eje del tubo. La velocidad del aceite en el eje es $v_0 = 0{,}12\ \text{m/s}$.
 
-<b>a)</b> Escribe la expresión del perfil de velocidades $v(r)$, siendo $r$ la distancia al eje.
-<b>b)</b> Escribe la expresión de la tensión cortante $\tau(r)$.
-<b>c)</b> Completa la tabla para los valores $r/R = 0;\ 1/3;\ 1/2;\ 2/3;\ 1$.</div>
+<b>a)</b> Obtener la velocidad del aceite en cualquier punto de la sección: $v = v(y,R)$.
+<b>b)</b> Obtener la tensión cortante en el flujo: $\tau = \tau(y,R)$.
+<b>c)</b> Rellenar la tabla para $y/R = 0;\ 1/3;\ 1/2;\ 2/3;\ 1$.
+
+<b>Resultados:</b> $v = 0{,}12 \cdot [1-(y/R)^2]$; $\tau = -2{,}4 \times 10^{-3} \cdot y/R^2$</div>
 
     <div class="seccion s-datos sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📋 Datos<span class="sarr">▼</span></button>
@@ -186,24 +188,27 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
         <table class="t-datos">
           <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
           <tr><td>$R$</td><td>$0{,}10\ \text{m}$</td><td>Radio interior de la tubería</td></tr>
-          <tr><td>$v_{\max}$</td><td>$0{,}12\ \text{m/s}$</td><td>Velocidad en el eje ($r = 0$)</td></tr>
-          <tr><td>$\mu$</td><td>$0{,}01\ \text{Pa} \cdot \text{s} = 10\ \text{mPa} \cdot \text{s}$</td><td>Viscosidad dinámica del fluido</td></tr>
-          <tr><td>$\rho$</td><td>$\approx 1000\ \text{kg/m}^3$</td><td>Fluido ligeramente viscoso</td></tr>
+          <tr><td>$v_0$</td><td>$0{,}12\ \text{m/s}$</td><td>Velocidad en el eje ($y = 0$)</td></tr>
+          <tr><td>$\mu$</td><td>$0{,}010\ \text{Pa} \cdot \text{s}$</td><td>Viscosidad dinámica del aceite</td></tr>
+          <tr><td>$s$</td><td>$0{,}80$</td><td>Densidad relativa del aceite</td></tr>
+          <tr><td>$\rho$</td><td>$0{,}80 \times 1000 = 800\ \text{kg/m}^3$</td><td>Densidad del aceite</td></tr>
         </table>
-        <div class="nota">Verificación de régimen laminar: $v_{\text{med}} = v_{\max}/2 = 0{,}06\ \text{m/s}$; $Re = \rho v_{\text{med}} D/\mu = 1000 \times 0{,}06 \times 0{,}2/0{,}01 = 1200 \ll 2300$ → laminar ✓</div>
+        <div class="nota">Verificación de régimen laminar: $v_{\text{med}} = v_0/2 = 0{,}06\ \text{m/s}$; $Re = \rho v_{\text{med}} D/\mu = 800 \times 0{,}06 \times 0{,}2/0{,}010 = 960 \ll 2300$ → laminar ✓</div>
       </div>
     </div>
 
     <div class="seccion s-formulas sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="formula-label">Perfil parabólico de Poiseuille (flujo laminar en tubería)</div>
-        <div class="formula-box">$$v(r) = v_{\max}\left[1 - \left(\frac{r}{R}\right)^2\right]$$</div>
+        <div class="formula-label">Perfil parabólico — condiciones de contorno de $v = a + b\cdot y^2$</div>
+        <div class="formula-box">$$v(0) = a = v_0 \quad;\quad v(R) = v_0 + b R^2 = 0 \;\Rightarrow\; b = -\frac{v_0}{R^2}$$</div>
+        <div class="formula-label">Perfil de velocidades resultante</div>
+        <div class="formula-box">$$v(y) = v_0\left[1 - \left(\frac{y}{R}\right)^2\right]$$</div>
         <div class="formula-label">Ley de Newton de la viscosidad — tensión cortante</div>
-        <div class="formula-box">$$\tau(r) = \mu\,\frac{dv}{dr} = -\frac{2\mu\, v_{\max}}{R^2}\,r$$</div>
+        <div class="formula-box">$$\tau(y) = \mu\,\frac{dv}{dy} = \mu \cdot 2by = -\frac{2\mu\, v_0}{R^2}\,y$$</div>
         <div class="formula-label">Sustituyendo los valores numéricos</div>
-        <div class="formula-box">$$\tau(r) = -\frac{2 \times 0{,}01 \times 0{,}12}{(0{,}1)^2}\,r = -0{,}24\,r \quad [\text{Pa, con } r \text{ en m}]$$</div>
-        <div class="nota">El signo negativo indica que la tensión actúa en sentido opuesto al movimiento (fluido de mayor velocidad arrastra al de menor). En valor absoluto: $|\tau(r)| = 24\,(r/R)\ \text{mPa}$.</div>
+        <div class="formula-box">$$\tau(y) = -\frac{2 \times 0{,}010 \times 0{,}12}{(0{,}1)^2}\,y = -0{,}24\,y \quad [\text{Pa, con } y \text{ en m}]$$</div>
+        <div class="nota">El signo negativo indica que la tensión actúa en sentido opuesto al movimiento. En valor absoluto: $|\tau(y)| = 24\,(y/R)\ \text{mPa}$.</div>
       </div>
     </div>
 
@@ -218,14 +223,29 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución<span class="sarr">▼</span></button>
       <div class="sec-body">
         <div class="paso">
-          <div class="paso-titulo">Tabla de valores</div>
+          <div class="paso-titulo">Apartado a — Determinación de $a$ y $b$</div>
+          <p>Condición de contorno en el eje ($y=0$): velocidad máxima $v_0 = 0{,}12\ \text{m/s}$:</p>
+          $$v(0) = a + b \cdot 0^2 = a \quad \Rightarrow \quad a = v_0 = 0{,}12\ \text{m/s}$$
+          <p>Condición de no deslizamiento en la pared ($y=R$): $v(R) = 0$:</p>
+          $$v(R) = 0{,}12 + b \cdot R^2 = 0 \quad \Rightarrow \quad b = -\frac{0{,}12}{(0{,}1)^2} = -\frac{0{,}12}{0{,}01} = -12\ \text{m}^{-1}\text{s}^{-1}$$
+          $$\boxed{v(y) = 0{,}12 - 12\,y^2 = 0{,}12\left[1 - \left(\frac{y}{R}\right)^2\right]\ \text{m/s}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Apartado b — Tensión cortante</div>
+          <p>Ley de Newton de la viscosidad: $\tau = \mu\,dv/dy$</p>
+          $$\frac{dv}{dy} = 2by = 2 \times (-12) \times y = -24\,y\ \text{s}^{-1}$$
+          $$\tau(y) = \mu \cdot (-24\,y) = 0{,}010 \times (-24\,y) = -0{,}24\,y\ \text{Pa}$$
+          $$\boxed{\tau(y) = -\frac{2\mu v_0}{R^2}\,y = -\frac{2{,}4 \times 10^{-3}}{R^2}\,y\ \text{Pa}}$$
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Apartado c — Tabla de valores</div>
           <table class="t-datos">
-            <tr><th>$r/R$</th><th>$r\ [\text{m}]$</th><th>$v = 0{,}12\,[1-(r/R)^2]\ [\text{m/s}]$</th><th>$\tau = -0{,}24\,r\ [\text{mPa}]$</th></tr>
-            <tr><td>$0$</td><td>$0$</td><td>$0{,}12\ (= v_{\max})$</td><td>$0$</td></tr>
-            <tr><td>$1/3$</td><td>$0{,}0333$</td><td>$0{,}12 \times [1 - 1/9] = 0{,}12 \times 8/9 \approx \mathbf{0{,}107}$</td><td>$-0{,}24 \times 0{,}0333 \approx \mathbf{-8\ \text{mPa}}$</td></tr>
-            <tr><td>$1/2$</td><td>$0{,}050$</td><td>$0{,}12 \times [1 - 1/4] = 0{,}12 \times 3/4 = \mathbf{0{,}090}$</td><td>$-0{,}24 \times 0{,}050 = \mathbf{-12\ \text{mPa}}$</td></tr>
-            <tr><td>$2/3$</td><td>$0{,}0667$</td><td>$0{,}12 \times [1 - 4/9] = 0{,}12 \times 5/9 \approx \mathbf{0{,}067}$</td><td>$-0{,}24 \times 0{,}0667 \approx \mathbf{-16\ \text{mPa}}$</td></tr>
-            <tr><td>$1$</td><td>$0{,}100$</td><td>$0{,}12 \times [1 - 1] = \mathbf{0}\ (v = 0\ \text{en pared})$</td><td>$-0{,}24 \times 0{,}1 = \mathbf{-24\ \text{mPa}}$</td></tr>
+            <tr><th>$y/R\ (-)$</th><th>$y\ [\text{m}]$</th><th>$v = 0{,}12\,[1-(y/R)^2]\ [\text{m/s}]$</th><th>$\tau = -0{,}24\,y\ [\text{Pa}]\ =\ [\text{mPa}]$</th></tr>
+            <tr><td>$0$</td><td>$0$</td><td>$0{,}12\ (= v_0)$</td><td>$0$</td></tr>
+            <tr><td>$1/3$</td><td>$0{,}0333$</td><td>$0{,}12 \times (1 - 1/9) = 0{,}12 \times 8/9 \approx \mathbf{0{,}107}$</td><td>$-0{,}24 \times 0{,}0333 \approx \mathbf{-8\ \text{mPa}}$</td></tr>
+            <tr><td>$1/2$</td><td>$0{,}050$</td><td>$0{,}12 \times (1 - 1/4) = 0{,}12 \times 3/4 = \mathbf{0{,}090}$</td><td>$-0{,}24 \times 0{,}050 = \mathbf{-12\ \text{mPa}}$</td></tr>
+            <tr><td>$2/3$</td><td>$0{,}0667$</td><td>$0{,}12 \times (1 - 4/9) = 0{,}12 \times 5/9 \approx \mathbf{0{,}067}$</td><td>$-0{,}24 \times 0{,}0667 \approx \mathbf{-16\ \text{mPa}}$</td></tr>
+            <tr><td>$1$</td><td>$0{,}100$</td><td>$0{,}12 \times (1 - 1) = \mathbf{0}\ (v = 0\ \text{en pared})$</td><td>$-0{,}24 \times 0{,}1 = \mathbf{-24\ \text{mPa}}$</td></tr>
           </table>
         </div>
       </div>
@@ -234,8 +254,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     <div class="seccion s-conclusiones">
       <button class="sec-btn" onclick="toggleSec(this)">✅ Conclusiones<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="concl-item">Perfil parabólico: $v(r) = 0{,}12\left[1-(r/R)^2\right]\ \text{m/s}$</div>
-        <div class="concl-item">Tensión cortante lineal: $\tau(r) = -0{,}24\,r\ \text{Pa}$ → $\tau_{\text{pared}} = -24\ \text{mPa}$ (máxima en módulo)</div>
+        <div class="concl-item">Coeficientes: $a = v_0 = 0{,}12\ \text{m/s}$; $b = -v_0/R^2 = -12\ \text{m}^{-1}\text{s}^{-1}$</div>
+        <div class="concl-item">Perfil parabólico: $v(y) = 0{,}12\left[1-(y/R)^2\right]\ \text{m/s}$</div>
+        <div class="concl-item">Tensión cortante lineal: $\tau(y) = -2{,}4 \times 10^{-3} \cdot y/R^2 = -0{,}24\,y\ \text{Pa}$ → $\tau_{\text{pared}} = -24\ \text{mPa}$ (máxima en módulo)</div>
         <div class="concl-item">La tensión es nula en el eje (simetría) y crece linealmente hasta la pared, donde el fluido no desliza pero experimenta el máximo gradiente de velocidad.</div>
       </div>
     </div>
