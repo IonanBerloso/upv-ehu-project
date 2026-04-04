@@ -84,7 +84,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .ex-card.open .ex-body{display:block}
 
 /* ENUNCIADO */
-.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #3a2d00}
+.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #222}
 
 /* SECCIONES */
 .seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
@@ -94,7 +94,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
 .sec-open .sec-body{display:block}
 .s-datos .sec-btn{background:#1a1400;color:var(--accent);border:1px solid #5c4200}
-.s-datos .sec-body{background:#0e0a00;border:1px solid #5c4200;border-top:none}
+.s-datos .sec-body{background:#0a0a0a;border:1px solid #5c4200;border-top:none}
 .s-pide .sec-btn{background:#0a1a2e;color:var(--blue);border:1px solid #0d2a44}
 .s-pide .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
 
@@ -102,7 +102,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
 .t-datos th{background:#2a2000;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #5c4200}
 .t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#e0d8a0}
-.t-datos tr:nth-child(even) td{background:#0a0800}
+.t-datos tr:nth-child(even) td{background:#0a0a0a}
 
 /* PRÓXIMAMENTE */
 .soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:20px;text-align:center;color:#333;font-size:.85em;font-style:italic}
@@ -438,7 +438,7 @@ T2_CARDS = [
 <thead><tr style="background:#2a2000;color:#ffd93d"><th style="padding:6px 10px;border:1px solid #5c4200">Herramienta</th><th style="padding:6px 10px;border:1px solid #5c4200">D [mm]</th><th style="padding:6px 10px;border:1px solid #5c4200">Z</th><th style="padding:6px 10px;border:1px solid #5c4200">&kappa;<sub>r</sub></th><th style="padding:6px 10px;border:1px solid #5c4200">Condiciones</th></tr></thead>
 <tbody>
 <tr style="color:#e0d8a0"><td style="padding:6px 10px;border:1px solid #1a1a2a">H1 (plaquitas)</td><td style="padding:6px 10px;border:1px solid #1a1a2a">40</td><td style="padding:6px 10px;border:1px solid #1a1a2a">5</td><td style="padding:6px 10px;border:1px solid #1a1a2a">90&deg;</td><td style="padding:6px 10px;border:1px solid #1a1a2a">N &le; 2.500 rpm; f<sub>z</sub> = 0,1–0,25 mm; a<sub>p</sub> &le; 4 mm; a<sub>e</sub>/D &le; 75%</td></tr>
-<tr style="background:#0a0800;color:#e0d8a0"><td style="padding:6px 10px;border:1px solid #1a1a2a">H2 (mango)</td><td style="padding:6px 10px;border:1px solid #1a1a2a">16</td><td style="padding:6px 10px;border:1px solid #1a1a2a">4</td><td style="padding:6px 10px;border:1px solid #1a1a2a">90&deg;</td><td style="padding:6px 10px;border:1px solid #1a1a2a">v<sub>c</sub> = 300 m/min (fija); f<sub>z</sub> = 0,1–0,35 mm; a<sub>p</sub> &le; 10 mm; a<sub>p</sub>&middot;a<sub>e</sub> &le; 90</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:6px 10px;border:1px solid #1a1a2a">H2 (mango)</td><td style="padding:6px 10px;border:1px solid #1a1a2a">16</td><td style="padding:6px 10px;border:1px solid #1a1a2a">4</td><td style="padding:6px 10px;border:1px solid #1a1a2a">90&deg;</td><td style="padding:6px 10px;border:1px solid #1a1a2a">v<sub>c</sub> = 300 m/min (fija); f<sub>z</sub> = 0,1–0,35 mm; a<sub>p</sub> &le; 10 mm; a<sub>p</sub>&middot;a<sub>e</sub> &le; 90</td></tr>
 </tbody></table>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
@@ -558,9 +558,9 @@ T3_CARDS = [
 <thead><tr style="background:#2a2000;color:#ffd93d"><th style="padding:5px 8px;border:1px solid #5c4200">Herramienta</th><th style="padding:5px 8px;border:1px solid #5c4200">L/D</th><th style="padding:5px 8px;border:1px solid #5c4200">D [mm]</th><th style="padding:5px 8px;border:1px solid #5c4200">f [mm/rev]</th><th style="padding:5px 8px;border:1px solid #5c4200">v<sub>c</sub> [m/min]</th></tr></thead>
 <tbody>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-ca&ntilde;&oacute;n</td><td style="padding:5px 8px;border:1px solid #1a1a2a">20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">60</td></tr>
-<tr style="background:#0a0800;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas</td><td style="padding:5px 8px;border:1px solid #1a1a2a">2,5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,10&ndash;0,18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">80</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas</td><td style="padding:5px 8px;border:1px solid #1a1a2a">2,5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,10&ndash;0,18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">80</td></tr>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas</td><td style="padding:5px 8px;border:1px solid #1a1a2a">3,5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">80</td></tr>
-<tr style="background:#0a0800;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">90</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">90</td></tr>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">90</td></tr>
 </tbody></table>
 <p><b>Se pide:</b></p>
@@ -578,9 +578,9 @@ T3_CARDS = [
 <thead><tr style="background:#2a2000;color:#ffd93d"><th style="padding:5px 8px;border:1px solid #5c4200">Herramienta</th><th style="padding:5px 8px;border:1px solid #5c4200">D [mm]</th><th style="padding:5px 8px;border:1px solid #5c4200">f [mm/rev]</th><th style="padding:5px 8px;border:1px solid #5c4200">v<sub>c</sub> [m/min]</th></tr></thead>
 <tbody>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de centrar (HSS)</td><td style="padding:5px 8px;border:1px solid #1a1a2a">4</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">15</td></tr>
-<tr style="background:#0a0800;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal metal duro</td><td style="padding:5px 8px;border:1px solid #1a1a2a">6</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">70</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal metal duro</td><td style="padding:5px 8px;border:1px solid #1a1a2a">6</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">70</td></tr>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal metal duro</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">70</td></tr>
-<tr style="background:#0a0800;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas intercambiables</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">70</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas intercambiables</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">70</td></tr>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-ca&ntilde;&oacute;n</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">60</td></tr>
 </tbody></table>
 <p><b>Se pide:</b></p>
@@ -598,9 +598,9 @@ T3_CARDS = [
 <thead><tr style="background:#2a2000;color:#ffd93d"><th style="padding:5px 8px;border:1px solid #5c4200">Herramienta</th><th style="padding:5px 8px;border:1px solid #5c4200">L/D<sub>max</sub></th><th style="padding:5px 8px;border:1px solid #5c4200">Par&aacute;metros de corte</th></tr></thead>
 <tbody>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca piloto D16, Z=2</td><td style="padding:5px 8px;border:1px solid #1a1a2a">[&mdash;]</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=15 m/min; f=0,08 mm/rev</td></tr>
-<tr style="background:#0a0800;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-ca&ntilde;&oacute;n D16, Z=1</td><td style="padding:5px 8px;border:1px solid #1a1a2a">25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=30 m/min; f=0,12 mm/rev</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-ca&ntilde;&oacute;n D16, Z=1</td><td style="padding:5px 8px;border:1px solid #1a1a2a">25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=30 m/min; f=0,12 mm/rev</td></tr>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal D16, Z=2</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=20 m/min; f=0,12 mm/rev</td></tr>
-<tr style="background:#0a0800;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas D16, Z=2</td><td style="padding:5px 8px;border:1px solid #1a1a2a">5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=25 m/min; f=0,10 mm/rev</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas D16, Z=2</td><td style="padding:5px 8px;border:1px solid #1a1a2a">5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=25 m/min; f=0,10 mm/rev</td></tr>
 </tbody></table>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
