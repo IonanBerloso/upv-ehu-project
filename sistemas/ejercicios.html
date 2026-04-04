@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sistemas — Ejercicios</title>
+<style>
+:root{--bg:#0a0e1a;--card:#111827;--card2:#0f1624;--border:#1e293b;
+      --teal:#14b8a6;--teal2:#0d9488;--text:#e2e8f0;--muted:#94a3b8;
+      --radius:10px;--radius-sm:6px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+     font-size:14px;line-height:1.6;min-height:100vh}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--teal);z-index:999;transition:width .1s}
+header{background:linear-gradient(135deg,#0f172a 0%,#0a1628 100%);
+       border-bottom:1px solid var(--border);padding:18px 24px;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;gap:14px;max-width:1100px;margin:0 auto}
+.header-icon{font-size:1.5rem}
+.header-text h1{font-size:1.15rem;font-weight:700;color:var(--teal);letter-spacing:.01em}
+.header-text p{font-size:.78rem;color:var(--muted)}
+.nav{background:#0c1220;border-bottom:1px solid var(--border);padding:0 24px;
+     display:flex;gap:4px;overflow-x:auto;max-width:100%;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-tab{padding:10px 18px;cursor:pointer;color:var(--muted);font-size:.82rem;font-weight:500;
+          border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+.content{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+/* TEMA ACCORDION */
+.tema{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      margin-bottom:16px;overflow:hidden}
+.tema-trigger{display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer;
+              transition:background .2s}
+.tema-trigger:hover{background:#1a2236}
+.tema-trigger.open{background:#131e30}
+.tema-tag{background:var(--teal2);color:#fff;font-weight:700;font-size:.78rem;
+          padding:2px 8px;border-radius:4px;min-width:28px;text-align:center}
+.tema-name{font-weight:600;font-size:.95rem;flex:1}
+.tema-count{font-size:.75rem;color:var(--muted);margin-left:auto}
+.tema-icon{color:var(--muted);font-size:.8rem;transition:transform .25s}
+.tema-trigger.open .tema-icon{transform:rotate(90deg)}
+.tema-body{display:none;padding:16px 20px 20px;border-top:1px solid var(--border)}
+.tema-body.open{display:block}
+/* EJ CARD */
+.ej-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);
+          margin-bottom:14px;overflow:hidden}
+.ej-head{display:flex;align-items:center;gap:10px;padding:10px 16px;
+          background:#0d1526;border-bottom:1px solid var(--border)}
+.ej-num{background:var(--teal);color:#000;font-weight:800;font-size:.78rem;
+        padding:2px 8px;border-radius:4px;min-width:26px;text-align:center}
+.ej-title{font-weight:600;font-size:.88rem;flex:1;color:var(--text)}
+.ej-badge{font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.badge-ord{background:#78350f;color:#fcd34d}
+.badge-ext{background:#7f1d1d;color:#fca5a5}
+.ej-body{padding:14px 16px}
+.ej-sec{margin-bottom:10px}
+.ej-sec-label{display:inline-block;font-size:.72rem;font-weight:700;color:var(--teal);
+               text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.ej-body p{color:var(--muted);font-size:.84rem;margin-bottom:6px}
+.ej-body ul,.ej-body ol{color:var(--muted);font-size:.84rem;padding-left:20px;margin-bottom:6px}
+.ej-body li{margin-bottom:3px}
+.ej-body b{color:var(--text)}
+.ej-body u{color:var(--text)}
+.ej-res{font-size:.8rem;margin-top:10px;padding:8px 12px;background:#0a1628;
+         border-left:3px solid var(--teal);border-radius:0 4px 4px 0}
+.res-nd{border-left-color:#374151;color:#6b7280}
+.res-label{font-weight:700;color:var(--text);margin-right:4px}
+.ej-note{font-size:.78rem;color:#6b7280;font-style:italic;
+          margin-top:8px;padding:6px 10px;background:#0c1220;border-radius:4px}
+/* TABLE */
+.ej-table-wrap{overflow-x:auto;margin:6px 0}
+.ej-table-wrap table{width:100%;border-collapse:collapse;font-size:.78rem}
+.ej-table-wrap th{background:#1a2236;color:var(--text);font-weight:600;
+                   padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.ej-table-wrap td{padding:5px 10px;border-bottom:1px solid #1a2236;color:var(--muted)}
+.ej-table-wrap tr:last-child td{border-bottom:none}
+/* FOOTER */
+.footer{text-align:center;padding:20px;font-size:.75rem;color:#374151;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<header>
+  <div class="header-inner">
+    <div class="header-icon">🏭</div>
+    <div class="header-text">
+      <h1>Sistemas de Producción y Fabricación — Ejercicios</h1>
+      <p>T1 Torneado · T2 Fresado · T3 Taladrado · T4 CNC &nbsp;|&nbsp; Curso 2025–26</p>
+    </div>
+  </div>
+</header>
+<div class="nav">
+  <div class="nav-tab active" onclick="scrollToTema(0)">T1 Torneado</div>
+  <div class="nav-tab" onclick="scrollToTema(1)">T2 Fresado</div>
+  <div class="nav-tab" onclick="scrollToTema(2)">T3 Taladrado</div>
+  <div class="nav-tab" onclick="scrollToTema(3)">T4 CNC</div>
+</div>
+<div class="content">
+
+<div class="tema" id="tema0">
+  <div class="tema-trigger open" onclick="toggleTema(this)">
+    <span class="tema-tag">T1</span>
+    <span class="tema-name">Torneado</span>
+    <span class="tema-count">9 problemas</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body open">
+
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P1</span>
+    <span class="ej-title">Refrentado — velocidad constante</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se desea realizar una operación de refrentado sobre una pieza cilíndrica <b>D60 × L150 mm</b>. La velocidad de giro se mantiene constante durante toda la operación: <b>N = 600 rpm</b>. Profundidad de corte a<sub>p</sub> = 0,5 mm; avance f = 0,1 mm/rev.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Describir cómo son las velocidades de corte v<sub>c</sub> y de avance v<sub>f</sub> a lo largo de toda la operación.</li><li>Calcular el tiempo de mecanizado t<sub>c</sub>.</li><li>Si se quiere mantener constante la velocidad de corte máxima calculada en a) y la velocidad de giro máxima alcanzable por la máquina es N<sub>max</sub> = 2.000 rpm, describir las velocidades de avance y de giro a lo largo de la operación.</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) v<sub>f</sub> = 60 mm/min; v<sub>c</sub> = 113,1 m/min · b) t<sub>c</sub> = 30 s · c) [—]</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P2</span>
+    <span class="ej-title">Taylor — aumento de productividad</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se dan los siguientes datos: v<sub>c</sub> = 325 m/min; S<sub>c</sub> = 1 mm²; duración herramienta T = 15 min. Para aumentar la productividad se quiere aumentar S<sub>c</sub> +25% y también v<sub>c</sub>. Calcular la nueva v<sub>c</sub> cumpliendo:</p></div><div class="ej-sec"><span class="ej-sec-label">Restricciones</span><ul><li>Máximo 40 placas en 6 horas de trabajo.</li><li>Potencia máquina P = 15 kW; rendimiento η = 80%.</li><li>Exponente Taylor n = 0,25.</li><li>Fuerza específica de corte p<sub>s</sub> = 1.500 N/mm².</li></ul></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> v<sub>c</sub> = 369,27 m/min</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P3</span>
+    <span class="ej-title">Cilindrado en dos pasadas — AISI 1045</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se desea ejecutar una operación de cilindrado en <b>dos pasadas idénticas</b> sobre una pieza de acero AISI 1045, p<sub>s</sub> = 1.600 N/mm². Dimensiones iniciales: <b>D150 × L400 mm</b>; diámetro final D = 144 mm; f = 0,2 mm/rev. El tiempo de mecanizado no debe superar t<sub>c</sub> ≤ 5 min.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Calcular la velocidad de corte v<sub>c</sub> necesaria.</li><li>Fuerza de corte F<sub>c</sub>.</li><li>Potencia de corte P<sub>c</sub>.</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) v<sub>c</sub> = 365,7 m/min · b) F<sub>c</sub> = 480 N · c) P<sub>c</sub> = 2,9 kW</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P4</span>
+    <span class="ej-title">Refrentado — placa rómbica con restricciones</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se desea realizar una operación de refrentado. Condiciones:</p></div><div class="ej-sec"><span class="ej-sec-label">Datos</span><ul><li>Rango de velocidades de giro: 0 – 3.000 rpm.</li><li>Placa rómbica: dimensión significativa l = 24 mm; radio r<sub>ε</sub> = 0,8 mm.</li><li>Ángulo de posición κ<sub>r</sub> = 105°.</li><li>Fuerza de corte máxima: F<sub>c,max</sub> = 15.000 N.</li><li>Espesor de viruta máximo: 80% del radio.</li><li>Longitud de corte máxima: 60% de la dimensión significativa.</li><li>Velocidad de corte máxima: v<sub>c</sub> = 90 m/min.</li><li>Fuerza específica de corte: p<sub>s</sub> = 2.000 N/mm².</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Calcular la profundidad a<sub>p</sub> y el avance f máximos.</li><li>Dibujar esquema del proceso, identificando los parámetros de la sección de viruta.</li><li>Si se quiere utilizar la velocidad de corte máxima, dibujar la evolución de N a lo largo de la operación (respecto a la distancia recorrida por la herramienta, indicando máximos y mínimos).</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) f<sub>max</sub> = 0,663 mm; a<sub>p,max</sub> = 13,90 mm</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P5</span>
+    <span class="ej-title">Cilindrado — selección de torno y Taylor</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se quiere pasar de D = 300 mm a D = 280 mm sobre una pieza cilíndrica L = 150 mm con p<sub>s</sub> = 2.000 N/mm². Rugosidad R<sub>t</sub> ≤ 2 μm. Datos herramienta: b = 8 mm (longitud máxima de corte recomendada), v<sub>c</sub> ∈ [100, 150] m/min, κ<sub>r</sub> = 45°, r<sub>ε</sub> = 1,4 mm. R<sub>t</sub> [μm] = f² / (8·r<sub>ε</sub>) · 1000. Con v<sub>c,min</sub> = 100 m/min la herramienta dura T = 15 min; n = 0,25 (Taylor).</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Número de pasadas necesarias y profundidad de corte.</li><li>Fuerza de corte máxima que soportará la herramienta.</li><li>Tiempo mínimo de mecanizado t<sub>c</sub>.</li><li>Determinar el torno más adecuado: <b>Torno A</b>: P = 15 kW, N<sub>max</sub> = 1.000 rpm, η = 80% — <b>Torno B</b>: P = 14 kW, N<sub>max</sub> = 3.000 rpm, η = 90%.</li><li>¿Cuántas piezas pueden mecanizarse antes del primer cambio de herramienta?</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) 2 pasadas · b) F<sub>c</sub> = 5.000 N · c) t<sub>c</sub> = 7,68 min · d) Torno B · e) Ninguna</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P6</span>
+    <span class="ej-title">Cilindrado D100 → figura D90 (desbaste + acabado)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Partiendo de un cilindro D = 100 mm × L = 175 mm se desea conseguir la pieza de la figura (D90 exterior, escalón interior). Restricciones: F<sub>c,max</sub> = 3.200 N; N<sub>max</sub> = 2.500 rpm. Primera operación: cilindrado de desbaste; segunda: pasada de acabado de 1 mm. Rugosidad R<sub>t</sub> = 4 μm en la última superficie. Minimizar el tiempo en todas las operaciones. Se proporcionan tres herramientas candidatas (κ<sub>r</sub> = 45°/95°/90°, distintos rangos de f y a<sub>p</sub>).</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Herramienta más adecuada para el desbaste y avance máximo.</li><li>Avance máximo en el acabado.</li><li>Valor máximo de la fuerza de corte.</li><li>Potencia de corte si el rendimiento es η = 80%.</li><li>Tiempo completo de mecanizado.</li><li>Para una duración de herramienta de T = 20 min, ¿cuál sería la nueva v<sub>c</sub>? (n = 0,2; T<sub>ref</sub> = 15 min)</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) f = 0,3 mm · b) f = 0,16 mm · c) F<sub>c,max</sub> = 2.755,3 N · d) P<sub>c,max</sub> = 13,8 kW · e) t<sub>c,2</sub> = 73,2 s · f) V<sub>c</sub>' = 283,23 m/min</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P7</span>
+    <span class="ej-title">Organigrama completo — D120 → D112 + acabado</span>
+    <span class="ej-badge badge-ord">Ordinaria 2021-22</span>
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>A partir de un cilindro D = 120 mm × L = 400 mm se desea lograr la pieza de la figura (desbaste hasta D = 112 mm; luego pasada de acabado). P<sub>max</sub> máquina = 18 kW. p<sub>s</sub> = 2.100 · h<sup>−0,24</sup> N/mm². Cuatro herramientas candidatas (tabla). T<sub>herr</sub> = 15 min; n = 0,25 (Taylor). Rugosidad media: R<sub>a</sub> = f² / (32·r<sub>ε</sub>) · 1.000.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Seleccionar la herramienta más adecuada para el <b>desbaste</b> (tiempo mínimo), especificando todos los parámetros de corte.</li><li>Seleccionar la herramienta más adecuada para el <b>acabado</b> con R<sub>a</sub> ≤ 0,5 μm, especificando todos los parámetros.</li><li>Calcular los tiempos de mecanizado de ambas operaciones.</li><li>Calcular las fuerzas de corte en desbaste y acabado.</li><li>¿Cuál será la potencia máxima consumida?</li><li>Si se quiere reducir un 30% el t<sub>c</sub> de acabado variando v<sub>c</sub>, ¿cuál será la nueva duración de herramienta?</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) H2; a<sub>p</sub>=4 mm; v<sub>c</sub>=280 m/min; f=0,36 mm/rev · b) a<sub>p</sub>=1 mm; v<sub>c</sub>=300; f=0,098 · c) t<sub>des</sub>=75,4 s; t<sub>aca</sub>=253,8 s · d) F<sub>c</sub>=3.857,1 N; 359,4 N · e) P<sub>c</sub>=18 kW · f) T<sub>L</sub>=3,6 min</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P8</span>
+    <span class="ej-title">Organigrama Ø40×116 — M16, M18, moleteado</span>
+    <span class="ej-badge badge-ord">Ordinaria 2023-24</span>
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Partiendo de un redondo Ø40 × L116 mm se desea conseguir la pieza de la figura (eje escalonado con Ø25h7, Ø31, Ø33, roscas M16×2 y M18×2,5, chaflanes 1,5×45°, y moleteado RGV 1,6). P<sub>s</sub> = 1.600 N/mm²; potencia nominal P = 15 kW; herramientas de metal duro recubierto; acabado N7.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Desarrollar el <b>organigrama</b> de la pieza (operaciones, herramientas, amarres, etc.).</li><li>Teniendo en cuenta la potencia máxima de la máquina, calcular en el desbaste de Ø25 × 40 mm los parámetros de corte, la fuerza y potencia necesarias, y el tiempo de mecanizado.</li><li>Seleccionar la herramienta más adecuada para lograr una rugosidad R<sub>t</sub> = 8 μm. Explicar cómo se lleva a cabo el moleteado.</li></ol></div>
+    <div class="ej-res res-nd"><span class="res-label">Resultados:</span> No publicados</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P9</span>
+    <span class="ej-title">Organigrama Ø75×185 — M20, M26, chaveta (con Tabla 1)</span>
+    <span class="ej-badge badge-ext">Extraordinaria 2025-26</span>
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Utilizando las herramientas de la <b>Tabla 1</b>, se desea fabricar la pieza Ø75 × 185 mm (dimensiones iniciales) que incluye: cilindrados Ø68, Ø42, Ø30, Ø20, Ø20j5×2, Ø16 mm, roscas M20×2,5 y M26×3, chaveta Ø26h6, taladros, etc. p<sub>s</sub> = 3.000 N/mm² (constante). Torno paralelo: N<sub>max</sub> = 1.800 rpm; P<sub>max</sub> = 10 kW.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Utilizando la Tabla 1, desarrollar el <b>organigrama</b> (operaciones, herramientas, amarres). Ayúdate de esquemas/croquis.</li><li>Para el desbaste hasta D42 (cilindrado L = 98 mm), seleccionar la herramienta más adecuada y las condiciones de corte (a<sub>p</sub>, nº pasadas) para realizar la operación en el menor tiempo posible. Obtener la potencia de corte necesaria.</li><li>Calcular la potencia necesaria y el tiempo de mecanizado para el <b>fresado de la chaveta</b>. Describir la herramienta, máquina y amarre.</li></ol></div><div class="ej-note">Roscados de métrica ISO paso normal (M20×2,5 y M26×3). No es necesario definir el número de pasadas.</div>
+    <div class="ej-res res-nd"><span class="res-label">Resultados:</span> No publicados</div>
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="tema" id="tema1">
+  <div class="tema-trigger" onclick="toggleTema(this)">
+    <span class="tema-tag">T2</span>
+    <span class="tema-name">Fresado</span>
+    <span class="tema-count">9 problemas</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P1</span>
+    <span class="ej-title">Escuadrado — sección de viruta y fuerza máxima</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>En una operación de escuadrado se fija a<sub>p</sub> = 10 mm. Datos:</p></div><div class="ej-sec"><span class="ej-sec-label">Datos</span><ul><li>Radio de la fresa R = 10 mm (D = 20 mm).</li><li>Ángulo de posición del filo principal κ<sub>r</sub> = 90°.</li><li>Avance por diente f<sub>z</sub> = 0,04 mm/Z/rev.</li><li>Velocidad de giro N = 2.500 rpm.</li><li>Profundidad radial (intervalo): a<sub>e</sub> = 0,5 – 12 mm.</li><li>Fuerza específica de corte (constante): p<sub>s</sub> = 1.900 N/mm².</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>¿Qué profundidad de corte radial a<sub>e</sub> genera la mayor fuerza de corte y potencia?</li><li>Calcular la fuerza de corte máxima F<sub>c,max</sub> y la potencia de corte máxima P<sub>c,max</sub> <b>por diente</b>.</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> b) F<sub>c</sub> = 760 N; P<sub>c</sub> = 2,0 kW</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P2</span>
+    <span class="ej-title">Escuadrado — S<sub>c,max</sub> y F<sub>c,max</sub> para distintos a<sub>e</sub></span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Antes de realizar una operación de fresado (escuadrado), se quiere estimar las fuerzas de corte sobre <u>cada diente</u>. Calcular la sección de viruta máxima S<sub>c,max</sub> y la fuerza de corte máxima F<sub>c,max</sub> en cada diente para los tres casos:</p></div><div class="ej-sec"><span class="ej-sec-label">Datos</span><ul><li>Radio de la fresa R = 20 mm (D = 40 mm).</li><li>Profundidad axial a<sub>p</sub> = 2 mm.</li><li>Avance por filo f<sub>z</sub> = 0,08 mm/Z/rev.</li><li>Ángulo de posición κ<sub>r</sub> = 90°.</li><li>Fuerza específica de corte p<sub>s</sub> = 2.900 N/mm².</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Casos</span><ul><li>a) a<sub>e</sub> = 15 mm</li><li>b) a<sub>e</sub> = 20 mm</li><li>c) a<sub>e</sub> = 24 mm</li></ul></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) F<sub>c,max</sub> = 452,4 N · b) F<sub>c,max</sub> = 464 N · c) F<sub>c,max</sub> = 464 N</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P3</span>
+    <span class="ej-title">Fresado de volumen 200×30×9 mm — selección herramienta y t<sub>c</sub></span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se desea realizar la operación de la figura para mecanizar un volumen <b>200 × 30 × 9 mm</b>. Se dispone de dos herramientas:</p></div><div class="ej-table-wrap"><table><thead><tr><th>Herramienta</th><th>D [mm]</th><th>Z</th><th>κ<sub>r</sub></th><th>Condiciones</th></tr></thead><tbody><tr><td>H1 (plaquitas)</td><td>40</td><td>5</td><td>90°</td><td>N ≤ 2.500 rpm; f<sub>z</sub> = 0,1–0,25 mm; a<sub>p</sub> ≤ 4 mm; a<sub>e</sub>/D ≤ 75%</td></tr><tr><td>H2 (mango)</td><td>16</td><td>4</td><td>90°</td><td>v<sub>c</sub> = 300 m/min (fija); f<sub>z</sub> = 0,1–0,35 mm; a<sub>p</sub> ≤ 10 mm; a<sub>p</sub>·a<sub>e</sub> ≤ 90</td></tr></tbody></table></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Seleccionar la herramienta más adecuada para el mínimo t<sub>c</sub>. Obtener v<sub>c</sub>, f<sub>z</sub>, a<sub>p</sub>, a<sub>e</sub>, nº de pasadas axiales y radiales, y t<sub>c</sub>.</li><li>Misma pregunta si la potencia media de la máquina es P<sub>m</sub> = 30 kW, tomando p̄<sub>s</sub> = 2.000 · h<sub>max</sub><sup>−0,3</sup>.</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) H2; t<sub>c</sub> = 4,31 s · b) H2; t<sub>c</sub> = 5,2 s</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P4</span>
+    <span class="ej-title">Planeado — v<sub>f,max</sub> con restricción de potencia</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se desea realizar un <b>planeado</b> con gama continua de velocidades. Potencia nominal P = 35 kW; pérdidas de rendimiento del 20%. Calcular la velocidad de avance máxima v<sub>f,max</sub>.</p></div><div class="ej-sec"><span class="ej-sec-label">Datos</span><ul><li>D = 350 mm; Z = 12 dientes; κ<sub>r</sub> = 60°.</li><li>Profundidad axial a<sub>p</sub> = 3 mm.</li><li>Espesor de viruta máximo h<sub>max</sub> = 0,3 mm.</li><li>Intervalo de velocidad de corte: 100 – 200 m/min.</li><li>Pieza a planear: 300 mm de anchura.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Tabla h̄ vs p̄<sub>s</sub></span><div class="ej-table-wrap"><table><thead><tr><th>h̄ [mm]</th><th>p̄<sub>s</sub> [N/mm²]</th></tr></thead><tbody><tr><td>0,05</td><td>5.000</td></tr><tr><td>0,10</td><td>3.700</td></tr><tr><td>0,20</td><td>2.800</td></tr><tr><td>0,30</td><td>2.500</td></tr></tbody></table></div></div><div class="ej-note">h̄ = (2 · f<sub>z</sub> · a<sub>e</sub> · sin κ<sub>r</sub>) / (θ · D)</div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> v<sub>f</sub> = 679 mm/min</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P5</span>
+    <span class="ej-title">Planeado + escuadrado bloque 200×60×100 mm</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se desean ejecutar las operaciones de la figura en el menor tiempo posible, partiendo de un bloque prismático <b>200 × 60 × 100 mm</b>. Condiciones: a<sub>e</sub> &lt; 0,65·D; F<sub>c,max</sub> &lt; 3.200 N; p<sub>s</sub> = 1.950 · h<sup>−0,23</sup>. Dos tipos de herramientas (κ<sub>r</sub> = 45° y κ<sub>r</sub> = 90°) con distintos D, Z, a<sub>p,max</sub> y N<sub>max</sub>. Dos calidades de placa con tabla h<sub>max</sub> → v<sub>c</sub>.</p></div><div class="ej-sec"><span class="ej-sec-label">Operaciones</span><ul><li>Planeado: retirar 4,5 mm.</li><li>Escuadrado: retirar 20 mm.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Elegir la herramienta más adecuada para cada operación.</li><li>Definir los parámetros de corte (a<sub>p</sub>, a<sub>e</sub>, f<sub>z</sub>, v<sub>c</sub>) y elegir calidad de placa.</li><li>Calcular la potencia media P<sub>c</sub> para el planeado usando la fuerza media específica p̄<sub>s</sub> = 2.000 · (h̄)<sup>−0,21</sup>.</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> Planeado: D=100,Z=7,a<sub>p</sub>=6mm,N=1130rpm,κ<sub>r</sub>=45° — Escuadrado: D=50,Z=4,N=7900rpm,κ<sub>r</sub>=90° · b) Planeado cal.1: v<sub>c</sub>=190 m/min, f<sub>z,max</sub>=0,212 mm — Escuadrado cal.2: v<sub>c</sub>=139 m/min, f<sub>z,max</sub>=0,275 mm · c) P<sub>c</sub> = 13,6 kW</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P6</span>
+    <span class="ej-title">Organigrama D40×L170 — chavetero (fresado)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Partiendo de un cilindro D40 × L170 mm se desea conseguir la pieza de la figura (eje escalonado con M30×2, Ø28, Ø33, Ø34, Ø30, Ø28, Ø26 y chavetero). Acabado N7 en todas las superficies. Material: acero al carbono UNE F114; CMC (Sandvik) 01.2; p<sub>s</sub> = 1.600 N/mm². Potencia nominal: P = 15 kW.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Desarrollar el <b>organigrama</b> de la pieza (operaciones, herramientas, amarres).</li><li>Teniendo en cuenta la potencia de la máquina, señalar en qué operación se produce la potencia máxima de corte y calcularla.</li><li>Para el <b>chavetero</b>: p<sub>s</sub> = 2.500 N/mm² (constante), a<sub>p</sub> = 8 mm (profundidad ranura), f<sub>z</sub> = 0,15 mm/diente, fresa de 2 filos. Calcular F<sub>c,max</sub> en el fresado.</li></ol></div>
+    <div class="ej-res res-nd"><span class="res-label">Resultados:</span> No publicados</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P7</span>
+    <span class="ej-title">Organigrama D50×L106 — M30×2 + chavetero</span>
+    <span class="ej-badge badge-ord">Ordinaria 2021-22</span>
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Partiendo de D50 × L106 mm se desea conseguir la pieza de la figura (eje con M30×2, escalones Ø28/Ø33/Ø34/Ø30/Ø28/Ø26 y chavetero). Material: acero al carbono UNE F114; CMC 01.2; p<sub>s</sub> = 1.600 N/mm². Potencia P = 15 kW. Acabado N7.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Desarrollar el <b>organigrama</b> de la pieza (operaciones, herramientas, amarres).</li><li>Teniendo en cuenta la potencia de la máquina, obtener las condiciones de corte para el desbaste <b>Ø25 × 41 mm</b>. Calcular la potencia de corte necesaria y el tiempo de mecanizado.</li><li>Seleccionar la herramienta más adecuada para lograr R<sub>t</sub> = 8 μm.</li></ol></div>
+    <div class="ej-res res-nd"><span class="res-label">Resultados:</span> No publicados</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P8</span>
+    <span class="ej-title">Organigrama Ø65×L110 — M28×3,5 + chavetero (inox)</span>
+    <span class="ej-badge badge-ord">Ordinaria 2023-24</span>
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Partiendo de Ø65 × L110 mm se desea conseguir la pieza de la figura (eje con M28×3,5, taladros interiores Ø22/Ø40, chavetero elíptico 10×12 mm y chaflanes 2×45°). Material: acero inoxidable (M), dúplex austenítico-ferrítico, soldable (&lt;C%0,05a); HB = 260; CMC (Sandvik) 05.52; p<sub>s</sub> = 2.450 N/mm². Condiciones de acabado: pasada 0,5 mm. Rugosidad R<sub>t</sub> = f² / (8·r<sub>ε</sub>) · 1.000. Taylor n = 0,2.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Desarrollar el <b>organigrama</b> de operaciones (herramientas, amarres).</li><li>Para el desbaste <b>más problemático</b> con P<sub>máq</sub> = 6 kW: seleccionar herramienta, calcular t<sub>c</sub> mínimo.</li><li>Para el chavetero: D = 8 mm, Z = 2, v<sub>c</sub> = 125 m/min, a<sub>p</sub> = 8 mm, f<sub>z</sub> = 0,1 mm/rev/Z. Calcular F<sub>c,max</sub>, caudal de viruta Q<sub>c</sub> y P<sub>c</sub>. ¿Puede ejecutarse con la máquina? Si no fuera posible, proponer 2–3 soluciones.</li></ol></div>
+    <div class="ej-res res-nd"><span class="res-label">Resultados:</span> No publicados</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P9</span>
+    <span class="ej-title">Organigrama Ø75×185 — M20, M26, chaveta (con Tabla 1)</span>
+    <span class="ej-badge badge-ext">Extraordinaria 2025-26</span>
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>(Ver también T1 P9 — mismo examen, mismo enunciado). Utilizando las herramientas de la <b>Tabla 1</b>, fabricar la pieza Ø75 × 185 mm (M20×2,5, M26×3, chaveta Ø26h6). p<sub>s</sub> = 3.000 N/mm²; torno paralelo N<sub>max</sub> = 1.800 rpm; P = 10 kW.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Desarrollar el <b>organigrama</b> (operaciones, herramientas, amarres, con croquis).</li><li>Desbaste hasta D42 en L = 98 mm: seleccionar herramienta y condiciones de corte. Calcular P<sub>c</sub>.</li><li>Calcular la potencia necesaria y t<sub>c</sub> para el <b>fresado de la chaveta</b>. Describir herramienta, máquina y amarre.</li></ol></div>
+    <div class="ej-res res-nd"><span class="res-label">Resultados:</span> No publicados</div>
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="tema" id="tema2">
+  <div class="tema-trigger" onclick="toggleTema(this)">
+    <span class="tema-tag">T3</span>
+    <span class="tema-name">Taladrado</span>
+    <span class="tema-count">6 problemas</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P1</span>
+    <span class="ej-title">Diámetro máximo de agujero — restricción potencia</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se dan las condiciones para el mecanizado de un agujero: material acero de baja aleación, p<sub>s</sub> = 2.200 N/mm²; máquina: taladradora de columna P = 600 W, η = 85%; condiciones de corte: v<sub>c</sub> = 25 m/min; f<sub>max</sub> = 0,18 mm/rev.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><p>Calcular el <b>momento torsor</b> M<sub>c</sub> y el <b>diámetro máximo</b> de agujero realizable en esas condiciones.</p></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> D = 12 mm; M<sub>c</sub> = 7,34 N·m</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P2</span>
+    <span class="ej-title">6 agujeros en fundición — selección herramienta y t<sub>c</sub></span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se desean mecanizar <b>6 agujeros pasantes</b> en una pieza de fundición de espesor 30 mm: 3 de D = 18 mm y 3 de D = 8 mm. p<sub>s</sub> = 2.900 N/mm²; taladradora P = 4 kW, η = 70%; distancia de aproximación = 2 mm.</p></div><div class="ej-table-wrap"><table><thead><tr><th>Herramienta</th><th>L/D</th><th>D [mm]</th><th>Z</th><th>f [mm/rev]</th><th>v<sub>c</sub> [m/min]</th></tr></thead><tbody><tr><td>Broca-cañón</td><td>20</td><td>8</td><td>2</td><td>0,05–0,10</td><td>60</td></tr><tr><td>Broca de plaquitas</td><td>2,5</td><td>8</td><td>2</td><td>0,10–0,18</td><td>80</td></tr><tr><td>Broca de plaquitas</td><td>3,5</td><td>18</td><td>2</td><td>0,05–0,25</td><td>80</td></tr><tr><td>Broca helicoidal</td><td>8</td><td>8</td><td>2</td><td>0,05–0,20</td><td>90</td></tr><tr><td>Broca helicoidal</td><td>10</td><td>18</td><td>2</td><td>0,05–0,20</td><td>90</td></tr></tbody></table></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Seleccionar la(s) herramienta(s) más adecuada(s) y las condiciones de corte para el menor tiempo de mecanizado.</li><li>Calcular el tiempo total mínimo para mecanizar los 6 agujeros.</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) Broca helicoidal para ambas — D8: f = 0,2 mm; D18: f = 0,144 mm · b) t<sub>c</sub> = 35,4 s</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P3</span>
+    <span class="ej-title">8 agujeros ciegos D10 — fundición gris, P=2 kW</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se dispone de las siguientes herramientas para mecanizar <b>8 agujeros ciegos</b> D = 10 mm, profundidad 25 mm, en un taladro de columna de P = 2 kW, η = 0,8. Material: fundición gris, p<sub>s</sub> = 2.850 N/mm². Distancia de aproximación = 5 mm.</p></div><div class="ej-table-wrap"><table><thead><tr><th>Herramienta</th><th>D [mm]</th><th>Z</th><th>f [mm/rev]</th><th>v<sub>c</sub> [m/min]</th></tr></thead><tbody><tr><td>Broca de centrar (HSS)</td><td>4</td><td>2</td><td>0,20</td><td>15</td></tr><tr><td>Broca helicoidal metal duro</td><td>6</td><td>2</td><td>0,25</td><td>70</td></tr><tr><td>Broca helicoidal metal duro</td><td>10</td><td>2</td><td>0,25</td><td>70</td></tr><tr><td>Broca de plaquitas intercambiables</td><td>10</td><td>2</td><td>0,20</td><td>70</td></tr><tr><td>Broca-cañón</td><td>10</td><td>2</td><td>0,10</td><td>60</td></tr></tbody></table></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Seleccionar la(s) herramienta(s) más adecuada(s), calcular F<sub>c</sub> y P<sub>c</sub>. Razonar las decisiones.</li><li>Calcular el tiempo de mecanizado t<sub>c</sub> y el caudal de viruta Q<sub>c</sub>.</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) P<sub>c</sub>=1,246 kW (D6); P<sub>c</sub>=0,665 kW (D10) · b) t<sub>c</sub>=5,2 s; Q<sub>c</sub>=26,2 cm³/min (D6) y 28,0 cm³/min (D10)</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P4</span>
+    <span class="ej-title">2 agujeros D16 — selección con M<sub>c,max</sub></span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Se desean mecanizar <b>2 agujeros D = 16 mm</b> en la pieza de la figura: uno ciego de profundidad 38 mm y uno pasante de 45 mm. Ángulo de apertura de punta 140°. Distancia de aproximación = 3 mm.</p></div><div class="ej-table-wrap"><table><thead><tr><th>Herramienta</th><th>L/D<sub>max</sub></th><th>Parámetros de corte</th></tr></thead><tbody><tr><td>Broca piloto D16, Z=2</td><td>[—]</td><td>v<sub>c</sub>=15 m/min; f=0,08 mm/rev</td></tr><tr><td>Broca-cañón D16, Z=1</td><td>25</td><td>v<sub>c</sub>=30 m/min; f=0,12 mm/rev</td></tr><tr><td>Broca helicoidal D16, Z=2</td><td>10</td><td>v<sub>c</sub>=20 m/min; f=0,12 mm/rev</td></tr><tr><td>Broca de plaquitas D16, Z=2</td><td>5</td><td>v<sub>c</sub>=25 m/min; f=0,10 mm/rev</td></tr></tbody></table></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Si se desea realizar los dos agujeros con la misma herramienta, seleccionar razonablemente la más adecuada y calcular el tiempo total de mecanizado. Tomar 3 mm de distancia de aproximación (entrada y salida).</li><li>Calcular S<sub>c</sub>, F<sub>c</sub>, momento torsor M<sub>c</sub> y P<sub>c</sub> para la herramienta elegida. p<sub>s</sub> = 2.700 N/mm².</li><li>Si el momento máximo estuviera limitado a M<sub>c,max</sub> = 8 N·m, ¿qué decisiones podrían tomarse?</li></ol></div>
+    <div class="ej-res"><span class="res-label">Resultados:</span> a) t<sub>m</sub> = 115 s · b) S<sub>c</sub>=0,48 mm²; F<sub>c</sub>=1.296 N; M<sub>c</sub>=10,368 N·m; P<sub>c</sub>=432 W · c) [—]</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P5</span>
+    <span class="ej-title">Organigrama Ø50×L165 — AISI 1045, catálogo Sandvik</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Partiendo de D50 × L165 mm se desea conseguir la pieza de la figura (eje con escalonados, taladros interiores). Material: acero no aleado AISI 1045; CMC (Sandvik) 01.2; p<sub>s</sub> = 1.600 N/mm². P<sub>nom</sub> = 13 kW. Herramientas de metal duro para torneado; HSS para otras. Dejar 0,5 mm para el acabado.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Desarrollar el <b>organigrama</b> de la pieza (operaciones, herramientas, amarres).</li><li>Usando el <b>catálogo de Sandvik</b>, razonar en qué operación se consume mayor potencia; en ella: 1) parámetros de corte; 2) F<sub>c</sub>; 3) P<sub>c</sub>; 4) t<sub>c</sub>.</li></ol></div>
+    <div class="ej-res res-nd"><span class="res-label">Resultados:</span> No publicados</div>
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P6</span>
+    <span class="ej-title">Organigrama Ø85×L130 — acero herramientas, taladrado complejo</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Partiendo de Ø85 × L130 mm se desea conseguir la pieza de la figura (eje con Ø64, Ø52, Ø32, cono R4, taladro Ø28 y rosca M36×4, chaflanes 2×45°). Material: acero de herramientas templado (ISO P); HB = 325; CMC (Sandvik) 03.21; p<sub>s</sub> = 3.000 N/mm². Dejar 0,5 mm acabado. El cono se mecaniza en la primera mitad del proceso.</p></div><div class="ej-sec"><span class="ej-sec-label">Se pide</span><ol><li>Desarrollar el <b>organigrama</b> de operaciones (herramientas, amarres).</li><li>Para el <b>desbaste más problemático</b> con P<sub>máq</sub> = 6 kW: seleccionar herramienta (tabla dada con κ<sub>r</sub>=95°/75°/90°) y calcular t<sub>c</sub> mínimo.</li><li>Para el taladrado: dos opciones: brocas D12 + D28 (2 etapas) o broca bidiamétrica D12–28 (1 etapa). Con P = 6 kW, seleccionar la opción más rápida y calcular t<sub>c,min</sub>.</li></ol></div>
+    <div class="ej-res res-nd"><span class="res-label">Resultados:</span> No publicados</div>
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="tema" id="tema3">
+  <div class="tema-trigger" onclick="toggleTema(this)">
+    <span class="tema-tag">T4</span>
+    <span class="tema-name">Control Numérico — CNC</span>
+    <span class="tema-count">13 problemas</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P1</span>
+    <span class="ej-title">Programación torneado — eje D57→M30×1,5, taladro D10</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, <b>desarrollar el programa de la pieza</b> (eje con Ø57, Ø50, Ø40, Ø25, Ø10, M30×1,5 y chaflanes 1,5×45°).</p></div><div class="ej-sec"><span class="ej-sec-label">Datos de operaciones</span><ul><li>Dimensiones de partida: <b>D60 × L100 mm</b>.</li><li>Torneado desbaste: v<sub>c</sub> = 180 m/min; f = 0,3 mm/rev.</li><li>Torneado acabado: v<sub>c</sub> = 180 m/min; f = 0,3 mm/rev.</li><li>Ranurado (b = 2,2 mm): S = 650 rpm; f = 0,15 mm/rev.</li><li>Taladrado D10: v<sub>c</sub> = 120 m/min; f = 0,1 mm/rev.</li><li>Roscado: M30 × 1,5.</li><li>Tronzado: S = 300 rpm; Z = 2; f = 0,1 mm/rev.</li><li>Elegir a voluntad parámetros no señalados (temporizaciones, planos de retroceso, etc.).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P2</span>
+    <span class="ej-title">Programación fresado — ranuras curvas 120×70×18 mm</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (placa con dos ranuras sinusoidales, R12,5/R18,5/R11,5). Planeado de 5 mm por una cara.</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D8: v<sub>c</sub>=180 m/min; Z=2; f<sub>z</sub>=0,05 mm/Z/rev; L=45 mm.</li><li>Fresa D20: v<sub>c</sub>=100 m/min; Z=6; f<sub>z</sub>=0,1 mm/Z/rev; L=60 mm.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>120 × 70 × 18 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P3</span>
+    <span class="ej-title">Programación fresado+taladrado — brida cuadrada Ø80 (100×100×35)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (brida circular Ø80 sobre base cuadrada, con taladros Ø8,5 en PCD Ø60 y cajera cuadrada interior □40×R5). Solo taladrado (sin roscado ni avellanado superior).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D20: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm.</li><li>Fresa D8: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm.</li><li>Broca D8,5: v<sub>c</sub>=25 m/min; Z=2; f=0,1 mm/rev; L=60 mm.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>100 × 100 × 35 mm</b>.</li><li>Planeado de 5 mm (una cara).</li><li>¿Cómo realizarías el avellanado/chaflán de 1,5×45°?</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P4</span>
+    <span class="ej-title">Programación fresado — brida circular D100, ranuras radiales</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (disco cilíndrico con ranuras radiales tipo T, 6 agujeros en PCD y cajera central Ø80/R30). Planeado de 5 mm.</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D30: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm.</li><li>Fresa D8: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm.</li><li>Brocas: definir a conveniencia.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>D100 × 25 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P5</span>
+    <span class="ej-title">Programación fresado — placa grande 160×160×55 mm</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (placa cuadrada con patrón circular de agujeros en varias PCDs: Ø100, Ø60, Ø8; con cajeras y taladros de distintos diámetros).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D20: v<sub>c</sub>=100 m/min; Z=6; f<sub>z</sub>=0,1 mm/Z/rev; L=60 mm.</li><li>Fresa D14: v<sub>c</sub>=180 m/min; Z=4; f<sub>z</sub>=0,05 mm/Z/rev; L=40 mm.</li><li>Broca D8: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,05 mm/Z/rev; L=70 mm.</li><li>Broca D12: v<sub>c</sub>=22 m/min; Z=2; f<sub>z</sub>=0,05 mm/Z/rev; L=65 mm.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>160 × 160 × 55 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P6</span>
+    <span class="ej-title">Programación fresado — pieza con cruz y agujeros (65×65×25)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (base cuadrada 65×65 con forma en cruz de brazos R15/R8, agujero central Ø12, y 4 agujeros Ø7 en esquinas).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D25: v<sub>c</sub>=200 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev.</li><li>Fresa D6: v<sub>c</sub>=100 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev.</li><li>Broca D7: v<sub>c</sub>=30 m/min; Z=2; f=0,1 mm/rev.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>65 × 65 × 25 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P7</span>
+    <span class="ej-title">Programación fresado — pieza mixta cajeras+slot (100×100×30)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (4 cajeras circulares Ø25 en las esquinas, cajera rectangular central □30, agujero central Ø10 y chaflanes 4,5°).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D25: v<sub>c</sub>=200 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev.</li><li>Fresa D10: v<sub>c</sub>=100 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev.</li><li>Fresa D4: v<sub>c</sub>=100 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev.</li><li>Broca D10: v<sub>c</sub>=30 m/min; Z=2; f=0,1 mm/Z.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>100 × 100 × 30 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P8</span>
+    <span class="ej-title">Programación fresado — pieza hexagonal con oval (55×45×25)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (base cuadrada 55×45 con contorno hexagonal interior, ranura oval central y 4 agujeros Ø8 en PCD Ø31,6 a 60°).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D20: v<sub>c</sub>=100 m/min; Z=6; f<sub>z</sub>=0,1 mm/Z/rev; L=60 mm.</li><li>Fresa D5: v<sub>c</sub>=180 m/min; Z=4; f<sub>z</sub>=0,05 mm/Z/rev; L=40 mm.</li><li>Broca D6: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,05 mm/Z/rev; L=70 mm.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>55 × 45 × 25 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P9</span>
+    <span class="ej-title">Programación fresado — pieza esquinas redondeadas R10 (66×66×25)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (base cuadrada 66×66 con esquinas R10, cajera rectangular interior R4 y 4 agujeros Ø4 en semicírculos).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D25: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm.</li><li>Fresa D6: v<sub>c</sub>=180 m/min; Z=4; f<sub>z</sub>=0,15 mm/Z/rev; L=30 mm.</li><li>Broca D4: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>66 × 66 × 25 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P10</span>
+    <span class="ej-title">Programación fresado — cajera anidada compleja (100×100×25)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (cajera exterior grande R10 + cajera interior R15/R10/R12 anidada + agujeros Ø5 y Ø8 de distintas profundidades).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D40: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm.</li><li>Fresa D16: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm.</li><li>Fresa D4: v<sub>c</sub>=200 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev; L=15 mm.</li><li>Broca D5: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev; L=60 mm.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>100 × 100 × 25 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P11</span>
+    <span class="ej-title">Programación fresado — cajera cuadrada R8 + patrón agujeros (86×86×35)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (cajera cuadrada 74×74 con R8 + 8 agujeros Ø4 en PCD Ø50 + agujero central D16 + alvéolo central R25 a cota Z-30).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D25: v<sub>c</sub>=125 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm.</li><li>Fresa D12: v<sub>c</sub>=160 m/min; Z=2; f<sub>z</sub>=0,15 mm/Z/rev; L=40 mm.</li><li>Broca D4: v<sub>c</sub>=25 m/min; Z=2; f=0,1 mm/rev; L=40 mm.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>86 × 86 × 35 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P12</span>
+    <span class="ej-title">Programación fresado — disco cilíndrico D80 con contorneado tangencial</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (disco D80 con contorneado circular D70, agujero central + 4 agujeros en PCD). Entrar de forma <b>tangencial</b> al contorno circular D70 (usando G37/G38 o bien G2/G3).</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D30: v<sub>c</sub>=200 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev.</li><li>Fresa D16: v<sub>c</sub>=200 m/min; Z=4; f<sub>z</sub>=0,2 mm/Z/rev.</li><li>Fresa D8: v<sub>c</sub>=200 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev.</li><li>Broca D8: v<sub>c</sub>=30 m/min; Z=2; f=0,1 mm/Z.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>tocho cilíndrico D80 × 30 mm</b>.</li><li>Planeado de 5 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+<div class="ej-card">
+  <div class="ej-head">
+    <span class="ej-num">P13</span>
+    <span class="ej-title">Programación fresado — pieza con patrón pétalos 80×80×30 (entrada tangencial)</span>
+    
+  </div>
+  <div class="ej-body">
+    <div class="ej-sec"><span class="ej-sec-label">Enunciado</span><p>Usando lenguaje de CN, desarrollar el programa de la pieza (base cuadrada 80×80 con esquinas R5, patrón en cruz de 4 'pétalos' R10, agujero central Ø10, 4 agujeros Ø13 y cajera cuadrada central Ø10). Entrar de forma <b>tangencial</b> en todas las operaciones de contorneado.</p></div><div class="ej-sec"><span class="ej-sec-label">Herramientas</span><ul><li>Fresa D18: v<sub>c</sub>=200 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev.</li><li>Fresa D6: v<sub>c</sub>=200 m/min; Z=4; f<sub>z</sub>=0,2 mm/Z/rev.</li><li>Broca D13: v<sub>c</sub>=30 m/min; Z=2; f=0,1 mm/rev.</li><li>Broca D5: v<sub>c</sub>=35 m/min; Z=2; f=0,1 mm/rev.</li></ul></div><div class="ej-sec"><span class="ej-sec-label">Datos adicionales</span><ul><li>Dimensiones de partida: <b>tocho cilíndrico 80 × 80 × 30 mm</b>.</li><li>Planeado de 7 mm (una cara).</li></ul></div>
+    
+  </div>
+</div>
+  </div>
+</div>
+
+</div><!-- /content -->
+<div class="footer">Sistemas de Producción y Fabricación · G. Urbikain Pelayo · UPV/EHU · Curso 2025–26</div>
+<script>
+window.addEventListener('scroll',function(){
+  var d=document.documentElement,h=d.scrollHeight-d.clientHeight,p=h>0?(d.scrollTop/h*100):0;
+  document.getElementById('progress').style.width=p+'%';
+});
+function toggleTema(trigger){
+  var body=trigger.nextElementSibling;
+  var isOpen=body.classList.contains('open');
+  document.querySelectorAll('.tema-body.open').forEach(function(b){b.classList.remove('open');});
+  document.querySelectorAll('.tema-trigger.open').forEach(function(t){t.classList.remove('open');});
+  if(!isOpen){body.classList.add('open');trigger.classList.add('open');}
+}
+var tabs=document.querySelectorAll('.nav-tab');
+function scrollToTema(i){
+  var el=document.getElementById('tema'+i);
+  if(!el)return;
+  var trigger=el.querySelector('.tema-trigger');
+  var body=el.querySelector('.tema-body');
+  document.querySelectorAll('.tema-body.open').forEach(function(b){b.classList.remove('open');});
+  document.querySelectorAll('.tema-trigger.open').forEach(function(t){t.classList.remove('open');});
+  body.classList.add('open');trigger.classList.add('open');
+  setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},50);
+  tabs.forEach(function(t){t.classList.remove('active');});
+  tabs[i].classList.add('active');
+}
+window.addEventListener('scroll',function(){
+  var scrollY=window.scrollY+120;
+  document.querySelectorAll('.tema').forEach(function(t,i){
+    if(t.offsetTop<=scrollY){
+      tabs.forEach(function(tab){tab.classList.remove('active');});
+      if(tabs[i])tabs[i].classList.add('active');
+    }
+  });
+},{passive:true});
+</script>
+</body>
+</html>
