@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Errores Frecuentes · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000; --surface:#0d0d0d; --border:#1a1a1a; --border2:#222;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --accent:#38bdf8; --green:#10b981; --purple:#a78bfa;
+  --orange:#fb923c; --gold:#f59e0b; --red:#f43f5e;
+  --radius:8px;
+}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);
+  font-size:13px;line-height:1.55;
+  padding:20px;
+}
+
+/* SCREEN TOPBAR */
+.screen-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:rgba(0,0,0,.95);border:1px solid var(--border);
+  border-radius:8px;margin-bottom:20px;gap:12px;flex-wrap:wrap;
+}
+.screen-topbar a{color:var(--text2);font-size:.8em;text-decoration:none;}
+.screen-topbar a:hover{color:var(--accent);}
+.print-btn{padding:8px 16px;border-radius:6px;background:var(--red);color:#fff;font-weight:700;font-size:.82em;border:none;cursor:pointer;}
+
+/* SHEET */
+.sheet{max-width:800px;margin:0 auto;}
+
+.sheet-header{
+  background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);
+  padding:10px 14px;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:3px solid var(--red);
+}
+.sheet-header h1{font-size:1em;font-weight:700;color:#f1f5f9;}
+.sheet-header p{font-size:.72em;color:var(--text3);}
+
+/* TWO-COL GRID */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* ERROR BLOCK */
+.eblock{
+  background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);
+  padding:9px 11px;break-inside:avoid;
+}
+.eblock.full{grid-column:1/-1;}
+.eblock-title{
+  font-size:.65em;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;gap:5px;
+}
+.bt-red{color:var(--red);}
+.bt-orange{color:var(--orange);}
+.bt-gold{color:var(--gold);}
+.bt-green{color:var(--green);}
+.bt-accent{color:var(--accent);}
+.bt-purple{color:var(--purple);}
+
+/* ERROR ITEM */
+.eitem{
+  display:grid;grid-template-columns:1fr 1fr;gap:6px;
+  padding:5px 0;border-bottom:1px solid var(--border);font-size:.75em;
+}
+.eitem:last-child{border-bottom:none;}
+.eitem.single{grid-template-columns:1fr;}
+
+.wrong-col{padding:3px 7px;background:#1a0008;border-left:2px solid var(--red);border-radius:0 4px 4px 0;}
+.right-col{padding:3px 7px;background:#001a0e;border-left:2px solid var(--green);border-radius:0 4px 4px 0;}
+
+.col-label{font-size:.65em;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px;}
+.wrong-col .col-label{color:var(--red);}
+.right-col .col-label{color:var(--green);}
+
+.wrong-col p{color:#fca5a5;}
+.right-col p{color:#86efac;}
+
+/* SINGLE ITEMS (tips) */
+.tip-item{
+  display:flex;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);font-size:.75em;
+}
+.tip-item:last-child{border-bottom:none;}
+.tip-icon{color:var(--gold);flex-shrink:0;margin-top:1px;}
+.tip-text{color:var(--text2);}
+.tip-text strong{color:var(--text);}
+
+/* PRINT */
+@media print {
+  @page{size:A4;margin:10mm 10mm 10mm 10mm;}
+  body{background:#fff !important;color:#000 !important;font-size:8.5pt;padding:0;}
+  .screen-topbar{display:none !important;}
+  :root{
+    --bg:#fff; --surface:#fff;
+    --border:#ccc; --border2:#ddd;
+    --text:#000; --text2:#333; --text3:#666;
+    --red:#cc0000; --green:#006633; --orange:#aa4400;
+    --gold:#775500; --accent:#005588; --purple:#550088;
+  }
+  .two-col{gap:5px;}
+  .eblock{border:1px solid #ccc;padding:6px 8px;}
+  .eblock.full{break-inside:avoid;}
+  .wrong-col{background:#fff8f8;border-left:2px solid #cc0000;}
+  .right-col{background:#f0fff4;border-left:2px solid #006633;}
+  .wrong-col p{color:#770000;}
+  .right-col p{color:#004400;}
+}
+</style>
+</head>
+<body>
+
+<div class="screen-topbar">
+  <div style="display:flex;gap:14px;align-items:center;">
+    <a href="examenes.html">← Exámenes</a>
+    <a href="formulario.html">📄 Formulario</a>
+  </div>
+  <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+</div>
+
+<div class="sheet">
+
+  <div class="sheet-header">
+    <div>
+      <h1>⚠️ Errores Frecuentes — Mecánica de Fluidos UPV/EHU</h1>
+      <p>Errores reales detectados en exámenes de convocatorias 2020–2025. Incorrecto (rojo) → Correcto (verde).</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <!-- ══ HIDROSTÁTICA ══ -->
+    <div class="eblock">
+      <div class="eblock-title bt-accent">💧 Hidrostática</div>
+
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Usar profundidad de la base en F = P̄·A</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>ȳ = profundidad del <strong>centroide</strong> de la superficie</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>F_V curva = fluido encima cuando está debajo</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Fluido debajo → F_V hacia arriba = γ·V_ficticio</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Confundir 1 atm = 1 bar</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>1 atm = 101 325 Pa = 1,013 bar = 10,33 mca</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>En flotación: E = γ·V_total siempre</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>E = γ_fluido·V_<strong>sumergido</strong> (no necesariamente todo el cuerpo)</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>ΔP burbuja de jabón = 2σ/R</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Jabón (2 interfaces): ΔP = 4σ/R · Burbuja en líquido: 2σ/R</p></div>
+      </div>
+    </div>
+
+    <!-- ══ BERNOULLI ══ -->
+    <div class="eblock">
+      <div class="eblock-title bt-green">🌀 Bernoulli</div>
+
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Aplicar Bernoulli entre dos puntos de líneas de corriente distintas</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Solo válido en la <strong>misma línea de corriente</strong></p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>En depósito grande: v_superficie ≠ 0</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Depósito grande: v ≈ 0 y P = P_atm en la superficie libre</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Sumar h_f al lado de energía de salida</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>h_f siempre resta energía en el <strong>sentido del flujo</strong>: E₁ + Hm = E₂ + h_f</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>No usar continuidad antes de Bernoulli → 2 incógnitas</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Siempre: continuidad primero → v₂ = v₁·(A₁/A₂), luego Bernoulli</p></div>
+      </div>
+    </div>
+
+    <!-- ══ QdM ══ -->
+    <div class="eblock">
+      <div class="eblock-title bt-purple">💥 Cantidad de Movimiento</div>
+
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Olvidar los términos P·A en tuberías a presión</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>En QdM con presión: incluir P₁A₁ (entrada) y −P₂A₂ (salida) en ΣF</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>F sobre el fluido = F sobre la placa</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>F_placa = −F_fluido (3.ª ley de Newton)</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Chorro oblicuo: no descomponer en x e y</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Proyectar siempre. QdM es vectorial → ecuación por cada eje</p></div>
+      </div>
+    </div>
+
+    <!-- ══ TUBERÍAS ══ -->
+    <div class="eblock">
+      <div class="eblock-title bt-orange">🔧 Tuberías y Colebrook</div>
+
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>No iterar en Tipo II/III: usar f inicial como resultado final</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Siempre iterar hasta error &lt; 1 %. Mínimo 2–3 iteraciones en examen</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>ε/D con ε en mm y D en m (o al revés)</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>ε y D en las <strong>mismas unidades</strong>. ε/D es adimensional</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Tipo III: escoger diámetro comercial inferior al calculado</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Diámetro comercial <strong>superior</strong>: para que el caudal real ≥ caudal de diseño</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>En ensanchamiento brusco: h = (v₁²−v₂²)/2g</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Borda-Carnot: h = (v₁ − v₂)²/2g &nbsp;[diferencia primero, luego elevar al cuadrado]</p></div>
+      </div>
+    </div>
+
+    <!-- ══ BOMBAS ══ -->
+    <div class="eblock">
+      <div class="eblock-title bt-accent">⚙️ Bombas y NPSH</div>
+
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Olvidar Δz en la curva del sistema</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>H_sist = Δz + K·Q². El Δz es la altura geométrica entre depósitos</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>NPSH: no incluir h_f en aspiración</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>NPSH_d = (P_atm−P_v)/γ − z_b − <strong>h_f,asp</strong></p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Bombas en paralelo: sumar H a igual Q</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Paralelo: sumar Q a igual H. Serie: sumar H a igual Q</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Usar γ = 9 810 N/m³ para agua</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>UPV/EHU: g = 9,8 → γ_agua(20°C) = 9 782 N/m³. No usar 9 810</p></div>
+      </div>
+    </div>
+
+    <!-- ══ CANALES ══ -->
+    <div class="eblock">
+      <div class="eblock-title bt-gold">🌊 Canales y Manning</div>
+
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>J en % en vez de m/m (adimensional)</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>J = pendiente del fondo en m/m. Si te dan 1 ‰ → J = 0,001</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>R_h = D/4 siempre</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>R_h = D/4 solo para tubería <strong>circular llena</strong>. En canal: R_h = A/P_m</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Confundir y_c (crítico) con y_n (normal)</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>y_n → Manning (flujo uniforme). y_c → Froude = 1 (flujo crítico). Son distintos</p></div>
+      </div>
+    </div>
+
+    <!-- ══ AN. DIMENSIONAL ══ -->
+    <div class="eblock">
+      <div class="eblock-title bt-red">🔢 An. Dimensional</div>
+
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Repetidas que ya forman un grupo adimensional entre sí</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Verificar que las k repetidas son dimensionalmente independientes entre sí</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Aplicar semejanza Reynolds a canal abierto</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Canal abierto (gravedad domina) → semejanza <strong>Froude</strong>. Reynolds → tuberías a presión</p></div>
+      </div>
+    </div>
+
+    <!-- ══ MEDIDA ══ -->
+    <div class="eblock">
+      <div class="eblock-title bt-gold">📏 Medida de caudal</div>
+
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Δh de manómetro = lectura T directamente</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Δh = T·(s_manómetro/s_fluido − 1). Si ambos son agua: Δh = T</p></div>
+      </div>
+      <div class="eitem">
+        <div class="wrong-col"><div class="col-label">✗ Error</div><p>Q_venturi = A₂·√(2gΔh)</p></div>
+        <div class="right-col"><div class="col-label">✓ Correcto</div><p>Q_teo = (A₁A₂/√(A₁²−A₂²))·√(2gΔh). No se puede simplificar a solo A₂</p></div>
+      </div>
+    </div>
+
+    <!-- ══ TIPS GENERALES ══ -->
+    <div class="eblock full">
+      <div class="eblock-title bt-red">🎯 Checklist examen — antes de entregar</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">
+        <div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>g = 9,8 m/s²</strong> en todos los cálculos. No usar 9,81</span></div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>Unidades coherentes</strong>: P en Pa, L en m, Q en m³/s. No mezclar</span></div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>Continuidad antes de Bernoulli</strong>. Siempre</span></div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>Iterar Colebrook</strong> hasta error &lt;1 %. Mínimo 2 iteraciones</span></div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>Diámetro comercial superior</strong> en Tipo III</span></div>
+        </div>
+        <div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>Signos QdM</strong>: definir eje positivo antes de proyectar</span></div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>NPSH</strong>: incluir h_f en aspiración. z_b positivo si bomba está por encima</span></div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>Manómetro</strong>: Δh = T·(s_m/s_f − 1), no T directamente</span></div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>ε/D adimensional</strong>: ε y D en las mismas unidades</span></div>
+          <div class="tip-item"><span class="tip-icon">▸</span><span class="tip-text"><strong>P_v en Pa</strong> para NPSH. No confundir con P_v en bar o mca</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /two-col -->
+</div><!-- /sheet -->
+
+</body>
+</html>

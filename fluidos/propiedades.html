@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Propiedades de Fluidos · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ── AUTH ── -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer;transition:.15s}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var i=document.getElementById('auth-input'),b=document.getElementById('auth-btn'),e=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(i.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{e.textContent='Contraseña incorrecta';i.value='';i.focus();setTimeout(()=>e.textContent='',2000);}}
+    b.addEventListener('click',attempt);i.addEventListener('keydown',ev=>{if(ev.key==='Enter')attempt();});i.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000; --surface:#0d0d0d; --surface2:#111111; --surface3:#161616;
+  --border:#1a1a1a; --border2:#222222;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --accent:#38bdf8; --gold:#f59e0b; --green:#10b981; --purple:#a78bfa;
+  --radius:12px; --transition:.2s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px;}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none;}
+.topbar-back:hover{color:var(--accent)}
+.topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.topbar-badge{margin-right:20px;background:#001e2e;border:1px solid #0d3a4e;border-radius:20px;padding:4px 12px;font-size:.72em;font-weight:600;color:var(--accent);white-space:nowrap;}
+
+/* PAGE HEADER */
+.page-header{padding:36px 24px 28px;max-width:1100px;margin:0 auto;border-bottom:1px solid var(--border);}
+.page-header h1{font-size:1.7em;font-weight:700;color:#f1f5f9;margin-bottom:6px;}
+.page-header p{color:var(--text2);font-size:.88em;max-width:600px;line-height:1.7;}
+
+/* NOTA */
+.nota{max-width:1100px;margin:16px auto 0;padding:0 24px;}
+.nota-box{background:#001e2e;border:1px solid #0d3a4e;border-radius:8px;padding:10px 16px;font-size:.8em;color:var(--accent);display:flex;gap:8px;align-items:flex-start;}
+
+/* SECTION LABEL */
+.sec-label{max-width:1100px;margin:28px auto 0;padding:0 24px 10px;font-size:.72em;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:10px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* TEMP SELECTOR (agua) */
+.temp-row{max-width:1100px;margin:0 auto;padding:0 24px 16px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.temp-label{font-size:.78em;color:var(--text3);margin-right:4px;}
+.temp-btn{padding:4px 12px;border-radius:16px;font-size:.75em;font-weight:600;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:var(--transition);}
+.temp-btn:hover,.temp-btn.active{background:#001e2e;color:var(--accent);border-color:var(--accent);}
+
+/* TABLE */
+.tbl-wrap{max-width:1100px;margin:0 auto;padding:0 24px 32px;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.83em;}
+thead tr{background:var(--surface2);border-bottom:1px solid var(--border2);}
+thead th{padding:10px 14px;text-align:left;font-size:.72em;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text3);white-space:nowrap;}
+thead th.num{text-align:right;}
+tbody tr{border-bottom:1px solid var(--border);transition:background var(--transition);}
+tbody tr:hover{background:var(--surface2);}
+tbody tr.highlight{background:#001a0e;border-left:3px solid var(--green);}
+tbody tr.highlight:hover{background:#002214;}
+tbody td{padding:9px 14px;color:var(--text2);white-space:nowrap;}
+tbody td.num{text-align:right;font-variant-numeric:tabular-nums;font-family:'Inter',monospace;}
+tbody td.fluid-name{color:var(--text);font-weight:600;}
+tbody td .badge{font-size:.65em;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:6px;background:#001e2e;color:var(--accent);border:1px solid #0d3a4e;vertical-align:middle;}
+.t-note{font-size:.72em;color:var(--text3);margin-top:6px;padding:0 2px;}
+
+/* CONVERSIONES */
+.conv-grid{max-width:1100px;margin:0 auto;padding:0 24px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.conv-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:14px 16px;}
+.conv-card h3{font-size:.75em;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+.conv-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:.82em;}
+.conv-row:last-child{border-bottom:none;}
+.conv-from{color:var(--text2);}
+.conv-eq{color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums;}
+
+/* RUGOSIDADES */
+.rug-table{width:100%;border-collapse:collapse;font-size:.83em;}
+.rug-table thead th{padding:8px 14px;text-align:left;font-size:.72em;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text3);background:var(--surface2);border-bottom:1px solid var(--border2);}
+.rug-table tbody td{padding:8px 14px;color:var(--text2);border-bottom:1px solid var(--border);}
+.rug-table tbody td:first-child{color:var(--text);font-weight:500;}
+.rug-table tbody td.num{text-align:right;font-variant-numeric:tabular-nums;}
+.rug-table tbody tr:hover{background:var(--surface2);}
+
+/* FOOTER */
+.page-footer{max-width:1100px;margin:0 auto;padding:24px 24px 56px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-links{display:flex;gap:14px;flex-wrap:wrap;}
+.footer-link{color:var(--text3);font-size:.8em;text-decoration:none;transition:color var(--transition);}
+.footer-link:hover{color:var(--accent);}
+.footer-note{font-size:.75em;color:var(--text3);}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="examenes.html" class="topbar-back">← Exámenes</a>
+  <span class="topbar-title">Propiedades de Fluidos</span>
+  <span class="topbar-badge">UPV/EHU · g = 9,8 m/s²</span>
+</nav>
+
+<header class="page-header">
+  <h1>📊 Propiedades de Fluidos</h1>
+  <p>Datos de referencia para los fluidos más habituales en los exámenes de Mecánica de Fluidos UPV/EHU. Temperatura estándar 20 °C salvo indicación.</p>
+</header>
+
+<div class="nota">
+  <div class="nota-box">ℹ️ &nbsp;En UPV/EHU se usa <strong>g = 9,8 m/s²</strong>. Los valores de γ de esta tabla se calculan con ese valor. Si el enunciado da g = 9,81, recalcula.</div>
+</div>
+
+<!-- ══════════════════════ AGUA ══════════════════════ -->
+<div class="sec-label">💧 Agua — variación con la temperatura</div>
+
+<div class="temp-row">
+  <span class="temp-label">Temperatura:</span>
+  <button class="temp-btn active" data-t="0">0 °C</button>
+  <button class="temp-btn" data-t="5">5 °C</button>
+  <button class="temp-btn" data-t="10">10 °C</button>
+  <button class="temp-btn" data-t="15">15 °C</button>
+  <button class="temp-btn" data-t="20">20 °C ★</button>
+  <button class="temp-btn" data-t="25">25 °C</button>
+  <button class="temp-btn" data-t="30">30 °C</button>
+  <button class="temp-btn" data-t="40">40 °C</button>
+  <button class="temp-btn" data-t="50">50 °C</button>
+  <button class="temp-btn" data-t="60">60 °C</button>
+  <button class="temp-btn" data-t="80">80 °C</button>
+  <button class="temp-btn" data-t="100">100 °C</button>
+</div>
+
+<div class="tbl-wrap">
+  <table id="tbl-agua">
+    <thead>
+      <tr>
+        <th>Propiedad</th>
+        <th>Símbolo</th>
+        <th class="num">Valor</th>
+        <th>Unidades</th>
+        <th>Notas</th>
+      </tr>
+    </thead>
+    <tbody id="agua-body"></tbody>
+  </table>
+  <div class="t-note">★ Temperatura de referencia habitual en exámenes.</div>
+</div>
+
+<!-- ══════════════════════ OTROS FLUIDOS ══════════════════════ -->
+<div class="sec-label">🧪 Otros fluidos — a 20 °C (salvo indicación)</div>
+
+<div class="tbl-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Fluido</th>
+        <th class="num">ρ (kg/m³)</th>
+        <th class="num">γ (N/m³)</th>
+        <th class="num">μ · 10³ (Pa·s)</th>
+        <th class="num">ν · 10⁶ (m²/s)</th>
+        <th class="num">P_v (Pa)</th>
+        <th class="num">σ · 10³ (N/m)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="highlight">
+        <td class="fluid-name">Agua<span class="badge">20 °C</span></td>
+        <td class="num">998,2</td>
+        <td class="num">9 782</td>
+        <td class="num">1,002</td>
+        <td class="num">1,004</td>
+        <td class="num">2 338</td>
+        <td class="num">72,8</td>
+      </tr>
+      <tr>
+        <td class="fluid-name">Mercurio<span class="badge">20 °C</span></td>
+        <td class="num">13 546</td>
+        <td class="num">132 751</td>
+        <td class="num">1,526</td>
+        <td class="num">0,113</td>
+        <td class="num">0,16</td>
+        <td class="num">480</td>
+      </tr>
+      <tr>
+        <td class="fluid-name">Etanol<span class="badge">20 °C</span></td>
+        <td class="num">789</td>
+        <td class="num">7 732</td>
+        <td class="num">1,20</td>
+        <td class="num">1,52</td>
+        <td class="num">5 900</td>
+        <td class="num">22,0</td>
+      </tr>
+      <tr>
+        <td class="fluid-name">Glicerina<span class="badge">20 °C</span></td>
+        <td class="num">1 258</td>
+        <td class="num">12 328</td>
+        <td class="num">1 490</td>
+        <td class="num">1 184</td>
+        <td class="num">—</td>
+        <td class="num">63,4</td>
+      </tr>
+      <tr>
+        <td class="fluid-name">Gasolina<span class="badge">20 °C</span></td>
+        <td class="num">720</td>
+        <td class="num">7 056</td>
+        <td class="num">0,60</td>
+        <td class="num">0,83</td>
+        <td class="num">55 000</td>
+        <td class="num">22,0</td>
+      </tr>
+      <tr>
+        <td class="fluid-name">Aceite hidráulico<span class="badge">20 °C</span></td>
+        <td class="num">870</td>
+        <td class="num">8 526</td>
+        <td class="num">30</td>
+        <td class="num">34,5</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+      <tr>
+        <td class="fluid-name">Agua de mar<span class="badge">20 °C</span></td>
+        <td class="num">1 025</td>
+        <td class="num">10 045</td>
+        <td class="num">1,07</td>
+        <td class="num">1,044</td>
+        <td class="num">2 300</td>
+        <td class="num">73,0</td>
+      </tr>
+      <tr>
+        <td class="fluid-name">Aire<span class="badge">20 °C · 1 atm</span></td>
+        <td class="num">1,204</td>
+        <td class="num">11,80</td>
+        <td class="num">0,01813</td>
+        <td class="num">15,06</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════ RUGOSIDADES ══════════════════════ -->
+<div class="sec-label">🔩 Rugosidades de tuberías (ε)</div>
+
+<div class="tbl-wrap">
+  <table class="rug-table">
+    <thead>
+      <tr>
+        <th>Material</th>
+        <th class="num">ε (mm)</th>
+        <th class="num">ε (m)</th>
+        <th>Uso típico</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Vidrio / plástico liso (PVC, PE)</td><td class="num">0,0015</td><td class="num">1,5 · 10⁻⁶</td><td>Instalaciones domésticas</td></tr>
+      <tr><td>Acero estirado nuevo</td><td class="num">0,046</td><td class="num">4,6 · 10⁻⁵</td><td>Hidráulica industrial</td></tr>
+      <tr><td>Acero comercial / soldado</td><td class="num">0,046</td><td class="num">4,6 · 10⁻⁵</td><td>Referencia más común en exámenes</td></tr>
+      <tr><td>Hierro galvanizado</td><td class="num">0,15</td><td class="num">1,5 · 10⁻⁴</td><td>Redes de distribución</td></tr>
+      <tr><td>Fundición gris nueva</td><td class="num">0,26</td><td class="num">2,6 · 10⁻⁴</td><td>Antiguas redes urbanas</td></tr>
+      <tr><td>Hormigón liso</td><td class="num">0,3 – 3,0</td><td class="num">3·10⁻⁴ – 3·10⁻³</td><td>Grandes conducciones</td></tr>
+      <tr><td>Hierro fundido con incrustaciones</td><td class="num">1,0 – 3,0</td><td class="num">10⁻³ – 3·10⁻³</td><td>Tuberías envejecidas</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════════════ CONVERSIONES ══════════════════════ -->
+<div class="sec-label">🔄 Conversiones de unidades frecuentes</div>
+
+<div class="conv-grid">
+  <div class="conv-card">
+    <h3>Presión</h3>
+    <div class="conv-row"><span class="conv-from">1 atm</span><span class="conv-eq">= 101 325 Pa</span></div>
+    <div class="conv-row"><span class="conv-from">1 atm</span><span class="conv-eq">= 1,01325 bar</span></div>
+    <div class="conv-row"><span class="conv-from">1 atm</span><span class="conv-eq">= 10,33 mca</span></div>
+    <div class="conv-row"><span class="conv-from">1 bar</span><span class="conv-eq">= 100 000 Pa</span></div>
+    <div class="conv-row"><span class="conv-from">1 bar</span><span class="conv-eq">= 10,20 mca</span></div>
+    <div class="conv-row"><span class="conv-from">1 kgf/cm²</span><span class="conv-eq">= 98 066 Pa</span></div>
+    <div class="conv-row"><span class="conv-from">1 mca</span><span class="conv-eq">= 9 800 Pa (con g=9,8)</span></div>
+    <div class="conv-row"><span class="conv-from">1 Torr (mmHg)</span><span class="conv-eq">= 133,3 Pa</span></div>
+  </div>
+  <div class="conv-card">
+    <h3>Caudal</h3>
+    <div class="conv-row"><span class="conv-from">1 m³/s</span><span class="conv-eq">= 1 000 l/s</span></div>
+    <div class="conv-row"><span class="conv-from">1 l/s</span><span class="conv-eq">= 10⁻³ m³/s</span></div>
+    <div class="conv-row"><span class="conv-from">1 m³/h</span><span class="conv-eq">= 2,778 · 10⁻⁴ m³/s</span></div>
+    <div class="conv-row"><span class="conv-from">1 l/min</span><span class="conv-eq">= 1,667 · 10⁻⁵ m³/s</span></div>
+  </div>
+  <div class="conv-card">
+    <h3>Energía / Potencia</h3>
+    <div class="conv-row"><span class="conv-from">1 CV (caballo)</span><span class="conv-eq">= 735,5 W</span></div>
+    <div class="conv-row"><span class="conv-from">1 HP (horsepower)</span><span class="conv-eq">= 745,7 W</span></div>
+    <div class="conv-row"><span class="conv-from">1 kW</span><span class="conv-eq">= 1 000 W</span></div>
+    <div class="conv-row"><span class="conv-from">N·u = ρgQH</span><span class="conv-eq">[W]</span></div>
+  </div>
+  <div class="conv-card">
+    <h3>Viscosidad</h3>
+    <div class="conv-row"><span class="conv-from">1 Pa·s</span><span class="conv-eq">= 1 N·s/m² = 1 kg/(m·s)</span></div>
+    <div class="conv-row"><span class="conv-from">1 cP (centipoise)</span><span class="conv-eq">= 10⁻³ Pa·s</span></div>
+    <div class="conv-row"><span class="conv-from">1 St (stokes)</span><span class="conv-eq">= 10⁻⁴ m²/s</span></div>
+    <div class="conv-row"><span class="conv-from">1 cSt</span><span class="conv-eq">= 10⁻⁶ m²/s</span></div>
+  </div>
+  <div class="conv-card">
+    <h3>Densidades relativas (s)</h3>
+    <div class="conv-row"><span class="conv-from">Mercurio</span><span class="conv-eq">s = 13,55</span></div>
+    <div class="conv-row"><span class="conv-from">Agua de mar</span><span class="conv-eq">s = 1,025</span></div>
+    <div class="conv-row"><span class="conv-from">Etanol</span><span class="conv-eq">s = 0,789</span></div>
+    <div class="conv-row"><span class="conv-from">Gasolina</span><span class="conv-eq">s = 0,72</span></div>
+    <div class="conv-row"><span class="conv-from">Aceite hidráulico</span><span class="conv-eq">s ≈ 0,87</span></div>
+  </div>
+  <div class="conv-card">
+    <h3>Constantes útiles</h3>
+    <div class="conv-row"><span class="conv-from">g (UPV/EHU)</span><span class="conv-eq">9,8 m/s²</span></div>
+    <div class="conv-row"><span class="conv-from">ρ agua (20 °C)</span><span class="conv-eq">998,2 kg/m³</span></div>
+    <div class="conv-row"><span class="conv-from">γ agua (20 °C)</span><span class="conv-eq">9 782 N/m³</span></div>
+    <div class="conv-row"><span class="conv-from">P_atm estándar</span><span class="conv-eq">101 325 Pa</span></div>
+    <div class="conv-row"><span class="conv-from">T estándar</span><span class="conv-eq">20 °C = 293,15 K</span></div>
+  </div>
+</div>
+
+<div class="page-footer">
+  <div class="footer-links">
+    <a href="examenes.html" class="footer-link">← Exámenes</a>
+    <a href="estrategia.html" class="footer-link">🎯 Estrategia</a>
+    <a href="colebrook.html" class="footer-link">🔧 Calculadora Colebrook</a>
+  </div>
+  <span class="footer-note">UPV/EHU · Mecánica de Fluidos · g = 9,8 m/s²</span>
+</div>
+
+<script>
+// ── DATOS AGUA ──
+var aguaData = {
+    0:  {rho:999.8, gamma:9798, mu:1.792, nu:1.792, Pv:611,    sigma:75.6, E:2050},
+    5:  {rho:999.9, gamma:9799, mu:1.519, nu:1.519, Pv:872,    sigma:74.9, E:2130},
+   10:  {rho:999.7, gamma:9797, mu:1.307, nu:1.307, Pv:1228,   sigma:74.2, E:2180},
+   15:  {rho:999.1, gamma:9791, mu:1.139, nu:1.140, Pv:1705,   sigma:73.5, E:2200},
+   20:  {rho:998.2, gamma:9782, mu:1.002, nu:1.004, Pv:2338,   sigma:72.8, E:2190},
+   25:  {rho:997.0, gamma:9771, mu:0.891, nu:0.893, Pv:3169,   sigma:72.0, E:2180},
+   30:  {rho:995.7, gamma:9757, mu:0.798, nu:0.801, Pv:4243,   sigma:71.2, E:2150},
+   40:  {rho:992.2, gamma:9722, mu:0.653, nu:0.658, Pv:7384,   sigma:69.6, E:2050},
+   50:  {rho:988.1, gamma:9683, mu:0.548, nu:0.554, Pv:12349,  sigma:67.9, E:1930},
+   60:  {rho:983.2, gamma:9635, mu:0.467, nu:0.475, Pv:19940,  sigma:66.2, E:1820},
+   80:  {rho:971.8, gamma:9523, mu:0.355, nu:0.365, Pv:47390,  sigma:62.6, E:1540},
+  100:  {rho:958.4, gamma:9392, mu:0.282, nu:0.294, Pv:101325, sigma:58.9, E:1230},
+};
+
+function fmtNum(n, dec){
+  return n.toLocaleString('es-ES', {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+
+function renderAgua(T){
+  var d = aguaData[T];
+  var rows = [
+    ['Densidad',                        'ρ',      fmtNum(d.rho,1),       'kg/m³',  ''],
+    ['Peso específico (g=9,8)',          'γ',      fmtNum(d.gamma,0),     'N/m³',   'γ = ρ·g'],
+    ['Viscosidad dinámica × 10³',        'μ',      fmtNum(d.mu,3),        'Pa·s',   ''],
+    ['Viscosidad cinemática × 10⁶',      'ν',      fmtNum(d.nu,3),        'm²/s',   'ν = μ/ρ'],
+    ['Presión de vapor',                 'P_v',    fmtNum(d.Pv,0),        'Pa',     'Clave para NPSH'],
+    ['Tensión superficial × 10³',        'σ',      fmtNum(d.sigma,1),     'N/m',    'Capilaridad'],
+    ['Módulo de compresibilidad × 10⁻⁶', 'E',      fmtNum(d.E,0),         'Pa',     'Compresibilidad'],
+  ];
+  var isRef = (T === 20);
+  var tbody = document.getElementById('agua-body');
+  tbody.innerHTML = rows.map(function(r){
+    return '<tr' + (isRef?' class="highlight"':'') + '>'
+      + '<td class="fluid-name">' + r[0] + '</td>'
+      + '<td style="color:var(--purple);font-style:italic">' + r[1] + '</td>'
+      + '<td class="num" style="color:var(--accent);font-weight:600">' + r[2] + '</td>'
+      + '<td style="color:var(--text3)">' + r[3] + '</td>'
+      + '<td style="color:var(--text3);font-size:.8em">' + r[4] + '</td>'
+      + '</tr>';
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  renderAgua(0);
+  document.querySelectorAll('.temp-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.temp-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      renderAgua(parseInt(btn.dataset.t));
+    });
+  });
+});
+</script>
+</body>
+</html>

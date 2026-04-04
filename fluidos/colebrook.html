@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Calculadora Colebrook · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- AUTH -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer;transition:.15s}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';
+  var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var i=document.getElementById('auth-input'),b=document.getElementById('auth-btn'),e=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(i.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{e.textContent='Contraseña incorrecta';i.value='';i.focus();setTimeout(()=>e.textContent='',2000);}}
+    b.addEventListener('click',attempt);i.addEventListener('keydown',ev=>{if(ev.key==='Enter')attempt();});i.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000; --surface:#0d0d0d; --surface2:#111111; --surface3:#161616;
+  --border:#1a1a1a; --border2:#222222;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --accent:#38bdf8; --gold:#f59e0b; --green:#10b981; --purple:#a78bfa;
+  --red:#f43f5e; --orange:#fb923c;
+  --radius:12px; --transition:.2s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px;}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none;}
+.topbar-back:hover{color:var(--accent)}
+.topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9;}
+.topbar-badge{margin-right:20px;background:#2e1400;border:1px solid #4e2800;border-radius:20px;padding:4px 12px;font-size:.72em;font-weight:600;color:var(--orange);white-space:nowrap;}
+
+/* HEADER */
+.page-header{padding:36px 24px 28px;max-width:1100px;margin:0 auto;border-bottom:1px solid var(--border);}
+.page-header h1{font-size:1.7em;font-weight:700;color:#f1f5f9;margin-bottom:6px;}
+.page-header p{color:var(--text2);font-size:.88em;max-width:600px;line-height:1.7;}
+
+/* LAYOUT */
+.main-layout{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;}
+@media(max-width:800px){.main-layout{grid-template-columns:1fr;}}
+
+/* PANEL INPUTS */
+.panel{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:22px;}
+.panel-title{font-size:.8em;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:.78em;font-weight:600;color:var(--text2);margin-bottom:5px;}
+.field input,.field select{
+  width:100%;padding:9px 12px;border-radius:8px;
+  background:var(--surface3);border:1px solid var(--border2);
+  color:var(--text);font-size:.88em;font-family:inherit;
+  outline:none;transition:border-color var(--transition);
+}
+.field input:focus,.field select:focus{border-color:var(--accent);}
+.field .hint{font-size:.7em;color:var(--text3);margin-top:3px;}
+
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* MATERIAL PRESETS */
+.preset-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.preset-btn{padding:3px 10px;border-radius:12px;font-size:.7em;font-weight:600;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:var(--transition);}
+.preset-btn:hover{background:#2e1400;color:var(--orange);border-color:var(--orange);}
+
+/* FLUID PRESETS */
+.fluid-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.fluid-btn{padding:3px 10px;border-radius:12px;font-size:.7em;font-weight:600;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:var(--transition);}
+.fluid-btn:hover{background:#001e2e;color:var(--accent);border-color:var(--accent);}
+
+/* CALC BTN */
+.calc-btn{width:100%;margin-top:6px;padding:12px;border-radius:8px;background:var(--orange);color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer;transition:.15s;}
+.calc-btn:hover{background:#f97316;}
+
+.divider-h{border:none;border-top:1px solid var(--border);margin:16px 0;}
+
+/* RIGHT PANEL */
+.results-area{display:flex;flex-direction:column;gap:16px;}
+
+/* REGIME BANNER */
+.regime-banner{border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;font-size:.88em;}
+.regime-banner.laminar{background:#001e2e;border:1px solid var(--accent);}
+.regime-banner.transicion{background:#2e1e00;border:1px solid var(--gold);}
+.regime-banner.turbulento{background:#2e0a00;border:1px solid var(--orange);}
+.regime-icon{font-size:1.5em;}
+.regime-text strong{display:block;font-size:1.05em;color:var(--text);}
+.regime-text span{color:var(--text2);font-size:.85em;}
+
+/* RESULT CARDS */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.res-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;text-align:center;}
+.res-card .rval{font-size:1.3em;font-weight:700;color:var(--accent);display:block;margin-bottom:2px;font-variant-numeric:tabular-nums;}
+.res-card .rval.green{color:var(--green);}
+.res-card .rval.orange{color:var(--orange);}
+.res-card .rval.purple{color:var(--purple);}
+.res-card .rlabel{font-size:.7em;color:var(--text3);}
+
+/* ITERACIONES */
+.iter-panel{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;}
+.iter-title{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px;}
+table.iter-tbl{width:100%;border-collapse:collapse;font-size:.8em;}
+.iter-tbl thead th{padding:6px 10px;text-align:right;color:var(--text3);font-size:.75em;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid var(--border2);}
+.iter-tbl thead th:first-child{text-align:center;}
+.iter-tbl tbody td{padding:7px 10px;text-align:right;font-variant-numeric:tabular-nums;color:var(--text2);border-bottom:1px solid var(--border);}
+.iter-tbl tbody td:first-child{text-align:center;color:var(--text3);}
+.iter-tbl tbody tr:last-child{background:#001a0e;}
+.iter-tbl tbody tr:last-child td{color:var(--green);font-weight:600;border-bottom:none;}
+
+/* FORMULAS BOX */
+.formula-panel{background:#0d0d1a;border:1px solid #1a1a33;border-radius:var(--radius);padding:16px;}
+.formula-panel h4{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--purple);margin-bottom:12px;}
+.formula-line{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1a1a22;font-size:.82em;}
+.formula-line:last-child{border-bottom:none;}
+.formula-line .fname{color:var(--text3);}
+.formula-line .fval{color:var(--purple);font-family:monospace;font-size:.95em;}
+
+/* MOODY DIAGRAM */
+.moody-wrap{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;}
+.moody-title{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px;}
+#moody-svg{width:100%;height:auto;display:block;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 24px;color:var(--text3);}
+.empty-state .es-icon{font-size:2.5em;margin-bottom:12px;}
+.empty-state p{font-size:.85em;line-height:1.6;}
+
+/* FOOTER */
+.page-footer{max-width:1100px;margin:0 auto;padding:20px 24px 56px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-link{color:var(--text3);font-size:.8em;text-decoration:none;transition:color var(--transition);}
+.footer-link:hover{color:var(--accent);}
+.footer-note{font-size:.75em;color:var(--text3);}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="examenes.html" class="topbar-back">← Exámenes</a>
+  <span class="topbar-title">Calculadora Colebrook-White + Moody</span>
+  <span class="topbar-badge">Tuberías a presión</span>
+</nav>
+
+<header class="page-header">
+  <h1>🔧 Calculadora Colebrook-White</h1>
+  <p>Calcula el factor de fricción f, pérdidas de carga y régimen de flujo. Muestra cada iteración de Colebrook-White y el punto en el diagrama de Moody.</p>
+</header>
+
+<div class="main-layout">
+
+  <!-- ── PANEL IZQUIERDO ── -->
+  <div>
+    <div class="panel">
+      <div class="panel-title">⚙️ Datos de la instalación</div>
+
+      <!-- GEOMETRÍA -->
+      <div class="field">
+        <label>Diámetro interior D (m)</label>
+        <input type="number" id="inp-D" value="0.1" step="0.001" min="0.001">
+        <div class="hint">Ej: 0.1 = 100 mm</div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Longitud L (m)</label>
+          <input type="number" id="inp-L" value="100" step="1" min="0">
+        </div>
+        <div class="field">
+          <label>Rugosidad ε (mm)</label>
+          <input type="number" id="inp-eps" value="0.046" step="0.001" min="0">
+        </div>
+      </div>
+
+      <!-- PRESETS RUGOSIDAD -->
+      <div class="preset-row" id="preset-row">
+        <button class="preset-btn" data-eps="0.0015">PVC/vidrio</button>
+        <button class="preset-btn" data-eps="0.046">Acero comercial</button>
+        <button class="preset-btn" data-eps="0.15">Galvanizado</button>
+        <button class="preset-btn" data-eps="0.26">Fundición</button>
+        <button class="preset-btn" data-eps="1.0">Hormigón</button>
+      </div>
+
+      <hr class="divider-h">
+
+      <!-- FLUIDO -->
+      <div class="field">
+        <label>Viscosidad cinemática ν (m²/s)</label>
+        <input type="number" id="inp-nu" value="1.004e-6" step="1e-7" min="0">
+      </div>
+
+      <div class="fluid-row">
+        <button class="fluid-btn" data-nu="1.004e-6">Agua 20°C</button>
+        <button class="fluid-btn" data-nu="1.307e-6">Agua 10°C</button>
+        <button class="fluid-btn" data-nu="0.658e-6">Agua 40°C</button>
+        <button class="fluid-btn" data-nu="1.52e-6">Etanol 20°C</button>
+        <button class="fluid-btn" data-nu="1.51e-5">Aire 20°C</button>
+        <button class="fluid-btn" data-nu="3.45e-5">Aceite hidráulico</button>
+      </div>
+
+      <hr class="divider-h">
+
+      <!-- CAUDAL -->
+      <div class="field">
+        <label>Caudal Q (m³/s)</label>
+        <input type="number" id="inp-Q" value="0.01" step="0.001" min="0">
+        <div class="hint">Ej: 0.01 = 10 l/s</div>
+      </div>
+
+      <!-- O VELOCIDAD -->
+      <div class="field">
+        <label>— o bien — Velocidad v (m/s) <span style="color:var(--text3);font-weight:400">(si dejas Q vacío)</span></label>
+        <input type="number" id="inp-v" placeholder="—" step="0.01" min="0">
+      </div>
+
+      <button class="calc-btn" id="btn-calc">Calcular →</button>
+    </div>
+  </div>
+
+  <!-- ── PANEL DERECHO ── -->
+  <div class="results-area" id="results-area">
+    <div class="empty-state">
+      <div class="es-icon">📐</div>
+      <p>Introduce los datos y pulsa <strong>Calcular</strong><br>para obtener f, Re, h_f y las iteraciones de Colebrook.</p>
+    </div>
+  </div>
+
+</div><!-- /main-layout -->
+
+<div class="page-footer">
+  <div style="display:flex;gap:14px;">
+    <a href="examenes.html" class="footer-link">← Exámenes</a>
+    <a href="estrategia.html" class="footer-link">🎯 Estrategia</a>
+    <a href="propiedades.html" class="footer-link">📊 Propiedades</a>
+  </div>
+  <span class="footer-note">UPV/EHU · Colebrook-White iteration</span>
+</div>
+
+<script>
+// ── PRESETS ──
+document.querySelectorAll('.preset-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.getElementById('inp-eps').value = btn.dataset.eps;
+  });
+});
+document.querySelectorAll('.fluid-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.getElementById('inp-nu').value = btn.dataset.nu;
+  });
+});
+
+// ── COLEBROOK ──
+function colebrook(Re, eD){
+  // Swamee-Jain initial guess
+  var f = 0.25 / Math.pow(Math.log10(eD/3.7 + 5.74/Math.pow(Re, 0.9)), 2);
+  var iters = [{i: 0, f: f, err: null}];
+  for(var k = 0; k < 20; k++){
+    var rhs = -2 * Math.log10(eD/3.7 + 2.51/(Re * Math.sqrt(f)));
+    var f_new = 1 / (rhs * rhs);
+    var err = Math.abs(f_new - f) / f;
+    iters.push({i: k+1, f: f_new, err: err});
+    f = f_new;
+    if(err < 1e-6) break;
+  }
+  return {f: f, iters: iters};
+}
+
+function fmt(n, sig){
+  if(n === null || n === undefined || isNaN(n)) return '—';
+  return n.toPrecision(sig);
+}
+function fmtFixed(n, dec){
+  if(n === null || isNaN(n)) return '—';
+  return n.toFixed(dec);
+}
+
+// ── MOODY SVG ──
+function drawMoody(Re_point, eD_point, f_point){
+  var W = 600, H = 340;
+  var ml = 52, mr = 20, mt = 20, mb = 40;
+  var pw = W - ml - mr, ph = H - mt - mb;
+
+  var ReMin = 600, ReMax = 1e8;
+  var fMin = 0.008, fMax = 0.1;
+
+  function xScale(Re){ return ml + pw * (Math.log10(Re) - Math.log10(ReMin)) / (Math.log10(ReMax) - Math.log10(ReMin)); }
+  function yScale(f){  return mt + ph * (1 - (Math.log10(f) - Math.log10(fMin)) / (Math.log10(fMax) - Math.log10(fMin))); }
+
+  var svg = '<svg id="moody-svg" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="font-family:Inter,sans-serif;font-size:10px">';
+
+  // Background
+  svg += '<rect width="' + W + '" height="' + H + '" fill="#0d0d0d"/>';
+
+  // Grid X (Re)
+  var reGridVals = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8];
+  reGridVals.forEach(function(re){
+    var x = xScale(re);
+    svg += '<line x1="'+x+'" y1="'+mt+'" x2="'+x+'" y2="'+(mt+ph)+'" stroke="#1a1a1a" stroke-width="1"/>';
+    svg += '<text x="'+x+'" y="'+(mt+ph+14)+'" text-anchor="middle" fill="#555" font-size="9">'+re.toExponential(0)+'</text>';
+  });
+
+  // Grid Y (f)
+  var fGridVals = [0.008, 0.01, 0.015, 0.02, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1];
+  fGridVals.forEach(function(fv){
+    var y = yScale(fv);
+    svg += '<line x1="'+ml+'" y1="'+y+'" x2="'+(ml+pw)+'" y2="'+y+'" stroke="#1a1a1a" stroke-width="1"/>';
+    svg += '<text x="'+(ml-4)+'" y="'+(y+3)+'" text-anchor="end" fill="#555" font-size="9">'+fv+'</text>';
+  });
+
+  // Laminar line f = 64/Re
+  var lamPath = '';
+  for(var re = 600; re <= 2300; re += 50){
+    var f_lam = 64/re;
+    if(f_lam < fMax && f_lam > fMin){
+      var x = xScale(re), y = yScale(f_lam);
+      lamPath += (lamPath===''? 'M ':'L ') + x + ' ' + y + ' ';
+    }
+  }
+  svg += '<path d="'+lamPath+'" stroke="#38bdf8" stroke-width="1.5" fill="none" opacity="0.8"/>';
+  svg += '<text x="'+xScale(1400)+'" y="'+(yScale(64/1400)-6)+'" fill="#38bdf8" font-size="8.5">f = 64/Re</text>';
+
+  // Turbulent curves for several ε/D values
+  var eDvals = [0, 0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05];
+  var colors = ['#334', '#334', '#334', '#334', '#334', '#334', '#334', '#334', '#334', '#334'];
+  eDvals.forEach(function(ed, idx){
+    var path = '';
+    for(var logRe = 3.4; logRe <= 8; logRe += 0.04){
+      var re = Math.pow(10, logRe);
+      var f = 0.02;
+      for(var k = 0; k < 30; k++){
+        var rhs = -2*Math.log10(ed/3.7 + 2.51/(re*Math.sqrt(f)));
+        f = 1/(rhs*rhs);
+      }
+      if(f >= fMin && f <= fMax){
+        var x = xScale(re), y = yScale(f);
+        path += (path===''?'M ':'L ') + x + ' ' + y + ' ';
+      }
+    }
+    svg += '<path d="'+path+'" stroke="#2a2a3a" stroke-width="1" fill="none"/>';
+  });
+
+  // Transition zone
+  svg += '<rect x="'+xScale(2300)+'" y="'+mt+'" width="'+(xScale(4000)-xScale(2300))+'" height="'+ph+'" fill="#2e1e00" opacity="0.3"/>';
+  svg += '<line x1="'+xScale(2300)+'" y1="'+mt+'" x2="'+xScale(2300)+'" y2="'+(mt+ph)+'" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>';
+  svg += '<line x1="'+xScale(4000)+'" y1="'+mt+'" x2="'+xScale(4000)+'" y2="'+(mt+ph)+'" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>';
+
+  // Axis labels
+  svg += '<text x="'+(ml+pw/2)+'" y="'+(H-4)+'" text-anchor="middle" fill="#555" font-size="9.5">Número de Reynolds (Re)</text>';
+  svg += '<text transform="rotate(-90,'+(ml-38)+','+(mt+ph/2)+')" x="'+(ml-38)+'" y="'+(mt+ph/2)+'" text-anchor="middle" fill="#555" font-size="9.5">Factor de fricción f</text>';
+
+  // Border
+  svg += '<rect x="'+ml+'" y="'+mt+'" width="'+pw+'" height="'+ph+'" fill="none" stroke="#2a2a2a" stroke-width="1"/>';
+
+  // Operating point
+  if(Re_point && f_point && Re_point >= ReMin && Re_point <= ReMax && f_point >= fMin && f_point <= fMax){
+    var xp = xScale(Re_point), yp = yScale(f_point);
+    // Crosshairs
+    svg += '<line x1="'+ml+'" y1="'+yp+'" x2="'+(ml+pw)+'" y2="'+yp+'" stroke="#10b981" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>';
+    svg += '<line x1="'+xp+'" y1="'+mt+'" x2="'+xp+'" y2="'+(mt+ph)+'" stroke="#10b981" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>';
+    // Point
+    svg += '<circle cx="'+xp+'" cy="'+yp+'" r="7" fill="#10b981" opacity="0.25"/>';
+    svg += '<circle cx="'+xp+'" cy="'+yp+'" r="4" fill="#10b981"/>';
+    // Labels
+    var labelX = xp + (xp > ml + pw*0.7 ? -55 : 8);
+    var labelY = yp + (yp > mt + ph*0.7 ? -10 : -10);
+    svg += '<rect x="'+(labelX-2)+'" y="'+(labelY-11)+'" width="62" height="13" rx="3" fill="#001a0e"/>';
+    svg += '<text x="'+labelX+'" y="'+labelY+'" fill="#10b981" font-size="8.5" font-weight="600">f = '+f_point.toFixed(4)+'</text>';
+  }
+
+  svg += '</svg>';
+  return svg;
+}
+
+// ── CALCULATE ──
+document.getElementById('btn-calc').addEventListener('click', function(){
+  var D   = parseFloat(document.getElementById('inp-D').value);
+  var L   = parseFloat(document.getElementById('inp-L').value);
+  var eps = parseFloat(document.getElementById('inp-eps').value) / 1000; // mm → m
+  var nu  = parseFloat(document.getElementById('inp-nu').value);
+  var Q_in = parseFloat(document.getElementById('inp-Q').value);
+  var v_in = parseFloat(document.getElementById('inp-v').value);
+
+  if(!D || !nu || D <= 0 || nu <= 0){ alert('Introduce D y ν correctamente.'); return; }
+
+  var A = Math.PI * D * D / 4;
+  var v, Q;
+  if(Q_in && Q_in > 0){
+    Q = Q_in; v = Q / A;
+  } else if(v_in && v_in > 0){
+    v = v_in; Q = v * A;
+  } else {
+    alert('Introduce Q o v.'); return;
+  }
+
+  var Re = v * D / nu;
+  var eD = eps / D;
+
+  var regime, regimeClass, regimeDesc;
+  if(Re < 2300){
+    regime = 'Flujo laminar'; regimeClass = 'laminar';
+    regimeDesc = 'Re < 2300 · f = 64/Re (Hagen-Poiseuille)';
+  } else if(Re < 4000){
+    regime = 'Zona de transición'; regimeClass = 'transicion';
+    regimeDesc = '2300 < Re < 4000 · f incierto — usar con precaución';
+  } else {
+    regime = 'Flujo turbulento'; regimeClass = 'turbulento';
+    regimeDesc = 'Re > 4000 · Colebrook-White iterativo';
+  }
+
+  var f, iters;
+  if(Re < 2300){
+    f = 64 / Re;
+    iters = null;
+  } else {
+    var res = colebrook(Re, eD);
+    f = res.f; iters = res.iters;
+  }
+
+  var hf = f * (L/D) * (v*v) / (2*9.8);
+  var v2_2g = (v*v) / (2*9.8);
+
+  // ── RENDER ──
+  var html = '';
+
+  // Regime banner
+  var icons = {laminar:'🔵', transicion:'🟡', turbulento:'🔴'};
+  html += '<div class="regime-banner ' + regimeClass + '">';
+  html += '<span class="regime-icon">' + icons[regimeClass] + '</span>';
+  html += '<div class="regime-text"><strong>' + regime + '</strong><span>' + regimeDesc + '</span></div>';
+  html += '</div>';
+
+  // Result cards
+  html += '<div class="res-grid">';
+  html += card('Re', Re.toExponential(3), '—', 'Número de Reynolds', 'accent');
+  html += card('ε/D', eD.toExponential(2), '—', 'Rugosidad relativa', 'orange');
+  html += card('v', v.toFixed(4), 'm/s', 'Velocidad', 'accent');
+  html += card('Q', (Q*1000).toFixed(4), 'l/s', 'Caudal', 'accent');
+  html += card('f', f.toFixed(6), '—', 'Factor de fricción', 'green');
+  html += card('v²/2g', v2_2g.toFixed(5), 'm', 'Energía cinética', 'purple');
+  html += card('h_f', hf.toFixed(4), 'm', 'Pérdida de carga', 'green');
+  html += card('J = h_f/L', (hf/L).toFixed(6), 'm/m', 'Pendiente hidráulica', 'purple');
+  html += '</div>';
+
+  // Formulas
+  html += '<div class="formula-panel">';
+  html += '<h4>⚡ Fórmulas aplicadas</h4>';
+  if(Re < 2300){
+    html += fline('f = 64/Re', 'f = 64 / ' + Re.toFixed(0) + ' = ' + f.toFixed(6));
+  } else {
+    html += fline('Colebrook-White', '1/√f = −2·log(ε/D/3.7 + 2.51/(Re·√f))');
+    html += fline('Inicio (Swamee-Jain)', 'f₀ = ' + (iters[0].f).toPrecision(5));
+  }
+  html += fline('h_f = f·(L/D)·v²/2g', f.toFixed(5) + '·(' + L + '/' + D + ')·' + v2_2g.toFixed(5) + ' = ' + hf.toFixed(4) + ' m');
+  html += '</div>';
+
+  // Iterations
+  if(iters && iters.length > 1){
+    html += '<div class="iter-panel">';
+    html += '<div class="iter-title">📋 Iteraciones Colebrook-White</div>';
+    html += '<div style="overflow-x:auto"><table class="iter-tbl"><thead><tr><th>It.</th><th>f</th><th>1/√f</th><th>Error rel. (%)</th></tr></thead><tbody>';
+    iters.forEach(function(it){
+      var sqrtf = 1/Math.sqrt(it.f);
+      html += '<tr><td>' + it.i + '</td>';
+      html += '<td>' + it.f.toFixed(7) + '</td>';
+      html += '<td>' + sqrtf.toFixed(5) + '</td>';
+      html += '<td>' + (it.err !== null ? (it.err*100).toExponential(2) : '(inicio)') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    html += '<div style="font-size:.72em;color:var(--text3);margin-top:8px">La última fila (verde) es el valor convergido.</div>';
+    html += '</div>';
+  }
+
+  // Moody
+  html += '<div class="moody-wrap">';
+  html += '<div class="moody-title">📈 Diagrama de Moody — punto de operación</div>';
+  html += drawMoody(Re, eD, f);
+  html += '<div style="font-size:.72em;color:var(--text3);margin-top:8px">🟢 Punto verde = condición de operación actual. Banda amarilla = zona de transición.</div>';
+  html += '</div>';
+
+  document.getElementById('results-area').innerHTML = html;
+});
+
+function card(label, val, unit, desc, color){
+  return '<div class="res-card">'
+    + '<span class="rval ' + (color||'accent') + '">' + val + (unit && unit !== '—' ? ' <span style="font-size:.55em;font-weight:400">'+unit+'</span>' : '') + '</span>'
+    + '<span class="rlabel">' + label + ' — ' + desc + '</span>'
+    + '</div>';
+}
+function fline(name, val){
+  return '<div class="formula-line"><span class="fname">' + name + '</span><span class="fval">' + val + '</span></div>';
+}
+
+// Allow Enter key on inputs
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter') document.getElementById('btn-calc').click();
+});
+</script>
+</body>
+</html>
