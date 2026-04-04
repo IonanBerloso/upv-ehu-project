@@ -275,11 +275,15 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     </div>
   </div>
   <div class="ex-body">
-    <div class="enunciado">Se desea calcular la presión en el fondo de una fosa oceánica a $h = 1500\ \text{m}$ de profundidad. El agua del mar en superficie tiene densidad $\rho_a = 1025\ \text{kg/m}^3$ y módulo volumétrico de compresibilidad $E_v = 2{,}1 \times 10^9\ \text{Pa}$.
+    <div class="enunciado">Se desea conocer la presión existente (MPa) en el océano a $h = 1500\ \text{m}$ de profundidad respecto a la superficie. El peso específico del agua de mar en superficie es $\gamma_0 = 1025\ \text{kg/m}^3$ y el módulo de elasticidad volumétrica del agua es $E_v = 2{,}1 \times 10^8\ \text{kg/m}^2 = 2{,}058 \times 10^9\ \text{Pa}$ (en unidades técnicas: $1\ \text{kgf/m}^2 = 9{,}8\ \text{Pa}$).
 
-<b>a)</b> Calcula la presión suponiendo el agua <em>incompresible</em>.
-<b>b)</b> Calcula la presión considerando el efecto de la compresibilidad (primera corrección).
-<b>c)</b> Calcula la densidad del agua en el fondo $\rho_b$.</div>
+<b>a)</b> Calcular el valor de la presión, en el caso de que el fluido sea incompresible.
+<b>b)</b> Calcular el valor de la presión, suponiendo que el agua de mar es compresible y aumenta el peso específico a medida que aumenta la profundidad.
+<b>c)</b> Indicar los valores de la densidad del agua de mar en los dos casos a) y b) a 1500 m de profundidad.
+
+<b>Ayuda:</b> Ecuación de la estática para fluidos compresibles: $dp = \gamma \cdot dh$.
+
+<b>Resultados:</b> 15,07 MPa; 15,12 MPa; $\rho_a = 1025\ \text{kg/m}^3$; $\rho_b = 1032{,}56\ \text{kg/m}^3$.</div>
 
     <div class="seccion s-datos sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📋 Datos<span class="sarr">▼</span></button>
@@ -288,7 +292,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
           <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
           <tr><td>$h$</td><td>$1500\ \text{m}$</td><td>Profundidad</td></tr>
           <tr><td>$\rho_a$</td><td>$1025\ \text{kg/m}^3$</td><td>Densidad en superficie</td></tr>
-          <tr><td>$E_v$</td><td>$2{,}1 \times 10^9\ \text{Pa}$</td><td>Módulo volumétrico (agua de mar)</td></tr>
+          <tr><td>$E_v$</td><td>$2{,}1 \times 10^8\ \text{kgf/m}^2 = 2{,}058 \times 10^9\ \text{Pa}$</td><td>Módulo de elasticidad volumétrica ($\approx 2{,}1 \times 10^9$ Pa)</td></tr>
           <tr><td>$g$</td><td>$9{,}8\ \text{m/s}^2$</td><td>Aceleración de la gravedad</td></tr>
         </table>
       </div>
@@ -329,8 +333,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
           $$P_{\text{comp}} = 15{,}07 + 0{,}054 \approx \boxed{15{,}12\ \text{MPa}}$$
         </div>
         <div class="paso">
-          <div class="paso-titulo">Apartado c — Densidad en el fondo</div>
-          $$\rho_b = \rho_a\left(1 + \frac{P_{\text{comp}}}{E_v}\right) = 1025\left(1 + \frac{15{,}12 \times 10^6}{2{,}1 \times 10^9}\right) = 1025 \times 1{,}00720 \approx \boxed{1032{,}56\ \text{kg/m}^3}$$
+          <div class="paso-titulo">Apartado c — Densidad del agua de mar en los dos casos</div>
+          <p><strong>Caso a (incompresible):</strong> la densidad no varía con la profundidad por hipótesis:</p>
+          $$\boxed{\rho_a = 1025\ \text{kg/m}^3}$$
+          <p><strong>Caso b (compresible):</strong> de la definición de $E_v$: $d\rho/\rho = dP/E_v$ → integrando: $\rho = \rho_0\,e^{P/E_v}$</p>
+          $$\rho_b = \rho_0 \cdot e^{P_{\text{comp}}/E_v} = 1025 \times e^{15{,}12 \times 10^6\,/\,2{,}1 \times 10^9}$$
+          $$= 1025 \times e^{0{,}007200} = 1025 \times 1{,}007226 = \boxed{1032{,}56\ \text{kg/m}^3}$$
         </div>
       </div>
     </div>
@@ -340,7 +348,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="sec-body">
         <div class="concl-item">$P_{\text{incompresible}} = 15{,}07\ \text{MPa}$ — hipótesis conservadora que subestima ligeramente la presión real.</div>
         <div class="concl-item">$P_{\text{compresible}} = 15{,}12\ \text{MPa}$ — corrección de +0,05 MPa (+0,35 %), pequeña pero apreciable a grandes profundidades.</div>
-        <div class="concl-item">$\rho_b = 1032{,}56\ \text{kg/m}^3$ — el agua se comprime un 0,72 % a 1500 m, confirmando que el agua de mar es muy poco compresible.</div>
+        <div class="concl-item">$\rho_a = 1025\ \text{kg/m}^3$ (caso incompresible, densidad constante); $\rho_b = 1032{,}56\ \text{kg/m}^3$ (caso compresible, $\rho = \rho_0\,e^{P/E_v}$) — el agua se comprime un 0,72 % a 1500 m.</div>
       </div>
     </div>
   </div>
