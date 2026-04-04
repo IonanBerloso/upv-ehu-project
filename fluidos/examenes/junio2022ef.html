@@ -810,6 +810,19 @@ $$\text{Fuerza fluido sobre pieza} = -\vec{R}$$</div>
       </div>
     </div>
 
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📖 Teoría e hipótesis<span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Altura manométrica de la bomba:</strong> la potencia útil (hidráulica) que la bomba aporta al fluido es $P_u = \rho g Q H_m$. Despejando: $H_m = P_u/(\rho g Q)$. El rendimiento $\eta$ relaciona potencia útil con potencia absorbida del motor: $P_u = \eta \cdot P_{\text{motor}}$.</p>
+        <p><strong>Bernoulli entre superficies libres de los depósitos</strong> (velocidades ≈ 0 en depósitos grandes, la bomba añade $H_m$ y las pérdidas la consumen):</p>
+        $$z_1 + \frac{P_1}{\rho g} + H_m = z_2 + \frac{P_2}{\rho g} + h_f \quad \Rightarrow \quad h_f = H_m - (z_2 - z_1) - \frac{P_2 - P_1}{\rho g}$$
+        <p><strong>Problema tipo III de Darcy-Weisbach</strong> (incógnita: diámetro $D$): al sustituir $v = 4Q/(\pi D^2)$ en $h_f = f(L/D)(v^2/2g)$ se obtiene:</p>
+        $$D^5 = \frac{8 f L Q^2}{\pi^2 g h_f}$$
+        <p>Como $f$ también depende de $D$ (a través de $Re = 4Q/(\pi D \nu)$ y $\varepsilon/D$), el problema es implícito y se resuelve por <strong>iteración</strong>: se supone $f_0$, se calcula $D$, se recalcula $f$ con Colebrook-White, y se repite hasta convergencia.</p>
+        <p><strong>Diámetro comercial:</strong> se redondea al alza al siguiente diámetro normalizado, porque un diámetro mayor reduce las pérdidas ($h_f \propto D^{-5}$), garantizando que la bomba puede suministrar el caudal pedido.</p>
+      </div>
+    </div>
+
     <div class="seccion s-resolucion sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución<span class="sarr">▼</span></button>
       <div class="sec-body">
@@ -938,6 +951,21 @@ $$\text{Fuerza fluido sobre pieza} = -\vec{R}$$</div>
       </div>
     </div>
 
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📖 Teoría e hipótesis<span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>NPSH disponible</strong> (Net Positive Suction Head): mide la carga neta en la entrada de la bomba por encima de la presión de vapor del fluido. Para evitar cavitación debe ser mayor que el NPSH requerido:</p>
+        $$NPSH_D = \frac{P_{\text{atm}} - P_v}{\gamma} - \Delta z - h_{f,\text{asp}} \geq NPSH_R$$
+        <p>donde $\Delta z$ es la altura de la bomba sobre la superficie libre del depósito de aspiración y $h_{f,\text{asp}}$ son las pérdidas en la tubería de aspiración (fricción + pérdidas locales).</p>
+        <p><strong>Altura máxima de aspiración:</strong> despejando $\Delta z$ en la condición límite $NPSH_D = NPSH_R$:</p>
+        $$\Delta z_{\text{max}} = \frac{P_{\text{atm}} - P_v}{\gamma} - NPSH_R - h_{f,\text{asp}}$$
+        <p>En este ejercicio, $NPSH_R$ viene expresado como $P_v + \Delta P_{\text{min}}$ → se suma la presión de vapor y el margen de seguridad requerido: $H_{\text{req}} = (P_v + \Delta P_{\text{min}})/\gamma$.</p>
+        <p><strong>Hazen-Williams para pérdidas de fricción:</strong> $h_f = J \cdot L_{\text{eq}}$, con $J = 10{,}67 \cdot Q^{1{,}852}/(C^{1{,}852} \cdot D^{4{,}87})$ en unidades SI. Las <strong>pérdidas locales</strong> (válvula de pie) se calculan por separado con $h_{\text{loc}} = K \cdot v^2/(2g)$.</p>
+        <p><strong>Bernoulli aspiración:</strong> partiendo de la superficie libre del depósito (presión $P_{\text{atm}}$, velocidad nula, cota 0) hasta la brida de aspiración de la bomba (presión $P_{\text{asp}}$, velocidad $v$, cota $\Delta z$):</p>
+        $$\frac{P_{\text{atm}}}{\gamma} = \frac{P_{\text{asp}}}{\gamma} + \Delta z + \frac{v^2}{2g} + h_{f,\text{asp}}$$
+      </div>
+    </div>
+
     <div class="seccion s-resolucion sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución<span class="sarr">▼</span></button>
       <div class="sec-body">
@@ -1029,6 +1057,19 @@ $$\text{Fuerza fluido sobre pieza} = -\vec{R}$$</div>
         <div class="formula-box">$$H_m(Q) = H_{\text{inst}}(Q) \quad \Rightarrow \quad Q_{\text{trabajo}},\ H_{\text{trabajo}}$$</div>
         <div class="formula-label">Pérdida adicional en válvula para caudal deseado $Q_d$</div>
         <div class="formula-box">$$h_{\text{val}} = H_m(Q_d) - H_{\text{inst,sin válvula}}(Q_d)$$</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📖 Teoría e hipótesis<span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Punto de trabajo de la bomba:</strong> es la intersección de la curva característica de la bomba $H_b(Q)$ (altura manométrica en función del caudal, decreciente) con la curva de la instalación $H_{\text{inst}}(Q)$ (creciente con $Q$ por las pérdidas):</p>
+        $$H_{\text{inst}}(Q) = \Delta z + \frac{P_B - P_A}{\gamma} + h_f(Q)$$
+        <p>En la gráfica, se lee directamente el caudal $Q_T$ y la altura $H_T$ en la intersección.</p>
+        <p><strong>Desglose del balance energético:</strong> en el punto de trabajo, $H_m = \Delta z + P_B/\gamma + h_f$, lo que permite determinar la presión en el depósito superior si se conocen los otros términos, o las pérdidas de carga si se conoce $P_B$.</p>
+        <p><strong>Regulación por válvula:</strong> una válvula parcialmente cerrada en la impulsión añade una pérdida adicional $h_{\text{val}}$ que "sube" la curva de instalación efectiva, desplazando el punto de trabajo a menor caudal. Para bajar el caudal de $Q_T$ a $Q_d$:</p>
+        $$h_{\text{val}} = H_m(Q_d) - H_{\text{inst}}(Q_d)$$
+        <p>donde $H_m(Q_d)$ se lee en la curva de la bomba y $H_{\text{inst}}(Q_d)$ en la curva de instalación sin válvula, ambas evaluadas en $Q_d$.</p>
       </div>
     </div>
 
