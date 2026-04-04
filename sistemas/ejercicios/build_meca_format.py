@@ -201,7 +201,7 @@ def jump_links(links):
     out += '</div>'
     return out
 
-def ex_card(eid, num, titulo, meta, badge, enunciado_html, result_html, is_exam=False):
+def ex_card(eid, num, meta, badge, body, result_html, is_exam=False):
     exam_cls = ' ex-card-exam' if is_exam else ''
     badge_span = f' <span class="exam-badge">&#9733; {badge}</span>' if badge else ''
     res = ''
@@ -220,7 +220,7 @@ def ex_card(eid, num, titulo, meta, badge, enunciado_html, result_html, is_exam=
     <span class="ex-arrow">&#9660;</span>
   </div>
   <div class="ex-body">
-    <div class="enunciado">{enunciado_html}</div>
+    <div class="enunciado">{body}</div>
     {res}
     <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
   </div>
