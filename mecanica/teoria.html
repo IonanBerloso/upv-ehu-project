@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Teoría · Mecánica Aplicada · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<!-- ── AUTH ── -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#c084fc}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#c084fc;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer;transition:.15s}
+#auth-btn:hover{background:#d4a0ff}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH = '52ed4a155ae39b8857d52e3c253776c0d5ab7245274be771b1ce0da1e2f02f58';
+  var KEY  = 'upv_auth_mecanica';
+  async function sha256(str){
+    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function inject(){
+    var overlay = document.createElement('div');
+    overlay.id = 'auth-overlay';
+    overlay.innerHTML = '<div id="auth-box">'
+      + '<div id="auth-logo">⚙️</div>'
+      + '<h2>Mecánica Aplicada</h2>'
+      + '<p>Introduce la contraseña para acceder</p>'
+      + '<input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password">'
+      + '<button id="auth-btn">Entrar</button>'
+      + '<div id="auth-error"></div>'
+      + '</div>';
+    document.body.appendChild(overlay);
+    var inp = document.getElementById('auth-input');
+    var btn = document.getElementById('auth-btn');
+    var err = document.getElementById('auth-error');
+    async function attempt(){
+      var h = await sha256(inp.value);
+      if(h === HASH){
+        sessionStorage.setItem(KEY, HASH);
+        overlay.style.transition='opacity .3s';
+        overlay.style.opacity='0';
+        setTimeout(function(){ overlay.remove(); }, 320);
+      } else {
+        err.textContent='Contraseña incorrecta';
+        inp.value='';inp.focus();
+        setTimeout(function(){ err.textContent=''; }, 2000);
+      }
+    }
+    btn.addEventListener('click', attempt);
+    inp.addEventListener('keydown', function(e){ if(e.key==='Enter') attempt(); });
+    inp.focus();
+  }
+  if(sessionStorage.getItem(KEY) !== HASH){
+    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', inject); }
+    else { inject(); }
+  }
+})();
+</script>
+
+<style>
+/* ── RESET & BASE ── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000; --surface:#0d0d0d; --surface2:#111111; --surface3:#161616;
+  --border:#1a1a1a; --border2:#222222;
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b;
+  --accent:#c084fc; --accent2:#a855f7;
+  --gold:#f59e0b; --gold2:#fbbf24;
+  --green:#10b981; --red:#f43f5e;
+  --orange:#fb923c; --blue:#38bdf8;
+  --formula-bg:#080808; --formula-border:#7c3aed;
+  --key-bg:#1a0a2e; --key-border:#9333ea;
+  --radius:10px; --radius-sm:6px;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+  --transition:.22s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#6d28d9}
+
+/* ── TOP BAR ── */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-back svg{opacity:.6;flex-shrink:0}
+.topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-meta{padding:0 20px;font-size:.75em;color:var(--text3);white-space:nowrap;display:flex;gap:12px;align-items:center}
+.topbar-meta .chip{background:var(--surface2);border:1px solid var(--border2);color:var(--accent);padding:3px 10px;border-radius:20px;font-size:.85em;font-weight:600}
+
+/* ── NAV TABS ── */
+.nav-tabs{position:sticky;top:56px;z-index:190;background:rgba(0,0,0,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto;display:flex;gap:2px;align-items:center;height:44px;white-space:nowrap}
+.nav-tabs::-webkit-scrollbar{height:2px}
+.nav-tab{display:inline-flex;align-items:center;padding:6px 14px;border-radius:var(--radius-sm);font-size:.78em;font-weight:500;color:var(--text3);cursor:pointer;transition:all var(--transition);user-select:none;flex-shrink:0}
+.nav-tab:hover{color:var(--text2);background:var(--surface2)}
+.nav-tab.active{color:var(--text);background:rgba(192,132,252,.1);border-bottom:2px solid var(--accent)}
+
+/* ── CONTENT ── */
+.content{max-width:900px;margin:0 auto;padding:20px 16px 60px}
+
+/* ── ACCORDION ── */
+.tema{margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color var(--transition)}
+.tema:has(.tema-body.open){border-color:var(--border2)}
+.tema-trigger{display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--surface);cursor:pointer;user-select:none;transition:background var(--transition)}
+.tema-trigger:hover{background:var(--surface2)}
+.tema-trigger.open{background:var(--surface2)}
+.tema-tag{font-size:.68em;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(192,132,252,.12);color:var(--accent);border:1px solid rgba(192,132,252,.25);white-space:nowrap;letter-spacing:.3px}
+.tema-name{flex:1;font-size:.95em;font-weight:600;color:#f1f5f9}
+.tema-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:.75em;transition:transform var(--transition);flex-shrink:0}
+.tema-trigger.open .tema-icon{transform:rotate(90deg)}
+.tema-body{display:none;background:var(--bg);border-top:1px solid var(--border);padding:24px 24px 20px}
+.tema-body.open{display:block}
+
+/* ── SECTIONS ── */
+.section{margin-bottom:28px}
+.section:last-child{margin-bottom:0}
+.section-label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-label::before{content:'';display:block;width:3px;height:18px;background:var(--orange);border-radius:2px;flex-shrink:0}
+.section-label span{font-size:.76em;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--orange)}
+
+.prose{font-size:.9em;line-height:1.8;color:#cbd5e1}
+.prose p{margin-bottom:10px}
+.prose ul,.prose ol{padding-left:20px;margin-bottom:10px}
+.prose li{margin-bottom:5px}
+.prose li::marker{color:var(--text3)}
+
+/* ── FORMULA BLOCKS ── */
+.fblock{background:var(--formula-bg);border:1px solid rgba(124,58,237,.35);border-left:3px solid var(--formula-border);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 16px;margin:10px 0;overflow-x:auto}
+.fblock .flabel{font-size:.68em;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(192,132,252,.7);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.fblock .katex-display{margin:4px 0}
+.fkey{background:rgba(192,132,252,.06);border:1px solid rgba(192,132,252,.25);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 16px;margin:10px 0;overflow-x:auto}
+.fkey .flabel{font-size:.68em;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(192,132,252,.8);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+
+/* ── INFO BOXES ── */
+.box{border-radius:var(--radius-sm);padding:14px 16px;margin:12px 0;font-size:.87em;line-height:1.7}
+.box .box-title{font-weight:700;font-size:.85em;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.box ul{padding-left:18px}
+.box li{margin-bottom:4px}
+.box.info{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);color:#a7f3d0}
+.box.info .box-title{color:var(--green)}
+.box.warn{background:rgba(251,146,60,.06);border:1px solid rgba(251,146,60,.2);color:#fed7aa}
+.box.warn .box-title{color:var(--orange)}
+.box.danger{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);color:#fecdd3}
+.box.danger .box-title{color:var(--red)}
+.box.note{background:var(--surface2);border:1px solid var(--border2);color:#94a3b8}
+.box.note .box-title{color:var(--accent)}
+
+/* ── TABLES ── */
+.table-wrap{overflow-x:auto;margin:12px 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.83em}
+th{background:var(--surface2);color:var(--accent);padding:9px 14px;text-align:left;font-weight:600;font-size:.8em;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border2)}
+td{padding:8px 14px;border-bottom:1px solid rgba(30,45,66,.5);color:#cbd5e1;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.td-accent{color:var(--accent);font-weight:600}
+.td-gold{color:var(--gold);font-weight:600}
+.td-green{color:var(--green)}
+
+/* ── TWO-COL GRID ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+
+/* ── STEPS ── */
+.steps{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin:10px 0}
+.step{display:flex;gap:12px;padding:5px 0;font-size:.87em;color:#94a3b8;align-items:baseline}
+.step-n{min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border2);border-radius:50%;font-size:.75em;font-weight:700;color:var(--orange);flex-shrink:0}
+.step b{color:#e2e8f0}
+
+/* ── INLINE HIGHLIGHTS ── */
+.hi{color:var(--accent);font-weight:600}
+.hi-g{color:var(--green);font-weight:600}
+.hi-y{color:var(--gold);font-weight:600}
+.hi-r{color:var(--red);font-weight:600}
+.hi-b{color:var(--blue);font-weight:600}
+
+code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--surface2);padding:1px 5px;border-radius:3px;color:#c4b5fd}
+
+/* ── BADGE ── */
+.badge{display:inline-block;font-size:.72em;font-weight:600;padding:2px 8px;border-radius:20px}
+.badge-stat{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.badge-din{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.25)}
+.badge-info{background:rgba(56,189,248,.12);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
+
+/* ── PROGRESS BAR ── */
+.progress-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent2),var(--blue));z-index:999;transition:width .1s;width:0%}
+
+/* ── DIAGRAM ── */
+.diagram{background:var(--surface3);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 12px 10px;margin:14px 0;overflow-x:auto;text-align:center}
+.diagram svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.diagram figcaption{font-size:.72em;color:var(--text3);margin-top:8px;letter-spacing:.02em}
+
+/* ── FOOTER ── */
+.footer{text-align:center;padding:40px 20px;color:var(--text3);font-size:.78em}
+
+@media(max-width:600px){
+  .topbar-meta{display:none}
+  .content{padding:16px 12px 40px}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a class="topbar-back" href="../index.html">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
+    Inicio
+  </a>
+  <span class="topbar-title">Mecánica Aplicada — Teoría</span>
+  <div class="topbar-meta">
+    <span class="chip">8 temas</span>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs" id="navTabs">
+  <div class="nav-tab active" onclick="scrollToTema(0)">T1 Vectorial</div>
+  <div class="nav-tab" onclick="scrollToTema(1)">T2 Geometría</div>
+  <div class="nav-tab" onclick="scrollToTema(2)">T3 Estática</div>
+  <div class="nav-tab" onclick="scrollToTema(3)">T4 Rozamiento</div>
+  <div class="nav-tab" onclick="scrollToTema(4)">T5 Cables</div>
+  <div class="nav-tab" onclick="scrollToTema(5)">T6 Resistencia</div>
+  <div class="nav-tab" onclick="scrollToTema(6)">T7 Cinemática</div>
+  <div class="nav-tab" onclick="scrollToTema(7)">T8 Movimiento</div>
+</div>
+
+<div class="content">
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 1 — FUNDAMENTOS DE CÁLCULO VECTORIAL
+═══════════════════════════════════════════════════════ -->
+<div class="tema" id="tema0">
+  <div class="tema-trigger" onclick="toggleTema(0)">
+    <span class="tema-tag">Tema 1</span>
+    <span class="tema-name">Fundamentos de Cálculo Vectorial</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Vectores y operaciones básicas</span></div>
+      <div class="prose">
+        <p>Un <strong>vector</strong> queda definido por módulo, dirección y sentido. En 3D se expresa en componentes cartesianas:</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Componentes cartesianas</div>
+        $\vec{A} = A_x\,\vec{i} + A_y\,\vec{j} + A_z\,\vec{k}$
+      </div>
+      <div class="fkey">
+        <div class="flabel">Módulo</div>
+        $|\vec{A}| = \sqrt{A_x^2 + A_y^2 + A_z^2}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Vector unitario</div>
+        $\hat{u}_A = \dfrac{\vec{A}}{|\vec{A}|}$
+      </div>
+      <div class="box note">
+        <div class="box-title">Cosenos directores</div>
+        $\cos\alpha = \dfrac{A_x}{|\vec{A}|},\quad \cos\beta = \dfrac{A_y}{|\vec{A}|},\quad \cos\gamma = \dfrac{A_z}{|\vec{A}|}$<br>
+        con $\cos^2\alpha + \cos^2\beta + \cos^2\gamma = 1$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Producto escalar (punto)</span></div>
+      <div class="fkey">
+        <div class="flabel">Definición</div>
+        $\vec{A}\cdot\vec{B} = A_xB_x + A_yB_y + A_zB_z = |\vec{A}||\vec{B}|\cos\theta$
+      </div>
+      <div class="prose">
+        <p>Propiedades: <strong>conmutativo</strong> ($\vec{A}\cdot\vec{B}=\vec{B}\cdot\vec{A}$), distributivo. Si $\vec{A}\cdot\vec{B}=0$ → perpendiculares.</p>
+        <p>El producto escalar permite obtener la <span class="hi">componente de un vector sobre una dirección</span>:</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Proyección de A sobre dirección u</div>
+        $A_u = \vec{A}\cdot\hat{u}$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Producto vectorial (cruz)</span></div>
+      <div class="fkey">
+        <div class="flabel">Determinante 3×3</div>
+        $\vec{A}\times\vec{B} = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\A_x&A_y&A_z\\B_x&B_y&B_z\end{vmatrix}$
+        $= (A_yB_z-A_zB_y)\,\vec{i} - (A_xB_z-A_zB_x)\,\vec{j} + (A_xB_y-A_yB_x)\,\vec{k}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Módulo</div>
+        $|\vec{A}\times\vec{B}| = |\vec{A}||\vec{B}|\sin\theta$
+      </div>
+      <div class="box warn">
+        <div class="box-title">Propiedad importante</div>
+        El producto vectorial <strong>NO es conmutativo</strong>: $\vec{A}\times\vec{B} = -\vec{B}\times\vec{A}$.<br>
+        La dirección es perpendicular al plano de $\vec{A}$ y $\vec{B}$ (regla de la mano derecha).
+      </div>
+      <div class="box note">
+        <div class="box-title">Vectores base</div>
+        $\vec{i}\times\vec{j}=\vec{k},\quad \vec{j}\times\vec{k}=\vec{i},\quad \vec{k}\times\vec{i}=\vec{j}$<br>
+        $\vec{i}\times\vec{i}=\vec{j}\times\vec{j}=\vec{k}\times\vec{k}=\vec{0}$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Momento de una fuerza</span></div>
+      <div class="prose">
+        <p>El <strong>momento</strong> de una fuerza $\vec{F}$ respecto a un punto O es:</p>
+      </div>
+      <div class="fkey">
+        <div class="flabel">Momento respecto a O</div>
+        $\vec{M}_O = \vec{r}_{OP}\times\vec{F}$
+      </div>
+      <div class="prose">
+        <p>donde $\vec{r}_{OP}$ es el vector de posición desde O hasta el punto de aplicación P. El módulo es:</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Módulo del momento</div>
+        $|M_O| = |\vec{F}|\cdot d$
+      </div>
+      <div class="prose">
+        <p>siendo $d$ la <span class="hi-y">distancia perpendicular</span> (brazo de momento) de O a la línea de acción de $\vec{F}$.</p>
+        <p><strong>Momento respecto a un eje</strong> (componente escalar sobre el eje $\hat{u}$):</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Momento sobre eje û</div>
+        $M_u = \hat{u}\cdot(\vec{r}\times\vec{F}) = \begin{vmatrix}u_x&u_y&u_z\\r_x&r_y&r_z\\F_x&F_y&F_z\end{vmatrix}$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Par de fuerzas y sistemas equivalentes</span></div>
+      <div class="prose">
+        <p>Un <strong>par</strong> es un sistema de dos fuerzas iguales, opuestas y no colineales. Su momento es independiente del punto de referencia:</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Momento de un par</div>
+        $\vec{M} = \vec{r}_{AB}\times\vec{F}$
+      </div>
+      <div class="prose">
+        <p>Reducción de un sistema de fuerzas al punto O: fuerza resultante $\vec{R}=\sum\vec{F}_i$ y momento resultante $\vec{M}_O=\sum\vec{M}_{Oi}$.</p>
+      </div>
+    </div>
+
+  </div><!-- /tema-body -->
+</div><!-- /tema0 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 2 — GEOMETRÍA DE MASAS Y SUPERFICIES PLANAS
+═══════════════════════════════════════════════════════ -->
+<div class="tema" id="tema1">
+  <div class="tema-trigger" onclick="toggleTema(1)">
+    <span class="tema-tag">Tema 2</span>
+    <span class="tema-name">Geometría de Masas y Superficies Planas</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Centroide de figuras planas</span></div>
+      <div class="prose">
+        <p>El <strong>centroide</strong> (baricentro geométrico) de una figura se obtiene ponderando las áreas parciales:</p>
+      </div>
+      <div class="fkey">
+        <div class="flabel">Centroide compuesto</div>
+        $\bar{x} = \dfrac{\sum A_i\,\bar{x}_i}{\sum A_i}, \qquad \bar{y} = \dfrac{\sum A_i\,\bar{y}_i}{\sum A_i}$
+      </div>
+      <div class="box warn">
+        <div class="box-title">Figuras con agujeros</div>
+        Las áreas restadas se introducen con <strong>signo negativo</strong>: $A_{hueco} < 0$.
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Figura</th><th>Área A</th><th>x̄ (desde extremo izq.)</th><th>ȳ (desde base)</th></tr></thead>
+          <tbody>
+            <tr><td>Rectángulo b×h</td><td class="td-accent">b·h</td><td>b/2</td><td>h/2</td></tr>
+            <tr><td>Triángulo base b, altura h</td><td class="td-accent">bh/2</td><td>b/3 (desde vértice)</td><td>h/3</td></tr>
+            <tr><td>Círculo radio R</td><td class="td-accent">πR²</td><td>0 (desde centro)</td><td>0</td></tr>
+            <tr><td>Semicírculo radio R</td><td class="td-accent">πR²/2</td><td>0</td><td>4R/(3π)</td></tr>
+            <tr><td>Cuarto de círculo R</td><td class="td-accent">πR²/4</td><td>4R/(3π)</td><td>4R/(3π)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Momentos de inercia</span></div>
+      <div class="fkey">
+        <div class="flabel">Definición</div>
+        $I_x = \int y^2\,dA, \qquad I_y = \int x^2\,dA$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Momento polar</div>
+        $J_O = I_x + I_y = \int r^2\,dA$
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Figura</th><th>I<sub>xc</sub> (eje horiz. centroidal)</th><th>I<sub>yc</sub> (eje vert. centroidal)</th></tr></thead>
+          <tbody>
+            <tr><td>Rectángulo b×h</td><td class="td-gold">bh³/12</td><td class="td-gold">hb³/12</td></tr>
+            <tr><td>Triángulo base b, h</td><td class="td-gold">bh³/36</td><td class="td-gold">hb³/36</td></tr>
+            <tr><td>Círculo radio R</td><td class="td-gold">πR⁴/4</td><td class="td-gold">πR⁴/4</td></tr>
+            <tr><td>Semicírculo radio R</td><td class="td-gold">(π/8−8/9π)R⁴ ≈ 0,1098R⁴</td><td class="td-gold">πR⁴/8</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Teorema de Steiner (Ejes Paralelos)</span></div>
+      <div class="fkey">
+        <div class="flabel">Steiner</div>
+        $I = I_c + A\,d^2$
+      </div>
+      <div class="prose">
+        <p>$I_c$ es el momento de inercia respecto al eje centroidal paralelo, $A$ el área y $d$ la distancia entre los dos ejes paralelos.</p>
+      </div>
+      <div class="box info">
+        <div class="box-title">Procedimiento para sección compuesta</div>
+        <ul>
+          <li>Localizar el centroide global $(\bar{x},\bar{y})$</li>
+          <li>Para cada parte: calcular $I_{ci}$ y la distancia $d_i$ al eje global</li>
+          <li>$I_{total} = \sum (I_{ci} + A_i\,d_i^2)$</li>
+          <li>Para huecos: restar el término correspondiente</li>
+        </ul>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Radio de giro</div>
+        $k = \sqrt{\dfrac{I}{A}}$
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tema1 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 3 — ESTÁTICA DEL SÓLIDO RÍGIDO
+═══════════════════════════════════════════════════════ -->
+<div class="tema" id="tema2">
+  <div class="tema-trigger" onclick="toggleTema(2)">
+    <span class="tema-tag">Tema 3</span>
+    <span class="tema-name">Estática del Sólido Rígido</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Condiciones de equilibrio</span></div>
+      <div class="fkey">
+        <div class="flabel">Equilibrio estático (2D)</div>
+        $\sum F_x = 0, \qquad \sum F_y = 0, \qquad \sum M_O = 0$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Equilibrio estático (3D)</div>
+        $\sum \vec{F} = \vec{0}, \qquad \sum \vec{M}_O = \vec{0}$
+      </div>
+      <div class="prose">
+        <p>En 2D tenemos 3 ecuaciones → máximo 3 incógnitas para ser <span class="hi-g">isostático</span>. Más incógnitas → <span class="hi-r">hiperestático</span>.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Tipos de apoyos y reacciones</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Apoyo</th><th>Símbolo</th><th>Reacciones</th><th>Incógnitas</th></tr></thead>
+          <tbody>
+            <tr><td>Rodillo / apoyo simple</td><td>△ con rueda</td><td>1 fuerza ⊥ superficie</td><td class="td-accent">1</td></tr>
+            <tr><td>Articulación (perno)</td><td>△ fijo</td><td>Rx, Ry</td><td class="td-accent">2</td></tr>
+            <tr><td>Empotramiento</td><td>▬</td><td>Rx, Ry, M</td><td class="td-accent">3</td></tr>
+            <tr><td>Cable / barra 2 fuerzas</td><td>———</td><td>Tensión T (solo tracción)</td><td class="td-accent">1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Diagrama de Cuerpo Libre (DCL)</span></div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><b>Aislar</b> el cuerpo del entorno cortando por todos los vínculos</div></div>
+        <div class="step"><div class="step-n">2</div><div><b>Dibujar</b> todas las fuerzas externas (cargas + peso)</div></div>
+        <div class="step"><div class="step-n">3</div><div><b>Sustituir</b> cada vínculo por las reacciones correspondientes</div></div>
+        <div class="step"><div class="step-n">4</div><div><b>Plantear</b> las 3 ecuaciones de equilibrio</div></div>
+        <div class="step"><div class="step-n">5</div><div><b>Resolver</b> el sistema de ecuaciones</div></div>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Elección del punto de momentos</div>
+        Tomar momentos respecto al punto donde se cruzan más incógnitas desconocidas para reducir el número de ecuaciones simultáneas.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Armaduras</span></div>
+      <div class="prose">
+        <p>Una <strong>armadura</strong> es una estructura formada exclusivamente por barras biarticuladas (sólo esfuerzo axial: tracción o compresión).</p>
+        <p>Relación para armadura isostática: <span class="hi">m + 3 = 2·n</span> (m barras, n nudos)</p>
+      </div>
+      <div class="grid2">
+        <div class="box info">
+          <div class="box-title">Método de los Nodos</div>
+          Equilibrio en cada nodo: ΣFx=0, ΣFy=0.<br>
+          Comenzar por nodos con ≤2 barras desconocidas.
+        </div>
+        <div class="box note">
+          <div class="box-title">Método de las Secciones</div>
+          Cortar la armadura con una sección que pase por ≤3 barras desconocidas. Aplicar las 3 ecuaciones de equilibrio al subconjunto.
+        </div>
+      </div>
+      <div class="box warn">
+        <div class="box-title">Barras de esfuerzo nulo</div>
+        Si en un nodo <strong>sin carga exterior</strong> concurren sólo 2 barras no colineales → ambas tienen esfuerzo cero.<br>
+        Si concurren 3 barras y 2 son colineales → la tercera tiene esfuerzo cero.
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tema2 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 4 — ROZAMIENTO
+═══════════════════════════════════════════════════════ -->
+<div class="tema" id="tema3">
+  <div class="tema-trigger" onclick="toggleTema(3)">
+    <span class="tema-tag">Tema 4</span>
+    <span class="tema-name">Rozamiento</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Ley de Coulomb</span></div>
+      <div class="fkey">
+        <div class="flabel">Fuerza de rozamiento</div>
+        $F_r \leq \mu_s\,N \quad\text{(reposo)}, \qquad F_r = \mu_k\,N \quad\text{(deslizamiento)}$
+      </div>
+      <div class="prose">
+        <p>$\mu_s$ = coeficiente estático (mayor), $\mu_k$ = coeficiente cinético (menor). Siempre $\mu_k < \mu_s$.</p>
+        <p>La fuerza de rozamiento se <strong>opone al movimiento</strong> (o movimiento inminente) y actúa tangencialmente a la superficie de contacto.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Par de materiales</th><th>μ<sub>s</sub></th><th>μ<sub>k</sub></th></tr></thead>
+          <tbody>
+            <tr><td>Madera sobre madera</td><td class="td-gold">0,35–0,5</td><td>0,3–0,4</td></tr>
+            <tr><td>Acero sobre acero</td><td class="td-gold">0,15–0,3</td><td>0,1–0,2</td></tr>
+            <tr><td>Goma sobre hormigón</td><td class="td-gold">0,6–0,8</td><td>0,5–0,7</td></tr>
+            <tr><td>Hielo sobre hielo</td><td class="td-gold">0,05–0,1</td><td>0,03–0,05</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Ángulo de rozamiento y cono de rozamiento</span></div>
+      <div class="fblock">
+        <div class="flabel">Ángulo de rozamiento</div>
+        $\phi_s = \arctan(\mu_s), \qquad \phi_k = \arctan(\mu_k)$
+      </div>
+      <div class="prose">
+        <p>La <strong>reacción total</strong> $\vec{R}$ (resultante de N y F<sub>r</sub>) forma un ángulo $\phi$ con la normal. El <span class="hi">cono de rozamiento</span> tiene semiángulo $\phi_s$:</p>
+        <ul>
+          <li>Si la fuerza aplicada cae <strong>dentro</strong> del cono → reposo (autoblocante)</li>
+          <li>Si cae <strong>fuera</strong> del cono → deslizamiento</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Aplicaciones: cuñas y tornillos</span></div>
+      <div class="grid2">
+        <div>
+          <div class="box note">
+            <div class="box-title">Cuña</div>
+            Analizar cada superficie de contacto por separado.<br>
+            Aplicar equilibrio a la cuña y al bloque con sus fuerzas de rozamiento ($F_r=\mu N$ en movimiento inminente).
+          </div>
+        </div>
+        <div>
+          <div class="box note">
+            <div class="box-title">Tornillo de potencia</div>
+            El tornillo se comporta como una cuña enrollada.<br>
+            Ángulo de hélice: $\lambda = \arctan(l/2\pi r_m)$<br>
+            Autoblocante si: $\lambda < \phi_s$
+          </div>
+        </div>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Par para avanzar / retroceder</div>
+        $M_{avance} = W\,r_m\,\tan(\lambda+\phi_s)$<br>
+        $M_{retroceso} = W\,r_m\,\tan(\phi_s-\lambda)$
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tema3 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 5 — CABLES
+═══════════════════════════════════════════════════════ -->
+<div class="tema" id="tema4">
+  <div class="tema-trigger" onclick="toggleTema(4)">
+    <span class="tema-tag">Tema 5</span>
+    <span class="tema-name">Cables</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Cable parabólico (carga uniformemente distribuida por proyección)</span></div>
+      <div class="prose">
+        <p>Modelo válido cuando la <span class="hi">carga está distribuida horizontalmente</span> (ej. tablero de un puente colgante). El cable adopta forma <strong>parabólica</strong>.</p>
+      </div>
+      <div class="fkey">
+        <div class="flabel">Ecuación de la parábola (origen en punto más bajo)</div>
+        $y = \dfrac{w\,x^2}{2\,H}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Tensión horizontal (constante)</div>
+        $H = \dfrac{w\,L^2}{8\,d}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Tensión en cualquier punto</div>
+        $T = \sqrt{H^2 + (wx)^2}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Tensión máxima (en los extremos)</div>
+        $T_{max} = \sqrt{H^2 + (wL/2)^2}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Longitud aproximada (flecha pequeña d/L &lt; 0,1)</div>
+        $s \approx L\left(1 + \dfrac{8d^2}{3L^2}\right)$
+      </div>
+      <div class="prose">
+        <p>donde $w$ = carga por unidad de longitud horizontal, $L$ = vano, $d$ = flecha.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Cable catenario (carga uniformemente distribuida por longitud)</span></div>
+      <div class="prose">
+        <p>Cuando la carga es el <span class="hi">peso propio del cable</span> (distribuido por longitud de arco), la forma es una <strong>catenaria</strong>.</p>
+      </div>
+      <div class="fkey">
+        <div class="flabel">Ecuación de la catenaria (origen en punto más bajo)</div>
+        $y = a\left(\cosh\dfrac{x}{a} - 1\right), \qquad a = \dfrac{H}{w}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Longitud de arco desde el punto más bajo</div>
+        $s = a\,\sinh\dfrac{x}{a}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Tensión en cualquier punto</div>
+        $T = H + wy = w(y+a)$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Relación geométrica</div>
+        $y^2 = s^2 + 2ay \quad\Rightarrow\quad s^2 = y^2 + 2ay$
+      </div>
+      <div class="box info">
+        <div class="box-title">Diferencia parábola vs. catenaria</div>
+        <ul>
+          <li><strong>Parábola:</strong> carga distribuida por proyección horizontal (ej. puente)</li>
+          <li><strong>Catenaria:</strong> carga distribuida por longitud del cable (cable propio)</li>
+          <li>Para flechas pequeñas ambas son aproximadamente iguales</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Cables con cargas concentradas</span></div>
+      <div class="prose">
+        <p>Para cables con cargas puntuales, cada segmento es <strong>rectilíneo</strong>. Resolver aplicando equilibrio en cada nodo de carga:</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><b>Definir</b> la geometría: posiciones y ángulos de cada tramo</div></div>
+        <div class="step"><div class="step-n">2</div><div><b>Equilibrio en nodos</b>: ΣFx=0, ΣFy=0 para cada punto de carga</div></div>
+        <div class="step"><div class="step-n">3</div><div><b>La tensión horizontal H</b> es la misma en todos los tramos</div></div>
+        <div class="step"><div class="step-n">4</div><div><b>T_i = H/cosθ_i</b> en cada segmento</div></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tema4 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 6 — PRINCIPIOS DE RESISTENCIA DE MATERIALES
+═══════════════════════════════════════════════════════ -->
+<div class="tema" id="tema5">
+  <div class="tema-trigger" onclick="toggleTema(5)">
+    <span class="tema-tag">Tema 6</span>
+    <span class="tema-name">Principios de Resistencia de Materiales</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Tensión y deformación</span></div>
+      <div class="fkey">
+        <div class="flabel">Tensión normal (tracción / compresión)</div>
+        $\sigma = \dfrac{F}{A}$
+      </div>
+      <div class="fkey">
+        <div class="flabel">Tensión tangencial media</div>
+        $\tau = \dfrac{V}{A}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Deformación unitaria</div>
+        $\varepsilon = \dfrac{\delta}{L}$
+      </div>
+      <div class="fkey">
+        <div class="flabel">Ley de Hooke (elasticidad lineal)</div>
+        $\sigma = E\,\varepsilon, \qquad \tau = G\,\gamma$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Alargamiento de barra axial</div>
+        $\delta = \dfrac{F\,L}{A\,E}$
+      </div>
+      <div class="prose">
+        <p>$E$ = módulo de Young (elasticidad), $G$ = módulo de cortadura. Para acero: $E \approx 200$ GPa, $G \approx 80$ GPa.</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Relación E, G y coeficiente de Poisson ν</div>
+        $G = \dfrac{E}{2(1+\nu)}, \qquad \nu_{acero} \approx 0{,}3$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Flexión de vigas</span></div>
+      <div class="fkey">
+        <div class="flabel">Tensión normal por flexión (fórmula de Navier)</div>
+        $\sigma = \dfrac{M\,y}{I}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Tensión tangencial por cortante (fórmula de Jouravski)</div>
+        $\tau = \dfrac{V\,Q}{I\,b}$
+      </div>
+      <div class="prose">
+        <p>$M$ = momento flector, $y$ = distancia a la fibra neutra, $I$ = momento de inercia de la sección, $V$ = cortante, $Q$ = momento estático del área por encima de $y$, $b$ = anchura en $y$.</p>
+        <p>La tensión normal es <span class="hi-r">máxima en la fibra más alejada</span> de la fibra neutra:</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Tensión máxima por flexión</div>
+        $\sigma_{max} = \dfrac{M\,c}{I} = \dfrac{M}{W_f}, \qquad W_f = \dfrac{I}{c}$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Diagramas de esfuerzos en vigas</span></div>
+      <div class="box note">
+        <div class="box-title">Relaciones diferenciales</div>
+        $\dfrac{dV}{dx} = -q(x)$ &nbsp;&nbsp; (carga distribuida)<br>
+        $\dfrac{dM}{dx} = V(x)$<br><br>
+        En punto de carga concentrada P: salto en V de valor P.<br>
+        En punto de par M₀: salto en diagrama M de valor M₀.
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><b>Calcular reacciones</b> en los apoyos</div></div>
+        <div class="step"><div class="step-n">2</div><div><b>Dividir</b> la viga en tramos entre cargas/apoyos</div></div>
+        <div class="step"><div class="step-n">3</div><div><b>En cada tramo</b>, calcular V(x) y M(x) con equilibrio</div></div>
+        <div class="step"><div class="step-n">4</div><div><b>Localizar V=0</b> para encontrar M<sub>max</sub></div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Estado tensional plano — Círculo de Mohr</span></div>
+      <div class="fkey">
+        <div class="flabel">Tensiones principales</div>
+        $\sigma_{1,2} = \dfrac{\sigma_x+\sigma_y}{2} \pm \sqrt{\left(\dfrac{\sigma_x-\sigma_y}{2}\right)^2 + \tau_{xy}^2}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Tensión tangencial máxima</div>
+        $\tau_{max} = \sqrt{\left(\dfrac{\sigma_x-\sigma_y}{2}\right)^2 + \tau_{xy}^2}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Ángulo de las tensiones principales</div>
+        $\tan(2\theta_p) = \dfrac{2\tau_{xy}}{\sigma_x - \sigma_y}$
+      </div>
+      <div class="box info">
+        <div class="box-title">Construcción del Círculo de Mohr</div>
+        <ul>
+          <li>Centro: $C = \left(\dfrac{\sigma_x+\sigma_y}{2},\, 0\right)$</li>
+          <li>Radio: $R = \sqrt{\left(\dfrac{\sigma_x-\sigma_y}{2}\right)^2 + \tau_{xy}^2}$</li>
+          <li>Puntos A($\sigma_x, \tau_{xy}$) y B($\sigma_y, -\tau_{xy}$) sobre el círculo</li>
+          <li>Tensiones principales en intersecciones con eje $\sigma$</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tema5 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 7 — CINEMÁTICA DEL SÓLIDO RÍGIDO
+═══════════════════════════════════════════════════════ -->
+<div class="tema" id="tema6">
+  <div class="tema-trigger" onclick="toggleTema(6)">
+    <span class="tema-tag">Tema 7</span>
+    <span class="tema-name">Cinemática del Sólido Rígido</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Rotación alrededor de un eje fijo</span></div>
+      <div class="fblock">
+        <div class="flabel">Cinemática angular</div>
+        $\omega = \dfrac{d\theta}{dt}, \qquad \alpha = \dfrac{d\omega}{dt} = \omega\,\dfrac{d\omega}{d\theta}$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Velocidad y aceleración de un punto</div>
+        $v = r\,\omega$<br>
+        $a_t = r\,\alpha \quad\text{(tangencial)}, \qquad a_n = r\,\omega^2 \quad\text{(normal, hacia eje)}$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Campo de velocidades del sólido rígido</span></div>
+      <div class="fkey">
+        <div class="flabel">Velocidad de B conocida la de A</div>
+        $\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$
+      </div>
+      <div class="prose">
+        <p>$\vec{r}_{AB}$ = vector de posición desde A hasta B. En movimiento plano ($\vec{\omega}=\omega\,\vec{k}$):</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Movimiento plano (2D)</div>
+        $v_{Bx} = v_{Ax} - \omega\,r_{ABy}$<br>
+        $v_{By} = v_{Ay} + \omega\,r_{ABx}$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Centro Instantáneo de Rotación (CIR)</span></div>
+      <div class="prose">
+        <p>El <strong>CIR</strong> (I) es el punto del plano (o de su extensión) con velocidad nula en cada instante. Toda la velocidad puede obtenerse como rotación pura alrededor del CIR:</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Módulo de velocidad desde el CIR</div>
+        $v_A = \omega\cdot r_{IA}, \qquad v_B = \omega\cdot r_{IB}$
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n">1</div><div><b>CIR:</b> se localiza en la intersección de las perpendiculares a las velocidades de dos puntos conocidos</div></div>
+        <div class="step"><div class="step-n">2</div><div><b>ω:</b> $\omega = v_A / r_{IA}$</div></div>
+        <div class="step"><div class="step-n">3</div><div><b>v<sub>B</sub>:</b> $v_B = \omega\cdot r_{IB}$, perpendicular a $r_{IB}$</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Campo de aceleraciones</span></div>
+      <div class="fkey">
+        <div class="flabel">Aceleración de B conocida la de A</div>
+        $\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\,\vec{r}_{AB}$
+      </div>
+      <div class="prose">
+        <p>El último término ($-\omega^2\vec{r}_{AB}$) es la <span class="hi-r">aceleración centrípe­ta</span> (apunta de B hacia A). El término $\vec{\alpha}\times\vec{r}_{AB}$ es la <span class="hi-y">aceleración tangencial</span> (perpendicular a $\vec{r}_{AB}$).</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Transmisiones</span></div>
+      <div class="grid2">
+        <div class="fblock">
+          <div class="flabel">Poleas / engranajes (contacto exterior)</div>
+          $r_A\,\omega_A = r_B\,\omega_B$<br>
+          (giran en sentido contrario)
+        </div>
+        <div class="fblock">
+          <div class="flabel">Engranajes (contacto interior)</div>
+          $r_A\,\omega_A = r_B\,\omega_B$<br>
+          (mismo sentido de giro)
+        </div>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Relación de transmisión</div>
+        $i = \dfrac{\omega_A}{\omega_B} = \dfrac{r_B}{r_A} = \dfrac{N_B}{N_A}$
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tema6 -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 8 — MOVIMIENTO PLANO DEL SÓLIDO RÍGIDO
+═══════════════════════════════════════════════════════ -->
+<div class="tema" id="tema7">
+  <div class="tema-trigger" onclick="toggleTema(7)">
+    <span class="tema-tag">Tema 8</span>
+    <span class="tema-name">Movimiento Plano del Sólido Rígido</span>
+    <span class="tema-icon">▶</span>
+  </div>
+  <div class="tema-body">
+
+    <div class="section">
+      <div class="section-label"><span>Ecuaciones de Newton-Euler</span></div>
+      <div class="fkey">
+        <div class="flabel">Dinámica del sólido rígido en movimiento plano</div>
+        $\sum \vec{F} = m\,\vec{a}_G$<br>
+        $\sum M_G = I_G\,\alpha$
+      </div>
+      <div class="prose">
+        <p>$\vec{a}_G$ = aceleración del centro de masa, $I_G$ = momento de inercia respecto al centro de masa, $\alpha$ = aceleración angular.</p>
+        <p>Tomando momentos respecto a otro punto Q ≠ G:</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Momentos respecto a punto Q</div>
+        $\sum M_Q = I_G\,\alpha + m\,a_G\,d_{GQ}$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Momentos de inercia de sólidos</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Sólido</th><th>I<sub>G</sub> (eje centroidal)</th></tr></thead>
+          <tbody>
+            <tr><td>Barra delgada, longitud L</td><td class="td-gold">$\frac{1}{12}mL^2$</td></tr>
+            <tr><td>Disco / cilindro sólido, radio R</td><td class="td-gold">$\frac{1}{2}mR^2$</td></tr>
+            <tr><td>Aro / cilindro hueco, radio R</td><td class="td-gold">$mR^2$</td></tr>
+            <tr><td>Esfera sólida, radio R</td><td class="td-gold">$\frac{2}{5}mR^2$</td></tr>
+            <tr><td>Placa rectangular b×h</td><td class="td-gold">$\frac{1}{12}m(b^2+h^2)$</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Steiner (traslación de eje)</div>
+        $I_A = I_G + m\,d^2$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Energía cinética</span></div>
+      <div class="fkey">
+        <div class="flabel">Energía cinética total (movimiento plano)</div>
+        $T = \dfrac{1}{2}m\,v_G^2 + \dfrac{1}{2}I_G\,\omega^2$
+      </div>
+      <div class="prose">
+        <p>Para <strong>rodadura sin deslizamiento</strong> sobre superficie fija (punto de contacto P con velocidad nula):</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Rodadura sin deslizamiento</div>
+        $v_G = R\,\omega, \qquad T = \dfrac{1}{2}I_P\,\omega^2 = \dfrac{1}{2}(I_G + mR^2)\,\omega^2$
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Principio de Trabajo y Energía</span></div>
+      <div class="fkey">
+        <div class="flabel">Trabajo-Energía</div>
+        $T_1 + \sum U_{1\to2} = T_2$
+      </div>
+      <div class="prose">
+        <p>El trabajo de las fuerzas externas e internas (excepto en sólido rígido) es:</p>
+      </div>
+      <div class="fblock">
+        <div class="flabel">Trabajo de fuerza constante</div>
+        $U = F\,s\,\cos\theta$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Trabajo del peso</div>
+        $U_W = -W\,\Delta y = -mg(y_2-y_1)$
+      </div>
+      <div class="fblock">
+        <div class="flabel">Trabajo de un muelle (k, deformación x)</div>
+        $U_k = -\dfrac{1}{2}k(x_2^2 - x_1^2)$
+      </div>
+      <div class="box info">
+        <div class="box-title">Fuerzas que no hacen trabajo</div>
+        <ul>
+          <li>Reacciones normales (perpendiculares al movimiento)</li>
+          <li>Fuerza de rozamiento en rodadura sin deslizamiento</li>
+          <li>Fuerza en el punto de contacto con velocidad nula</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Impulso y Cantidad de Movimiento</span></div>
+      <div class="fkey">
+        <div class="flabel">Impulso-momento lineal</div>
+        $m\,\vec{v}_{G1} + \sum\int_{t_1}^{t_2}\vec{F}\,dt = m\,\vec{v}_{G2}$
+      </div>
+      <div class="fkey">
+        <div class="flabel">Impulso-momento angular (respecto a G)</div>
+        $I_G\,\omega_1 + \sum\int_{t_1}^{t_2}M_G\,dt = I_G\,\omega_2$
+      </div>
+      <div class="grid2">
+        <div class="box note">
+          <div class="box-title">Choque excéntrico</div>
+          Aplicar conservación de momento lineal y angular.<br>
+          Coeficiente de restitución: $e = \dfrac{v_B'-v_A'}{v_A-v_B}$
+        </div>
+        <div class="box warn">
+          <div class="box-title">Cuándo usar cada método</div>
+          <b>Trabajo-Energía:</b> problemas con velocidades y desplazamientos.<br>
+          <b>Impulso-Momento:</b> problemas con tiempos y fuerzas impulsivas.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /tema7 -->
+
+<div class="footer">
+  Mecánica Aplicada · UPV/EHU · Curso 2025–26 &nbsp;·&nbsp;
+  <a href="../index.html">Inicio</a>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// ── KaTeX rendering ──
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof renderMathInElement !== 'undefined'){
+    renderMathInElement(document.body, {
+      delimiters:[
+        {left:'$$',right:'$$',display:true},
+        {left:'$',right:'$',display:false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+
+// ── Accordion ──
+function toggleTema(idx){
+  var trigger = document.querySelector('#tema'+idx+' .tema-trigger');
+  var body    = document.querySelector('#tema'+idx+' .tema-body');
+  var isOpen  = body.classList.contains('open');
+  trigger.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
+}
+
+// ── Tab nav ──
+var tabs = document.querySelectorAll('.nav-tab');
+function scrollToTema(idx){
+  var el = document.getElementById('tema'+idx);
+  if(!el) return;
+  // Open if closed
+  var body = el.querySelector('.tema-body');
+  var trigger = el.querySelector('.tema-trigger');
+  if(!body.classList.contains('open')){
+    body.classList.add('open');
+    trigger.classList.add('open');
+  }
+  var offset = 56 + 44 + 8; // topbar + nav + gap
+  var top = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({top: top, behavior:'smooth'});
+  tabs.forEach(function(t,i){ t.classList.toggle('active', i===idx); });
+}
+
+// ── Active tab on scroll ──
+window.addEventListener('scroll', function(){
+  var offset = 56+44+16;
+  var active = 0;
+  for(var i=0;i<8;i++){
+    var el = document.getElementById('tema'+i);
+    if(el && el.getBoundingClientRect().top < offset+80) active=i;
+  }
+  tabs.forEach(function(t,i){ t.classList.toggle('active', i===active); });
+  // progress bar
+  var h = document.documentElement;
+  var pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct+'%';
+});
+
+// Open first tema by default
+toggleTema(0);
+</script>
+</body>
+</html>

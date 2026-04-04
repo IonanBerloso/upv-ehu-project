@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario · Mecánica Aplicada · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<!-- ── AUTH ── -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#c084fc}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#c084fc;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#d4a0ff}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='52ed4a155ae39b8857d52e3c253776c0d5ab7245274be771b1ce0da1e2f02f58';
+  var KEY='upv_auth_mecanica';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">⚙️</div><h2>Mecánica Aplicada</h2><p>Introduce la contraseña</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(function(){o.remove();},320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(function(){err.textContent='';},2000);}}
+    btn.addEventListener('click',attempt);inp.addEventListener('keydown',function(e){if(e.key==='Enter')attempt();});inp.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',inject);}else{inject();}}
+})();
+</script>
+
+<style>
+/* ── SCREEN STYLES ── */
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#000;color:#e2e8f0;font-size:13px;line-height:1.5}
+
+.screen-header{background:#000;border-bottom:1px solid #1a1a1a;padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.screen-header a{color:#c084fc;font-size:.85em;text-decoration:none}
+.screen-header a:hover{text-decoration:underline}
+.screen-header h1{font-size:1em;color:#f1f5f9;flex:1;text-align:center}
+.btn-print{background:#c084fc;color:#000;border:none;padding:7px 16px;border-radius:6px;font-size:.82em;font-weight:700;cursor:pointer}
+.btn-print:hover{background:#d4a0ff}
+
+/* ── PRINT LAYOUT ── */
+.page{
+  width:210mm;min-height:297mm;
+  margin:20px auto;
+  background:#0a0a0a;
+  border:1px solid #1a1a1a;
+  padding:14mm 12mm;
+}
+
+.page-header{
+  text-align:center;
+  border-bottom:2px solid #c084fc;
+  padding-bottom:8px;margin-bottom:12px;
+}
+.page-header h2{font-size:1.1em;color:#c084fc;font-weight:700;letter-spacing:.5px}
+.page-header p{font-size:.72em;color:#64748b;margin-top:2px}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+.block{
+  background:#0d0d0d;
+  border:1px solid #1e1e1e;
+  border-radius:5px;
+  padding:8px 10px;
+  break-inside:avoid;
+  margin-bottom:8px;
+}
+.block-title{
+  font-size:.65em;font-weight:700;
+  text-transform:uppercase;letter-spacing:.8px;
+  color:#c084fc;margin-bottom:6px;
+  padding-bottom:4px;border-bottom:1px solid #1e1e1e;
+}
+.block.gold .block-title{color:#f59e0b}
+.block.green .block-title{color:#10b981}
+.block.blue .block-title{color:#38bdf8}
+.block.orange .block-title{color:#fb923c}
+.block.red .block-title{color:#f43f5e}
+
+.f{
+  font-size:.78em;
+  margin:4px 0;
+  display:flex;align-items:center;gap:6px;
+  color:#cbd5e1;
+}
+.f .label{
+  font-size:.75em;color:#64748b;
+  min-width:80px;flex-shrink:0;
+}
+.f-center{text-align:center;justify-content:center;margin:6px 0}
+.note{font-size:.7em;color:#64748b;margin-top:4px;line-height:1.4}
+
+table.mini{width:100%;border-collapse:collapse;font-size:.72em;margin-top:6px}
+table.mini th{background:#111;color:#c084fc;padding:3px 6px;text-align:left;font-size:.75em;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid #1e1e1e}
+table.mini td{padding:3px 6px;color:#cbd5e1;border-bottom:1px solid #111}
+table.mini tr:last-child td{border-bottom:none}
+table.mini .em{color:#f59e0b;font-weight:600}
+
+/* ── PRINT ── */
+@media print{
+  body{background:#fff !important;color:#000 !important}
+  .screen-header{display:none}
+  .page{
+    width:100%;margin:0;padding:10mm;
+    background:#fff !important;
+    border:none;
+    page-break-after:always;
+  }
+  .page:last-child{page-break-after:auto}
+  .block{background:#f9f9f9 !important;border-color:#ddd !important;color:#000 !important}
+  .block-title{color:#5b21b6 !important;border-bottom-color:#ddd !important}
+  .block.gold .block-title{color:#92400e !important}
+  .block.green .block-title{color:#065f46 !important}
+  .block.blue .block-title{color:#0369a1 !important}
+  .block.orange .block-title{color:#9a3412 !important}
+  .block.red .block-title{color:#9f1239 !important}
+  .f{color:#333 !important}
+  .f .label{color:#666 !important}
+  .note{color:#555 !important}
+  .page-header h2{color:#5b21b6 !important;border-bottom-color:#5b21b6 !important}
+  .page-header p{color:#555 !important}
+  table.mini th{background:#eee !important;color:#5b21b6 !important;border-bottom-color:#ccc !important}
+  table.mini td{color:#333 !important;border-bottom-color:#eee !important}
+  table.mini .em{color:#92400e !important}
+  .katex{color:inherit !important}
+}
+</style>
+</head>
+<body>
+
+<div class="screen-header">
+  <a href="../index.html">← Inicio</a>
+  <h1>Formulario — Mecánica Aplicada</h1>
+  <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+</div>
+
+<!-- ═══════════ PÁGINA 1 ═══════════ -->
+<div class="page">
+  <div class="page-header">
+    <h2>MECÁNICA APLICADA — FORMULARIO COMPLETO</h2>
+    <p>UPV/EHU · Ingeniería · Curso 2025–26 &nbsp;|&nbsp; Temas 1–4</p>
+  </div>
+
+  <div class="cols">
+
+    <!-- T1: VECTORIAL -->
+    <div>
+      <div class="block">
+        <div class="block-title">T1 · Vectores — Operaciones</div>
+        <div class="f f-center">$|\vec{A}| = \sqrt{A_x^2+A_y^2+A_z^2}$</div>
+        <div class="f f-center">$\hat{u} = \vec{A}/|\vec{A}|$</div>
+        <div class="f f-center">$\vec{A}\cdot\vec{B} = A_xB_x+A_yB_y+A_zB_z = |\vec{A}||\vec{B}|\cos\theta$</div>
+        <div class="note">Proyección de A sobre dirección û: $A_u = \vec{A}\cdot\hat{u}$</div>
+      </div>
+
+      <div class="block gold">
+        <div class="block-title">T1 · Producto Vectorial</div>
+        <div class="f f-center">$\vec{A}\times\vec{B} = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\A_x&A_y&A_z\\B_x&B_y&B_z\end{vmatrix}$</div>
+        <div class="f f-center">$|\vec{A}\times\vec{B}| = |\vec{A}||\vec{B}|\sin\theta$</div>
+        <div class="note">No conmutativo: $\vec{A}\times\vec{B}=-\vec{B}\times\vec{A}$<br>
+        $\vec{i}\times\vec{j}=\vec{k}$, $\vec{j}\times\vec{k}=\vec{i}$, $\vec{k}\times\vec{i}=\vec{j}$</div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">T1 · Momento de una fuerza</div>
+        <div class="f f-center">$\vec{M}_O = \vec{r}_{OP}\times\vec{F}$</div>
+        <div class="f f-center">$|M_O| = |\vec{F}|\cdot d$</div>
+        <div class="f f-center">$M_u = \hat{u}\cdot(\vec{r}\times\vec{F})$</div>
+        <div class="note">d = brazo de momento (distancia perpendicular)</div>
+      </div>
+    </div>
+
+    <!-- T2: GEOMETRÍA -->
+    <div>
+      <div class="block green">
+        <div class="block-title">T2 · Centroide Compuesto</div>
+        <div class="f f-center">$\bar{x} = \dfrac{\sum A_i\bar{x}_i}{\sum A_i}, \quad \bar{y} = \dfrac{\sum A_i\bar{y}_i}{\sum A_i}$</div>
+        <div class="note">Huecos: área negativa</div>
+        <table class="mini" style="margin-top:6px">
+          <thead><tr><th>Figura</th><th>A</th><th>ȳ (desde base)</th></tr></thead>
+          <tbody>
+            <tr><td>Rectángulo b×h</td><td class="em">bh</td><td>h/2</td></tr>
+            <tr><td>Triángulo (b,h)</td><td class="em">bh/2</td><td>h/3</td></tr>
+            <tr><td>Círculo R</td><td class="em">πR²</td><td>0 (desde centro)</td></tr>
+            <tr><td>Semicírculo R</td><td class="em">πR²/2</td><td>4R/3π</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block gold">
+        <div class="block-title">T2 · Momentos de Inercia</div>
+        <div class="f f-center">$I_x = \int y^2\,dA,\quad J_O = I_x+I_y$</div>
+        <table class="mini" style="margin-top:4px">
+          <thead><tr><th>Figura</th><th>I<sub>xc</sub></th><th>I<sub>yc</sub></th></tr></thead>
+          <tbody>
+            <tr><td>Rect. b×h</td><td class="em">bh³/12</td><td class="em">hb³/12</td></tr>
+            <tr><td>Triang. b,h</td><td class="em">bh³/36</td><td class="em">hb³/36</td></tr>
+            <tr><td>Círculo R</td><td class="em">πR⁴/4</td><td class="em">πR⁴/4</td></tr>
+          </tbody>
+        </table>
+        <div class="f f-center" style="margin-top:6px">$\boxed{I = I_c + A\,d^2}$ &nbsp; (Steiner)</div>
+        <div class="note">k = √(I/A) radio de giro</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T3: ESTÁTICA -->
+  <div class="block" style="margin-top:4px">
+    <div class="block-title">T3 · Equilibrio Estático</div>
+    <div class="cols">
+      <div>
+        <div class="f f-center">$\sum F_x=0,\quad \sum F_y=0,\quad \sum M_O=0$</div>
+        <div class="note" style="text-align:center">3 ecuaciones → máx. 3 incógnitas (isostático)</div>
+        <table class="mini" style="margin-top:4px">
+          <thead><tr><th>Apoyo</th><th>Reacciones</th><th>Incóg.</th></tr></thead>
+          <tbody>
+            <tr><td>Rodillo</td><td>1 fuerza ⊥ sup.</td><td class="em">1</td></tr>
+            <tr><td>Articulación</td><td>Rx, Ry</td><td class="em">2</td></tr>
+            <tr><td>Empotramiento</td><td>Rx, Ry, M</td><td class="em">3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="note"><b>Armaduras:</b> isostática si m + 3 = 2n<br><br>
+        <b>Nodos:</b> equilibrio en cada nudo (2 ec.)<br>
+        Empezar por nudos con ≤ 2 barras incógnitas<br><br>
+        <b>Secciones:</b> corte por ≤ 3 barras, 3 ec. equilibrio<br><br>
+        <b>Esfuerzo nulo:</b> nudo sin carga + 2 barras no colineales → ambas nulas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T4: ROZAMIENTO -->
+  <div class="block red">
+    <div class="block-title">T4 · Rozamiento de Coulomb</div>
+    <div class="cols">
+      <div>
+        <div class="f f-center">$F_r \leq \mu_s N$ (reposo)</div>
+        <div class="f f-center">$F_r = \mu_k N$ (deslizamiento)</div>
+        <div class="f f-center">$\phi = \arctan(\mu)$</div>
+        <div class="note">μ<sub>s</sub> > μ<sub>k</sub> siempre<br>
+        Autoblocante si fuerza dentro del cono (λ &lt; φ<sub>s</sub>)</div>
+      </div>
+      <div>
+        <div class="note"><b>Tornillo de potencia:</b><br>
+        $M_{av} = Wr_m\tan(\lambda+\phi_s)$<br>
+        $M_{ret} = Wr_m\tan(\phi_s-\lambda)$<br>
+        $\lambda = \arctan(l/2\pi r_m)$<br><br>
+        <b>μ típicos:</b><br>
+        Madera/madera: μ<sub>s</sub>≈0,4<br>
+        Acero/acero: μ<sub>s</sub>≈0,2</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page 1 -->
+
+
+<!-- ═══════════ PÁGINA 2 ═══════════ -->
+<div class="page">
+  <div class="page-header">
+    <h2>MECÁNICA APLICADA — FORMULARIO COMPLETO</h2>
+    <p>UPV/EHU · Ingeniería · Curso 2025–26 &nbsp;|&nbsp; Temas 5–8</p>
+  </div>
+
+  <div class="cols">
+
+    <!-- T5: CABLES -->
+    <div>
+      <div class="block blue">
+        <div class="block-title">T5 · Cable Parabólico (carga horiz.)</div>
+        <div class="f f-center">$y = \dfrac{w\,x^2}{2H}$</div>
+        <div class="f f-center">$H = \dfrac{wL^2}{8d}$</div>
+        <div class="f f-center">$T = \sqrt{H^2+(wx)^2}$</div>
+        <div class="f f-center">$T_{max} = \sqrt{H^2+(wL/2)^2}$</div>
+        <div class="f f-center">$s \approx L\!\left(1+\dfrac{8d^2}{3L^2}\right)$</div>
+        <div class="note">L = vano, d = flecha, w = carga/m horizontal</div>
+      </div>
+
+      <div class="block green">
+        <div class="block-title">T5 · Catenaria (peso propio)</div>
+        <div class="f f-center">$y = a\!\left(\cosh\dfrac{x}{a}-1\right),\quad a=\dfrac{H}{w}$</div>
+        <div class="f f-center">$s = a\sinh\dfrac{x}{a}$</div>
+        <div class="f f-center">$T = w(y+a)$</div>
+        <div class="f f-center">$s^2 = y^2+2ay$</div>
+        <div class="note">w = peso/m de longitud de cable</div>
+      </div>
+    </div>
+
+    <!-- T6: RESISTENCIA -->
+    <div>
+      <div class="block gold">
+        <div class="block-title">T6 · Tensión y Deformación</div>
+        <div class="f f-center">$\sigma=F/A,\quad \tau=V/A$</div>
+        <div class="f f-center">$\sigma=E\varepsilon,\quad \tau=G\gamma$</div>
+        <div class="f f-center">$\delta=\dfrac{FL}{AE}$</div>
+        <div class="f f-center">$G = \dfrac{E}{2(1+\nu)}$</div>
+        <div class="note">E<sub>acero</sub>≈200 GPa, G<sub>acero</sub>≈80 GPa, ν≈0,3</div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">T6 · Flexión de Vigas</div>
+        <div class="f f-center">$\sigma = \dfrac{My}{I}$</div>
+        <div class="f f-center">$\tau = \dfrac{VQ}{Ib}$</div>
+        <div class="f f-center">$\sigma_{max} = \dfrac{Mc}{I} = \dfrac{M}{W_f}$</div>
+        <div class="note">dV/dx = −q, &nbsp; dM/dx = V<br>
+        σ máx en fibra más alejada de FN<br>
+        τ máx en fibra neutra</div>
+      </div>
+
+      <div class="block red">
+        <div class="block-title">T6 · Círculo de Mohr</div>
+        <div class="f f-center">$\sigma_{1,2} = \dfrac{\sigma_x+\sigma_y}{2} \pm R$</div>
+        <div class="f f-center">$R = \tau_{max} = \sqrt{\!\left(\dfrac{\sigma_x-\sigma_y}{2}\right)^{\!2}+\tau_{xy}^2}$</div>
+        <div class="f f-center">$\tan 2\theta_p = \dfrac{2\tau_{xy}}{\sigma_x-\sigma_y}$</div>
+        <div class="note">Centro $C = \left(\dfrac{\sigma_x+\sigma_y}{2},\,0\right)$</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols">
+
+    <!-- T7: CINEMÁTICA -->
+    <div>
+      <div class="block orange">
+        <div class="block-title">T7 · Cinemática Sólido Rígido</div>
+        <div class="f f-center">$\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$</div>
+        <div class="f f-center">$\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\vec{r}_{AB}$</div>
+        <div class="note"><b>CIR:</b> perps. a velocidades de 2 puntos.<br>
+        $v_A = \omega\cdot r_{IA}$, $v_B = \omega\cdot r_{IB}$<br><br>
+        <b>Transmisiones:</b> $r_A\omega_A = r_B\omega_B$<br>
+        $i = \omega_A/\omega_B = r_B/r_A = N_B/N_A$</div>
+      </div>
+    </div>
+
+    <!-- T8: DINÁMICA -->
+    <div>
+      <div class="block">
+        <div class="block-title">T8 · I<sub>G</sub> de sólidos comunes</div>
+        <table class="mini">
+          <thead><tr><th>Sólido</th><th>I<sub>G</sub></th></tr></thead>
+          <tbody>
+            <tr><td>Barra delg. L</td><td class="em">mL²/12</td></tr>
+            <tr><td>Disco / cil. R</td><td class="em">mR²/2</td></tr>
+            <tr><td>Aro / cil. hueco R</td><td class="em">mR²</td></tr>
+            <tr><td>Esfera R</td><td class="em">2mR²/5</td></tr>
+            <tr><td>Placa b×h</td><td class="em">m(b²+h²)/12</td></tr>
+          </tbody>
+        </table>
+        <div class="note">Steiner: $I_A = I_G + md^2$</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T8: DINÁMICA CONT. -->
+  <div class="block gold" style="margin-top:6px">
+    <div class="block-title">T8 · Dinámica del Sólido Rígido</div>
+    <div class="cols">
+      <div>
+        <div class="f f-center">$\sum \vec{F} = m\vec{a}_G$</div>
+        <div class="f f-center">$\sum M_G = I_G\alpha$</div>
+        <div class="f f-center">$T = \tfrac{1}{2}mv_G^2 + \tfrac{1}{2}I_G\omega^2$</div>
+        <div class="note">Rodadura sin desliz: $v_G=R\omega$<br>
+        $T = \frac{1}{2}I_P\omega^2 = \frac{1}{2}(I_G+mR^2)\omega^2$</div>
+      </div>
+      <div>
+        <div class="note"><b>Trabajo-Energía:</b><br>
+        $T_1 + \sum U_{1\to2} = T_2$<br>
+        $U_F = Fs\cos\theta$<br>
+        $U_W = -mg\Delta y$<br>
+        $U_k = -\frac{1}{2}k(x_2^2-x_1^2)$<br><br>
+        <b>Impulso-Momento:</b><br>
+        $m\vec{v}_1 + \sum\!\int\!\vec{F}\,dt = m\vec{v}_2$<br>
+        $I_G\omega_1 + \sum\!\int\! M_G\,dt = I_G\omega_2$</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page 2 -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof renderMathInElement !== 'undefined'){
+    renderMathInElement(document.body, {
+      delimiters:[
+        {left:'$$',right:'$$',display:true},
+        {left:'$',right:'$',display:false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>
