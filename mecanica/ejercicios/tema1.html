@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Tema 1 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex()"></script>
+
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#c084fc}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#c084fc;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#d4a0ff}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='52ed4a155ae39b8857d52e3c253776c0d5ab7245274be771b1ce0da1e2f02f58';
+  var KEY='upv_auth_mecanica';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">⚙️</div><h2>Mecánica Aplicada</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(function(){o.remove();},320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(function(){err.textContent='';},2000);}}
+    btn.addEventListener('click',attempt);inp.addEventListener('keydown',function(e){if(e.key==='Enter')attempt();});inp.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--gold:#f59e0b;--green:#6bcb77;--blue:#7ecfff;--orange:#f4a261;--yellow:#ffd93d;
+  --transition:.2s;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-pill{margin-right:20px;background:#1a0a30;border:1px solid #3b1f6e;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);white-space:nowrap}
+
+/* PAGE HEADER */
+.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
+.ph-type{display:inline-block;background:#1a0a30;border:1px solid #3b1f6e;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
+.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+
+/* JUMP LINKS */
+.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
+.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
+.jump-link:hover{background:#1a0a30;color:var(--accent);border-color:var(--accent);text-decoration:none}
+
+/* CONTAINER */
+.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+
+/* EX CARDS */
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
+.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
+.ex-header:hover{background:#111}
+.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
+.ex-meta{font-size:.78em;color:var(--text3)}
+.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
+.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
+.ex-body{display:none;padding:0 20px 20px}
+.ex-card.open .ex-body{display:block}
+
+/* ENUNCIADO */
+.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #2a1a4a;white-space:pre-wrap}
+
+/* SECCIONES */
+.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
+.sec-btn .sarr{transition:.2s}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.sec-open .sec-body{display:block}
+
+.s-datos .sec-btn{background:#1a0a30;color:var(--accent);border:1px solid #3b1f6e}
+.s-datos .sec-body{background:#0e0520;border:1px solid #3b1f6e;border-top:none}
+.s-formulas .sec-btn{background:#1a0f00;color:var(--orange);border:1px solid #2a1800}
+.s-formulas .sec-body{background:#0f0800;border:1px solid #2a1800;border-top:none}
+.s-teoria .sec-btn{background:#0a1a2e;color:var(--blue);border:1px solid #0d2a44}
+.s-teoria .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
+.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
+.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
+.s-conclusiones .sec-btn{background:#1a1a00;color:var(--yellow);border:1px solid #2a2800}
+.s-conclusiones .sec-body{background:#0f0f00;border:1px solid #2a2800;border-top:none}
+
+/* TABLAS */
+.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
+.t-datos th{background:#1e0a3a;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #3b1f6e}
+.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#d0c8ff}
+.t-datos tr:nth-child(even) td{background:#0a0518}
+
+/* FORMULA BOX */
+.formula-box{background:#110800;border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#ffe0c0;overflow-x:auto}
+.formula-label{font-size:.72em;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
+
+/* PASOS */
+.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
+.paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+
+/* RESULTADO FINAL */
+.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
+.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
+.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
+
+/* CONCLUSIONES */
+.concl-item{padding:6px 0 6px 14px;border-left:2px solid var(--yellow);margin-bottom:8px;font-size:.87em;color:#f0e080}
+
+/* NOTA */
+.nota{background:#1a0a00;border:1px solid #3a1a00;border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+
+/* PRÓXIMAMENTE */
+.soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:20px;text-align:center;color:#333;font-size:.85em;font-style:italic}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:3px}
+.katex{font-size:1.05em}
+.katex-display{overflow-x:auto;overflow-y:hidden}
+@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../teoria.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Teoría
+  </a>
+  <span class="topbar-title">⚙️ Tema 1 · Fundamentos de Cálculo Vectorial — Ejercicios</span>
+  <span class="topbar-pill">18 ejercicios</span>
+</nav>
+
+<div class="page-header">
+  <div class="ph-type">Ejercicios Propuestos</div>
+  <h1>Tema 1 · Fundamentos de Cálculo Vectorial</h1>
+  <div class="ph-meta">Mecánica Aplicada · Curso 2025–26 · UPV/EHU · Gipuzkoako Ingeniaritza Eskola</div>
+  <div class="ph-tags">
+    <span class="ph-tag">Producto escalar</span>
+    <span class="ph-tag">Producto vectorial</span>
+    <span class="ph-tag">Momento de una fuerza</span>
+    <span class="ph-tag">Sistemas de vectores</span>
+    <span class="ph-tag">Eje central</span>
+    <span class="ph-tag">18 ejercicios</span>
+  </div>
+</div>
+
+<div class="jump-links">
+  <a class="jump-link" href="#ex1">1.1 · Ángulos cables</a>
+  <a class="jump-link" href="#ex2">1.2 · Momento fuerza T</a>
+  <a class="jump-link" href="#ex3">1.3 · Momento espacial</a>
+  <a class="jump-link" href="#ex4">1.4 · Momentos respecto ejes</a>
+  <a class="jump-link" href="#ex5">1.5 · Sistema vectores</a>
+  <a class="jump-link" href="#ex6">1.6 · Par de fuerzas</a>
+  <a class="jump-link" href="#ex7">1.7 · Resultante equivalente</a>
+  <a class="jump-link" href="#ex8">1.8 · Cuadrado ABCD</a>
+  <a class="jump-link" href="#ex9">1.9 · Fuerza equivalente</a>
+  <a class="jump-link" href="#ex10">1.10 · Eje central plano</a>
+  <a class="jump-link" href="#ex11">1.11 · Momento nulo</a>
+  <a class="jump-link" href="#ex12">1.12 · Invariantes</a>
+  <a class="jump-link" href="#ex13">1.13 · Nivel examen ★</a>
+  <a class="jump-link" href="#ex14">1.14 · Dos sistemas</a>
+  <a class="jump-link" href="#ex15">1.15 · Eje central (a,b,c)</a>
+  <a class="jump-link" href="#ex16">1.16 · Eje central 3 puntos</a>
+  <a class="jump-link" href="#ex17">1.17 · Compatibilidad ε,λ,γ</a>
+  <a class="jump-link" href="#ex18">1.18 · Vectores paralelos</a>
+</div>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════════════════════
+     EJERCICIO 1.1 — ÁNGULOS DE CABLES RESPECTO AL EJE Y
+══════════════════════════════════════════════════════════ -->
+<div class="ex-card open" id="ex1">
+  <div class="ex-header" onclick="toggleEx('ex1')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.1 · Ángulos de tres cables respecto al eje y</h2>
+      <div class="ex-meta">Cosenos directores · Producto escalar · Módulo de un vector</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">Para sostener un contenedor se emplean tres cables que van desde el punto A hasta los puntos B, C y D. Calcular los ángulos que forman los tres cables respecto al eje $y$.
+
+Coordenadas (en metros):
+  A(0; −0,9; 0)    B(0,56; 0; 0)    C(0; 0; −0,48)    D(−0,52; 0; 0,36)
+
+<b>Resultado:</b> $\alpha_{AB} = 31{,}89°$; $\alpha_{AC} = 28{,}07°$; $\alpha_{AD} = 35°$.</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Punto</th><th>Coordenadas (m)</th></tr>
+          <tr><td>A (punto inferior, común)</td><td>(0; −0,9; 0)</td></tr>
+          <tr><td>B (anclaje cable AB)</td><td>(0,56; 0; 0)</td></tr>
+          <tr><td>C (anclaje cable AC)</td><td>(0; 0; −0,48)</td></tr>
+          <tr><td>D (anclaje cable AD)</td><td>(−0,52; 0; 0,36)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría: cosenos directores <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>El ángulo $\alpha$ que forma un vector $\vec{V}$ con el eje $y$ se obtiene a través del <strong>coseno director</strong> respecto a dicho eje:</p>
+        <div class="formula-box">
+          <div class="formula-label">Coseno director respecto al eje y</div>
+          $$\cos(\alpha) = \frac{V_y}{|\vec{V}|}$$
+        </div>
+        <p style="margin-top:8px">donde $V_y$ es la componente $y$ del vector y $|\vec{V}|$ es su módulo (longitud física del cable).</p>
+        <div class="formula-box">
+          <div class="formula-label">Módulo de un vector 3D</div>
+          $$|\vec{V}| = \sqrt{V_x^2 + V_y^2 + V_z^2}$$
+        </div>
+        <p style="margin-top:8px">El vector de cada cable se obtiene restando las coordenadas del punto de origen (A) a las del destino (B, C o D): $\vec{AB} = B - A$.</p>
+        <div class="nota">💡 Todos los cables tienen la misma componente $y = 0{,}9$ m, ya que todos van desde $y_A = -0{,}9$ m hasta $y = 0$. El ángulo varía porque el módulo total difiere según la extensión horizontal/lateral.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Vectores de posición de cada cable</div>
+          <p>Cada cable va del punto A (inferior) al punto de anclaje superior. El vector se calcula restando las coordenadas de A a las del punto destino:</p>
+          <p><strong>Vector AB:</strong></p>
+          $$\vec{AB} = B - A = (0{,}56 - 0)\,\vec{i} + (0 - (-0{,}9))\,\vec{j} + (0 - 0)\,\vec{k}$$
+          $$\boxed{\vec{AB} = 0{,}56\,\vec{i} + 0{,}9\,\vec{j} + 0\,\vec{k}}$$
+          <p><strong>Vector AC:</strong></p>
+          $$\vec{AC} = C - A = (0 - 0)\,\vec{i} + (0 - (-0{,}9))\,\vec{j} + (-0{,}48 - 0)\,\vec{k}$$
+          $$\boxed{\vec{AC} = 0\,\vec{i} + 0{,}9\,\vec{j} - 0{,}48\,\vec{k}}$$
+          <p><strong>Vector AD:</strong></p>
+          $$\vec{AD} = D - A = (-0{,}52 - 0)\,\vec{i} + (0 - (-0{,}9))\,\vec{j} + (0{,}36 - 0)\,\vec{k}$$
+          $$\boxed{\vec{AD} = -0{,}52\,\vec{i} + 0{,}9\,\vec{j} + 0{,}36\,\vec{k}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Módulo (longitud) de cada cable</div>
+          <p>Aplicamos el teorema de Pitágoras en 3D:</p>
+          <p><strong>Módulo AB:</strong></p>
+          $$|\vec{AB}| = \sqrt{0{,}56^2 + 0{,}9^2 + 0^2} = \sqrt{0{,}3136 + 0{,}81} = \sqrt{1{,}1236} = 1{,}06\ \text{m}$$
+          <p><strong>Módulo AC:</strong></p>
+          $$|\vec{AC}| = \sqrt{0^2 + 0{,}9^2 + (-0{,}48)^2} = \sqrt{0{,}81 + 0{,}2304} = \sqrt{1{,}0404} = 1{,}02\ \text{m}$$
+          <p><strong>Módulo AD:</strong></p>
+          $$|\vec{AD}| = \sqrt{(-0{,}52)^2 + 0{,}9^2 + 0{,}36^2} = \sqrt{0{,}2704 + 0{,}81 + 0{,}1296} = \sqrt{1{,}21} = 1{,}10\ \text{m}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Ángulos con el eje y (cosenos directores)</div>
+          <p>Aplicamos $\alpha = \arccos\!\left(\dfrac{V_y}{|\vec{V}|}\right)$. La componente $y$ de los tres vectores es $0{,}9$ m en todos los casos.</p>
+          <p><strong>Cable AB:</strong></p>
+          $$\cos(\alpha_{AB}) = \frac{0{,}9}{1{,}06} = 0{,}84906 \implies \alpha_{AB} = \arccos(0{,}84906) = \mathbf{31{,}89°}$$
+          <p><strong>Cable AC:</strong></p>
+          $$\cos(\alpha_{AC}) = \frac{0{,}9}{1{,}02} = 0{,}88235 \implies \alpha_{AC} = \arccos(0{,}88235) = \mathbf{28{,}07°}$$
+          <p><strong>Cable AD:</strong></p>
+          $$\cos(\alpha_{AD}) = \frac{0{,}9}{1{,}10} = 0{,}81818 \implies \alpha_{AD} = \arccos(0{,}81818) = \mathbf{35{,}10° \approx 35°}$$
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val">
+            $\alpha_{AB} = \arccos\!\left(\dfrac{0{,}9}{1{,}06}\right) = \boxed{31{,}89°}$<br>
+            $\alpha_{AC} = \arccos\!\left(\dfrac{0{,}9}{1{,}02}\right) = \boxed{28{,}07°}$<br>
+            $\alpha_{AD} = \arccos\!\left(\dfrac{0{,}9}{1{,}10}\right) = \boxed{35°}$
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">El ángulo con el eje $y$ aumenta cuanto más se separa horizontalmente el punto de anclaje: el cable AB tiene más extensión en $x$, el AD en $x$ y $z$, y el AC en $z$.</div>
+        <div class="concl-item">La componente $y = 0{,}9$ m es idéntica en los tres vectores porque todos los cables parten de la misma profundidad $y_A = -0{,}9$ m hasta el plano $y = 0$.</div>
+        <div class="concl-item">Método directo: <strong>coseno director</strong> $= V_y / |\vec{V}|$. Equivalente a usar el producto escalar $\vec{V} \cdot \vec{j} = |\vec{V}|\cos\alpha$, ya que $|\vec{j}| = 1$.</div>
+        <div class="concl-item">El cable más vertical es el AC ($\alpha = 28°$, anclado solo en $z$), el más inclinado el AD ($\alpha = 35°$, anclado en $x$ y $z$ simultáneamente).</div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex1 -->
+
+
+<!-- ══════════════════════════════════════════════════════════
+     EJERCICIOS 1.2 – 1.18 (próximamente)
+══════════════════════════════════════════════════════════ -->
+
+<div class="ex-card" id="ex2">
+  <div class="ex-header" onclick="toggleEx('ex2')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.2 · Momento de la fuerza T = 130 N en A y B</h2>
+      <div class="ex-meta">Producto vectorial · Campo de momentos · Caso plano</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex3">
+  <div class="ex-header" onclick="toggleEx('ex3')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.3 · Momento de fuerza 400 N respecto al punto C</h2>
+      <div class="ex-meta">Producto vectorial espacial · Momento 3D</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex4">
+  <div class="ex-header" onclick="toggleEx('ex4')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.4 · Momentos respecto a los ejes x, y, z</h2>
+      <div class="ex-meta">Momento respecto a ejes · Fuerzas P₁, P₂, P₃</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex5">
+  <div class="ex-header" onclick="toggleEx('ex5')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.5 · Sistema de tres vectores — resultante e invariantes</h2>
+      <div class="ex-meta">Resultante · Momento en O · Invariantes · Momento mínimo</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex6">
+  <div class="ex-header" onclick="toggleEx('ex6')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.6 · Par de fuerzas — momento resultante</h2>
+      <div class="ex-meta">Par de fuerzas · Momento independiente del punto</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex7">
+  <div class="ex-header" onclick="toggleEx('ex7')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.7 · Resultante equivalente y posición</h2>
+      <div class="ex-meta">Sistema equivalente · Resultante · Distancia a la pared</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex8">
+  <div class="ex-header" onclick="toggleEx('ex8')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.8 · Cuadrado ABCD — vectores F₃ y F₄</h2>
+      <div class="ex-meta">Sistema de vectores · Resultante nula · Momento dado</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex9">
+  <div class="ex-header" onclick="toggleEx('ex9')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.9 · Placa cuadrada — fuerza única equivalente</h2>
+      <div class="ex-meta">Fuerza equivalente · Distancia desde A en lados AB y AC</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex10">
+  <div class="ex-header" onclick="toggleEx('ex10')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.10 · Resultante, momento en A y eje central</h2>
+      <div class="ex-meta">Sistema plano · Resultante · Momento · Distancia al eje central</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex11">
+  <div class="ex-header" onclick="toggleEx('ex11')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.11 · Punto P con momento nulo</h2>
+      <div class="ex-meta">Vectores deslizantes · Momento resultante nulo en P(0,y,0)</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex12">
+  <div class="ex-header" onclick="toggleEx('ex12')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.12 · Invariantes y momento en O'</h2>
+      <div class="ex-meta">Invariante escalar · Eje central · Momento mínimo</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex13">
+  <div class="ex-header" onclick="toggleEx('ex13')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.13 · ★ Nivel examen — Vectores v_A y v_B con eje central y</h2>
+      <div class="ex-meta">Eje central · Momento mínimo · Componentes de vectores</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex14">
+  <div class="ex-header" onclick="toggleEx('ex14')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.14 · Dos sistemas S1 y S2 — sistema completo S</h2>
+      <div class="ex-meta">Unión de sistemas · Resultante · Momento · Invariante escalar</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex15">
+  <div class="ex-header" onclick="toggleEx('ex15')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.15 · Momentos en A, B, C — hallar a, b, c y eje central</h2>
+      <div class="ex-meta">Campo de momentos · Resultante · Ecuaciones del eje central</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex16">
+  <div class="ex-header" onclick="toggleEx('ex16')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.16 · Sistema definido por momentos en tres puntos</h2>
+      <div class="ex-meta">Campo de momentos · Valores a, b, c · Eje central</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex17">
+  <div class="ex-header" onclick="toggleEx('ex17')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.17 · Compatibilidad ε, λ, γ e invariantes</h2>
+      <div class="ex-meta">Consistencia del campo de momentos · Invariantes escalar y vectorial</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+<div class="ex-card" id="ex18">
+  <div class="ex-header" onclick="toggleEx('ex18')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 1.18 · Dos vectores paralelos ligados — hallar v₁ y A₁</h2>
+      <div class="ex-meta">Vectores paralelos · Módulo de resultante · Punto de aplicación</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+    <div class="soon">Resolución en preparación</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+function initKatex(){
+  renderMathInElement(document.body,{
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'$',right:'$',display:false}
+    ],
+    throwOnError:false
+  });
+}
+
+function toggleEx(id){
+  var card=document.getElementById(id);
+  card.classList.toggle('open');
+}
+
+function toggleSec(btn){
+  btn.parentElement.classList.toggle('sec-open');
+}
+</script>
+</body>
+</html>
