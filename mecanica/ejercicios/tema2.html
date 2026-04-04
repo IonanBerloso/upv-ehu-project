@@ -200,6 +200,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex2-1">2.1 Arco de circunferencia</a>
   <a class="jump-link" href="#ex2-2">2.2 Triángulo</a>
   <a class="jump-link" href="#ex2-3">2.3 Cono recto</a>
+  <a class="jump-link" href="#ex2-4">2.4 Semiesfera</a>
 </div>
 
 <div class="container">
@@ -518,6 +519,106 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-3 -->
+
+<!-- ═══════════════════════════════════════════════════════ EJERCICIO 2.4 -->
+<div class="ex-card" id="ex2-4">
+  <div class="ex-header" onclick="toggleEx('ex2-4')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.4 — Centro de gravedad de la semiesfera</h2>
+      <div class="ex-meta">Sólido de revolución · Integración por discos · Ejemplo teórico-práctico esencial</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Calcular la posición del centro de gravedad de la <strong>semiesfera homogénea de radio \(R\)</strong>.
+      La cara plana está en el plano \(z = 0\) y la superficie curva se extiende hasta \(z = R\), con eje de simetría \(z\).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Igual que en el cono, integramos por <strong>discos circulares</strong> horizontales de espesor \(dz\):</p>
+        \[
+          dV = \pi\,r(z)^2\,dz
+        \]
+        <p style="margin-top:8px">En este caso el radio del disco a altura \(z\) se obtiene de la ecuación de la esfera \(x^2+y^2+z^2 = R^2\):</p>
+        \[
+          r(z)^2 = R^2 - z^2
+        \]
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Elemento diferencial de volumen</div>
+          <p>A altura \(z\), el radio del disco es \(r(z) = \sqrt{R^2 - z^2}\):</p>
+          \[
+            dV = \pi\,r(z)^2\,dz = \pi(R^2 - z^2)\,dz
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Volumen total (verificación)</div>
+          \[
+            V = \int_0^R \pi(R^2 - z^2)\,dz
+              = \pi\!\left[R^2 z - \frac{z^3}{3}\right]_0^R
+              = \pi\!\left(R^3 - \frac{R^3}{3}\right)
+              = \frac{2\pi R^3}{3} \checkmark
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Simetría (\(x_G = y_G = 0\))</div>
+          <p>La semiesfera es simétrica respecto al eje \(z\): \(x_G = y_G = 0\).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Momento estático \(Q_z = \int z\,dV\)</div>
+          \[
+            Q_z = \int_0^R z\cdot\pi(R^2 - z^2)\,dz
+                = \pi\int_0^R\!(R^2 z - z^3)\,dz
+                = \pi\!\left[\frac{R^2 z^2}{2} - \frac{z^4}{4}\right]_0^R
+          \]
+          \[
+            = \pi\!\left(\frac{R^4}{2} - \frac{R^4}{4}\right)
+            = \pi R^4\!\left(\frac{2}{4} - \frac{1}{4}\right)
+            = \frac{\pi R^4}{4}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Centro de gravedad \(z_G\)</div>
+          \[
+            z_G = \frac{Q_z}{V}
+                = \frac{\,\dfrac{\pi R^4}{4}\,}{\dfrac{2\pi R^3}{3}}
+                = \frac{\pi R^4}{4}\cdot\frac{3}{2\pi R^3}
+                = \frac{3R}{8}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              z_G = \frac{3R}{8}, \qquad x_G = y_G = 0
+            \]
+            <p style="margin-top:8px;color:#94a3b8;font-size:.88em">
+              Progresión lógica: triángulo \(\tfrac{h}{3}\) → cono \(\tfrac{h}{4}\) → semiesfera \(\tfrac{3R}{8} \approx 0{,}375R\).
+              La semiesfera es más "esférica" cerca de la cima, así que su CG sube respecto al cono.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-4 -->
 
 </div><!-- /container -->
 
