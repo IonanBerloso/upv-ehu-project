@@ -1450,8 +1450,7 @@ body{
 
 <!-- KaTeX -->
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
 <script>
 // ── FÓRMULAS KaTeX inline ──
@@ -1484,24 +1483,18 @@ const formulas = {
 };
 
 document.addEventListener('DOMContentLoaded', function(){
-  // Render formulas
+  // Render formulas with KaTeX (deferred scripts already ran before DOMContentLoaded)
   Object.entries(formulas).forEach(([id, tex]) => {
     var el = document.getElementById(id);
-    if(el) el.textContent = tex;
+    if(!el) return;
+    var isDisplay = tex.startsWith('$$');
+    var clean = tex.replace(/^\$\$?/, '').replace(/\$\$?$/, '');
+    try {
+      katex.render(clean, el, {throwOnError: false, displayMode: isDisplay});
+    } catch(e) {
+      el.textContent = clean;
+    }
   });
-
-  // After KaTeX auto-render fires, also render our manual placeholders
-  // (auto-render handles $...$ globally, but we need it on these specific elements)
-  function renderFormulas(){
-    Object.entries(formulas).forEach(([id, tex]) => {
-      var el = document.getElementById(id);
-      if(el && el.textContent === tex){
-        try {
-          katex.render(tex.replace(/^\$|\$$/g,''), el, {throwOnError:false, displayMode: tex.startsWith('$$')});
-        } catch(e){}
-      }
-    });
-  }
 
   // Filter logic
   var btns = document.querySelectorAll('.filter-btn');
