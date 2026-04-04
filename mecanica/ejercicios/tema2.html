@@ -199,6 +199,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <div class="jump-links">
   <a class="jump-link" href="#ex2-1">2.1 Arco de circunferencia</a>
   <a class="jump-link" href="#ex2-2">2.2 Triángulo</a>
+  <a class="jump-link" href="#ex2-3">2.3 Cono recto</a>
 </div>
 
 <div class="container">
@@ -408,6 +409,115 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-2 -->
+
+<!-- ═══════════════════════════════════════════════════════ EJERCICIO 2.3 -->
+<div class="ex-card" id="ex2-3">
+  <div class="ex-header" onclick="toggleEx('ex2-3')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.3 — Centro de gravedad del cono recto</h2>
+      <div class="ex-meta">Sólido de revolución · Integración por discos · Ejemplo teórico-práctico esencial</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Calcular la posición del centro de gravedad de un <strong>cono recto de radio \(R\) y altura \(h\)</strong>.
+      El cono tiene la base circular (\(r = R\)) en \(z = 0\) y el vértice en \(z = h\), con eje de simetría \(z\).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>El centro de gravedad de un <strong>sólido homogéneo</strong> se calcula como:</p>
+        \[
+          z_G = \frac{\displaystyle\int z\,dV}{V}
+        \]
+        <p style="margin-top:10px">Para un sólido de revolución con simetría respecto al eje \(z\), integramos por <strong>discos circulares</strong> horizontales de espesor \(dz\):</p>
+        \[
+          dV = \pi\,r(z)^2\,dz
+        \]
+        <p style="margin-top:6px">donde \(r(z)\) es el radio del disco a altura \(z\).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Radio del disco a altura z</div>
+          <p>El radio varía linealmente desde \(R\) en \(z=0\) hasta \(0\) en \(z=h\). Por semejanza de triángulos:</p>
+          \[
+            r(z) = R\cdot\frac{h - z}{h} = R\!\left(1 - \frac{z}{h}\right)
+          \]
+          <p style="margin-top:6px">Elemento diferencial de volumen:</p>
+          \[
+            dV = \pi\,r(z)^2\,dz = \pi R^2\!\left(1-\frac{z}{h}\right)^{\!2}dz
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Volumen total (verificación)</div>
+          \[
+            V = \int_0^h \pi R^2\!\left(1-\frac{z}{h}\right)^{\!2}dz
+          \]
+          <p style="margin-top:4px">Cambio de variable \(u = 1 - z/h\), \(dz = -h\,du\):</p>
+          \[
+            V = \pi R^2 h\int_0^1 u^2\,du = \pi R^2 h\cdot\frac{1}{3} = \frac{\pi R^2 h}{3} \checkmark
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Simetría (\(x_G = y_G = 0\))</div>
+          <p>El cono es simétrico respecto al eje \(z\): \(x_G = y_G = 0\). Solo necesitamos calcular \(z_G\).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Momento estático \(Q_z = \int z\,dV\)</div>
+          \[
+            Q_z = \int_0^h z\cdot\pi R^2\!\left(1-\frac{z}{h}\right)^{\!2}dz
+                = \pi R^2\int_0^h z\!\left(1 - \frac{2z}{h} + \frac{z^2}{h^2}\right)dz
+          \]
+          \[
+            = \pi R^2\int_0^h\!\left(z - \frac{2z^2}{h} + \frac{z^3}{h^2}\right)dz
+            = \pi R^2\!\left[\frac{z^2}{2} - \frac{2z^3}{3h} + \frac{z^4}{4h^2}\right]_0^h
+          \]
+          \[
+            = \pi R^2\!\left(\frac{h^2}{2} - \frac{2h^2}{3} + \frac{h^2}{4}\right)
+            = \pi R^2 h^2\!\left(\frac{6}{12} - \frac{8}{12} + \frac{3}{12}\right)
+            = \pi R^2 h^2\cdot\frac{1}{12}
+            = \frac{\pi R^2 h^2}{12}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Centro de gravedad \(z_G\)</div>
+          \[
+            z_G = \frac{Q_z}{V} = \frac{\,\dfrac{\pi R^2 h^2}{12}\,}{\dfrac{\pi R^2 h}{3}}
+                = \frac{\pi R^2 h^2}{12}\cdot\frac{3}{\pi R^2 h}
+                = \frac{h}{4}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              z_G = \frac{h}{4}, \qquad x_G = y_G = 0
+            \]
+            <p style="margin-top:8px;color:#94a3b8;font-size:.88em">
+              El CG se sitúa a \(\tfrac{1}{4}\) de la base. Análogamente, el triángulo (2D) tiene su CG a \(\tfrac{h}{3}\) —
+              en 3D el cono "pesa más" cerca de la base, desplazando el CG más abajo.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-3 -->
 
 </div><!-- /container -->
 
