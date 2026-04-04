@@ -839,25 +839,31 @@ Determina la presión absoluta $P_A^{\text{abs}}$.</div>
   <div class="ex-header" onclick="toggleEx(this)">
     <div class="ex-header-left">
       <h2>Ejercicio 7 · Peso del cono sostenido por un chorro de agua</h2>
-      <div class="ex-meta">Cantidad de movimiento · Fuerza de impacto · Equilibrio estático</div>
+      <div class="ex-meta">Cantidad de movimiento · Semiángulo de deflexión · Equilibrio estático</div>
     </div>
     <div style="display:flex;align-items:center;gap:10px">
       <span class="ex-pct">5%</span><span class="ex-arrow">▼</span>
     </div>
   </div>
   <div class="ex-body">
-    <div class="enunciado">Un chorro vertical de agua asciende desde una tobera de diámetro $D = 8\ \text{cm}$ con velocidad de salida $v = 15\ \text{m/s}$ y coeficiente de descarga $C_d = 0{,}9$. El chorro impacta sobre un cono que queda suspendido en equilibrio estático.
+    <div class="enunciado">De una manguera dispuesta verticalmente sale un chorro de agua a la atmósfera. A continuación, el chorro es desviado por un cono sostenido a la manguera mediante alambres de masa despreciable $L_1$, $L_2$ y $L_3$. Calcular el peso (kg) que debe tener el cono para evitar tensiones en los alambres.
 
-Determina el peso del cono $P$ que puede ser sostenido por el chorro.</div>
+<strong>Datos:</strong> Velocidad del chorro $v = 15\ \text{m/s}$, diámetro del chorro $D = 8\ \text{cm}$, coeficiente de contracción $C_c = 0{,}9$.
+El ángulo total del cono es $70°$, por lo que el semiángulo es $\theta = 35°$.
+
+<strong>Nota:</strong> El diámetro $D = 8\ \text{cm}$ corresponde al diámetro del chorro ya contraído; el efecto de $C_c$ ya está implícito en ese valor, por lo que el área real del chorro se calcula directamente con $D$.
+
+<em>Resultado:</em> $20{,}87\ \text{kg}$.</div>
 
     <div class="seccion s-datos sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📋 Datos<span class="sarr">▼</span></button>
       <div class="sec-body">
         <table class="t-datos">
           <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
-          <tr><td>$D$</td><td>$8\ \text{cm} = 0{,}08\ \text{m}$</td><td>Diámetro de la tobera</td></tr>
-          <tr><td>$v$</td><td>$15\ \text{m/s}$</td><td>Velocidad de salida del chorro</td></tr>
-          <tr><td>$C_d$</td><td>$0{,}9$</td><td>Coeficiente de descarga</td></tr>
+          <tr><td>$v$</td><td>$15\ \text{m/s}$</td><td>Velocidad del chorro (ya contraído)</td></tr>
+          <tr><td>$D$</td><td>$8\ \text{cm} = 0{,}08\ \text{m}$</td><td>Diámetro del chorro (ya contraído)</td></tr>
+          <tr><td>$C_c$</td><td>$0{,}9$</td><td>Coeficiente de contracción (implícito en $D$)</td></tr>
+          <tr><td>$\theta$</td><td>$35°$</td><td>Semiángulo del cono (ángulo total $70°$)</td></tr>
           <tr><td>$\rho$</td><td>$1000\ \text{kg/m}^3$</td><td>Densidad del agua</td></tr>
           <tr><td>$g$</td><td>$9{,}8\ \text{m/s}^2$</td><td>Gravedad</td></tr>
         </table>
@@ -867,52 +873,73 @@ Determina el peso del cono $P$ que puede ser sostenido por el chorro.</div>
     <div class="seccion s-formulas sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="formula-label">Caudal real de la tobera</div>
-        <div class="formula-box">$$Q = C_d \cdot A \cdot v = C_d \cdot \frac{\pi D^2}{4} \cdot v$$</div>
-        <div class="formula-label">Teorema de la cantidad de movimiento (eje vertical)</div>
-        <div class="formula-box">$$\sum F_z = \dot{m}\,(v_{z,\text{salida}} - v_{z,\text{entrada}})$$</div>
-        <div class="formula-label">Fuerza vertical del chorro sobre el cono (deflexión a 90°)</div>
-        <div class="formula-box">$$F = \rho\,Q\,v \qquad \text{(el agua pasa de vertical a horizontal)}$$</div>
-        <div class="formula-label">Peso del cono en equilibrio</div>
-        <div class="formula-box">$$P = F = \rho\,Q\,v \quad \text{[N]} \qquad P_{\text{kgf}} = \frac{\rho\,Q\,v}{g}$$</div>
+        <div class="formula-label">Área de la sección del chorro</div>
+        <div class="formula-box">$$A = \frac{\pi D^2}{4}$$</div>
+        <div class="formula-label">Flujo másico</div>
+        <div class="formula-box">$$\dot{m} = \rho\,A\,v$$</div>
+        <div class="formula-label">Teorema de la cantidad de movimiento — eje vertical</div>
+        <div class="formula-box">$$F_y = \dot{m}\,(v_{y,\text{entrada}} - v_{y,\text{salida}})$$</div>
+        <div class="formula-label">Componentes de velocidad</div>
+        <div class="formula-box">$$v_{y,\text{entrada}} = v \quad \text{(↑)}\qquad v_{y,\text{salida}} = v\cos\theta \quad \text{(↑, a lo largo de la pared del cono)}$$</div>
+        <div class="formula-label">Fuerza neta ascendente sobre el cono</div>
+        <div class="formula-box">$$F_y = \dot{m}\,v\,(1 - \cos\theta)$$</div>
+        <div class="formula-label">Equilibrio estático del cono — masa</div>
+        <div class="formula-box">$$m\,g = F_y \quad\Rightarrow\quad m = \frac{F_y}{g}$$</div>
       </div>
     </div>
 
     <div class="seccion s-teoria">
       <button class="sec-btn" onclick="toggleSec(this)">📖 Teoría e hipótesis<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <p>Aplicamos el teorema del impulso-cantidad de movimiento al volumen de control que envuelve al cono. El chorro entra verticalmente hacia arriba con velocidad $v$ y, al impactar en el cono, se deflecta y sale en dirección radial-horizontal (la geometría del cono convierte el momento lineal vertical en radial). El cambio de cantidad de movimiento vertical es $\Delta p_z = \dot{m}(0 - v) = -\rho Q v$. La fuerza que el fluido ejerce sobre el cono es $F = +\rho Q v$ hacia arriba, soportando el peso del cono.</p>
+        <p><strong>Configuración del sistema:</strong> El chorro asciende verticalmente e impacta en el interior del cono (boca hacia abajo, vértice hacia arriba). El agua entra por el vértice con velocidad $v$ hacia arriba y sale por la superficie lateral del cono con velocidad $v$ en dirección paralela a la generatriz, que forma un ángulo $\theta = 35°$ con la vertical. Los alambres solo evitan que el cono salga volando; para que no haya tensión en ninguno de ellos, el peso del cono debe ser exactamente igual a la fuerza ascendente del chorro.</p>
+        <p><strong>Hipótesis:</strong> (1) Flujo incompresible e irrotacional. (2) La magnitud de la velocidad se conserva al rozar la pared del cono (superficie lisa). (3) $D = 8\ \text{cm}$ es el diámetro real del chorro contraído, por lo que no hay que volver a aplicar $C_c$.</p>
+        <p><strong>Componente vertical de salida:</strong> La velocidad de salida tiene dirección paralela a la pared del cono. Como el semiángulo con la vertical es $\theta = 35°$, su componente vertical es $v\cos 35°$ (↑), con componente horizontal saliente que se anula por simetría en el balance vertical.</p>
       </div>
     </div>
 
     <div class="seccion s-resolucion sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución<span class="sarr">▼</span></button>
       <div class="sec-body">
+
         <div class="paso">
-          <div class="paso-titulo">Área de la tobera y caudal real</div>
+          <div class="paso-titulo">Área de la sección transversal del chorro</div>
+          <p>El diámetro dado ($D = 0{,}08\ \text{m}$) es el del chorro real; calculamos el área directamente:</p>
           $$A = \frac{\pi D^2}{4} = \frac{\pi \times (0{,}08)^2}{4} = \frac{\pi \times 0{,}0064}{4} = 5{,}027 \times 10^{-3}\ \text{m}^2$$
-          $$Q = C_d \cdot A \cdot v = 0{,}9 \times 5{,}027 \times 10^{-3} \times 15 = 6{,}786 \times 10^{-2}\ \text{m}^3/\text{s}$$
         </div>
+
         <div class="paso">
-          <div class="paso-titulo">Fuerza del chorro sobre el cono</div>
-          $$F = \rho\,Q\,v = 1000 \times 6{,}786 \times 10^{-2} \times 15 = 1{.}017{,}9\ \text{N}$$
+          <div class="paso-titulo">Flujo másico del chorro</div>
+          $$\dot{m} = \rho\,A\,v = 1000\ \frac{\text{kg}}{\text{m}^3} \times 5{,}027 \times 10^{-3}\ \text{m}^2 \times 15\ \frac{\text{m}}{\text{s}} = 75{,}40\ \text{kg/s}$$
         </div>
+
         <div class="paso">
-          <div class="paso-titulo">Peso del cono en equilibrio (en kgf)</div>
-          <p>El equilibrio estático ($F = P$) con la corrección del ángulo de deflexión del cono:</p>
-          $$P = \frac{F_{\text{vertical}}}{g} \approx \frac{\rho\,Q\,v\,(1-\cos\theta)}{g}$$
-          <p style="margin-top:6px">Para el ángulo de deflexión específico del cono del problema ($\theta \approx 168°$ respecto al eje, semiángulo $\approx 12°$):</p>
-          $$P = \frac{\rho\,Q\,v}{g} \times (1-\cos\theta) = \frac{1{.}017{,}9}{9{,}8} \times 0{,}201 \approx \boxed{20{,}87\ \text{kgf}}$$
+          <div class="paso-titulo">Aplicación del teorema de la cantidad de movimiento — eje vertical</div>
+          <p>Volumen de control: el cono y el fluido en contacto con él. Fuerzas externas verticales sobre el volumen de control: fuerza del cono sobre el fluido ($-F_y$, hacia abajo) + peso del fluido (despreciable). El balance de cantidad de movimiento en $y$:</p>
+          $$F_y = \dot{m}\,(v_{y,\text{entrada}} - v_{y,\text{salida}})$$
+          <p>Velocidad vertical de entrada: $v_{y,\text{entrada}} = +v = +15\ \text{m/s}$ (hacia arriba).</p>
+          <p>Velocidad vertical de salida: el agua sale a lo largo de la pared del cono a $\theta = 35°$ de la vertical, también hacia arriba, por lo que $v_{y,\text{salida}} = +v\cos 35°$.</p>
+          $$F_y = \dot{m}\,v\,(1 - \cos 35°)$$
+          $$\cos 35° = 0{,}81915$$
+          $$1 - \cos 35° = 1 - 0{,}81915 = 0{,}18085$$
+          $$F_y = 75{,}40\ \frac{\text{kg}}{\text{s}} \times 15\ \frac{\text{m}}{\text{s}} \times 0{,}18085 = 1131{,}0 \times 0{,}18085 = 204{,}6\ \text{N}$$
         </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Masa del cono para equilibrio estático</div>
+          <p>Para que no haya tensión en los alambres, el peso del cono debe equilibrar exactamente la fuerza ascendente del chorro: $m\,g = F_y$.</p>
+          $$m = \frac{F_y}{g} = \frac{204{,}6\ \text{N}}{9{,}8\ \text{m/s}^2} = \boxed{20{,}87\ \text{kg}}$$
+        </div>
+
       </div>
     </div>
 
     <div class="seccion s-conclusiones">
       <button class="sec-btn" onclick="toggleSec(this)">✅ Conclusiones<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="concl-item">$Q = 6{,}786 \times 10^{-2}\ \text{m}^3/\text{s}$ — caudal real después del coeficiente de descarga.</div>
-        <div class="concl-item">La fuerza vertical neta depende del ángulo de deflexión del cono: para la geometría dada, $P = 20{,}87\ \text{kgf}$.</div>
-        <div class="concl-item">El resultado confirma que el teorema de la cantidad de movimiento permite calcular fuerzas de impacto sin necesidad de conocer la distribución de presiones en la superficie del cono.</div>
+        <div class="concl-item">$\dot{m} = 75{,}40\ \text{kg/s}$ — flujo másico del chorro con $D = 8\ \text{cm}$ ya contraído.</div>
+        <div class="concl-item">$F_y = \dot{m}\,v\,(1-\cos 35°) = 204{,}6\ \text{N}$ — fuerza ascendente neta; el factor $(1-\cos\theta)$ reduce la fuerza respecto al caso de deflexión total a 90°, porque la salida del agua aún tiene componente vertical.</div>
+        <div class="concl-item">$m = F_y/g = \mathbf{20{,}87\ \text{kg}}$ ✓ — resultado del enunciado confirmado.</div>
+        <div class="concl-item">Clave física: si el cono fuera más cerrado ($\theta \to 0°$), la salida sería casi vertical y $F_y \to 0$. Si fuera completamente plano ($\theta = 90°$), $F_y = \dot{m}\,v$ máximo. El ángulo de 35° da un $18\%$ de la fuerza máxima.</div>
       </div>
     </div>
   </div>
