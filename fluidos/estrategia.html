@@ -1499,6 +1499,7 @@ document.addEventListener('DOMContentLoaded', function(){
   // Filter logic
   var btns = document.querySelectorAll('.filter-btn');
   var cards = document.querySelectorAll('.sc');
+  var sections = document.querySelectorAll('.strategy-section');
 
   btns.forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -1511,6 +1512,11 @@ document.addEventListener('DOMContentLoaded', function(){
         } else {
           card.classList.add('hidden');
         }
+      });
+      // Ocultar secciones enteras que no tengan ninguna tarjeta visible
+      sections.forEach(function(sec){
+        var visible = sec.querySelectorAll('.sc:not(.hidden)').length > 0;
+        sec.style.display = visible ? '' : 'none';
       });
     });
   });
