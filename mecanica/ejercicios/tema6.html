@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#000000">
-<title>Tema 2 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
+<title>Tema 6 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -168,135 +168,44 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Teoría
   </a>
-  <span class="topbar-title">⚙️ Tema 2 · Geometría de Masas y Superficies Planas — Ejercicios</span>
+  <span class="topbar-title">⚙️ Tema 6 · Principios de Resistencia de Materiales — Ejercicios</span>
   <div class="tema-picker" id="temaPicker">
-  <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">📚 T2 ▾</button>
+  <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">&#128218; T6 &#9660;</button>
   <div class="tema-dropdown">
     <a class="td-item td-available" href="tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
-    <span class="td-item td-active"><span class="td-num">T2</span> Geometría de Masas</span>
+    <a class="td-item td-available" href="tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
     <a class="td-item td-available" href="tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
     <a class="td-item td-available" href="tema4.html"><span class="td-num">T4</span> Rozamiento</a>
     <a class="td-item td-available" href="tema5.html"><span class="td-num">T5</span> Cables</a>
-    <a class="td-item td-available" href="tema6.html"><span class="td-num">T6</span> Resistencia de Mat.</a>
-    <a class="td-item td-available" href="tema7.html"><span class="td-num">T7</span> Cinemática del S.R.</a>
-    <a class="td-item td-available" href="tema8.html"><span class="td-num">T8</span> Mov. Plano del S.R.</a>
+    <span class="td-item td-active"><span class="td-num">T6</span> Resistencia de Mat.</span>
+    <span class="td-item td-soon"><span class="td-num">T7</span> Cinemática del S.R.</span>
+    <span class="td-item td-soon"><span class="td-num">T8</span> Mov. Plano del S.R.</span>
   </div>
 </div>
 </nav>
 
 <div class="page-header">
-  <div class="ph-type">Mecánica Aplicada · Tema 2</div>
-  <h1>Geometría de Masas y Superficies Planas</h1>
-  <div class="ph-meta">Centro de gravedad · Momentos de inercia · Teorema de Steiner · Radio de giro</div>
+  <div class="ph-type">Mecánica Aplicada · Tema 6</div>
+  <h1>Principios de Resistencia de Materiales</h1>
+  <div class="ph-meta">Esfuerzos internos · Diagramas N, V, M · Flexión · Cortante</div>
   <div class="ph-tags">
-    <span class="ph-tag">Centroides</span>
-    <span class="ph-tag">Momentos de inercia</span>
-    <span class="ph-tag">Steiner</span>
-    <span class="ph-tag">Figuras compuestas</span>
+    <span class="ph-tag">Esfuerzos internos</span>
+    <span class="ph-tag">Flexión</span>
+    <span class="ph-tag">Cortante</span>
+    <span class="ph-tag">Diagramas</span>
   </div>
 </div>
 
 <div class="jump-links">
-  <a class="jump-link" href="#ex2-1">2.1 Arco de circunferencia</a>
+  <!-- Los enlaces se añadirán conforme se resuelvan los ejercicios -->
 </div>
 
 <div class="container">
 
-<!-- ═══════════════════════════════════════════════════════ EJERCICIO 2.1 -->
-<div class="ex-card" id="ex2-1">
-  <div class="ex-header" onclick="toggleEx('ex2-1')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.1 — Centro de gravedad del arco de circunferencia</h2>
-      <div class="ex-meta">Elemento curvilíneo · Integración · Ejemplo teórico-práctico esencial</div>
-    </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
-      Calcular la posición del centro de gravedad del <strong>arco de circunferencia</strong> (elemento curvilíneo)
-      de radio \(R\) y semiángulo \(\alpha\) respecto al sistema de referencia indicado.
-      El arco es simétrico respecto al eje \(x\), abarcando desde \(-\alpha\) hasta \(+\alpha\).
-    </div>
-
-    <div class="seccion s-teoria">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>El <strong>centro de gravedad</strong> de un elemento curvilíneo se obtiene ponderando la posición de cada punto por su longitud diferencial:</p>
-        \[
-          x_G = \frac{\displaystyle\int x\,dL}{\displaystyle\int dL}, \qquad y_G = \frac{\displaystyle\int y\,dL}{\displaystyle\int dL}
-        \]
-        <p style="margin-top:10px">Para un arco circular de radio \(R\), el <strong>elemento diferencial de longitud</strong> en función del ángulo \(\theta\) es:</p>
-        \[
-          dL = R\,d\theta
-        \]
-        <p style="margin-top:10px">Las coordenadas de un punto del arco son \(x = R\cos\theta\), \(y = R\sin\theta\).</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Longitud total del arco</div>
-          <p>El arco recorre desde \(\theta = -\alpha\) hasta \(\theta = +\alpha\):</p>
-          \[
-            L = \int_{-\alpha}^{+\alpha} R\,d\theta = R\,[\theta]_{-\alpha}^{+\alpha} = R\cdot(+\alpha - (-\alpha)) = 2R\alpha
-          \]
-        </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Coordenada \(y_G\) (simetría)</div>
-          <p>El arco es simétrico respecto al eje \(x\). Para cada punto a ángulo \(+\theta\) con \(y = R\sin\theta > 0\), existe uno simétrico a \(-\theta\) con \(y = -R\sin\theta\). Las contribuciones se cancelan:</p>
-          \[
-            y_G = \frac{\int_{-\alpha}^{+\alpha} R\sin\theta\cdot R\,d\theta}{2R\alpha}
-                = \frac{R^2\,[-\cos\theta]_{-\alpha}^{+\alpha}}{2R\alpha}
-                = \frac{R^2(-\cos\alpha + \cos\alpha)}{2R\alpha} = 0
-          \]
-          \[
-            \boxed{y_G = 0}
-          \]
-        </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Integral del numerador para \(x_G\)</div>
-          <p>Calculamos \(\displaystyle\int_{-\alpha}^{+\alpha} x\,dL\):</p>
-          \[
-            \int_{-\alpha}^{+\alpha} R\cos\theta \cdot R\,d\theta
-            = R^2\,[\sin\theta]_{-\alpha}^{+\alpha}
-            = R^2\,\bigl(\sin\alpha - \sin(-\alpha)\bigr)
-            = R^2 \cdot 2\sin\alpha
-          \]
-        </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Centro de gravedad \(x_G\)</div>
-          \[
-            x_G = \frac{\displaystyle\int_{-\alpha}^{+\alpha} x\,dL}{L}
-                = \frac{R^2 \cdot 2\sin\alpha}{2R\alpha}
-                = \frac{R\sin\alpha}{\alpha}
-          \]
-        </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
-            \[
-              x_G = \frac{R\sin\alpha}{\alpha}, \qquad y_G = 0
-            \]
-            <p style="margin-top:8px;color:#94a3b8;font-size:.88em">
-              Verificación: para \(\alpha = \tfrac{\pi}{2}\) (semicircunferencia) →
-              \(x_G = \tfrac{R \cdot 1}{\pi/2} = \tfrac{2R}{\pi} \approx 0{,}637R\) ✓
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</div><!-- /ex2-1 -->
+<!-- Los ejercicios se irán añadiendo aquí -->
+<div style="text-align:center;padding:60px 20px;color:#333;font-size:.9em">
+  Ejercicios en preparación &mdash; se añadirán progresivamente
+</div>
 
 </div><!-- /container -->
 

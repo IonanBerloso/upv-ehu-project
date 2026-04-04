@@ -149,6 +149,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 ::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:3px}
 .katex{font-size:1.05em}
 .katex-display{overflow-x:auto;overflow-y:hidden}
+
+/* TEMA PICKER */
+.tema-picker{position:relative;margin-right:20px}
+.tema-picker-btn{background:#1a0a30;border:1px solid #3b1f6e;border-radius:20px;padding:4px 14px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s}
+.tema-picker-btn:hover{background:#240f44}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:#0d0d0d;border:1px solid #2a1a4a;border-radius:10px;padding:6px;min-width:250px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker.open .tema-dropdown{display:block}
+.td-item{display:block;padding:8px 12px;border-radius:6px;font-size:.8em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500}
+.td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:#1a0a30;color:var(--accent)}
+.td-item.td-active{color:var(--accent);background:#1a0a30;font-weight:700;pointer-events:none}
+.td-item.td-soon{color:#333;cursor:default}
+.td-num{display:inline-block;width:24px;font-weight:700}
+.td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
 @media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
 </style>
 </head>
@@ -160,7 +173,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     Teoría
   </a>
   <span class="topbar-title">⚙️ Tema 1 · Fundamentos de Cálculo Vectorial — Ejercicios</span>
-  <a href="tema2.html" style="margin-right:20px;background:#1a0a30;border:1px solid #3b1f6e;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap">Tema 2 →</a>
+  <div class="tema-picker" id="temaPicker">
+  <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">📚 T1 ▾</button>
+  <div class="tema-dropdown">
+    <span class="td-item td-active"><span class="td-num">T1</span> Cálculo Vectorial</span>
+    <a class="td-item td-available" href="tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
+    <a class="td-item td-available" href="tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
+    <a class="td-item td-available" href="tema4.html"><span class="td-num">T4</span> Rozamiento</a>
+    <a class="td-item td-available" href="tema5.html"><span class="td-num">T5</span> Cables</a>
+    <a class="td-item td-available" href="tema6.html"><span class="td-num">T6</span> Resistencia de Mat.</a>
+    <a class="td-item td-available" href="tema7.html"><span class="td-num">T7</span> Cinemática del S.R.</a>
+    <a class="td-item td-available" href="tema8.html"><span class="td-num">T8</span> Mov. Plano del S.R.</a>
+  </div>
+</div>
 </nav>
 
 <div class="page-header">
@@ -1832,6 +1857,10 @@ function toggleEx(id){
 function toggleSec(btn){
   btn.parentElement.classList.toggle('sec-open');
 }
+
+// Tema picker
+var _tp=document.getElementById('temaPicker');
+document.addEventListener('click',function(e){if(_tp&&!_tp.contains(e.target))_tp.classList.remove('open');});
 </script>
 </body>
 </html>
