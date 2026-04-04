@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Banco de Ejercicios · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- AUTH -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){var o=document.createElement('div');o.id='auth-overlay';o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';document.body.appendChild(o);var i=document.getElementById('auth-input'),b=document.getElementById('auth-btn'),e=document.getElementById('auth-error');async function attempt(){var h=await sha256(i.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{e.textContent='Contraseña incorrecta';i.value='';i.focus();setTimeout(()=>e.textContent='',2000);}}b.addEventListener('click',attempt);i.addEventListener('keydown',ev=>{if(ev.key==='Enter')attempt();});i.focus();}
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000;--surface:#0d0d0d;--surface2:#111;--border:#1a1a1a;--border2:#222;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#38bdf8;--green:#10b981;--purple:#a78bfa;--orange:#fb923c;
+  --gold:#f59e0b;--red:#f43f5e;--cyan:#22d3ee;--pink:#e879f9;
+  --radius:10px;--transition:.2s cubic-bezier(.4,0,.2,1);
+  /* category colors */
+  --c-hidro:#38bdf8;--c-bern:#10b981;--c-qdm:#e879f9;
+  --c-tube:#fb923c;--c-redes:#a78bfa;--c-bomb:#22d3ee;
+  --c-medida:#f59e0b;--c-canal:#facc15;--c-dim:#f43f5e;--c-comp:#94a3b8;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent)}
+.topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9}
+.topbar-badge{margin-right:20px;background:#002214;border:1px solid #003318;border-radius:20px;padding:4px 12px;font-size:.72em;font-weight:600;color:var(--green);white-space:nowrap}
+.page-header{padding:36px 24px 28px;max-width:1200px;margin:0 auto;border-bottom:1px solid var(--border)}
+.page-header h1{font-size:1.7em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.page-header p{color:var(--text2);font-size:.88em;max-width:600px;line-height:1.7}
+
+/* STATS */
+.stats-row{max-width:1200px;margin:20px auto 0;padding:0 24px;display:flex;flex-wrap:wrap;gap:12px}
+.stat-pill{background:var(--surface);border:1px solid var(--border2);border-radius:30px;padding:7px 16px;display:flex;align-items:center;gap:8px;font-size:.8em}
+.stat-pill .snum{font-weight:700;font-size:1.1em;color:var(--accent)}
+.stat-pill .slabel{color:var(--text3)}
+
+/* FILTER */
+.filter-bar{max-width:1200px;margin:0 auto;padding:20px 24px 16px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;position:sticky;top:56px;z-index:100;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.filter-label{font-size:.78em;color:var(--text3);margin-right:4px}
+.filter-btn{padding:5px 14px;border-radius:20px;font-size:.75em;font-weight:600;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:var(--transition);white-space:nowrap}
+.filter-btn.active{background:#001e2e;color:var(--accent);border-color:var(--accent)}
+.filter-btn[data-cat="hidro"].active{background:#001e2e;color:var(--c-hidro);border-color:var(--c-hidro)}
+.filter-btn[data-cat="bern"].active{background:#001a0e;color:var(--c-bern);border-color:var(--c-bern)}
+.filter-btn[data-cat="qdm"].active{background:#1a0020;color:var(--c-qdm);border-color:var(--c-qdm)}
+.filter-btn[data-cat="tube"].active{background:#1a0800;color:var(--c-tube);border-color:var(--c-tube)}
+.filter-btn[data-cat="redes"].active{background:#0a0020;color:var(--c-redes);border-color:var(--c-redes)}
+.filter-btn[data-cat="bomb"].active{background:#001e28;color:var(--c-bomb);border-color:var(--c-bomb)}
+.filter-btn[data-cat="medida"].active{background:#1a1000;color:var(--c-medida);border-color:var(--c-medida)}
+.filter-btn[data-cat="canal"].active{background:#1a1600;color:var(--c-canal);border-color:var(--c-canal)}
+.filter-btn[data-cat="dim"].active{background:#1a0008;color:var(--c-dim);border-color:var(--c-dim)}
+.filter-btn[data-cat="comp"].active{background:#111;color:var(--c-comp);border-color:var(--c-comp)}
+
+/* GRID */
+.exercises-grid{max-width:1200px;margin:0 auto;padding:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+
+/* EXERCISE CARD */
+.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;border-top:3px solid var(--cat-clr, var(--border));transition:var(--transition);display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit}
+.ex-card:hover{transform:translateY(-2px);border-color:var(--cat-clr, var(--accent));box-shadow:0 6px 24px rgba(0,0,0,.4)}
+.ex-card.hidden{display:none}
+.ex-meta{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.ex-year{font-size:.68em;font-weight:700;color:var(--text3);background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:2px 8px}
+.ex-num{font-size:.68em;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:2px 8px;border-radius:10px;background:color-mix(in srgb, var(--cat-clr, var(--accent)) 15%, transparent);color:var(--cat-clr, var(--accent));border:1px solid color-mix(in srgb, var(--cat-clr, var(--accent)) 35%, transparent)}
+.ex-title{font-size:.87em;font-weight:600;color:#f1f5f9;line-height:1.4}
+.ex-cats{display:flex;flex-wrap:wrap;gap:4px}
+.ex-cat-tag{font-size:.62em;font-weight:600;padding:2px 7px;border-radius:8px;background:color-mix(in srgb, var(--cat-clr, var(--accent)) 12%, transparent);color:var(--cat-clr, var(--accent));border:1px solid color-mix(in srgb, var(--cat-clr, var(--accent)) 30%, transparent)}
+.ex-link{font-size:.75em;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:4px}
+.ex-link::after{content:'→';color:var(--accent)}
+
+.no-results{max-width:1200px;margin:0 auto;padding:60px 24px;text-align:center;color:var(--text3);display:none}
+.no-results.visible{display:block}
+
+.page-footer{max-width:1200px;margin:0 auto;padding:24px 24px 56px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.8em}
+.page-footer a{color:var(--text3);text-decoration:none;transition:color var(--transition)}
+.page-footer a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="examenes.html" class="topbar-back">← Exámenes</a>
+  <span class="topbar-title">Banco de Ejercicios por Tema</span>
+  <span class="topbar-badge" id="count-badge">— ejercicios</span>
+</nav>
+
+<header class="page-header">
+  <h1>📚 Banco de Ejercicios por Tema</h1>
+  <p>Todos los ejercicios de los 15 exámenes organizados por tipo de problema. Filtra por tema y practica lo que más necesitas.</p>
+</header>
+
+<div class="stats-row">
+  <div class="stat-pill"><span class="snum" id="stat-total">—</span><span class="slabel">ejercicios en total</span></div>
+  <div class="stat-pill"><span class="snum">15</span><span class="slabel">exámenes cubiertos</span></div>
+  <div class="stat-pill"><span class="snum">10</span><span class="slabel">temas</span></div>
+  <div class="stat-pill"><span class="snum">2020–2025</span><span class="slabel">periodo</span></div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Tema:</span>
+  <button class="filter-btn active" data-cat="all">Todos</button>
+  <button class="filter-btn" data-cat="hidro">💧 Hidrostática</button>
+  <button class="filter-btn" data-cat="bern">🌀 Bernoulli</button>
+  <button class="filter-btn" data-cat="qdm">💥 QdM</button>
+  <button class="filter-btn" data-cat="tube">🔧 Tuberías</button>
+  <button class="filter-btn" data-cat="redes">🕸️ Redes</button>
+  <button class="filter-btn" data-cat="bomb">⚙️ Bombas</button>
+  <button class="filter-btn" data-cat="medida">📏 Medida Q</button>
+  <button class="filter-btn" data-cat="canal">🌊 Canales</button>
+  <button class="filter-btn" data-cat="dim">🔢 An. Dimensional</button>
+  <button class="filter-btn" data-cat="comp">💨 Compresibilidad</button>
+</div>
+
+<div class="exercises-grid" id="grid"></div>
+<div class="no-results" id="no-results">No hay ejercicios para este tema todavía.</div>
+
+<div class="page-footer">
+  <div style="display:flex;gap:14px">
+    <a href="examenes.html">← Exámenes</a>
+    <a href="estrategia.html">🎯 Estrategia</a>
+    <a href="simulacro.html">⏱ Simulacro</a>
+  </div>
+  <span style="color:var(--text3)">UPV/EHU · Mecánica de Fluidos · 2020–2025</span>
+</div>
+
+<script>
+var CAT_COLOR = {
+  hidro:'#38bdf8', bern:'#10b981', qdm:'#e879f9',
+  tube:'#fb923c',  redes:'#a78bfa', bomb:'#22d3ee',
+  medida:'#f59e0b', canal:'#facc15', dim:'#f43f5e', comp:'#94a3b8'
+};
+var CAT_LABEL = {
+  hidro:'Hidrostática', bern:'Bernoulli', qdm:'QdM',
+  tube:'Tuberías', redes:'Redes', bomb:'Bombas',
+  medida:'Medida Q', canal:'Canales', dim:'An. Dimensional', comp:'Compresibilidad'
+};
+
+// ── EXERCISE DATABASE ──
+var EJERCICIOS = [
+  // ABRIL 2021
+  {id:'a21-2',exam:'Abril 2021',num:'EJ2',title:'Micromanómetro de líquidos inmiscibles',cats:['hidro'],file:'examenes/abril2021.html'},
+  {id:'a21-3',exam:'Abril 2021',num:'EJ3',title:'Compuerta articulada OABO',cats:['hidro'],file:'examenes/abril2021.html'},
+  {id:'a21-4',exam:'Abril 2021',num:'EJ4',title:'Depósito presurizado (queroseno y gas butano)',cats:['hidro'],file:'examenes/abril2021.html'},
+
+  // JUNIO 2020
+  {id:'j20-1',exam:'Junio 2020',num:'EJ1',title:'Chorro sobre álabe móvil',cats:['qdm'],file:'examenes/junio2020.html'},
+  {id:'j20-2',exam:'Junio 2020',num:'EJ2',title:'Análisis dimensional — módulo de aterrizaje en Marte',cats:['dim'],file:'examenes/junio2020.html'},
+  {id:'j20-3',exam:'Junio 2020',num:'EJ3',title:'Canal abierto de montaña y tubería a presión',cats:['canal','tube'],file:'examenes/junio2020.html'},
+  {id:'j20-4',exam:'Junio 2020',num:'EJ4',title:'Instalación de bombeo con turbobomba',cats:['bomb','tube'],file:'examenes/junio2020.html'},
+  {id:'j20-5',exam:'Junio 2020',num:'EJ5',title:'Red de tuberías — depósito A, boquilla C, depósito B',cats:['redes'],file:'examenes/junio2020.html'},
+
+  // JUNIO 2020 EF
+  {id:'j20ef-1',exam:'Junio 2020 EF',num:'EJ1',title:'Embrague hidráulico de múltiples etapas',cats:['dim'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-2',exam:'Junio 2020 EF',num:'EJ2',title:'Manometría compleja — tres depósitos y cámara de aire',cats:['hidro'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-3',exam:'Junio 2020 EF',num:'EJ3',title:'Flotación de cuerpo compuesto en dos fluidos',cats:['hidro'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-4',exam:'Junio 2020 EF',num:'EJ4',title:'Tobera con válvula cónica — Bernoulli y cantidad de movimiento',cats:['bern','qdm'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-5',exam:'Junio 2020 EF',num:'EJ5',title:'Análisis dimensional — turbobomba',cats:['dim'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-6',exam:'Junio 2020 EF',num:'EJ6',title:'Tubería con turbina hidráulica — Darcy-Weisbach',cats:['tube'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-7',exam:'Junio 2020 EF',num:'EJ7',title:'Red de distribución — 4 barrios (C, D, E, F)',cats:['redes'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-8',exam:'Junio 2020 EF',num:'EJ8',title:'Canales abiertos — circular y rectangular óptimo',cats:['canal'],file:'examenes/junio2020ef.html'},
+
+  // JUNIO 2021
+  {id:'j21-3',exam:'Junio 2021',num:'EJ3',title:'Golpe de ariete con válvula de retención',cats:['comp'],file:'examenes/junio2021.html'},
+  {id:'j21-4',exam:'Junio 2021',num:'EJ4',title:'Trasvase A→B por gravedad — Darcy-Weisbach',cats:['tube','redes'],file:'examenes/junio2021.html'},
+  {id:'j21-5',exam:'Junio 2021',num:'EJ5',title:'Red de canales con central hidroeléctrica',cats:['canal','bomb'],file:'examenes/junio2021.html'},
+  {id:'j21-6',exam:'Junio 2021',num:'EJ6',title:'Instalación de bombeo con cavitación',cats:['bomb'],file:'examenes/junio2021.html'},
+
+  // JUNIO 2021 EF
+  {id:'j21ef-1',exam:'Junio 2021 EF',num:'EJ1',title:'Fuerzas hidrostáticas sobre presa entre dos fluidos',cats:['hidro'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-2',exam:'Junio 2021 EF',num:'EJ2',title:'Coeficiente de velocidad del orificio',cats:['bern','medida'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-3',exam:'Junio 2021 EF',num:'EJ3',title:'Aliviadero lateral de presa — rampas paralelas',cats:['medida','canal'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-4',exam:'Junio 2021 EF',num:'EJ4',title:'Conducción de fluido + golpe de ariete',cats:['comp','tube'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-5',exam:'Junio 2021 EF',num:'EJ5',title:'Elevador hidráulico para coches — taller mecánico',cats:['hidro','bern'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-6',exam:'Junio 2021 EF',num:'EJ6',title:'Análisis dimensional — sustentación aerodinámica',cats:['dim'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-8',exam:'Junio 2021 EF',num:'EJ8',title:'Instalación de bombeo — Darcy-Weisbach y NPSH',cats:['bomb','tube'],file:'examenes/junio2021ef.html'},
+
+  // JUNIO 2022
+  {id:'j22-1',exam:'Junio 2022',num:'EJ1',title:'Flujo laminar en tubería — perfil de velocidades y tensiones',cats:['tube'],file:'examenes/junio2022.html'},
+  {id:'j22-2',exam:'Junio 2022',num:'EJ2',title:'Presión en el fondo del océano — fluido incompresible vs compresible',cats:['comp','hidro'],file:'examenes/junio2022.html'},
+  {id:'j22-3',exam:'Junio 2022',num:'EJ3',title:'Canal rectangular a sección plena — Manning y material de revestimiento',cats:['canal'],file:'examenes/junio2022.html'},
+  {id:'j22-4',exam:'Junio 2022',num:'EJ4',title:'Manómetro diferencial — Helio, líquidos s=10 y s=3',cats:['hidro'],file:'examenes/junio2022.html'},
+  {id:'j22-5',exam:'Junio 2022',num:'EJ5',title:'Compuerta curva de cuarto de círculo — reacciones en apoyos',cats:['hidro'],file:'examenes/junio2022.html'},
+  {id:'j22-6',exam:'Junio 2022',num:'EJ6',title:'Venturímetro con dos manómetros en U — fluido ligero y pesado',cats:['medida'],file:'examenes/junio2022.html'},
+  {id:'j22-7',exam:'Junio 2022',num:'EJ7',title:'Peso del cono sostenido por un chorro de agua',cats:['qdm'],file:'examenes/junio2022.html'},
+  {id:'j22-8',exam:'Junio 2022',num:'EJ8',title:'Análisis dimensional — módulo de elasticidad, viscosidad, presión',cats:['dim'],file:'examenes/junio2022.html'},
+  {id:'j22-9',exam:'Junio 2022',num:'EJ9',title:'Red de tuberías en paralelo — flujo laminar, bomba en rama 1',cats:['redes','tube'],file:'examenes/junio2022.html'},
+  {id:'j22-11',exam:'Junio 2022',num:'EJ11',title:'Instalación de bombeo simple — NPSH y maniobra de válvula',cats:['bomb'],file:'examenes/junio2022.html'},
+
+  // JUNIO 2022 EF
+  {id:'j22ef-1',exam:'Junio 2022 EF',num:'EJ1',title:'Capilaridad — diámetro de los vasos de la savia en árbol de 30 m',cats:['hidro'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-2',exam:'Junio 2022 EF',num:'EJ2',title:'Sistema de elevación oleohidráulico de tres coches',cats:['hidro'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-3',exam:'Junio 2022 EF',num:'EJ3',title:'Prisma triangular y esfera sumergidos en dos fluidos',cats:['hidro'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-4',exam:'Junio 2022 EF',num:'EJ4',title:'Bernoulli y cantidad de movimiento en bifurcación horizontal',cats:['bern','qdm'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-5',exam:'Junio 2022 EF',num:'EJ5',title:'Semejanza hidrodinámica — números de Reynolds y Froude',cats:['dim'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-6',exam:'Junio 2022 EF',num:'EJ6',title:'Vertedero horizontal — caudal real y comparación pared delgada/gruesa',cats:['medida'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-7',exam:'Junio 2022 EF',num:'EJ7',title:'Transvasamiento entre depósitos con bomba — diámetro de tubería',cats:['bomb','tube'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-8',exam:'Junio 2022 EF',num:'EJ8',title:'Cota máxima de aspiración — NPSH con Hazen-Williams',cats:['bomb'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-9',exam:'Junio 2022 EF',num:'EJ9',title:'Curvas características de bomba e instalación — lectura gráfica',cats:['bomb'],file:'examenes/junio2022ef.html'},
+
+  // JUNIO 2023
+  {id:'j23-1',exam:'Junio 2023',num:'EJ1',title:'Micromanómetro de líquidos inmiscibles — sensibilidad y menisco',cats:['hidro'],file:'examenes/junio2023.html'},
+  {id:'j23-2',exam:'Junio 2023',num:'EJ2',title:'Conjunto codo-boquilla horizontal — caudal y fuerza',cats:['qdm','bern'],file:'examenes/junio2023.html'},
+  {id:'j23-3',exam:'Junio 2023',num:'EJ3',title:'Depósito cerrado bicompartimento — fuerzas hidrostáticas y manómetros',cats:['hidro'],file:'examenes/junio2023.html'},
+  {id:'j23-4',exam:'Junio 2023',num:'EJ4',title:'Compresibilidad — cubo y cilindro de aceite',cats:['comp'],file:'examenes/junio2023.html'},
+  {id:'j23-5',exam:'Junio 2023',num:'EJ5',title:'Venturímetro — agua + glicol',cats:['medida'],file:'examenes/junio2023.html'},
+  {id:'j23-6',exam:'Junio 2023',num:'EJ6',title:'Semejanza dinámica en gas',cats:['dim'],file:'examenes/junio2023.html'},
+  {id:'j23-7',exam:'Junio 2023',num:'EJ7',title:'Canal rectangular hidráulicamente óptimo',cats:['canal'],file:'examenes/junio2023.html'},
+  {id:'j23-8',exam:'Junio 2023',num:'EJ8',title:'Instalación de bombeo con red de tuberías y boquilla',cats:['redes','bomb'],file:'examenes/junio2023.html'},
+  {id:'j23-9',exam:'Junio 2023',num:'EJ9',title:'Bombeo — punto de trabajo y NPSH',cats:['bomb'],file:'examenes/junio2023.html'},
+
+  // JUNIO 2023 EF
+  {id:'j23ef-1',exam:'Junio 2023 EF',num:'EJ1',title:'Capilaridad — tubo de sección rectangular',cats:['hidro'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-2',exam:'Junio 2023 EF',num:'EJ2',title:'Manometría — depósito con agua, aceite y aire a presión',cats:['hidro'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-3',exam:'Junio 2023 EF',num:'EJ3',title:'Tubería submarina anclada con hormigón',cats:['hidro'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-4',exam:'Junio 2023 EF',num:'EJ4',title:'Cantidad de movimiento — chorro sobre placa fija',cats:['qdm'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-5',exam:'Junio 2023 EF',num:'EJ5',title:'Semejanza dinámica — avión a 12 000 m de altitud',cats:['dim'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-6',exam:'Junio 2023 EF',num:'EJ6',title:'Instalación de bombeo — etanol en red ramificada',cats:['bomb','redes'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-7',exam:'Junio 2023 EF',num:'EJ7',title:'Red de canales — rectangular, trapezoidal y semi-circular',cats:['canal'],file:'examenes/junio2023ef.html'},
+
+  // JUNIO 2024 EF
+  {id:'j24ef-1',exam:'Junio 2024 EF',num:'EJ1',title:'Compresibilidad de un depósito metálico rígido',cats:['comp'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-2',exam:'Junio 2024 EF',num:'EJ2',title:'La gabarra del Athletic — Flotabilidad, hundimiento e inversión',cats:['hidro'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-3',exam:'Junio 2024 EF',num:'EJ3',title:'Micromanómetro con dos fluidos inmiscibles',cats:['hidro'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-4',exam:'Junio 2024 EF',num:'EJ4',title:'Venturímetro diferencial en conducto inclinado 30°',cats:['medida'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-5',exam:'Junio 2024 EF',num:'EJ5',title:'Análisis dimensional — Bomba interplanetaria',cats:['dim'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-6',exam:'Junio 2024 EF',num:'EJ6',title:'Red de tuberías PVC con bomba y 3 boquillas en paralelo',cats:['redes','bomb'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-7',exam:'Junio 2024 EF',num:'EJ7',title:'Canal de calzada — Sección compuesta rectangular + semicircular',cats:['canal'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-8',exam:'Junio 2024 EF',num:'EJ8',title:'Máxima ΔP para flujo laminar en dos tuberías en paralelo',cats:['tube','redes'],file:'examenes/junio2024ef.html'},
+
+  // JUNIO 2025 EF
+  {id:'j25ef-1',exam:'Junio 2025 EF',num:'EJ1',title:'Cilindro con CO₂: presión final, densidad y coeficiente de compresibilidad',cats:['comp'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-2',exam:'Junio 2025 EF',num:'EJ2',title:'Bombeo a depósito presurizado: curva del sistema, NPSH y regulación',cats:['bomb'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-3',exam:'Junio 2025 EF',num:'EJ3',title:'Depósitos presurizados: manómetros y alturas de fluidos',cats:['hidro'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-4',exam:'Junio 2025 EF',num:'EJ4',title:'Análisis dimensional: vertedero en V',cats:['dim'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-5',exam:'Junio 2025 EF',num:'EJ5',title:'Red de bombas en paralelo para petróleo crudo en el desierto',cats:['bomb','redes'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-6',exam:'Junio 2025 EF',num:'EJ6',title:'Fuerzas hidrostáticas sobre compuerta ABCD con vacuómetro',cats:['hidro'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-7',exam:'Junio 2025 EF',num:'EJ7',title:'Canal hormigón acabado: hexágono completo + semicírculo',cats:['canal'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-8',exam:'Junio 2025 EF',num:'EJ8',title:'Alerones de Fórmula 1: fuerzas y pérdida de potencia',cats:['dim','qdm'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-9',exam:'Junio 2025 EF',num:'EJ9',title:'Tubo Pitot + piezómetro: velocidad de avión y fallo del sistema',cats:['medida','bern'],file:'examenes/junio2025ef.html'},
+
+  // MAYO 2020
+  {id:'m20-1',exam:'Mayo 2020',num:'EJ1',title:'Gas ideal en recipiente rígido',cats:['comp'],file:'examenes/mayo2020.html'},
+  {id:'m20-2',exam:'Mayo 2020',num:'EJ2',title:'Laboratorio de observación submarino',cats:['hidro'],file:'examenes/mayo2020.html'},
+  {id:'m20-3',exam:'Mayo 2020',num:'EJ3',title:'Sistema de bombeo con boquilla',cats:['bomb','bern'],file:'examenes/mayo2020.html'},
+  {id:'m20-4',exam:'Mayo 2020',num:'EJ4',title:'Tubo de helio bajo dos fluidos',cats:['hidro'],file:'examenes/mayo2020.html'},
+  {id:'m20-5',exam:'Mayo 2020',num:'EJ5',title:'Vaciado de tanque cerrado',cats:['bern'],file:'examenes/mayo2020.html'},
+
+  // MAYO 2021
+  {id:'m21-1',exam:'Mayo 2021',num:'EJ1',title:'Instalación de bombeo para embotellar mirinda',cats:['bomb','tube'],file:'examenes/mayo2021.html'},
+  {id:'m21-2',exam:'Mayo 2021',num:'EJ2',title:'Venturímetro en tubería de gasolina con tubo Pitot',cats:['medida'],file:'examenes/mayo2021.html'},
+  {id:'m21-3',exam:'Mayo 2021',num:'EJ3',title:'Depósito circular + álabe deflector + carro',cats:['qdm','bern'],file:'examenes/mayo2021.html'},
+  {id:'m21-4',exam:'Mayo 2021',num:'EJ4',title:'Análisis dimensional y semejanza',cats:['dim'],file:'examenes/mayo2021.html'},
+
+  // MAYO 2024
+  {id:'m24-1',exam:'Mayo 2024',num:'EJ1',title:'Capilaridad — sección anular cuadrado-círculo',cats:['hidro'],file:'examenes/mayo2024.html'},
+  {id:'m24-2',exam:'Mayo 2024',num:'EJ2',title:'Cantidad de movimiento — pieza especial (codo + boquilla)',cats:['qdm'],file:'examenes/mayo2024.html'},
+  {id:'m24-3',exam:'Mayo 2024',num:'EJ3',title:'Manómetros redundantes — identificar lectura incorrecta',cats:['hidro'],file:'examenes/mayo2024.html'},
+  {id:'m24-4',exam:'Mayo 2024',num:'EJ4',title:'Compuerta cilíndrica ABC — Fuerzas hidrostáticas y reacción en pivote',cats:['hidro'],file:'examenes/mayo2024.html'},
+  {id:'m24-5',exam:'Mayo 2024',num:'EJ5',title:'Vaciado de depósito rectangular — Torricelli y coeficiente de contracción',cats:['bern'],file:'examenes/mayo2024.html'},
+  {id:'m24-6',exam:'Mayo 2024',num:'EJ6',title:'Bombeo con Hazen-Williams — Curva de instalación y punto de trabajo',cats:['bomb','tube'],file:'examenes/mayo2024.html'},
+  {id:'m24-7',exam:'Mayo 2024',num:'EJ7',title:'Análisis dimensional de canales — Semejanza y canal semicircular',cats:['dim','canal'],file:'examenes/mayo2024.html'},
+  {id:'m24-8',exam:'Mayo 2024',num:'EJ8',title:'Codo con manómetro diferencial — caudal y longitud equivalente (laminar)',cats:['tube','medida'],file:'examenes/mayo2024.html'},
+
+  // MAYO 2025
+  {id:'m25-1',exam:'Mayo 2025',num:'EJ1',title:'Fuerzas hidrostáticas sobre dos cuerpos articulados con tope',cats:['hidro'],file:'examenes/mayo2025.html'},
+  {id:'m25-2',exam:'Mayo 2025',num:'EJ2',title:'Tubo piezométrico en depósito presurizado: capilaridad en tubo cuadrado',cats:['hidro'],file:'examenes/mayo2025.html'},
+  {id:'m25-3',exam:'Mayo 2025',num:'EJ3',title:'Comparación de micromanómetros: líquidos inmiscibles vs. tubo inclinado',cats:['hidro'],file:'examenes/mayo2025.html'},
+  {id:'m25-4',exam:'Mayo 2025',num:'EJ4',title:'Canal de sección compuesta con partes curvas: caudal máximo',cats:['canal'],file:'examenes/mayo2025.html'},
+  {id:'m25-5',exam:'Mayo 2025',num:'EJ5',title:'Análisis dimensional: compuerta en tubería presurizada de presa',cats:['dim'],file:'examenes/mayo2025.html'},
+  {id:'m25-6',exam:'Mayo 2025',num:'EJ6',title:'Central hidroeléctrica: 3 turbinas en paralelo con Darcy-Weisbach',cats:['redes','tube'],file:'examenes/mayo2025.html'},
+  {id:'m25-7',exam:'Mayo 2025',num:'EJ7',title:'Flyboard: cantidad de movimiento para peso máximo del usuario',cats:['qdm'],file:'examenes/mayo2025.html'},
+  {id:'m25-8',exam:'Mayo 2025',num:'EJ8',title:'Diafragma con glicerina: expresión de caudal y fluido manométrico',cats:['medida'],file:'examenes/mayo2025.html'},
+  {id:'m25-9',exam:'Mayo 2025',num:'EJ9',title:'Bomba IN-100-200: curva del sistema, NPSH y coste de operación',cats:['bomb'],file:'examenes/mayo2025.html'},
+];
+
+// ── RENDER ──
+function render(activeCat){
+  var grid = document.getElementById('grid');
+  var noRes = document.getElementById('no-results');
+  grid.innerHTML = '';
+  var visible = 0;
+  EJERCICIOS.forEach(function(ej){
+    var show = activeCat === 'all' || ej.cats.indexOf(activeCat) !== -1;
+    if(!show) return;
+    visible++;
+    var primaryCat = activeCat === 'all' ? ej.cats[0] : activeCat;
+    var color = CAT_COLOR[primaryCat] || '#38bdf8';
+    var card = document.createElement('a');
+    card.className = 'ex-card';
+    card.href = ej.file;
+    card.style.setProperty('--cat-clr', color);
+    card.innerHTML =
+      '<div class="ex-meta">'
+        + '<span class="ex-year">'+ej.exam+'</span>'
+        + '<span class="ex-num" style="--cat-clr:'+color+'">'+ej.num+'</span>'
+      + '</div>'
+      + '<div class="ex-title">'+ej.title+'</div>'
+      + '<div class="ex-cats">'+ej.cats.map(function(c){return '<span class="ex-cat-tag" style="--cat-clr:'+CAT_COLOR[c]+'">'+CAT_LABEL[c]+'</span>';}).join('')+'</div>'
+      + '<div class="ex-link">Ver resolución completa</div>';
+    grid.appendChild(card);
+  });
+  noRes.classList.toggle('visible', visible === 0);
+  document.getElementById('count-badge').textContent = visible + ' ejercicios';
+  document.getElementById('stat-total').textContent = EJERCICIOS.length;
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  render('all');
+  document.querySelectorAll('.filter-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      render(btn.dataset.cat);
+    });
+  });
+});
+</script>
+</body>
+</html>

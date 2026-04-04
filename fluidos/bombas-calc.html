@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Curvas Bomba-Sistema · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- AUTH -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){var o=document.createElement('div');o.id='auth-overlay';o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';document.body.appendChild(o);var i=document.getElementById('auth-input'),b=document.getElementById('auth-btn'),e=document.getElementById('auth-error');async function attempt(){var h=await sha256(i.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{e.textContent='Contraseña incorrecta';i.value='';i.focus();setTimeout(()=>e.textContent='',2000);}}b.addEventListener('click',attempt);i.addEventListener('keydown',ev=>{if(ev.key==='Enter')attempt();});i.focus();}
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#000;--surface:#0d0d0d;--surface2:#111;--surface3:#161616;--border:#1a1a1a;--border2:#222;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--accent:#38bdf8;--green:#10b981;--purple:#a78bfa;--orange:#fb923c;--gold:#f59e0b;--red:#f43f5e;--cyan:#22d3ee;--radius:12px;--transition:.2s cubic-bezier(.4,0,.2,1)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent)}
+.topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9}
+.topbar-badge{margin-right:20px;background:#002234;border:1px solid #0a4464;border-radius:20px;padding:4px 12px;font-size:.72em;font-weight:600;color:var(--cyan);white-space:nowrap}
+.page-header{padding:36px 24px 28px;max-width:1100px;margin:0 auto;border-bottom:1px solid var(--border)}
+.page-header h1{font-size:1.7em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.page-header p{color:var(--text2);font-size:.88em;max-width:600px;line-height:1.7}
+
+.layout{max-width:1100px;margin:28px auto;padding:0 24px;display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start}
+@media(max-width:780px){.layout{grid-template-columns:1fr}}
+
+/* PANELS */
+.panel{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.panel-title{font-size:.75em;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:6px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.78em;font-weight:600;color:var(--text2);margin-bottom:4px}
+.field input{width:100%;padding:9px 12px;border-radius:8px;background:var(--surface3);border:1px solid var(--border2);color:var(--text);font-size:.88em;font-family:inherit;outline:none;transition:border-color var(--transition)}
+.field input:focus{border-color:var(--cyan)}
+.field .hint{font-size:.7em;color:var(--text3);margin-top:3px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.section-divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+.calc-btn{width:100%;padding:12px;border-radius:8px;background:var(--cyan);color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer;transition:.15s;margin-top:4px}
+.calc-btn:hover{background:#38bdf8}
+.mode-row{display:flex;gap:6px;margin-bottom:14px}
+.mode-btn{flex:1;padding:6px;border-radius:6px;font-size:.75em;font-weight:600;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:var(--transition);text-align:center}
+.mode-btn.active{background:#002234;color:var(--cyan);border-color:var(--cyan)}
+
+/* RIGHT */
+.right-col{display:flex;flex-direction:column;gap:16px}
+.empty-state{text-align:center;padding:60px 24px;color:var(--text3);background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius)}
+.empty-state .es-icon{font-size:2.5em;margin-bottom:12px}
+.empty-state p{font-size:.85em;line-height:1.6}
+
+/* RESULT BANNER */
+.result-banner{background:#002214;border:1px solid var(--green);border-radius:var(--radius);padding:18px 22px;display:flex;align-items:center;gap:16px}
+.rb-icon{font-size:2em}
+.rb-main strong{display:block;font-size:1.1em;color:var(--green);margin-bottom:2px}
+.rb-main span{color:var(--text2);font-size:.85em}
+.rb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.rb-card{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;text-align:center}
+.rb-val{font-size:1.15em;font-weight:700;color:var(--cyan);display:block}
+.rb-label{font-size:.7em;color:var(--text3)}
+
+/* CHART */
+.chart-wrap{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:16px}
+.chart-title{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+canvas{width:100%;height:auto;display:block;border-radius:6px}
+
+/* ANALYSIS */
+.analysis-panel{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:16px}
+.analysis-panel h4{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:12px}
+.analysis-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:.82em}
+.analysis-row:last-child{border-bottom:none}
+.ar-label{color:var(--text3)}
+.ar-val{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums}
+.ar-warn{color:var(--gold)}
+.ar-ok{color:var(--green)}
+.ar-bad{color:var(--red)}
+
+/* REGULATION */
+.reg-panel{background:#1a0a00;border:1px solid #3a2000;border-radius:var(--radius);padding:16px}
+.reg-panel h4{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);margin-bottom:10px}
+.reg-text{font-size:.82em;color:var(--text2);line-height:1.6}
+.reg-text strong{color:var(--text)}
+
+.footer-bar{max-width:1100px;margin:0 auto;padding:20px 24px 56px;border-top:1px solid var(--border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.8em}
+.footer-bar a{color:var(--text3);text-decoration:none;transition:color var(--transition)}
+.footer-bar a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="examenes.html" class="topbar-back">← Exámenes</a>
+  <span class="topbar-title">Calculadora Bomba-Sistema</span>
+  <span class="topbar-badge">Punto de funcionamiento</span>
+</nav>
+
+<header class="page-header">
+  <h1>⚙️ Punto de Funcionamiento Bomba–Instalación</h1>
+  <p>Introduce la curva de la bomba y la curva del sistema. Calcula el punto de intersección, NPSH y regulación de válvula automáticamente.</p>
+</header>
+
+<div class="layout">
+
+  <!-- ── INPUTS ── -->
+  <div>
+
+    <!-- CURVA BOMBA -->
+    <div class="panel">
+      <div class="panel-title">🔵 Curva característica de la bomba</div>
+      <p style="font-size:.78em;color:var(--text3);margin-bottom:12px">Forma: H<sub>b</sub> = H₀ − a·Q − b·Q² &nbsp;(Q en m³/s, H en m)</p>
+
+      <div class="mode-row">
+        <button class="mode-btn active" id="mode-coef" onclick="switchMode('coef')">Coeficientes</button>
+        <button class="mode-btn" id="mode-pts" onclick="switchMode('pts')">3 puntos</button>
+      </div>
+
+      <!-- MODO COEFICIENTES -->
+      <div id="panel-coef">
+        <div class="field">
+          <label>H₀ — altura a caudal cero (m)</label>
+          <input type="number" id="b-H0" value="30" step="0.5">
+          <div class="hint">Punto de corte de la curva con el eje H</div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>a (m·s/m³)</label>
+            <input type="number" id="b-a" value="0" step="0.1">
+            <div class="hint">Término lineal (a menudo 0)</div>
+          </div>
+          <div class="field">
+            <label>b (m·s²/m⁶)</label>
+            <input type="number" id="b-b" value="5000" step="100">
+            <div class="hint">Término cuadrático</div>
+          </div>
+        </div>
+        <div class="hint" style="margin-bottom:6px">💡 Si te dan Q_d y H_d: b = (H₀−H_d)/Q_d²</div>
+      </div>
+
+      <!-- MODO PUNTOS -->
+      <div id="panel-pts" style="display:none">
+        <p style="font-size:.75em;color:var(--text3);margin-bottom:10px">Introduce 3 puntos (Q, H) de la curva de la bomba. Se ajusta una parábola H = H₀ − b·Q².</p>
+        <div class="field-row">
+          <div class="field"><label>Q₁ (m³/s)</label><input type="number" id="p1q" value="0" step="0.001"></div>
+          <div class="field"><label>H₁ (m)</label><input type="number" id="p1h" value="35" step="0.5"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Q₂ (m³/s)</label><input type="number" id="p2q" value="0.04" step="0.001"></div>
+          <div class="field"><label>H₂ (m)</label><input type="number" id="p2h" value="28" step="0.5"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Q₃ (m³/s)</label><input type="number" id="p3q" value="0.08" step="0.001"></div>
+          <div class="field"><label>H₃ (m)</label><input type="number" id="p3h" value="10" step="0.5"></div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- RENDIMIENTO (opcional) -->
+      <div class="field">
+        <label>Rendimiento η (%) — opcional</label>
+        <input type="number" id="b-eta" value="75" step="1" min="1" max="100">
+        <div class="hint">Para calcular potencia en el punto de trabajo</div>
+      </div>
+    </div>
+
+    <!-- CURVA SISTEMA -->
+    <div class="panel">
+      <div class="panel-title">🟠 Curva del sistema</div>
+      <p style="font-size:.78em;color:var(--text3);margin-bottom:12px">H<sub>sist</sub> = Δz + K·Q² &nbsp;(las pérdidas crecen con Q²)</p>
+
+      <div class="field">
+        <label>Δz — diferencia de cotas (m)</label>
+        <input type="number" id="s-dz" value="15" step="0.5">
+        <div class="hint">Altura geométrica entre depósitos. Puede ser negativa si aspira desde arriba.</div>
+      </div>
+      <div class="field">
+        <label>K — coeficiente de pérdidas (m·s²/m⁶)</label>
+        <input type="number" id="s-K" value="3000" step="100">
+        <div class="hint">K = (f·L/D + ΣK_loc) / (2g·A²). Si tienes h_f a Q_d: K = h_f/Q_d²</div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- NPSH (opcional) -->
+      <div class="panel-title" style="margin-top:4px">🔴 NPSH (opcional)</div>
+      <div class="field-row">
+        <div class="field">
+          <label>P_atm (Pa)</label>
+          <input type="number" id="n-patm" value="101325" step="100">
+        </div>
+        <div class="field">
+          <label>P_v (Pa)</label>
+          <input type="number" id="n-pv" value="2338" step="100">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>ρ fluido (kg/m³)</label>
+          <input type="number" id="n-rho" value="998.2" step="0.1">
+        </div>
+        <div class="field">
+          <label>z_bomba (m)</label>
+          <input type="number" id="n-zb" value="3" step="0.1">
+          <div class="hint">+ si bomba encima del depósito</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>h_f,asp (m)</label>
+          <input type="number" id="n-hf" value="0.5" step="0.1">
+        </div>
+        <div class="field">
+          <label>NPSH_r (m)</label>
+          <input type="number" id="n-npshr" value="3" step="0.1">
+          <div class="hint">Dato de catálogo</div>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- PUNTO DE DISEÑO (regulación) -->
+      <div class="panel-title" style="margin-top:4px">🟡 Punto de diseño (regulación de válvula)</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Q_diseño (m³/s)</label>
+          <input type="number" id="d-Qd" value="0.05" step="0.001">
+        </div>
+        <div class="field">
+          <label>H_diseño (m) — si se conoce</label>
+          <input type="number" id="d-Hd" placeholder="auto" step="0.1">
+          <div class="hint">Deja vacío para calcular</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" id="btn-calc">Calcular punto de funcionamiento →</button>
+  </div>
+
+  <!-- ── RESULTS ── -->
+  <div class="right-col" id="right-col">
+    <div class="empty-state">
+      <div class="es-icon">📈</div>
+      <p>Introduce los datos de la bomba y la instalación,<br>luego pulsa <strong>Calcular</strong>.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-bar">
+  <div style="display:flex;gap:14px">
+    <a href="examenes.html">← Exámenes</a>
+    <a href="colebrook.html">🔧 Colebrook</a>
+    <a href="propiedades.html">📊 Propiedades</a>
+  </div>
+  <span style="color:var(--text3)">UPV/EHU · Mecánica de Fluidos</span>
+</div>
+
+<script>
+var currentMode = 'coef';
+
+function switchMode(m){
+  currentMode = m;
+  document.getElementById('panel-coef').style.display = m==='coef'?'':'none';
+  document.getElementById('panel-pts').style.display  = m==='pts' ?'':'none';
+  document.getElementById('mode-coef').classList.toggle('active', m==='coef');
+  document.getElementById('mode-pts').classList.toggle('active',  m==='pts');
+}
+
+function getPumpCoeffs(){
+  if(currentMode === 'coef'){
+    return {
+      H0: parseFloat(document.getElementById('b-H0').value)||0,
+      a:  parseFloat(document.getElementById('b-a').value)||0,
+      b:  parseFloat(document.getElementById('b-b').value)||0
+    };
+  } else {
+    // Fit H = H0 - b*Q^2 using points 1 and 2 (assuming a=0, two-parameter fit)
+    var q1=parseFloat(document.getElementById('p1q').value)||0, h1=parseFloat(document.getElementById('p1h').value)||0;
+    var q2=parseFloat(document.getElementById('p2q').value)||0, h2=parseFloat(document.getElementById('p2h').value)||0;
+    var q3=parseFloat(document.getElementById('p3q').value)||0, h3=parseFloat(document.getElementById('p3h').value)||0;
+    // Least squares for H = H0 - b*Q^2
+    // Use points to solve: [1, -Q²] * [H0, b]^T = H
+    var N=3, sumH=h1+h2+h3, sumQ2=q1*q1+q2*q2+q3*q3, sumHQ2=h1*q1*q1+h2*q2*q2+h3*q3*q3, sumQ4=Math.pow(q1,4)+Math.pow(q2,4)+Math.pow(q3,4);
+    var det = N*sumQ4 - sumQ2*sumQ2;
+    var H0 = (sumH*sumQ4 - sumHQ2*sumQ2)/det;
+    var b  = (N*sumHQ2 - sumH*sumQ2)/det;
+    return {H0: H0, a: 0, b: b};
+  }
+}
+
+function bombCurve(Q, p){ return p.H0 - p.a*Q - p.b*Q*Q; }
+function systCurve(Q, dz, K){ return dz + K*Q*Q; }
+
+document.getElementById('btn-calc').addEventListener('click', function(){
+  var pump = getPumpCoeffs();
+  var dz = parseFloat(document.getElementById('s-dz').value)||0;
+  var K  = parseFloat(document.getElementById('s-K').value)||0;
+  var eta = parseFloat(document.getElementById('b-eta').value)||75;
+
+  // Find intersection: H0 - a*Q - b*Q² = dz + K*Q²
+  // (b+K)*Q² + a*Q + (dz-H0) = 0
+  var A = pump.b + K;
+  var B = pump.a;
+  var C = dz - pump.H0;
+  var disc = B*B - 4*A*C;
+  if(disc < 0 || A === 0){
+    document.getElementById('right-col').innerHTML = '<div class="empty-state"><div class="es-icon">⚠️</div><p>No se encontró punto de intersección con los datos actuales.<br>Verifica que la bomba puede superar el Δz de la instalación.</p></div>';
+    return;
+  }
+  var Q_op = (-B + Math.sqrt(disc))/(2*A);
+  if(Q_op < 0) Q_op = (-B - Math.sqrt(disc))/(2*A);
+  var H_op = bombCurve(Q_op, pump);
+
+  // Power
+  var rho = parseFloat(document.getElementById('n-rho').value)||998.2;
+  var Nu  = rho*9.8*Q_op*H_op;
+  var Neje= Nu/(eta/100);
+
+  // NPSH
+  var Patm = parseFloat(document.getElementById('n-patm').value)||101325;
+  var Pv   = parseFloat(document.getElementById('n-pv').value)||2338;
+  var zb   = parseFloat(document.getElementById('n-zb').value)||0;
+  var hf_asp = parseFloat(document.getElementById('n-hf').value)||0;
+  var NPSHr  = parseFloat(document.getElementById('n-npshr').value)||0;
+  var gamma  = rho*9.8;
+  var NPSHd  = (Patm-Pv)/gamma - zb - hf_asp;
+  var cavita = NPSHd < NPSHr;
+
+  // Design point (valve regulation)
+  var Qd = parseFloat(document.getElementById('d-Qd').value)||Q_op;
+  var Hd_input = parseFloat(document.getElementById('d-Hd').value);
+  var Hd = isNaN(Hd_input) ? systCurve(Qd, dz, K) : Hd_input;
+  var Hb_at_Qd = bombCurve(Qd, pump);
+  var h_valve = Hb_at_Qd - Hd; // caída en válvula
+
+  // Q range for chart
+  var Qmax = 0;
+  while(bombCurve(Qmax, pump) > dz && Qmax < 10) Qmax += 0.001;
+  Qmax = Math.max(Qmax*1.2, Q_op*2, 0.01);
+  var steps = 200;
+  var Qarr = [], Hb_arr = [], Hs_arr = [];
+  for(var i=0; i<=steps; i++){
+    var q = Qmax*i/steps;
+    var hb = bombCurve(q, pump);
+    var hs = systCurve(q, dz, K);
+    Qarr.push(q);
+    Hb_arr.push(hb);
+    Hs_arr.push(hs);
+  }
+  var Hmax = Math.max(...Hb_arr.filter(h=>h>0), ...Hs_arr)*1.15;
+
+  // BUILD HTML
+  var html = '';
+
+  // Result banner
+  html += '<div class="result-banner">';
+  html += '<span class="rb-icon">✅</span>';
+  html += '<div style="flex:1"><div class="rb-main"><strong>Punto de funcionamiento encontrado</strong><span>Intersección curva bomba / curva sistema</span></div>';
+  html += '<div class="rb-grid">';
+  html += rbCard(fmt3(Q_op*1000)+' l/s', 'Q operación');
+  html += rbCard(fmt3(H_op)+' m', 'H manométrica');
+  html += rbCard(fmt3(Nu/1000)+' kW', 'Potencia útil');
+  html += rbCard(fmt3(Neje/1000)+' kW', 'Potencia eje (η='+eta+'%)');
+  html += '</div></div></div>';
+
+  // Chart
+  html += '<div class="chart-wrap"><div class="chart-title">📈 Curvas bomba y sistema</div>';
+  html += '<canvas id="curvas-canvas" width="600" height="360"></canvas></div>';
+
+  // NPSH
+  html += '<div class="analysis-panel"><h4>💧 Análisis NPSH</h4>';
+  html += aRow('NPSH disponible', fmt3(NPSHd)+' m', cavita?'bad':'ok');
+  html += aRow('NPSH requerido (catálogo)', fmt3(NPSHr)+' m', '');
+  html += aRow('Margen NPSH', fmt3(NPSHd-NPSHr)+' m', NPSHd-NPSHr>=0?'ok':'bad');
+  html += aRow('Riesgo de cavitación', cavita?'⚠ SÍ — reducir z_bomba o h_f,asp':'✓ NO', cavita?'bad':'ok');
+  html += '</div>';
+
+  // Valve regulation
+  if(h_valve > 0.001){
+    html += '<div class="reg-panel"><h4>🔧 Regulación de válvula</h4>';
+    html += '<div class="reg-text">Para operar a <strong>Q_d = '+fmt3(Qd*1000)+' l/s</strong> (menor que el punto natural):<br>';
+    html += 'La válvula debe absorber una pérdida adicional de <strong>h_válvula = H_b(Q_d) − H_sist(Q_d) = '+fmt3(Hb_at_Qd)+' − '+fmt3(Hd)+' = '+fmt3(h_valve)+' m</strong>.<br>';
+    html += 'Esto equivale a un coeficiente K_válvula = '+fmt3(h_valve/(Qd*Qd))+' m·s²/m⁶.</div></div>';
+  }
+
+  // Formulas used
+  html += '<div class="analysis-panel"><h4>📐 Ecuaciones aplicadas</h4>';
+  html += aRow('Curva bomba', 'H_b = '+pump.H0.toFixed(2)+' − '+pump.a.toFixed(1)+'Q − '+pump.b.toFixed(0)+'Q²', '');
+  html += aRow('Curva sistema', 'H_s = '+dz.toFixed(2)+' + '+K.toFixed(0)+'Q²', '');
+  html += aRow('Intersección', '('+pump.b.toFixed(0)+'+'+K.toFixed(0)+')Q² + '+pump.a.toFixed(1)+'Q + ('+dz.toFixed(2)+'−'+pump.H0.toFixed(2)+') = 0', '');
+  html += aRow('NPSH_d', '(P_atm−P_v)/γ − z_b − h_f,asp = '+fmt3(NPSHd)+' m', '');
+  html += '</div>';
+
+  document.getElementById('right-col').innerHTML = html;
+
+  // Draw canvas
+  requestAnimationFrame(function(){
+    var canvas = document.getElementById('curvas-canvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W=canvas.width, H=canvas.height;
+    var ml=55, mr=20, mt=20, mb=45;
+    var pw=W-ml-mr, ph=H-mt-mb;
+
+    function xS(q){ return ml + q/Qmax*pw; }
+    function yS(h){ return mt + ph*(1 - Math.max(0,h)/Hmax); }
+
+    ctx.fillStyle='#0d0d0d'; ctx.fillRect(0,0,W,H);
+
+    // Grid
+    ctx.strokeStyle='#1a1a1a'; ctx.lineWidth=1;
+    for(var i=0;i<=5;i++){
+      var x=ml+pw*i/5; ctx.beginPath();ctx.moveTo(x,mt);ctx.lineTo(x,mt+ph);ctx.stroke();
+      var y=mt+ph*i/5; ctx.beginPath();ctx.moveTo(ml,y);ctx.lineTo(ml+pw,y);ctx.stroke();
+      ctx.fillStyle='#444';ctx.font='10px Inter';ctx.textAlign='center';
+      ctx.fillText((Qmax*i/5*1000).toFixed(1)+' l/s', x, mt+ph+16);
+      ctx.textAlign='right';
+      ctx.fillText((Hmax*(1-i/5)).toFixed(1), ml-5, y+4);
+    }
+    ctx.fillStyle='#555';ctx.font='11px Inter';ctx.textAlign='center';
+    ctx.fillText('Caudal Q (l/s)', ml+pw/2, H-4);
+    ctx.save();ctx.translate(14,mt+ph/2);ctx.rotate(-Math.PI/2);ctx.fillText('Altura H (m)',0,0);ctx.restore();
+
+    // Pump curve (cyan)
+    ctx.strokeStyle='#22d3ee'; ctx.lineWidth=2.5; ctx.beginPath();
+    var started=false;
+    for(var i=0;i<Qarr.length;i++){
+      if(Hb_arr[i]<0) break;
+      var x=xS(Qarr[i]),y=yS(Hb_arr[i]);
+      started?ctx.lineTo(x,y):ctx.moveTo(x,y); started=true;
+    }
+    ctx.stroke();
+
+    // System curve (orange)
+    ctx.strokeStyle='#fb923c'; ctx.lineWidth=2.5; ctx.beginPath(); started=false;
+    for(var i=0;i<Qarr.length;i++){
+      var x=xS(Qarr[i]),y=yS(Hs_arr[i]);
+      started?ctx.lineTo(x,y):ctx.moveTo(x,y); started=true;
+    }
+    ctx.stroke();
+
+    // Operating point
+    var xp=xS(Q_op),yp=yS(H_op);
+    ctx.strokeStyle='#10b981'; ctx.lineWidth=1; ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(ml,yp);ctx.lineTo(xp,yp);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(xp,mt+ph);ctx.lineTo(xp,yp);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(16,185,129,.2)'; ctx.beginPath();ctx.arc(xp,yp,12,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#10b981'; ctx.beginPath();ctx.arc(xp,yp,5,0,Math.PI*2);ctx.fill();
+
+    // Design point (if different)
+    if(Math.abs(Qd-Q_op)>0.001){
+      var xd=xS(Qd),yd=yS(Hd);
+      ctx.fillStyle='rgba(251,146,60,.3)';ctx.beginPath();ctx.arc(xd,yd,8,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#fb923c';ctx.beginPath();ctx.arc(xd,yd,4,0,Math.PI*2);ctx.fill();
+    }
+
+    // Legend
+    var ly=mt+12;
+    ctx.fillStyle='#22d3ee';ctx.fillRect(ml+8,ly,18,3);
+    ctx.fillStyle='#94a3b8';ctx.font='11px Inter';ctx.textAlign='left';
+    ctx.fillText('Curva bomba', ml+30, ly+4);
+    ctx.fillStyle='#fb923c';ctx.fillRect(ml+8,ly+16,18,3);
+    ctx.fillText('Curva sistema', ml+30, ly+20);
+    ctx.fillStyle='rgba(16,185,129,.8)';ctx.beginPath();ctx.arc(ml+17,ly+32,4,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#94a3b8';ctx.fillText('Punto trabajo', ml+30, ly+36);
+  });
+});
+
+function rbCard(val, label){
+  return '<div class="rb-card"><span class="rb-val">'+val+'</span><span class="rb-label">'+label+'</span></div>';
+}
+function aRow(label, val, cls){
+  return '<div class="analysis-row"><span class="ar-label">'+label+'</span><span class="ar-val '+(cls==='ok'?'ar-ok':cls==='bad'?'ar-bad':cls==='warn'?'ar-warn':'')+'">'+val+'</span></div>';
+}
+function fmt3(n){ return isNaN(n)?'—':n.toFixed(3); }
+</script>
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Simulacro de Examen · Mecánica de Fluidos · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- AUTH -->
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#f59e0b}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#f59e0b;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#fbbf24}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='e50193c0dd6e3f7fecd74a069ef92f5d68e91c351955830520541161df5d341e';var KEY='upv_auth_fluidos';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){var o=document.createElement('div');o.id='auth-overlay';o.innerHTML='<div id="auth-box"><div id="auth-logo">🌊</div><h2>Mecánica de Fluidos</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';document.body.appendChild(o);var i=document.getElementById('auth-input'),b=document.getElementById('auth-btn'),e=document.getElementById('auth-error');async function attempt(){var h=await sha256(i.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(()=>o.remove(),320);}else{e.textContent='Contraseña incorrecta';i.value='';i.focus();setTimeout(()=>e.textContent='',2000);}}b.addEventListener('click',attempt);i.addEventListener('keydown',ev=>{if(ev.key==='Enter')attempt();});i.focus();}
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000;--surface:#0d0d0d;--surface2:#111;--border:#1a1a1a;--border2:#222;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#38bdf8;--green:#10b981;--purple:#a78bfa;--orange:#fb923c;
+  --gold:#f59e0b;--red:#f43f5e;--cyan:#22d3ee;
+  --radius:12px;--transition:.2s cubic-bezier(.4,0,.2,1);
+  --c-hidro:#38bdf8;--c-bern:#10b981;--c-qdm:#e879f9;
+  --c-tube:#fb923c;--c-redes:#a78bfa;--c-bomb:#22d3ee;
+  --c-medida:#f59e0b;--c-canal:#facc15;--c-dim:#f43f5e;--c-comp:#94a3b8;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent)}
+.topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9}
+
+/* TIMER in topbar */
+.timer-display{margin-right:20px;font-size:1.1em;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.05em;padding:4px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--border2);transition:background .5s}
+.timer-display.warning{background:#2e1400;border-color:var(--orange);color:var(--orange)}
+.timer-display.danger{background:#2e0008;border-color:var(--red);color:var(--red);animation:pulse 1s infinite}
+.timer-display.done{background:#001a0e;border-color:var(--green);color:var(--green)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* SCREEN: CONFIG */
+#screen-config{max-width:700px;margin:60px auto;padding:0 24px}
+.config-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:32px 36px}
+.config-card h1{font-size:1.5em;font-weight:700;color:#f1f5f9;margin-bottom:8px}
+.config-card p{color:var(--text2);font-size:.88em;margin-bottom:28px;line-height:1.7}
+.config-section{margin-bottom:22px}
+.config-section label{display:block;font-size:.78em;font-weight:700;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
+.duration-row{display:flex;gap:8px;flex-wrap:wrap}
+.dur-btn{padding:8px 18px;border-radius:8px;font-size:.85em;font-weight:600;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:var(--transition)}
+.dur-btn.active{background:#001e2e;color:var(--accent);border-color:var(--accent)}
+.nexs-row{display:flex;gap:8px;flex-wrap:wrap}
+.nexs-btn{padding:8px 16px;border-radius:8px;font-size:.85em;font-weight:600;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:var(--transition)}
+.nexs-btn.active{background:#001a0e;color:var(--green);border-color:var(--green)}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.cat-toggle{padding:7px 10px;border-radius:8px;font-size:.77em;font-weight:600;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:5px}
+.cat-toggle.on{border-color:var(--cat-clr, var(--accent));color:var(--cat-clr, var(--accent));background:color-mix(in srgb, var(--cat-clr, var(--accent)) 10%, transparent)}
+.all-cats-row{display:flex;gap:8px;margin-bottom:8px}
+.mini-btn{padding:4px 10px;border-radius:6px;font-size:.72em;font-weight:600;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer}
+.start-btn{width:100%;padding:14px;border-radius:8px;background:var(--green);color:#000;font-weight:700;font-size:1em;border:none;cursor:pointer;margin-top:12px;transition:.15s}
+.start-btn:hover{background:#34d399}
+
+/* SCREEN: EXAM */
+#screen-exam{max-width:960px;margin:0 auto;padding:24px}
+.exam-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.exam-header h2{font-size:1.1em;font-weight:700;color:#f1f5f9}
+.exam-header p{font-size:.82em;color:var(--text3)}
+.exam-progress{display:flex;gap:6px;margin-bottom:24px}
+.prog-dot{width:10px;height:10px;border-radius:50%;background:var(--border2);transition:.3s}
+.prog-dot.done{background:var(--green)}
+.prog-dot.active{background:var(--accent)}
+
+/* EXERCISE CARDS in exam */
+.ex-list{display:flex;flex-direction:column;gap:14px}
+.sim-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;border-left:4px solid var(--cat-clr, var(--border))}
+.sim-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.sim-card-num{font-size:.8em;font-weight:700;color:var(--text3)}
+.sim-card-tag{font-size:.65em;font-weight:700;padding:3px 9px;border-radius:10px;background:color-mix(in srgb, var(--cat-clr, var(--accent)) 15%, transparent);color:var(--cat-clr, var(--accent));border:1px solid color-mix(in srgb, var(--cat-clr, var(--accent)) 35%, transparent);white-space:nowrap}
+.sim-card-title{font-size:.97em;font-weight:600;color:#f1f5f9;margin-bottom:4px}
+.sim-card-exam{font-size:.77em;color:var(--text3)}
+.sim-card-footer{margin-top:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.check-row{display:flex;align-items:center;gap:8px;font-size:.82em;color:var(--text2)}
+.check-row input{width:16px;height:16px;accent-color:var(--green);cursor:pointer}
+.sol-link{font-size:.78em;color:var(--text3);text-decoration:none;padding:5px 12px;border:1px solid var(--border2);border-radius:6px;transition:var(--transition)}
+.sol-link:hover{color:var(--accent);border-color:var(--accent)}
+
+.exam-footer{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+.ef-btn{padding:10px 22px;border-radius:8px;font-size:.88em;font-weight:700;border:none;cursor:pointer;transition:.15s}
+.ef-btn-end{background:var(--red);color:#fff}
+.ef-btn-end:hover{background:#e11d48}
+.ef-btn-new{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)}
+.ef-btn-new:hover{color:var(--accent);border-color:var(--accent)}
+
+/* SCREEN: RESULTS */
+#screen-results{max-width:700px;margin:0 auto;padding:40px 24px}
+.results-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:32px}
+.results-title{font-size:1.3em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.results-sub{font-size:.85em;color:var(--text2);margin-bottom:24px}
+.score-banner{background:#001a0e;border:1px solid var(--green);border-radius:10px;padding:16px 20px;margin-bottom:20px;text-align:center}
+.score-big{font-size:2.5em;font-weight:700;color:var(--green);display:block}
+.score-label{font-size:.85em;color:var(--text2)}
+.results-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.res-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border-radius:8px;font-size:.83em}
+.res-item .ri-status{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;flex-shrink:0}
+.ri-ok{background:#001a0e;color:var(--green)}
+.ri-no{background:#1a0008;color:var(--red)}
+.res-item .ri-text{flex:1;color:var(--text2)}
+.res-item .ri-link{color:var(--text3);text-decoration:none;font-size:.9em}
+.res-item .ri-link:hover{color:var(--accent)}
+.results-actions{display:flex;gap:10px;flex-wrap:wrap}
+.ra-btn{padding:10px 20px;border-radius:8px;font-size:.88em;font-weight:700;border:none;cursor:pointer;transition:.15s}
+.ra-new{background:var(--green);color:#000}
+.ra-new:hover{background:#34d399}
+.ra-back{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)}
+.ra-back:hover{color:var(--accent);border-color:var(--accent)}
+
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a href="examenes.html" class="topbar-back">← Exámenes</a>
+  <span class="topbar-title" id="topbar-title">Simulacro de Examen</span>
+  <div class="timer-display hidden" id="timer">2:00:00</div>
+</nav>
+
+<!-- ════════════════ PANTALLA: CONFIGURACIÓN ════════════════ -->
+<div id="screen-config">
+  <div class="config-card">
+    <h1>⏱ Simulacro de Examen</h1>
+    <p>Selecciona la duración, el número de ejercicios y los temas que quieres practicar. Se seleccionarán ejercicios reales de distintos años aleatoriamente.</p>
+
+    <div class="config-section">
+      <label>Duración</label>
+      <div class="duration-row">
+        <button class="dur-btn" data-min="30">30 min</button>
+        <button class="dur-btn" data-min="60">1 h</button>
+        <button class="dur-btn active" data-min="120">2 h (real)</button>
+        <button class="dur-btn" data-min="180">3 h</button>
+        <button class="dur-btn" data-min="0">Sin límite</button>
+      </div>
+    </div>
+
+    <div class="config-section">
+      <label>Número de ejercicios</label>
+      <div class="nexs-row">
+        <button class="nexs-btn" data-n="3">3</button>
+        <button class="nexs-btn active" data-n="5">5 (examen real)</button>
+        <button class="nexs-btn" data-n="7">7</button>
+        <button class="nexs-btn" data-n="10">10</button>
+      </div>
+    </div>
+
+    <div class="config-section">
+      <label>Temas incluidos</label>
+      <div class="all-cats-row">
+        <button class="mini-btn" onclick="setAllCats(true)">Todos</button>
+        <button class="mini-btn" onclick="setAllCats(false)">Ninguno</button>
+      </div>
+      <div class="cats-grid" id="cats-grid"></div>
+    </div>
+
+    <button class="start-btn" onclick="startExam()">🚀 Comenzar simulacro</button>
+    <div id="config-error" style="margin-top:10px;font-size:.8em;color:var(--red)"></div>
+  </div>
+</div>
+
+<!-- ════════════════ PANTALLA: EXAMEN ════════════════ -->
+<div id="screen-exam" class="hidden">
+  <div class="exam-header">
+    <div>
+      <h2 id="exam-title">Simulacro en curso</h2>
+      <p id="exam-subtitle">Resuelve los ejercicios en papel. Marca los que completes.</p>
+    </div>
+  </div>
+  <div class="exam-progress" id="exam-progress"></div>
+  <div class="ex-list" id="ex-list"></div>
+  <div class="exam-footer">
+    <button class="ef-btn ef-btn-end" onclick="endExam()">Terminar simulacro</button>
+    <button class="ef-btn ef-btn-new" onclick="goConfig()">Nueva configuración</button>
+  </div>
+</div>
+
+<!-- ════════════════ PANTALLA: RESULTADOS ════════════════ -->
+<div id="screen-results" class="hidden">
+  <div class="results-card">
+    <div class="results-title">📊 Resultados del simulacro</div>
+    <div class="results-sub" id="results-sub">Has completado el examen.</div>
+    <div class="score-banner">
+      <span class="score-big" id="score-num">—</span>
+      <span class="score-label" id="score-label">ejercicios marcados como completados</span>
+    </div>
+    <div class="results-list" id="results-list"></div>
+    <div class="results-actions">
+      <button class="ra-btn ra-new" onclick="goConfig()">🔄 Nuevo simulacro</button>
+      <a href="examenes.html" class="ra-btn ra-back" style="text-decoration:none;display:inline-flex;align-items:center">← Volver a exámenes</a>
+    </div>
+  </div>
+</div>
+
+<script>
+var CAT_COLOR = {
+  hidro:'#38bdf8', bern:'#10b981', qdm:'#e879f9',
+  tube:'#fb923c',  redes:'#a78bfa', bomb:'#22d3ee',
+  medida:'#f59e0b', canal:'#facc15', dim:'#f43f5e', comp:'#94a3b8'
+};
+var CAT_LABEL = {
+  hidro:'💧 Hidrostática', bern:'🌀 Bernoulli', qdm:'💥 QdM',
+  tube:'🔧 Tuberías', redes:'🕸️ Redes', bomb:'⚙️ Bombas',
+  medida:'📏 Medida Q', canal:'🌊 Canales', dim:'🔢 An. Dimensional', comp:'💨 Compresibilidad'
+};
+
+// ── EXERCISE DATABASE (subset - all exercises) ──
+var EJERCICIOS = [
+  {id:'a21-2',exam:'Abril 2021',num:'EJ2',title:'Micromanómetro de líquidos inmiscibles',cats:['hidro'],file:'examenes/abril2021.html'},
+  {id:'a21-3',exam:'Abril 2021',num:'EJ3',title:'Compuerta articulada OABO',cats:['hidro'],file:'examenes/abril2021.html'},
+  {id:'j20-1',exam:'Junio 2020',num:'EJ1',title:'Chorro sobre álabe móvil',cats:['qdm'],file:'examenes/junio2020.html'},
+  {id:'j20-2',exam:'Junio 2020',num:'EJ2',title:'Análisis dimensional — módulo de aterrizaje en Marte',cats:['dim'],file:'examenes/junio2020.html'},
+  {id:'j20-3',exam:'Junio 2020',num:'EJ3',title:'Canal abierto de montaña y tubería a presión',cats:['canal','tube'],file:'examenes/junio2020.html'},
+  {id:'j20-4',exam:'Junio 2020',num:'EJ4',title:'Instalación de bombeo con turbobomba',cats:['bomb'],file:'examenes/junio2020.html'},
+  {id:'j20-5',exam:'Junio 2020',num:'EJ5',title:'Red de tuberías — depósito A, boquilla C, depósito B',cats:['redes'],file:'examenes/junio2020.html'},
+  {id:'j20ef-2',exam:'Junio 2020 EF',num:'EJ2',title:'Manometría compleja — tres depósitos y cámara de aire',cats:['hidro'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-3',exam:'Junio 2020 EF',num:'EJ3',title:'Flotación de cuerpo compuesto en dos fluidos',cats:['hidro'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-4',exam:'Junio 2020 EF',num:'EJ4',title:'Tobera con válvula cónica — Bernoulli y QdM',cats:['bern','qdm'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-5',exam:'Junio 2020 EF',num:'EJ5',title:'Análisis dimensional — turbobomba',cats:['dim'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-6',exam:'Junio 2020 EF',num:'EJ6',title:'Tubería con turbina hidráulica — Darcy-Weisbach',cats:['tube'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-7',exam:'Junio 2020 EF',num:'EJ7',title:'Red de distribución — 4 barrios',cats:['redes'],file:'examenes/junio2020ef.html'},
+  {id:'j20ef-8',exam:'Junio 2020 EF',num:'EJ8',title:'Canales abiertos — circular y rectangular óptimo',cats:['canal'],file:'examenes/junio2020ef.html'},
+  {id:'j21-3',exam:'Junio 2021',num:'EJ3',title:'Golpe de ariete con válvula de retención',cats:['comp'],file:'examenes/junio2021.html'},
+  {id:'j21-4',exam:'Junio 2021',num:'EJ4',title:'Trasvase A→B por gravedad — Darcy-Weisbach',cats:['tube'],file:'examenes/junio2021.html'},
+  {id:'j21-5',exam:'Junio 2021',num:'EJ5',title:'Red de canales con central hidroeléctrica',cats:['canal'],file:'examenes/junio2021.html'},
+  {id:'j21-6',exam:'Junio 2021',num:'EJ6',title:'Instalación de bombeo con cavitación',cats:['bomb'],file:'examenes/junio2021.html'},
+  {id:'j21ef-1',exam:'Junio 2021 EF',num:'EJ1',title:'Fuerzas hidrostáticas sobre presa entre dos fluidos',cats:['hidro'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-2',exam:'Junio 2021 EF',num:'EJ2',title:'Coeficiente de velocidad del orificio',cats:['bern'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-3',exam:'Junio 2021 EF',num:'EJ3',title:'Aliviadero lateral de presa',cats:['medida'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-4',exam:'Junio 2021 EF',num:'EJ4',title:'Conducción de fluido + golpe de ariete',cats:['comp'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-6',exam:'Junio 2021 EF',num:'EJ6',title:'Análisis dimensional — sustentación aerodinámica',cats:['dim'],file:'examenes/junio2021ef.html'},
+  {id:'j21ef-8',exam:'Junio 2021 EF',num:'EJ8',title:'Instalación de bombeo — Darcy-Weisbach y NPSH',cats:['bomb'],file:'examenes/junio2021ef.html'},
+  {id:'j22-1',exam:'Junio 2022',num:'EJ1',title:'Flujo laminar en tubería — perfil de velocidades',cats:['tube'],file:'examenes/junio2022.html'},
+  {id:'j22-2',exam:'Junio 2022',num:'EJ2',title:'Presión en el fondo del océano — compresibilidad',cats:['comp'],file:'examenes/junio2022.html'},
+  {id:'j22-3',exam:'Junio 2022',num:'EJ3',title:'Canal rectangular — Manning y material de revestimiento',cats:['canal'],file:'examenes/junio2022.html'},
+  {id:'j22-4',exam:'Junio 2022',num:'EJ4',title:'Manómetro diferencial — Helio y líquidos',cats:['hidro'],file:'examenes/junio2022.html'},
+  {id:'j22-5',exam:'Junio 2022',num:'EJ5',title:'Compuerta curva de cuarto de círculo',cats:['hidro'],file:'examenes/junio2022.html'},
+  {id:'j22-6',exam:'Junio 2022',num:'EJ6',title:'Venturímetro con dos manómetros en U',cats:['medida'],file:'examenes/junio2022.html'},
+  {id:'j22-7',exam:'Junio 2022',num:'EJ7',title:'Peso del cono sostenido por un chorro de agua',cats:['qdm'],file:'examenes/junio2022.html'},
+  {id:'j22-8',exam:'Junio 2022',num:'EJ8',title:'Análisis dimensional — elasticidad, viscosidad, presión',cats:['dim'],file:'examenes/junio2022.html'},
+  {id:'j22-9',exam:'Junio 2022',num:'EJ9',title:'Red de tuberías en paralelo — flujo laminar con bomba',cats:['redes'],file:'examenes/junio2022.html'},
+  {id:'j22-11',exam:'Junio 2022',num:'EJ11',title:'Instalación de bombeo — NPSH y maniobra de válvula',cats:['bomb'],file:'examenes/junio2022.html'},
+  {id:'j22ef-1',exam:'Junio 2022 EF',num:'EJ1',title:'Capilaridad — vasos de la savia en árbol de 30 m',cats:['hidro'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-3',exam:'Junio 2022 EF',num:'EJ3',title:'Prisma triangular y esfera en dos fluidos',cats:['hidro'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-4',exam:'Junio 2022 EF',num:'EJ4',title:'Bernoulli y QdM en bifurcación horizontal',cats:['bern','qdm'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-5',exam:'Junio 2022 EF',num:'EJ5',title:'Semejanza hidrodinámica — Reynolds y Froude',cats:['dim'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-6',exam:'Junio 2022 EF',num:'EJ6',title:'Vertedero horizontal — caudal real',cats:['medida'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-7',exam:'Junio 2022 EF',num:'EJ7',title:'Transvasamiento con bomba — diámetro de tubería',cats:['bomb','tube'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-8',exam:'Junio 2022 EF',num:'EJ8',title:'Cota máxima de aspiración — NPSH con Hazen-Williams',cats:['bomb'],file:'examenes/junio2022ef.html'},
+  {id:'j22ef-9',exam:'Junio 2022 EF',num:'EJ9',title:'Curvas características de bomba e instalación',cats:['bomb'],file:'examenes/junio2022ef.html'},
+  {id:'j23-1',exam:'Junio 2023',num:'EJ1',title:'Micromanómetro de líquidos inmiscibles',cats:['hidro'],file:'examenes/junio2023.html'},
+  {id:'j23-2',exam:'Junio 2023',num:'EJ2',title:'Conjunto codo-boquilla — caudal y fuerza',cats:['qdm','bern'],file:'examenes/junio2023.html'},
+  {id:'j23-3',exam:'Junio 2023',num:'EJ3',title:'Depósito bicompartimento — fuerzas hidrostáticas',cats:['hidro'],file:'examenes/junio2023.html'},
+  {id:'j23-4',exam:'Junio 2023',num:'EJ4',title:'Compresibilidad — cubo y cilindro de aceite',cats:['comp'],file:'examenes/junio2023.html'},
+  {id:'j23-5',exam:'Junio 2023',num:'EJ5',title:'Venturímetro — agua + glicol',cats:['medida'],file:'examenes/junio2023.html'},
+  {id:'j23-6',exam:'Junio 2023',num:'EJ6',title:'Semejanza dinámica en gas',cats:['dim'],file:'examenes/junio2023.html'},
+  {id:'j23-7',exam:'Junio 2023',num:'EJ7',title:'Canal rectangular hidráulicamente óptimo',cats:['canal'],file:'examenes/junio2023.html'},
+  {id:'j23-8',exam:'Junio 2023',num:'EJ8',title:'Red de tuberías y boquilla con bomba',cats:['redes','bomb'],file:'examenes/junio2023.html'},
+  {id:'j23-9',exam:'Junio 2023',num:'EJ9',title:'Bombeo — punto de trabajo y NPSH',cats:['bomb'],file:'examenes/junio2023.html'},
+  {id:'j23ef-1',exam:'Junio 2023 EF',num:'EJ1',title:'Capilaridad — tubo de sección rectangular',cats:['hidro'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-2',exam:'Junio 2023 EF',num:'EJ2',title:'Manometría — depósito con agua, aceite y aire',cats:['hidro'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-3',exam:'Junio 2023 EF',num:'EJ3',title:'Tubería submarina anclada con hormigón',cats:['hidro'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-4',exam:'Junio 2023 EF',num:'EJ4',title:'QdM — chorro sobre placa fija',cats:['qdm'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-5',exam:'Junio 2023 EF',num:'EJ5',title:'Semejanza dinámica — avión a 12 000 m',cats:['dim'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-6',exam:'Junio 2023 EF',num:'EJ6',title:'Bombeo — etanol en red ramificada',cats:['bomb','redes'],file:'examenes/junio2023ef.html'},
+  {id:'j23ef-7',exam:'Junio 2023 EF',num:'EJ7',title:'Red de canales rectangular, trapezoidal y semicircular',cats:['canal'],file:'examenes/junio2023ef.html'},
+  {id:'j24ef-1',exam:'Junio 2024 EF',num:'EJ1',title:'Compresibilidad de depósito metálico rígido',cats:['comp'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-2',exam:'Junio 2024 EF',num:'EJ2',title:'Gabarra del Athletic — flotabilidad e inversión',cats:['hidro'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-3',exam:'Junio 2024 EF',num:'EJ3',title:'Micromanómetro con dos fluidos inmiscibles',cats:['hidro'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-4',exam:'Junio 2024 EF',num:'EJ4',title:'Venturímetro diferencial en conducto inclinado 30°',cats:['medida'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-5',exam:'Junio 2024 EF',num:'EJ5',title:'Análisis dimensional — bomba interplanetaria',cats:['dim'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-6',exam:'Junio 2024 EF',num:'EJ6',title:'Red PVC con bomba y 3 boquillas en paralelo',cats:['redes','bomb'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-7',exam:'Junio 2024 EF',num:'EJ7',title:'Canal calzada — sección compuesta rectangular + semicircular',cats:['canal'],file:'examenes/junio2024ef.html'},
+  {id:'j24ef-8',exam:'Junio 2024 EF',num:'EJ8',title:'Máxima ΔP para flujo laminar en paralelo',cats:['tube'],file:'examenes/junio2024ef.html'},
+  {id:'j25ef-1',exam:'Junio 2025 EF',num:'EJ1',title:'Cilindro CO₂: presión, densidad, compresibilidad',cats:['comp'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-2',exam:'Junio 2025 EF',num:'EJ2',title:'Bombeo a depósito presurizado: sistema, NPSH, válvula',cats:['bomb'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-3',exam:'Junio 2025 EF',num:'EJ3',title:'Depósitos presurizados: manómetros y alturas',cats:['hidro'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-4',exam:'Junio 2025 EF',num:'EJ4',title:'Análisis dimensional: vertedero en V',cats:['dim'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-5',exam:'Junio 2025 EF',num:'EJ5',title:'Red de bombas en paralelo — petróleo en el desierto',cats:['bomb','redes'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-6',exam:'Junio 2025 EF',num:'EJ6',title:'Fuerzas hidrostáticas sobre compuerta ABCD con vacuómetro',cats:['hidro'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-7',exam:'Junio 2025 EF',num:'EJ7',title:'Canal hormigón: hexágono completo + semicírculo',cats:['canal'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-8',exam:'Junio 2025 EF',num:'EJ8',title:'Alerones de F1: fuerzas y pérdida de potencia',cats:['dim','qdm'],file:'examenes/junio2025ef.html'},
+  {id:'j25ef-9',exam:'Junio 2025 EF',num:'EJ9',title:'Tubo Pitot + piezómetro: velocidad de avión',cats:['medida','bern'],file:'examenes/junio2025ef.html'},
+  {id:'m20-1',exam:'Mayo 2020',num:'EJ1',title:'Gas ideal en recipiente rígido',cats:['comp'],file:'examenes/mayo2020.html'},
+  {id:'m20-3',exam:'Mayo 2020',num:'EJ3',title:'Sistema de bombeo con boquilla',cats:['bomb','bern'],file:'examenes/mayo2020.html'},
+  {id:'m20-5',exam:'Mayo 2020',num:'EJ5',title:'Vaciado de tanque cerrado',cats:['bern'],file:'examenes/mayo2020.html'},
+  {id:'m21-1',exam:'Mayo 2021',num:'EJ1',title:'Instalación de bombeo para embotellar mirinda',cats:['bomb'],file:'examenes/mayo2021.html'},
+  {id:'m21-2',exam:'Mayo 2021',num:'EJ2',title:'Venturímetro en tubería de gasolina con Pitot',cats:['medida'],file:'examenes/mayo2021.html'},
+  {id:'m21-3',exam:'Mayo 2021',num:'EJ3',title:'Depósito + álabe deflector + carro',cats:['qdm'],file:'examenes/mayo2021.html'},
+  {id:'m21-4',exam:'Mayo 2021',num:'EJ4',title:'Análisis dimensional y semejanza',cats:['dim'],file:'examenes/mayo2021.html'},
+  {id:'m24-1',exam:'Mayo 2024',num:'EJ1',title:'Capilaridad — sección anular cuadrado-círculo',cats:['hidro'],file:'examenes/mayo2024.html'},
+  {id:'m24-2',exam:'Mayo 2024',num:'EJ2',title:'QdM — pieza especial (codo + boquilla)',cats:['qdm'],file:'examenes/mayo2024.html'},
+  {id:'m24-3',exam:'Mayo 2024',num:'EJ3',title:'Manómetros redundantes — lectura incorrecta',cats:['hidro'],file:'examenes/mayo2024.html'},
+  {id:'m24-4',exam:'Mayo 2024',num:'EJ4',title:'Compuerta cilíndrica ABC — fuerzas y reacción en pivote',cats:['hidro'],file:'examenes/mayo2024.html'},
+  {id:'m24-5',exam:'Mayo 2024',num:'EJ5',title:'Vaciado de depósito rectangular — Torricelli',cats:['bern'],file:'examenes/mayo2024.html'},
+  {id:'m24-6',exam:'Mayo 2024',num:'EJ6',title:'Bombeo con Hazen-Williams — punto de trabajo',cats:['bomb'],file:'examenes/mayo2024.html'},
+  {id:'m24-7',exam:'Mayo 2024',num:'EJ7',title:'Análisis dimensional de canales + semicircular',cats:['dim','canal'],file:'examenes/mayo2024.html'},
+  {id:'m24-8',exam:'Mayo 2024',num:'EJ8',title:'Codo + manómetro diferencial — longitud equivalente laminar',cats:['tube','medida'],file:'examenes/mayo2024.html'},
+  {id:'m25-1',exam:'Mayo 2025',num:'EJ1',title:'Fuerzas hidrostáticas sobre dos cuerpos articulados',cats:['hidro'],file:'examenes/mayo2025.html'},
+  {id:'m25-2',exam:'Mayo 2025',num:'EJ2',title:'Capilaridad en tubo cuadrado + depósito presurizado',cats:['hidro'],file:'examenes/mayo2025.html'},
+  {id:'m25-4',exam:'Mayo 2025',num:'EJ4',title:'Canal sección compuesta con partes curvas',cats:['canal'],file:'examenes/mayo2025.html'},
+  {id:'m25-5',exam:'Mayo 2025',num:'EJ5',title:'Análisis dimensional: compuerta en presa',cats:['dim'],file:'examenes/mayo2025.html'},
+  {id:'m25-6',exam:'Mayo 2025',num:'EJ6',title:'Central hidroeléctrica: 3 turbinas en paralelo',cats:['redes','tube'],file:'examenes/mayo2025.html'},
+  {id:'m25-7',exam:'Mayo 2025',num:'EJ7',title:'Flyboard: QdM para peso máximo',cats:['qdm'],file:'examenes/mayo2025.html'},
+  {id:'m25-8',exam:'Mayo 2025',num:'EJ8',title:'Diafragma con glicerina: expresión de caudal',cats:['medida'],file:'examenes/mayo2025.html'},
+  {id:'m25-9',exam:'Mayo 2025',num:'EJ9',title:'Bomba IN-100-200: sistema, NPSH y coste',cats:['bomb'],file:'examenes/mayo2025.html'},
+];
+
+// ── STATE ──
+var config = { minutes: 120, nExs: 5, cats: Object.keys(CAT_COLOR) };
+var selectedExs = [];
+var timerInterval = null;
+var secondsLeft = 0;
+
+// ── BUILD CONFIG UI ──
+document.addEventListener('DOMContentLoaded', function(){
+  var grid = document.getElementById('cats-grid');
+  Object.keys(CAT_COLOR).forEach(function(cat){
+    var btn = document.createElement('button');
+    btn.className = 'cat-toggle on';
+    btn.dataset.cat = cat;
+    btn.style.setProperty('--cat-clr', CAT_COLOR[cat]);
+    btn.textContent = CAT_LABEL[cat];
+    btn.onclick = function(){
+      var on = !btn.classList.contains('on');
+      btn.classList.toggle('on', on);
+      updateConfig();
+    };
+    grid.appendChild(btn);
+  });
+
+  document.querySelectorAll('.dur-btn').forEach(function(b){
+    b.onclick = function(){
+      document.querySelectorAll('.dur-btn').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      config.minutes = parseInt(b.dataset.min);
+    };
+  });
+  document.querySelectorAll('.nexs-btn').forEach(function(b){
+    b.onclick = function(){
+      document.querySelectorAll('.nexs-btn').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      config.nExs = parseInt(b.dataset.n);
+    };
+  });
+});
+
+function setAllCats(on){
+  document.querySelectorAll('.cat-toggle').forEach(function(b){b.classList.toggle('on',on);});
+  updateConfig();
+}
+function updateConfig(){
+  config.cats = [];
+  document.querySelectorAll('.cat-toggle.on').forEach(function(b){config.cats.push(b.dataset.cat);});
+}
+
+// ── SHUFFLE ──
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+
+// ── START EXAM ──
+function startExam(){
+  updateConfig();
+  var errEl = document.getElementById('config-error');
+  if(config.cats.length === 0){ errEl.textContent = 'Selecciona al menos un tema.'; return; }
+
+  // Filter exercises
+  var pool = EJERCICIOS.filter(function(e){
+    return e.cats.some(function(c){ return config.cats.indexOf(c) !== -1; });
+  });
+  if(pool.length < config.nExs){
+    errEl.textContent = 'No hay suficientes ejercicios para los temas seleccionados (' + pool.length + ' disponibles). Reduce el número o añade temas.';
+    return;
+  }
+  errEl.textContent = '';
+
+  // Pick exercises trying to cover different categories and years
+  var picked = [];
+  var catsCovered = [];
+  var shuffled = shuffle(pool);
+  // First pass: one per category
+  shuffled.forEach(function(e){
+    if(picked.length >= config.nExs) return;
+    var newCat = e.cats.find(function(c){ return catsCovered.indexOf(c) === -1 && config.cats.indexOf(c) !== -1; });
+    if(newCat){ picked.push(e); catsCovered.push(newCat); }
+  });
+  // Second pass: fill remaining
+  shuffled.forEach(function(e){
+    if(picked.length >= config.nExs) return;
+    if(picked.indexOf(e) === -1) picked.push(e);
+  });
+  selectedExs = picked.slice(0, config.nExs);
+
+  // Build exam screen
+  document.getElementById('exam-title').textContent = 'Simulacro · ' + config.nExs + ' ejercicios' + (config.minutes ? ' · ' + config.minutes + ' min' : '');
+  document.getElementById('exam-subtitle').textContent = 'Resuelve los ejercicios en papel. Marca los que completes. Las soluciones aparecerán al terminar.';
+
+  var progress = document.getElementById('exam-progress');
+  progress.innerHTML = selectedExs.map(function(_,i){
+    return '<div class="prog-dot'+(i===0?' active':'')+'"></div>';
+  }).join('');
+
+  var list = document.getElementById('ex-list');
+  list.innerHTML = selectedExs.map(function(ej, i){
+    var primaryCat = ej.cats[0];
+    var color = CAT_COLOR[primaryCat] || '#38bdf8';
+    return '<div class="sim-card" id="sim-card-'+i+'" style="--cat-clr:'+color+'">'
+      + '<div class="sim-card-head">'
+        + '<span class="sim-card-num">Ejercicio '+(i+1)+' de '+selectedExs.length+'</span>'
+        + '<span class="sim-card-tag">'+CAT_LABEL[primaryCat]+'</span>'
+      + '</div>'
+      + '<div class="sim-card-title">'+ej.title+'</div>'
+      + '<div class="sim-card-exam">'+ej.exam+' · '+ej.num+'</div>'
+      + '<div class="sim-card-footer">'
+        + '<label class="check-row"><input type="checkbox" class="ex-check" data-i="'+i+'" onchange="updateProgress()"> Completado</label>'
+        + '<span style="color:var(--text3);font-size:.78em">Solución al terminar →</span>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Show exam screen
+  document.getElementById('screen-config').classList.add('hidden');
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-exam').classList.remove('hidden');
+
+  // Start timer
+  startTimer(config.minutes);
+}
+
+function updateProgress(){
+  var dots = document.querySelectorAll('.prog-dot');
+  var checks = document.querySelectorAll('.ex-check');
+  checks.forEach(function(c, i){
+    dots[i].classList.toggle('done', c.checked);
+    dots[i].classList.toggle('active', !c.checked && i === findFirstUnchecked(checks));
+  });
+}
+function findFirstUnchecked(checks){
+  for(var i=0;i<checks.length;i++) if(!checks[i].checked) return i;
+  return -1;
+}
+
+// ── TIMER ──
+function startTimer(minutes){
+  clearInterval(timerInterval);
+  var timerEl = document.getElementById('timer');
+  document.getElementById('topbar-title').textContent = 'Simulacro en curso';
+  if(!minutes){ timerEl.classList.add('hidden'); return; }
+
+  secondsLeft = minutes * 60;
+  timerEl.classList.remove('hidden','warning','danger','done');
+  updateTimerDisplay();
+
+  timerInterval = setInterval(function(){
+    secondsLeft--;
+    updateTimerDisplay();
+    if(secondsLeft <= 0){
+      clearInterval(timerInterval);
+      timerEl.classList.add('done');
+      timerEl.textContent = '¡Tiempo!';
+      endExam(true);
+    } else if(secondsLeft <= 300){
+      timerEl.classList.add('danger');
+    } else if(secondsLeft <= 900){
+      timerEl.classList.add('warning');
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay(){
+  var timerEl = document.getElementById('timer');
+  var h = Math.floor(secondsLeft/3600);
+  var m = Math.floor((secondsLeft%3600)/60);
+  var s = secondsLeft%60;
+  timerEl.textContent = (h>0?h+':':'') + (h>0?String(m).padStart(2,'0'):m) + ':' + String(s).padStart(2,'0');
+}
+
+// ── END EXAM ──
+function endExam(timeUp){
+  clearInterval(timerInterval);
+  document.getElementById('timer').classList.add('hidden');
+
+  var checks = document.querySelectorAll('.ex-check');
+  var completed = 0;
+  checks.forEach(function(c){ if(c.checked) completed++; });
+
+  // Build results
+  document.getElementById('results-sub').textContent = timeUp
+    ? '¡Se acabó el tiempo! Has marcado '+completed+' de '+selectedExs.length+' ejercicios.'
+    : 'Has terminado el simulacro. '+completed+' de '+selectedExs.length+' ejercicios completados.';
+
+  var pct = Math.round(completed/selectedExs.length*100);
+  document.getElementById('score-num').textContent = completed + ' / ' + selectedExs.length;
+  document.getElementById('score-label').textContent = '(' + pct + '%) — ' + (pct>=80?'¡Buen resultado!':pct>=60?'Bien, sigue practicando.':'Revisa los temas pendientes.');
+
+  var list = document.getElementById('results-list');
+  list.innerHTML = selectedExs.map(function(ej, i){
+    var done = checks[i] && checks[i].checked;
+    var primaryCat = ej.cats[0];
+    var color = CAT_COLOR[primaryCat] || '#38bdf8';
+    return '<div class="res-item">'
+      + '<div class="ri-status '+(done?'ri-ok':'ri-no')+'">'+(done?'✓':'✗')+'</div>'
+      + '<div class="ri-text" style="color:'+(done?'var(--text)':'var(--text2)')+'">'
+        + '<strong>EJ'+(i+1)+'</strong> '+ej.title+' <span style="color:var(--text3);">('+ej.exam+')</span>'
+        + '<span style="margin-left:6px;font-size:.85em;padding:1px 7px;border-radius:8px;background:color-mix(in srgb,'+color+' 12%,transparent);color:'+color+'">'+CAT_LABEL[primaryCat]+'</span>'
+      + '</div>'
+      + '<a href="'+ej.file+'" target="_blank" class="ri-link">Ver →</a>'
+      + '</div>';
+  }).join('');
+
+  document.getElementById('screen-exam').classList.add('hidden');
+  document.getElementById('screen-config').classList.add('hidden');
+  document.getElementById('screen-results').classList.remove('hidden');
+}
+
+function goConfig(){
+  clearInterval(timerInterval);
+  document.getElementById('timer').classList.add('hidden');
+  document.getElementById('screen-exam').classList.add('hidden');
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-config').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
