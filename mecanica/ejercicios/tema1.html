@@ -423,12 +423,110 @@ Coordenadas (en metros):
   <div class="ex-header" onclick="toggleEx('ex3')">
     <div class="ex-header-left">
       <h2>Ejercicio 1.3 · Momento de fuerza 400 N respecto al punto C</h2>
-      <div class="ex-meta">Producto vectorial espacial · Momento 3D</div>
+      <div class="ex-meta">Producto vectorial espacial · Momento 3D · Vector unitario de dirección</div>
     </div>
     <span class="ex-arrow">▼</span>
   </div>
   <div class="ex-body">
-    <div class="soon">Resolución en preparación</div>
+
+    <div class="enunciado">Sobre la rama inclinada de un árbol actúa una fuerza de 400 N mediante un cable que va desde A hasta B (la fuerza físicamente va en esa dirección, aunque $\overrightarrow{AB}$ sea un vector geométrico). Encontrar el momento que realiza esta fuerza respecto al punto C.
+
+Coordenadas (en metros): $C(0,\ 2,\ 8)$; $A(0,\ 8,\ 11)$; $B(6,\ 10,\ 2)$.
+
+<b>Resultado:</b> $\vec{M}_C = -2180\,\vec{i} + 655\,\vec{j} - 1309\,\vec{k}\ \text{N·m}$.</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Punto</th><th>Coordenadas (m)</th><th>Descripción</th></tr>
+          <tr><td>C</td><td>(0; 2; 8)</td><td>Punto respecto al cual se calcula el momento</td></tr>
+          <tr><td>A</td><td>(0; 8; 11)</td><td>Punto de aplicación de la fuerza (extremo de la rama)</td></tr>
+          <tr><td>B</td><td>(6; 10; 2)</td><td>Punto donde tira la persona (dirección del cable)</td></tr>
+          <tr><td>$|\vec{F}|$</td><td>400 N</td><td>Módulo de la fuerza</td></tr>
+        </table>
+        <div class="nota">⚠️ $\overrightarrow{AB}$ define la <strong>dirección geométrica</strong> del cable, pero la fuerza tiene unidades de Newton. Hay que obtener el vector unitario de $\overrightarrow{AB}$ y multiplicar por 400 N.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría: producto vectorial 3D <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>El momento respecto a C se calcula como:</p>
+        <div class="formula-box">
+          <div class="formula-label">Momento en C</div>
+          $$\vec{M}_C = \vec{r}_{CA} \times \vec{F}$$
+        </div>
+        <p style="margin-top:8px">El vector fuerza se obtiene escalando el vector unitario de dirección $\overrightarrow{AB}$:</p>
+        <div class="formula-box">
+          <div class="formula-label">Vector fuerza</div>
+          $$\vec{F} = |\vec{F}| \cdot \frac{\overrightarrow{AB}}{|\overrightarrow{AB}|}$$
+        </div>
+        <p style="margin-top:8px">El producto vectorial 3D se calcula con el determinante:</p>
+        <div class="formula-box">
+          <div class="formula-label">Determinante 3×3</div>
+          $$\vec{r}\times\vec{F} = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\r_x&r_y&r_z\\F_x&F_y&F_z\end{vmatrix} = (r_yF_z-r_zF_y)\,\vec{i} - (r_xF_z-r_zF_x)\,\vec{j} + (r_xF_y-r_yF_x)\,\vec{k}$$
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Coordenadas de los puntos</div>
+          <p>Leyendo la figura con origen O(0,0,0) en la base del árbol:</p>
+          $$C(0,\ 2,\ 8) \qquad A(0,\ 8,\ 11) \qquad B(6,\ 10,\ 2)$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Vector fuerza F (dirección A→B, módulo 400 N)</div>
+          <p>Vector geométrico de A a B:</p>
+          $$\overrightarrow{AB} = B - A = (6-0)\,\vec{i} + (10-8)\,\vec{j} + (2-11)\,\vec{k} = 6\,\vec{i} + 2\,\vec{j} - 9\,\vec{k}\ \text{(m)}$$
+          <p>Módulo:</p>
+          $$|\overrightarrow{AB}| = \sqrt{6^2 + 2^2 + (-9)^2} = \sqrt{36 + 4 + 81} = \sqrt{121} = 11\ \text{m}$$
+          <p>Vector fuerza (multiplicamos el unitario por 400 N):</p>
+          $$\vec{F} = 400 \cdot \frac{\overrightarrow{AB}}{11} = \frac{400}{11}(6\,\vec{i} + 2\,\vec{j} - 9\,\vec{k})$$
+          $$\boxed{\vec{F} = \frac{2400}{11}\,\vec{i} + \frac{800}{11}\,\vec{j} - \frac{3600}{11}\,\vec{k}\ \text{(N)}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Vector de posición r_CA (desde C hasta A)</div>
+          <p>El momento se calcula en C, y la fuerza se aplica en A, por lo que el vector de posición va <strong>de C a A</strong>:</p>
+          $$\vec{r}_{CA} = A - C = (0-0)\,\vec{i} + (8-2)\,\vec{j} + (11-8)\,\vec{k}$$
+          $$\boxed{\vec{r}_{CA} = 0\,\vec{i} + 6\,\vec{j} + 3\,\vec{k}\ \text{(m)}}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Producto vectorial M_C = r_CA × F</div>
+          $$\vec{M}_C = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\0&6&3\\\dfrac{2400}{11}&\dfrac{800}{11}&-\dfrac{3600}{11}\end{vmatrix}$$
+          <p><strong>Componente i:</strong></p>
+          $$i: 6\cdot\!\left(-\frac{3600}{11}\right) - 3\cdot\frac{800}{11} = \frac{-21600-2400}{11} = -\frac{24000}{11} \approx -2181{,}8\ \text{N·m}$$
+          <p><strong>Componente j</strong> (con cambio de signo):</p>
+          $$-j:\left[0\cdot\!\left(-\frac{3600}{11}\right) - 3\cdot\frac{2400}{11}\right] = \frac{0-7200}{11} \implies +j: \frac{7200}{11} \approx +654{,}5\ \text{N·m}$$
+          <p><strong>Componente k:</strong></p>
+          $$k: 0\cdot\frac{800}{11} - 6\cdot\frac{2400}{11} = -\frac{14400}{11} \approx -1309{,}1\ \text{N·m}$$
+          <div class="resultado-final">
+            <div class="rf-label">Resultado</div>
+            <div class="rf-val">$\vec{M}_C = \boxed{-2182\,\vec{i} + 655\,\vec{j} - 1309\,\vec{k}\ \text{N·m}}$<br>
+            <span style="font-size:.88em;color:#6bcb77">Coincide con el enunciado: $-2180\,\vec{i} + 655\,\vec{j} - 1309\,\vec{k}$ (diferencia de redondeo de 2 N·m en $i$)</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="seccion s-conclusiones">
+      <button class="sec-btn" onclick="toggleSec(this)">🏁 Conclusiones <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="concl-item">$\overrightarrow{AB}$ es un <strong>vector geométrico</strong> (metros). Para obtener la fuerza hay que normalizarlo y multiplicar por el módulo en Newtons.</div>
+        <div class="concl-item">El vector de posición va <strong>desde el punto de momento (C) hasta el punto de aplicación (A)</strong>: $\vec{r}_{CA} = A - C$.</div>
+        <div class="concl-item">Trabajar con fracciones exactas ($\frac{2400}{11}$, etc.) evita errores de redondeo acumulado en el determinante.</div>
+        <div class="concl-item">El resultado tiene las tres componentes no nulas porque el problema es completamente espacial (3D).</div>
+      </div>
+    </div>
+
   </div>
 </div>
 
