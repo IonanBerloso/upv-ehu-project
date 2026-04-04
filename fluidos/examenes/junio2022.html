@@ -598,10 +598,16 @@ Determina la presión absoluta $P_A^{\text{abs}}$.</div>
     </div>
   </div>
   <div class="ex-body">
-    <div class="enunciado">Una compuerta curva 0AB tiene forma de cuarto de círculo de radio $R = 2\ \text{m}$ y anchura $b = 3\ \text{m}$. El eje de giro está en O (esquina superior). La cara cóncava está en contacto con el agua hasta la profundidad $R$. Sobre la compuerta actúa además una fuerza exterior $F_1 = 450\ \text{kN}$ formando un ángulo $\alpha = 50°$ con la horizontal.
+    <div class="enunciado">La compuerta 0AB tiene forma de cuarto de cilindro de radio $R$ y profundidad $b$. Es rígida y su peso es despreciable. Está articulada en el punto A y en el punto B entra en contacto con el suelo. Se ejerce en el punto O una fuerza $F_1$ con un ángulo $\alpha$, manteniendo la compuerta apoyada en el suelo, permitiendo acumular agua en el lado izquierdo ($H$ = altura del agua).
 
-<b>a)</b> Calcula las componentes horizontal y vertical de la fuerza hidrostática sobre la compuerta.
-<b>b)</b> Determina las reacciones en los apoyos A (en la base) y B (en el extremo lateral), tomando momentos respecto a O.</div>
+<b>a)</b> Dibujar los prismas de presiones acotados de las fuerzas sobre la compuerta 0AB en función de $H$.
+<b>b)</b> Calcular las fuerzas que actúan sobre la compuerta en función de $H$.
+<b>c)</b> Con $R = 2\ \text{m}$ y $b = 3\ \text{m}$: calcular la altura $H$ máxima del agua.
+<b>d)</b> Calcular las reacciones en A y B para $H = 3\ \text{m}$.
+
+<b>Datos:</b> $F_1 = 450\ \text{kN}$; $\alpha = 50°$.
+
+<b>Resultados:</b> $F_h = \gamma(H-R/2)\cdot R\cdot b$; $F_b = \gamma[\pi R^2/4+(H-R)\cdot R]\cdot b$; $H = 6{,}29\ \text{m}$; $B_y = 193{,}56\ \text{kN}\ (\uparrow)$; $A_x = 406{,}85\ \text{kN}\ (\leftarrow)$; $A_y = 0$.</div>
 
     <div class="seccion s-datos sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📋 Datos<span class="sarr">▼</span></button>
@@ -609,10 +615,10 @@ Determina la presión absoluta $P_A^{\text{abs}}$.</div>
         <table class="t-datos">
           <tr><th>Variable</th><th>Valor</th><th>Notas</th></tr>
           <tr><td>$R$</td><td>$2\ \text{m}$</td><td>Radio de la compuerta</td></tr>
-          <tr><td>$b$</td><td>$3\ \text{m}$</td><td>Anchura (dimensión perpendicular al plano)</td></tr>
-          <tr><td>$F_1$</td><td>$450\ \text{kN}$</td><td>Fuerza exterior aplicada</td></tr>
+          <tr><td>$b$</td><td>$3\ \text{m}$</td><td>Profundidad (dimensión perpendicular al plano)</td></tr>
+          <tr><td>$F_1$</td><td>$450\ \text{kN}$</td><td>Fuerza exterior aplicada en O (↘ al plano de la compuerta)</td></tr>
           <tr><td>$\alpha$</td><td>$50°$</td><td>Ángulo de $F_1$ con la horizontal</td></tr>
-          <tr><td>$\gamma$</td><td>$9{.}800\ \text{N/m}^3$</td><td>Peso específico del agua ($s=1$)</td></tr>
+          <tr><td>$\gamma$</td><td>$9{.}800\ \text{N/m}^3$</td><td>Peso específico del agua</td></tr>
         </table>
       </div>
     </div>
@@ -620,21 +626,24 @@ Determina la presión absoluta $P_A^{\text{abs}}$.</div>
     <div class="seccion s-formulas sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="formula-label">Componente horizontal — proyección vertical de la superficie curva</div>
-        <div class="formula-box">$$F_H = \gamma\,\bar{h}\,A_v \qquad \bar{h} = \frac{R}{2},\quad A_v = R \cdot b$$</div>
-        <div class="formula-label">Componente vertical — peso del volumen de fluido sobre la superficie</div>
-        <div class="formula-box">$$F_V = \gamma\,V_{\text{fluido}} = \gamma\,\frac{\pi R^2}{4}\,b \quad \text{(cuarto de círculo lleno de agua encima)}$$</div>
-        <div class="formula-label">Punto de aplicación de $F_H$ (centro de presiones)</div>
-        <div class="formula-box">$$h_{cp} = \bar{h} + \frac{I_G}{\bar{h}\,A_v} = \frac{R}{2} + \frac{b\,R^3/12}{(R/2)(R\,b)} = \frac{R}{2} + \frac{R}{6} = \frac{2R}{3}$$</div>
-        <div class="formula-label">Punto de aplicación de $F_V$ — centroide del cuarto de círculo</div>
-        <div class="formula-box">$$x_{F_V} = \frac{4R}{3\pi} \quad \text{desde el eje vertical de O}$$</div>
+        <div class="formula-label">Componente horizontal — proyección vertical (altura $R$, profundidad media $H-R/2$)</div>
+        <div class="formula-box">$$F_h = \gamma\,(H - R/2)\cdot R\cdot b$$</div>
+        <div class="formula-label">Componente vertical — peso del agua sobre la superficie curva</div>
+        <div class="formula-box">$$F_b = \gamma\left[\frac{\pi R^2}{4} + (H-R)\cdot R\right]\cdot b \quad \text{(cuarto de círculo + rectángulo superior)}$$</div>
+        <div class="formula-label">Equilibrio vertical (A solo reacciona horizontalmente: $A_y = 0$)</div>
+        <div class="formula-box">$$B_y = F_1\sin\alpha - F_b$$</div>
+        <div class="formula-label">Equilibrio horizontal</div>
+        <div class="formula-box">$$A_x = F_h + F_1\cos\alpha$$</div>
+        <div class="formula-label">Altura máxima: condición $B_y = 0$</div>
+        <div class="formula-box">$$F_b(H_{\max}) = F_1\sin\alpha \quad\Rightarrow\quad H_{\max} = \frac{F_1\sin\alpha}{\gamma\,b\,R} - \frac{\pi R}{4} + R$$</div>
       </div>
     </div>
 
     <div class="seccion s-teoria">
       <button class="sec-btn" onclick="toggleSec(this)">📖 Teoría e hipótesis<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <p>Para superficies curvas, la fuerza hidrostática se descompone siempre en: (1) componente horizontal $F_H$, igual a la fuerza sobre la proyección plana vertical; (2) componente vertical $F_V$, igual al peso del volumen real o ficticio de fluido sobre la superficie. La compuerta 0AB está articulada en O: en el equilibrio de momentos respecto a O, la reacción en B es la fuerza que cierra el balance. La fuerza exterior $F_1$ se descompone en $F_{1x} = F_1\cos\alpha$ y $F_{1y} = F_1\sin\alpha$.</p>
+        <p>Para superficies curvas, la fuerza hidrostática se descompone en: (1) $F_h$ = fuerza horizontal = fuerza sobre la proyección plana vertical (altura $R$, profundidad centroidal $H-R/2$); (2) $F_b$ = fuerza vertical = peso del volumen de agua desde la superficie libre hasta la superficie curva = cuarto de círculo + prisma rectangular superior de altura $H-R$. Ambas fuerzas actúan sobre la cara cóncava (lado del agua).</p>
+        <p style="margin-top:8px">La articulación A solo proporciona reacción horizontal ($A_y = 0$). $B_y$ es la reacción vertical en el suelo. La condición $B_y = 0$ determina $H_{\max}$: cuando la componente vertical del agua iguala la componente vertical de $F_1$, la compuerta está a punto de despegarse del suelo.</p>
       </div>
     </div>
 
@@ -642,28 +651,46 @@ Determina la presión absoluta $P_A^{\text{abs}}$.</div>
       <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución<span class="sarr">▼</span></button>
       <div class="sec-body">
         <div class="paso">
-          <div class="paso-titulo">Fuerzas hidrostáticas</div>
-          $$F_H = \gamma\,\frac{R}{2}\,(R\,b) = 9{.}800 \times 1 \times (2 \times 3) = 58{.}800\ \text{N} = 58{,}8\ \text{kN}$$
-          <p style="margin-top:6px">Actúa a $h_{cp} = 2R/3 = 1{,}333\ \text{m}$ de la superficie → a $R - 1{,}333 = 0{,}667\ \text{m}$ del fondo (punto A).</p>
-          $$F_V = \gamma\,\frac{\pi R^2}{4}\,b = 9{.}800 \times \frac{\pi \times 4}{4} \times 3 = 9{.}800 \times \pi \times 3 = 92{.}362\ \text{N} = 92{,}4\ \text{kN}$$
-          <p style="margin-top:6px">Actúa a $x_{F_V} = 4R/(3\pi) = 8/(3\pi) = 0{,}849\ \text{m}$ del eje vertical de O.</p>
+          <div class="paso-titulo">Apartados a–b — Fuerzas hidrostáticas en función de $H$</div>
+          <p>La compuerta ocupa desde la altura $0$ (punto B, suelo) hasta la altura $R$ (punto O). El agua tiene nivel $H > R$.</p>
+          <p><strong>Componente horizontal</strong> — proyección vertical de la compuerta (rectángulo $R \times b$), centroide a profundidad $H-R/2$ de la superficie libre:</p>
+          $$\boxed{F_h = \gamma\left(H - \frac{R}{2}\right)\cdot R\cdot b}$$
+          <p style="margin-top:8px"><strong>Componente vertical</strong> — peso del agua directamente sobre la superficie curva:</p>
+          <ul style="margin-left:16px;color:#d0e8ff;margin-top:4px">
+            <li>Prisma rectangular (de $y=R$ a $y=H$, ancho $R$): volumen $= (H-R)\cdot R\cdot b$</li>
+            <li>Cuarto de círculo (de $y=0$ a $y=R$, la propia curva): volumen $= \pi R^2/4\cdot b$</li>
+          </ul>
+          $$\boxed{F_b = \gamma\left[\frac{\pi R^2}{4} + (H-R)\cdot R\right]\cdot b}$$
+          <p style="margin-top:8px">$F_b$ actúa hacia <strong>arriba</strong> (el agua empuja la cara cóncava desde abajo-izquierda); $F_h$ actúa hacia la <strong>derecha</strong>.</p>
         </div>
         <div class="paso">
-          <div class="paso-titulo">Componentes de la fuerza exterior $F_1$</div>
-          $$F_{1x} = 450 \times \cos 50° = 450 \times 0{,}6428 = 289{,}3\ \text{kN} \quad \text{(horizontal)}$$
-          $$F_{1y} = 450 \times \sin 50° = 450 \times 0{,}7660 = 344{,}7\ \text{kN} \quad \text{(vertical)}$$
+          <div class="paso-titulo">Apartado c — Altura máxima del agua ($R=2\ \text{m}$, $b=3\ \text{m}$)</div>
+          <p>Para $H_{\max}$ la compuerta está a punto de despegarse del suelo: $B_y = 0$, es decir $F_b(H_{\max}) = F_1\sin\alpha$.</p>
+          $$F_1\sin\alpha = 450 \times \sin 50° = 450 \times 0{,}7660 = 344{,}7\ \text{kN}$$
+          $$\gamma\left[\frac{\pi R^2}{4} + (H_{\max}-R)\cdot R\right]\cdot b = 344\,700\ \text{N}$$
+          $$9800\left[\frac{\pi \times 4}{4} + (H_{\max}-2)\times 2\right]\times 3 = 344\,700$$
+          $$29\,400\left[\pi + 2H_{\max} - 4\right] = 344\,700$$
+          $$\pi + 2H_{\max} - 4 = \frac{344\,700}{29\,400} = 11{,}724$$
+          $$2H_{\max} = 11{,}724 - \pi + 4 = 11{,}724 - 3{,}1416 + 4 = 12{,}582$$
+          $$\boxed{H_{\max} = 6{,}29\ \text{m}}$$
         </div>
         <div class="paso">
-          <div class="paso-titulo">Reacciones en los apoyos</div>
-          <p>Equilibrio de fuerzas verticales (↑ positivo):</p>
-          $$B_r - F_V + F_{1y} = 0 \quad\Rightarrow\quad B_r = F_V - F_{1y} = 92{,}4 - 344{,}7 + \Delta$$
-          <p style="margin-top:6px;color:#94a3b8;font-size:.85em;">Tomando momentos respecto a O para obtener la reacción vertical en B y horizontal en A, con los brazos de cada fuerza:</p>
+          <div class="paso-titulo">Apartado d — Fuerzas y reacciones para $H = 3\ \text{m}$</div>
+          <p><strong>Fuerzas hidrostáticas con $H=3$ m, $R=2$ m, $b=3$ m:</strong></p>
+          $$F_h = 9800\times\left(3 - \frac{2}{2}\right)\times 2\times 3 = 9800\times 2\times 6 = 117\,600\ \text{N} = 117{,}6\ \text{kN}$$
+          $$F_b = 9800\times\left[\frac{\pi\times 4}{4} + (3-2)\times 2\right]\times 3 = 9800\times(\pi + 2)\times 3 = 9800\times 5{,}1416\times 3 = 151\,103\ \text{N} = 151{,}1\ \text{kN}$$
+          <p style="margin-top:8px"><strong>Componentes de $F_1$:</strong></p>
+          $$F_{1x} = 450\times\cos 50° = 450\times 0{,}6428 = 289{,}3\ \text{kN}\ (\rightarrow)$$
+          $$F_{1y} = 450\times\sin 50° = 450\times 0{,}7660 = 344{,}7\ \text{kN}\ (\downarrow)$$
+          <p style="margin-top:8px"><strong>Equilibrio horizontal</strong> (B solo proporciona reacción vertical, $A_y=0$):</p>
+          $$\Sigma F_x = 0: \quad F_h + F_{1x} - A_x = 0$$
+          $$A_x = F_h + F_{1x} = 117{,}6 + 289{,}3 = \boxed{406{,}9\ \text{kN}\ (\leftarrow)} \approx 406{,}85\ \text{kN}$$
+          <p style="margin-top:8px"><strong>Equilibrio vertical</strong> ($A_y = 0$ — la articulación A solo reacciona horizontalmente):</p>
+          $$\Sigma F_y = 0: \quad F_b\ (\uparrow) - F_{1y}\ (\downarrow) + B_y\ (\uparrow) = 0$$
+          $$B_y = F_{1y} - F_b = 344{,}7 - 151{,}1 = \boxed{193{,}6\ \text{kN}\ (\uparrow)} \approx 193{,}56\ \text{kN}$$
           <div class="resultado-final">
-            <div class="rf-label">Resultados oficiales</div>
-            <div class="rf-val">
-              $B_r = 193{,}56\ \text{kN}\ (\uparrow)$ — reacción vertical en B<br>
-              $A_r = 406{,}85\ \text{kN}$ — reacción en A
-            </div>
+            <div class="rf-label">Resultados para H = 3 m</div>
+            <div class="rf-val">$A_x = 406{,}85\ \text{kN}\ (\leftarrow)$ · $A_y = 0$ · $B_y = 193{,}56\ \text{kN}\ (\uparrow)$</div>
           </div>
         </div>
       </div>
@@ -672,9 +699,9 @@ Determina la presión absoluta $P_A^{\text{abs}}$.</div>
     <div class="seccion s-conclusiones">
       <button class="sec-btn" onclick="toggleSec(this)">✅ Conclusiones<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <div class="concl-item">$F_H = 58{,}8\ \text{kN}$ (horizontal) a $2R/3 = 1{,}33\ \text{m}$ de profundidad.</div>
-        <div class="concl-item">$F_V = 92{,}4\ \text{kN}$ (vertical hacia arriba) — peso del volumen de agua en el cuarto de círculo.</div>
-        <div class="concl-item">La fuerza exterior $F_1 = 450\ \text{kN}$ domina el equilibrio, generando reacciones $B_r = 193{,}56\ \text{kN}\uparrow$ y $A_r = 406{,}85\ \text{kN}$.</div>
+        <div class="concl-item">$F_h = \gamma(H-R/2)\cdot Rb$ (horizontal →); $F_b = \gamma[\pi R^2/4+(H-R)R]\cdot b$ (vertical ↑). Las fórmulas son válidas para cualquier $H \geq R$.</div>
+        <div class="concl-item">$H_{\max} = 6{,}29\ \text{m}$: condición $B_y=0$, es decir $F_b = F_1\sin\alpha$. Si $H > H_{\max}$, la compuerta se despega del suelo.</div>
+        <div class="concl-item">Para $H=3$ m: $A_x = 406{,}85\ \text{kN}$ (equilibrio horizontal), $B_y = 193{,}56\ \text{kN}$ (equilibrio vertical), $A_y = 0$.</div>
       </div>
     </div>
   </div>
