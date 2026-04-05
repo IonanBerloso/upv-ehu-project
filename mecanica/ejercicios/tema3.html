@@ -215,6 +215,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-16">3.16 Par de equilibrio con disco</a>
   <a class="jump-link" href="#ex3-17">3.17 Barras + disco + resorte: constante k</a>
   <a class="jump-link" href="#ex3-18">3.18 Barra en semiesfera libre</a>
+  <a class="jump-link" href="#ex3-19">3.19 Celosía: reacciones y nudos</a>
 </div>
 
 <div class="container">
@@ -2030,6 +2031,93 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-18 -->
+
+<div class="ex-card" id="ex3-19">
+  <div class="ex-header" onclick="toggleEx('ex3-19')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.19 — Celosía: reacciones externas y esfuerzos en barras</h2>
+      <div class="ex-meta">Análisis de celosía · Método de los Nudos · Tracción y compresión</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Analizar la celosía de la figura. Cargas: 8 kN↓ en \(A=(0,2)\ \text{m}\) y 4 kN↓ en \(B=(3,2)\ \text{m}\).
+      Apoyos: \(C=(6,2)\ \text{m}\) articulación fija (reacciones \(C_x\), \(C_y\)); \(E=(4{,}5,0)\ \text{m}\) rodillo horizontal (reacción vertical \(E_y\)).
+      Nudo \(D=(1{,}5,0)\ \text{m}\). Calcular las reacciones externas y los esfuerzos en las barras \(AD\) y \(AB\).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>En una celosía ideal (barras biarticuladas, cargas solo en nudos, sin masa): cada barra transmite únicamente un esfuerzo axial (tracción o compresión). El análisis se divide en dos etapas:</p>
+        <ol style="margin:6px 0 0 16px;line-height:1.9">
+          <li><strong>Reacciones externas:</strong> equilibrio del sistema completo (\(\sum M=0\), \(\sum F=0\)).</li>
+          <li><strong>Método de los nudos:</strong> aislar cada nudo y aplicar \(\sum F_x=0\), \(\sum F_y=0\). Convenio: esfuerzo positivo = tracción (la barra tira del nudo).</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Reacciones externas: ΣM_C = 0 → E_y</div>
+          <p>Momentos respecto a \(C=(6,2)\), antihorario positivo. Los brazos son distancias horizontales:</p>
+          \[
+            \sum M_C=0:\quad (8\cdot 6)+(4\cdot 3)-(E_y\cdot 1{,}5)=0
+          \]
+          \[
+            48+12-1{,}5\,E_y=0 \quad\Rightarrow\quad E_y=\frac{60}{1{,}5}=40\ \text{kN}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Reacciones en C</div>
+          \[
+            \sum F_y=0:\quad -8-4+E_y+C_y=0 \quad\Rightarrow\quad C_y=12-40=-28\ \text{kN}
+          \]
+          \[
+            \sum F_x=0:\quad C_x=0
+          \]
+          <div class="nota">\(C_y=-28\ \text{kN}\): la reacción en \(C\) tira hacia abajo para evitar que la estructura pivote sobre \(E\).</div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Método de los nudos: Nudo A</div>
+          <p>Nudo \(A=(0,2)\). Barras concurrentes: \(AD\) (hacia \(D=(1{,}5,0)\)) y \(AB\) (horizontal hacia \(B\)). Carga externa: 8 kN↓.</p>
+          <p style="margin-top:6px">Geometría de la barra \(AD\): \(\Delta x=1{,}5\ \text{m}\), \(\Delta y=-2\ \text{m}\), \(L_{AD}=\sqrt{1{,}5^2+2^2}=2{,}5\ \text{m}\).</p>
+          \[
+            \text{prop. vert.}=\frac{-2}{2{,}5}=-0{,}8 \qquad \text{prop. horiz.}=\frac{1{,}5}{2{,}5}=0{,}6
+          \]
+          \[
+            \sum F_y=0:\quad -8+N_{AD}\cdot(-0{,}8)=0 \quad\Rightarrow\quad N_{AD}=-10\ \text{kN}\quad(\textbf{Compresión})
+          \]
+          \[
+            \sum F_x=0:\quad N_{AB}+N_{AD}\cdot(0{,}6)=0 \quad\Rightarrow\quad N_{AB}=(-10)(-0{,}6)=\,\ldots
+          \]
+          \[
+            N_{AB}+(-10)(0{,}6)=0 \quad\Rightarrow\quad N_{AB}=6\ \text{kN}\quad(\textbf{Tracción})
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val" style="line-height:2.1">
+            Reacción en \(E\): \(E_y=40\ \text{kN}\uparrow\)<br>
+            Reacción en \(C\): \(C_x=0\), \(C_y=-28\ \text{kN}\) (↓)<br>
+            Barra \(AD\): \(N_{AD}=-10\ \text{kN}\) (Compresión)<br>
+            Barra \(AB\): \(N_{AB}=+6\ \text{kN}\) (Tracción)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-19 -->
 
 </div><!-- /container -->
 
