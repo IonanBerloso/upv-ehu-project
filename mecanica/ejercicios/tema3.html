@@ -217,6 +217,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-18">3.18 Barra en semiesfera libre</a>
   <a class="jump-link" href="#ex3-19">3.19 Celosía: reacciones y nudos</a>
   <a class="jump-link" href="#ex3-20">3.20 Celosía triangular equilátero</a>
+  <a class="jump-link" href="#ex3-21">3.21 Panel central de celosía</a>
 </div>
 
 <div class="container">
@@ -2229,6 +2230,84 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-20 -->
+
+<div class="ex-card" id="ex3-21">
+  <div class="ex-header" onclick="toggleEx('ex3-21')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.21 — Fuerzas en el panel central de una celosía</h2>
+      <div class="ex-meta">Método de las Secciones · Celosía simétrica · Cortante nulo en el panel central</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Celosía simétrica de cordones paralelos (tipo Pratt o Howe) con altura de panel \(h=3\ \text{m}\) y longitud de vano \(3\ \text{m}\). Cargas simétricas de 2 kN aplicadas en los nodos superiores. Determinar los esfuerzos en las barras del panel central (\(CD\), \(CE\), \(EF\)).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p><strong>Método de las Secciones:</strong> se corta la celosía con un plano que secciona las barras de interés y se estudia el equilibrio de uno de los semisistemas resultantes. El semisistema queda como un sólido rígido con las fuerzas externas conocidas y los esfuerzos de las barras cortadas como incógnitas.</p>
+        <p style="margin-top:8px"><strong>Propiedad de la simetría:</strong> en el panel central de una celosía con carga simétrica, el esfuerzo cortante neto es cero (\(V=0\)). Esto implica directamente que la barra diagonal central \(CE\) tiene esfuerzo nulo.</p>
+        <p style="margin-top:8px">El momento flector externo en el centro vale:</p>
+        \[
+          M_{\text{centro}} = R \cdot \frac{L}{2} - \sum(\text{cargas}\times\text{brazos}) = 36\ \text{kN·m}
+        \]
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Barra diagonal CE (cortante nulo)</div>
+          <p>En el panel central de una celosía simétrica con carga simétrica, el esfuerzo cortante neto es cero. Las barras horizontales (\(CD\) y \(EF\)) no pueden absorber fuerzas verticales. La única barra que podría absorber el cortante es la diagonal \(CE\). Como \(V=0\):</p>
+          \[
+            \sum F_y = 0 \quad\Rightarrow\quad T_{CE} = 0
+          \]
+          <p>La barra \(CE\) es un <strong>elemento de fuerza cero</strong> bajo esta configuración de carga.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Cordón superior CD: ΣM_E = 0</div>
+          <p>Se toman momentos respecto al nodo inferior \(E\) para eliminar las incógnitas de \(CE\) y \(EF\). El momento flector externo a la izquierda del corte es \(M_{\text{centro}}=36\ \text{kN·m}\).</p>
+          \[
+            \sum M_E=0:\quad T_{CD}\cdot h - M_{\text{centro}}=0
+          \]
+          \[
+            T_{CD}\cdot 3 - 36=0 \quad\Rightarrow\quad T_{CD}=12\ \text{kN}
+          \]
+          <div class="nota">El cordón superior está bajo carga gravitatoria → se comprime: \(T_{CD}=-12\ \text{kN}\) (Compresión).</div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Cordón inferior EF: ΣM_C = 0</div>
+          <p>Momentos respecto al nodo superior \(C\) para eliminar \(CD\) y \(CE\):</p>
+          \[
+            \sum M_C=0:\quad T_{EF}\cdot h - M_{\text{centro}}=0
+          \]
+          \[
+            T_{EF}\cdot 3 - 36=0 \quad\Rightarrow\quad T_{EF}=12\ \text{kN}
+          \]
+          <div class="nota">El cordón inferior está en la parte de tracción del momento flector: \(T_{EF}=+12\ \text{kN}\) (Tracción).</div>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val" style="line-height:2.1">
+            \(T_{CE} = 0\ \text{N}\) (elemento de fuerza cero)<br>
+            \(T_{CD} = -12\ \text{kN}\) (Compresión)<br>
+            \(T_{EF} = +12\ \text{kN}\) (Tracción)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-21 -->
 
 </div><!-- /container -->
 
