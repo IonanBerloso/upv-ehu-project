@@ -205,6 +205,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex2-6">2.6 Curva \(Y=Kx^n\)</a>
   <a class="jump-link" href="#ex2-7">2.7 Semidisco vaciado</a>
   <a class="jump-link" href="#ex2-8">2.8 Avellanado</a>
+  <a class="jump-link" href="#ex2-9">2.9 Alambre \(CE\)</a>
 </div>
 
 <div class="container">
@@ -1026,6 +1027,124 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-8 -->
+
+<div class="ex-card" id="ex2-9">
+  <div class="ex-header" onclick="toggleEx('ex2-9')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.9 — Longitud del tramo \(CE\) para que \(G\) esté en \(C\)</h2>
+      <div class="ex-meta">Alambre continuo · Equilibrio de momentos estáticos · Centroide de arco · Dos casos</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      La figura muestra un alambre homogéneo delgado compuesto por un arco \(AB\) de radio \(r\) y ángulo total \(2\vartheta\), y una barra recta \(DE\) que va desde el punto \(D\) (borde interior del arco) hasta el extremo libre \(E\), pasando por \(C\). El tramo \(DC = r\) y el tramo \(CE = l\) es la incógnita.
+      <br><br>
+      Calcular \(l\) para que el centro de gravedad del conjunto se localice en \(C\):<br>
+      a) \(\vartheta = 15°\) &nbsp;&nbsp; b) \(\vartheta = 60°\)
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>El alambre es un elemento <strong>unidimensional continuo</strong> — se trabaja con longitudes \(L_i\) en lugar de áreas.</p>
+        <p style="margin-top:8px">El centroide de un arco de circunferencia de radio \(r\) y semiángulo \(\theta\) (medido desde el eje de simetría) está a una distancia del centro de curvatura de:</p>
+        \[
+          x_{arco} = \frac{r \sin\theta}{\theta}
+        \]
+        <p style="margin-top:8px">Para que \(G\) esté en el origen \(C(0,0)\), la suma de los momentos estáticos de línea respecto al eje \(y\) debe ser cero:</p>
+        \[
+          Q_{y1} + Q_{y2} = 0
+        \]
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Sistema de referencia en \(C(0,0)\)</div>
+          <p>Se fija el origen en \(C\), que es el punto donde debe estar \(G\). Así la condición de equilibrio es simplemente \(\sum Q_y = 0\).</p>
+          <ul style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+            <li>El arco \(AB\) queda a la <strong>izquierda</strong> de \(C\) → su centroide tiene coordenada \(x\) negativa</li>
+            <li>La barra \(DE\) va desde \(x = -r\) hasta \(x = l\)</li>
+          </ul>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Elemento 1: Arco \(AB\)</div>
+          \[
+            L_1 = r \cdot 2\theta = 2r\theta
+          \]
+          <p>El centroide del arco está a \(\frac{r\sin\theta}{\theta}\) del centro de curvatura, pero como el arco está a la izquierda de \(C\):</p>
+          \[
+            x_1 = -\frac{r\sin\theta}{\theta}
+          \]
+          \[
+            Q_{y1} = L_1 \cdot x_1 = 2r\theta \cdot \left(-\frac{r\sin\theta}{\theta}\right) = -2r^2\sin\theta
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Elemento 2: Barra recta \(DE\)</div>
+          <p>La barra va de \(x = -r\) (punto \(D\)) a \(x = l\) (punto \(E\)):</p>
+          \[
+            L_2 = r + l
+          \]
+          <p>Su centroide está en el punto medio geométrico:</p>
+          \[
+            x_2 = \frac{l + (-r)}{2} = \frac{l - r}{2}
+          \]
+          \[
+            Q_{y2} = L_2 \cdot x_2 = (r + l) \cdot \frac{l - r}{2} = \frac{l^2 - r^2}{2}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Ecuación de equilibrio → fórmula general</div>
+          \[
+            Q_{y1} + Q_{y2} = 0 \implies -2r^2\sin\theta + \frac{l^2 - r^2}{2} = 0
+          \]
+          <p>Multiplicando por 2:</p>
+          \[
+            -4r^2\sin\theta + l^2 - r^2 = 0 \implies l^2 = r^2(1 + 4\sin\theta)
+          \]
+          \[
+            \boxed{l = r\sqrt{1 + 4\sin\theta}}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Casos numéricos</div>
+          <p><strong>a) \(\vartheta = 15°\):</strong></p>
+          \[
+            l = r\sqrt{1 + 4\sin 15°} = r\sqrt{1 + 4 \times 0{,}2588} = r\sqrt{2{,}0352} \approx 1{,}427\,r
+          \]
+          <p style="margin-top:10px"><strong>b) \(\vartheta = 60°\):</strong></p>
+          \[
+            l = r\sqrt{1 + 4\sin 60°} = r\sqrt{1 + 4 \times 0{,}866} = r\sqrt{4{,}464} \approx 2{,}11\,r
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              l = r\sqrt{1 + 4\sin\theta}
+            \]
+            \[
+              \text{a)}\ l \approx 1{,}427\,r \qquad \text{b)}\ l \approx 2{,}11\,r
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-9 -->
 
 </div><!-- /container -->
 
