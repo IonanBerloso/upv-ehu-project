@@ -204,6 +204,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex2-5">2.5 Figura en L</a>
   <a class="jump-link" href="#ex2-6">2.6 Curva \(Y=Kx^n\)</a>
   <a class="jump-link" href="#ex2-7">2.7 Semidisco vaciado</a>
+  <a class="jump-link" href="#ex2-8">2.8 Avellanado</a>
 </div>
 
 <div class="container">
@@ -931,6 +932,100 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-7 -->
+
+<div class="ex-card" id="ex2-8">
+  <div class="ex-header" onclick="toggleEx('ex2-8')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.8 — Volumen de acero removido en avellanado</h2>
+      <div class="ex-meta">Cuerpo de revolución · Pappus-Guldin · Rectángulo + triángulo generatrices</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Se taladra un agujero de \(\varnothing\,15\ \text{mm}\) en una pieza de acero de 20 mm de espesor y después se avellana con ángulo de 90° hasta un diámetro exterior de 25 mm.
+      Calcular el volumen de acero removido. \(\rho = 7{,}85\ \text{kg/dm}^3\).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>El hueco es un <strong>sólido de revolución</strong>. Cortando por el eje de simetría, la sección generatriz está compuesta por dos áreas:</p>
+        <ul style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+          <li><strong style="color:#e2e8f0">Rectángulo</strong> — el taladro cilíndrico pasante</li>
+          <li><strong style="color:#e2e8f0">Triángulo rectángulo</strong> — el cono del avellanado</li>
+        </ul>
+        <p style="margin-top:8px">Se aplica el <strong>Teorema de Pappus-Guldin</strong>:</p>
+        \[
+          V = 2\pi \cdot \sum(A_i \cdot x_i) = 2\pi \cdot (Q_{y1} + Q_{y2})
+        \]
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Deducción de cotas</div>
+          <p>El taladro tiene \(\varnothing\,15\ \text{mm}\) → radio \(r = 7{,}5\ \text{mm}\). El avellanado llega a \(\varnothing\,25\ \text{mm}\) → radio exterior \(R = 12{,}5\ \text{mm}\).</p>
+          <p style="margin-top:6px">Base del triángulo (diferencia de radios): \(b = 12{,}5 - 7{,}5 = 5\ \text{mm}\).</p>
+          <p style="margin-top:6px">Ángulo 90° simétrico (45° a cada lado) → triángulo isósceles → altura \(= b = 5\ \text{mm}\).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Área 1: rectángulo (taladro cilíndrico)</div>
+          \[
+            A_1 = 7{,}5 \times 20 = 150\ \text{mm}^2
+          \]
+          <p>Centroide en \(x\) a mitad de la base:</p>
+          \[
+            x_1 = \frac{7{,}5}{2} = 3{,}75\ \text{mm} \qquad Q_{y1} = 150 \times 3{,}75 = 562{,}5\ \text{mm}^3
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Área 2: triángulo rectángulo (cono del avellanado)</div>
+          \[
+            A_2 = \frac{5 \times 5}{2} = 12{,}5\ \text{mm}^2
+          \]
+          <p>El centroide de un triángulo rectángulo está a \(\frac{1}{3}\) del cateto desde el vértice del ángulo recto. El cateto empieza en \(x = 7{,}5\), no en el origen:</p>
+          \[
+            x_2 = 7{,}5 + \frac{5}{3} = \frac{22{,}5 + 5}{3} = \frac{27{,}5}{3}\ \text{mm} \approx 9{,}17\ \text{mm}
+          \]
+          \[
+            Q_{y2} = 12{,}5 \times \frac{27{,}5}{3} = \frac{343{,}75}{3}\ \text{mm}^3
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Aplicación de Pappus-Guldin</div>
+          \[
+            V = 2\pi \left(562{,}5 + \frac{343{,}75}{3}\right)
+              = 2\pi \left(\frac{1687{,}5 + 343{,}75}{3}\right)
+              = 2\pi \cdot \frac{2031{,}25}{3}
+              = \frac{4062{,}5\,\pi}{3}
+          \]
+          \[
+            V = \frac{4062{,}5 \times 3{,}14159\ldots}{3} \approx 4254\ \text{mm}^3
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              V = \frac{4062{,}5\,\pi}{3} \approx 4254\ \text{mm}^3
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-8 -->
 
 </div><!-- /container -->
 
