@@ -218,6 +218,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-19">3.19 Celosía: reacciones y nudos</a>
   <a class="jump-link" href="#ex3-20">3.20 Celosía triangular equilátero</a>
   <a class="jump-link" href="#ex3-21">3.21 Panel central de celosía</a>
+  <a class="jump-link" href="#ex3-22">3.22 Celosía paramétrica (barras 1–11)</a>
 </div>
 
 <div class="container">
@@ -2308,6 +2309,110 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-21 -->
+
+<div class="ex-card" id="ex3-22">
+  <div class="ex-header" onclick="toggleEx('ex3-22')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.22 — Celosía paramétrica: esfuerzos en barras 1–11</h2>
+      <div class="ex-meta">Método de las Secciones + Método de los Nudos · Diagonales a 45° · Resultados en función de P</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Celosía paramétrica con diagonales a 45° y longitud de panel \(L\). Cargas externas expresadas en términos de \(P\). Determinar los esfuerzos en todas las barras numeradas (1 a 11).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Se combina el <strong>Método de las Secciones</strong> (para grupos de barras, tomando momentos en la intersección de las demás barras cortadas) con el <strong>Método de los Nudos</strong> (para barras individuales en nodos específicos).</p>
+        <p style="margin-top:8px">Con diagonales a 45°: \(\sin45°=\cos45°=1/\sqrt{2}\). Convenio: esfuerzo positivo = tracción.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Barras 4, 5, 6 — Sección vertical en el panel central</div>
+          <p>Se aísla la porción derecha de la estructura.</p>
+
+          <p style="margin-top:8px"><strong>Barra 4</strong> (cordón superior): momentos en la intersección de las barras 5 y 6 (nodo inferior del corte). La carga resultante neta a la derecha del corte es \(3P\):</p>
+          \[
+            \sum M=0:\quad N_4\cdot L - 3PL=0 \quad\Rightarrow\quad N_4=3P\ \textbf{(T)}
+          \]
+
+          <p style="margin-top:8px"><strong>Barra 6</strong> (cordón inferior): momentos en la intersección de las barras 4 y 5 (nodo superior del corte):</p>
+          \[
+            \sum M=0:\quad N_6\cdot L - 3PL=0 \quad\Rightarrow\quad N_6=3P\ \textbf{(C)}
+          \]
+
+          <p style="margin-top:8px"><strong>Barra 5</strong> (diagonal 45°): la porción derecha debe soportar una carga vertical neta de \(2P\)↓:</p>
+          \[
+            \sum F_y=0:\quad N_5\cdot\frac{1}{\sqrt{2}}-2P=0 \quad\Rightarrow\quad N_5=2\sqrt{2}\,P\ \textbf{(T)}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Barras 1, 2, 3 — Sección horizontal sobre los anclajes</div>
+          <p>Se aísla la superestructura (todo por encima de la sección horizontal).</p>
+
+          <p style="margin-top:8px"><strong>Barra 3</strong> (pilar derecho): momentos en el apoyo izquierdo para anular \(N_1\) y la diagonal \(N_2\). El momento neto de las cargas externas que vuelcan la estructura es \(7PL\):</p>
+          \[
+            \sum M=0:\quad N_3\cdot L - 7PL=0 \quad\Rightarrow\quad N_3=7P\ \textbf{(C)}
+          \]
+
+          <p style="margin-top:8px"><strong>Barra 1</strong> (pilar izquierdo): equilibrio vertical global (\(\sum F_y=0\)). Carga total externa = \(2P\)↓; barra 3 empuja \(7P\)↑:</p>
+          \[
+            -N_1+7P-2P=0 \quad\Rightarrow\quad N_1=5P\ \textbf{(T)}
+          \]
+
+          <p style="margin-top:8px"><strong>Barra 2</strong> (diagonal inferior): las cargas horizontales externas se anulan entre sí → esfuerzo cortante horizontal neto = 0:</p>
+          \[
+            \sum F_x=0 \quad\Rightarrow\quad N_2=0
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Barras 7, 8, 9, 10, 11 — Método de los nudos</div>
+
+          <p style="margin-top:4px"><strong>Nodo superior izquierdo</strong> (barras 7 horizontal y 9 vertical, sin carga externa):</p>
+          \[
+            \sum F_x=0\Rightarrow N_7=0 \qquad \sum F_y=0\Rightarrow N_9=0
+          \]
+
+          <p style="margin-top:8px"><strong>Nodo intermedio izquierdo</strong> (confluyen barras 9=0, barra 1=5P↓, diagonal 8, barra 11):</p>
+          \[
+            \sum F_y=0:\quad N_8\cdot\frac{1}{\sqrt{2}}-5P=0 \quad\Rightarrow\quad N_8=5\sqrt{2}\,P\ \textbf{(T)}
+          \]
+          \[
+            \sum F_x=0:\quad N_{11}+N_8\cdot\frac{1}{\sqrt{2}}=0 \quad\Rightarrow\quad N_{11}=-5P\ \textbf{(C)}
+          \]
+
+          <p style="margin-top:8px"><strong>Pilar central \(N_{10}\)</strong>: acumulación de compresiones de las diagonales superiores e inferiores que fluyen por el centro de la celosía:</p>
+          \[
+            N_{10}=7P\ \textbf{(C)}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado — Resumen de esfuerzos</div>
+          <div class="rf-val" style="line-height:2.1">
+            \(N_1=5P\) (T) · \(N_2=0\) · \(N_3=7P\) (C)<br>
+            \(N_4=3P\) (T) · \(N_5=2\sqrt{2}\,P\) (T) · \(N_6=3P\) (C)<br>
+            \(N_7=0\) · \(N_8=5\sqrt{2}\,P\) (T) · \(N_9=0\)<br>
+            \(N_{10}=7P\) (C) · \(N_{11}=5P\) (C)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-22 -->
 
 </div><!-- /container -->
 
