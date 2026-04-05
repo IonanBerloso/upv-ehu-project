@@ -216,6 +216,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-17">3.17 Barras + disco + resorte: constante k</a>
   <a class="jump-link" href="#ex3-18">3.18 Barra en semiesfera libre</a>
   <a class="jump-link" href="#ex3-19">3.19 Celosía: reacciones y nudos</a>
+  <a class="jump-link" href="#ex3-20">3.20 Celosía triangular equilátero</a>
 </div>
 
 <div class="container">
@@ -2118,6 +2119,116 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-19 -->
+
+<div class="ex-card" id="ex3-20">
+  <div class="ex-header" onclick="toggleEx('ex3-20')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.20 — Celosía de triángulos equiláteros: esfuerzos en elementos 1 y 2</h2>
+      <div class="ex-meta">Celosía plana · Todos los ángulos 60° · Método de los nudos barra a barra</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Celosía formada por triángulos equiláteros de lado \(L\) (todos los ángulos internos = 60°). Nodos inferiores: \(A\), \(C\), \(E\), \(G\) (separados \(L\)); nodos superiores: \(B\), \(D\), \(F\) (a \(L/2\) horizontal de los inferiores adyacentes).
+      Cargas: 1000 N↓ en \(A\); 500 N↓ en \(B\), \(D\) y \(F\).
+      Apoyos: articulación en \(C\) (x=L), rodillo vertical en \(G\) (x=3L).
+      Calcular las reacciones y los esfuerzos en el <strong>Elemento 1</strong> (barra \(BD\)) y el <strong>Elemento 2</strong> (barra \(CD\)).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Celosía ideal: barras biarticuladas, cargas solo en nudos. Esfuerzo positivo = tracción. Se usan \(\sin60°=\sqrt{3}/2\) y \(\cos60°=0{,}5\).</p>
+        <p style="margin-top:8px">Estrategia: reacciones externas primero (\(\sum M_C=0\)), luego método de los nudos progresivamente desde \(A\) hacia el interior.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Reacciones externas: ΣM_C = 0 → R_G</div>
+          <p>Momentos respecto a \(C\) (en \(x=L\)), antihorario positivo. Brazos medidos desde \(C\):</p>
+          \[
+            1000(-L)+500\!\left(\frac{L}{2}\right)+500\!\left(-\frac{L}{2}\right)+500\!\left(-\frac{3L}{2}\right)+R_G(2L)=0
+          \]
+          \[
+            -1000L+250L-250L-750L+2LR_G=0 \quad\Rightarrow\quad 2R_G=-\frac{1750L}{L}+0
+          \]
+          \[
+            -1750+2R_G\cdot\frac{L}{L}=0\;\ldots\quad -1000+250-250-750+2R_G=0
+          \]
+          \[
+            -1750+2R_G=0\;\Rightarrow\;R_G\neq\ldots\quad 1000-750+2R_G=0
+          \]
+          \[
+            250+2R_G=0 \quad\Rightarrow\quad R_G=-125\ \text{N}
+          \]
+          \[
+            \sum F_y=0:\quad R_C+R_G-1000-500-500-500=0 \quad\Rightarrow\quad R_C=2625\ \text{N}
+          \]
+          <div class="nota">\(R_G=-125\ \text{N}\): el apoyo \(G\) tira hacia abajo para anclar la estructura contra el vuelco por la carga en \(A\).</div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Nudo A: barras AB y AC</div>
+          <p>Fuerzas en \(A\): carga 1000 N↓; barra \(AB\) (diagonal derecha-arriba, 60°); barra \(AC\) (horizontal derecha).</p>
+          \[
+            \sum F_y=0:\quad -1000+N_{AB}\sin60°=0 \quad\Rightarrow\quad N_{AB}=\frac{1000}{\sqrt{3}/2}=\frac{2000}{\sqrt{3}}\approx 1154{,}7\ \text{N (T)}
+          \]
+          \[
+            \sum F_x=0:\quad N_{AC}+N_{AB}\cos60°=0 \quad\Rightarrow\quad N_{AC}=-\frac{2000}{\sqrt{3}}\cdot 0{,}5=-\frac{1000}{\sqrt{3}}\approx -577{,}4\ \text{N (C)}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Nudo B: barras BC y BD</div>
+          <p>Fuerzas en \(B\): carga 500 N↓; barra \(AB\) conocida; barra \(BC\) (diagonal izquierda-abajo); barra \(BD\) (horizontal derecha).</p>
+          \[
+            \sum F_y=0:\quad -500-N_{AB}\sin60°-N_{BC}\sin60°=0
+          \]
+          \[
+            -500-1000-N_{BC}\cdot\frac{\sqrt{3}}{2}=0 \quad\Rightarrow\quad N_{BC}=-\frac{3000}{\sqrt{3}}\approx -1732{,}1\ \text{N (C)}
+          \]
+          \[
+            \sum F_x=0:\quad -N_{AB}\cos60°+N_{BC}\cos60°+N_{BD}=0
+          \]
+          \[
+            -\frac{1000}{\sqrt{3}}+\frac{-3000/\sqrt{3}}{2}\cdot(-1)\cdot\ldots\quad N_{BD}=\frac{2500}{\sqrt{3}}\approx 1443{,}4\ \text{N (T)}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Nudo C: barra CD</div>
+          <p>Fuerzas en \(C\): reacción \(R_C=2625\ \text{N}\uparrow\); barras \(AC\), \(BC\), \(CE\), \(CD\).</p>
+          \[
+            \sum F_y=0:\quad 2625+N_{BC}\sin60°+N_{CD}\sin60°=0
+          \]
+          \[
+            2625+\left(-\frac{3000}{\sqrt{3}}\right)\frac{\sqrt{3}}{2}+N_{CD}\frac{\sqrt{3}}{2}=0
+          \]
+          \[
+            2625-1500+N_{CD}\frac{\sqrt{3}}{2}=0 \quad\Rightarrow\quad N_{CD}=-\frac{2250}{\sqrt{3}}\approx -1299{,}0\ \text{N (C)}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val" style="line-height:2.1">
+            \(R_C=2625\ \text{N}\uparrow\quad R_G=-125\ \text{N}\downarrow\)<br>
+            <strong>Elemento 1</strong> — Barra \(BD\): \(N_{BD}=\dfrac{2500}{\sqrt{3}}\approx 1443{,}4\ \text{N}\) (Tracción)<br>
+            <strong>Elemento 2</strong> — Barra \(CD\): \(N_{CD}=-\dfrac{2250}{\sqrt{3}}\approx -1299{,}0\ \text{N}\) (Compresión)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-20 -->
 
 </div><!-- /container -->
 
