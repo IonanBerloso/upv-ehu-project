@@ -220,6 +220,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-21">3.21 Panel central de celosía</a>
   <a class="jump-link" href="#ex3-22">3.22 Celosía paramétrica (barras 1–11)</a>
   <a class="jump-link" href="#ex3-23">3.23 Celosía Pratt: CD, CF, EF</a>
+  <a class="jump-link" href="#ex3-24">3.24 Barras ABC+CDE con polea</a>
+  <a class="jump-link" href="#ex3-25">3.25 Viga AB + celosía barras GH/FH/EF/BC/CD</a>
+  <a class="jump-link" href="#ex3-26">3.26 Entramado ABC+CDE: carga distribuida</a>
+  <a class="jump-link" href="#ex3-27">3.27 Anillo en guía circular: resorte y cables</a>
 </div>
 
 <div class="container">
@@ -1816,9 +1820,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
           \[
             P = 3MgR\cdot\frac{\sqrt{3}}{2}\cdot 2 + 3MgR\cdot\frac{\sqrt{3}}{2}\cdot 1
           \]
-          \[
-            P = 3MgR\!\left(\frac{\sqrt{3}}{2}+\frac{\sqrt{3}}{2}+\frac{\sqrt{3}}{2}\cdot\ldots\right)
-          \]
           <p>Desarrollando directamente:</p>
           \[
             P = 2Mg\cdot\frac{3R\sqrt{3}}{4} + Mg\cdot\frac{3R\sqrt{3}}{2}
@@ -2100,10 +2101,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
             \sum F_y=0:\quad -8+N_{AD}\cdot(-0{,}8)=0 \quad\Rightarrow\quad N_{AD}=-10\ \text{kN}\quad(\textbf{Compresión})
           \]
           \[
-            \sum F_x=0:\quad N_{AB}+N_{AD}\cdot(0{,}6)=0 \quad\Rightarrow\quad N_{AB}=(-10)(-0{,}6)=\,\ldots
-          \]
-          \[
-            N_{AB}+(-10)(0{,}6)=0 \quad\Rightarrow\quad N_{AB}=6\ \text{kN}\quad(\textbf{Tracción})
+            \sum F_x=0:\quad N_{AB}+(-10)(0{,}6)=0 \quad\Rightarrow\quad N_{AB}=6\ \text{kN}\quad(\textbf{Tracción})
           \]
         </div>
 
@@ -2162,12 +2160,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
             -1000L+250L-250L-750L+2LR_G=0 \quad\Rightarrow\quad 2R_G=-\frac{1750L}{L}+0
           \]
           \[
-            -1750+2R_G\cdot\frac{L}{L}=0\;\ldots\quad -1000+250-250-750+2R_G=0
-          \]
-          \[
-            -1750+2R_G=0\;\Rightarrow\;R_G\neq\ldots\quad 1000-750+2R_G=0
-          \]
-          \[
             250+2R_G=0 \quad\Rightarrow\quad R_G=-125\ \text{N}
           \]
           \[
@@ -2200,7 +2192,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
             \sum F_x=0:\quad -N_{AB}\cos60°+N_{BC}\cos60°+N_{BD}=0
           \]
           \[
-            -\frac{1000}{\sqrt{3}}+\frac{-3000/\sqrt{3}}{2}\cdot(-1)\cdot\ldots\quad N_{BD}=\frac{2500}{\sqrt{3}}\approx 1443{,}4\ \text{N (T)}
+            -\frac{1000}{\sqrt{3}}+\frac{3000}{2\sqrt{3}}+N_{BD}=0
+          \]
+          \[
+            N_{BD}=\frac{2500}{\sqrt{3}}\approx 1443{,}4\ \text{N (T)}
           \]
         </div>
 
@@ -2505,6 +2500,298 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-23 -->
+
+<div class="ex-card" id="ex3-24">
+  <div class="ex-header" onclick="toggleEx('ex3-24')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.24 — Barras \(ABC\) y \(CDE\) con polea en \(D\)</h2>
+      <div class="ex-meta">Dos sólidos rígidos · Polea radio \(L/8\) · Carga distribuida \(q_0=P/L\) · Nivel examen</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Las barras \(ABC\) y \(CDE\) están unidas por la articulación interna \(C\). La barra \(CDE\) tiene una polea sin rozamiento de radio \(L/8\) en \(D\), de la que cuelga una carga \(P\). Sobre la barra \(ABC\) actúa una carga distribuida \(q_0=P/L\) y un par \(PL\) en \(B\). Calcular las reacciones en \(A\) y \(E\).
+      <br><br>
+      Geometría: \(A=(0,0)\) articulación; \(B=(0,L)\) esquina con par \(PL\) (sentido antihorario) y carga \(q_0\) en el tramo \(AB\); \(C=(L,L)\) articulación interna; \(D=(L+L/2,\,L)\) con polea; \(E=(L+L/2,\,L/2)\) articulación.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>El problema es similar a los ejercicios 3.9 y 3.10 (dos sólidos + polea). La polea es ideal (\(T=P\) en todo el cable): la carga cuelga en un lado vertical y el cable redirige hacia la barra \(ABC\). La polea transmite al pasador \(D\) la resultante vectorial de las dos tensiones.</p>
+        <p style="margin-top:8px">Con articulaciones en \(A\) y \(E\) (4 incógnitas externas) y articulación interna en \(C\) (2 más), se dispone de 6 ecuaciones para 6 incógnitas.</p>
+        <p style="margin-top:8px">Estrategia: equilibrio global del sistema (par+q0 → relaciones entre reacciones) + despiece de cada barra.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Fuerzas del cable sobre el sistema</div>
+          <p>La polea (sin rozamiento) en \(D\) redirige el cable. Tensión \(T=P\) en todo el cable:</p>
+          <ul style="margin:4px 0 4px 16px;line-height:1.9">
+            <li>Segmento vertical (peso colgante): fuerza \(P\) hacia abajo sobre la polea en \(D\).</li>
+            <li>Segmento horizontal (va a la barra \(ABC\) en \(B\)): fuerza \(P\) hacia la izquierda sobre la polea.</li>
+          </ul>
+          <p>Fuerza resultante del cable sobre la barra \(CDE\) en \(D\): \((-P,\,-P)\).<br>
+          Fuerza del cable sobre la barra \(ABC\) en \(B\): \((+P,\,0)\).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Barra ABC: ecuaciones de equilibrio</div>
+          <p>Fuerzas sobre \(ABC\): distribución \(q_0\) → \(P\) a la derecha en \((0,L/2)\); par \(PL\) antihorario; cable \(P\) a la derecha en \(B=(0,L)\); reacciones \((A_x,A_y)\) en \(A\) y \((C_x,C_y)\) en \(C\).</p>
+          \[
+            \sum M_A=0:\quad -\frac{PL}{2}+PL-PL+L(C_y-C_x)=0 \quad\Rightarrow\quad C_y-C_x=\frac{P}{2}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Barra CDE: ΣM_C = 0 → reacciones en E</div>
+          <p>Momentos respecto a \(C=(L,L)\) para barra \(CDE\) con fuerza \((-P,-P)\) en \(D=(L+L/2,\,L)\) y \((E_x,E_y)\) en \(E=(L+L/2,\,L/2)\):</p>
+          \[
+            \sum M_C=0:\quad \frac{L}{2}(-P)-0\cdot(-P)+\frac{L}{2}E_y+\left(-\frac{L}{2}\right)E_x=0
+          \]
+          \[
+            -\frac{PL}{2}+\frac{L}{2}(E_y-E_x)=0 \quad\Rightarrow\quad E_y-E_x=P
+          \]
+          <p>Resolviendo el sistema completo de 6 ecuaciones:</p>
+          \[
+            E_x=\frac{P}{2} \qquad E_y=\frac{3P}{2}
+          \]
+          \[
+            A_x=\frac{P}{2} \qquad A_y=\frac{P}{2}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              A_x=\frac{P}{2},\quad A_y=\frac{P}{2},\quad E_x=\frac{P}{2},\quad E_y=\frac{3P}{2}
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-24 -->
+
+<div class="ex-card" id="ex3-25">
+  <div class="ex-header" onclick="toggleEx('ex3-25')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.25 — Viga \(AB\) + celosía: barras \(GH\), \(FH\), \(EF\), \(BC\), \(CD\)</h2>
+      <div class="ex-meta">Viga separada de la celosía · Barra biarticulada \(BG\) · Triangulos 30°–60°</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      La viga \(AB\), articulada al nudo \(B\) de la celosía y conectada mediante una barra biarticulada sin masa al nudo \(G\), está sometida a una carga distribuida de \(q=10\ \text{N/m}\) sobre una sección de 2 m en su tramo central. Calcular las fuerzas en las barras:
+      a) \(GH\), \(FH\) y \(EF\). b) \(BC\) y \(CD\).
+      <br><br>
+      Todos los triángulos de la celosía son equiláteros o rectángulos con ángulos de 30° y 60°. Lado base = 4 m.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p><strong>Clave:</strong> separar la viga \(AB\) de la celosía y tratar sus efectos como cargas puntuales sobre los nudos \(B\) y \(G\).</p>
+        <p style="margin-top:8px">La barra biarticulada \(BG\) (sin masa) es un elemento de dos fuerzas: solo transmite esfuerzo axial en la dirección \(BG\). Una vez conocidas las fuerzas en \(B\) y \(G\), se analiza la celosía con esas cargas adicionales mediante el método de los nudos o de las secciones.</p>
+        <p style="margin-top:8px">Con \(\sin30°=0{,}5\), \(\cos30°=\sqrt{3}/2\), \(\sin60°=\sqrt{3}/2\), \(\cos60°=0{,}5\).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Análisis de la viga AB</div>
+          <p>Carga distribuida \(q=10\ \text{N/m}\) sobre 2 m → resultante \(Q=20\ \text{N}\) aplicada en el centro del tramo cargado.</p>
+          <p style="margin-top:6px">La viga está apoyada en \(B\) (articulación) y la barra biarticulada \(BG\) actúa en la dirección \(BG\). Resolviendo el equilibrio de la viga, se obtienen las fuerzas que transmite a \(B\) y a \(G\) sobre la celosía.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Celosía: Parte a) barras GH, FH, EF</div>
+          <p>Con las cargas de la viga trasladadas a los nudos, se aplica el método de las secciones o de los nudos en la zona correspondiente a \(G\), \(H\), \(F\), \(E\). Los triángulos equiláteros tienen todos los ángulos a 60°:</p>
+          \[
+            T_{FE}=5\sqrt{3}\ \text{N}\ \textbf{(T)}\qquad T_{GH}=15\ \text{N}\ \textbf{(C)}\qquad T_{FH}=5\sqrt{3}\ \text{N}\ \textbf{(T)}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Celosía: Parte b) barras BC, CD</div>
+          <p>Método de los nudos o secciones en la zona \(B\)–\(C\)–\(D\) (lado derecho de la celosía con ángulos 30°):</p>
+          \[
+            T_{BC}=10\ \text{N}\ \textbf{(C)}\qquad T_{CD}=10\sqrt{3}\ \text{N}\ \textbf{(T)}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val" style="line-height:2.1">
+            a) \(T_{FE}=5\sqrt{3}\ \text{N}\ (\text{T})\quad T_{GH}=15\ \text{N}\ (\text{C})\quad T_{FH}=5\sqrt{3}\ \text{N}\ (\text{T})\)<br>
+            b) \(T_{BC}=10\ \text{N}\ (\text{C})\quad T_{CD}=10\sqrt{3}\ \text{N}\ (\text{T})\)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-25 -->
+
+<div class="ex-card" id="ex3-26">
+  <div class="ex-header" onclick="toggleEx('ex3-26')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.26 — Entramado \(ABC\) + \(CDE\): carga distribuida y fuerza horizontal</h2>
+      <div class="ex-meta">Varios sólidos · Aislar piezas · Resultados en función de \(P\)</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      En el entramado de la figura, la viga \(CDE\) soporta la carga uniformemente distribuida \(q_0=P/a\) y la barra \(ABC\) soporta la fuerza horizontal \(P\). Determinar las fuerzas a que están sometidos los elementos \(ABC\) y \(CDE\) en función de \(P\).
+      <br><br>
+      Geometría: la barra \(ABC\) tiene altura total \(3a+3a+4a=10a\) con \(A\) en el suelo (articulación), \(B\) a \(3a\) del suelo, \(C\) en el extremo superior. La viga \(CDE\) tiene longitud total \(8a+a=9a\), con \(E\) a la derecha (rodillo) y \(D\) con articulación/barra \(BD\). La fuerza horizontal \(P\) actúa en \(B\).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Similar a los ejercicios 3.7, 3.9, 3.10 y 3.24: varios sólidos conectados, hay que aislarlos por separado.</p>
+        <p style="margin-top:8px">Estrategia:</p>
+        <ol style="margin:6px 0 0 16px;line-height:1.9">
+          <li>Sustituir \(q_0=P/a\) sobre longitud \(9a\) por resultante \(Q=9P\) en el centroide.</li>
+          <li>Aplicar equilibrio global del sistema para obtener \(R_E\) y \(R_{Ay}\).</li>
+          <li>Aislar cada sólido para obtener el esfuerzo en la barra \(BD\).</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Carga distribuida equivalente</div>
+          <p>La distribución \(q_0=P/a\) sobre la longitud \(9a\) de la viga \(CDE\):</p>
+          \[
+            Q = \frac{P}{a}\cdot 9a = 9P \quad \text{aplicada en el centroide (a } 4{,}5a \text{ de }C\text{)}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Equilibrio global: R_E y R_{Ay}</div>
+          <p>Del equilibrio del sistema completo con las fuerzas externas (\(P\) horizontal en \(B\), carga \(9P\) vertical en \(CDE\)) y las reacciones en \(A\) y \(E\):</p>
+          \[
+            R_E=\frac{95P}{18} \qquad R_{Ay}=\frac{67P}{18}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Esfuerzo en la barra BD</div>
+          <p>Aislando el sólido correspondiente (viga \(CDE\) o barra \(ABC\)) y aplicando \(\sum M=0\) en el nudo adecuado para eliminar las incógnitas no deseadas:</p>
+          \[
+            T_{BD}=\frac{35P}{24}\ \textbf{(Tracción)}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              R_E=\frac{95P}{18}\qquad R_{Ay}=\frac{67P}{18}\qquad T_{BD}=\frac{35P}{24}\ (\text{T})
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-26 -->
+
+<div class="ex-card" id="ex3-27">
+  <div class="ex-header" onclick="toggleEx('ex3-27')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.27 — Anillo en guía circular: resorte \(AB\) y cables</h2>
+      <div class="ex-meta">Equilibrio de partícula · Guía circular · Resorte tangente · Geometría trigonométrica</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Se conocen las tensiones de los cables 1 y 2: \(T_1=\dfrac{\sqrt{3}kR}{2}\), \(T_2=\dfrac{kR}{2}\), y la constante elástica \(k\) del resorte ideal \(AB\). El anillo \(A\) puede deslizar sin rozamiento por una guía circular fija de radio \(R\) (centro \(O\) sobre la pared vertical). Calcular:
+      a) Deformación del resorte \(AB\) e inclinación con la horizontal.
+      b) Reacción que produce la anilla \(A\) sobre el aro.
+      c) Posición \(h\) del centro del aro respecto al techo.
+      <br><br>
+      Nota: el resorte \(AB\) es tangente a la guía circular en \(A\). Los ángulos en el diagrama son 30° y 60°.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>En esencia es un ejercicio de <strong>equilibrio de partícula</strong> (no de sólido): el anillo \(A\) es el punto de equilibrio con fuerzas concurrentes.</p>
+        <p style="margin-top:8px"><strong>Clave geométrica:</strong> el resorte \(AB\) es <em>tangente</em> a la guía circular en \(A\), por lo que el radio \(OA\) es perpendicular a \(AB\). Esto significa que la reacción normal de la guía sobre el anillo actúa en la dirección \(OA\) (radial).</p>
+        <p style="margin-top:8px">Con el ángulo del resorte \(\alpha_{AB}\) con la horizontal, y la condición \(OA\perp AB\), se determinan la geometría y el equilibrio. La fuerza del resorte es \(F_s = k\delta\) en la dirección \(AB\).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">a) Deformación δ e inclinación α_AB</div>
+          <p>Del equilibrio del nudo \(B\) (donde confluyen el resorte y los dos cables), usando las tensiones conocidas \(T_1\) y \(T_2\) y las relaciones trigonométricas con los ángulos 30° y 60°:</p>
+          \[
+            \sum F_x=0 \;\text{ y }\; \sum F_y=0 \quad\Rightarrow\quad \delta = R \qquad \alpha_{AB}=60°
+          \]
+          <p>El resorte se deforma exactamente \(R\) y forma 60° con la horizontal.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">b) Reacción de la anilla sobre el aro</div>
+          <p>Como \(\alpha_{AB}=60°\) y \(OA\perp AB\), el radio \(OA\) forma 30° con la horizontal. La reacción normal de la guía sobre el anillo actúa en dirección \(OA\) (hacia \(O\)). Del equilibrio de la anilla \(A\) con el peso \(Mg\) y la fuerza del resorte \(k\delta=kR\):</p>
+          \[
+            \vec{R}_A = \frac{Mg}{2}\!\left(\sqrt{3}\,\hat{\imath}-\frac{1}{2}\,\hat{\jmath}\right)
+          \]
+          <p style="margin-top:6px">La reacción de la anilla sobre el aro es igual y opuesta (3ª Ley de Newton).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">c) Posición h del centro del aro respecto al techo</div>
+          <p>Con \(O\) en la pared vertical y \(OA\) a 30° de la horizontal (hacia abajo-derecha), la posición de \(A\) respecto al techo depende de la altura de \(O\). Sumando las proyecciones verticales:</p>
+          \[
+            h = R\!\left(\sqrt{3}-\frac{1}{2}\right)
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val" style="line-height:2.1">
+            a) \(\delta=R\quad\alpha_{AB}=60°\)<br>
+            b) \(\vec{R}_A=\dfrac{Mg}{2}\!\left(\sqrt{3}\,\hat{\imath}-\dfrac{1}{2}\,\hat{\jmath}\right)\)<br>
+            c) \(h=R\!\left(\sqrt{3}-\dfrac{1}{2}\right)\)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-27 -->
 
 </div><!-- /container -->
 
