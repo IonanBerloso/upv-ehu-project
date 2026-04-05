@@ -200,6 +200,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-1">3.1 Cables AC y BC</a>
   <a class="jump-link" href="#ex3-2">3.2 Resorte y dos cuerdas</a>
   <a class="jump-link" href="#ex3-3">3.3 Ménsula móvil</a>
+  <a class="jump-link" href="#ex3-4">3.4 Cable ABD y polea</a>
+  <a class="jump-link" href="#ex3-5">3.5 Entramado 2 sólidos (A/D/E)</a>
+  <a class="jump-link" href="#ex3-6">3.6 Entramado 2 sólidos (kg*)</a>
 </div>
 
 <div class="container">
@@ -497,6 +500,330 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-3 -->
+
+<div class="ex-card" id="ex3-4">
+  <div class="ex-header" onclick="toggleEx('ex3-4')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.4 — Cable \(ABD\) con polea en \(B\), soporte en \(C\)</h2>
+      <div class="ex-meta">Equilibrio de sólido rígido · Polea sin rozamiento · ΣF = 0 y ΣM = 0</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Determinar la fuerza en el cable \(ABD\) y las reacciones horizontal y vertical en el soporte \(C\).
+      El cable continuo \(ABD\) pasa por la polea sin rozamiento en \(B\): en \(D\) el cable tira verticalmente hacia arriba y en \(A\) tira hacia la polea \(B\).
+      Geometría: la carga de 150 N se aplica verticalmente en la esquina inferior izquierda de la escuadra (origen \(O\)); \(C\) (articulación) a 225 mm a la derecha de \(O\); \(D\) (cable) a 75 mm más a la derecha que \(C\), es decir, a 300 mm de \(O\); \(A\) (cable) a 175 mm por encima de \(O\), en la misma vertical; \(B\) (polea, fija a la pared) alineada verticalmente con \(D\), a 125 mm por encima de \(A\), es decir, a 300 mm de altura.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Equilibrio estático de un <strong>sólido rígido</strong> en el plano: tres ecuaciones independientes.</p>
+        \[
+          \sum F_x = 0 \qquad \sum F_y = 0 \qquad \sum M_C = 0
+        \]
+        <p style="margin-top:8px">La polea <em>sin rozamiento</em> en \(B\) no cambia el módulo de la tensión: la tensión \(T\) es la misma a ambos lados. Las dos fuerzas de la tensión actúan sobre la escuadra en los puntos \(A\) y \(D\) con la dirección del cable correspondiente.</p>
+        <p style="margin-top:8px">Estrategia: tomar momentos respecto a \(C\) para despejar \(T\) directamente (se eliminan \(C_x\) y \(C_y\)).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Geometría y vectores unitarios</div>
+          <p>Se toma la esquina inferior izquierda (punto de aplicación de 150 N) como origen \(O=(0,0)\):</p>
+          \[
+            O=(0,0)\ \text{mm},\quad A=(0,175)\ \text{mm},\quad B=(300,300)\ \text{mm},
+          \]
+          \[
+            C=(225,0)\ \text{mm},\quad D=(300,0)\ \text{mm}
+          \]
+          <p style="margin-top:8px">Vector unitario \(A \to B\) (dirección del cable en \(A\)):</p>
+          \[
+            \vec{AB}=(300-0,\ 300-175)=(300,\ 125)\ \text{mm}
+          \]
+          \[
+            L_{AB}=\sqrt{300^2+125^2}=\sqrt{90\,000+15\,625}=\sqrt{105\,625}=325\ \text{mm}\quad(5\text{-}12\text{-}13\times 25)
+          \]
+          \[
+            \hat{u}_{AB}=\left(\frac{12}{13},\ \frac{5}{13}\right)
+          \]
+          <p style="margin-top:8px">El cable en \(D\) va recto hacia arriba: \(\hat{u}_{D}=(0,1)\).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — ΣM respecto a C: valor de T</div>
+          <p>Momentos respecto a \(C=(225,0)\) (antihorario positivo). Para cada fuerza \(\vec{F}\) aplicada en \(\vec{r}\) relativo a \(C\): \(M = r_x F_y - r_y F_x\).</p>
+          \[
+            M_{150}=(0-225)\cdot(-150)-0\cdot 0=+33\,750\ \text{N·mm}
+          \]
+          \[
+            M_{T_D}=(300-225)\cdot T - 0\cdot 0=+75T\ \text{N·mm}
+          \]
+          \[
+            M_{T_A}=(0-225)\cdot\frac{5T}{13}-(175-0)\cdot\frac{12T}{13}
+                   =-\frac{1125T}{13}-\frac{2100T}{13}=-\frac{3225T}{13}\ \text{N·mm}
+          \]
+          \[
+            \sum M_C=0:\quad 33\,750+75T-\frac{3225T}{13}=0
+          \]
+          \[
+            33\,750+T\!\left(\frac{975-3225}{13}\right)=0 \quad\Rightarrow\quad 33\,750=\frac{2250T}{13}
+          \]
+          \[
+            T=\frac{33\,750\times 13}{2250}=\frac{438\,750}{2250}=195\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — ΣFx = 0: reacción horizontal en C</div>
+          \[
+            \sum F_x=0:\quad C_x + T\cdot\frac{12}{13}=0 \quad\Rightarrow\quad C_x+195\cdot\frac{12}{13}=0
+          \]
+          \[
+            C_x+180=0 \quad\Rightarrow\quad C_x=-180\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — ΣFy = 0: reacción vertical en C</div>
+          \[
+            \sum F_y=0:\quad C_y-150+T\cdot\frac{5}{13}+T=0
+          \]
+          \[
+            C_y-150+195\cdot\frac{5}{13}+195=0 \quad\Rightarrow\quad C_y-150+75+195=0
+          \]
+          \[
+            C_y+120=0 \quad\Rightarrow\quad C_y=-120\ \text{N}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              T=195\ \text{N} \qquad C_x=-180\ \text{N} \qquad C_y=-120\ \text{N}
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-4 -->
+
+<div class="ex-card" id="ex3-5">
+  <div class="ex-header" onclick="toggleEx('ex3-5')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.5 — Entramado de 2 sólidos: reacciones en \(B\) y \(F\)</h2>
+      <div class="ex-meta">Equilibrio de 2 sólidos rígidos · Articulación interna \(C\) · Tres casos de carga</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Calcular las componentes de las reacciones en \(B\) y \(F\) si la carga de 240 N se aplica:
+      a) en el punto \(A\), b) en el punto \(D\), c) en el punto \(E\).
+      <br><br>
+      Geometría (origen en la esquina inferior izquierda del entramado):
+      \(B=(400,225)\ \text{mm}\) (articulación derecha superior);
+      \(F=(400,0)\ \text{mm}\) (articulación derecha inferior);
+      \(C=(0,175)\ \text{mm}\) (articulación interna, punto de despiece);
+      \(A=(200,225)\ \text{mm}\); \(D=(200,175)\ \text{mm}\); \(E=(200,0)\ \text{mm}\).
+      <br><br>
+      <strong>Sólido 1 (C-D-B):</strong> forma de L invertida — de \(C\) horizontal hasta \(D\), sigue hasta la esquina \((400,175)\) y sube hasta \(B\). <br>
+      <strong>Sólido 2 (F-E-C-A):</strong> forma de C abierta a la derecha — de \(F\) horizontal hasta \(E\), sube hasta \(C\), y continúa hasta \(A\).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Con dos sólidos y 4 incógnitas de apoyo (\(B_x, B_y, F_x, F_y\)) más 2 reacciones internas en la articulación \(C\), disponemos de <strong>6 ecuaciones</strong> (3 por sólido) para 6 incógnitas.</p>
+        <p style="margin-top:8px">Estrategia de dos pasos:</p>
+        <ol style="margin:6px 0 0 16px;line-height:1.9">
+          <li><strong>Sistema global:</strong> \(\sum M_F=0\) da \(B_x\); \(\sum F_x=0\) da \(F_x\).</li>
+          <li><strong>Despiece del Sólido 1:</strong> \(\sum M_C(\text{Sól. 1})=0\) da \(B_y\); \(\sum F_y=0\) global da \(F_y\).</li>
+        </ol>
+        <p style="margin-top:8px">Los tres puntos de carga (\(A\), \(D\), \(E\)) están en \(x=200\ \text{mm}\), por lo que las ecuaciones globales de momento y de fuerzas horizontales son <em>idénticas</em> en los tres casos. Solo cambia \(B_y\) y \(F_y\) según a qué sólido pertenece la carga.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Equilibrio global: B_x y F_x (iguales para los tres casos)</div>
+          <p>\(\sum M_F=0\) respecto a \(F=(400,0)\). La carga 240 N está a 200 mm de \(F\) horizontalmente; \(B\) está a la misma \(x\) que \(F\), con lo que \(B_y\) no genera momento; \(B_x\) actúa a 225 mm de altura:</p>
+          \[
+            \sum M_F=0:\quad 240\cdot 200 - B_x\cdot 225=0 \quad\Rightarrow\quad B_x=\frac{48\,000}{225}=213{,}3\ \text{N}
+          \]
+          \[
+            \sum F_x=0:\quad B_x+F_x=0 \quad\Rightarrow\quad F_x=-213{,}3\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Despiece del Sólido 1 (C-D-B): ΣM_C = 0</div>
+          <p>Fuerzas sobre el Sólido 1 con momento respecto a \(C=(0,175)\):</p>
+          <ul style="margin:6px 0 0 16px;line-height:1.9">
+            <li>\(B_x=213{,}3\ \text{N}\) actúa en \(B=(400,225)\), a 50 mm por encima de \(C\): genera giro horario → \(-B_x\cdot 50=-10\,666{,}67\ \text{N·mm}\).</li>
+            <li>\(B_y\) actúa en \(B=(400,225)\), a 400 mm a la derecha de \(C\): genera giro antihorario → \(+B_y\cdot 400\).</li>
+            <li>Carga de 240 N: <em>solo si pertenece al Sólido 1</em> (caso b, en \(D=(200,175)\), 200 mm a la derecha de \(C\)): momento \(-(240\cdot 200)=-48\,000\ \text{N·mm}\).</li>
+          </ul>
+          \[
+            \sum M_C(\text{Sól. 1})=400\,B_y-10\,666{,}67+M_{\text{carga local}}=0
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Caso a — Carga en A (Sólido 2 → M_carga local = 0)</div>
+          \[
+            400\,B_y-10\,666{,}67=0 \quad\Rightarrow\quad B_y=\frac{10\,666{,}67}{400}=26{,}7\ \text{N}
+          \]
+          \[
+            \sum F_y=0:\quad B_y+F_y-240=0 \quad\Rightarrow\quad F_y=240-26{,}7=213{,}3\ \text{N}
+          \]
+          <div class="resultado-final" style="margin-top:10px">
+            <div class="rf-label">Resultado caso a</div>
+            <div class="rf-val">\(B_x=213{,}3\ \text{N},\quad B_y=26{,}7\ \text{N},\quad F_x=-213{,}3\ \text{N},\quad F_y=213{,}3\ \text{N}\)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Caso b — Carga en D (Sólido 1 → M_carga local = −48 000 N·mm)</div>
+          \[
+            400\,B_y-10\,666{,}67-48\,000=0 \quad\Rightarrow\quad B_y=\frac{58\,666{,}67}{400}=146{,}7\ \text{N}
+          \]
+          \[
+            F_y=240-146{,}7=93{,}3\ \text{N}
+          \]
+          <div class="resultado-final" style="margin-top:10px">
+            <div class="rf-label">Resultado caso b</div>
+            <div class="rf-val">\(B_x=213{,}3\ \text{N},\quad B_y=146{,}7\ \text{N},\quad F_x=-213{,}3\ \text{N},\quad F_y=93{,}3\ \text{N}\)</div>
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Caso c — Carga en E (Sólido 2 → igual que caso a)</div>
+          <p>\(E=(200,0)\) pertenece al Sólido 2, por lo que no actúa directamente sobre el Sólido 1. Las ecuaciones son idénticas al caso a.</p>
+          <div class="resultado-final" style="margin-top:10px">
+            <div class="rf-label">Resultado caso c</div>
+            <div class="rf-val">\(B_x=213{,}3\ \text{N},\quad B_y=26{,}7\ \text{N},\quad F_x=-213{,}3\ \text{N},\quad F_y=213{,}3\ \text{N}\)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-5 -->
+
+<div class="ex-card" id="ex3-6">
+  <div class="ex-header" onclick="toggleEx('ex3-6')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.6 — Entramado de 2 sólidos: reacciones en \(A\) y \(C\)</h2>
+      <div class="ex-meta">Dos sólidos rígidos · Elemento de dos fuerzas · Pasador interno \(D\)</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Calcular las reacciones en \(A\) y \(C\) del entramado de la figura bajo una carga \(W=250\ \text{kg}^*\) aplicada en \(B\).
+      <br><br>
+      Geometría (origen en \(B\)):
+      \(B=(0,0)\ \text{mm}\) (carga \(W\) ↓);
+      \(A=(60,30)\ \text{mm}\) (articulación externa);
+      \(D=(200,0)\ \text{mm}\) (pasador interno, une los dos sólidos);
+      \(C=(100,60)\ \text{mm}\) (articulación externa).
+      <br><br>
+      <strong>Sólido 1 (A-B-D):</strong> escuadra en T invertida. <br>
+      <strong>Sólido 2 (C-D):</strong> escuadra — articulado solo en \(C\) y \(D\), sin fuerzas externas directas.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p><strong>Elemento de dos fuerzas:</strong> el Sólido 2 está articulado únicamente en \(C\) y \(D\) y no tiene ninguna carga externa. Por equilibrio, la fuerza que transmite es estrictamente colineal a la línea \(C\text{-}D\). Esto reduce una incógnita vectorial a una sola incógnita escalar.</p>
+        <p style="margin-top:8px">La dirección de la fuerza en \(D\) queda fijada por la pendiente de la recta \(C\text{-}D\):</p>
+        \[
+          \frac{D_y}{D_x}=\frac{\Delta y}{\Delta x}=\frac{60-0}{100-200}=\frac{60}{-100}=-0{,}6
+          \quad\Rightarrow\quad D_y=-0{,}6\,D_x
+        \]
+        <p style="margin-top:8px">Con esta relación se analizan las 3 ecuaciones del Sólido 1 con 3 incógnitas efectivas: \(A_x\), \(A_y\) y \(D_x\).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Dirección de la fuerza interna en D (Sólido 2, elemento de dos fuerzas)</div>
+          <p>Vector \(D \to C\): \(\Delta x=100-200=-100\ \text{mm}\), \(\Delta y=60-0=60\ \text{mm}\).</p>
+          \[
+            D_y=-0{,}6\,D_x
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — ΣM respecto a A (Sólido 1): valor de D_x</div>
+          <p>Posiciones relativas a \(A=(60,30)\):</p>
+          <ul style="margin:4px 0 4px 16px;line-height:1.9">
+            <li>\(B-A=(-60,-30)\): carga \((0,-250)\ \text{kg}^*\) → \(M_W=(-60)(-250)-(-30)(0)=+15\,000\ \text{kg}^*\text{·mm}\)</li>
+            <li>\(D-A=(140,-30)\): fuerza \((D_x,D_y)\) → \(M_D=140\,D_y-(-30)\,D_x=140D_y+30D_x\)</li>
+          </ul>
+          <p>Sustituyendo \(D_y=-0{,}6\,D_x\):</p>
+          \[
+            M_D=140(-0{,}6\,D_x)+30\,D_x=-84\,D_x+30\,D_x=-54\,D_x
+          \]
+          \[
+            \sum M_A=0:\quad 15\,000-54\,D_x=0 \quad\Rightarrow\quad D_x=\frac{15\,000}{54}=277{,}77\ \text{kg}^*
+          \]
+          \[
+            D_y=-0{,}6\times 277{,}77=-166{,}67\ \text{kg}^*
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — ΣF (Sólido 1): reacciones en A</div>
+          \[
+            \sum F_x=0:\quad A_x+D_x=0 \quad\Rightarrow\quad A_x=-277{,}77\ \text{kg}^*
+          \]
+          \[
+            \sum F_y=0:\quad A_y-250+D_y=0 \quad\Rightarrow\quad A_y=250+166{,}67=416{,}67\ \text{kg}^*
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Reacciones en C (Sólido 2, 3ª Ley de Newton)</div>
+          <p>El Sólido 1 ejerce sobre el Sólido 2 en \(D\) la fuerza \((-D_x,-D_y)\). Al ser un elemento de dos fuerzas, la reacción en \(C\) contrarresta exactamente esa acción:</p>
+          \[
+            C_x=D_x=277{,}77\ \text{kg}^* \qquad C_y=D_y=-166{,}67\ \text{kg}^*
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              A_x=-277{,}77\ \text{kg}^*\quad A_y=416{,}67\ \text{kg}^*\quad C_x=277{,}77\ \text{kg}^*\quad C_y=-166{,}67\ \text{kg}^*
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-6 -->
 
 </div><!-- /container -->
 
