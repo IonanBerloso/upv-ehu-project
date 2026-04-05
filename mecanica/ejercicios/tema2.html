@@ -202,6 +202,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex2-3">2.3 Cono recto</a>
   <a class="jump-link" href="#ex2-4">2.4 Semiesfera</a>
   <a class="jump-link" href="#ex2-5">2.5 Figura en L</a>
+  <a class="jump-link" href="#ex2-6">2.6 Curva \(Y=Kx^n\)</a>
 </div>
 
 <div class="container">
@@ -715,6 +716,124 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-5 -->
+
+<div class="ex-card" id="ex2-6">
+  <div class="ex-header" onclick="toggleEx('ex2-6')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.6 — Centro de gravedad y volumen de revolución de \(Y = K \cdot x^n\)</h2>
+      <div class="ex-meta">Integración · Centroide de área curva · Teorema de Pappus-Guldin · \(n = 3\)</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      En la superficie de la figura, siendo \(n = 3\), calcular:
+      <ol style="margin-top:8px;padding-left:20px;line-height:2">
+        <li>Posición del centro de gravedad respecto a los ejes \(x\) e \(y\).</li>
+        <li>Volumen del cuerpo que la superficie genera al girar respecto al eje \(x\).</li>
+      </ol>
+      La curva tiene la forma \(Y = K \cdot x^n\), con \(n = 3\), dimensiones \(h\) (ancho) y \(a\) (alto).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Se trabaja con <strong>tiras verticales diferenciales</strong> de base \(dx\) y altura \(y\). El centroide local de cada tira está a mitad de su altura:</p>
+        \[
+          y_e = \frac{y}{2}
+        \]
+        <p style="margin-top:8px">El <strong>Teorema de Pappus-Guldin</strong> relaciona el volumen de revolución con el centroide:</p>
+        \[
+          V = A \cdot (2\pi \cdot y_G)
+        \]
+        <p style="margin-top:8px">Al girar respecto al eje \(x\), la distancia al eje de giro de cada centroide es \(y_G\), y cada vuelta completa recorre \(2\pi\).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Función exacta de la curva</div>
+          <p>En el punto \((h,\, a)\) la curva pasa por el extremo superior derecho, lo que permite hallar \(K\):</p>
+          \[
+            a = K \cdot h^3 \implies K = \frac{a}{h^3}
+          \]
+          \[
+            y = \frac{a}{h^3}\, x^3
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Área total \(A\)</div>
+          <p>Elemento diferencial de área vertical: \(dA = y\, dx\)</p>
+          \[
+            A = \int_0^h \frac{a}{h^3}\, x^3\, dx
+              = \frac{a}{h^3} \left[\frac{x^4}{4}\right]_0^h
+              = \frac{a}{h^3} \cdot \frac{h^4}{4}
+              = \frac{ah}{4}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Coordenada \(x_G\)</div>
+          <p>Momento estático respecto al eje \(y\):</p>
+          \[
+            Q_y = \int_0^h x \cdot \frac{a}{h^3}\, x^3\, dx
+                = \frac{a}{h^3} \left[\frac{x^5}{5}\right]_0^h
+                = \frac{a}{h^3} \cdot \frac{h^5}{5}
+                = \frac{ah^2}{5}
+          \]
+          \[
+            x_G = \frac{Q_y}{A} = \frac{\dfrac{ah^2}{5}}{\dfrac{ah}{4}} = \frac{4h}{5}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Coordenada \(y_G\)</div>
+          <p>El centroide local de cada tira vertical está a \(y_e = y/2\), por lo que:</p>
+          \[
+            Q_x = \int_0^h \frac{y}{2} \cdot y\, dx = \frac{1}{2}\int_0^h y^2\, dx
+                = \frac{1}{2}\int_0^h \left(\frac{a}{h^3}\,x^3\right)^2 dx
+                = \frac{a^2}{2h^6}\int_0^h x^6\, dx
+          \]
+          \[
+            Q_x = \frac{a^2}{2h^6} \left[\frac{x^7}{7}\right]_0^h
+                = \frac{a^2}{2h^6} \cdot \frac{h^7}{7}
+                = \frac{a^2 h}{14}
+          \]
+          \[
+            y_G = \frac{Q_x}{A} = \frac{\dfrac{a^2 h}{14}}{\dfrac{ah}{4}} = \frac{2a}{7}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Volumen de revolución (Pappus-Guldin)</div>
+          <p>Al girar respecto al eje \(x\), la distancia del centroide al eje es \(y_G\):</p>
+          \[
+            V = A \cdot 2\pi\, y_G
+              = \frac{ah}{4} \cdot 2\pi \cdot \frac{2a}{7}
+              = \frac{ah}{4} \cdot \frac{4\pi a}{7}
+              = \frac{\pi a^2 h}{7}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              x_G = \frac{4h}{5} \qquad y_G = \frac{2a}{7} \qquad V = \frac{\pi a^2 h}{7}
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-6 -->
 
 </div><!-- /container -->
 
