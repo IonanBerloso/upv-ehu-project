@@ -208,6 +208,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-9">3.9 Polea R=60 mm, soportes A y E</a>
   <a class="jump-link" href="#ex3-10">3.10 Polea R=75 mm, soportes A y B</a>
   <a class="jump-link" href="#ex3-11">3.11 Cargas distribuidas (a–d)</a>
+  <a class="jump-link" href="#ex3-12">3.12 Placa ABCD: CG, inercia y equilibrio</a>
 </div>
 
 <div class="container">
@@ -1332,6 +1333,137 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-11 -->
+
+<div class="ex-card" id="ex3-12">
+  <div class="ex-header" onclick="toggleEx('ex3-12')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.12 — Placa \(ABCD\): CG, inercia e equilibrio estático</h2>
+      <div class="ex-meta">Repaso Tema 2 · Integración · Equilibrio con y sin masa · Cable DE</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      La placa \(ABCD\) de masa uniforme está articulada en \(A\) y unida a un cable en \(D\). En \(C\) se aplica una fuerza horizontal \(P=50\ \text{N}\). Calcular:
+      a) posición del CG; b) \(I_x\) e \(I_y\) por integración; c) \(I_A\) polar; d) reacción en \(A\) y tensión del cable (despreciando la masa); e) ídem con masa \(m=10\ \text{kg}\).
+      <br><br>
+      Geometría (cm): \(A=(0,0)\), \(B=(0,30)\), \(C=(15,30)\), \(D=(15,15)\). El lado \(DA\) es oblicuo con ecuación \(y=x\). El cable \(DE\) conecta \(D=(15,15)\) con el anclaje \(E=(45,0)\).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>La placa se descompone en dos áreas básicas: <strong>rectángulo</strong> superior (entre \(y=15\) e \(y=30\)) y <strong>triángulo</strong> inferior (vértices en \((0,0)\), \((0,15)\), \((15,15)\)).</p>
+        <p style="margin-top:8px">Los momentos de inercia se calculan por integración directa: \(I_y = \int x^2\,dA\) con franjas verticales; \(I_x = \int y^2\,dA\) con franjas horizontales (el límite del borde oblicuo cambia en \(y=15\)).</p>
+        <p style="margin-top:8px">El momento polar respecto a \(A\) se obtiene por el teorema de los ejes perpendiculares: \(I_A = I_x + I_y\).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">a) Centro de gravedad</div>
+          <p>Áreas y centroides de las dos partes:</p>
+          \[
+            A_1=15\times 15=225\ \text{cm}^2,\quad \bar{x}_1=7{,}5\ \text{cm},\quad \bar{y}_1=22{,}5\ \text{cm}
+          \]
+          \[
+            A_2=\frac{15\times 15}{2}=112{,}5\ \text{cm}^2,\quad \bar{x}_2=5\ \text{cm},\quad \bar{y}_2=10\ \text{cm}
+          \]
+          \[
+            A_{\text{tot}}=337{,}5\ \text{cm}^2
+          \]
+          \[
+            x_G=\frac{225\times 7{,}5+112{,}5\times 5}{337{,}5}=\frac{2250}{337{,}5}=6{,}67\ \text{cm}
+          \]
+          \[
+            y_G=\frac{225\times 22{,}5+112{,}5\times 10}{337{,}5}=\frac{6187{,}5}{337{,}5}=18{,}33\ \text{cm}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">b) Momentos de inercia por integración</div>
+          <p><strong>\(I_y\)</strong> — franjas verticales, altura \((30-x)\) (el borde oblicuo \(y=x\) limita por abajo):</p>
+          \[
+            I_y=\int_0^{15}x^2(30-x)\,dx=\int_0^{15}(30x^2-x^3)\,dx
+            =\left[10x^3-\frac{x^4}{4}\right]_0^{15}
+          \]
+          \[
+            I_y=10(3375)-\frac{50625}{4}=33750-12656{,}25=21093{,}75\ \text{cm}^4
+          \]
+          <p style="margin-top:10px"><strong>\(I_x\)</strong> — franjas horizontales en dos tramos (el borde derecho cambia en \(y=15\)):</p>
+          \[
+            I_x=\int_0^{15}y^2(y\,dy)+\int_{15}^{30}y^2(15\,dy)
+            =\left[\frac{y^4}{4}\right]_0^{15}+5\left[y^3\right]_{15}^{30}
+          \]
+          \[
+            I_x=12656{,}25+5(27000-3375)=12656{,}25+118125=130781{,}25\ \text{cm}^4
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">c) Momento de inercia polar en A</div>
+          \[
+            I_A=I_x+I_y=130781{,}25+21093{,}75=151875\ \text{cm}^4
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">d) Equilibrio estático (despreciando la masa)</div>
+          <p>Dirección del cable \(DE\): de \(D(15,15)\) a \(E(45,0)\) → \(\vec{DE}=(30,-15)\), \(|\vec{DE}|=\sqrt{900+225}=15\sqrt{5}\ \text{cm}\).</p>
+          \[
+            \hat{u}_{DE}=\left(\frac{2}{\sqrt{5}},\ -\frac{1}{\sqrt{5}}\right)
+            \quad\Rightarrow\quad T_x=\frac{2T}{\sqrt{5}},\quad T_y=-\frac{T}{\sqrt{5}}
+          \]
+          <p style="margin-top:8px">\(\sum M_A=0\) (antihorario positivo):</p>
+          \[
+            \underbrace{+1500}_{P\text{ en }C} - \frac{45T}{\sqrt{5}}=0 \quad\Rightarrow\quad T=\frac{1500\sqrt{5}}{45}\approx 74{,}5\ \text{N}
+          \]
+          \[
+            \sum F_x=0:\quad A_x-50+\frac{2T}{\sqrt{5}}=0 \quad\Rightarrow\quad A_x=-16{,}7\ \text{N}
+          \]
+          \[
+            \sum F_y=0:\quad A_y-\frac{T}{\sqrt{5}}=0 \quad\Rightarrow\quad A_y=33{,}3\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">e) Equilibrio estático con masa m = 10 kg</div>
+          <p>Peso \(W=10\times 9{,}8=98\ \text{N}\) aplicado hacia abajo en \(G=(6{,}67,18{,}33)\ \text{cm}\). Se añade el momento de \(W\) respecto a \(A\):</p>
+          \[
+            \sum M_A=0:\quad 1500-\underbrace{98\times 6{,}67}_{653{,}3}-\frac{45T}{\sqrt{5}}=0
+          \]
+          \[
+            846{,}7=\frac{45T}{\sqrt{5}} \quad\Rightarrow\quad T=\frac{846{,}7\sqrt{5}}{45}\approx 42{,}1\ \text{N}
+          \]
+          \[
+            \sum F_x=0:\quad A_x-50+\frac{2\times 42{,}1}{\sqrt{5}}=0 \quad\Rightarrow\quad A_x\approx +12{,}3\ \text{N}
+          \]
+          \[
+            \sum F_y=0:\quad A_y-98-\frac{42{,}1}{\sqrt{5}}=0 \quad\Rightarrow\quad A_y\approx 116{,}8\ \text{N}
+          \]
+          <div class="nota">El solucionario oficial indica erróneamente \(A_x=-12{,}4\ \text{N}\) y \(A_y=12{,}4\ \text{N}\) para el apartado e). Los valores correctos son \(A_x\approx+12{,}3\ \text{N}\) y \(A_y\approx 116{,}8\ \text{N}\) (el apoyo debe soportar el peso completo de la placa más el tirón vertical del cable).</div>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val" style="line-height:2.1">
+            a) \(x_G=6{,}67\ \text{cm},\ y_G=18{,}33\ \text{cm}\)<br>
+            b) \(I_y=21093{,}75\ \text{cm}^4,\quad I_x=130781{,}25\ \text{cm}^4\)<br>
+            c) \(I_A=151875\ \text{cm}^4\)<br>
+            d) \(T=74{,}5\ \text{N},\ A_x=-16{,}7\ \text{N},\ A_y=33{,}3\ \text{N}\)<br>
+            e) \(T=42{,}1\ \text{N},\ A_x=+12{,}3\ \text{N},\ A_y=116{,}8\ \text{N}\)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-12 -->
 
 </div><!-- /container -->
 
