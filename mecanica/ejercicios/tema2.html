@@ -211,6 +211,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex2-12">2.12 Inercia disco</a>
   <a class="jump-link jump-link-exam" href="#ex2-13">2.13 Inercias rectángulo ★</a>
   <a class="jump-link" href="#ex2-14">2.14 Inercias parábola</a>
+  <a class="jump-link" href="#ex2-15">2.15 Marco rectangular</a>
 </div>
 
 <div class="container">
@@ -1630,6 +1631,122 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-14 -->
+
+<div class="ex-card" id="ex2-15">
+  <div class="ex-header" onclick="toggleEx('ex2-15')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.15 — Superficie plana hueca: CG, inercias y volumen</h2>
+      <div class="ex-meta">Marco rectangular hueco · Superposición · Steiner · Pappus-Guldin</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Para la superficie plana hueca de la figura (marco rectangular), calcular:
+      <ol style="margin-top:8px;padding-left:20px;line-height:2">
+        <li>Posición del centro de gravedad respecto al sistema \(x'y'\) (origen en vértice \(O\)).</li>
+        <li>Momentos de inercia respecto a los ejes \(x'\) e \(y'\).</li>
+        <li>Momentos de inercia respecto a los ejes \(x\) e \(y\) paralelos que pasan por \(G\).</li>
+        <li>Volumen generado al girar la superficie respecto al eje \(x'\).</li>
+      </ol>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Se aplica <strong>superposición</strong>: rectángulo exterior (positivo) − rectángulo interior hueco (negativo). El orden óptimo de cálculo es:</p>
+        <ol style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+          <li>Calcular las inercias centroidales de cada figura (\(bh^3/12\))</li>
+          <li>Combinar por superposición → inercias centroidales del conjunto</li>
+          <li>Aplicar Steiner para trasladar al vértice \(O\)</li>
+        </ol>
+        <p style="margin-top:8px">Steiner inverso (de centroide al vértice): \(I_{x'} = I_x + A \cdot y_G^2\)</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Descomposición y áreas</div>
+          <p><strong>Figura 1</strong> (rectángulo exterior): \(b_1 = 6\ \text{cm}\), \(h_1 = 10\ \text{cm}\)</p>
+          \[A_1 = 6 \times 10 = 60\ \text{cm}^2 \qquad x_1 = 3\ \text{cm} \qquad y_1 = 5\ \text{cm}\]
+          <p style="margin-top:8px"><strong>Figura 2</strong> (hueco interior): \(b_2 = 2\ \text{cm}\), \(h_2 = 6\ \text{cm}\) — negativo</p>
+          \[A_2 = -(2 \times 6) = -12\ \text{cm}^2 \qquad x_2 = 3\ \text{cm} \qquad y_2 = 5\ \text{cm}\]
+          \[A_{tot} = 60 - 12 = 48\ \text{cm}^2\]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte a — Centro de gravedad \((x_G,\, y_G)\)</div>
+          <p>Ambas figuras comparten el mismo centroide \((3, 5)\) por simetría, lo que simplifica el cálculo:</p>
+          \[
+            x_G = \frac{A_1 x_1 + A_2 x_2}{A_{tot}} = \frac{60 \cdot 3 + (-12) \cdot 3}{48} = \frac{180 - 36}{48} = \frac{144}{48} = 3\ \text{cm}
+          \]
+          \[
+            y_G = \frac{A_1 y_1 + A_2 y_2}{A_{tot}} = \frac{60 \cdot 5 + (-12) \cdot 5}{48} = \frac{300 - 60}{48} = \frac{240}{48} = 5\ \text{cm}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte c — Inercias centroidales \((I_x,\, I_y)\) — se calcula antes que la parte b</div>
+          <p>Como los ejes centroidales \(x\) e \(y\) pasan exactamente por los centros de ambas figuras, no hace falta Steiner — superposición directa:</p>
+          \[
+            I_x = \frac{b_1 h_1^3}{12} - \frac{b_2 h_2^3}{12}
+                = \frac{6 \cdot 10^3}{12} - \frac{2 \cdot 6^3}{12}
+                = \frac{6000}{12} - \frac{432}{12}
+                = 500 - 36 = 464\ \text{cm}^4
+          \]
+          \[
+            I_y = \frac{h_1 b_1^3}{12} - \frac{h_2 b_2^3}{12}
+                = \frac{10 \cdot 6^3}{12} - \frac{6 \cdot 2^3}{12}
+                = \frac{2160}{12} - \frac{48}{12}
+                = 180 - 4 = 176\ \text{cm}^4
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte b — Inercias en el vértice \(O\): \((I_{x'},\, I_{y'})\) — Steiner</div>
+          \[
+            I_{x'} = I_x + A_{tot} \cdot y_G^2 = 464 + 48 \cdot 5^2 = 464 + 1200 = 1664\ \text{cm}^4
+          \]
+          \[
+            I_{y'} = I_y + A_{tot} \cdot x_G^2 = 176 + 48 \cdot 3^2 = 176 + 432 = 608\ \text{cm}^4
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte d — Volumen de revolución respecto al eje \(x'\) (Pappus-Guldin)</div>
+          <p>La distancia del centroide \(G\) al eje \(x'\) es \(d = y_G = 5\ \text{cm}\):</p>
+          \[
+            V = 2\pi \cdot d \cdot A_{tot} = 2\pi \cdot 5 \cdot 48 = 480\pi \approx 1508\ \text{cm}^3
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              \text{a)}\ x_G = 3\ \text{cm},\quad y_G = 5\ \text{cm}
+            \]
+            \[
+              \text{b)}\ I_{x'} = 1664\ \text{cm}^4 \quad I_{y'} = 608\ \text{cm}^4
+            \]
+            \[
+              \text{c)}\ I_x = 464\ \text{cm}^4 \quad I_y = 176\ \text{cm}^4
+            \]
+            \[
+              \text{d)}\ V = 480\pi \approx 1508\ \text{cm}^3
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-15 -->
 
 </div><!-- /container -->
 
