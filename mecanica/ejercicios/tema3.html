@@ -207,6 +207,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-8">3.8 Alambre doblado: ángulo θ</a>
   <a class="jump-link" href="#ex3-9">3.9 Polea R=60 mm, soportes A y E</a>
   <a class="jump-link" href="#ex3-10">3.10 Polea R=75 mm, soportes A y B</a>
+  <a class="jump-link" href="#ex3-11">3.11 Cargas distribuidas (a–d)</a>
 </div>
 
 <div class="container">
@@ -1228,6 +1229,109 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-10 -->
+
+<div class="ex-card" id="ex3-11">
+  <div class="ex-header" onclick="toggleEx('ex3-11')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.11 — Reacciones con cargas distribuidas (4 casos)</h2>
+      <div class="ex-meta">Viga biapoyada · Cargas distribuidas → fuerza puntual equivalente · ΣM = 0</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Calcular las reacciones sobre los apoyos en los cuatro elementos de la figura.
+      En todos los casos se utiliza una viga biapoyada (articulación en \(A\), rodillo en el apoyo derecho).
+      La clave es convertir cada carga distribuida en su fuerza puntual equivalente aplicada en el centroide del área de carga.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Para reemplazar una carga distribuida por su equivalente puntual se aplican dos principios:</p>
+        <ol style="margin:6px 0 0 16px;line-height:1.9">
+          <li><strong>Magnitud:</strong> igual al área bajo la curva de carga \(Q = \int q\,dx\).</li>
+          <li><strong>Punto de aplicación:</strong> centroide del área de carga.</li>
+        </ol>
+        <p style="margin-top:8px">Centroides útiles: triángulo rectángulo → \(\bar{x} = \tfrac{1}{3}\) desde la base (o \(\tfrac{2}{3}\) desde el vértice); rectángulo → \(\bar{x} = \tfrac{1}{2}\) de la base. Una carga trapezoidal se descompone en rectángulo + triángulo.</p>
+        <p style="margin-top:8px">Un par puro (momento \(M\)) no añade fuerza neta, pero sí crea un par de reacciones verticales opuestas en los apoyos.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Caso a — Carga triangular (viga 7 m, q_max = 5 T/m en B)</div>
+          <p>La carga es triangular: nula en \(A\) y máxima en \(B\). Fuerza equivalente y centroide:</p>
+          \[
+            Q = \frac{1}{2}\cdot 7\cdot 5 = 17{,}5\ \text{T} \qquad x_G = \frac{2}{3}\cdot 7 = 4{,}667\ \text{m}\ (\text{desde }A)
+          \]
+          \[
+            \sum M_A=0:\quad B_y\cdot 7 - 17{,}5\cdot 4{,}667=0 \quad\Rightarrow\quad B_y=\frac{81{,}67}{7}=11{,}67\ \text{T}
+          \]
+          \[
+            \sum F_y=0:\quad A_y+11{,}67-17{,}5=0 \quad\Rightarrow\quad A_y=5{,}83\ \text{T}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Caso b — Carga trapezoidal (q_min = 2 T/m, q_max = 3 T/m, L = 4 m)</div>
+          <p>Se descompone el trapecio en <strong>rectángulo</strong> (2 T/m base) + <strong>triángulo</strong> (1 T/m extra):</p>
+          \[
+            Q_{\text{rect}}=2\cdot 4=8\ \text{T}\quad(x=2\ \text{m}) \qquad Q_{\text{tri}}=\frac{1\cdot 4}{2}=2\ \text{T}\quad\left(x=\frac{2}{3}\cdot 4=2{,}667\ \text{m}\right)
+          \]
+          \[
+            \sum M_A=0:\quad B_y\cdot 4 - 8\cdot 2 - 2\cdot 2{,}667=0 \quad\Rightarrow\quad 4B_y=21{,}33 \quad\Rightarrow\quad B_y=5{,}33\ \text{T}
+          \]
+          \[
+            \sum F_y=0:\quad A_y+5{,}33-10=0 \quad\Rightarrow\quad A_y=4{,}67\ \text{T}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Caso c — Par puro \(M = 6\ \text{T·m}\) (viga 10 m)</div>
+          <p>Un par puro no añade fuerza neta al sistema. Los apoyos generan un par de reacciones verticales opuestas para equilibrar el momento:</p>
+          \[
+            \sum M_A=0:\quad B_y\cdot 10 - 6=0 \quad\Rightarrow\quad B_y=0{,}6\ \text{T}
+          \]
+          \[
+            \sum F_y=0:\quad A_y+0{,}6=0 \quad\Rightarrow\quad A_y=-0{,}6\ \text{T}
+          \]
+          <div class="nota">El apoyo \(A\) tira hacia abajo para anclar la viga y evitar que vuelque bajo el par aplicado.</div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Caso d — Cargas distribuidas escalonadas (q₁ = 4 kN/m en 2 m + q₂ = 2 kN/m en 2 m)</div>
+          <p>Dos tramos rectangulares independientes:</p>
+          \[
+            Q_1=4\cdot 2=8\ \text{kN}\quad(x=1\ \text{m desde }A) \qquad Q_2=2\cdot 2=4\ \text{kN}\quad(x=3\ \text{m desde }A)
+          \]
+          \[
+            \sum M_A=0:\quad B_y\cdot 4 - 8\cdot 1 - 4\cdot 3=0 \quad\Rightarrow\quad 4B_y=20 \quad\Rightarrow\quad B_y=5\ \text{kN}
+          \]
+          \[
+            \sum F_y=0:\quad A_y+5-8-4=0 \quad\Rightarrow\quad A_y=7\ \text{kN}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultados</div>
+          <div class="rf-val" style="line-height:2.1">
+            a) \(A_y=5{,}83\ \text{T},\ B_y=11{,}67\ \text{T}\)<br>
+            b) \(A_y=4{,}67\ \text{T},\ B_y=5{,}33\ \text{T}\)<br>
+            c) \(A_y=-0{,}6\ \text{T},\ B_y=0{,}6\ \text{T}\)<br>
+            d) \(A_y=7\ \text{kN},\ B_y=5\ \text{kN}\)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-11 -->
 
 </div><!-- /container -->
 
