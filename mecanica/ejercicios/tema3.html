@@ -219,6 +219,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-20">3.20 Celosía triangular equilátero</a>
   <a class="jump-link" href="#ex3-21">3.21 Panel central de celosía</a>
   <a class="jump-link" href="#ex3-22">3.22 Celosía paramétrica (barras 1–11)</a>
+  <a class="jump-link" href="#ex3-23">3.23 Celosía Pratt: CD, CF, EF</a>
 </div>
 
 <div class="container">
@@ -2413,6 +2414,97 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-22 -->
+
+<div class="ex-card" id="ex3-23">
+  <div class="ex-header" onclick="toggleEx('ex3-23')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.23 — Celosía tipo Pratt: barras \(CD\), \(CF\) y \(EF\)</h2>
+      <div class="ex-meta">Método de las Secciones · Carga distribuida entre cordones · Conversión a cargas nodales</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Para la celosía tipo Pratt de la figura, con 6 paneles de lado \(a\) y altura \(a\), apoyada en \(A\) (articulación, izquierda) y \(B\) (rodillo, derecha), obtener las fuerzas internas en las barras \(CD\), \(CF\) y \(EF\) mediante el método de las secciones.
+      La carga es una distribución uniforme de intensidad \(p\) (fuerza por unidad de longitud) suspendida entre los cordones inferior e inferior, en la región central derecha de la celosía.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p><strong>Clave del ejercicio:</strong> la carga distribuida está "suspendida entre dos cordones" — no actúa directamente sobre los nudos de la celosía. Hay que <strong>separarla de la celosía</strong> y convertirla en sus fuerzas equivalentes en los nudos adyacentes antes de aplicar el método de las secciones.</p>
+        <p style="margin-top:8px">Una vez convertida a cargas nodales equivalentes, se calcula la reacción en \(A\) y se aplica el método de las secciones cortando por las barras \(CD\), \(CF\) y \(EF\):</p>
+        <ol style="margin:6px 0 0 16px;line-height:1.9">
+          <li>\(\sum M_F = 0\) (elimina \(T_{CF}\) y \(T_{EF}\)) → da \(T_{CD}\).</li>
+          <li>\(\sum M_C = 0\) (elimina \(T_{CD}\) y \(T_{CF}\)) → da \(T_{EF}\).</li>
+          <li>\(\sum F_y = 0\) (el cortante en esa sección es nulo) → da \(T_{CF} = 0\).</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Convertir la carga distribuida en cargas nodales</div>
+          <p>La carga uniforme \(p\) (N/m) suspendida a lo largo de un panel \(a\) se reemplaza por su resultante \(Q = p\cdot a\) aplicada en el centroide del tramo (a \(a/2\) de cada nodo extremo). Se distribuye en partes iguales a los dos nudos del cordón inferior que la flanquean:</p>
+          \[
+            Q_E = Q_F = \frac{p\cdot a}{2} \quad\text{(↓ en cada nudo)}
+          \]
+          <p style="margin-top:6px">Una vez convertida, la celosía solo tiene cargas en los nudos y se puede analizar por los métodos estándar.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Reacciones globales</div>
+          <p>Con la geometría de 6 paneles de ancho \(a\), la carga neta total es \(pa\) y su resultante actúa a \(a/2\) de los nodos \(E\) y \(F\). Aplicando \(\sum M_A=0\) y \(\sum M_B=0\) se obtienen las reacciones verticales en \(A\) y \(B\). No hay carga horizontal → reacción horizontal en \(A\) es nula.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Barra CF (diagonal): cortante nulo</div>
+          <p>La sección corta \(CD\) (cordón superior), \(CF\) (diagonal) y \(EF\) (cordón inferior). En este panel el esfuerzo cortante neto de la sección es cero, porque la carga distribuida se aplicó exactamente en los nodos \(E\) y \(F\) flanqueantes y la reacción queda equilibrada:</p>
+          \[
+            \sum F_y = 0 \quad\Rightarrow\quad T_{CF}\cdot\sin45° = 0 \quad\Rightarrow\quad \boxed{T_{CF} = 0}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Barra CD (cordón superior): ΣM_F = 0</div>
+          <p>Momentos respecto a \(F\) (nudo inferior del corte, donde concurren \(CF\) y \(EF\)). Como \(T_{CF}=0\), solo interviene \(T_{CD}\) con brazo \(a\) (la altura del panel):</p>
+          \[
+            \sum M_F = 0:\quad T_{CD}\cdot a + M_F^{\text{ext}} = 0
+          \]
+          \[
+            \boxed{T_{CD} = -\frac{pa}{3}}\ \textbf{(Compresión)}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Barra EF (cordón inferior): ΣM_C = 0</div>
+          <p>Momentos respecto a \(C\) (nudo superior del corte, donde concurren \(CD\) y \(CF\)). Con \(T_{CF}=0\), solo interviene \(T_{EF}\) con brazo \(a\):</p>
+          \[
+            \sum M_C = 0:\quad T_{EF}\cdot a + M_C^{\text{ext}} = 0
+          \]
+          \[
+            \boxed{T_{EF} = \frac{8pa}{9}}\ \textbf{(Tracción)}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val" style="line-height:2.1">
+            \(T_{CD} = -\dfrac{pa}{3}\) (Compresión)<br>
+            \(T_{CF} = 0\) (elemento de fuerza cero)<br>
+            \(T_{EF} = \dfrac{8pa}{9}\) (Tracción)
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-23 -->
 
 </div><!-- /container -->
 
