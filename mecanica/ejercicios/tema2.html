@@ -213,6 +213,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link jump-link-exam" href="#ex2-14">2.14 Inercias parábola ★</a>
   <a class="jump-link jump-link-exam" href="#ex2-15">2.15 Marco rectangular ★</a>
   <a class="jump-link jump-link-exam" href="#ex2-16">2.16 Barras en T ★</a>
+  <a class="jump-link jump-link-exam" href="#ex2-17">2.17 Rectángulo + círculo ★</a>
 </div>
 
 <div class="container">
@@ -1845,6 +1846,131 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-16 -->
+
+<div class="ex-card ex-card-exam" id="ex2-17">
+  <div class="ex-header" onclick="toggleEx('ex2-17')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.17 — Rectángulo con agujero circular: CG, inercias y producto <span class="ex-badge">Nivel examen</span></h2>
+      <div class="ex-meta">Superposición · Steiner · Producto de inercia · \(35 \times 50\ \text{cm}\), \(R=10\ \text{cm}\)</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Calcular para la superficie plana de la figura (rectángulo 35×50 cm con agujero circular de radio \(R=10\ \text{cm}\) centrado en \((15, 30)\ \text{cm}\) desde \(O\)):
+      <ol style="margin-top:8px;padding-left:20px;line-height:2">
+        <li>Posición del CG respecto a los ejes \(xy\) (origen en \(O\)).</li>
+        <li>Momentos de inercia \(I_x\) e \(I_y\) respecto a los ejes en \(O\).</li>
+        <li>Momentos de inercia centroidales \(I_{x'}\) e \(I_{y'}\) paralelos que pasan por \(G\).</li>
+        <li>Producto de inercia \(C_{x'y'}\) respecto a los ejes centroidales.</li>
+      </ol>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Superposición: rectángulo exterior (positivo) − disco (negativo). Para el disco de radio \(R\):</p>
+        \[
+          I_{x,\text{disco}} = \frac{\pi R^4}{4} \quad \text{(centroidal)} \qquad C_{xy,\text{disco}} = 0 \quad \text{(simetría)}
+        \]
+        <p style="margin-top:8px">Para el producto de inercia del rectángulo desde el origen:</p>
+        \[
+          C_{xy,\text{rect}} = \frac{b^2 h^2}{4}
+        \]
+        <p style="margin-top:8px">Steiner para trasladar al centroide (inverso): \(I_{x'} = I_x - A_{tot} \cdot y_G^2\)</p>
+        <p style="margin-top:4px">Steiner para producto de inercia: \(C_{x'y'} = C_{xy} - A_{tot} \cdot x_G \cdot y_G\)</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Áreas y datos</div>
+          \[
+            A_1 = 35 \times 50 = 1750\ \text{cm}^2 \quad x_1 = 17{,}5\ \text{cm} \quad y_1 = 25\ \text{cm}
+          \]
+          \[
+            A_2 = -\pi \times 10^2 = -100\pi\ \text{cm}^2 \quad x_2 = 15\ \text{cm} \quad y_2 = 30\ \text{cm}
+          \]
+          \[
+            A_{tot} = 1750 - 100\pi \approx 1435{,}84\ \text{cm}^2
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte a — Centro de gravedad</div>
+          \[
+            x_G = \frac{1750 \times 17{,}5 - 100\pi \times 15}{1750 - 100\pi}
+                = \frac{30625 - 1500\pi}{1750 - 100\pi}
+                \approx \frac{25912{,}6}{1435{,}84} = 18{,}05\ \text{cm}
+          \]
+          \[
+            y_G = \frac{1750 \times 25 - 100\pi \times 30}{1750 - 100\pi}
+                = \frac{43750 - 3000\pi}{1750 - 100\pi}
+                \approx \frac{34325{,}2}{1435{,}84} = 23{,}91\ \text{cm}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte b — Momentos de inercia en \(O\)</div>
+          \[
+            I_x = \frac{35 \times 50^3}{3} - \left(\frac{\pi \times 10^4}{4} + 100\pi \times 30^2\right)
+                = \frac{4\,375\,000}{3} - 92500\pi \approx 1\,167\,736\ \text{cm}^4
+          \]
+          \[
+            I_y = \frac{50 \times 35^3}{3} - \left(\frac{\pi \times 10^4}{4} + 100\pi \times 15^2\right)
+                = \frac{2\,143\,750}{3} - 25000\pi \approx 636\,043\ \text{cm}^4
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte c — Inercias centroidales (Steiner inverso)</div>
+          \[
+            I_{x'} = I_x - A_{tot} \cdot y_G^2 = 1\,167\,736 - 1435{,}84 \times 23{,}91^2 \approx 347\,157\ \text{cm}^4
+          \]
+          \[
+            I_{y'} = I_y - A_{tot} \cdot x_G^2 = 636\,043 - 1435{,}84 \times 18{,}05^2 \approx 168\,399\ \text{cm}^4
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte d — Producto de inercia centroidal</div>
+          <p>Producto de inercia respecto a \(O\):</p>
+          \[
+            C_{xy} = \frac{35^2 \times 50^2}{4} - (0 + 100\pi \times 15 \times 30)
+                   = 765\,625 - 45000\pi \approx 624\,253\ \text{cm}^4
+          \]
+          <p style="margin-top:8px">Traslación al centroide:</p>
+          \[
+            C_{x'y'} = C_{xy} - A_{tot} \cdot x_G \cdot y_G
+                     = 624\,253 - 1435{,}84 \times 18{,}05 \times 23{,}91
+                     \approx 4\,786\ \text{cm}^4
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              x_G = 18{,}05\ \text{cm} \quad y_G = 23{,}91\ \text{cm}
+            \]
+            \[
+              I_x \approx 1\,167\,736\ \text{cm}^4 \quad I_y \approx 636\,043\ \text{cm}^4
+            \]
+            \[
+              I_{x'} \approx 347\,157\ \text{cm}^4 \quad I_{y'} \approx 168\,399\ \text{cm}^4 \quad C_{x'y'} \approx 4\,786\ \text{cm}^4
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-17 -->
 
 </div><!-- /container -->
 
