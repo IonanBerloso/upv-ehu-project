@@ -210,6 +210,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-11">3.11 Cargas distribuidas (a–d)</a>
   <a class="jump-link" href="#ex3-12">3.12 Placa ABCD: CG, inercia y equilibrio</a>
   <a class="jump-link" href="#ex3-13">3.13 Mecanismo articulado: ángulo θ</a>
+  <a class="jump-link" href="#ex3-14">3.14 Vuelco cilindro con esferas</a>
 </div>
 
 <div class="container">
@@ -1560,6 +1561,103 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-13 -->
+
+<div class="ex-card" id="ex3-14">
+  <div class="ex-header" onclick="toggleEx('ex3-14')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.14 — Peso mínimo del vaso cilíndrico para evitar el vuelco</h2>
+      <div class="ex-meta">Dos esferas lisas · Condición crítica de vuelco · Solución paramétrica</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Un vaso cilíndrico invertido de radio \(R\) contiene dos esferas de radio \(r\) y masa \(m\) cada una, en contacto mutuo y con las paredes (sin rozamiento). Determinar el peso mínimo \(Q\) del vaso para que no vuelque.
+      <br><br>
+      <strong>Esfera 1</strong> (inferior): apoyada en el suelo y en la pared izquierda.<br>
+      <strong>Esfera 2</strong> (superior): apoyada sobre la Esfera 1 y en la pared derecha.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Superficies <em>lisas</em> (sin rozamiento): todas las reacciones son normales a las superficies de contacto. La fuerza entre las dos esferas actúa a lo largo de la línea que une sus centros.</p>
+        <p style="margin-top:8px"><strong>Geometría del contacto:</strong> la distancia entre centros es \(2r\) (hipotenusa). La distancia horizontal es \(\Delta x = 2(R-r)\). El ángulo \(\alpha\) de esa línea con la horizontal satisface:</p>
+        \[
+          \cos\alpha = \frac{R-r}{r}
+        \]
+        <p style="margin-top:8px"><strong>Condición de vuelco:</strong> el vaso está a punto de volcar cuando pierde contacto con el suelo por el lado izquierdo y toda la reacción del suelo se concentra en la esquina inferior derecha \(O\). En ese instante crítico \(\sum M_O = 0\).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Equilibrio de la Esfera 2 (superior)</div>
+          <p>Fuerzas: peso \(mg\) ↓, reacción de la pared derecha \(N_R\) ←, fuerza de la Esfera 1 (\(N_{12}\)) inclinada \(\alpha\) sobre la horizontal.</p>
+          \[
+            \sum F_y=0:\quad N_{12}\sin\alpha - mg=0 \quad\Rightarrow\quad N_{12}=\frac{mg}{\sin\alpha}
+          \]
+          \[
+            \sum F_x=0:\quad N_R - N_{12}\cos\alpha=0 \quad\Rightarrow\quad N_R=\frac{mg}{\sin\alpha}\cdot\cos\alpha=mg\cot\alpha
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Equilibrio horizontal del sistema completo</div>
+          <p>Para el conjunto de las dos esferas, la fuerza horizontal neta es cero: la pared izquierda empuja a la derecha con \(N_L\) y la pared derecha empuja a la izquierda con \(N_R\):</p>
+          \[
+            N_L = N_R = mg\cot\alpha
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Condición de vuelco: ΣM_O = 0</div>
+          <p>Momentos respecto al punto crítico \(O\) (esquina inferior derecha), antihorario positivo. \(N_L\) actúa a altura \(r\) (centro Esfera 1); \(N_R\) actúa a altura \(y_2\) (centro Esfera 2); \(Q\) actúa en el centro del vaso a distancia horizontal \(R\) de \(O\):</p>
+          \[
+            \sum M_O=0:\quad Q\cdot R + N_L\cdot r - N_R\cdot y_2=0
+          \]
+          <p>Como \(N_L=N_R\):</p>
+          \[
+            Q\cdot R = N_R(y_2-r)
+          \]
+          <p>La diferencia de alturas \(y_2-r\) es el cateto vertical del triángulo entre centros:</p>
+          \[
+            y_2-r=2r\sin\alpha
+          \]
+          \[
+            Q\cdot R = mg\cot\alpha\cdot 2r\sin\alpha = mg\cdot\frac{\cos\alpha}{\sin\alpha}\cdot 2r\sin\alpha = 2mgr\cos\alpha
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Sustitución de cos α y resultado final</div>
+          <p>Del paso de geometría: \(\cos\alpha=(R-r)/r\).</p>
+          \[
+            Q\cdot R = 2mgr\cdot\frac{R-r}{r} = 2mg(R-r)
+          \]
+          \[
+            Q = \frac{2mg(R-r)}{R} = \frac{2R-2r}{R}\,mg
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              Q = \frac{2(R-r)}{R}\,mg = \left(2 - \frac{2r}{R}\right)mg
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-14 -->
 
 </div><!-- /container -->
 
