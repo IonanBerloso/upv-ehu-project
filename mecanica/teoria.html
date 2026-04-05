@@ -108,6 +108,13 @@ b,strong{color:#f1f5f9;font-weight:600}
 .topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .topbar-meta{padding:0 20px;font-size:.75em;color:var(--text3);white-space:nowrap;display:flex;gap:12px;align-items:center}
 .topbar-meta .chip{background:var(--surface2);border:1px solid var(--border2);color:var(--accent);padding:3px 10px;border-radius:20px;font-size:.85em;font-weight:600}
+.ej-picker{position:relative}
+.ej-picker-btn{background:rgba(192,132,252,.15);border:1px solid rgba(192,132,252,.3);border-radius:20px;padding:3px 12px;font-size:.8em;font-weight:600;color:var(--accent);cursor:pointer;white-space:nowrap;transition:.15s}
+.ej-picker-btn:hover{background:rgba(192,132,252,.25)}
+.ej-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:#0d0d0d;border:1px solid #2a1a4a;border-radius:10px;padding:6px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.ej-picker.open .ej-dropdown{display:block}
+.ej-item{display:block;padding:8px 12px;border-radius:6px;font-size:.8em;color:#e2e8f0;text-decoration:none;font-weight:500;transition:.15s}
+.ej-item:hover{background:#1a0a30;color:var(--accent)}
 
 /* ── NAV TABS ── */
 .nav-tabs{position:sticky;top:56px;z-index:190;background:rgba(0,0,0,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto;display:flex;gap:2px;align-items:center;height:44px;white-space:nowrap}
@@ -231,8 +238,14 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
   </a>
   <span class="topbar-title">Mecánica Aplicada — Teoría</span>
   <div class="topbar-meta">
-    <a href="ejercicios/tema1.html" style="background:rgba(192,132,252,.15);border:1px solid rgba(192,132,252,.3);border-radius:20px;padding:3px 12px;font-size:.8em;font-weight:600;color:var(--accent);text-decoration:none">📝 Ejercicios T1</a>
-    <a href="ejercicios/tema2.html" style="background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.2);border-radius:20px;padding:3px 12px;font-size:.8em;font-weight:600;color:var(--accent);opacity:.7;text-decoration:none">📝 Ejercicios T2</a>
+    <div class="ej-picker" id="ejPicker">
+      <button class="ej-picker-btn" onclick="document.getElementById('ejPicker').classList.toggle('open')">📝 Ejercicios ▾</button>
+      <div class="ej-dropdown">
+        <a class="ej-item" href="ejercicios/tema1.html">T1 — Cálculo Vectorial</a>
+        <a class="ej-item" href="ejercicios/tema2.html">T2 — Geometría de Masas</a>
+        <a class="ej-item" href="ejercicios/tema3.html">T3 — Estática del S.R.</a>
+      </div>
+    </div>
     <a href="formulario.html" style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:20px;padding:3px 12px;font-size:.8em;font-weight:600;color:#f59e0b;text-decoration:none">📋 Formulario</a>
     <span class="chip">8 temas</span>
   </div>
@@ -1098,6 +1111,10 @@ window.addEventListener('scroll', function(){
 
 // Open first tema by default
 toggleTema(0);
+
+// Ejercicios picker — close on outside click
+var _ep=document.getElementById('ejPicker');
+document.addEventListener('click',function(e){if(_ep&&!_ep.contains(e.target))_ep.classList.remove('open');});
 </script>
 </body>
 </html>
