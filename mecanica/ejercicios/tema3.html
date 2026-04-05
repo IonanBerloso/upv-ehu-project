@@ -213,6 +213,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-14">3.14 Vuelco cilindro con esferas</a>
   <a class="jump-link" href="#ex3-15">3.15 Barra en pista semicircular</a>
   <a class="jump-link" href="#ex3-16">3.16 Par de equilibrio con disco</a>
+  <a class="jump-link" href="#ex3-17">3.17 Barras + disco + resorte: constante k</a>
 </div>
 
 <div class="container">
@@ -1837,6 +1838,107 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-16 -->
+
+<div class="ex-card" id="ex3-17">
+  <div class="ex-header" onclick="toggleEx('ex3-17')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.17 — Sistema articulado con disco y resorte: constante \(k\)</h2>
+      <div class="ex-meta">Principio de los Trabajos Virtuales · Energía potencial total · Equilibrio en θ = 60°</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Dos barras articuladas de masa \(M\) y longitud total \(L=4R\sqrt{3}\) forman una V, unidas en su punto medio \(E\). Un disco de masa \(M\) y radio \(R\) reposa simétricamente en el valle. Un resorte ideal une los anclajes inferiores. La posición de equilibrio es \(\theta=60°\) (ángulo de las barras con la horizontal). Determinar la constante elástica \(k\) del resorte.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>El sistema tiene un único grado de libertad: el ángulo \(\theta\). El equilibrio se alcanza cuando la energía potencial total \(V = V_g + V_k\) es mínima, es decir:</p>
+        \[
+          \frac{dV}{d\theta} = \frac{dV_g}{d\theta} + \frac{dV_k}{d\theta} = 0
+        \]
+        <p style="margin-top:8px">El resorte es ideal (\(l_0=0\)): \(V_k = \tfrac{1}{2}k\,x_k^2\) donde \(x_k\) es su longitud actual.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Geometría: alturas en función de θ</div>
+          <p>Semilongitud de cada barra: \(L/2=2R\sqrt{3}\).</p>
+          \[
+            y_E = 2R\sqrt{3}\sin\theta \qquad (\text{altura de la articulación }E)
+          \]
+          <p>El disco toca la barra con su normal. El ángulo barra-vertical es \(90°-\theta\), por lo que la distancia del centro del disco a \(E\) a lo largo del eje de simetría es \(R/\cos\theta\):</p>
+          \[
+            y_O = y_E + \frac{R}{\cos\theta} = 2R\sqrt{3}\sin\theta + \frac{R}{\cos\theta}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Longitud del resorte x_k</div>
+          <p>A \(\theta=60°\) el plano indica que el resorte se ancla a altura \(3R/2\). La distancia horizontal desde \(E\) al anclaje es:</p>
+          \[
+            d_{\text{resorte}} = \frac{L}{2} - s = 2R\sqrt{3} - R\sqrt{3} = R\sqrt{3}
+          \]
+          <p>La longitud total del resorte (doble de la proyección horizontal de cada segmento):</p>
+          \[
+            x_k = 2\cdot(R\sqrt{3})\cos\theta = 2R\sqrt{3}\cos\theta
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Energía potencial total</div>
+          \[
+            V_g = (2M\cdot g\cdot y_E) + (M\cdot g\cdot y_O) = MgR\!\left(6\sqrt{3}\sin\theta + \frac{1}{\cos\theta}\right)
+          \]
+          \[
+            V_k = \frac{1}{2}k\,x_k^2 = \frac{1}{2}k\,(2R\sqrt{3}\cos\theta)^2 = 6kR^2\cos^2\theta
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Derivadas y condición de equilibrio en θ = 60°</div>
+          \[
+            \frac{dV_g}{d\theta} = MgR\!\left(6\sqrt{3}\cos\theta + \frac{\sin\theta}{\cos^2\theta}\right)
+          \]
+          \[
+            \frac{dV_k}{d\theta} = -12kR^2\sin\theta\cos\theta
+          \]
+          <p>Evaluando en \(\theta=60°\) (\(\sin60°=\sqrt{3}/2\), \(\cos60°=1/2\)):</p>
+          \[
+            \frac{dV_g}{d\theta}\bigg|_{60°} = MgR\!\left(6\sqrt{3}\cdot\frac{1}{2}+\frac{\sqrt{3}/2}{1/4}\right) = MgR\!\left(3\sqrt{3}+2\sqrt{3}\right) = 5\sqrt{3}\,MgR
+          \]
+          \[
+            \frac{dV_k}{d\theta}\bigg|_{60°} = -12kR^2\cdot\frac{\sqrt{3}}{2}\cdot\frac{1}{2} = -3\sqrt{3}\,kR^2
+          \]
+          \[
+            5\sqrt{3}\,MgR - 3\sqrt{3}\,kR^2 = 0 \quad\Rightarrow\quad 5Mg = 3kR
+          \]
+          \[
+            k = \frac{5Mg}{3R}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              k = \frac{5Mg}{3R}
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-17 -->
 
 </div><!-- /container -->
 
