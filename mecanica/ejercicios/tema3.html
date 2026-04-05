@@ -204,6 +204,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-5">3.5 Entramado 2 sólidos (A/D/E)</a>
   <a class="jump-link" href="#ex3-6">3.6 Entramado 2 sólidos (kg*)</a>
   <a class="jump-link" href="#ex3-7">3.7 Viga AB + manivela BCD</a>
+  <a class="jump-link" href="#ex3-8">3.8 Alambre doblado: ángulo θ</a>
 </div>
 
 <div class="container">
@@ -935,6 +936,111 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-7 -->
+
+<div class="ex-card" id="ex3-8">
+  <div class="ex-header" onclick="toggleEx('ex3-8')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.8 — Alambre homogéneo \(ABCD\): ángulo \(\theta\) para equilibrio</h2>
+      <div class="ex-meta">Sólido rígido articulado en \(B\) · Centro de gravedad · Momentos estáticos</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Un alambre homogéneo \(ABCD\) se dobla tal como muestra la figura y está articulado en \(B\). Calcular el ángulo \(\theta\) para que el tramo \(BC\) permanezca horizontal.
+      <br><br>
+      Geometría (origen en \(B=(0,0)\)):
+      tramo \(AB\) es un arco semicircular de radio \(R=150\ \text{mm}\) a la izquierda de \(B\);
+      tramo \(BC\) horizontal de 200 mm hacia la derecha hasta \(C=(200,0)\);
+      tramo \(CD\) recto de 150 mm desde \(C\) inclinado \(\theta\) por debajo de la horizontal.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Un cuerpo suspendido libremente de una articulación está en equilibrio solo si su <strong>centro de gravedad global \(G\) cae sobre la vertical que pasa por \(B\)</strong>. Si \(G\) estuviera desplazado lateralmente, el peso generaría un momento respecto a \(B\) y el alambre rotaría.</p>
+        <p style="margin-top:8px">Matemáticamente, situando el origen en \(B\), la condición es:</p>
+        \[
+          \bar{x} = 0 \quad\Longleftrightarrow\quad \sum Q_y = \sum L_i\, x_i = 0
+        \]
+        <p style="margin-top:8px">Como el alambre es homogéneo (densidad lineal \(\rho\) constante), \(\rho\) cancela en la ecuación y se trabaja directamente con longitudes.</p>
+        <p style="margin-top:8px">Centroide de un arco semicircular: \(x_c = \dfrac{2R}{\pi}\) desde su diámetro.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Tramo AB: arco semicircular (R = 150 mm, a la izquierda de B)</div>
+          \[
+            L_1 = \pi R = 150\pi\ \text{mm}
+          \]
+          <p>El centroide del arco está a \(2R/\pi\) del diámetro, hacia la izquierda de \(B\):</p>
+          \[
+            x_1 = -\frac{2\cdot 150}{\pi} = -\frac{300}{\pi}\ \text{mm}
+          \]
+          \[
+            Q_{y1} = L_1\cdot x_1 = 150\pi\cdot\left(-\frac{300}{\pi}\right) = -45\,000\ \text{mm}^2
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Tramo BC: barra recta horizontal (200 mm)</div>
+          \[
+            L_2 = 200\ \text{mm} \qquad x_2 = 100\ \text{mm (punto medio)}
+          \]
+          \[
+            Q_{y2} = 200\cdot 100 = 20\,000\ \text{mm}^2
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Tramo CD: barra recta inclinada θ desde C = (200, 0)</div>
+          \[
+            L_3 = 150\ \text{mm}
+          \]
+          <p>El centroide está en el punto medio de \(CD\), a 75 mm de \(C\) a lo largo de la barra. La proyección horizontal:</p>
+          \[
+            x_3 = 200 - 75\cos\theta
+          \]
+          \[
+            Q_{y3} = 150\cdot(200-75\cos\theta) = 30\,000 - 11\,250\cos\theta\ \text{mm}^2
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Condición de equilibrio: ΣQy = 0</div>
+          \[
+            Q_{y1}+Q_{y2}+Q_{y3}=0
+          \]
+          \[
+            -45\,000+20\,000+(30\,000-11\,250\cos\theta)=0
+          \]
+          \[
+            5\,000-11\,250\cos\theta=0 \quad\Rightarrow\quad \cos\theta=\frac{5\,000}{11\,250}=\frac{4}{9}
+          \]
+          \[
+            \theta=\arccos\!\left(\frac{4}{9}\right)\approx 63{,}61°
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              \theta = \arccos\!\left(\tfrac{4}{9}\right) \approx 63{,}61°
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-8 -->
 
 </div><!-- /container -->
 
