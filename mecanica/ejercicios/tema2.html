@@ -207,6 +207,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex2-8">2.8 Avellanado</a>
   <a class="jump-link" href="#ex2-9">2.9 Alambre \(CE\)</a>
   <a class="jump-link" href="#ex2-10">2.10 Revolución eje \(e\)</a>
+  <a class="jump-link" href="#ex2-11">2.11 Inercia barra</a>
 </div>
 
 <div class="container">
@@ -1235,6 +1236,105 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-10 -->
+
+<div class="ex-card" id="ex2-11">
+  <div class="ex-header" onclick="toggleEx('ex2-11')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.11 — Momento de inercia de una barra homogénea</h2>
+      <div class="ex-meta">Integración directa · Teorema de Steiner · Eje en CG y en extremo</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Hallar el momento de inercia de una barra homogénea de masa \(M\) y longitud \(L\) respecto al eje \(z\) perpendicular a la barra:
+      <ol style="margin-top:8px;padding-left:20px;line-height:2">
+        <li>Eje \(z\) que pasa por su centro de gravedad.</li>
+        <li>Eje \(z\) que pasa por un extremo.</li>
+      </ol>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Para una barra homogénea se define la <strong>densidad lineal de masa</strong> \(\lambda\) (constante):</p>
+        \[
+          \lambda = \frac{M}{L} \qquad \Rightarrow \qquad dm = \lambda\, dx = \frac{M}{L}\,dx
+        \]
+        <p style="margin-top:8px">El momento de inercia respecto a un eje es:</p>
+        \[
+          I = \int x^2\, dm
+        \]
+        <p style="margin-top:8px">El <strong>Teorema de Steiner</strong> (ejes paralelos) permite trasladar el momento de inercia desde el centroide a cualquier eje paralelo:</p>
+        \[
+          I_O = I_G + M \cdot d^2
+        \]
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Caso A — Eje en el centro de gravedad \((I_G)\)</div>
+          <p>Origen en el CG: la barra se extiende de \(x = -L/2\) a \(x = +L/2\).</p>
+          \[
+            I_G = \int_{-L/2}^{L/2} x^2 \cdot \frac{M}{L}\,dx
+                = \frac{M}{L}\left[\frac{x^3}{3}\right]_{-L/2}^{L/2}
+                = \frac{M}{L}\left(\frac{L^3/8}{3} - \frac{-L^3/8}{3}\right)
+          \]
+          \[
+            I_G = \frac{M}{L} \cdot \frac{2L^3}{24} = \frac{M}{L} \cdot \frac{L^3}{12}
+          \]
+          \[
+            \boxed{I_G = \frac{ML^2}{12}}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Caso B — Eje en un extremo \((I_O)\) · Método 1: integración directa</div>
+          <p>Origen en el extremo: la barra se extiende de \(x = 0\) a \(x = L\).</p>
+          \[
+            I_O = \int_0^L x^2 \cdot \frac{M}{L}\,dx
+                = \frac{M}{L}\left[\frac{x^3}{3}\right]_0^L
+                = \frac{M}{L} \cdot \frac{L^3}{3}
+          \]
+          \[
+            \boxed{I_O = \frac{ML^2}{3}}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Caso B — Eje en un extremo \((I_O)\) · Método 2: Teorema de Steiner</div>
+          <p>La distancia entre el CG y el extremo es \(d = L/2\). Aplicando Steiner sobre el resultado del Caso A:</p>
+          \[
+            I_O = I_G + M \cdot d^2
+                = \frac{ML^2}{12} + M \cdot \left(\frac{L}{2}\right)^2
+                = \frac{ML^2}{12} + \frac{ML^2}{4}
+                = \frac{ML^2}{12} + \frac{3ML^2}{12}
+                = \frac{4ML^2}{12}
+          \]
+          \[
+            \boxed{I_O = \frac{ML^2}{3}} \checkmark
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              \text{a)}\ I_G = \frac{ML^2}{12} \qquad \text{b)}\ I_O = \frac{ML^2}{3}
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-11 -->
 
 </div><!-- /container -->
 
