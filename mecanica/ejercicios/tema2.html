@@ -210,6 +210,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex2-11">2.11 Inercia barra</a>
   <a class="jump-link" href="#ex2-12">2.12 Inercia disco</a>
   <a class="jump-link jump-link-exam" href="#ex2-13">2.13 Inercias rectángulo ★</a>
+  <a class="jump-link" href="#ex2-14">2.14 Inercias parábola</a>
 </div>
 
 <div class="container">
@@ -1538,6 +1539,97 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-13 -->
+
+<div class="ex-card" id="ex2-14">
+  <div class="ex-header" onclick="toggleEx('ex2-14')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.14 — Momentos de inercia de superficie parabólica</h2>
+      <div class="ex-meta">Curva \(y = Kx^2\) · Tiras verticales para \(I_y\) · Tiras horizontales para \(I_x\)</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Calcular para la superficie de la figura los momentos de inercia respecto a los ejes \(x\) e \(y\).
+      La región está limitada por el eje \(x = 0\), la recta \(y = b\) y la curva \(y = Kx^2\), con dimensiones \(a\) (ancho) y \(b\) (alto).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>La constante \(K\) se obtiene del punto extremo \((a, b)\):</p>
+        \[
+          b = K \cdot a^2 \implies K = \frac{b}{a^2} \qquad \Rightarrow \qquad y = \frac{b}{a^2}\,x^2
+        \]
+        <p style="margin-top:8px">Estrategia de integración:</p>
+        <ul style="margin-top:6px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+          <li><strong style="color:#e2e8f0">Tiras verticales</strong> para \(I_y\): la altura de cada tira es \(b - y_{curva}\), directo.</li>
+          <li><strong style="color:#e2e8f0">Tiras horizontales</strong> para \(I_x\): el ancho es \(x(y)\) despejado de la curva. Evita aplicar Steiner a cada tira vertical.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Momento \(I_y\) — Tiras verticales</div>
+          <p>La tira vertical en \(x\) va desde la curva hasta \(y = b\), con altura \(h = b - \frac{b}{a^2}x^2\):</p>
+          \[
+            dA = \left(b - \frac{b}{a^2}x^2\right)dx
+          \]
+          \[
+            I_y = \int_0^a x^2 \cdot \left(b - \frac{b}{a^2}x^2\right)dx
+                = \int_0^a \left(bx^2 - \frac{b}{a^2}x^4\right)dx
+                = \left[\frac{bx^3}{3} - \frac{bx^5}{5a^2}\right]_0^a
+          \]
+          \[
+            I_y = \frac{ba^3}{3} - \frac{ba^3}{5} = ba^3\left(\frac{5-3}{15}\right)
+          \]
+          \[
+            \boxed{I_y = \frac{2ba^3}{15}}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Momento \(I_x\) — Tiras horizontales</div>
+          <p>Se despeja \(x\) en función de \(y\): la tira horizontal en \(y\) va de \(x = 0\) hasta la curva:</p>
+          \[
+            y = \frac{b}{a^2}x^2 \implies x = a\sqrt{\frac{y}{b}} = a \cdot y^{1/2} \cdot b^{-1/2}
+          \]
+          \[
+            dA = x\, dy = a\, b^{-1/2}\, y^{1/2}\, dy
+          \]
+          \[
+            I_x = \int_0^b y^2 \cdot a\, b^{-1/2}\, y^{1/2}\, dy
+                = \frac{a}{\sqrt{b}} \int_0^b y^{5/2}\, dy
+                = \frac{a}{\sqrt{b}} \left[\frac{y^{7/2}}{7/2}\right]_0^b
+                = \frac{a}{\sqrt{b}} \cdot \frac{2}{7} \cdot b^{7/2}
+          \]
+          \[
+            I_x = \frac{2a}{7} \cdot \frac{b^{7/2}}{b^{1/2}} = \frac{2a}{7} \cdot b^3
+          \]
+          \[
+            \boxed{I_x = \frac{2ab^3}{7}}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              I_x = \frac{2ab^3}{7} \qquad I_y = \frac{2ba^3}{15}
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-14 -->
 
 </div><!-- /container -->
 
