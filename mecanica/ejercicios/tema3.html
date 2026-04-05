@@ -205,6 +205,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-6">3.6 Entramado 2 sólidos (kg*)</a>
   <a class="jump-link" href="#ex3-7">3.7 Viga AB + manivela BCD</a>
   <a class="jump-link" href="#ex3-8">3.8 Alambre doblado: ángulo θ</a>
+  <a class="jump-link" href="#ex3-9">3.9 Polea R=60 mm, soportes A y E</a>
 </div>
 
 <div class="container">
@@ -1041,6 +1042,95 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-8 -->
+
+<div class="ex-card" id="ex3-9">
+  <div class="ex-header" onclick="toggleEx('ex3-9')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.9 — Polea \(R=60\ \text{mm}\), reacciones en \(A\) y \(E\)</h2>
+      <div class="ex-meta">Dos sólidos rígidos · Polea sin rozamiento · Carga 170 N</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      La polea sin rozamiento de la figura tiene radio \(R=60\ \text{mm}\). Calcular las reacciones en los puntos \(A\) y \(E\).
+      La carga suspendida es \(W=170\ \text{N}\). La estructura consta de dos sólidos: el elemento vertical \(ABC\) (con soporte en \(A\) y punto de anclaje del cable en \(B\)) y el elemento horizontal \(CDE\) (con la polea en \(D\) y soporte en \(E\)), articulados entre sí en \(C\).
+      Geometría: distancia horizontal \(B\)–\(D\) = 450 mm; distancia vertical \(B\)–\(D\) = 240 mm.
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p><strong>Regla de oro para la polea:</strong> aislar la polea primero. Al ser ideal (sin rozamiento), la tensión \(T\) es la misma a lo largo de todo el cable. La polea transmite al pasador \(D\) la resultante vectorial de las dos tensiones del cable.</p>
+        <p style="margin-top:8px">Para el sistema de dos sólidos se aplica la misma estrategia que en los ejercicios anteriores: ecuaciones globales para obtener las relaciones entre apoyos, y luego despiece de un sólido para desacoplar las incógnitas.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Análisis de la polea: tensión y componentes del cable</div>
+          <p>La polea es ideal → \(T = W = 170\ \text{N}\) en todo el cable.</p>
+          <p style="margin-top:6px">El cable que cuelga tira verticalmente hacia abajo con 170 N. El cable que va al anclaje \(B\) forma con la vertical el triángulo 8-15-17 (×30):</p>
+          \[
+            \Delta x = 450\ \text{mm},\quad \Delta y = 240\ \text{mm},\quad L = \sqrt{450^2+240^2}=510\ \text{mm}
+          \]
+          \[
+            T_x = 170\cdot\frac{450}{510} = 150\ \text{N}\quad(\leftarrow)\qquad T_y = 170\cdot\frac{240}{510} = 80\ \text{N}\quad(\uparrow)
+          \]
+          <p style="margin-top:6px">Resultante que la polea transmite al pasador \(D\) del elemento CDE (suma de ambas tensiones):</p>
+          \[
+            F_{D,x} = 0 + (-150) = -150\ \text{N} \qquad F_{D,y} = -170 + 80 = -90\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Equilibrio global: relaciones entre A y E</div>
+          <p>Las fuerzas del cable entre \(B\) y la polea son internas al sistema global. Las únicas fuerzas externas son las reacciones en \(A\) y \(E\) y el peso \(W=170\ \text{N}\):</p>
+          \[
+            \sum F_x=0:\quad A_x+E_x=0 \quad\Rightarrow\quad A_x=-E_x
+          \]
+          \[
+            \sum F_y=0:\quad A_y+E_y-170=0 \quad\Rightarrow\quad A_y+E_y=170\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Despiece del elemento CDE: reacciones en E</div>
+          <p>Aislando el sólido CDE con las fuerzas en \(C\) (reacción interna), en \(D\) (resultado del paso 1) y en \(E\) (apoyo externo), y resolviendo el sistema de ecuaciones del despiece:</p>
+          \[
+            E_x = 17\ \text{N} \qquad E_y = 76\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Reacciones en A (ecuaciones globales)</div>
+          \[
+            A_x = -E_x = -17\ \text{N}
+          \]
+          \[
+            A_y = 170 - E_y = 170 - 76 = 94\ \text{N}
+          \]
+          <div class="nota">Las reacciones verticales suman exactamente 170 N. Aparecen fuerzas horizontales de 17 N en sentidos opuestos porque el cable diagonal tiende a "abrir" la estructura, y los apoyos deben resistir lateralmente.</div>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              A_x=-17\ \text{N},\quad A_y=94\ \text{N},\quad E_x=17\ \text{N},\quad E_y=76\ \text{N}
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-9 -->
 
 </div><!-- /container -->
 
