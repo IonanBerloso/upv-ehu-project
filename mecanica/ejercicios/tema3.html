@@ -206,6 +206,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex3-7">3.7 Viga AB + manivela BCD</a>
   <a class="jump-link" href="#ex3-8">3.8 Alambre doblado: ángulo θ</a>
   <a class="jump-link" href="#ex3-9">3.9 Polea R=60 mm, soportes A y E</a>
+  <a class="jump-link" href="#ex3-10">3.10 Polea R=75 mm, soportes A y B</a>
 </div>
 
 <div class="container">
@@ -1131,6 +1132,102 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex3-9 -->
+
+<div class="ex-card" id="ex3-10">
+  <div class="ex-header" onclick="toggleEx('ex3-10')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 3.10 — Polea \(R=75\ \text{mm}\), reacciones en \(A\) y \(B\)</h2>
+      <div class="ex-meta">Dos sólidos rígidos · Polea sin rozamiento · Pasador interno \(D\) · Carga 240 N</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      La polea de radio \(R=75\ \text{mm}\) no presenta rozamiento y \(D\) es un punto articulado. Calcular las reacciones en los puntos \(A\) y \(B\).
+      Carga: \(W=240\ \text{N}\) colgando verticalmente desde el borde derecho de la polea.
+      <br><br>
+      Geometría (origen en la esquina inferior izquierda, a la misma horizontal que \(D\)):
+      \(A=(0,200)\ \text{mm}\) (soporte superior izquierdo);
+      \(B=(600,200)\ \text{mm}\) (soporte superior derecho);
+      \(C=(0,75)\ \text{mm}\) (anclaje del cable, a 125 mm por debajo de \(A\));
+      \(D=(300,0)\ \text{mm}\) (pasador interno);
+      \(E=(600,0)\ \text{mm}\) (centro de la polea, \(R=75\ \text{mm}\)).
+      <br><br>
+      El cable parte de \(C\), va <em>horizontalmente</em> hasta la parte superior de la polea \((600,75)\) y luego cae <em>verticalmente</em> hasta la carga, que cuelga desde el borde derecho de la polea \((675,0)\).
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Polea ideal (sin rozamiento): \(T=240\ \text{N}\) en todo el cable. La polea transmite al pasador \(E\) la resultante de las dos tensiones del cable.</p>
+        <p style="margin-top:8px">La tensión horizontal actúa en la parte superior de la polea \((600,75)\); la tensión vertical actúa en el borde derecho \((675,0)\). Para el análisis del sólido que contiene la polea, estas fuerzas actúan en esos puntos concretos, lo que significa que crean momentos respecto al pasador \(D\).</p>
+        <p style="margin-top:8px">Estrategia: equilibrio global → \(B_y\) y relación \(A_y\). Despiece del sólido derecho (D-E-B) → \(B_x\) → \(A_x\).</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Fuerzas del cable sobre el sistema</div>
+          <p>\(T=240\ \text{N}\). El tramo horizontal del cable es una fuerza <em>interna</em> del sistema global (se anula entre \(C\) y la polea). La única fuerza externa es la carga de 240 N hacia abajo, aplicada en \(x=675\ \text{mm}\).</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Equilibrio global: B_y y A_y</div>
+          <p>\(\sum M_A=0\) respecto a \(A=(0,200)\). \(B_x\) actúa a la misma altura que \(A\) → brazo cero; \(B_y\) actúa a 600 mm a la derecha:</p>
+          \[
+            600\,B_y - 240\times 675 = 0 \quad\Rightarrow\quad B_y=\frac{162\,000}{600}=270\ \text{N}
+          \]
+          \[
+            \sum F_y=0:\quad A_y+B_y-240=0 \quad\Rightarrow\quad A_y=240-270=-30\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Despiece del Sólido Derecho (D-E-B): B_x</div>
+          <p>Se aísla el sólido derecho que incluye el pasador \(D\), la polea en \(E\) y el soporte \(B\). Fuerzas externas sobre este sólido:</p>
+          <ul style="margin:4px 0 4px 16px;line-height:1.9">
+            <li>Reacción en \(B=(600,200)\): \((B_x,\ 270)\).</li>
+            <li>Tensión horizontal del cable: 240 N hacia la izquierda en \((600,75)\).</li>
+            <li>Tensión vertical del cable: 240 N hacia abajo en \((675,0)\).</li>
+            <li>Reacción interna en \(D=(300,0)\): \((D_x,D_y)\) — se elimina tomando momentos en \(D\).</li>
+          </ul>
+          <p style="margin-top:8px">\(\sum M_D=0\) respecto a \(D=(300,0)\) (antihorario positivo):</p>
+          \[
+            \underbrace{(300)\cdot 270 - (200)\cdot B_x}_{B} + \underbrace{(300)\cdot 0 - (75)\cdot(-240)}_{\text{cable horiz.}} + \underbrace{(375)\cdot(-240) - (0)\cdot 0}_{\text{cable vert.}} = 0
+          \]
+          \[
+            (81\,000 - 200\,B_x) + 18\,000 - 90\,000 = 0
+          \]
+          \[
+            -200\,B_x + 9\,000 = 0 \quad\Rightarrow\quad B_x=45\ \text{N}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — A_x (equilibrio horizontal global)</div>
+          \[
+            \sum F_x=0:\quad A_x+B_x=0 \quad\Rightarrow\quad A_x=-45\ \text{N}
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              A_x=-45\ \text{N},\quad A_y=-30\ \text{N},\quad B_x=45\ \text{N},\quad B_y=270\ \text{N}
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex3-10 -->
 
 </div><!-- /container -->
 
