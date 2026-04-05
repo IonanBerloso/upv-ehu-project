@@ -209,6 +209,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link" href="#ex2-10">2.10 Revolución eje \(e\)</a>
   <a class="jump-link" href="#ex2-11">2.11 Inercia barra</a>
   <a class="jump-link" href="#ex2-12">2.12 Inercia disco</a>
+  <a class="jump-link jump-link-exam" href="#ex2-13">2.13 Inercias rectángulo ★</a>
 </div>
 
 <div class="container">
@@ -1422,6 +1423,121 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-12 -->
+
+<div class="ex-card ex-card-exam" id="ex2-13">
+  <div class="ex-header" onclick="toggleEx('ex2-13')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.13 — Inercias y productos de inercia del rectángulo <span class="ex-badge">Nivel examen</span></h2>
+      <div class="ex-meta">Integración directa · Steiner · Sistemas \(xy\) (vértice) y \(x'y'\) (centroide)</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Calcular para el rectángulo de dimensiones \(b \times h\) los momentos de inercia y los productos de inercia respecto a:
+      <ul style="margin-top:8px;padding-left:20px;line-height:2">
+        <li>Sistema \(xy\): origen en el vértice inferior izquierdo \(O\).</li>
+        <li>Sistema \(x'y'\): origen en el centroide \(G\) (paralelo a \(xy\)).</li>
+      </ul>
+      <p style="margin-top:8px;color:#94a3b8;font-size:.88em">Nota: el rectángulo no tiene masa definida, solo dimensiones geométricas → se trabaja con <strong>momentos de inercia de área</strong> \([cm^4]\).</p>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Los <strong>momentos de inercia de área</strong> miden la resistencia de una sección a doblarse alrededor de un eje:</p>
+        \[
+          I_x = \int y^2\, dA \qquad I_y = \int x^2\, dA \qquad C_{xy} = \int xy\, dA
+        \]
+        <p style="margin-top:8px">El <strong>Teorema de Steiner</strong> para traslación de ejes (de \(O\) al centroide \(G\) a distancia \(d\)):</p>
+        \[
+          I_{x'} = I_x - A \cdot y_G^2 \qquad I_{y'} = I_y - A \cdot x_G^2 \qquad C_{x'y'} = C_{xy} - A \cdot x_G \cdot y_G
+        \]
+        <p style="margin-top:8px">El producto de inercia es nulo cuando los ejes son ejes de simetría de la figura.</p>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Sistema \(xy\) — Momento \(I_x\) (eje \(x\) en la base)</div>
+          <p>Tiras horizontales de anchura \(b\) y altura \(dy\) a distancia \(y\) del eje \(x\):</p>
+          \[
+            dA = b\, dy \qquad \Rightarrow \qquad I_x = \int_0^h y^2 \cdot b\, dy = b\left[\frac{y^3}{3}\right]_0^h
+          \]
+          \[
+            \boxed{I_x = \frac{bh^3}{3}}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Sistema \(xy\) — Momento \(I_y\) (eje \(y\) en el lado izquierdo)</div>
+          <p>Tiras verticales de altura \(h\) y anchura \(dx\) a distancia \(x\) del eje \(y\):</p>
+          \[
+            dA = h\, dx \qquad \Rightarrow \qquad I_y = \int_0^b x^2 \cdot h\, dx = h\left[\frac{x^3}{3}\right]_0^b
+          \]
+          \[
+            \boxed{I_y = \frac{hb^3}{3}}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Sistema \(xy\) — Producto de inercia \(C_{xy}\)</div>
+          \[
+            C_{xy} = \int_0^b \int_0^h xy\, dy\, dx
+                   = \int_0^b x \left[\frac{y^2}{2}\right]_0^h dx
+                   = \int_0^b x \cdot \frac{h^2}{2}\, dx
+                   = \frac{h^2}{2}\left[\frac{x^2}{2}\right]_0^b
+          \]
+          \[
+            \boxed{C_{xy} = \frac{b^2 h^2}{4}}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Sistema \(x'y'\) — Traslación al centroide \(G\) mediante Steiner</div>
+          <p>El centroide del rectángulo está en \(x_G = b/2\), \(y_G = h/2\). Área total \(A = bh\).</p>
+          \[
+            I_{x'} = I_x - A \cdot y_G^2 = \frac{bh^3}{3} - bh \cdot \frac{h^2}{4} = \frac{bh^3}{3} - \frac{bh^3}{4} = \frac{4bh^3 - 3bh^3}{12}
+          \]
+          \[
+            \boxed{I_{x'} = \frac{bh^3}{12}}
+          \]
+          \[
+            I_{y'} = I_y - A \cdot x_G^2 = \frac{hb^3}{3} - bh \cdot \frac{b^2}{4} = \frac{hb^3}{3} - \frac{hb^3}{4}
+          \]
+          \[
+            \boxed{I_{y'} = \frac{hb^3}{12}}
+          \]
+          \[
+            C_{x'y'} = C_{xy} - A \cdot x_G \cdot y_G = \frac{b^2h^2}{4} - bh \cdot \frac{b}{2} \cdot \frac{h}{2} = \frac{b^2h^2}{4} - \frac{b^2h^2}{4}
+          \]
+          \[
+            \boxed{C_{x'y'} = 0}
+          \]
+          <p style="margin-top:8px;color:#94a3b8;font-size:.88em">El producto de inercia es cero porque \(x'\) e \(y'\) son ejes de simetría del rectángulo.</p>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              I_x = \frac{bh^3}{3} \quad I_y = \frac{hb^3}{3} \quad C_{xy} = \frac{b^2h^2}{4}
+            \]
+            \[
+              I_{x'} = \frac{bh^3}{12} \quad I_{y'} = \frac{hb^3}{12} \quad C_{x'y'} = 0
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-13 -->
 
 </div><!-- /container -->
 
