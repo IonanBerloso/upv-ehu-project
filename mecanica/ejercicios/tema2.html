@@ -212,6 +212,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   <a class="jump-link jump-link-exam" href="#ex2-13">2.13 Inercias rectángulo ★</a>
   <a class="jump-link jump-link-exam" href="#ex2-14">2.14 Inercias parábola ★</a>
   <a class="jump-link jump-link-exam" href="#ex2-15">2.15 Marco rectangular ★</a>
+  <a class="jump-link jump-link-exam" href="#ex2-16">2.16 Barras en T ★</a>
 </div>
 
 <div class="container">
@@ -1747,6 +1748,103 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 
   </div>
 </div><!-- /ex2-15 -->
+
+<div class="ex-card ex-card-exam" id="ex2-16">
+  <div class="ex-header" onclick="toggleEx('ex2-16')">
+    <div class="ex-header-left">
+      <h2>Ejercicio 2.16 — Sistema articulado de barras en T <span class="ex-badge">Nivel examen</span></h2>
+      <div class="ex-meta">Dos barras homogéneas · CG del sistema · \(I_O\) directo · Steiner inverso para \(I_G\)</div>
+    </div>
+    <span class="ex-arrow">▼</span>
+  </div>
+  <div class="ex-body">
+
+    <div class="enunciado">
+      Dos barras homogéneas en un plano vertical, soldadas en \(A\) formando una T y articuladas en \(O\). Masa de cada barra: 8 kg. Longitudes: barra horizontal \(OA = 0{,}25\ \text{m}\), barra vertical \(= 0{,}5\ \text{m}\) (0,25 m a cada lado de \(A\)).
+      <ol style="margin-top:8px;padding-left:20px;line-height:2">
+        <li>Posición del centro de gravedad del sistema \(G\).</li>
+        <li>Momento de inercia del conjunto respecto a \(G\).</li>
+        <li>Momento de inercia del conjunto respecto a \(O\).</li>
+      </ol>
+    </div>
+
+    <div class="seccion s-teoria">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+      <div class="sec-body">
+        <p>Para barras homogéneas, los momentos de inercia de referencia son:</p>
+        \[
+          I_G = \frac{1}{12}mL^2 \quad \text{(eje por el centro)} \qquad I_O = \frac{1}{3}mL^2 \quad \text{(eje por un extremo)}
+        \]
+        <p style="margin-top:8px">Estrategia óptima: calcular \(I_O\) primero (es el punto de articulación, geométricamente directo para ambas barras), y luego obtener \(I_G\) por <strong>Steiner inverso</strong>:</p>
+        \[
+          I_G = I_O - M \cdot d_{OG}^2
+        \]
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion">
+      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Centro de gravedad del sistema</div>
+          <p>Origen en \(O(0,0)\). Masas y centroides de cada barra:</p>
+          \[
+            m_1 = 8\ \text{kg} \quad x_1 = \frac{0{,}25}{2} = 0{,}125\ \text{m} \quad y_1 = 0
+          \]
+          \[
+            m_2 = 8\ \text{kg} \quad x_2 = 0{,}25\ \text{m} \quad y_2 = 0 \quad \text{(simétrica respecto al eje horizontal)}
+          \]
+          \[
+            x_G = \frac{m_1 x_1 + m_2 x_2}{M} = \frac{8 \cdot 0{,}125 + 8 \cdot 0{,}25}{16} = \frac{1 + 2}{16} = \frac{3}{16} = 0{,}1875\ \text{m}
+          \]
+          \[
+            y_G = 0 \quad \text{(simetría)}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Momento de inercia respecto a \(O\)</div>
+          <p><strong>Barra 1</strong> (horizontal): extremo en \(O\), fórmula directa:</p>
+          \[
+            I_{O1} = \frac{1}{3}m_1 L_1^2 = \frac{1}{3}(8)(0{,}25)^2 = \frac{8}{3} \cdot \frac{1}{16} = \frac{1}{6}\ \text{kg·m}^2
+          \]
+          <p style="margin-top:8px"><strong>Barra 2</strong> (vertical): centroide en \(x_2 = 0{,}25\ \text{m}\) desde \(O\) — Steiner:</p>
+          \[
+            I_{G2} = \frac{1}{12}m_2 L_2^2 = \frac{1}{12}(8)(0{,}5)^2 = \frac{8}{12} \cdot \frac{1}{4} = \frac{1}{6}\ \text{kg·m}^2
+          \]
+          \[
+            I_{O2} = I_{G2} + m_2 d_2^2 = \frac{1}{6} + 8(0{,}25)^2 = \frac{1}{6} + \frac{1}{2} = \frac{1}{6} + \frac{3}{6} = \frac{4}{6}\ \text{kg·m}^2
+          \]
+          \[
+            \boxed{I_O = I_{O1} + I_{O2} = \frac{1}{6} + \frac{4}{6} = \frac{5}{6}\ \text{kg·m}^2}
+          \]
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Momento de inercia respecto a \(G\) (Steiner inverso)</div>
+          \[
+            I_G = I_O - M \cdot x_G^2 = \frac{5}{6} - 16 \cdot \left(\frac{3}{16}\right)^2 = \frac{5}{6} - 16 \cdot \frac{9}{256} = \frac{5}{6} - \frac{9}{16}
+          \]
+          \[
+            I_G = \frac{40}{48} - \frac{27}{48} = \frac{13}{48} \approx 0{,}2708\ \text{kg·m}^2
+          \]
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">
+            \[
+              x_G = \frac{3}{16}\ \text{m} \qquad I_O = \frac{5}{6}\ \text{kg·m}^2 \qquad I_G = \frac{13}{48} \approx 0{,}2708\ \text{kg·m}^2
+            \]
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div><!-- /ex2-16 -->
 
 </div><!-- /container -->
 
