@@ -235,65 +235,93 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <p style="margin-top:10px"><strong>Resultado:</strong> \(P = 20\ \text{N}\).</p>
     </div>
 
-    <div class="seccion s-teoria">
-      <h3>Conceptos clave</h3>
-      <p>En un cable con <strong>cargas concentradas</strong>, el cable es recto entre puntos de carga. En cada nudo se aplica el equilibrio de fuerzas. La componente horizontal de la tensión es <strong>constante</strong> en todos los tramos donde no hay fuerza exterior horizontal; cambia en los nudos donde actúa una fuerza horizontal.</p>
-      <p>Definimos \(H_1\) = componente horizontal de la tensión en el tramo \(AB\) y \(H_2\) = componente horizontal en los tramos \(BC\) y \(CD\). Como \(P\) actúa hacia la izquierda en \(B\):</p>
-      \[\sum F_x\big|_B = 0 \implies H_2 - H_1 = P\]
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Carga en \(B\)</td><td>\(P_B = 70\ \text{N}\) (vertical, ↓)</td></tr>
+          <tr><td>Carga en \(C\)</td><td>\(P_C = 25\ \text{N}\) (vertical, ↓)</td></tr>
+          <tr><td>Fuerza en \(B\)</td><td>\(P\) horizontal (incógnita)</td></tr>
+          <tr><td>Separaciones horizontales</td><td>\(AB = 4\ \text{m},\quad BC = 6\ \text{m},\quad CD = 4\ \text{m}\)</td></tr>
+          <tr><td>Posición de \(B\)</td><td>\(5\ \text{m}\) por debajo de \(A\)</td></tr>
+          <tr><td>Posición de \(C\)</td><td>\(3\ \text{m}\) por debajo de \(A\)</td></tr>
+          <tr><td>Apoyo \(D\)</td><td>al mismo nivel que \(A\)</td></tr>
+        </table>
+      </div>
     </div>
 
-    <div class="seccion s-resolucion">
-      <h3>Resolución</h3>
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría: cables con cargas concentradas <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>En un cable con <strong>cargas concentradas</strong>, el cable es recto entre puntos de carga. En cada nudo se aplica el equilibrio de fuerzas. La componente horizontal de la tensión es <strong>constante</strong> en todos los tramos donde no hay fuerza exterior horizontal; cambia en los nudos donde actúa una fuerza horizontal.</p>
+        <div class="formula-box">
+          <div class="formula-label">Equilibrio vertical en un nudo (sin carga horizontal)</div>
+          $$\sum F_y = 0:\quad H\,\frac{\Delta y_\text{iz}}{\Delta x_\text{iz}} + H\,\frac{\Delta y_\text{der}}{\Delta x_\text{der}} = P_\text{nudo}$$
+        </div>
+        <p style="margin-top:8px">En el nudo \(B\) actúa la fuerza horizontal \(P\), por lo que la componente horizontal cambia:</p>
+        <div class="formula-box">
+          <div class="formula-label">Cambio de tensión horizontal en nudo con fuerza horizontal</div>
+          $$\sum F_x\big|_B = 0 \implies H_2 - H_1 = P$$
+        </div>
+        <div class="nota">💡 La pendiente de cada tramo se define como la diferencia de altura (positiva hacia arriba) dividida por la separación horizontal.</div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
 
       <div class="paso">
         <div class="paso-titulo">Paso 1 — Coordenadas de los nudos</div>
-        <p>Fijamos el origen en \(A\). Los apoyos \(A\) y \(D\) están al mismo nivel (línea horizontal de puntos de la figura). Las cargas se aplican en \(B\) y \(C\):</p>
-        \[A(0,\,0),\quad B(4,\,-5),\quad C(10,\,-3),\quad D(14,\,0)\]
-        <p>Las pendientes de cada tramo (\(=\) caída vertical / avance horizontal):</p>
-        \[m_{AB} = \frac{5}{4},\quad m_{BC} = \frac{2}{6} = \frac{1}{3},\quad m_{CD} = \frac{3}{4}\]
+        <p>Fijamos el origen en \(A\). Los apoyos \(A\) y \(D\) están al mismo nivel:</p>
+        $$A(0,\,0),\quad B(4,\,-5),\quad C(10,\,-3),\quad D(14,\,0)$$
+        <p>Pendientes de cada tramo (positiva = sube de izquierda a derecha):</p>
+        $$m_{AB} = \frac{0-(-5)}{4-0} = \frac{5}{4},\qquad m_{BC} = \frac{-3-(-5)}{10-4} = \frac{2}{6} = \frac{1}{3},\qquad m_{CD} = \frac{0-(-3)}{14-10} = \frac{3}{4}$$
       </div>
 
       <div class="paso">
         <div class="paso-titulo">Paso 2 — Nudo \(C\): hallar \(H_2\)</div>
-        <p>En \(C\) no hay fuerza horizontal, por lo que \(H_2\) es la misma en \(BC\) y \(CD\). Equilibrio vertical en \(C\):</p>
+        <p>En \(C\) no hay fuerza horizontal → \(H_2\) es la misma en \(BC\) y \(CD\). Equilibrio vertical:</p>
         <ul>
-          <li>Tramo \(BC\) tira de \(C\) hacia abajo (hacia \(B\) que está debajo): componente vertical \(-H_2\cdot\dfrac{1}{3}\)</li>
-          <li>Tramo \(CD\) tira de \(C\) hacia arriba (hacia \(D\) que está arriba): componente vertical \(+H_2\cdot\dfrac{3}{4}\)</li>
-          <li>Carga \(P_C = 25\ \text{N}\) hacia abajo.</li>
+          <li>Tramo \(BC\) tira hacia \(B\) (abajo): componente \(\uparrow = -H_2\cdot\tfrac{1}{3}\)</li>
+          <li>Tramo \(CD\) tira hacia \(D\) (arriba): componente \(\uparrow = +H_2\cdot\tfrac{3}{4}\)</li>
+          <li>Carga \(P_C = 25\ \text{N}\) ↓</li>
         </ul>
-        \[\sum F_y\big|_C = 0:\quad H_2\cdot\frac{3}{4} - H_2\cdot\frac{1}{3} - 25 = 0\]
-        \[H_2\!\left(\frac{9}{12} - \frac{4}{12}\right) = 25 \implies H_2\cdot\frac{5}{12} = 25 \implies \boxed{H_2 = 60\ \text{N}}\]
+        $$\sum F_y\big|_C = 0:\quad H_2\cdot\frac{3}{4} - H_2\cdot\frac{1}{3} = 25$$
+        $$H_2\!\left(\frac{9-4}{12}\right) = 25 \implies H_2\cdot\frac{5}{12} = 25 \implies \boxed{H_2 = 60\ \text{N}}$$
       </div>
 
       <div class="paso">
         <div class="paso-titulo">Paso 3 — Nudo \(B\): hallar \(H_1\)</div>
         <p>Equilibrio vertical en \(B\):</p>
         <ul>
-          <li>Tramo \(AB\) tira de \(B\) hacia arriba (hacia \(A\)): componente vertical \(+H_1\cdot\dfrac{5}{4}\)</li>
-          <li>Tramo \(BC\) tira de \(B\) hacia arriba (hacia \(C\) que está arriba): componente vertical \(+H_2\cdot\dfrac{1}{3}\)</li>
-          <li>Carga \(P_B = 70\ \text{N}\) hacia abajo.</li>
+          <li>Tramo \(AB\) tira hacia \(A\) (arriba): componente \(\uparrow = +H_1\cdot\tfrac{5}{4}\)</li>
+          <li>Tramo \(BC\) tira hacia \(C\) (arriba): componente \(\uparrow = +H_2\cdot\tfrac{1}{3} = 20\ \text{N}\)</li>
+          <li>Carga \(P_B = 70\ \text{N}\) ↓</li>
         </ul>
-        \[\sum F_y\big|_B = 0:\quad H_1\cdot\frac{5}{4} + 60\cdot\frac{1}{3} - 70 = 0\]
-        \[H_1\cdot\frac{5}{4} = 70 - 20 = 50 \implies \boxed{H_1 = 40\ \text{N}}\]
+        $$\sum F_y\big|_B = 0:\quad H_1\cdot\frac{5}{4} + 20 - 70 = 0 \implies H_1\cdot\frac{5}{4} = 50 \implies \boxed{H_1 = 40\ \text{N}}$$
       </div>
 
       <div class="paso">
         <div class="paso-titulo">Paso 4 — Nudo \(B\): hallar \(P\)</div>
-        <p>Equilibrio horizontal en \(B\) (con \(P\) actuando hacia la izquierda):</p>
-        \[\sum F_x\big|_B = 0:\quad H_2 - H_1 - P = 0 \implies P = H_2 - H_1 = 60 - 40 = \boxed{20\ \text{N}}\]
+        <p>Equilibrio horizontal en \(B\) (\(P\) actúa hacia la izquierda, \(H_2\) hacia la derecha, \(H_1\) hacia la izquierda):</p>
+        $$\sum F_x\big|_B = 0:\quad H_2 - H_1 - P = 0 \implies P = 60 - 40 = \boxed{20\ \text{N}}$$
       </div>
 
       <div class="paso">
-        <div class="paso-titulo">Verificación: reacciones en los apoyos</div>
-        <p>Apoyo \(A\): \(R_{Ax} = H_1 = 40\ \text{N}\ (\leftarrow)\); \(R_{Ay} = H_1\cdot\dfrac{5}{4} = 50\ \text{N}\ (\uparrow)\).</p>
-        <p>Apoyo \(D\): \(R_{Dx} = H_2 = 60\ \text{N}\ (\rightarrow)\); \(R_{Dy} = H_2\cdot\dfrac{3}{4} = 45\ \text{N}\ (\uparrow)\).</p>
-        <p>Comprobación global: \(\sum F_y = 50 + 45 - 70 - 25 = 0\ ✓\); \(\sum F_x = 60 - 40 - 20 = 0\ ✓\).</p>
+        <div class="paso-titulo">Verificación — Reacciones en los apoyos</div>
+        <p>Apoyo \(A\): \(R_{Ax} = H_1 = 40\ \text{N}\) (←); \(R_{Ay} = H_1\cdot m_{AB} = 40\cdot\tfrac{5}{4} = 50\ \text{N}\) (↑).</p>
+        <p>Apoyo \(D\): \(R_{Dx} = H_2 = 60\ \text{N}\) (→); \(R_{Dy} = H_2\cdot m_{CD} = 60\cdot\tfrac{3}{4} = 45\ \text{N}\) (↑).</p>
+        $$\sum F_y = 50+45-70-25 = 0\ ✓\qquad \sum F_x = 60-40-20 = 0\ ✓$$
       </div>
-    </div>
 
-    <div class="resultado-final">
-      <span class="rf-label">Resultado</span>
-      <span class="rf-val">\(P = 20\ \text{N}\) &nbsp;·&nbsp; \(H_1 = 40\ \text{N}\) &nbsp;·&nbsp; \(H_2 = 60\ \text{N}\)</span>
+      <div class="resultado-final">
+        <div class="rf-label">Resultado</div>
+        <div class="rf-val">$$P = 20\ \text{N};\quad H_1 = 40\ \text{N};\quad H_2 = 60\ \text{N}$$</div>
+      </div>
+
+      </div>
     </div>
   </div>
 </div>
@@ -317,90 +345,97 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(y_B = 5{,}55\ \text{m},\ y_D = 5{,}83\ \text{m}\); &nbsp; b. \(T = 24{,}761\ \text{kN},\ \theta = 43{,}37°\).</p>
     </div>
 
-    <!-- RESOLUCIÓN -->
-    <div class="seccion s-teoria">
-      <h3>Conceptos clave</h3>
-      <p>Cuando <strong>todas las cargas son verticales</strong>, la componente horizontal de la tensión es
-      <strong>constante en todo el cable</strong>: \(H = \text{cte}\). La tensión en cada tramo es:</p>
-      \[T_i = \dfrac{H}{\cos\theta_i}\]
-      <p>donde \(\theta_i\) es el ángulo del tramo con la horizontal. La <strong>tensión máxima</strong> se produce en el tramo de <strong>mayor pendiente</strong>.</p>
-      <p>Equilibrio vertical en cada nudo de carga (con \(P_i\) positivo hacia abajo):</p>
-      \[\sum F_y = 0:\quad H\,\frac{y_{i-1}-y_i}{\Delta x_\text{iz}} + H\,\frac{y_{i+1}-y_i}{\Delta x_\text{der}} = P_i\]
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Separaciones horizontales</td><td>\(AB=20\ \text{m},\quad BC=10\ \text{m},\quad CD=15\ \text{m},\quad DE=15\ \text{m}\)</td></tr>
+          <tr><td>Posición de \(C\)</td><td>\(5\ \text{m}\) por debajo de \(A\) (dato del enunciado)</td></tr>
+          <tr><td>Posición de \(E\)</td><td>\(20\ \text{m}\) por encima de \(A\)</td></tr>
+          <tr><td>Carga en \(B\)</td><td>\(6\ \text{kN}\) ↓</td></tr>
+          <tr><td>Carga en \(C\)</td><td>\(12\ \text{kN}\) ↓</td></tr>
+          <tr><td>Carga en \(D\)</td><td>\(4\ \text{kN}\) ↓</td></tr>
+          <tr><td>Incógnitas</td><td>\(H\) (tensión horizontal), \(y_B\), \(y_D\)</td></tr>
+        </table>
+      </div>
     </div>
 
-    <div class="seccion s-resolucion">
-      <h3>Resolución</h3>
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría: cargas verticales → \(H\) constante <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Cuando <strong>todas las cargas son verticales</strong>, la componente horizontal de la tensión es <strong>constante en todo el cable</strong>: \(H = \text{cte}\).</p>
+        <div class="formula-box">
+          <div class="formula-label">Equilibrio vertical en un nudo de carga</div>
+          $$\sum F_y = 0:\quad H\,\frac{y_{i-1}-y_i}{\Delta x_\text{iz}} + H\,\frac{y_{i+1}-y_i}{\Delta x_\text{der}} = P_i$$
+        </div>
+        <div class="formula-box">
+          <div class="formula-label">Tensión en un tramo</div>
+          $$T_i = \sqrt{H^2 + V_i^2}\,,\quad V_i = H\cdot\frac{\Delta y_i}{\Delta x_i}$$
+        </div>
+        <div class="nota">💡 La tensión máxima aparece en el tramo de mayor pendiente.</div>
+      </div>
+    </div>
 
-      <!-- Paso 1 -->
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
       <div class="paso">
-        <div class="paso-titulo">Paso 1 · Sistema de referencia y datos geométricos</div>
-        <p>Se toma \(A\) como origen. El apoyo \(E\) está \(20\ \text{m}\) por encima de \(A\):</p>
-        \[A = (0,\,0)\quad B = (20,\,y_B)\quad C = (30,\,-5)\quad D = (45,\,y_D)\quad E = (60,\,+20)\]
-        <p>Incógnitas: \(H\), \(y_B\) y \(y_D\). Las cargas verticales son \(6\ \text{kN}\) en \(B\), \(12\ \text{kN}\) en \(C\) y \(4\ \text{kN}\) en \(D\).</p>
+        <div class="paso-titulo">Paso 1 — Sistema de referencia</div>
+        <p>Origen en \(A\); \(y\) positivo hacia arriba:</p>
+        $$A(0,\,0)\quad B(20,\,y_B)\quad C(30,\,-5)\quad D(45,\,y_D)\quad E(60,\,+20)$$
       </div>
 
-      <!-- Paso 2 -->
       <div class="paso">
-        <div class="paso-titulo">Paso 2 · Equilibrio en el nudo \(B\)</div>
-        \[\sum F_y^B = 0:\quad H\,\frac{0-y_B}{20} + H\,\frac{-5-y_B}{10} = 6\]
-        <p>Expandiendo y agrupando:</p>
-        \[H\,\frac{-y_B}{20} + H\,\frac{-5-y_B}{10} = 6 \;\Rightarrow\; H\,\frac{-3y_B-10}{20} = 6 \tag{I}\]
-        <p>Despejando: \(\displaystyle y_B = -\frac{10+120/H}{3}\)</p>
+        <div class="paso-titulo">Paso 2 — Equilibrio en \(B\) → ecuación (I)</div>
+        $$\sum F_y^B = 0:\quad H\,\frac{0-y_B}{20} + H\,\frac{-5-y_B}{10} = 6$$
+        $$H\,\frac{-3y_B-10}{20} = 6 \tag{I} \quad\Rightarrow\quad y_B = -\frac{10+120/H}{3}$$
       </div>
 
-      <!-- Paso 3 -->
       <div class="paso">
-        <div class="paso-titulo">Paso 3 · Equilibrio en el nudo \(D\)</div>
-        \[\sum F_y^D = 0:\quad H\,\frac{-5-y_D}{15} + H\,\frac{20-y_D}{15} = 4\]
-        \[H\,\frac{15-2y_D}{15} = 4 \tag{III}\]
-        <p>Despejando: \(\displaystyle y_D = \frac{15-60/H}{2}\)</p>
+        <div class="paso-titulo">Paso 3 — Equilibrio en \(D\) → ecuación (III)</div>
+        $$\sum F_y^D = 0:\quad H\,\frac{-5-y_D}{15} + H\,\frac{20-y_D}{15} = 4$$
+        $$H\,\frac{15-2y_D}{15} = 4 \tag{III} \quad\Rightarrow\quad y_D = \frac{15-60/H}{2}$$
       </div>
 
-      <!-- Paso 4 -->
       <div class="paso">
-        <div class="paso-titulo">Paso 4 · Equilibrio en el nudo \(C\) → valor de \(H\)</div>
-        \[\sum F_y^C = 0:\quad H\,\frac{y_B+5}{10} + H\,\frac{y_D+5}{15} = 12 \tag{II}\]
-        <p>Sustituyendo \(y_B+5 = \dfrac{5-120/H}{3}\) y \(y_D+5 = \dfrac{25-60/H}{2}\):</p>
-        \[H\left[\frac{5-120/H}{30}+\frac{25-60/H}{30}\right]=12 \;\Rightarrow\; H\cdot\frac{30-180/H}{30}=12\]
-        \[H - 6 = 12 \;\Rightarrow\; \boxed{H = 18\ \text{kN}}\]
+        <div class="paso-titulo">Paso 4 — Equilibrio en \(C\) → hallar \(H\)</div>
+        $$\sum F_y^C = 0:\quad H\,\frac{y_B+5}{10} + H\,\frac{y_D+5}{15} = 12 \tag{II}$$
+        <p>Sustituyendo \(y_B+5 = \dfrac{5-120/H}{3}\) y \(y_D+5 = \dfrac{25-60/H}{2}\) en (II):</p>
+        $$H\cdot\frac{(5-120/H)+(25-60/H)}{30}=12 \;\Rightarrow\; H\cdot\frac{30-180/H}{30}=12$$
+        $$H - 6 = 12 \;\Rightarrow\; \boxed{H = 18\ \text{kN}}$$
       </div>
 
-      <!-- Paso 5 -->
       <div class="paso">
-        <div class="paso-titulo">Paso 5 · Elevación de \(B\) y \(D\)</div>
-        <p>Con \(H = 18\ \text{kN}\):</p>
-        \[y_B = -\frac{10+120/18}{3} = -\frac{10+6{,}667}{3} = \frac{-16{,}667}{3} = -5{,}556\ \text{m}\]
-        \[y_D = \frac{15-60/18}{2} = \frac{15-3{,}333}{2} = \frac{11{,}667}{2} = +5{,}833\ \text{m}\]
-        <p>El punto \(B\) se encuentra \(\mathbf{5{,}56\ \text{m}}\) <strong>por debajo</strong> de \(A\); el punto \(D\) se encuentra \(\mathbf{5{,}83\ \text{m}}\) <strong>por encima</strong> de \(A\).</p>
+        <div class="paso-titulo">Paso 5 — Elevación de \(B\) y \(D\)</div>
+        $$y_B = -\frac{10+120/18}{3} = -\frac{16{,}667}{3} = -5{,}556\ \text{m} \quad(\mathbf{5{,}56\ \text{m\ bajo\ }A})$$
+        $$y_D = \frac{15-60/18}{2} = \frac{11{,}667}{2} = +5{,}833\ \text{m} \quad(\mathbf{5{,}83\ \text{m\ sobre\ }A})$$
       </div>
 
-      <!-- Paso 6 -->
       <div class="paso">
-        <div class="paso-titulo">Paso 6 · Pendientes de cada tramo</div>
-        <p>Pendiente \(= \Delta y / \Delta x\) (positivo = sube hacia la derecha):</p>
-        \[m_{AB}=\frac{-5{,}556-0}{20}=-0{,}278 \;\rightarrow\; |\theta_{AB}|=15{,}5°\]
-        \[m_{BC}=\frac{-5-(-5{,}556)}{10}=\frac{0{,}556}{10}=+0{,}056 \;\rightarrow\; \theta_{BC}=3{,}2°\]
-        \[m_{CD}=\frac{5{,}833-(-5)}{15}=\frac{10{,}833}{15}=+0{,}722 \;\rightarrow\; \theta_{CD}=35{,}9°\]
-        \[m_{DE}=\frac{20-5{,}833}{15}=\frac{14{,}167}{15}=+0{,}944 \;\rightarrow\; \theta_{DE}=43{,}37°\]
-        <p>El tramo de <strong>mayor pendiente</strong> es \(\mathbf{DE}\): \(\theta_{\max}=43{,}37°\).</p>
+        <div class="paso-titulo">Paso 6 — Pendiente y ángulo de cada tramo</div>
+        $$m_{AB}=\frac{-5{,}556}{20}=-0{,}278\;\rightarrow\;|\theta|=15{,}5°$$
+        $$m_{BC}=\frac{0{,}556}{10}=+0{,}056\;\rightarrow\;\theta=3{,}2°$$
+        $$m_{CD}=\frac{10{,}833}{15}=+0{,}722\;\rightarrow\;\theta=35{,}9°$$
+        $$m_{DE}=\frac{14{,}167}{15}=+0{,}944\;\rightarrow\;\theta_{DE}=43{,}37°\quad(\text{máxima})$$
       </div>
 
-      <!-- Paso 7 -->
       <div class="paso">
-        <div class="paso-titulo">Paso 7 · Tensión máxima (tramo \(DE\))</div>
-        <p>Componente vertical de la tensión en \(DE\):</p>
-        \[V_{DE} = H\cdot m_{DE} = 18\times\frac{14{,}167}{15} = 17{,}0\ \text{kN}\]
-        <p>Tensión resultante:</p>
-        \[T_{\max} = \sqrt{H^2+V_{DE}^2} = \sqrt{18^2+17^2} = \sqrt{324+289} = \sqrt{613}\]
-        \[\boxed{T_{\max} = 24{,}76\ \text{kN}}\]
+        <div class="paso-titulo">Paso 7 — Tensión máxima en el tramo \(DE\)</div>
+        $$V_{DE}=H\cdot m_{DE}=18\times\frac{14{,}167}{15}=17{,}0\ \text{kN}$$
+        $$T_{\max}=\sqrt{18^2+17^2}=\sqrt{613}=\boxed{24{,}76\ \text{kN}}$$
       </div>
-    </div><!-- fin s-resolucion -->
 
-    <div class="resultado-final">
-      <span class="rf-label">a)</span>
-      <span class="rf-val">\(y_B = 5{,}56\ \text{m}\) (bajo \(A\)); &ensp; \(y_D = 5{,}83\ \text{m}\) (sobre \(A\))</span>
-      <span class="rf-label">b)</span>
-      <span class="rf-val">\(\theta_{\max} = 43{,}37°\) (tramo \(DE\)); \quad T_{\max} = 24{,}76\ \text{kN}\)</span>
+      <div class="resultado-final">
+        <div class="rf-label">Resultados</div>
+        <div class="rf-val">
+          a) \(y_B = 5{,}56\ \text{m}\) (bajo \(A\));&ensp;\(y_D = 5{,}83\ \text{m}\) (sobre \(A\))<br>
+          b) \(\theta_{\max} = 43{,}37°\) (tramo \(DE\));&ensp;\(T_{\max} = 24{,}76\ \text{kN}\)
+        </div>
+      </div>
+
+      </div>
     </div>
 
   </div>
