@@ -314,9 +314,95 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <p><strong>b)</strong> La pendiente máxima y la tensión máxima en el cable.</p>
       <p>Datos: cargas \(6\ \text{kN}\) (en \(B\)), \(12\ \text{kN}\) (en \(C\)) y \(4\ \text{kN}\) (en \(D\)); separaciones horizontales \(20+10+15+15\ \text{m}\); \(E\) está \(20\ \text{m}\) por encima de \(A\).</p>
       <div class="nota">Cables sometidos a cargas puntuales (o concentradas).</div>
-      <p style="margin-top:10px"><strong>Resultado:</strong> a. \(y_B = 5{,}55\ \text{m},\ y_C = 5{,}83\ \text{m}\); &nbsp; b. \(T = 24{,}761\ \text{kN},\ \theta = 43{,}37°\).</p>
+      <p style="margin-top:10px"><strong>Resultado:</strong> a. \(y_B = 5{,}55\ \text{m},\ y_D = 5{,}83\ \text{m}\); &nbsp; b. \(T = 24{,}761\ \text{kN},\ \theta = 43{,}37°\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- RESOLUCIÓN -->
+    <div class="seccion s-teoria">
+      <h3>Conceptos clave</h3>
+      <p>Cuando <strong>todas las cargas son verticales</strong>, la componente horizontal de la tensión es
+      <strong>constante en todo el cable</strong>: \(H = \text{cte}\). La tensión en cada tramo es:</p>
+      \[T_i = \dfrac{H}{\cos\theta_i}\]
+      <p>donde \(\theta_i\) es el ángulo del tramo con la horizontal. La <strong>tensión máxima</strong> se produce en el tramo de <strong>mayor pendiente</strong>.</p>
+      <p>Equilibrio vertical en cada nudo de carga (con \(P_i\) positivo hacia abajo):</p>
+      \[\sum F_y = 0:\quad H\,\frac{y_{i-1}-y_i}{\Delta x_\text{iz}} + H\,\frac{y_{i+1}-y_i}{\Delta x_\text{der}} = P_i\]
+    </div>
+
+    <div class="seccion s-resolucion">
+      <h3>Resolución</h3>
+
+      <!-- Paso 1 -->
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 · Sistema de referencia y datos geométricos</div>
+        <p>Se toma \(A\) como origen. El apoyo \(E\) está \(20\ \text{m}\) por encima de \(A\):</p>
+        \[A = (0,\,0)\quad B = (20,\,y_B)\quad C = (30,\,-5)\quad D = (45,\,y_D)\quad E = (60,\,+20)\]
+        <p>Incógnitas: \(H\), \(y_B\) y \(y_D\). Las cargas verticales son \(6\ \text{kN}\) en \(B\), \(12\ \text{kN}\) en \(C\) y \(4\ \text{kN}\) en \(D\).</p>
+      </div>
+
+      <!-- Paso 2 -->
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 · Equilibrio en el nudo \(B\)</div>
+        \[\sum F_y^B = 0:\quad H\,\frac{0-y_B}{20} + H\,\frac{-5-y_B}{10} = 6\]
+        <p>Expandiendo y agrupando:</p>
+        \[H\,\frac{-y_B}{20} + H\,\frac{-5-y_B}{10} = 6 \;\Rightarrow\; H\,\frac{-3y_B-10}{20} = 6 \tag{I}\]
+        <p>Despejando: \(\displaystyle y_B = -\frac{10+120/H}{3}\)</p>
+      </div>
+
+      <!-- Paso 3 -->
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 · Equilibrio en el nudo \(D\)</div>
+        \[\sum F_y^D = 0:\quad H\,\frac{-5-y_D}{15} + H\,\frac{20-y_D}{15} = 4\]
+        \[H\,\frac{15-2y_D}{15} = 4 \tag{III}\]
+        <p>Despejando: \(\displaystyle y_D = \frac{15-60/H}{2}\)</p>
+      </div>
+
+      <!-- Paso 4 -->
+      <div class="paso">
+        <div class="paso-titulo">Paso 4 · Equilibrio en el nudo \(C\) → valor de \(H\)</div>
+        \[\sum F_y^C = 0:\quad H\,\frac{y_B+5}{10} + H\,\frac{y_D+5}{15} = 12 \tag{II}\]
+        <p>Sustituyendo \(y_B+5 = \dfrac{5-120/H}{3}\) y \(y_D+5 = \dfrac{25-60/H}{2}\):</p>
+        \[H\left[\frac{5-120/H}{30}+\frac{25-60/H}{30}\right]=12 \;\Rightarrow\; H\cdot\frac{30-180/H}{30}=12\]
+        \[H - 6 = 12 \;\Rightarrow\; \boxed{H = 18\ \text{kN}}\]
+      </div>
+
+      <!-- Paso 5 -->
+      <div class="paso">
+        <div class="paso-titulo">Paso 5 · Elevación de \(B\) y \(D\)</div>
+        <p>Con \(H = 18\ \text{kN}\):</p>
+        \[y_B = -\frac{10+120/18}{3} = -\frac{10+6{,}667}{3} = \frac{-16{,}667}{3} = -5{,}556\ \text{m}\]
+        \[y_D = \frac{15-60/18}{2} = \frac{15-3{,}333}{2} = \frac{11{,}667}{2} = +5{,}833\ \text{m}\]
+        <p>El punto \(B\) se encuentra \(\mathbf{5{,}56\ \text{m}}\) <strong>por debajo</strong> de \(A\); el punto \(D\) se encuentra \(\mathbf{5{,}83\ \text{m}}\) <strong>por encima</strong> de \(A\).</p>
+      </div>
+
+      <!-- Paso 6 -->
+      <div class="paso">
+        <div class="paso-titulo">Paso 6 · Pendientes de cada tramo</div>
+        <p>Pendiente \(= \Delta y / \Delta x\) (positivo = sube hacia la derecha):</p>
+        \[m_{AB}=\frac{-5{,}556-0}{20}=-0{,}278 \;\rightarrow\; |\theta_{AB}|=15{,}5°\]
+        \[m_{BC}=\frac{-5-(-5{,}556)}{10}=\frac{0{,}556}{10}=+0{,}056 \;\rightarrow\; \theta_{BC}=3{,}2°\]
+        \[m_{CD}=\frac{5{,}833-(-5)}{15}=\frac{10{,}833}{15}=+0{,}722 \;\rightarrow\; \theta_{CD}=35{,}9°\]
+        \[m_{DE}=\frac{20-5{,}833}{15}=\frac{14{,}167}{15}=+0{,}944 \;\rightarrow\; \theta_{DE}=43{,}37°\]
+        <p>El tramo de <strong>mayor pendiente</strong> es \(\mathbf{DE}\): \(\theta_{\max}=43{,}37°\).</p>
+      </div>
+
+      <!-- Paso 7 -->
+      <div class="paso">
+        <div class="paso-titulo">Paso 7 · Tensión máxima (tramo \(DE\))</div>
+        <p>Componente vertical de la tensión en \(DE\):</p>
+        \[V_{DE} = H\cdot m_{DE} = 18\times\frac{14{,}167}{15} = 17{,}0\ \text{kN}\]
+        <p>Tensión resultante:</p>
+        \[T_{\max} = \sqrt{H^2+V_{DE}^2} = \sqrt{18^2+17^2} = \sqrt{324+289} = \sqrt{613}\]
+        \[\boxed{T_{\max} = 24{,}76\ \text{kN}}\]
+      </div>
+    </div><!-- fin s-resolucion -->
+
+    <div class="resultado-final">
+      <span class="rf-label">a)</span>
+      <span class="rf-val">\(y_B = 5{,}56\ \text{m}\) (bajo \(A\)); &ensp; \(y_D = 5{,}83\ \text{m}\) (sobre \(A\))</span>
+      <span class="rf-label">b)</span>
+      <span class="rf-val">\(\theta_{\max} = 43{,}37°\) (tramo \(DE\)); \quad T_{\max} = 24{,}76\ \text{kN}\)</span>
+    </div>
+
   </div>
 </div>
 
