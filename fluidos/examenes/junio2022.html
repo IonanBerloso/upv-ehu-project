@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0e1a">
+<meta name="theme-color" content="#131313">
 <title>EF Junio 2022 · Mecánica de Fluidos · UPV/EHU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,9 +15,9 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0e1a;--panel:#0d1120;--surface:#111827;
-  --border:#1a2a3a;--border2:#223040;
-  --text:#e2e8f0;--text2:#8ba3be;--text3:#4a6480;
+  --bg:#131313;--panel:rgba(255,255,255,.02);--surface:rgba(255,255,255,.04);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
   --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;
   --purple:#c084fc;--orange:#f4a261;--yellow:#ffd93d;
   --sb-w:268px;--top-h:52px;
@@ -1660,14 +1660,21 @@ function showPanel(panelId) {
   const cardId = panelId.replace('panel-', '');
   const sbItem = document.getElementById('sb-' + cardId);
   if (sbItem) sbItem.classList.add('active');
-  // save to sessionStorage
-  sessionStorage.setItem('activePanel', panelId);
   return false;
 }
 
-// Restore last panel
-const saved = sessionStorage.getItem('activePanel');
-if (saved && document.getElementById(saved)) showPanel(saved);
+// Restore last panel (key scoped to this exam)
+const SS_KEY = 'panel-junio2022';
+const saved = sessionStorage.getItem(SS_KEY);
+if (saved && document.getElementById(saved)) {
+  showPanel(saved);
+}
+// update key on every showPanel call
+const _origShowPanel = showPanel;
+window.showPanel = function(id) {
+  sessionStorage.setItem(SS_KEY, id);
+  return _origShowPanel(id);
+};
 
 function toggleSec(b) {
   const s = b.closest('.seccion');
