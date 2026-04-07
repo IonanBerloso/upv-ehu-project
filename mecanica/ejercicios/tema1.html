@@ -3,40 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#131313">
 <title>Tema 1 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="initKatex()"></script>
 
-
-
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
-  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --accent:#c084fc;--gold:#f59e0b;--green:#6bcb77;--blue:#7ecfff;--orange:#f4a261;--yellow:#ffd93d;
-  --transition:.2s;
+  --bg:#131313;
+  --surface:rgba(255,255,255,.04);
+  --surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#c084fc;
+  --accent-dim:rgba(192,132,252,.12);
+  --accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;
+  --gold-dim:rgba(245,158,11,.1);
+  --gold-border:rgba(245,158,11,.28);
+  --green:#10b981;
+  --blue:#38bdf8;
+  --orange:#fb923c;
+  --yellow:#ffd93d;
+  --ff:'Space Grotesk',system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;
+  --radius-sm:6px;
+  --transition:.22s cubic-bezier(.4,0,.2,1);
 }
 html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
 
 /* TOPBAR */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
 .topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
 .topbar-back:hover{color:var(--accent);text-decoration:none}
 .topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbar-pill{margin-right:20px;background:#1a0a30;border:1px solid #3b1f6e;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);white-space:nowrap}
+.topbar-pill{margin-right:20px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);white-space:nowrap}
 
 /* PAGE HEADER */
 .page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
-.ph-type{display:inline-block;background:#1a0a30;border:1px solid #3b1f6e;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.ph-type{display:inline-block;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
 .page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
 .ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
 .ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
@@ -45,9 +61,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 /* JUMP LINKS */
 .jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
 .jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
-.jump-link:hover{background:#1a0a30;color:var(--accent);border-color:var(--accent);text-decoration:none}
-.jump-link-exam{background:#1a0f00;border-color:#854d0e;color:#fbbf24}
-.jump-link-exam:hover{background:#2a1a00;color:#fde68a;border-color:#f59e0b}
+.jump-link:hover{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border);text-decoration:none}
+.jump-link-exam{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold)}
+.jump-link-exam:hover{background:rgba(245,158,11,.15);color:var(--gold);border-color:var(--gold)}
 
 /* CONTAINER */
 .container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
@@ -55,7 +71,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 /* EX CARDS */
 .ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
 .ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
-.ex-header:hover{background:#111}
+.ex-header:hover{background:var(--surface2)}
 .ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
 .ex-meta{font-size:.78em;color:var(--text3)}
 .ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
@@ -64,7 +80,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .ex-card.open .ex-body{display:block}
 
 /* ENUNCIADO */
-.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #2a1a4a;white-space:pre-wrap}
+.enunciado{background:var(--surface2);border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid var(--accent-border);white-space:pre-wrap}
 
 /* SECCIONES */
 .seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
@@ -74,68 +90,68 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
 .sec-open .sec-body{display:block}
 
-.s-datos .sec-btn{background:#1a0a30;color:var(--accent);border:1px solid #3b1f6e}
-.s-datos .sec-body{background:#0e0520;border:1px solid #3b1f6e;border-top:none}
-.s-formulas .sec-btn{background:#1a0f00;color:var(--orange);border:1px solid #2a1800}
-.s-formulas .sec-body{background:#0f0800;border:1px solid #2a1800;border-top:none}
-.s-teoria .sec-btn{background:#0a1a2e;color:var(--blue);border:1px solid #0d2a44}
-.s-teoria .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
-.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
-.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
+.s-datos .sec-btn{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border)}
+.s-datos .sec-body{background:rgba(192,132,252,.04);border:1px solid var(--accent-border);border-top:none}
+.s-formulas .sec-btn{background:rgba(251,146,60,.1);color:var(--orange);border:1px solid rgba(251,146,60,.25)}
+.s-formulas .sec-body{background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.2);border-top:none}
+.s-teoria .sec-btn{background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
+.s-teoria .sec-body{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.2);border-top:none}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-top:none}
 
 /* TABLAS */
 .t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
-.t-datos th{background:#1e0a3a;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #3b1f6e}
-.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#d0c8ff}
-.t-datos tr:nth-child(even) td{background:#0a0518}
+.t-datos th{background:var(--accent-dim);color:var(--accent);padding:7px 10px;text-align:left;border:1px solid var(--accent-border)}
+.t-datos td{padding:7px 10px;border:1px solid var(--border);color:var(--text2)}
+.t-datos tr:nth-child(even) td{background:rgba(192,132,252,.04)}
 
 /* FORMULA BOX */
-.formula-box{background:#110800;border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#ffe0c0;overflow-x:auto}
+.formula-box{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#fed7aa;overflow-x:auto}
 .formula-label{font-size:.72em;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
 
 /* PASOS */
-.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
+.paso{margin-bottom:14px;padding:10px 14px;background:rgba(16,185,129,.06);border-radius:8px;border-left:3px solid rgba(16,185,129,.4)}
 .paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 
 /* RESULTADO FINAL */
-.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
+.resultado-final{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:12px 16px;margin-top:12px}
 .rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
-.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
+.rf-val{color:#d1fae5;font-size:.92em;line-height:1.9}
 
 /* CONCLUSIONES */
 .concl-item{padding:6px 0 6px 14px;border-left:2px solid var(--yellow);margin-bottom:8px;font-size:.87em;color:#f0e080}
 
 /* NOTA */
-.nota{background:#1a0a00;border:1px solid #3a1a00;border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+.nota{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
 
 /* PRÓXIMAMENTE */
-.soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:20px;text-align:center;color:#333;font-size:.85em;font-style:italic}
+.soon{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:20px;text-align:center;color:var(--text3);font-size:.85em;font-style:italic}
 
 /* NIVEL EXAMEN */
-.ex-card-exam{border-color:#854d0e}
-.ex-card-exam .ex-header:hover{background:#1a0f00}
-.ex-card-exam .ex-header-left h2{color:#fbbf24}
-.ex-card-exam.open .ex-arrow{color:#fbbf24}
-.exam-badge{display:inline-flex;align-items:center;gap:5px;background:#1a0f00;border:1px solid #854d0e;border-radius:20px;padding:3px 10px;font-size:.7em;font-weight:700;color:#fbbf24;margin-left:10px;vertical-align:middle;letter-spacing:.03em}
+.ex-card-exam{border-color:var(--gold-border)}
+.ex-card-exam .ex-header:hover{background:rgba(245,158,11,.06)}
+.ex-card-exam .ex-header-left h2{color:var(--gold)}
+.ex-card-exam.open .ex-arrow{color:var(--gold)}
+.exam-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:20px;padding:3px 10px;font-size:.7em;font-weight:700;color:var(--gold);margin-left:10px;vertical-align:middle;letter-spacing:.03em}
 
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:3px}
+::-webkit-scrollbar-thumb{background:rgba(192,132,252,.18);border-radius:3px}
 .katex{font-size:1.05em}
 .katex-display{overflow-x:auto;overflow-y:hidden}
 
 /* TEMA PICKER */
 .tema-picker{position:relative;margin-right:20px}
-.tema-picker-btn{background:#1a0a30;border:1px solid #3b1f6e;border-radius:20px;padding:4px 14px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s}
-.tema-picker-btn:hover{background:#240f44}
-.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:#0d0d0d;border:1px solid #2a1a4a;border-radius:10px;padding:6px;min-width:250px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 14px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s}
+.tema-picker-btn:hover{background:rgba(192,132,252,.2)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:250px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
 .tema-picker.open .tema-dropdown{display:block}
 .td-item{display:block;padding:8px 12px;border-radius:6px;font-size:.8em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500}
-.td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:#1a0a30;color:var(--accent)}
-.td-item.td-active{color:var(--accent);background:#1a0a30;font-weight:700;pointer-events:none}
+.td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:var(--accent-dim);color:var(--accent)}
+.td-item.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
 .td-item.td-soon{color:#333;cursor:default}
-.td-sep{padding:4px 12px 2px;font-size:.65em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a3a6a;pointer-events:none;user-select:none;margin-top:2px}
-.td-sep-line{border:none;border-top:1px solid #1e1030;margin:4px 6px}
+.td-sep{padding:4px 12px 2px;font-size:.65em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);pointer-events:none;user-select:none;margin-top:2px}
+.td-sep-line{border:none;border-top:1px solid var(--border);margin:4px 6px}
 .td-num{display:inline-block;width:24px;font-weight:700}
 .td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
 @media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
@@ -148,7 +164,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Teoría
   </a>
-  <span class="topbar-title">⚙️ Tema 1 · Fundamentos de Cálculo Vectorial — Ejercicios</span>
+  <span class="topbar-title">Mecánica · Tema 1 <span style="color:var(--accent)">· Cálculo Vectorial</span></span>
   <div class="tema-picker" id="temaPicker">
   <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">📚 T1 ▾</button>
   <div class="tema-dropdown">
@@ -309,7 +325,6 @@ Coordenadas (en metros):
 
   </div>
 </div><!-- /ex1 -->
-
 
 <!-- ══════════════════════════════════════════════════════════
      EJERCICIOS 1.2 – 1.18 (próximamente)
@@ -1243,6 +1258,10 @@ Fuerzas: 300 N (→) a altura 2,1 m; 200 N (→) a altura 3,6 m; 125 N a 30° en
     <span class="ex-arrow">▼</span>
   </div>
   <div class="ex-body">
+
+    <div style="text-align:center;margin:16px 0 4px">
+      <img src="img/t1_ex13_fig.png" alt="Sistema de ejes: eje y con momento M, resultante R, puntos O-A-B sobre eje x, plano xz con distancias a y b" style="max-width:340px;width:100%;border-radius:8px;background:#fff;padding:10px">
+    </div>
 
     <div class="enunciado">
       <p>Se conocen los siguientes datos del sistema de dos vectores deslizantes \(\vec{v}_A\) y \(\vec{v}_B\):</p>
