@@ -51,7 +51,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
 .ex-body{display:none;padding:0 20px 20px}
 .ex-card.open .ex-body{display:block}
-.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #333;white-space:pre-wrap}
+.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:0;border-left:3px solid #333;white-space:pre-wrap}
+/* figure — attached to enunciado */
+.ex-figure{margin:0 0 20px;padding:10px 16px 14px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.07);border-top:none;border-radius:0 0 10px 10px}
+.ex-figure-label{font-size:.61em;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(180,180,180,.45);font-family:monospace;margin-bottom:9px}
+.ex-figure img{max-width:100%;max-height:380px;border-radius:6px;display:block;background:#fff;object-fit:contain}
+.enunciado:not(+ .ex-figure){margin-bottom:20px}
+.enunciado + .ex-figure + *,.ex-figure + *{margin-top:0}
+.enunciado + .ex-figure{margin-bottom:20px}
 .seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
 .sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
 .sec-btn .sarr{transition:.2s}
@@ -86,7 +93,31 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 ::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
 .katex{font-size:1.05em}
 .katex-display{overflow-x:auto;overflow-y:hidden}
-@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+@media(max-width:640px){
+  .topbar-pill{display:none}
+  .topbar-title{font-size:.78em}
+  .page-header{padding:18px 14px 14px}
+  .page-header h1{font-size:1.25em}
+  .ph-meta{font-size:.76em}
+  .jump-links{padding:10px 14px;gap:6px}
+  .jump-link{font-size:.71em;padding:4px 9px}
+  .container{padding:12px 12px 40px}
+  .ex-header{padding:12px 14px}
+  .ex-header-left h2{font-size:.92em}
+  .ex-meta{font-size:.73em}
+  .ex-body{padding:0 12px 14px}
+  .enunciado{padding:10px 12px;font-size:.84em}
+  .sec-btn{font-size:.83em;padding:9px 12px}
+  .sec-body{padding:10px 12px;overflow-x:auto}
+  .t-datos{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .t-datos th,.t-datos td{padding:5px 7px;white-space:nowrap}
+  .formula-box{padding:6px 10px}
+  .paso{padding:8px 10px}
+  .resultado-final{padding:10px 12px}
+  .ex-figure{padding:8px 12px 10px}
+  .ex-figure img{max-height:260px}
+  .vf-item{padding:10px 12px}
+}
 </style>
 </head>
 <body>
@@ -145,6 +176,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <b>c)</b> Fuerza sobre el álabe si $u = 20\ \text{m/s}$ <b>hacia el chorro</b>.
 
 <b>Resultados:</b> $F = 42{,}47\ \text{kN}$; $u' = 60\ \text{m/s}$; $F' = 169{,}9\ \text{kN}$.</div>
+    <div class="ex-figure">
+      <div class="ex-figure-label">&#128196; Figura original (PDF)</div>
+      <img src="img/junio2020_p05_c1.png" alt="Figura del enunciado original (PDF)">
+    </div>
 
     <div class="seccion s-datos sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
@@ -391,6 +426,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <b>c)</b> ¿Es buena idea cerrar la válvula en 10 s en lugar de 25 s? Razonar con valores.
 
 <b>Resultados:</b> $h = 46{,}3\ \text{cm}$; $v_c = 1{,}17\ \text{m/s}$; $e = 14\ \text{mm}$; el cambio es aceptable.</div>
+    <div class="ex-figure">
+      <div class="ex-figure-label">&#128196; Figura original (PDF)</div>
+      <img src="img/junio2020_p06_c1.png" alt="Figura del enunciado original (PDF)">
+    </div>
 
     <div class="seccion s-formulas sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas clave <span class="sarr">▼</span></button>
@@ -501,6 +540,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <b>Datos:</b> $P_{atm} = 1\ \text{atm}$; $P_v/\gamma = 0{,}2\ \text{mca}$.
 
 <b>Resultados:</b> $h_{mi} = 12 + 1{,}02 \times 10^{-2} Q^{1{,}852} + 1{,}81 \times 10^{-3} Q^2$; $h_{mtb} = 50{,}74 - 5333{,}53 \cdot Q^2$; $z_b = -1{,}52\ \text{m}$; $P_{vac} = -0{,}83\ \text{kg/cm}^2$, $P_{man} = 2{,}83\ \text{kg/cm}^2$; $h_{f,valv} = 3{,}98\ \text{m}$, $k_{valv} = 9{,}02$; $\Delta P = 5{,}07\ \text{kg/cm}^2$.</div>
+    <div class="ex-figure">
+      <div class="ex-figure-label">&#128196; Figura original (PDF)</div>
+      <img src="img/junio2020_p06_c2.png" alt="Figura del enunciado original (PDF)">
+    </div>
 
     <div class="seccion s-formulas sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas clave <span class="sarr">▼</span></button>
@@ -631,6 +674,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <b>d)</b> Longitud tubería 4 (m).
 
 <b>Resultados:</b> $Q_2 = 14{,}74\ \text{l/s}$; $v_5 = 3{,}71\ \text{m/s}$; $v_3 = 3{,}65\ \text{m/s}$, $v_4 = 4{,}39\ \text{m/s}$; $L_4 = 108{,}21\ \text{m}$.</div>
+    <div class="ex-figure">
+      <div class="ex-figure-label">&#128196; Figura original (PDF)</div>
+      <img src="img/junio2020_p07_c1.png" alt="Figura del enunciado original (PDF)">
+    </div>
 
     <div class="seccion s-datos sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">📋 Datos de la red <span class="sarr">▼</span></button>
