@@ -45,10 +45,11 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--surface3:#161616;
+  --border:#1a1a1a;--border2:#222222;
   --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
   --accent:#c084fc;--gold:#f59e0b;--green:#6bcb77;--blue:#7ecfff;--orange:#f4a261;--red:#f87171;
-  --transition:.2s;
+  --purple:#a78bfa;--radius:12px;--transition:.2s cubic-bezier(.4,0,.2,1);
 }
 html{scroll-behavior:smooth}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
@@ -69,7 +70,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:#1a0a30;color:var(--accent)}
 .td-item.td-active{color:var(--gold);background:#1a0f00;font-weight:700;border:1px solid #854d0e;pointer-events:none}
 .td-item.td-soon{color:#333;cursor:default}
-.td-sep{padding:4px 12px 2px;font-size:.65em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a3a6a;pointer-events:none;user-select:none;margin-top:2px}
+.td-sep{padding:4px 12px 2px;font-size:.65em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a3a6a;pointer-events:none;user-select:none;margin-top:2px;display:block}
 .td-sep-line{border:none;border-top:1px solid #1e1030;margin:4px 6px}
 .td-num{display:inline-block;width:24px;font-weight:700}
 .td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
@@ -77,30 +78,72 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .td-item.td-active .td-num{color:var(--gold)}
 
 /* PAGE HEADER */
-.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
-.ph-type{display:inline-block;background:#1a0f00;border:1px solid #854d0e;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
-.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
-.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
-.ph-tags{display:flex;flex-wrap:wrap;gap:6px}
-.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.page-header{padding:36px 24px 24px;max-width:1100px;margin:0 auto;border-bottom:1px solid var(--border)}
+.page-header h1{font-size:1.8em;font-weight:700;color:#f1f5f9;margin-bottom:8px}
+.page-header p{color:var(--text2);font-size:.9em;max-width:640px;line-height:1.7}
 
-/* CONTAINER */
-.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+/* STATS ROW */
+.stats-row{display:flex;flex-wrap:wrap;gap:16px;max-width:1100px;margin:0 auto;padding:24px}
+.stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:30px;padding:8px 18px;display:flex;align-items:center;gap:8px;font-size:.82em}
+.stat-pill .snum{font-weight:700;font-size:1.1em;color:var(--accent)}
+.stat-pill .slabel{color:var(--text3)}
 
-/* YEAR CARD */
-.year-card{background:var(--surface);border:1px solid #854d0e;border-radius:16px;margin-bottom:32px;overflow:hidden}
-.year-header{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;border-bottom:1px solid #2a1a00;transition:background var(--transition)}
-.year-header:hover{background:#0e0800}
-.year-header-left h2{font-size:1.1em;font-weight:700;color:var(--gold);margin-bottom:4px}
-.year-header-left .year-meta{font-size:.8em;color:var(--text3)}
-.year-badge{background:#1a0f00;border:1px solid #854d0e;border-radius:20px;padding:4px 12px;font-size:.75em;font-weight:700;color:var(--gold)}
-.year-arrow{color:#854d0e;font-size:1em;transition:.2s}
-.year-card.open .year-arrow{transform:rotate(180deg);color:var(--gold)}
-.year-body{display:none;padding:20px 22px}
-.year-card.open .year-body{display:block}
+/* FILTER BAR */
+.filter-bar{max-width:1100px;margin:0 auto;padding:0 24px 20px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filter-label{font-size:.78em;color:var(--text3);margin-right:4px}
+.filter-btn{padding:5px 14px;border-radius:20px;font-size:.78em;font-weight:600;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:var(--transition)}
+.filter-btn:hover,.filter-btn.active{background:#1a0a30;color:var(--accent);border-color:var(--accent)}
 
-/* EXAM SECTION */
-.exam-section{margin-bottom:28px}
+/* SECTION DIVIDER */
+.section-divider{max-width:1100px;margin:0 auto;padding:16px 24px 8px;display:flex;align-items:center;gap:12px}
+.section-divider h2{font-size:.85em;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);white-space:nowrap}
+.section-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* EXAM GRID */
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;max-width:1100px;margin:0 auto;padding:0 24px 32px}
+
+/* EXAM CARD */
+.exam-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:var(--transition);display:flex;flex-direction:column;cursor:pointer}
+.exam-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 32px rgba(192,132,252,.08)}
+.exam-card.active-card{border-color:var(--accent);box-shadow:0 0 0 2px rgba(192,132,252,.18)}
+
+/* Card header */
+.ec-header{padding:20px 20px 14px}
+.ec-type-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.ec-type{font-size:.7em;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:3px 10px;border-radius:20px}
+.type-ordinaria{background:#1a0f00;color:var(--gold);border:1px solid #854d0e}
+.type-enero{background:#0a1a2e;color:var(--blue);border:1px solid #0d3a5e}
+.ec-status{font-size:.7em;font-weight:700;letter-spacing:.4px;padding:3px 10px;border-radius:20px}
+.status-done{background:#001a08;color:var(--green);border:1px solid #003318}
+.ec-date{font-size:1.15em;font-weight:700;color:#f1f5f9;margin-bottom:4px}
+.ec-curso{font-size:.78em;color:var(--text3)}
+
+/* Topics */
+.ec-topics{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 14px}
+.ec-tag{padding:3px 10px;border-radius:20px;font-size:.7em;font-weight:600;background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+
+/* Exercises list */
+.ec-exercises{padding:12px 20px 14px;border-top:1px solid var(--border)}
+.ec-ex-row{display:flex;align-items:center;gap:8px;font-size:.8em;color:var(--text2);padding:3px 0}
+.ec-ex-row .ex-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* Card footer */
+.ec-footer{margin-top:auto;padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ec-score{font-size:.78em;color:var(--text3)}
+.ec-score span{color:var(--gold);font-weight:700}
+.ec-open-btn{padding:8px 16px;border-radius:8px;font-size:.8em;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:var(--transition);border:1px solid var(--accent);background:#1a0a30;color:var(--accent);cursor:pointer}
+.ec-open-btn:hover{background:#240f44}
+
+/* EXAM CONTENT */
+.exam-content{display:none;max-width:960px;margin:0 auto;padding:0 24px 60px}
+.exam-content.visible{display:block}
+.content-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding:20px;background:var(--surface);border:1px solid #2a1a4a;border-radius:12px;gap:16px}
+.content-header-title{font-size:1em;font-weight:700;color:var(--gold);margin-bottom:4px}
+.content-header-meta{font-size:.8em;color:var(--text3)}
+.close-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text2);cursor:pointer;font-size:.82em;font-weight:600;transition:var(--transition);white-space:nowrap;flex-shrink:0}
+.close-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* EXAM INTERNALS */
 .exam-section-title{font-size:.72em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #2a1a00}
 
 /* QUESTION CARD */
@@ -118,12 +161,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .q-text li{margin-bottom:4px}
 .q-nota{background:#1a0f00;border-left:3px solid var(--gold);border-radius:4px;padding:8px 12px;font-size:.82em;color:#fde68a;margin-top:10px}
 
-/* FIGURE PLACEHOLDER */
+/* FIGURE */
 .fig-box{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:16px;margin-top:12px;text-align:center;font-size:.8em;color:#333;font-style:italic}
 .fig-box img{max-width:100%;border-radius:6px;margin-top:0}
 .fig-desc{font-size:.78em;color:#444;margin-top:6px}
 
-/* RESOLUCION */
+/* SECCIONES */
 .seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
 .sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
 .sec-btn .sarr{transition:.2s}
@@ -148,7 +191,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 ::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:3px}
 .katex{font-size:1.05em}
 .katex-display{overflow-x:auto;overflow-y:hidden}
-@media(max-width:640px){.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+@media(max-width:640px){
+  .page-header h1{font-size:1.4em}
+  .exam-grid{grid-template-columns:1fr;padding:0 16px 24px}
+  .stats-row{padding:16px}
+  .exam-content{padding:0 16px 40px}
+}
 </style>
 </head>
 <body>
@@ -178,776 +226,675 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   </div>
 </nav>
 
+<!-- PAGE HEADER -->
 <div class="page-header">
-  <div class="ph-type">★ Exámenes Oficiales</div>
-  <h1>Exámenes · Mecánica Aplicada</h1>
-  <div class="ph-meta">Exámenes ordinarios y extraordinarios · UPV/EHU · Gipuzkoa</div>
-  <div class="ph-tags">
-    <span class="ph-tag">2 exámenes disponibles</span>
-    <span class="ph-tag">Enero 2024</span>
-    <span class="ph-tag">Ordinario 2025</span>
-    <span class="ph-tag">Estática</span>
-  </div>
+  <h1>Exámenes Resueltos</h1>
+  <p>Exámenes oficiales de convocatorias anteriores con enunciados completos y figuras SVG. Haz clic en una tarjeta para ver el examen completo.</p>
 </div>
 
-<div class="container">
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-pill"><span class="snum">2</span><span class="slabel">exámenes disponibles</span></div>
+  <div class="stat-pill"><span class="snum">2</span><span class="slabel">cursos académicos</span></div>
+  <div class="stat-pill"><span class="snum">2023–2025</span><span class="slabel">periodo cubierto</span></div>
+</div>
 
-  <!-- ══════════════════════ CURSO 2024-2025 ══════════════════════ -->
-  <div class="year-card open" id="curso2425">
-    <div class="year-header" onclick="toggleYear('curso2425')">
-      <div class="year-header-left">
-        <h2>Curso 2024–2025</h2>
-        <div class="year-meta">1 examen · Ordinario · 6 de junio de 2025</div>
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <span class="filter-label">Año:</span>
+  <button class="filter-btn year-btn active" onclick="filterYear('all',this)">Todos</button>
+  <button class="filter-btn year-btn" onclick="filterYear('2425',this)">2024–25</button>
+  <button class="filter-btn year-btn" onclick="filterYear('2324',this)">2023–24</button>
+</div>
+
+<!-- SECTION DIVIDER -->
+<div class="section-divider"><h2>Disponibles</h2></div>
+
+<!-- EXAM GRID -->
+<div class="exam-grid" id="exam-grid">
+
+  <!-- CARD 2024-25 -->
+  <div class="exam-card" id="card-2425" data-year="2425" onclick="openExam('content-2425','card-2425')">
+    <div class="ec-header">
+      <div class="ec-type-row">
+        <span class="ec-type type-ordinaria">Ordinaria</span>
+        <span class="ec-status status-done">✓ Enunciados</span>
       </div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <span class="year-badge">2024–2025</span>
-        <span class="year-arrow">▼</span>
-      </div>
+      <div class="ec-date">6 de Junio de 2025</div>
+      <div class="ec-curso">1.er Cuatrimestre · Estática · UPV/EHU Gipuzkoa</div>
     </div>
-    <div class="year-body">
-
-      <!-- EXAMEN ORDINARIO -->
-      <div class="exam-section">
-        <div class="exam-section-title">📄 Examen Ordinario · 1er Cuatrimestre · 6 junio 2025</div>
-
-        <!-- ── TEORÍA ── -->
-        <div class="cuatri-sep">
-          <hr class="cuatri-sep-line">
-          <span class="cuatri-sep-label">Parte de Teoría</span>
-          <hr class="cuatri-sep-line">
-        </div>
-
-        <!-- T1 -->
-        <div class="q-card open" id="q-2425-t1">
-          <div class="q-header" onclick="toggleQ('q-2425-t1')">
-            <span class="q-title">Pregunta 1 — Sistema de vectores deslizantes: resultante y eje central</span>
-            <span class="q-pts">1,5 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>En un sistema de vectores deslizantes, el momento resultante respecto al origen es \(\vec{M}_O = 2\hat{k}\). El eje central pasa por el punto \(E(0;\,1;\,0)\). La resultante y el momento mínimo son iguales, \(\vec{R} = \vec{M}_{\min}\). El sistema está formado por los vectores \(\vec{v}_1 = a\hat{i} + a\hat{j} + a\hat{k}\) y \(\vec{v}_2 = b\hat{j} + c\hat{k}\).</p>
-              <p style="margin-top:10px">Determinar:</p>
-              <ol type="a" style="margin-top:6px">
-                <li>La resultante \(\vec{R}\) y el invariante escalar \(r\).</li>
-                <li>Los parámetros \(a\), \(b\), \(c\).</li>
-              </ol>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-        <!-- T2 -->
-        <div class="q-card open" id="q-2425-t2">
-          <div class="q-header" onclick="toggleQ('q-2425-t2')">
-            <span class="q-title">Pregunta 2 — Rueda sobre suelo: fuerza de rozamiento en función de \(F\)</span>
-            <span class="q-pts">1,5 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>La rueda de radio \(R\) de la figura. En su centro están aplicadas la fuerza conocida \(F\) (vertical), el momento \(5FR\) y la fuerza horizontal desconocida \(H\). Sabiendo que rueda hacia la derecha a velocidad constante y que el coeficiente de resistencia a la rodadura es \(\mu_r = 0{,}05R\), determinar la fuerza de rozamiento en función de \(F\), indicando su sentido.</p>
-              <div class="fig-box">
-                <svg viewBox="0 0 220 180" width="220" height="180" style="display:block;margin:0 auto">
-                  <!-- suelo -->
-                  <rect x="10" y="145" width="200" height="10" fill="#333" rx="2"/>
-                  <line x1="10" y1="145" x2="210" y2="145" stroke="#555" stroke-width="1"/>
-                  <!-- rueda -->
-                  <circle cx="110" cy="105" r="40" fill="none" stroke="#7ecfff" stroke-width="2"/>
-                  <circle cx="110" cy="105" r="3" fill="#7ecfff"/>
-                  <!-- contacto -->
-                  <circle cx="110" cy="145" r="3" fill="#f59e0b"/>
-                  <!-- flecha F vertical -->
-                  <line x1="110" y1="105" x2="110" y2="135" stroke="#f87171" stroke-width="2" marker-end="url(#arr-red)"/>
-                  <text x="116" y="126" font-size="11" fill="#f87171" font-family="Inter,sans-serif">F</text>
-                  <!-- momento 5FR -->
-                  <text x="68" y="88" font-size="10" fill="#c084fc" font-family="Inter,sans-serif">5FR</text>
-                  <path d="M85 80 Q95 68 105 74" stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arr-purple)"/>
-                  <!-- flecha H horizontal -->
-                  <line x1="110" y1="105" x2="155" y2="105" stroke="#7ecfff" stroke-width="2" marker-end="url(#arr-blue)"/>
-                  <text x="158" y="109" font-size="11" fill="#7ecfff" font-family="Inter,sans-serif">H</text>
-                  <defs>
-                    <marker id="arr-red" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#f87171"/></marker>
-                    <marker id="arr-blue" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7ecfff"/></marker>
-                    <marker id="arr-purple" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c084fc"/></marker>
-                  </defs>
-                </svg>
-                <div class="fig-desc">Rueda sobre suelo: fuerzas aplicadas en el centro</div>
-              </div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-        <!-- T3 -->
-        <div class="q-card open" id="q-2425-t3">
-          <div class="q-header" onclick="toggleQ('q-2425-t3')">
-            <span class="q-title">Pregunta 3 — Fuerza distribuida \(q(x)\): resultante y localización</span>
-            <span class="q-pts">1 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Para una fuerza distribuida en la longitud \(q(x)\), deducir la resultante y la localización de la misma.</p>
-              <div class="q-nota">Pregunta teórica de deducción — desarrollo algebraico completo.</div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-        <!-- T4 -->
-        <div class="q-card open" id="q-2425-t4">
-          <div class="q-header" onclick="toggleQ('q-2425-t4')">
-            <span class="q-title">Pregunta 4 — Elemento diferencial de pieza prismática: ecuaciones de equilibrio \(q\), \(V\), \(M\)</span>
-            <span class="q-pts">1 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Deducir las ecuaciones de equilibrio de un elemento diferencial de una pieza prismática, relacionando \(q\), \(V\) y \(M\).</p>
-              <div class="q-nota">Pregunta teórica de deducción — desarrollo algebraico completo.</div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-        <!-- ── EJERCICIOS ── -->
-        <div class="cuatri-sep">
-          <hr class="cuatri-sep-line">
-          <span class="cuatri-sep-label">Parte de Ejercicios</span>
-          <hr class="cuatri-sep-line">
-        </div>
-
-        <!-- EJ1 -->
-        <div class="q-card open" id="q-2425-e1">
-          <div class="q-header" onclick="toggleQ('q-2425-e1')">
-            <span class="q-title">Ejercicio 1 — Bloque cuadrado + muelle + cable catenaria + polea: \(T_0\), \(c\), longitudes, reacción en \(D\)</span>
-            <span class="q-pts">3 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Un bloque cuadrado de masa \(M\) y lado \(L\) se encuentra articulado en un punto fijo \(D\). El bloque está unido en el punto \(E\) a un muelle ideal de constante elástica \(k = \dfrac{Mg}{2L}\), deformado \(L\). En el punto \(C\) está sujeto a un cable de peso por unidad de longitud \(w = \dfrac{Mg}{L}\) que se arrolla sobre la polea \(B\) de dimensiones despreciables y cuelga por el otro lado de la polea. El punto \(A\) está en la misma horizontal que \(D\). El ángulo del cable en \(C\) con la horizontal es de \(30°\). Se pide:</p>
-              <ol type="a" style="margin-top:10px">
-                <li><strong>(1 p)</strong> Fuerza mínima del cable \(T_0\) y parámetro de la catenaria \(c\).</li>
-                <li><strong>(1 p)</strong> Ángulo del cable con la horizontal en \(B\), en el lado derecho de la polea, y longitud del cable \(BC\).</li>
-                <li><strong>(1 p)</strong> Componentes de la reacción en \(D\) y distancia \(h\).</li>
-              </ol>
-              <div class="fig-box" style="background:#06080f;padding:20px 16px">
-                <svg viewBox="0 0 430 285" width="100%" style="max-width:430px;display:block;margin:0 auto;overflow:visible">
-                  <defs>
-                    <!-- Hatching pattern -->
-                    <pattern id="hatch-e1" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
-                      <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
-                    </pattern>
-                    <!-- Arrow para cotas -->
-                    <marker id="dim-r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                      <path d="M0,0.5 L5,3 L0,5.5 Z" fill="#64748b"/>
-                    </marker>
-                    <marker id="dim-l" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
-                      <path d="M5,0.5 L0,3 L5,5.5 Z" fill="#64748b"/>
-                    </marker>
-                    <marker id="dim-u" markerWidth="6" markerHeight="6" refX="3" refY="5" orient="auto">
-                      <path d="M0.5,5 L3,0 L5.5,5 Z" fill="#64748b"/>
-                    </marker>
-                    <marker id="dim-d" markerWidth="6" markerHeight="6" refX="3" refY="1" orient="auto">
-                      <path d="M0.5,0 L3,5 L5.5,0 Z" fill="#64748b"/>
-                    </marker>
-                  </defs>
-
-                  <!-- ══ TECHO (sobre B) ══ -->
-                  <!-- B está en (106, 88). Techo centrado sobre B -->
-                  <rect x="74" y="52" width="64" height="9" fill="url(#hatch-e1)"/>
-                  <line x1="74" y1="61" x2="138" y2="61" stroke="#888" stroke-width="1.8"/>
-
-                  <!-- ══ PARED DERECHA ══ -->
-                  <!-- Muelle va de E(252,130) a la pared. E es esquina sup-der del bloque. -->
-                  <!-- Bloque: C(168,122) E(252,122) bottom y=207 -->
-                  <rect x="358" y="100" width="10" height="60" fill="url(#hatch-e1)"/>
-                  <line x1="358" y1="100" x2="358" y2="160" stroke="#888" stroke-width="1.8"/>
-
-                  <!-- ══ SUELO (bajo D) ══ -->
-                  <!-- D en (210,207). Suelo en y=228 -->
-                  <rect x="158" y="228" width="115" height="9" fill="url(#hatch-e1)"/>
-                  <line x1="158" y1="228" x2="273" y2="228" stroke="#888" stroke-width="1.8"/>
-
-                  <!-- ══ BLOQUE CUADRADO (lado L=85px) ══ -->
-                  <!-- C(168,122) top-left, E(253,122) top-right, L=85 -->
-                  <rect x="168" y="122" width="85" height="85" fill="#0a0e1a" stroke="#c084fc" stroke-width="2"/>
-
-                  <!-- Etiqueta M (interior bloque) -->
-                  <text x="198" y="172" font-size="12" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="600">M</text>
-
-                  <!-- ══ PUNTO C (esquina sup-izq) ══ -->
-                  <circle cx="168" cy="122" r="3.5" fill="#f4a261"/>
-                  <text x="154" y="120" font-size="11" fill="#f4a261" font-family="Inter,sans-serif" font-weight="700">C</text>
-
-                  <!-- ══ PUNTO E (esquina sup-der) ══ -->
-                  <circle cx="253" cy="122" r="3.5" fill="#6bcb77"/>
-                  <text x="256" y="118" font-size="11" fill="#6bcb77" font-family="Inter,sans-serif" font-weight="700">E</text>
-
-                  <!-- ══ MUELLE (E → pared, horizontal, longitud L=85px) ══ -->
-                  <!-- E en (253,130), pared en x=358, la mitad del muelle va de 257 a 354 -->
-                  <line x1="253" y1="130" x2="260" y2="130" stroke="#6bcb77" stroke-width="1.8"/>
-                  <polyline points="260,130 265,119 273,141 281,119 289,141 297,119 305,141 313,119 321,130" stroke="#6bcb77" stroke-width="1.8" fill="none"/>
-                  <line x1="321" y1="130" x2="358" y2="130" stroke="#6bcb77" stroke-width="1.8"/>
-
-                  <!-- Etiquetas muelle -->
-                  <text x="264" y="110" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif" font-style="italic">k = Mg/2L</text>
-                  <text x="264" y="122" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif" font-style="italic">L₀ = 0</text>
-
-                  <!-- Cota L del muelle (horizontal, debajo del muelle) -->
-                  <line x1="253" y1="145" x2="358" y2="145" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
-                  <line x1="253" y1="140" x2="253" y2="150" stroke="#64748b" stroke-width="1"/>
-                  <line x1="358" y1="140" x2="358" y2="150" stroke="#64748b" stroke-width="1"/>
-                  <text x="297" y="157" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
-
-                  <!-- ══ ARTICULACIÓN D (centro-inferior bloque) ══ -->
-                  <!-- D en x=210 (un poco a la derecha del centro del bloque: 168+42=210) -->
-                  <circle cx="210" cy="207" r="4.5" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
-                  <!-- Triángulo pin hacia el suelo -->
-                  <polygon points="210,212 199,228 221,228" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
-                  <text x="225" y="218" font-size="11" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700">D</text>
-
-                  <!-- ══ PUNTO A (misma horizontal que D, izquierda) ══ -->
-                  <!-- A en (50, 207) -->
-                  <text x="44" y="211" font-size="11" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="700">A</text>
-                  <!-- Línea de cota horizontal A–D -->
-                  <line x1="56" y1="207" x2="168" y2="207" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
-
-                  <!-- ══ POLEA B ══ -->
-                  <!-- B: 2L/5=34px sobre C(168,122), y 59px a la izquierda → B(109,88) -->
-                  <!-- Verificación ángulo: Δx=59, Δy=34 → atan(34/59)=30° ✓ -->
-                  <circle cx="109" cy="88" r="12" fill="#0a0e1a" stroke="#e2e8f0" stroke-width="2"/>
-                  <circle cx="109" cy="88" r="3.5" fill="#0a0e1a" stroke="#888" stroke-width="1.2"/>
-                  <!-- Cruz pequeña en el centro de la polea -->
-                  <line x1="105" y1="88" x2="113" y2="88" stroke="#666" stroke-width="1"/>
-                  <line x1="109" y1="84" x2="109" y2="92" stroke="#666" stroke-width="1"/>
-                  <text x="118" y="82" font-size="11" fill="#e2e8f0" font-family="Inter,sans-serif" font-weight="700">B</text>
-                  <!-- Línea de unión polea–techo -->
-                  <line x1="109" y1="61" x2="109" y2="76" stroke="#888" stroke-width="1.5"/>
-
-                  <!-- ══ CABLE BC (de C a la polea B, ángulo 30°) ══ -->
-                  <!-- C(168,122) → B(109,88): tangente en C con 30° sobre horizontal -->
-                  <line x1="168" y1="122" x2="115" y2="93" stroke="#f4a261" stroke-width="2"/>
-
-                  <!-- Arco ángulo 30° en C -->
-                  <path d="M 148,122 A 20,20 0 0,1 151,113" stroke="#94a3b8" stroke-width="1.2" fill="none"/>
-                  <text x="128" y="125" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">30°</text>
-                  <!-- Línea horizontal de referencia para el ángulo -->
-                  <line x1="140" y1="122" x2="168" y2="122" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
-
-                  <!-- ══ CABLE colgante izquierdo de B (w = Mg/L) ══ -->
-                  <!-- Sale de la izquierda de la polea, cae vertical hacia A -->
-                  <line x1="100" y1="99" x2="57" y2="207" stroke="#f4a261" stroke-width="2"/>
-                  <!-- Etiqueta w -->
-                  <text x="52" y="148" font-size="10" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic">w = Mg/L</text>
-
-                  <!-- ══ COTAS VERTICALES ══ -->
-                  <!-- Cota 2L/5: desde B(y=88) hasta C(y=122), a la izquierda (x=58) -->
-                  <line x1="58" y1="88" x2="58" y2="122" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="53" y1="88" x2="63" y2="88" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="53" y1="122" x2="63" y2="122" stroke="#64748b" stroke-width="0.9"/>
-                  <!-- Líneas de referencia horizontales -->
-                  <line x1="58" y1="88" x2="109" y2="88" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
-                  <line x1="58" y1="122" x2="168" y2="122" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
-                  <text x="30" y="110" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">2L/5</text>
-
-                  <!-- Cota L (altura bloque): desde C(y=122) hasta fondo(y=207), a la izquierda (x=58) -->
-                  <line x1="58" y1="125" x2="58" y2="204" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="53" y1="207" x2="63" y2="207" stroke="#64748b" stroke-width="0.9"/>
-                  <text x="30" y="170" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
-
-                  <!-- Cota horizontal L (bloque, de C a E), encima del bloque -->
-                  <line x1="168" y1="112" x2="253" y2="112" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="168" y1="107" x2="168" y2="117" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="253" y1="107" x2="253" y2="117" stroke="#64748b" stroke-width="0.9"/>
-                  <text x="210" y="108" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
-
-                  <!-- ══ COTA h (horizontal, en la base del pin D) ══ -->
-                  <!-- h = distancia horizontal de la esquina izq del bloque hasta D -->
-                  <!-- Esquina izq base: (168,228). D en x=210. Δx=42 -->
-                  <line x1="168" y1="240" x2="210" y2="240" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="168" y1="235" x2="168" y2="245" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="210" y1="235" x2="210" y2="245" stroke="#64748b" stroke-width="0.9"/>
-                  <!-- Líneas de proyección verticales (punteadas) -->
-                  <line x1="168" y1="207" x2="168" y2="245" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
-                  <line x1="210" y1="228" x2="210" y2="245" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
-                  <text x="189" y="258" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">h</text>
-
-                </svg>
-                <div class="fig-desc">Bloque \(M\) articulado en \(D\) — muelle en \(E\) — cable catenaria \(BC\) con polea \(B\) — ángulo 30° en \(C\)</div>
-              </div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-        <!-- EJ2 -->
-        <div class="q-card open" id="q-2425-e2">
-          <div class="q-header" onclick="toggleQ('q-2425-e2')">
-            <span class="q-title">Ejercicio 2 — Viga ABCDE en T: DSL, diagramas N-V-M y tensiones normales</span>
-            <span class="q-pts">3 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>La viga \(ABCDE\) de sección transversal en T soporta las siguientes fuerzas:</p>
-              <ul style="margin-top:6px">
-                <li>Carga uniformemente distribuida de valor \(q_0 = \dfrac{4Mg}{L}\).</li>
-                <li>Carga concentrada horizontal de valor \(2Mg\) en la sección \(C\).</li>
-                <li>Momento de valor \(4MgL\) aplicado en la sección \(D\).</li>
-              </ul>
-              <p style="margin-top:10px">La viga tiene una articulación fija en \(A\) y en \(E\) está unida a un muelle de longitud no deformada nula, de constante \(k\) a determinar. Se pide:</p>
-              <ol type="a" style="margin-top:8px">
-                <li><strong>(0,75 p)</strong> Diagrama del sólido libre de la viga resuelto, indicando las reacciones que actúan sobre ella, la fuerza del muelle y su constante \(k\).</li>
-                <li><strong>(1,5 p)</strong> Diagramas de fuerzas axiales y cortantes y de momentos flectores en la viga. Determinar el momento máximo e indicar en qué sección ocurre.</li>
-                <li><strong>(0,75 p)</strong> Tensiones normales máxima y mínima en función de \(M\), \(g\), \(L\) y \(b\).</li>
-              </ol>
-              <div class="fig-box">
-                <svg viewBox="0 0 400 200" width="400" height="200" style="display:block;margin:0 auto">
-                  <!-- Viga horizontal ABCDE -->
-                  <rect x="40" y="90" width="280" height="10" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1.5" rx="2"/>
-                  <!-- Puntos A B C D E -->
-                  <text x="37" y="87" font-size="10" fill="#c084fc" font-family="Inter,sans-serif">A</text>
-                  <text x="107" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">B</text>
-                  <text x="177" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">C</text>
-                  <text x="247" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">D</text>
-                  <text x="317" y="87" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif">E</text>
-                  <!-- Articulación A -->
-                  <polygon points="40,100 30,118 50,118" fill="none" stroke="#c084fc" stroke-width="1.5"/>
-                  <line x1="25" y1="118" x2="55" y2="118" stroke="#c084fc" stroke-width="2"/>
-                  <!-- Carga distribuida q0 (de A a D) -->
-                  <defs>
-                    <marker id="arr-q" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#f4a261"/></marker>
-                  </defs>
-                  <!-- flechas q0 -->
-                  <line x1="55" y1="68" x2="55" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="80" y1="68" x2="80" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="105" y1="68" x2="105" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="130" y1="68" x2="130" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="155" y1="68" x2="155" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="180" y1="68" x2="180" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="205" y1="68" x2="205" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="230" y1="68" x2="230" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="250" y1="68" x2="250" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
-                  <line x1="42" y1="68" x2="252" y2="68" stroke="#f4a261" stroke-width="1.2"/>
-                  <text x="120" y="62" font-size="9" fill="#f4a261" font-family="Inter,sans-serif">q₀=4Mg/L</text>
-                  <!-- 2Mg horizontal en C -->
-                  <defs>
-                    <marker id="arr-h" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7ecfff"/></marker>
-                  </defs>
-                  <line x1="175" y1="95" x2="148" y2="95" stroke="#7ecfff" stroke-width="1.8" marker-end="url(#arr-h)"/>
-                  <text x="149" y="112" font-size="9" fill="#7ecfff" font-family="Inter,sans-serif">2Mg</text>
-                  <!-- Momento 4MgL en D (arco) -->
-                  <path d="M255 85 Q265 75 258 68" stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arr-purple2)"/>
-                  <defs><marker id="arr-purple2" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#c084fc"/></marker></defs>
-                  <text x="268" y="73" font-size="9" fill="#c084fc" font-family="Inter,sans-serif">4MgL</text>
-                  <!-- Muelle en E (vertical) -->
-                  <path d="M320,100 l0,5 l-5,4 l10,4 l-10,4 l10,4 l-10,4 l5,4 l0,5" stroke="#6bcb77" stroke-width="1.5" fill="none"/>
-                  <rect x="312" y="134" width="18" height="5" fill="#333"/>
-                  <text x="328" y="120" font-size="9" fill="#6bcb77" font-family="Inter,sans-serif">k=?</text>
-                  <!-- cotas L entre puntos -->
-                  <text x="67" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
-                  <text x="137" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
-                  <text x="207" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
-                  <text x="277" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
-                  <!-- Sección T (a la derecha) -->
-                  <rect x="355" y="60" width="30" height="8" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1"/>
-                  <rect x="366" y="68" width="8" height="30" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1"/>
-                  <text x="348" y="57" font-size="9" fill="#94a3b8" font-family="Inter,sans-serif">Sección T</text>
-                  <text x="352" y="48" font-size="8" fill="#555" font-family="Inter,sans-serif">5b</text>
-                  <text x="388" y="73" font-size="8" fill="#555" font-family="Inter,sans-serif">b</text>
-                  <text x="388" y="90" font-size="8" fill="#555" font-family="Inter,sans-serif">5b</text>
-                  <text x="360" y="108" font-size="8" fill="#555" font-family="Inter,sans-serif">b</text>
-                </svg>
-                <div class="fig-desc">Viga ABCDE con sección en T — articulación en A, muelle en E</div>
-              </div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-      </div><!-- /exam-section -->
-    </div><!-- /year-body -->
-  </div><!-- /year-card -->
-
-  <!-- ══════════════════════ CURSO 2023-2024 ══════════════════════ -->
-  <div class="year-card open" id="curso2324">
-    <div class="year-header" onclick="toggleYear('curso2324')">
-      <div class="year-header-left">
-        <h2>Curso 2023–2024</h2>
-        <div class="year-meta">1 examen · Enero · 17 de enero de 2024</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <span class="year-badge">2023–2024</span>
-        <span class="year-arrow">▼</span>
-      </div>
+    <div class="ec-topics">
+      <span class="ec-tag">Vectores</span>
+      <span class="ec-tag">Rozamiento</span>
+      <span class="ec-tag">Catenaria</span>
+      <span class="ec-tag">Vigas</span>
+      <span class="ec-tag">Tensiones</span>
     </div>
-    <div class="year-body">
+    <div class="ec-exercises">
+      <div class="ec-ex-row"><span class="ex-dot"></span>T1 — Sistema de vectores: resultante y eje central</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>T2 — Rueda sobre suelo: fuerza de rozamiento</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>T3 — Fuerza distribuida \(q(x)\): resultante</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>T4 — Elemento diferencial: ecuaciones \(q\), \(V\), \(M\)</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>E1 — Bloque + muelle + cable catenaria + polea</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>E2 — Viga ABCDE en T: diagramas N-V-M y tensiones</div>
+    </div>
+    <div class="ec-footer">
+      <span class="ec-score">4 teoría + 2 ejercicios · Curso <span>2024–25</span></span>
+      <span class="ec-open-btn">
+        Ver examen
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </div>
+  </div>
 
-      <div class="exam-section">
-        <div class="exam-section-title">📄 Examen Enero · Estática · 17 enero 2024</div>
+  <!-- CARD 2023-24 -->
+  <div class="exam-card" id="card-2324" data-year="2324" onclick="openExam('content-2324','card-2324')">
+    <div class="ec-header">
+      <div class="ec-type-row">
+        <span class="ec-type type-enero">Enero</span>
+        <span class="ec-status status-done">✓ Enunciados</span>
+      </div>
+      <div class="ec-date">17 de Enero de 2024</div>
+      <div class="ec-curso">1.er Cuatrimestre · Estática · UPV/EHU Gipuzkoa</div>
+    </div>
+    <div class="ec-topics">
+      <span class="ec-tag">Vectores</span>
+      <span class="ec-tag">Catenaria</span>
+      <span class="ec-tag">Rozamiento</span>
+      <span class="ec-tag">Vigas</span>
+      <span class="ec-tag">Torsión</span>
+    </div>
+    <div class="ec-exercises">
+      <div class="ec-ex-row"><span class="ex-dot"></span>T1 — Sistema de 3 vectores: momento en el origen</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>T2 — Cable pesado: deducción de \(s\) y \(T\)</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>T3 — Disco en plano inclinado: \(F_{\min}\) y \(\mu_{k,\min}\)</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>T4 — Torsión sección circular: tensiones y \(M_t\)</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>E1 — Barra AC + resorte + cable catenaria BD</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>E2 — Barra AB + disco: reacciones y momento \(P\)</div>
+      <div class="ec-ex-row"><span class="ex-dot"></span>E3 — Viga ABCD: diagramas V-M, tensión normal, dim. \(e\)</div>
+    </div>
+    <div class="ec-footer">
+      <span class="ec-score">4 teoría + 3 ejercicios · Curso <span>2023–24</span></span>
+      <span class="ec-open-btn">
+        Ver examen
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </div>
+  </div>
 
-        <!-- ── TEORÍA ── -->
-        <div class="cuatri-sep">
-          <hr class="cuatri-sep-line">
-          <span class="cuatri-sep-label">Parte de Teoría</span>
-          <hr class="cuatri-sep-line">
+</div><!-- /exam-grid -->
+
+<!-- ══════════════════════ CONTENIDO EXAMEN 2024-2025 ══════════════════════ -->
+<div class="exam-content" id="content-2425">
+  <div class="content-header">
+    <div>
+      <div class="content-header-title">📄 Examen Ordinario · 1er Cuatrimestre · 6 junio 2025</div>
+      <div class="content-header-meta">Curso 2024–2025 · UPV/EHU Gipuzkoa · 4 preguntas de teoría + 2 ejercicios</div>
+    </div>
+    <button class="close-btn" onclick="closeExam('content-2425','card-2425')">✕ Cerrar</button>
+  </div>
+
+  <div class="exam-section-title" style="margin-bottom:18px">Examen 2024–2025</div>
+
+  <!-- TEORÍA -->
+  <div class="cuatri-sep">
+    <hr class="cuatri-sep-line">
+    <span class="cuatri-sep-label">Parte de Teoría</span>
+    <hr class="cuatri-sep-line">
+  </div>
+
+  <!-- T1 -->
+  <div class="q-card open" id="q-2425-t1">
+    <div class="q-header" onclick="toggleQ('q-2425-t1')">
+      <span class="q-title">Pregunta 1 — Sistema de vectores deslizantes: resultante y eje central</span>
+      <span class="q-pts">1,5 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>En un sistema de vectores deslizantes, el momento resultante respecto al origen es \(\vec{M}_O = 2\hat{k}\). El eje central pasa por el punto \(E(0;\,1;\,0)\). La resultante y el momento mínimo son iguales, \(\vec{R} = \vec{M}_{\min}\). El sistema está formado por los vectores \(\vec{v}_1 = a\hat{i} + a\hat{j} + a\hat{k}\) y \(\vec{v}_2 = b\hat{j} + c\hat{k}\).</p>
+        <p style="margin-top:10px">Determinar:</p>
+        <ol type="a" style="margin-top:6px">
+          <li>La resultante \(\vec{R}\) y el invariante escalar \(r\).</li>
+          <li>Los parámetros \(a\), \(b\), \(c\).</li>
+        </ol>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
+
+  <!-- T2 -->
+  <div class="q-card open" id="q-2425-t2">
+    <div class="q-header" onclick="toggleQ('q-2425-t2')">
+      <span class="q-title">Pregunta 2 — Rueda sobre suelo: fuerza de rozamiento en función de \(F\)</span>
+      <span class="q-pts">1,5 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>La rueda de radio \(R\) de la figura. En su centro están aplicadas la fuerza conocida \(F\) (vertical), el momento \(5FR\) y la fuerza horizontal desconocida \(H\). Sabiendo que rueda hacia la derecha a velocidad constante y que el coeficiente de resistencia a la rodadura es \(\mu_r = 0{,}05R\), determinar la fuerza de rozamiento en función de \(F\), indicando su sentido.</p>
+        <div class="fig-box">
+          <svg viewBox="0 0 220 180" width="220" height="180" style="display:block;margin:0 auto">
+            <rect x="10" y="145" width="200" height="10" fill="#333" rx="2"/>
+            <line x1="10" y1="145" x2="210" y2="145" stroke="#555" stroke-width="1"/>
+            <circle cx="110" cy="105" r="40" fill="none" stroke="#7ecfff" stroke-width="2"/>
+            <circle cx="110" cy="105" r="3" fill="#7ecfff"/>
+            <circle cx="110" cy="145" r="3" fill="#f59e0b"/>
+            <line x1="110" y1="105" x2="110" y2="135" stroke="#f87171" stroke-width="2" marker-end="url(#arr-red-2425t2)"/>
+            <text x="116" y="126" font-size="11" fill="#f87171" font-family="Inter,sans-serif">F</text>
+            <text x="68" y="88" font-size="10" fill="#c084fc" font-family="Inter,sans-serif">5FR</text>
+            <path d="M85 80 Q95 68 105 74" stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arr-purple-2425t2)"/>
+            <line x1="110" y1="105" x2="155" y2="105" stroke="#7ecfff" stroke-width="2" marker-end="url(#arr-blue-2425t2)"/>
+            <text x="158" y="109" font-size="11" fill="#7ecfff" font-family="Inter,sans-serif">H</text>
+            <defs>
+              <marker id="arr-red-2425t2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#f87171"/></marker>
+              <marker id="arr-blue-2425t2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7ecfff"/></marker>
+              <marker id="arr-purple-2425t2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c084fc"/></marker>
+            </defs>
+          </svg>
+          <div class="fig-desc">Rueda sobre suelo: fuerzas aplicadas en el centro</div>
         </div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
 
-        <!-- T1 -->
-        <div class="q-card open" id="q-2324-t1">
-          <div class="q-header" onclick="toggleQ('q-2324-t1')">
-            <span class="q-title">Pregunta 1 — Sistema de 3 vectores deslizantes: momento en el origen</span>
-            <span class="q-pts">1 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Sea el sistema vectorial formado por tres vectores deslizantes:</p>
-              \[\vec{v}_1 = 3\hat{i}-2\hat{j},\qquad \vec{v}_2 = -\hat{i}-\hat{j}-\hat{k},\qquad \vec{v}_3 = 2\hat{i}+3\hat{j}-2\hat{k}\]
-              <p style="margin-top:8px">Se sabe que el invariante escalar del sistema es 25 y que el eje central pasa por el punto \(P(3;\,2;\,5)\). Calcular el momento que producen los vectores respecto al origen \(O(0;\,0;\,0)\).</p>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
+  <!-- T3 -->
+  <div class="q-card open" id="q-2425-t3">
+    <div class="q-header" onclick="toggleQ('q-2425-t3')">
+      <span class="q-title">Pregunta 3 — Fuerza distribuida \(q(x)\): resultante y localización</span>
+      <span class="q-pts">1 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Para una fuerza distribuida en la longitud \(q(x)\), deducir la resultante y la localización de la misma.</p>
+        <div class="q-nota">Pregunta teórica de deducción — desarrollo algebraico completo.</div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
+
+  <!-- T4 -->
+  <div class="q-card open" id="q-2425-t4">
+    <div class="q-header" onclick="toggleQ('q-2425-t4')">
+      <span class="q-title">Pregunta 4 — Elemento diferencial de pieza prismática: ecuaciones de equilibrio \(q\), \(V\), \(M\)</span>
+      <span class="q-pts">1 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Deducir las ecuaciones de equilibrio de un elemento diferencial de una pieza prismática, relacionando \(q\), \(V\) y \(M\).</p>
+        <div class="q-nota">Pregunta teórica de deducción — desarrollo algebraico completo.</div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
+
+  <!-- EJERCICIOS -->
+  <div class="cuatri-sep">
+    <hr class="cuatri-sep-line">
+    <span class="cuatri-sep-label">Parte de Ejercicios</span>
+    <hr class="cuatri-sep-line">
+  </div>
+
+  <!-- EJ1 -->
+  <div class="q-card open" id="q-2425-e1">
+    <div class="q-header" onclick="toggleQ('q-2425-e1')">
+      <span class="q-title">Ejercicio 1 — Bloque cuadrado + muelle + cable catenaria + polea: \(T_0\), \(c\), longitudes, reacción en \(D\)</span>
+      <span class="q-pts">3 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Un bloque cuadrado de masa \(M\) y lado \(L\) se encuentra articulado en un punto fijo \(D\). El bloque está unido en el punto \(E\) a un muelle ideal de constante elástica \(k = \dfrac{Mg}{2L}\), deformado \(L\). En el punto \(C\) está sujeto a un cable de peso por unidad de longitud \(w = \dfrac{Mg}{L}\) que se arrolla sobre la polea \(B\) de dimensiones despreciables y cuelga por el otro lado de la polea. El punto \(A\) está en la misma horizontal que \(D\). El ángulo del cable en \(C\) con la horizontal es de \(30°\). Se pide:</p>
+        <ol type="a" style="margin-top:10px">
+          <li><strong>(1 p)</strong> Fuerza mínima del cable \(T_0\) y parámetro de la catenaria \(c\).</li>
+          <li><strong>(1 p)</strong> Ángulo del cable con la horizontal en \(B\), en el lado derecho de la polea, y longitud del cable \(BC\).</li>
+          <li><strong>(1 p)</strong> Componentes de la reacción en \(D\) y distancia \(h\).</li>
+        </ol>
+        <div class="fig-box" style="background:#06080f;padding:20px 16px">
+          <svg viewBox="0 0 430 285" width="100%" style="max-width:430px;display:block;margin:0 auto;overflow:visible">
+            <defs>
+              <pattern id="hatch-e1-2425" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
+              </pattern>
+              <marker id="dim-r-2425" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0.5 L5,3 L0,5.5 Z" fill="#64748b"/>
+              </marker>
+              <marker id="dim-l-2425" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+                <path d="M5,0.5 L0,3 L5,5.5 Z" fill="#64748b"/>
+              </marker>
+            </defs>
+            <rect x="74" y="52" width="64" height="9" fill="url(#hatch-e1-2425)"/>
+            <line x1="74" y1="61" x2="138" y2="61" stroke="#888" stroke-width="1.8"/>
+            <rect x="358" y="100" width="10" height="60" fill="url(#hatch-e1-2425)"/>
+            <line x1="358" y1="100" x2="358" y2="160" stroke="#888" stroke-width="1.8"/>
+            <rect x="158" y="228" width="115" height="9" fill="url(#hatch-e1-2425)"/>
+            <line x1="158" y1="228" x2="273" y2="228" stroke="#888" stroke-width="1.8"/>
+            <rect x="168" y="122" width="85" height="85" fill="#0a0e1a" stroke="#c084fc" stroke-width="2"/>
+            <text x="198" y="172" font-size="12" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="600">M</text>
+            <circle cx="168" cy="122" r="3.5" fill="#f4a261"/>
+            <text x="154" y="120" font-size="11" fill="#f4a261" font-family="Inter,sans-serif" font-weight="700">C</text>
+            <circle cx="253" cy="122" r="3.5" fill="#6bcb77"/>
+            <text x="256" y="118" font-size="11" fill="#6bcb77" font-family="Inter,sans-serif" font-weight="700">E</text>
+            <line x1="253" y1="130" x2="260" y2="130" stroke="#6bcb77" stroke-width="1.8"/>
+            <polyline points="260,130 265,119 273,141 281,119 289,141 297,119 305,141 313,119 321,130" stroke="#6bcb77" stroke-width="1.8" fill="none"/>
+            <line x1="321" y1="130" x2="358" y2="130" stroke="#6bcb77" stroke-width="1.8"/>
+            <text x="264" y="110" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif" font-style="italic">k = Mg/2L</text>
+            <text x="264" y="122" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif" font-style="italic">L₀ = 0</text>
+            <line x1="253" y1="145" x2="358" y2="145" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
+            <line x1="253" y1="140" x2="253" y2="150" stroke="#64748b" stroke-width="1"/>
+            <line x1="358" y1="140" x2="358" y2="150" stroke="#64748b" stroke-width="1"/>
+            <text x="297" y="157" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
+            <circle cx="210" cy="207" r="4.5" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+            <polygon points="210,212 199,228 221,228" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+            <text x="225" y="218" font-size="11" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700">D</text>
+            <text x="44" y="211" font-size="11" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="700">A</text>
+            <line x1="56" y1="207" x2="168" y2="207" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
+            <circle cx="109" cy="88" r="12" fill="#0a0e1a" stroke="#e2e8f0" stroke-width="2"/>
+            <circle cx="109" cy="88" r="3.5" fill="#0a0e1a" stroke="#888" stroke-width="1.2"/>
+            <line x1="105" y1="88" x2="113" y2="88" stroke="#666" stroke-width="1"/>
+            <line x1="109" y1="84" x2="109" y2="92" stroke="#666" stroke-width="1"/>
+            <text x="118" y="82" font-size="11" fill="#e2e8f0" font-family="Inter,sans-serif" font-weight="700">B</text>
+            <line x1="109" y1="61" x2="109" y2="76" stroke="#888" stroke-width="1.5"/>
+            <line x1="168" y1="122" x2="115" y2="93" stroke="#f4a261" stroke-width="2"/>
+            <path d="M 148,122 A 20,20 0 0,1 151,113" stroke="#94a3b8" stroke-width="1.2" fill="none"/>
+            <text x="128" y="125" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">30°</text>
+            <line x1="140" y1="122" x2="168" y2="122" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
+            <line x1="100" y1="99" x2="57" y2="207" stroke="#f4a261" stroke-width="2"/>
+            <text x="52" y="148" font-size="10" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic">w = Mg/L</text>
+            <line x1="58" y1="88" x2="58" y2="122" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="53" y1="88" x2="63" y2="88" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="53" y1="122" x2="63" y2="122" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="58" y1="88" x2="109" y2="88" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
+            <line x1="58" y1="122" x2="168" y2="122" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
+            <text x="30" y="110" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">2L/5</text>
+            <line x1="58" y1="125" x2="58" y2="204" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="53" y1="207" x2="63" y2="207" stroke="#64748b" stroke-width="0.9"/>
+            <text x="30" y="170" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
+            <line x1="168" y1="112" x2="253" y2="112" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="168" y1="107" x2="168" y2="117" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="253" y1="107" x2="253" y2="117" stroke="#64748b" stroke-width="0.9"/>
+            <text x="210" y="108" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
+            <line x1="168" y1="240" x2="210" y2="240" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="168" y1="235" x2="168" y2="245" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="210" y1="235" x2="210" y2="245" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="168" y1="207" x2="168" y2="245" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
+            <line x1="210" y1="228" x2="210" y2="245" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
+            <text x="189" y="258" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">h</text>
+          </svg>
+          <div class="fig-desc">Bloque \(M\) articulado en \(D\) — muelle en \(E\) — cable catenaria \(BC\) con polea \(B\) — ángulo 30° en \(C\)</div>
         </div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
 
-        <!-- T2 -->
-        <div class="q-card open" id="q-2324-t2">
-          <div class="q-header" onclick="toggleQ('q-2324-t2')">
-            <span class="q-title">Pregunta 2 — Cable pesado: deducción de \(s\) y \(T\) a partir de la ecuación de la catenaria</span>
-            <span class="q-pts">1 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Para un cable que pesa \(w\) por unidad de longitud de cable, deducir la longitud \(s\) respecto del punto más bajo y la tensión \(T\) para un punto \(P\) cualquiera del cable, a partir de las siguientes relaciones:</p>
-              \[y = c\cosh\!\left(\frac{x}{c}\right) \qquad \cosh^2\!\left(\frac{x}{c}\right) - \sinh^2\!\left(\frac{x}{c}\right) = 1\]
-              <div class="q-nota">Deducción algebraica completa — justificar todos los pasos.</div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
+  <!-- EJ2 -->
+  <div class="q-card open" id="q-2425-e2">
+    <div class="q-header" onclick="toggleQ('q-2425-e2')">
+      <span class="q-title">Ejercicio 2 — Viga ABCDE en T: DSL, diagramas N-V-M y tensiones normales</span>
+      <span class="q-pts">3 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>La viga \(ABCDE\) de sección transversal en T soporta las siguientes fuerzas:</p>
+        <ul style="margin-top:6px">
+          <li>Carga uniformemente distribuida de valor \(q_0 = \dfrac{4Mg}{L}\).</li>
+          <li>Carga concentrada horizontal de valor \(2Mg\) en la sección \(C\).</li>
+          <li>Momento de valor \(4MgL\) aplicado en la sección \(D\).</li>
+        </ul>
+        <p style="margin-top:10px">La viga tiene una articulación fija en \(A\) y en \(E\) está unida a un muelle de longitud no deformada nula, de constante \(k\) a determinar. Se pide:</p>
+        <ol type="a" style="margin-top:8px">
+          <li><strong>(0,75 p)</strong> Diagrama del sólido libre de la viga resuelto, indicando las reacciones que actúan sobre ella, la fuerza del muelle y su constante \(k\).</li>
+          <li><strong>(1,5 p)</strong> Diagramas de fuerzas axiales y cortantes y de momentos flectores en la viga. Determinar el momento máximo e indicar en qué sección ocurre.</li>
+          <li><strong>(0,75 p)</strong> Tensiones normales máxima y mínima en función de \(M\), \(g\), \(L\) y \(b\).</li>
+        </ol>
+        <div class="fig-box">
+          <svg viewBox="0 0 400 200" width="400" height="200" style="display:block;margin:0 auto">
+            <rect x="40" y="90" width="280" height="10" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1.5" rx="2"/>
+            <text x="37" y="87" font-size="10" fill="#c084fc" font-family="Inter,sans-serif">A</text>
+            <text x="107" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">B</text>
+            <text x="177" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">C</text>
+            <text x="247" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">D</text>
+            <text x="317" y="87" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif">E</text>
+            <polygon points="40,100 30,118 50,118" fill="none" stroke="#c084fc" stroke-width="1.5"/>
+            <line x1="25" y1="118" x2="55" y2="118" stroke="#c084fc" stroke-width="2"/>
+            <defs>
+              <marker id="arr-q-2425e2" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#f4a261"/></marker>
+              <marker id="arr-h-2425e2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7ecfff"/></marker>
+              <marker id="arr-purp-2425e2" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#c084fc"/></marker>
+            </defs>
+            <line x1="55" y1="68" x2="55" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="80" y1="68" x2="80" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="105" y1="68" x2="105" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="130" y1="68" x2="130" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="155" y1="68" x2="155" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="180" y1="68" x2="180" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="205" y1="68" x2="205" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="230" y1="68" x2="230" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="250" y1="68" x2="250" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q-2425e2)"/>
+            <line x1="42" y1="68" x2="252" y2="68" stroke="#f4a261" stroke-width="1.2"/>
+            <text x="120" y="62" font-size="9" fill="#f4a261" font-family="Inter,sans-serif">q₀=4Mg/L</text>
+            <line x1="175" y1="95" x2="148" y2="95" stroke="#7ecfff" stroke-width="1.8" marker-end="url(#arr-h-2425e2)"/>
+            <text x="149" y="112" font-size="9" fill="#7ecfff" font-family="Inter,sans-serif">2Mg</text>
+            <path d="M255 85 Q265 75 258 68" stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arr-purp-2425e2)"/>
+            <text x="268" y="73" font-size="9" fill="#c084fc" font-family="Inter,sans-serif">4MgL</text>
+            <path d="M320,100 l0,5 l-5,4 l10,4 l-10,4 l10,4 l-10,4 l5,4 l0,5" stroke="#6bcb77" stroke-width="1.5" fill="none"/>
+            <rect x="312" y="134" width="18" height="5" fill="#333"/>
+            <text x="328" y="120" font-size="9" fill="#6bcb77" font-family="Inter,sans-serif">k=?</text>
+            <text x="67" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+            <text x="137" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+            <text x="207" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+            <text x="277" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+            <rect x="355" y="60" width="30" height="8" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1"/>
+            <rect x="366" y="68" width="8" height="30" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1"/>
+            <text x="348" y="57" font-size="9" fill="#94a3b8" font-family="Inter,sans-serif">Sección T</text>
+            <text x="352" y="48" font-size="8" fill="#555" font-family="Inter,sans-serif">5b</text>
+            <text x="388" y="73" font-size="8" fill="#555" font-family="Inter,sans-serif">b</text>
+            <text x="388" y="90" font-size="8" fill="#555" font-family="Inter,sans-serif">5b</text>
+            <text x="360" y="108" font-size="8" fill="#555" font-family="Inter,sans-serif">b</text>
+          </svg>
+          <div class="fig-desc">Viga ABCDE con sección en T — articulación en A, muelle en E</div>
         </div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
 
-        <!-- T3 -->
-        <div class="q-card open" id="q-2324-t3">
-          <div class="q-header" onclick="toggleQ('q-2324-t3')">
-            <span class="q-title">Pregunta 3 — Disco en plano inclinado: \(F_{\min}\) y \(\mu_{k,\min}\) para evitar rodadura</span>
-            <span class="q-pts">1 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Un disco de masa \(M\) y radio \(R\) con resistencia a la rodadura \(\mu_k\) está colocado encima de un plano inclinado que forma un ángulo \(\beta\) con la horizontal. En el centro del disco se aplica una fuerza \(F\) paralela al plano, para que el disco no comience a rodar hacia abajo. Determinar el valor mínimo de \(F\) y el coeficiente de rozamiento \(\mu_k\) mínimo para asegurar la rodadura.</p>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
+</div><!-- /content-2425 -->
+
+<!-- ══════════════════════ CONTENIDO EXAMEN 2023-2024 ══════════════════════ -->
+<div class="exam-content" id="content-2324">
+  <div class="content-header">
+    <div>
+      <div class="content-header-title">📄 Examen Enero · Estática · 17 enero 2024</div>
+      <div class="content-header-meta">Curso 2023–2024 · UPV/EHU Gipuzkoa · 4 preguntas de teoría + 3 ejercicios</div>
+    </div>
+    <button class="close-btn" onclick="closeExam('content-2324','card-2324')">✕ Cerrar</button>
+  </div>
+
+  <div class="exam-section-title" style="margin-bottom:18px">Examen 2023–2024</div>
+
+  <!-- TEORÍA -->
+  <div class="cuatri-sep">
+    <hr class="cuatri-sep-line">
+    <span class="cuatri-sep-label">Parte de Teoría</span>
+    <hr class="cuatri-sep-line">
+  </div>
+
+  <!-- T1 -->
+  <div class="q-card open" id="q-2324-t1">
+    <div class="q-header" onclick="toggleQ('q-2324-t1')">
+      <span class="q-title">Pregunta 1 — Sistema de 3 vectores deslizantes: momento en el origen</span>
+      <span class="q-pts">1 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Sea el sistema vectorial formado por tres vectores deslizantes:</p>
+        \[\vec{v}_1 = 3\hat{i}-2\hat{j},\qquad \vec{v}_2 = -\hat{i}-\hat{j}-\hat{k},\qquad \vec{v}_3 = 2\hat{i}+3\hat{j}-2\hat{k}\]
+        <p style="margin-top:8px">Se sabe que el invariante escalar del sistema es 25 y que el eje central pasa por el punto \(P(3;\,2;\,5)\). Calcular el momento que producen los vectores respecto al origen \(O(0;\,0;\,0)\).</p>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
+
+  <!-- T2 -->
+  <div class="q-card open" id="q-2324-t2">
+    <div class="q-header" onclick="toggleQ('q-2324-t2')">
+      <span class="q-title">Pregunta 2 — Cable pesado: deducción de \(s\) y \(T\) a partir de la ecuación de la catenaria</span>
+      <span class="q-pts">1 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Para un cable que pesa \(w\) por unidad de longitud de cable, deducir la longitud \(s\) respecto del punto más bajo y la tensión \(T\) para un punto \(P\) cualquiera del cable, a partir de las siguientes relaciones:</p>
+        \[y = c\cosh\!\left(\frac{x}{c}\right) \qquad \cosh^2\!\left(\frac{x}{c}\right) - \sinh^2\!\left(\frac{x}{c}\right) = 1\]
+        <div class="q-nota">Deducción algebraica completa — justificar todos los pasos.</div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
+
+  <!-- T3 -->
+  <div class="q-card open" id="q-2324-t3">
+    <div class="q-header" onclick="toggleQ('q-2324-t3')">
+      <span class="q-title">Pregunta 3 — Disco en plano inclinado: \(F_{\min}\) y \(\mu_{k,\min}\) para evitar rodadura</span>
+      <span class="q-pts">1 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Un disco de masa \(M\) y radio \(R\) con resistencia a la rodadura \(\mu_k\) está colocado encima de un plano inclinado que forma un ángulo \(\beta\) con la horizontal. En el centro del disco se aplica una fuerza \(F\) paralela al plano, para que el disco no comience a rodar hacia abajo. Determinar el valor mínimo de \(F\) y el coeficiente de rozamiento \(\mu_k\) mínimo para asegurar la rodadura.</p>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
+
+  <!-- T4 -->
+  <div class="q-card open" id="q-2324-t4">
+    <div class="q-header" onclick="toggleQ('q-2324-t4')">
+      <span class="q-title">Pregunta 4 — Torsión en sección circular: relación entre tensiones cortantes y momento torsor</span>
+      <span class="q-pts">1 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Torsión en una sección circular: deducir la relación entre las tensiones cortantes y el momento torsor.</p>
+        <div class="q-nota">Deducción teórica — desarrollo algebraico completo.</div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
+
+  <!-- EJERCICIOS -->
+  <div class="cuatri-sep">
+    <hr class="cuatri-sep-line">
+    <span class="cuatri-sep-label">Parte de Ejercicios</span>
+    <hr class="cuatri-sep-line">
+  </div>
+
+  <!-- EJ1 -->
+  <div class="q-card open" id="q-2324-e1">
+    <div class="q-header" onclick="toggleQ('q-2324-e1')">
+      <span class="q-title">Ejercicio 1 — Barra AC + resorte en C + cable catenaria BD: DSL, fuerza en B y en D</span>
+      <span class="q-pts">2 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>El sistema plano de la figura consta de la barra AC, de masa \(M\) y longitud \(L\), unida al suelo con una articulación fija en \(A\) y a la pared, en su punto \(C\), a través de un resorte de constante \(k = \dfrac{5}{2}\dfrac{Mg}{L}\) y longitud en reposo \(L_0 = 0\). En el punto \(B\), situado a distancia \(3L/4\) de \(A\), se une un cable \(BD\), de peso por unidad de longitud \(q = \dfrac{2}{3}\dfrac{Mg}{L}\) y que soporta una fuerza mínima \(T_0 = \dfrac{4}{3}Mg\). Los puntos \(E\), \(C\) y \(D\) están en la misma horizontal mientras que \(E\) y \(A\) se encuentran en la misma vertical. El valor del ángulo es \(\alpha = 36{,}87°\).</p>
+        <p style="margin-top:10px">Determinar:</p>
+        <ol type="a" style="margin-top:6px">
+          <li><strong>(1 p)</strong> Diagrama de sólido libre de la barra y componente vertical de la fuerza en \(B\).</li>
+          <li><strong>(1 p)</strong> Fuerza del cable en el punto \(D\).</li>
+        </ol>
+        <div class="fig-box" style="background:#06080f;padding:20px 16px">
+          <svg viewBox="0 0 400 270" width="100%" style="max-width:400px;display:block;margin:0 auto">
+            <defs>
+              <pattern id="hatch-2324e1" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
+              </pattern>
+            </defs>
+            <rect x="30" y="215" width="60" height="9" fill="url(#hatch-2324e1)"/>
+            <line x1="30" y1="215" x2="90" y2="215" stroke="#888" stroke-width="1.8"/>
+            <rect x="18" y="55" width="9" height="60" fill="url(#hatch-2324e1)"/>
+            <line x1="27" y1="55" x2="27" y2="115" stroke="#888" stroke-width="1.8"/>
+            <rect x="302" y="110" width="9" height="18" fill="url(#hatch-2324e1)"/>
+            <line x1="302" y1="110" x2="302" y2="128" stroke="#888" stroke-width="1.8"/>
+            <line x1="60" y1="215" x2="188" y2="119" stroke="#c084fc" stroke-width="3.5"/>
+            <circle cx="60" cy="215" r="5" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+            <polygon points="60,220 48,235 72,235" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+            <line x1="42" y1="235" x2="82" y2="235" stroke="#888" stroke-width="1.5"/>
+            <text x="42" y="212" font-size="11" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700">A</text>
+            <path d="M 80,215 A 20,20 0 0,0 76,203" stroke="#94a3b8" stroke-width="1.2" fill="none"/>
+            <text x="82" y="212" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">α</text>
+            <circle cx="156" cy="143" r="4" fill="#f4a261"/>
+            <text x="160" y="140" font-size="11" fill="#f4a261" font-family="Inter,sans-serif" font-weight="700">B</text>
+            <circle cx="188" cy="119" r="4" fill="#c084fc"/>
+            <text x="192" y="116" font-size="11" fill="#c084fc" font-family="Inter,sans-serif" font-weight="700">C</text>
+            <circle cx="60" cy="119" r="3.5" fill="#6bcb77"/>
+            <text x="38" y="122" font-size="11" fill="#6bcb77" font-family="Inter,sans-serif" font-weight="700">E</text>
+            <line x1="27" y1="119" x2="38" y2="119" stroke="#6bcb77" stroke-width="1.8"/>
+            <polyline points="38,119 43,110 51,128 59,110 67,128 75,110 83,128 88,119" stroke="#6bcb77" stroke-width="1.8" fill="none"/>
+            <line x1="88" y1="119" x2="188" y2="119" stroke="#6bcb77" stroke-width="1.8"/>
+            <text x="95" y="108" font-size="9.5" fill="#6bcb77" font-family="Inter,sans-serif" font-style="italic">k = 5Mg/(2L), L₀=0</text>
+            <path d="M 156,143 Q 200,175 250,155 Q 270,148 298,119" stroke="#f4a261" stroke-width="2" fill="none"/>
+            <circle cx="298" cy="119" r="5" fill="none" stroke="#f87171" stroke-width="1.8"/>
+            <text x="278" y="112" font-size="11" fill="#f87171" font-family="Inter,sans-serif" font-weight="700">D</text>
+            <text x="195" y="175" font-size="9.5" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic">q = 2Mg/(3L)</text>
+            <text x="195" y="188" font-size="9.5" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic">T₀ = 4Mg/3</text>
+            <line x1="60" y1="119" x2="300" y2="119" stroke="#333" stroke-width="0.8" stroke-dasharray="4,3"/>
+            <text x="88" y="190" font-size="9.5" fill="#64748b" font-family="Inter,sans-serif">3L/4</text>
+            <line x1="20" y1="119" x2="20" y2="215" stroke="#64748b" stroke-width="0.8"/>
+            <line x1="15" y1="119" x2="25" y2="119" stroke="#64748b" stroke-width="0.8"/>
+            <line x1="15" y1="215" x2="25" y2="215" stroke="#64748b" stroke-width="0.8"/>
+            <text x="5" y="172" font-size="10" fill="#64748b" font-family="Inter,sans-serif">L</text>
+          </svg>
+          <div class="fig-desc">Barra AC articulada en A — resorte en C — cable catenaria BD con \(\alpha = 36{,}87°\)</div>
         </div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
 
-        <!-- T4 -->
-        <div class="q-card open" id="q-2324-t4">
-          <div class="q-header" onclick="toggleQ('q-2324-t4')">
-            <span class="q-title">Pregunta 4 — Torsión en sección circular: relación entre tensiones cortantes y momento torsor</span>
-            <span class="q-pts">1 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Torsión en una sección circular: deducir la relación entre las tensiones cortantes y el momento torsor.</p>
-              <div class="q-nota">Deducción teórica — desarrollo algebraico completo.</div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
+  <!-- EJ2 -->
+  <div class="q-card open" id="q-2324-e2">
+    <div class="q-header" onclick="toggleQ('q-2324-e2')">
+      <span class="q-title">Ejercicio 2 — Barra AB + disco: DSL, reacciones en A y C, momento \(P\)</span>
+      <span class="q-pts">2 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Una barra AB de masa \(M\) y longitud \(2R\) está articulada en su extremo \(B\) al centro de un disco de radio \(R\) y masa \(M\), sometido a un momento \(P\). El sistema se apoya en el suelo en \(A\) y \(C\), siendo el coeficiente de rozamiento en \(A\) \(f = \dfrac{\sqrt{2}}{2}\). Si el deslizamiento en \(A\) es inminente, determinar:</p>
+        <ol type="a" style="margin-top:8px">
+          <li><strong>(0,5 p)</strong> Diagramas del sólido libre del disco y de la barra.</li>
+          <li><strong>(0,5 p)</strong> Fuerza normal y de rozamiento en el punto \(A\).</li>
+          <li><strong>(0,5 p)</strong> Momento \(P\) aplicado al disco.</li>
+          <li><strong>(0,5 p)</strong> Fuerza normal y de rozamiento en \(C\).</li>
+        </ol>
+        <div class="fig-box" style="background:#06080f;padding:20px 16px">
+          <svg viewBox="0 0 320 220" width="100%" style="max-width:320px;display:block;margin:0 auto">
+            <defs>
+              <pattern id="hatch-2324e2" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
+              </pattern>
+              <marker id="arr-P-2324" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#c084fc"/>
+              </marker>
+              <marker id="arr-Mg-2324" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#7ecfff"/>
+              </marker>
+            </defs>
+            <rect x="30" y="178" width="260" height="9" fill="url(#hatch-2324e2)"/>
+            <line x1="30" y1="178" x2="290" y2="178" stroke="#888" stroke-width="1.8"/>
+            <circle cx="200" cy="98" r="80" fill="#0d1020" stroke="#e2e8f0" stroke-width="2"/>
+            <circle cx="200" cy="98" r="4" fill="#f59e0b"/>
+            <text x="207" y="94" font-size="11" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700">B</text>
+            <path d="M 215,80 A 20,20 0 1,1 218,116" stroke="#c084fc" stroke-width="2" fill="none" marker-end="url(#arr-P-2324)"/>
+            <text x="238" y="100" font-size="11" fill="#c084fc" font-family="Inter,sans-serif" font-style="italic">P</text>
+            <line x1="200" y1="98" x2="200" y2="130" stroke="#7ecfff" stroke-width="1.8" marker-end="url(#arr-Mg-2324)"/>
+            <text x="205" y="122" font-size="10" fill="#7ecfff" font-family="Inter,sans-serif">Mg</text>
+            <circle cx="200" cy="178" r="4" fill="#6bcb77"/>
+            <text x="206" y="175" font-size="11" fill="#6bcb77" font-family="Inter,sans-serif" font-weight="700">C</text>
+            <line x1="61" y1="178" x2="200" y2="98" stroke="#c084fc" stroke-width="3"/>
+            <circle cx="61" cy="178" r="4" fill="#f87171"/>
+            <text x="44" y="175" font-size="11" fill="#f87171" font-family="Inter,sans-serif" font-weight="700">A</text>
+            <path d="M 85,178 A 24,24 0 0,0 79,162" stroke="#94a3b8" stroke-width="1.2" fill="none"/>
+            <text x="88" y="173" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">30°</text>
+            <line x1="130" y1="138" x2="130" y2="160" stroke="#7ecfff" stroke-width="1.5" marker-end="url(#arr-Mg-2324)"/>
+            <text x="134" y="155" font-size="9.5" fill="#7ecfff" font-family="Inter,sans-serif">Mg</text>
+          </svg>
+          <div class="fig-desc">Barra AB articulada en B (centro del disco) — apoyos en A y C — momento P en B</div>
         </div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
 
-        <!-- ── EJERCICIOS ── -->
-        <div class="cuatri-sep">
-          <hr class="cuatri-sep-line">
-          <span class="cuatri-sep-label">Parte de Ejercicios</span>
-          <hr class="cuatri-sep-line">
+  <!-- EJ3 -->
+  <div class="q-card open" id="q-2324-e3">
+    <div class="q-header" onclick="toggleQ('q-2324-e3')">
+      <span class="q-title">Ejercicio 3 — Viga ABCD con carga distribuida: diagramas V y M, tensión normal y dimensión \(e\)</span>
+      <span class="q-pts">2 p</span>
+      <span class="q-arrow">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-text">
+        <p>Para la viga de la figura, determinar:</p>
+        <ol type="a" style="margin-top:6px">
+          <li><strong>(1 p)</strong> Diagramas de esfuerzos cortantes y momentos flectores en función de \(q_0\) y \(L\).</li>
+          <li><strong>(1 p)</strong> Si \(q_0\) es el peso propio por unidad de longitud de la viga y siendo el peso específico del material \(18\,000\ \text{N/m}^3\) y \(L = 2\ \text{m}\):
+            <ul style="margin-top:4px">
+              <li>b1) Tensión normal máxima (indicar si es tracción o compresión y la sección donde tiene lugar).</li>
+              <li>b2) Dimensión \(e\) de la figura (en mm), siendo la tensión admisible del material \(\sigma_0 = 200\ \text{MPa}\).</li>
+            </ul>
+          </li>
+        </ol>
+        <div class="fig-box" style="background:#06080f;padding:20px 16px">
+          <svg viewBox="0 0 420 190" width="100%" style="max-width:420px;display:block;margin:0 auto">
+            <defs>
+              <pattern id="hatch-2324e3" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
+              </pattern>
+              <marker id="arr-q3-2324" markerWidth="5" markerHeight="5" refX="2.5" refY="4.5" orient="auto">
+                <path d="M0,0 L5,0 L2.5,5 Z" fill="#f4a261"/>
+              </marker>
+            </defs>
+            <rect x="30" y="97" width="300" height="9" fill="#1a0a30" stroke="#c084fc" stroke-width="1.5"/>
+            <text x="26" y="93" font-size="11" fill="#c084fc" font-family="Inter,sans-serif" font-weight="700">A</text>
+            <text x="96" y="93" font-size="11" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="700">B</text>
+            <text x="256" y="93" font-size="11" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="700">C</text>
+            <text x="326" y="93" font-size="11" fill="#c084fc" font-family="Inter,sans-serif" font-weight="700">D</text>
+            <polygon points="100,106 88,124 112,124" fill="none" stroke="#6bcb77" stroke-width="1.8"/>
+            <line x1="83" y1="124" x2="117" y2="124" stroke="#888" stroke-width="1.5"/>
+            <rect x="78" y="124" width="44" height="7" fill="url(#hatch-2324e3)"/>
+            <circle cx="260" cy="115" r="9" fill="none" stroke="#6bcb77" stroke-width="1.8"/>
+            <line x1="244" y1="124" x2="276" y2="124" stroke="#888" stroke-width="1.5"/>
+            <rect x="240" y="124" width="40" height="7" fill="url(#hatch-2324e3)"/>
+            <line x1="30" y1="58" x2="330" y2="58" stroke="#f4a261" stroke-width="1.5"/>
+            <line x1="40" y1="58" x2="40" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="65" y1="58" x2="65" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="90" y1="58" x2="90" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="115" y1="58" x2="115" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="140" y1="58" x2="140" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="165" y1="58" x2="165" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="190" y1="58" x2="190" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="215" y1="58" x2="215" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="240" y1="58" x2="240" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="265" y1="58" x2="265" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="290" y1="58" x2="290" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <line x1="315" y1="58" x2="315" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3-2324)"/>
+            <text x="155" y="50" font-size="11" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic" text-anchor="middle">q₀</text>
+            <line x1="30" y1="145" x2="100" y2="145" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="30" y1="140" x2="30" y2="150" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="100" y1="140" x2="100" y2="150" stroke="#64748b" stroke-width="0.9"/>
+            <text x="65" y="158" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
+            <line x1="100" y1="145" x2="260" y2="145" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="260" y1="140" x2="260" y2="150" stroke="#64748b" stroke-width="0.9"/>
+            <text x="180" y="158" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">2L</text>
+            <line x1="260" y1="145" x2="330" y2="145" stroke="#64748b" stroke-width="0.9"/>
+            <line x1="330" y1="140" x2="330" y2="150" stroke="#64748b" stroke-width="0.9"/>
+            <text x="295" y="158" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
+            <rect x="356" y="50" width="16" height="50" fill="#1a0a30" stroke="#c084fc" stroke-width="1.2"/>
+            <rect x="344" y="100" width="40" height="30" fill="#1a0a30" stroke="#c084fc" stroke-width="1.2"/>
+            <text x="375" y="77" font-size="9" fill="#64748b" font-family="Inter,sans-serif">3e</text>
+            <text x="375" y="118" font-size="9" fill="#64748b" font-family="Inter,sans-serif">2e</text>
+            <text x="349" y="142" font-size="9" fill="#64748b" font-family="Inter,sans-serif">5e</text>
+            <text x="344" y="47" font-size="9" fill="#64748b" font-family="Inter,sans-serif">e</text>
+          </svg>
+          <div class="fig-desc">Viga ABCD: apoyos en B y C — carga \(q_0\) uniforme — sección en T (alma e×3e, ala 5e×2e)</div>
         </div>
+      </div>
+      <div class="soon">Resolución en preparación</div>
+    </div>
+  </div>
 
-        <!-- EJ1 -->
-        <div class="q-card open" id="q-2324-e1">
-          <div class="q-header" onclick="toggleQ('q-2324-e1')">
-            <span class="q-title">Ejercicio 1 — Barra AC + resorte en C + cable catenaria BD: DSL, fuerza en B y en D</span>
-            <span class="q-pts">2 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>El sistema plano de la figura consta de la barra AC, de masa \(M\) y longitud \(L\), unida al suelo con una articulación fija en \(A\) y a la pared, en su punto \(C\), a través de un resorte de constante \(k = \dfrac{5}{2}\dfrac{Mg}{L}\) y longitud en reposo \(L_0 = 0\). En el punto \(B\), situado a distancia \(3L/4\) de \(A\), se une un cable \(BD\), de peso por unidad de longitud \(q = \dfrac{2}{3}\dfrac{Mg}{L}\) y que soporta una fuerza mínima \(T_0 = \dfrac{4}{3}Mg\). Los puntos \(E\), \(C\) y \(D\) están en la misma horizontal mientras que \(E\) y \(A\) se encuentran en la misma vertical. El valor del ángulo es \(\alpha = 36{,}87°\).</p>
-              <p style="margin-top:10px">Determinar:</p>
-              <ol type="a" style="margin-top:6px">
-                <li><strong>(1 p)</strong> Diagrama de sólido libre de la barra y componente vertical de la fuerza en \(B\).</li>
-                <li><strong>(1 p)</strong> Fuerza del cable en el punto \(D\).</li>
-              </ol>
-              <div class="fig-box" style="background:#06080f;padding:20px 16px">
-                <svg viewBox="0 0 400 270" width="100%" style="max-width:400px;display:block;margin:0 auto">
-                  <defs>
-                    <pattern id="hatch-2324e1" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
-                      <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
-                    </pattern>
-                  </defs>
-
-                  <!-- Suelo en A -->
-                  <rect x="30" y="215" width="60" height="9" fill="url(#hatch-2324e1)"/>
-                  <line x1="30" y1="215" x2="90" y2="215" stroke="#888" stroke-width="1.8"/>
-
-                  <!-- Pared izquierda (donde va el resorte desde E) -->
-                  <rect x="18" y="55" width="9" height="60" fill="url(#hatch-2324e1)"/>
-                  <line x1="27" y1="55" x2="27" y2="115" stroke="#888" stroke-width="1.8"/>
-
-                  <!-- Articulación D (arriba-derecha) -->
-                  <!-- α=36.87° → sin=0.6, cos=0.8. L=160px. A=(60,215). C=(60+160·0.8, 215-160·0.6)=(188,119) -->
-                  <!-- E misma vertical que A → E=(60, 119). E,C,D misma horizontal → D en (310,119) -->
-                  <rect x="302" y="110" width="9" height="18" fill="url(#hatch-2324e1)"/>
-                  <line x1="302" y1="110" x2="302" y2="128" stroke="#888" stroke-width="1.8"/>
-
-                  <!-- ══ BARRA AC ══ -->
-                  <!-- A=(60,215), C=(188,119) -->
-                  <line x1="60" y1="215" x2="188" y2="119" stroke="#c084fc" stroke-width="3.5"/>
-
-                  <!-- Articulación A -->
-                  <circle cx="60" cy="215" r="5" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
-                  <polygon points="60,220 48,235 72,235" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
-                  <line x1="42" y1="235" x2="82" y2="235" stroke="#888" stroke-width="1.5"/>
-                  <text x="42" y="212" font-size="11" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700">A</text>
-
-                  <!-- Ángulo α en A -->
-                  <path d="M 80,215 A 20,20 0 0,0 76,203" stroke="#94a3b8" stroke-width="1.2" fill="none"/>
-                  <text x="82" y="212" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">α</text>
-
-                  <!-- Punto B en la barra (3L/4 de A → B=(60+120·0.8, 215-120·0.6)=(156,143)) -->
-                  <circle cx="156" cy="143" r="4" fill="#f4a261"/>
-                  <text x="160" y="140" font-size="11" fill="#f4a261" font-family="Inter,sans-serif" font-weight="700">B</text>
-
-                  <!-- Punto C -->
-                  <circle cx="188" cy="119" r="4" fill="#c084fc"/>
-                  <text x="192" y="116" font-size="11" fill="#c084fc" font-family="Inter,sans-serif" font-weight="700">C</text>
-
-                  <!-- Punto E (misma vertical que A, misma horizontal que C) -->
-                  <circle cx="60" cy="119" r="3.5" fill="#6bcb77"/>
-                  <text x="38" y="122" font-size="11" fill="#6bcb77" font-family="Inter,sans-serif" font-weight="700">E</text>
-
-                  <!-- Resorte de E a C (horizontal) -->
-                  <line x1="27" y1="119" x2="38" y2="119" stroke="#6bcb77" stroke-width="1.8"/>
-                  <polyline points="38,119 43,110 51,128 59,110 67,128 75,110 83,128 88,119" stroke="#6bcb77" stroke-width="1.8" fill="none"/>
-                  <line x1="88" y1="119" x2="188" y2="119" stroke="#6bcb77" stroke-width="1.8"/>
-                  <text x="95" y="108" font-size="9.5" fill="#6bcb77" font-family="Inter,sans-serif" font-style="italic">k = 5Mg/(2L), L₀=0</text>
-
-                  <!-- Cable BD (catenaria) de B hacia D -->
-                  <!-- B=(156,143), D=(298,119): curva suave tipo catenaria -->
-                  <path d="M 156,143 Q 200,175 250,155 Q 270,148 298,119" stroke="#f4a261" stroke-width="2" fill="none"/>
-                  <!-- Articulación D -->
-                  <circle cx="298" cy="119" r="5" fill="none" stroke="#f87171" stroke-width="1.8"/>
-                  <text x="278" y="112" font-size="11" fill="#f87171" font-family="Inter,sans-serif" font-weight="700">D</text>
-
-                  <!-- Etiquetas cable -->
-                  <text x="195" y="175" font-size="9.5" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic">q = 2Mg/(3L)</text>
-                  <text x="195" y="188" font-size="9.5" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic">T₀ = 4Mg/3</text>
-
-                  <!-- Línea horizontal punteada E-C-D (misma cota) -->
-                  <line x1="60" y1="119" x2="300" y2="119" stroke="#333" stroke-width="0.8" stroke-dasharray="4,3"/>
-
-                  <!-- Cota 3L/4 a lo largo de la barra (desde A a B) -->
-                  <!-- Punto medio A-B: (108,179) -->
-                  <text x="88" y="190" font-size="9.5" fill="#64748b" font-family="Inter,sans-serif">3L/4</text>
-
-                  <!-- Cota vertical L (de A al nivel E/C) a la izquierda -->
-                  <line x1="20" y1="119" x2="20" y2="215" stroke="#64748b" stroke-width="0.8"/>
-                  <line x1="15" y1="119" x2="25" y2="119" stroke="#64748b" stroke-width="0.8"/>
-                  <line x1="15" y1="215" x2="25" y2="215" stroke="#64748b" stroke-width="0.8"/>
-                  <text x="5" y="172" font-size="10" fill="#64748b" font-family="Inter,sans-serif">L</text>
-                </svg>
-                <div class="fig-desc">Barra AC articulada en A — resorte en C — cable catenaria BD con \(\alpha = 36{,}87°\)</div>
-              </div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-        <!-- EJ2 -->
-        <div class="q-card open" id="q-2324-e2">
-          <div class="q-header" onclick="toggleQ('q-2324-e2')">
-            <span class="q-title">Ejercicio 2 — Barra AB + disco: DSL, reacciones en A y C, momento \(P\)</span>
-            <span class="q-pts">2 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Una barra AB de masa \(M\) y longitud \(2R\) está articulada en su extremo \(B\) al centro de un disco de radio \(R\) y masa \(M\), sometido a un momento \(P\). El sistema se apoya en el suelo en \(A\) y \(C\), siendo el coeficiente de rozamiento en \(A\) \(f = \dfrac{\sqrt{2}}{2}\). Si el deslizamiento en \(A\) es inminente, determinar:</p>
-              <ol type="a" style="margin-top:8px">
-                <li><strong>(0,5 p)</strong> Diagramas del sólido libre del disco y de la barra.</li>
-                <li><strong>(0,5 p)</strong> Fuerza normal y de rozamiento en el punto \(A\).</li>
-                <li><strong>(0,5 p)</strong> Momento \(P\) aplicado al disco.</li>
-                <li><strong>(0,5 p)</strong> Fuerza normal y de rozamiento en \(C\).</li>
-              </ol>
-              <div class="fig-box" style="background:#06080f;padding:20px 16px">
-                <svg viewBox="0 0 320 220" width="100%" style="max-width:320px;display:block;margin:0 auto">
-                  <defs>
-                    <pattern id="hatch-2324e2" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
-                      <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
-                    </pattern>
-                    <marker id="arr-P" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                      <path d="M0,0 L6,3 L0,6 Z" fill="#c084fc"/>
-                    </marker>
-                    <marker id="arr-Mg2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                      <path d="M0,0 L6,3 L0,6 Z" fill="#7ecfff"/>
-                    </marker>
-                  </defs>
-
-                  <!-- Suelo -->
-                  <rect x="30" y="178" width="260" height="9" fill="url(#hatch-2324e2)"/>
-                  <line x1="30" y1="178" x2="290" y2="178" stroke="#888" stroke-width="1.8"/>
-
-                  <!-- Disco: centro B en (200,98), radio R=80px -->
-                  <circle cx="200" cy="98" r="80" fill="#0d1020" stroke="#e2e8f0" stroke-width="2"/>
-                  <!-- Centro B -->
-                  <circle cx="200" cy="98" r="4" fill="#f59e0b"/>
-                  <text x="207" y="94" font-size="11" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700">B</text>
-
-                  <!-- Momento P (arco en B, horario) -->
-                  <path d="M 215,80 A 20,20 0 1,1 218,116" stroke="#c084fc" stroke-width="2" fill="none" marker-end="url(#arr-P)"/>
-                  <text x="238" y="100" font-size="11" fill="#c084fc" font-family="Inter,sans-serif" font-style="italic">P</text>
-
-                  <!-- Peso disco Mg (en B hacia abajo) -->
-                  <line x1="200" y1="98" x2="200" y2="130" stroke="#7ecfff" stroke-width="1.8" marker-end="url(#arr-Mg2)"/>
-                  <text x="205" y="122" font-size="10" fill="#7ecfff" font-family="Inter,sans-serif">Mg</text>
-
-                  <!-- Contacto C (disco sobre suelo, abajo) -->
-                  <circle cx="200" cy="178" r="4" fill="#6bcb77"/>
-                  <text x="206" y="175" font-size="11" fill="#6bcb77" font-family="Inter,sans-serif" font-weight="700">C</text>
-
-                  <!-- Barra AB: B=(200,98), A en suelo. α=30° con horizontal desde A -->
-                  <!-- 2R=160px. A=(200-160·cos30°, 98+160·sin... wait: desde B hacia abajo-izq 30° con horizontal -->
-                  <!-- A=(200 - 160·cos30°, 178) = (200-139,178)=(61,178). Check: dist BA=sqrt(139²+80²)=sqrt(19321+6400)=sqrt(25721)=160.4 ≈ 160 ✓ -->
-                  <!-- En la figura original la barra va 30° desde horizontal en A -->
-                  <line x1="61" y1="178" x2="200" y2="98" stroke="#c084fc" stroke-width="3"/>
-
-                  <!-- Punto A (contacto barra-suelo) -->
-                  <circle cx="61" cy="178" r="4" fill="#f87171"/>
-                  <text x="44" y="175" font-size="11" fill="#f87171" font-family="Inter,sans-serif" font-weight="700">A</text>
-
-                  <!-- Ángulo 30° en A -->
-                  <path d="M 85,178 A 24,24 0 0,0 79,162" stroke="#94a3b8" stroke-width="1.2" fill="none"/>
-                  <text x="88" y="173" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">30°</text>
-
-                  <!-- Peso barra Mg (punto medio de AB → (130,138)) -->
-                  <line x1="130" y1="138" x2="130" y2="160" stroke="#7ecfff" stroke-width="1.5" marker-end="url(#arr-Mg2)"/>
-                  <text x="134" y="155" font-size="9.5" fill="#7ecfff" font-family="Inter,sans-serif">Mg</text>
-                </svg>
-                <div class="fig-desc">Barra AB articulada en B (centro del disco) — apoyos en A y C — momento P en B</div>
-              </div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-        <!-- EJ3 -->
-        <div class="q-card open" id="q-2324-e3">
-          <div class="q-header" onclick="toggleQ('q-2324-e3')">
-            <span class="q-title">Ejercicio 3 — Viga ABCD con carga distribuida: diagramas V y M, tensión normal y dimensión \(e\)</span>
-            <span class="q-pts">2 p</span>
-            <span class="q-arrow">▼</span>
-          </div>
-          <div class="q-body">
-            <div class="q-text">
-              <p>Para la viga de la figura, determinar:</p>
-              <ol type="a" style="margin-top:6px">
-                <li><strong>(1 p)</strong> Diagramas de esfuerzos cortantes y momentos flectores en función de \(q_0\) y \(L\).</li>
-                <li><strong>(1 p)</strong> Si \(q_0\) es el peso propio por unidad de longitud de la viga y siendo el peso específico del material \(18\,000\ \text{N/m}^3\) y \(L = 2\ \text{m}\):
-                  <ul style="margin-top:4px">
-                    <li>b1) Tensión normal máxima (indicar si es tracción o compresión y la sección donde tiene lugar).</li>
-                    <li>b2) Dimensión \(e\) de la figura (en mm), siendo la tensión admisible del material \(\sigma_0 = 200\ \text{MPa}\).</li>
-                  </ul>
-                </li>
-              </ol>
-              <div class="fig-box" style="background:#06080f;padding:20px 16px">
-                <svg viewBox="0 0 420 190" width="100%" style="max-width:420px;display:block;margin:0 auto">
-                  <defs>
-                    <pattern id="hatch-2324e3" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
-                      <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
-                    </pattern>
-                    <marker id="arr-q3" markerWidth="5" markerHeight="5" refX="2.5" refY="4.5" orient="auto">
-                      <path d="M0,0 L5,0 L2.5,5 Z" fill="#f4a261"/>
-                    </marker>
-                  </defs>
-
-                  <!-- Viga ABCD horizontal -->
-                  <!-- A(30,100) B(100,100) C(260,100) D(330,100). Tramos L,2L,L con L=70px -->
-                  <rect x="30" y="97" width="300" height="9" fill="#1a0a30" stroke="#c084fc" stroke-width="1.5"/>
-
-                  <!-- Etiquetas puntos -->
-                  <text x="26" y="93" font-size="11" fill="#c084fc" font-family="Inter,sans-serif" font-weight="700">A</text>
-                  <text x="96" y="93" font-size="11" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="700">B</text>
-                  <text x="256" y="93" font-size="11" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="700">C</text>
-                  <text x="326" y="93" font-size="11" fill="#c084fc" font-family="Inter,sans-serif" font-weight="700">D</text>
-
-                  <!-- Apoyo B (triángulo articulado) -->
-                  <polygon points="100,106 88,124 112,124" fill="none" stroke="#6bcb77" stroke-width="1.8"/>
-                  <line x1="83" y1="124" x2="117" y2="124" stroke="#888" stroke-width="1.5"/>
-                  <rect x="78" y="124" width="44" height="7" fill="url(#hatch-2324e3)"/>
-
-                  <!-- Apoyo C (rueda/rodillo) -->
-                  <circle cx="260" cy="115" r="9" fill="none" stroke="#6bcb77" stroke-width="1.8"/>
-                  <line x1="244" y1="124" x2="276" y2="124" stroke="#888" stroke-width="1.5"/>
-                  <rect x="240" y="124" width="40" height="7" fill="url(#hatch-2324e3)"/>
-
-                  <!-- Carga distribuida q₀ (flechas hacia abajo sobre toda la viga) -->
-                  <line x1="30" y1="58" x2="330" y2="58" stroke="#f4a261" stroke-width="1.5"/>
-                  <!-- flechas q0 -->
-                  <line x1="40" y1="58" x2="40" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="65" y1="58" x2="65" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="90" y1="58" x2="90" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="115" y1="58" x2="115" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="140" y1="58" x2="140" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="165" y1="58" x2="165" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="190" y1="58" x2="190" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="215" y1="58" x2="215" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="240" y1="58" x2="240" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="265" y1="58" x2="265" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="290" y1="58" x2="290" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <line x1="315" y1="58" x2="315" y2="96" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q3)"/>
-                  <text x="155" y="50" font-size="11" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic" text-anchor="middle">q₀</text>
-
-                  <!-- Cotas L, 2L, L -->
-                  <line x1="30" y1="145" x2="100" y2="145" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="30" y1="140" x2="30" y2="150" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="100" y1="140" x2="100" y2="150" stroke="#64748b" stroke-width="0.9"/>
-                  <text x="65" y="158" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
-
-                  <line x1="100" y1="145" x2="260" y2="145" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="260" y1="140" x2="260" y2="150" stroke="#64748b" stroke-width="0.9"/>
-                  <text x="180" y="158" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">2L</text>
-
-                  <line x1="260" y1="145" x2="330" y2="145" stroke="#64748b" stroke-width="0.9"/>
-                  <line x1="330" y1="140" x2="330" y2="150" stroke="#64748b" stroke-width="0.9"/>
-                  <text x="295" y="158" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
-
-                  <!-- Sección en T (derecha) -->
-                  <!-- T invertida: ala inferior ancha (5e), alma superior estrecha (e ancho, 3e alto), ala inferior (5e ancho, 2e alto) -->
-                  <rect x="356" y="50" width="16" height="50" fill="#1a0a30" stroke="#c084fc" stroke-width="1.2"/>
-                  <rect x="344" y="100" width="40" height="30" fill="#1a0a30" stroke="#c084fc" stroke-width="1.2"/>
-                  <!-- Cotas sección -->
-                  <text x="375" y="77" font-size="9" fill="#64748b" font-family="Inter,sans-serif">3e</text>
-                  <text x="375" y="118" font-size="9" fill="#64748b" font-family="Inter,sans-serif">2e</text>
-                  <text x="349" y="142" font-size="9" fill="#64748b" font-family="Inter,sans-serif">5e</text>
-                  <text x="344" y="47" font-size="9" fill="#64748b" font-family="Inter,sans-serif">e</text>
-                </svg>
-                <div class="fig-desc">Viga ABCD: apoyos en B y C — carga \(q_0\) uniforme — sección en T (alma e×3e, ala 5e×2e)</div>
-              </div>
-            </div>
-            <div class="soon">Resolución en preparación</div>
-          </div>
-        </div>
-
-      </div><!-- /exam-section -->
-    </div><!-- /year-body -->
-  </div><!-- /year-card -->
-
-</div><!-- /container -->
+</div><!-- /content-2324 -->
 
 <script>
 function initKatex(){
@@ -959,13 +906,50 @@ function initKatex(){
     throwOnError:false
   });
 }
-function toggleYear(id){
-  document.getElementById(id).classList.toggle('open');
+
+function openExam(contentId, cardId){
+  var content = document.getElementById(contentId);
+  var card = document.getElementById(cardId);
+  var isOpen = content.classList.contains('visible');
+
+  // Close all
+  document.querySelectorAll('.exam-content').forEach(function(c){ c.classList.remove('visible'); });
+  document.querySelectorAll('.exam-card').forEach(function(c){ c.classList.remove('active-card'); });
+
+  if(!isOpen){
+    content.classList.add('visible');
+    card.classList.add('active-card');
+    setTimeout(function(){ content.scrollIntoView({behavior:'smooth',block:'start'}); }, 50);
+  }
 }
+
+function closeExam(contentId, cardId){
+  document.getElementById(contentId).classList.remove('visible');
+  document.getElementById(cardId).classList.remove('active-card');
+  document.getElementById('exam-grid').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function filterYear(year, btn){
+  document.querySelectorAll('.year-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.exam-card').forEach(function(card){
+    if(year === 'all' || card.dataset.year === year){
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+      // Close content if its card is hidden
+      var cId = 'content-' + card.dataset.year;
+      var content = document.getElementById(cId);
+      if(content) content.classList.remove('visible');
+      card.classList.remove('active-card');
+    }
+  });
+}
+
 function toggleQ(id){
   document.getElementById(id).classList.toggle('open');
 }
-// Cerrar picker al hacer click fuera
+
 document.addEventListener('click',function(e){
   var picker=document.getElementById('temaPicker');
   if(picker && !picker.contains(e.target)) picker.classList.remove('open');
