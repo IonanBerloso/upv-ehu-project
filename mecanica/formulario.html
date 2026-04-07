@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Formulario · Mecánica Aplicada · UPV/EHU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -17,21 +18,37 @@
 <style>
 /* ── SCREEN STYLES ── */
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#000;color:#e2e8f0;font-size:13px;line-height:1.5}
+:root{
+  --bg:#131313;
+  --surface:rgba(255,255,255,.04);
+  --surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#c084fc;
+  --accent-dim:rgba(192,132,252,.12);
+  --accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;
+  --green:#10b981;
+  --red:#f43f5e;
+  --orange:#fb923c;
+  --blue:#38bdf8;
+  --ff:'Space Grotesk',system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+  --radius:8px;
+}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:13px;line-height:1.5}
 
-.screen-header{background:#000;border-bottom:1px solid #1a1a1a;padding:12px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
-.screen-header a{color:#c084fc;font-size:.85em;text-decoration:none}
-.screen-header a:hover{text-decoration:underline}
-.screen-header h1{font-size:1em;color:#f1f5f9;flex:1;text-align:center}
-.btn-print{background:#c084fc;color:#000;border:none;padding:7px 16px;border-radius:6px;font-size:.82em;font-weight:700;cursor:pointer}
-.btn-print:hover{background:#d4a0ff}
+
 
 /* ── PRINT LAYOUT ── */
 .page{
   width:210mm;min-height:297mm;
   margin:20px auto;
-  background:#0a0a0a;
-  border:1px solid #1a1a1a;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
   padding:14mm 12mm;
 }
 
@@ -40,15 +57,15 @@ body{font-family:'Inter',sans-serif;background:#000;color:#e2e8f0;font-size:13px
   border-bottom:2px solid #c084fc;
   padding-bottom:8px;margin-bottom:12px;
 }
-.page-header h2{font-size:1.1em;color:#c084fc;font-weight:700;letter-spacing:.5px}
-.page-header p{font-size:.72em;color:#64748b;margin-top:2px}
+.page-header h2{font-size:1.1em;color:var(--accent);font-weight:700;letter-spacing:.5px}
+.page-header p{font-size:.72em;color:var(--text3);margin-top:2px}
 
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 
 .block{
-  background:#0d0d0d;
-  border:1px solid #1e1e1e;
+  background:var(--surface);
+  border:1px solid var(--border2);
   border-radius:5px;
   padding:8px 10px;
   break-inside:avoid;
@@ -57,8 +74,8 @@ body{font-family:'Inter',sans-serif;background:#000;color:#e2e8f0;font-size:13px
 .block-title{
   font-size:.65em;font-weight:700;
   text-transform:uppercase;letter-spacing:.8px;
-  color:#c084fc;margin-bottom:6px;
-  padding-bottom:4px;border-bottom:1px solid #1e1e1e;
+  color:var(--accent);margin-bottom:6px;
+  padding-bottom:4px;border-bottom:1px solid var(--border2);
 }
 .block.gold .block-title{color:#f59e0b}
 .block.green .block-title{color:#10b981}
@@ -70,25 +87,24 @@ body{font-family:'Inter',sans-serif;background:#000;color:#e2e8f0;font-size:13px
   font-size:.78em;
   margin:4px 0;
   display:flex;align-items:center;gap:6px;
-  color:#cbd5e1;
+  color:var(--text2);
 }
 .f .label{
-  font-size:.75em;color:#64748b;
+  font-size:.75em;color:var(--text3);
   min-width:80px;flex-shrink:0;
 }
 .f-center{text-align:center;justify-content:center;margin:6px 0}
-.note{font-size:.7em;color:#64748b;margin-top:4px;line-height:1.4}
+.note{font-size:.7em;color:var(--text3);margin-top:4px;line-height:1.4}
 
 table.mini{width:100%;border-collapse:collapse;font-size:.72em;margin-top:6px}
-table.mini th{background:#111;color:#c084fc;padding:3px 6px;text-align:left;font-size:.75em;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid #1e1e1e}
-table.mini td{padding:3px 6px;color:#cbd5e1;border-bottom:1px solid #111}
+table.mini th{background:var(--surface2);color:var(--accent);padding:3px 6px;text-align:left;font-size:.75em;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid var(--border2)}
+table.mini td{padding:3px 6px;color:var(--text2);border-bottom:1px solid #111}
 table.mini tr:last-child td{border-bottom:none}
 table.mini .em{color:#f59e0b;font-weight:600}
 
 /* ── PRINT ── */
 @media print{
   body{background:#fff !important;color:#000 !important}
-  .screen-header{display:none}
   .page{
     width:100%;margin:0;padding:10mm;
     background:#fff !important;
@@ -96,7 +112,7 @@ table.mini .em{color:#f59e0b;font-weight:600}
     page-break-after:always;
   }
   .page:last-child{page-break-after:auto}
-  .block{background:#f9f9f9 !important;border-color:#ddd !important;color:#000 !important}
+  .block{background:#f5f5f5 !important;border-color:#ddd !important;color:#000 !important}
   .block-title{color:#5b21b6 !important;border-bottom-color:#ddd !important}
   .block.gold .block-title{color:#92400e !important}
   .block.green .block-title{color:#065f46 !important}
@@ -113,15 +129,26 @@ table.mini .em{color:#f59e0b;font-weight:600}
   table.mini .em{color:#92400e !important}
   .katex{color:inherit !important}
 }
+/* TOPBAR (screen only) */
+@media screen{
+  .topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px;}
+  .topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color .2s;white-space:nowrap;text-decoration:none;}
+  .topbar-back:hover{color:var(--accent);}
+  .topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9;}
+  .topbar-print{margin-right:16px;padding:5px 14px;border-radius:20px;font-size:.76em;font-weight:600;cursor:pointer;background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent);transition:.2s;}
+  .topbar-print:hover{background:rgba(192,132,252,.22);}
+}
+@media print{.topbar{display:none!important;}}
+
 </style>
 </head>
 <body>
 
-<div class="screen-header">
-  <a href="../index.html">← Inicio</a>
-  <h1>Formulario — Mecánica Aplicada</h1>
-  <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
-</div>
+<nav class="topbar">
+  <a href="../index.html" class="topbar-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-right:2px"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Mecánica</a>
+  <span class="topbar-title">Formulario — Mecánica Aplicada</span>
+  <button class="topbar-print" onclick="window.print()">&#128424; Imprimir / PDF</button>
+</nav>
 
 <!-- ═══════════ PÁGINA 1 ═══════════ -->
 <div class="page">
