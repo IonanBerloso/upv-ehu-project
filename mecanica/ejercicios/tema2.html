@@ -4,15 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#131313">
-<title>Tema 2 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
+<title>T2 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="initKatex()"></script>
-
+  onload="initKatex && initKatex()"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -38,55 +37,135 @@
   --ff-mono:'JetBrains Mono',monospace;
   --radius:10px;
   --radius-sm:6px;
+  --topbar-h:52px;
+  --sidebar-w:280px;
   --transition:.22s cubic-bezier(.4,0,.2,1);
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
-.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
 .topbar-back:hover{color:var(--accent);text-decoration:none}
-.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-back svg{transition:transform var(--transition)}
+.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* PAGE HEADER */
-.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
-.ph-type{display:inline-block;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
-.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
-.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
-.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+/* ── TEMA PICKER ── */
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-picker-btn:hover{background:rgba(192,132,252,.2)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker.open .tema-dropdown{display:block}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover{background:var(--accent-dim);color:var(--accent)}
+.td-item.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-sep{display:block;padding:4px 11px 2px;font-size:.63em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);pointer-events:none;user-select:none;margin-top:2px}
+.td-sep-line{border:none;border-top:1px solid var(--border);margin:4px 5px}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
 
-/* JUMP LINKS */
-.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
-.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
-.jump-link:hover{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border);text-decoration:none}
-.jump-link-exam{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold)}
-.jump-link-exam:hover{background:rgba(245,158,11,.15);color:var(--gold);border-color:var(--gold)}
 
-/* CONTAINER */
-.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+/* ── LAYOUT ── */
+.layout{display:flex;padding-top:52px;min-height:calc(100vh - 52px)}
 
-/* EX CARDS */
-.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
-.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
-.ex-header:hover{background:var(--surface2)}
-.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
-.ex-meta{font-size:.78em;color:var(--text3)}
-.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
-.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
-.ex-body{display:none;padding:0 20px 20px}
-.ex-card.open .ex-body{display:block}
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  position:fixed;top:52px;left:0;bottom:0;
+  background:rgba(255,255,255,.025);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{
+  width:100%;display:flex;align-items:center;gap:8px;
+  padding:6px 9px;border-radius:var(--radius-sm);
+  background:none;border:1px solid transparent;
+  color:var(--text2);font-family:var(--ff);font-size:.78em;
+  cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px;
+}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-item-exam{border-color:rgba(245,158,11,.15);color:var(--gold)}
+.sb-item-exam:hover{background:var(--gold-dim);color:var(--gold)}
+.sb-item-exam.active{background:var(--gold-dim);color:var(--gold);border-color:var(--gold-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:30px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{
+  display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);
+  font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition);
+}
+.sb-link-gold{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
+.sb-link-gold:hover{background:rgba(245,158,11,.15)}
+.sb-link-purple{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.sb-link-purple:hover{background:rgba(192,132,252,.2)}
 
-/* ENUNCIADO */
-.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #2a1a4a}
+/* ── CONTENT ── */
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
 
-/* SECCIONES */
-.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
-.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
-.sec-btn .sarr{transition:.2s}
+/* ── TOPIC PANEL ── */
+.topic-panel{display:none;max-width:860px}
+.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-header{
+  margin-bottom:24px;padding:14px 18px 16px;
+  background:linear-gradient(135deg,rgba(192,132,252,.06) 0%,transparent 60%);
+  border:1px solid rgba(192,132,252,.18);
+  border-left:3px solid var(--accent);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.panel-header-exam{
+  background:linear-gradient(135deg,rgba(245,158,11,.06) 0%,transparent 60%);
+  border-color:rgba(245,158,11,.2);
+  border-left-color:var(--gold);
+}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-tag-exam{color:var(--gold)}
+.panel-title{font-size:1.3em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.exam-badge{display:inline-flex;align-items:center;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:20px;padding:2px 9px;font-size:.65em;font-weight:700;color:var(--gold);margin-left:8px;vertical-align:middle}
+
+/* ── READING PROGRESS ── */
+.read-progress{
+  position:fixed;top:52px;left:var(--sidebar-w);right:0;height:2px;z-index:200;
+  background:linear-gradient(90deg,var(--accent),var(--blue));
+  transform-origin:left;transform:scaleX(0);transition:transform .08s linear;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:80px 20px;color:var(--text3)}
+.empty-state p{font-size:.9em;margin-top:8px}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(192,132,252,.18);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(192,132,252,.35)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:20px 16px 40px}
+  .sb-list{max-height:200px}
+  .read-progress{left:0}
+}
+
+
+/* ── SECTIONS ── */
+.section-wrap{margin-bottom:14px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}
 .sec-open .sec-btn .sarr{transform:rotate(180deg)}
-.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
 .sec-open .sec-body{display:block}
 
 .s-datos .sec-btn{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border)}
@@ -98,59 +177,54 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
 .s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
 .s-resolucion .sec-body{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-top:none}
 
-/* TABLAS */
-.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
+/* ── ENUNCIADO ── */
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:14px;border-left:3px solid var(--accent-border)}
+
+/* ── TABLES ── */
+.table-wrap{overflow-x:auto;margin:10px 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
+.t-datos{width:100%;border-collapse:collapse;font-size:.84em}
 .t-datos th{background:var(--accent-dim);color:var(--accent);padding:7px 10px;text-align:left;border:1px solid var(--accent-border)}
 .t-datos td{padding:7px 10px;border:1px solid var(--border);color:var(--text2)}
-.t-dados tr:nth-child(even) td{background:rgba(192,132,252,.04)}
+.t-datos tr:nth-child(even) td{background:rgba(192,132,252,.04)}
 
-/* FORMULA BOX */
-.formula-box{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#fed7aa;overflow-x:auto}
-.formula-label{font-size:.72em;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600}
+/* ── FORMULA BOX ── */
+.formula-box{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:8px 13px;margin:6px 0;color:#fed7aa;overflow-x:auto}
+.formula-label{font-size:.7em;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-weight:600;font-family:var(--ff-mono)}
 
-/* PASOS */
-.paso{margin-bottom:14px;padding:10px 14px;background:rgba(16,185,129,.06);border-radius:8px;border-left:3px solid rgba(16,185,129,.4)}
-.paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+/* ── PASO ── */
+.paso{margin-bottom:13px;padding:10px 13px;background:rgba(16,185,129,.06);border-radius:var(--radius-sm);border-left:3px solid rgba(16,185,129,.4)}
+.paso-titulo{color:var(--green);font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
 
-/* RESULTADO FINAL */
-.resultado-final{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:8px;padding:12px 16px;margin-top:12px}
-.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
-.rf-val{color:#d1fae5;font-size:.92em;line-height:1.9}
+/* ── RESULTADO FINAL ── */
+.resultado-final{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-sm);padding:11px 15px;margin-top:12px}
+.rf-label{font-size:.7em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:700}
+.rf-val{color:#d1fae5;font-size:.9em;line-height:1.9}
 
-/* NOTA */
-.nota{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+/* ── NOTA ── */
+.nota{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:var(--radius-sm);padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
 
-/* PRÓXIMAMENTE */
-.soon{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:20px;text-align:center;color:var(--text3);font-size:.85em;font-style:italic}
+/* ── SOON ── */
+.soon{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:20px;text-align:center;color:var(--text3);font-size:.85em;font-style:italic}
 
-/* NIVEL EXAMEN */
-.ex-card-exam{border-color:var(--gold-border)}
-.ex-card-exam .ex-header:hover{background:rgba(245,158,11,.06)}
-.ex-card-exam .ex-header-left h2{color:var(--gold)}
-.ex-card-exam.open .ex-arrow{color:var(--gold)}
-.exam-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:20px;padding:3px 10px;font-size:.7em;font-weight:700;color:var(--gold);margin-left:10px;vertical-align:middle;letter-spacing:.03em}
-
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:rgba(192,132,252,.18);border-radius:3px}
-.katex{font-size:1.05em}
+/* ── MISC ── */
+.steps{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 15px;margin:10px 0}
+.step{display:flex;gap:11px;padding:5px 0;font-size:.86em;color:#94a3b8;align-items:baseline}
+.step-n{min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border2);border-radius:50%;font-size:.74em;font-weight:700;color:var(--orange);flex-shrink:0}
+.step b{color:#e2e8f0}
+.hi{color:var(--accent);font-weight:600}
+.hi-g{color:var(--green);font-weight:600}
+.hi-y{color:var(--gold);font-weight:600}
+.hi-r{color:var(--red);font-weight:600}
+.hi-b{color:var(--blue);font-weight:600}
+.prose{font-size:.88em;line-height:1.8;color:#cbd5e1}
+.prose p{margin-bottom:9px}
+.prose ul,.prose ol{padding-left:18px;margin-bottom:9px}
+.prose li{margin-bottom:4px}
+code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);padding:1px 5px;border-radius:3px;color:#c4b5fd}
+.katex{font-size:1.04em}
 .katex-display{overflow-x:auto;overflow-y:hidden}
+.footer{text-align:center;padding:40px 20px;color:var(--text3);font-size:.78em}
 
-/* TEMA PICKER */
-.tema-picker{position:relative;margin-right:20px}
-.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 14px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s}
-.tema-picker-btn:hover{background:rgba(192,132,252,.2)}
-.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:250px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
-.tema-picker.open .tema-dropdown{display:block}
-.td-item{display:block;padding:8px 12px;border-radius:6px;font-size:.8em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500}
-.td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:var(--accent-dim);color:var(--accent)}
-.td-item.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
-.td-item.td-soon{color:#333;cursor:default}
-.td-sep{padding:4px 12px 2px;font-size:.65em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);pointer-events:none;user-select:none;margin-top:2px}
-.td-sep-line{border:none;border-top:1px solid var(--border);margin:4px 6px}
-.td-num{display:inline-block;width:24px;font-weight:700}
-.td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
-@media(max-width:640px){.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
 </style>
 </head>
 <body>
@@ -160,94 +234,139 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Teoría
   </a>
-  <span class="topbar-title">⚙️ Tema 2 · Geometría de Masas y Superficies Planas — Ejercicios</span>
+  <span class="topbar-title">Mecánica · T2 <span style="color:var(--accent)">· Geometría de Masas</span></span>
   <div class="tema-picker" id="temaPicker">
-  <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">📚 T2 ▾</button>
-  <div class="tema-dropdown">
+    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T2 ▾</button>
+    <div class="tema-dropdown">
     <span class="td-sep">1.er Cuatrimestre</span>
-    <a class="td-item td-available" href="tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
-    <span class="td-item td-active"><span class="td-num">T2</span> Geometría de Masas</span>
-    <a class="td-item td-available" href="tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
-    <a class="td-item td-available" href="tema4.html"><span class="td-num">T4</span> Rozamiento</a>
-    <a class="td-item td-available" href="tema5.html"><span class="td-num">T5</span> Cables</a>
-    <a class="td-item td-available" href="../examenes.html"><span class="td-num">★</span> Exámenes</a>
-        <hr class="td-sep-line">
+    <a class="td-item " href="tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
+    <a class="td-item td-active" href="tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
+    <a class="td-item " href="tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
+    <a class="td-item " href="tema4.html"><span class="td-num">T4</span> Rozamiento</a>
+    <a class="td-item " href="tema5.html"><span class="td-num">T5</span> Cables</a>
+    <hr class="td-sep-line">
     <span class="td-sep">2.º Cuatrimestre</span>
-    <a class="td-item td-available" href="tema6.html"><span class="td-num">T6</span> Resistencia de Mat.</a>
-    <a class="td-item td-available" href="tema7.html"><span class="td-num">T7</span> Cinemática del S.R.</a>
-    <a class="td-item td-available" href="tema8.html"><span class="td-num">T8</span> Mov. Plano del S.R.</a>
+    <a class="td-item " href="tema6.html"><span class="td-num">T6</span> Resistencia Mat.</a>
+    <a class="td-item " href="tema7.html"><span class="td-num">T7</span> Cinemática S.R.</a>
+    <a class="td-item " href="tema8.html"><span class="td-num">T8</span> Mov. Plano S.R.</a>
+    </div>
   </div>
-</div>
 </nav>
 
-<div class="page-header">
-  <div class="ph-type">Mecánica Aplicada · Tema 2</div>
-  <h1>Geometría de Masas y Superficies Planas</h1>
-  <div class="ph-meta">Centro de gravedad · Momentos de inercia · Teorema de Steiner · Radio de giro</div>
-  <div class="ph-tags">
-    <span class="ph-tag">Centroides</span>
-    <span class="ph-tag">Momentos de inercia</span>
-    <span class="ph-tag">Steiner</span>
-    <span class="ph-tag">Figuras compuestas</span>
-  </div>
-</div>
-
-<div class="jump-links">
-  <a class="jump-link" href="#ex2-1">2.1 Arco de circunferencia</a>
-  <a class="jump-link" href="#ex2-2">2.2 Triángulo</a>
-  <a class="jump-link" href="#ex2-3">2.3 Cono recto</a>
-  <a class="jump-link" href="#ex2-4">2.4 Semiesfera</a>
-  <a class="jump-link" href="#ex2-5">2.5 Figura en L</a>
-  <a class="jump-link" href="#ex2-6">2.6 Curva \(Y=Kx^n\)</a>
-  <a class="jump-link" href="#ex2-7">2.7 Semidisco vaciado</a>
-  <a class="jump-link" href="#ex2-8">2.8 Avellanado</a>
-  <a class="jump-link" href="#ex2-9">2.9 Alambre \(CE\)</a>
-  <a class="jump-link" href="#ex2-10">2.10 Revolución eje \(e\)</a>
-  <a class="jump-link" href="#ex2-11">2.11 Inercia barra</a>
-  <a class="jump-link" href="#ex2-12">2.12 Inercia disco</a>
-  <a class="jump-link jump-link-exam" href="#ex2-13">2.13 Inercias rectángulo ★</a>
-  <a class="jump-link jump-link-exam" href="#ex2-14">2.14 Inercias parábola ★</a>
-  <a class="jump-link jump-link-exam" href="#ex2-15">2.15 Marco rectangular ★</a>
-  <a class="jump-link jump-link-exam" href="#ex2-16">2.16 Barras en T ★</a>
-  <a class="jump-link jump-link-exam" href="#ex2-17">2.17 Rectángulo + círculo ★</a>
-</div>
-
-<div class="container">
-
-<!-- ═══════════════════════════════════════════════════════ EJERCICIO 2.1 -->
-<div class="ex-card" id="ex2-1">
-  <div class="ex-header" onclick="toggleEx('ex2-1')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.1 — Centro de gravedad del arco de circunferencia</h2>
-      <div class="ex-meta">Elemento curvilíneo · Integración · Ejemplo teórico-práctico esencial</div>
+<div class="read-progress" id="readProgress"></div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-subtitle">T2 · Geometría de Masas</div>
+      <div class="sb-current" id="sbCurrent">2.1 · Centro de gravedad del arco de circunfer</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+    <div class="sb-list">
+      <button class="sb-item" onclick="showEx('ex2-1')" data-id="ex2-1">
+        <span class="sb-tag">2.1</span>
+        <span class="sb-name">Centro de gravedad del arco de circunferencia</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-2')" data-id="ex2-2">
+        <span class="sb-tag">2.2</span>
+        <span class="sb-name">Centro de gravedad del triángulo</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-3')" data-id="ex2-3">
+        <span class="sb-tag">2.3</span>
+        <span class="sb-name">Centro de gravedad del cono recto</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-4')" data-id="ex2-4">
+        <span class="sb-tag">2.4</span>
+        <span class="sb-name">Centro de gravedad de la semiesfera</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-5')" data-id="ex2-5">
+        <span class="sb-tag">2.5</span>
+        <span class="sb-name">Centro de gravedad de figura compuesta en L</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-6')" data-id="ex2-6">
+        <span class="sb-tag">2.6</span>
+        <span class="sb-name">Centro de gravedad y volumen de revolución de …</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-7')" data-id="ex2-7">
+        <span class="sb-tag">2.7</span>
+        <span class="sb-name">Centro de gravedad de figura con semidisco vaciado</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-8')" data-id="ex2-8">
+        <span class="sb-tag">2.8</span>
+        <span class="sb-name">Volumen de acero removido en avellanado</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-9')" data-id="ex2-9">
+        <span class="sb-tag">2.9</span>
+        <span class="sb-name">Longitud del tramo … para que … esté en …</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-10')" data-id="ex2-10">
+        <span class="sb-tag">2.10</span>
+        <span class="sb-name">Volumen de revolución alrededor del eje …</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-11')" data-id="ex2-11">
+        <span class="sb-tag">2.11</span>
+        <span class="sb-name">Momento de inercia de una barra homogénea</span>
+      </button>
+      <button class="sb-item" onclick="showEx('ex2-12')" data-id="ex2-12">
+        <span class="sb-tag">2.12</span>
+        <span class="sb-name">Momento de inercia de un disco homogéneo</span>
+      </button>
+      <button class="sb-item sb-item-exam" onclick="showEx('ex2-13')" data-id="ex2-13">
+        <span class="sb-tag">2.13</span>
+        <span class="sb-name">Inercias y productos de inercia del rectángulo N…</span>
+      </button>
+      <button class="sb-item sb-item-exam" onclick="showEx('ex2-14')" data-id="ex2-14">
+        <span class="sb-tag">2.14</span>
+        <span class="sb-name">Momentos de inercia de superficie parabólica</span>
+      </button>
+      <button class="sb-item sb-item-exam" onclick="showEx('ex2-15')" data-id="ex2-15">
+        <span class="sb-tag">2.15</span>
+        <span class="sb-name">Superficie plana hueca: CG, inercias y volumen</span>
+      </button>
+      <button class="sb-item sb-item-exam" onclick="showEx('ex2-16')" data-id="ex2-16">
+        <span class="sb-tag">2.16</span>
+        <span class="sb-name">Sistema articulado de barras en T Nivel examen</span>
+      </button>
+      <button class="sb-item sb-item-exam" onclick="showEx('ex2-17')" data-id="ex2-17">
+        <span class="sb-tag">2.17</span>
+        <span class="sb-name">Rectángulo con agujero circular: CG, inercias y …</span>
+      </button>
+    </div>
+    <div class="sb-footer">
+      <a class="sb-link sb-link-purple" href="../teoria.html">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Teoría
+      </a>
+      <a class="sb-link sb-link-gold" href="../examenes.html">&#9733; Exámenes</a>
+    </div>
+  </aside>
+  <main class="content">
+  <div class="topic-panel" id="ex2-1">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.1</div>
+      <h1 class="panel-title">Centro de gravedad del arco de circunferencia</h1>
+      <div class="panel-meta">Elemento curvilíneo · Integración · Ejemplo teórico-práctico esencial</div>
+    </div>
+<div class="enunciado">
       Calcular la posición del centro de gravedad del <strong>arco de circunferencia</strong> (elemento curvilíneo)
       de radio \(R\) y semiángulo \(\alpha\) respecto al sistema de referencia indicado.
       El arco es simétrico respecto al eje \(x\), abarcando desde \(-\alpha\) hasta \(+\alpha\).
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex01_fig.png" alt="Arco de circunferencia radio R ángulo α" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Arco de circunferencia (elemento curvilíneo)</td></tr>
-          <tr><td>Radio</td><td>\(R\)</td></tr>
-          <tr><td>Semiángulo</td><td>\(\alpha\) (arco simétrico de \(-\alpha\) a \(+\alpha\))</td></tr>
-          <tr><td>Incógnita</td><td>posición del CG respecto al vértice \(O\)</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>El <strong>centro de gravedad</strong> de un elemento curvilíneo se obtiene ponderando la posición de cada punto por su longitud diferencial:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Arco de circunferencia radio R ángulo α" src="img/t2_ex01_fig.png" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Arco de circunferencia (elemento curvilíneo)</td></tr>
+<tr><td>Radio</td><td>\(R\)</td></tr>
+<tr><td>Semiángulo</td><td>\(\alpha\) (arco simétrico de \(-\alpha\) a \(+\alpha\))</td></tr>
+<tr><td>Incógnita</td><td>posición del CG respecto al vértice \(O\)</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>El <strong>centro de gravedad</strong> de un elemento curvilíneo se obtiene ponderando la posición de cada punto por su longitud diferencial:</p>
         \[
           x_G = \frac{\displaystyle\int x\,dL}{\displaystyle\int dL}, \qquad y_G = \frac{\displaystyle\int y\,dL}{\displaystyle\int dL}
         \]
@@ -256,24 +375,21 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           dL = R\,d\theta
         \]
         <p style="margin-top:10px">Las coordenadas de un punto del arco son \(x = R\cos\theta\), \(y = R\sin\theta\).</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Longitud total del arco</div>
-          <p>El arco recorre desde \(\theta = -\alpha\) hasta \(\theta = +\alpha\):</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Longitud total del arco</div>
+<p>El arco recorre desde \(\theta = -\alpha\) hasta \(\theta = +\alpha\):</p>
           \[
             L = \int_{-\alpha}^{+\alpha} R\,d\theta = R\,[\theta]_{-\alpha}^{+\alpha} = R\cdot(+\alpha - (-\alpha)) = 2R\alpha
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Coordenada \(y_G\) (simetría)</div>
-          <p>El arco es simétrico respecto al eje \(x\). Para cada punto a ángulo \(+\theta\) con \(y = R\sin\theta > 0\), existe uno simétrico a \(-\theta\) con \(y = -R\sin\theta\). Las contribuciones se cancelan:</p>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Coordenada \(y_G\) (simetría)</div>
+<p>El arco es simétrico respecto al eje \(x\). Para cada punto a ángulo \(+\theta\) con \(y = R\sin\theta &gt; 0\), existe uno simétrico a \(-\theta\) con \(y = -R\sin\theta\). Las contribuciones se cancelan:</p>
           \[
             y_G = \frac{\int_{-\alpha}^{+\alpha} R\sin\theta\cdot R\,d\theta}{2R\alpha}
                 = \frac{R^2\,[-\cos\theta]_{-\alpha}^{+\alpha}}{2R\alpha}
@@ -283,10 +399,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{y_G = 0}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Integral del numerador para \(x_G\)</div>
-          <p>Calculamos \(\displaystyle\int_{-\alpha}^{+\alpha} x\,dL\):</p>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Integral del numerador para \(x_G\)</div>
+<p>Calculamos \(\displaystyle\int_{-\alpha}^{+\alpha} x\,dL\):</p>
           \[
             \int_{-\alpha}^{+\alpha} R\cos\theta \cdot R\,d\theta
             = R^2\,[\sin\theta]_{-\alpha}^{+\alpha}
@@ -294,19 +409,17 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             = R^2 \cdot 2\sin\alpha
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Centro de gravedad \(x_G\)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Centro de gravedad \(x_G\)</div>
           \[
             x_G = \frac{\displaystyle\int_{-\alpha}^{+\alpha} x\,dL}{L}
                 = \frac{R^2 \cdot 2\sin\alpha}{2R\alpha}
                 = \frac{R\sin\alpha}{\alpha}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               x_G = \frac{R\sin\alpha}{\alpha}, \qquad y_G = 0
             \]
@@ -314,70 +427,57 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               Verificación: para \(\alpha = \tfrac{\pi}{2}\) (semicircunferencia) →
               \(x_G = \tfrac{R \cdot 1}{\pi/2} = \tfrac{2R}{\pi} \approx 0{,}637R\) ✓
             </p>
-          </div>
-        </div>
-
-        <div class="nota">
-          <strong>Nota sobre el PDF del profesor:</strong> El boletín indica \(x_G = \tfrac{2R\sin\alpha}{\alpha}\).
+</div>
+</div>
+<div class="nota">
+<strong>Nota sobre el PDF del profesor:</strong> El boletín indica \(x_G = \tfrac{2R\sin\alpha}{\alpha}\).
           Esa expresión aparece cuando el ángulo total del arco se llama \(\alpha\) (en lugar de \(2\alpha\)),
           con lo que los límites de integración serían \(-\alpha/2\) a \(+\alpha/2\) y \(L = R\alpha\).
           Basándonos en la figura, donde <em>\(\alpha\) es el semi-ángulo</em> (cada rama mide \(\alpha\) respecto al eje \(x\)),
           la deducción estándar da \(\dfrac{R\sin\alpha}{\alpha}\), que es la fórmula correcta.
         </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
   </div>
-</div><!-- /ex2-1 -->
-
-<!-- ═══════════════════════════════════════════════════════ EJERCICIO 2.2 -->
-<div class="ex-card" id="ex2-2">
-  <div class="ex-header" onclick="toggleEx('ex2-2')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.2 — Centro de gravedad del triángulo</h2>
-      <div class="ex-meta">Superficie plana · Integración por franjas · Ejemplo teórico-práctico esencial</div>
+  <div class="topic-panel" id="ex2-2">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.2</div>
+      <h1 class="panel-title">Centro de gravedad del triángulo</h1>
+      <div class="panel-meta">Superficie plana · Integración por franjas · Ejemplo teórico-práctico esencial</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Calcular la posición del centro de gravedad de un <strong>triángulo de base \(b\) y altura \(h\)</strong>.
       El triángulo es isósceles, con la base sobre el eje \(x\) y el vértice superior en el eje \(y\).
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex02_fig.png" alt="Triángulo base b altura h" style="max-width:300px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Triángulo isósceles plano</td></tr>
-          <tr><td>Base</td><td>\(b\) (sobre el eje \(x\))</td></tr>
-          <tr><td>Altura</td><td>\(h\) (vértice en el eje \(y\))</td></tr>
-          <tr><td>Incógnita</td><td>posición del CG</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>El centro de gravedad de una <strong>superficie plana</strong> se obtiene como:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Triángulo base b altura h" src="img/t2_ex02_fig.png" style="max-width:300px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Triángulo isósceles plano</td></tr>
+<tr><td>Base</td><td>\(b\) (sobre el eje \(x\))</td></tr>
+<tr><td>Altura</td><td>\(h\) (vértice en el eje \(y\))</td></tr>
+<tr><td>Incógnita</td><td>posición del CG</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>El centro de gravedad de una <strong>superficie plana</strong> se obtiene como:</p>
         \[
           x_G = \frac{\displaystyle\int x\,dA}{A}, \qquad y_G = \frac{\displaystyle\int y\,dA}{A}
         \]
         <p style="margin-top:10px">La estrategia es integrar por <strong>franjas horizontales</strong> a altura \(y\). El ancho de cada franja varía linealmente con \(y\) por semejanza de triángulos.</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Ancho de la franja a altura y</div>
-          <p>Por semejanza de triángulos, a altura \(y\) la anchura restante es proporcional a la altura que queda \((h - y)\):</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Ancho de la franja a altura y</div>
+<p>Por semejanza de triángulos, a altura \(y\) la anchura restante es proporcional a la altura que queda \((h - y)\):</p>
           \[
             \text{ancho}(y) = b\cdot\frac{h - y}{h} = b\!\left(1 - \frac{y}{h}\right)
           \]
@@ -386,27 +486,24 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             dA = b\!\left(1 - \frac{y}{h}\right)dy
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Área total (verificación)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Área total (verificación)</div>
           \[
             A = \int_0^h b\!\left(1-\frac{y}{h}\right)dy
               = b\!\left[y - \frac{y^2}{2h}\right]_0^h
               = b\!\left(h - \frac{h}{2}\right) = \frac{bh}{2} \checkmark
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Coordenada \(x_G\) (simetría)</div>
-          <p>El triángulo es simétrico respecto al eje \(y\): para cada punto a \(+x\) existe uno a \(-x\) con el mismo área diferencial. Por tanto:</p>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Coordenada \(x_G\) (simetría)</div>
+<p>El triángulo es simétrico respecto al eje \(y\): para cada punto a \(+x\) existe uno a \(-x\) con el mismo área diferencial. Por tanto:</p>
           \[
             x_G = 0
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Momento estático respecto al eje \(x\) \((Q_x)\)</div>
-          <p>El momento estático \(Q_x = \int y\,dA\) es el numerador de \(y_G\):</p>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Momento estático respecto al eje \(x\) \((Q_x)\)</div>
+<p>El momento estático \(Q_x = \int y\,dA\) es el numerador de \(y_G\):</p>
           \[
             Q_x = \int_0^h y\,dA = \int_0^h y\cdot b\!\left(1 - \frac{y}{h}\right)dy
               = b\int_0^h\!\left(y - \frac{y^2}{h}\right)dy
@@ -419,17 +516,15 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               = \frac{bh^2}{6}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 5 — Centro de gravedad \(y_G\)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 5 — Centro de gravedad \(y_G\)</div>
           \[
             y_G = \frac{Q_x}{A} = \frac{\,\dfrac{bh^2}{6}\,}{\dfrac{bh}{2}} = \frac{2bh^2}{6bh} = \frac{h}{3}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               y_G = \frac{h}{3}, \qquad x_G = 0
             \]
@@ -437,49 +532,39 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               El centro de gravedad de cualquier triángulo se sitúa a \(\tfrac{1}{3}\) de la base,
               independientemente de la forma (resultado general válido para triángulos no isósceles también).
             </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-2 -->
-
-<!-- ═══════════════════════════════════════════════════════ EJERCICIO 2.3 -->
-<div class="ex-card" id="ex2-3">
-  <div class="ex-header" onclick="toggleEx('ex2-3')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.3 — Centro de gravedad del cono recto</h2>
-      <div class="ex-meta">Sólido de revolución · Integración por discos · Ejemplo teórico-práctico esencial</div>
+  <div class="topic-panel" id="ex2-3">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.3</div>
+      <h1 class="panel-title">Centro de gravedad del cono recto</h1>
+      <div class="panel-meta">Sólido de revolución · Integración por discos · Ejemplo teórico-práctico esencial</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Calcular la posición del centro de gravedad de un <strong>cono recto de radio \(R\) y altura \(h\)</strong>.
       El cono tiene la base circular (\(r = R\)) en \(z = 0\) y el vértice en \(z = h\), con eje de simetría \(z\).
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex03_fig.png" alt="Cono recto radio R altura h con ejes xyz" style="max-width:340px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Cono recto sólido</td></tr>
-          <tr><td>Radio de la base</td><td>\(R\)</td></tr>
-          <tr><td>Altura</td><td>\(h\)</td></tr>
-          <tr><td>Orientación</td><td>base en \(z=0\), vértice en \(z=h\)</td></tr>
-          <tr><td>Incógnita</td><td>posición del CG</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>El centro de gravedad de un <strong>sólido homogéneo</strong> se calcula como:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Cono recto radio R altura h con ejes xyz" src="img/t2_ex03_fig.png" style="max-width:340px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Cono recto sólido</td></tr>
+<tr><td>Radio de la base</td><td>\(R\)</td></tr>
+<tr><td>Altura</td><td>\(h\)</td></tr>
+<tr><td>Orientación</td><td>base en \(z=0\), vértice en \(z=h\)</td></tr>
+<tr><td>Incógnita</td><td>posición del CG</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>El centro de gravedad de un <strong>sólido homogéneo</strong> se calcula como:</p>
         \[
           z_G = \frac{\displaystyle\int z\,dV}{V}
         \]
@@ -488,16 +573,14 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           dV = \pi\,r(z)^2\,dz
         \]
         <p style="margin-top:6px">donde \(r(z)\) es el radio del disco a altura \(z\).</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Radio del disco a altura z</div>
-          <p>El radio varía linealmente desde \(R\) en \(z=0\) hasta \(0\) en \(z=h\). Por semejanza de triángulos:</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Radio del disco a altura z</div>
+<p>El radio varía linealmente desde \(R\) en \(z=0\) hasta \(0\) en \(z=h\). Por semejanza de triángulos:</p>
           \[
             r(z) = R\cdot\frac{h - z}{h} = R\!\left(1 - \frac{z}{h}\right)
           \]
@@ -506,9 +589,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             dV = \pi\,r(z)^2\,dz = \pi R^2\!\left(1-\frac{z}{h}\right)^{\!2}dz
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Volumen total (verificación)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Volumen total (verificación)</div>
           \[
             V = \int_0^h \pi R^2\!\left(1-\frac{z}{h}\right)^{\!2}dz
           \]
@@ -517,14 +599,12 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             V = \pi R^2 h\int_0^1 u^2\,du = \pi R^2 h\cdot\frac{1}{3} = \frac{\pi R^2 h}{3} \checkmark
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Simetría (\(x_G = y_G = 0\))</div>
-          <p>El cono es simétrico respecto al eje \(z\): \(x_G = y_G = 0\). Solo necesitamos calcular \(z_G\).</p>
-        </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Momento estático \(Q_z = \int z\,dV\)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Simetría (\(x_G = y_G = 0\))</div>
+<p>El cono es simétrico respecto al eje \(z\): \(x_G = y_G = 0\). Solo necesitamos calcular \(z_G\).</p>
+</div>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Momento estático \(Q_z = \int z\,dV\)</div>
           \[
             Q_z = \int_0^h z\cdot\pi R^2\!\left(1-\frac{z}{h}\right)^{\!2}dz
                 = \pi R^2\int_0^h z\!\left(1 - \frac{2z}{h} + \frac{z^2}{h^2}\right)dz
@@ -540,19 +620,17 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             = \frac{\pi R^2 h^2}{12}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 5 — Centro de gravedad \(z_G\)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 5 — Centro de gravedad \(z_G\)</div>
           \[
             z_G = \frac{Q_z}{V} = \frac{\,\dfrac{\pi R^2 h^2}{12}\,}{\dfrac{\pi R^2 h}{3}}
                 = \frac{\pi R^2 h^2}{12}\cdot\frac{3}{\pi R^2 h}
                 = \frac{h}{4}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               z_G = \frac{h}{4}, \qquad x_G = y_G = 0
             \]
@@ -560,48 +638,38 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               El CG se sitúa a \(\tfrac{1}{4}\) de la base. Análogamente, el triángulo (2D) tiene su CG a \(\tfrac{h}{3}\) —
               en 3D el cono "pesa más" cerca de la base, desplazando el CG más abajo.
             </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-3 -->
-
-<!-- ═══════════════════════════════════════════════════════ EJERCICIO 2.4 -->
-<div class="ex-card" id="ex2-4">
-  <div class="ex-header" onclick="toggleEx('ex2-4')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.4 — Centro de gravedad de la semiesfera</h2>
-      <div class="ex-meta">Sólido de revolución · Integración por discos · Ejemplo teórico-práctico esencial</div>
+  <div class="topic-panel" id="ex2-4">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.4</div>
+      <h1 class="panel-title">Centro de gravedad de la semiesfera</h1>
+      <div class="panel-meta">Sólido de revolución · Integración por discos · Ejemplo teórico-práctico esencial</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Calcular la posición del centro de gravedad de la <strong>semiesfera homogénea de radio \(R\)</strong>.
       La cara plana está en el plano \(z = 0\) y la superficie curva se extiende hasta \(z = R\), con eje de simetría \(z\).
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex04_fig.png" alt="Semiesfera homogénea radio R con ejes xyz" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Semiesfera homogénea sólida</td></tr>
-          <tr><td>Radio</td><td>\(R\)</td></tr>
-          <tr><td>Orientación</td><td>cara plana en \(z=0\), superficie curva hacia \(z>0\)</td></tr>
-          <tr><td>Incógnita</td><td>posición del CG</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Igual que en el cono, integramos por <strong>discos circulares</strong> horizontales de espesor \(dz\):</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Semiesfera homogénea radio R con ejes xyz" src="img/t2_ex04_fig.png" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Semiesfera homogénea sólida</td></tr>
+<tr><td>Radio</td><td>\(R\)</td></tr>
+<tr><td>Orientación</td><td>cara plana en \(z=0\), superficie curva hacia \(z&gt;0\)</td></tr>
+<tr><td>Incógnita</td><td>posición del CG</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Igual que en el cono, integramos por <strong>discos circulares</strong> horizontales de espesor \(dz\):</p>
         \[
           dV = \pi\,r(z)^2\,dz
         \]
@@ -610,22 +678,19 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           r(z)^2 = R^2 - z^2
         \]
       </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Elemento diferencial de volumen</div>
-          <p>A altura \(z\), el radio del disco es \(r(z) = \sqrt{R^2 - z^2}\):</p>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Elemento diferencial de volumen</div>
+<p>A altura \(z\), el radio del disco es \(r(z) = \sqrt{R^2 - z^2}\):</p>
           \[
             dV = \pi\,r(z)^2\,dz = \pi(R^2 - z^2)\,dz
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Volumen total (verificación)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Volumen total (verificación)</div>
           \[
             V = \int_0^R \pi(R^2 - z^2)\,dz
               = \pi\!\left[R^2 z - \frac{z^3}{3}\right]_0^R
@@ -633,14 +698,12 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               = \frac{2\pi R^3}{3} \checkmark
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Simetría (\(x_G = y_G = 0\))</div>
-          <p>La semiesfera es simétrica respecto al eje \(z\): \(x_G = y_G = 0\).</p>
-        </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Momento estático \(Q_z = \int z\,dV\)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Simetría (\(x_G = y_G = 0\))</div>
+<p>La semiesfera es simétrica respecto al eje \(z\): \(x_G = y_G = 0\).</p>
+</div>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Momento estático \(Q_z = \int z\,dV\)</div>
           \[
             Q_z = \int_0^R z\cdot\pi(R^2 - z^2)\,dz
                 = \pi\int_0^R\!(R^2 z - z^3)\,dz
@@ -652,9 +715,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             = \frac{\pi R^4}{4}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 5 — Centro de gravedad \(z_G\)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 5 — Centro de gravedad \(z_G\)</div>
           \[
             z_G = \frac{Q_z}{V}
                 = \frac{\,\dfrac{\pi R^4}{4}\,}{\dfrac{2\pi R^3}{3}}
@@ -662,10 +724,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
                 = \frac{3R}{8}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               z_G = \frac{3R}{8}, \qquad x_G = y_G = 0
             \]
@@ -673,73 +734,61 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               Progresión lógica: triángulo \(\tfrac{h}{3}\) → cono \(\tfrac{h}{4}\) → semiesfera \(\tfrac{3R}{8} \approx 0{,}375R\).
               La semiesfera es más "esférica" cerca de la cima, así que su CG sube respecto al cono.
             </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-4 -->
-
-<div class="ex-card" id="ex2-5">
-  <div class="ex-header" onclick="toggleEx('ex2-5')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.5 — Centro de gravedad de figura compuesta en L</h2>
-      <div class="ex-meta">Figuras compuestas · Momentos estáticos · Coordenadas en cm</div>
+  <div class="topic-panel" id="ex2-5">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.5</div>
+      <h1 class="panel-title">Centro de gravedad de figura compuesta en L</h1>
+      <div class="panel-meta">Figuras compuestas · Momentos estáticos · Coordenadas en cm</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Calcular la posición del centro de gravedad de la superficie de la figura, sabiendo que las medidas están en centímetros.
       La figura tiene forma de C/escuadra: base de 30 cm, altura total de 20 cm, ala superior de 10×2 cm y alma vertical izquierda de 2 cm de espesor.
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex05_fig.png" alt="Figura en L con dimensiones 10, 2, 20, 30 cm" style="max-width:340px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Perfil en C / escuadra (medidas en cm)</td></tr>
-          <tr><td>Base total</td><td>\(30\ \text{cm}\)</td></tr>
-          <tr><td>Altura total</td><td>\(20\ \text{cm}\)</td></tr>
-          <tr><td>Ala superior</td><td>\(10 \times 2\ \text{cm}\)</td></tr>
-          <tr><td>Alma vertical</td><td>\(2\ \text{cm}\) de espesor</td></tr>
-          <tr><td>Incógnita</td><td>posición del CG respecto al sistema de referencia dado</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Para figuras compuestas se aplica la <strong>aditividad de los momentos estáticos</strong>:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Figura en L con dimensiones 10, 2, 20, 30 cm" src="img/t2_ex05_fig.png" style="max-width:340px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Perfil en C / escuadra (medidas en cm)</td></tr>
+<tr><td>Base total</td><td>\(30\ \text{cm}\)</td></tr>
+<tr><td>Altura total</td><td>\(20\ \text{cm}\)</td></tr>
+<tr><td>Ala superior</td><td>\(10 \times 2\ \text{cm}\)</td></tr>
+<tr><td>Alma vertical</td><td>\(2\ \text{cm}\) de espesor</td></tr>
+<tr><td>Incógnita</td><td>posición del CG respecto al sistema de referencia dado</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Para figuras compuestas se aplica la <strong>aditividad de los momentos estáticos</strong>:</p>
         \[
           C_G = \frac{\sum A_i \cdot c_i}{\sum A_i}
         \]
         <p style="margin-top:8px">Se descompone la figura en subfiguras sencillas (rectángulos), cuyo centroide está siempre en su centro geométrico. Se suman áreas y momentos, y se divide.</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Descomposición en 3 rectángulos</div>
-          <p>Se divide la figura en tres rectángulos no solapados, asumiendo espesor constante de 2 cm:</p>
-          <ul style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
-            <li>\(R_1\) <strong style="color:#e2e8f0">(ala superior)</strong>: rectángulo horizontal de 10×2 cm en la parte alta</li>
-            <li>\(R_2\) <strong style="color:#e2e8f0">(alma vertical)</strong>: rectángulo vertical de 2×16 cm (altura total 20 menos las dos alas de 2 cm)</li>
-            <li>\(R_3\) <strong style="color:#e2e8f0">(base inferior)</strong>: rectángulo horizontal de 30×2 cm en la base</li>
-          </ul>
-        </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Áreas y centroides locales \((x_i,\, y_i)\)</div>
-          <p>El centroide de un rectángulo está en su centro geométrico:</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Descomposición en 3 rectángulos</div>
+<p>Se divide la figura en tres rectángulos no solapados, asumiendo espesor constante de 2 cm:</p>
+<ul style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+<li>\(R_1\) <strong style="color:#e2e8f0">(ala superior)</strong>: rectángulo horizontal de 10×2 cm en la parte alta</li>
+<li>\(R_2\) <strong style="color:#e2e8f0">(alma vertical)</strong>: rectángulo vertical de 2×16 cm (altura total 20 menos las dos alas de 2 cm)</li>
+<li>\(R_3\) <strong style="color:#e2e8f0">(base inferior)</strong>: rectángulo horizontal de 30×2 cm en la base</li>
+</ul>
+</div>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Áreas y centroides locales \((x_i,\, y_i)\)</div>
+<p>El centroide de un rectángulo está en su centro geométrico:</p>
           \[
             A_1 = 10 \cdot 2 = 20\ \text{cm}^2 \qquad x_1 = \tfrac{10}{2} = 5\ \text{cm} \qquad y_1 = 20 - 1 = 19\ \text{cm}
           \]
@@ -753,9 +802,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \sum A_i = 20 + 32 + 60 = 112\ \text{cm}^2
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Coordenada \(x_G\) (momentos respecto al eje \(y\))</div>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Coordenada \(x_G\) (momentos respecto al eje \(y\))</div>
           \[
             x_G \cdot \sum A_i = \sum (A_i \cdot x_i)
           \]
@@ -766,9 +814,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             x_G = \frac{1032}{112} = 9{,}21\ \text{cm}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Coordenada \(y_G\) (momentos respecto al eje \(x\))</div>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Coordenada \(y_G\) (momentos respecto al eje \(x\))</div>
           \[
             y_G \cdot 112 = (20)(19) + (32)(10) + (60)(1) = 380 + 320 + 60 = 760
           \]
@@ -776,56 +823,46 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             y_G = \frac{760}{112} = 6{,}79\ \text{cm}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               x_G = 9{,}21\ \text{cm} \qquad y_G = 6{,}79\ \text{cm}
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-5 -->
-
-<div class="ex-card" id="ex2-6">
-  <div class="ex-header" onclick="toggleEx('ex2-6')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.6 — Centro de gravedad y volumen de revolución de \(Y = K \cdot x^n\)</h2>
-      <div class="ex-meta">Integración · Centroide de área curva · Teorema de Pappus-Guldin · \(n = 3\)</div>
+  <div class="topic-panel" id="ex2-6">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.6</div>
+      <h1 class="panel-title">Centro de gravedad y volumen de revolución de \(Y = K \cdot x^n\)</h1>
+      <div class="panel-meta">Integración · Centroide de área curva · Teorema de Pappus-Guldin · \(n = 3\)</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       En la superficie de la figura, siendo \(n = 3\), calcular:
       <ol style="margin-top:8px;padding-left:20px;line-height:2">
-        <li>Posición del centro de gravedad respecto a los ejes \(x\) e \(y\).</li>
-        <li>Volumen del cuerpo que la superficie genera al girar respecto al eje \(x\).</li>
-      </ol>
+<li>Posición del centro de gravedad respecto a los ejes \(x\) e \(y\).</li>
+<li>Volumen del cuerpo que la superficie genera al girar respecto al eje \(x\).</li>
+</ol>
       La curva tiene la forma \(Y = K \cdot x^n\), con \(n = 3\), dimensiones \(h\) (ancho) y \(a\) (alto).
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex06_fig.png" alt="Curva Y=K·xⁿ con dimensiones h y a" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Curva</td><td>\(Y = K \cdot x^n\), con \(n = 3\)</td></tr>
-          <tr><td>Incógnitas</td><td>posición del CG; volumen al girar respecto al eje \(x\)</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Se trabaja con <strong>tiras verticales diferenciales</strong> de base \(dx\) y altura \(y\). El centroide local de cada tira está a mitad de su altura:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Curva Y=K·xⁿ con dimensiones h y a" src="img/t2_ex06_fig.png" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Curva</td><td>\(Y = K \cdot x^n\), con \(n = 3\)</td></tr>
+<tr><td>Incógnitas</td><td>posición del CG; volumen al girar respecto al eje \(x\)</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Se trabaja con <strong>tiras verticales diferenciales</strong> de base \(dx\) y altura \(y\). El centroide local de cada tira está a mitad de su altura:</p>
         \[
           y_e = \frac{y}{2}
         \]
@@ -834,16 +871,14 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           V = A \cdot (2\pi \cdot y_G)
         \]
         <p style="margin-top:8px">Al girar respecto al eje \(x\), la distancia al eje de giro de cada centroide es \(y_G\), y cada vuelta completa recorre \(2\pi\).</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Función exacta de la curva</div>
-          <p>En el punto \((h,\, a)\) la curva pasa por el extremo superior derecho, lo que permite hallar \(K\):</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Función exacta de la curva</div>
+<p>En el punto \((h,\, a)\) la curva pasa por el extremo superior derecho, lo que permite hallar \(K\):</p>
           \[
             a = K \cdot h^3 \implies K = \frac{a}{h^3}
           \]
@@ -851,10 +886,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             y = \frac{a}{h^3}\, x^3
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Área total \(A\)</div>
-          <p>Elemento diferencial de área vertical: \(dA = y\, dx\)</p>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Área total \(A\)</div>
+<p>Elemento diferencial de área vertical: \(dA = y\, dx\)</p>
           \[
             A = \int_0^h \frac{a}{h^3}\, x^3\, dx
               = \frac{a}{h^3} \left[\frac{x^4}{4}\right]_0^h
@@ -862,10 +896,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               = \frac{ah}{4}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Coordenada \(x_G\)</div>
-          <p>Momento estático respecto al eje \(y\):</p>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Coordenada \(x_G\)</div>
+<p>Momento estático respecto al eje \(y\):</p>
           \[
             Q_y = \int_0^h x \cdot \frac{a}{h^3}\, x^3\, dx
                 = \frac{a}{h^3} \left[\frac{x^5}{5}\right]_0^h
@@ -876,10 +909,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             x_G = \frac{Q_y}{A} = \frac{\dfrac{ah^2}{5}}{\dfrac{ah}{4}} = \frac{4h}{5}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Coordenada \(y_G\)</div>
-          <p>El centroide local de cada tira vertical está a \(y_e = y/2\), por lo que:</p>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Coordenada \(y_G\)</div>
+<p>El centroide local de cada tira vertical está a \(y_e = y/2\), por lo que:</p>
           \[
             Q_x = \int_0^h \frac{y}{2} \cdot y\, dx = \frac{1}{2}\int_0^h y^2\, dx
                 = \frac{1}{2}\int_0^h \left(\frac{a}{h^3}\,x^3\right)^2 dx
@@ -894,10 +926,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             y_G = \frac{Q_x}{A} = \frac{\dfrac{a^2 h}{14}}{\dfrac{ah}{4}} = \frac{2a}{7}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 5 — Volumen de revolución (Pappus-Guldin)</div>
-          <p>Al girar respecto al eje \(x\), la distancia del centroide al eje es \(y_G\):</p>
+<div class="paso">
+<div class="paso-titulo">Paso 5 — Volumen de revolución (Pappus-Guldin)</div>
+<p>Al girar respecto al eje \(x\), la distancia del centroide al eje es \(y_G\):</p>
           \[
             V = A \cdot 2\pi\, y_G
               = \frac{ah}{4} \cdot 2\pi \cdot \frac{2a}{7}
@@ -905,69 +936,57 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               = \frac{\pi a^2 h}{7}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               x_G = \frac{4h}{5} \qquad y_G = \frac{2a}{7} \qquad V = \frac{\pi a^2 h}{7}
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-6 -->
-
-<div class="ex-card" id="ex2-7">
-  <div class="ex-header" onclick="toggleEx('ex2-7')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.7 — Centro de gravedad de figura con semidisco vaciado</h2>
-      <div class="ex-meta">Superposición · Semidisco grande − semidisco hueco · Dimensiones en \(r\)</div>
+  <div class="topic-panel" id="ex2-7">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.7</div>
+      <h1 class="panel-title">Centro de gravedad de figura con semidisco vaciado</h1>
+      <div class="panel-meta">Superposición · Semidisco grande − semidisco hueco · Dimensiones en \(r\)</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Calcular la posición del centro de gravedad de la figura respecto al sistema de referencia indicado.
       La figura es un semidisco de radio \(r\) al que se le ha vaciado un semidisco de radio \(r/2\) en su mitad derecha.
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex07_fig.png" alt="Figura con semidisco vaciado, dimensiones r y r/2" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Semidisco de radio \(r\) con vaciado de semidisco de radio \(r/2\) en mitad derecha</td></tr>
-          <tr><td>Radio exterior</td><td>\(r\)</td></tr>
-          <tr><td>Radio del vaciado</td><td>\(r/2\)</td></tr>
-          <tr><td>Incógnita</td><td>posición del CG</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Se aplica el <strong>principio de superposición</strong>: se considera la figura total como la suma de una figura positiva (sólido completo) y una negativa (el hueco que se resta).</p>
-        <p style="margin-top:8px">Centroide de un semidisco de radio \(R\) apoyado sobre su diámetro:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Figura con semidisco vaciado, dimensiones r y r/2" src="img/t2_ex07_fig.png" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Semidisco de radio \(r\) con vaciado de semidisco de radio \(r/2\) en mitad derecha</td></tr>
+<tr><td>Radio exterior</td><td>\(r\)</td></tr>
+<tr><td>Radio del vaciado</td><td>\(r/2\)</td></tr>
+<tr><td>Incógnita</td><td>posición del CG</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Se aplica el <strong>principio de superposición</strong>: se considera la figura total como la suma de una figura positiva (sólido completo) y una negativa (el hueco que se resta).</p>
+<p style="margin-top:8px">Centroide de un semidisco de radio \(R\) apoyado sobre su diámetro:</p>
         \[
           y = \frac{4R}{3\pi}
         \]
         <p style="margin-top:8px">El área del hueco se introduce con <strong>signo negativo</strong> tanto en el área total como en los momentos estáticos.</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Descomposición y áreas</div>
-          <p><strong>Área 1</strong> — Semidisco grande (\(R_1 = r\), positivo):</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Descomposición y áreas</div>
+<p><strong>Área 1</strong> — Semidisco grande (\(R_1 = r\), positivo):</p>
           \[
             A_1 = \frac{\pi r^2}{2} \qquad x_1 = r \qquad y_1 = \frac{4r}{3\pi}
           \]
@@ -980,9 +999,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             A_{tot} = \frac{\pi r^2}{2} - \frac{\pi r^2}{8} = \frac{4\pi r^2 - \pi r^2}{8} = \frac{3\pi r^2}{8}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Coordenada \(x_G\)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Coordenada \(x_G\)</div>
           \[
             Q_y = A_1 \cdot x_1 + A_2 \cdot x_2
                 = \frac{\pi r^2}{2} \cdot r + \left(-\frac{\pi r^2}{8}\right) \cdot \frac{3r}{2}
@@ -997,9 +1015,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
                 = \frac{5r}{6}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Coordenada \(y_G\)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Coordenada \(y_G\)</div>
           \[
             Q_x = A_1 \cdot y_1 + A_2 \cdot y_2
                 = \frac{\pi r^2}{2} \cdot \frac{4r}{3\pi} + \left(-\frac{\pi r^2}{8}\right) \cdot \frac{2r}{3\pi}
@@ -1014,79 +1031,66 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
                 = \frac{14r}{9\pi}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               x_G = \frac{5r}{6} \qquad y_G = \frac{14r}{9\pi}
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-7 -->
-
-<div class="ex-card" id="ex2-8">
-  <div class="ex-header" onclick="toggleEx('ex2-8')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.8 — Volumen de acero removido en avellanado</h2>
-      <div class="ex-meta">Cuerpo de revolución · Pappus-Guldin · Rectángulo + triángulo generatrices</div>
+  <div class="topic-panel" id="ex2-8">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.8</div>
+      <h1 class="panel-title">Volumen de acero removido en avellanado</h1>
+      <div class="panel-meta">Cuerpo de revolución · Pappus-Guldin · Rectángulo + triángulo generatrices</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Se taladra un agujero de \(\varnothing\,15\ \text{mm}\) en una pieza de acero de 20 mm de espesor y después se avellana con ángulo de 90° hasta un diámetro exterior de 25 mm.
       Calcular el volumen de acero removido. \(\rho = 7{,}85\ \text{kg/dm}^3\).
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex08_fig.png" alt="Avellanado 90° en pieza 20mm, agujero 15mm, cabeza 25mm" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Material</td><td>Acero, \(\rho = 7{,}85\ \text{kg/dm}^3\)</td></tr>
-          <tr><td>Espesor de la pieza</td><td>\(20\ \text{mm}\)</td></tr>
-          <tr><td>Diámetro del taladro</td><td>\(15\ \text{mm}\)</td></tr>
-          <tr><td>Avellana</td><td>ángulo \(90°\), diámetro exterior \(25\ \text{mm}\)</td></tr>
-          <tr><td>Incógnita</td><td>volumen de acero removido</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>El hueco es un <strong>sólido de revolución</strong>. Cortando por el eje de simetría, la sección generatriz está compuesta por dos áreas:</p>
-        <ul style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
-          <li><strong style="color:#e2e8f0">Rectángulo</strong> — el taladro cilíndrico pasante</li>
-          <li><strong style="color:#e2e8f0">Triángulo rectángulo</strong> — el cono del avellanado</li>
-        </ul>
-        <p style="margin-top:8px">Se aplica el <strong>Teorema de Pappus-Guldin</strong>:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Avellanado 90° en pieza 20mm, agujero 15mm, cabeza 25mm" src="img/t2_ex08_fig.png" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Material</td><td>Acero, \(\rho = 7{,}85\ \text{kg/dm}^3\)</td></tr>
+<tr><td>Espesor de la pieza</td><td>\(20\ \text{mm}\)</td></tr>
+<tr><td>Diámetro del taladro</td><td>\(15\ \text{mm}\)</td></tr>
+<tr><td>Avellana</td><td>ángulo \(90°\), diámetro exterior \(25\ \text{mm}\)</td></tr>
+<tr><td>Incógnita</td><td>volumen de acero removido</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>El hueco es un <strong>sólido de revolución</strong>. Cortando por el eje de simetría, la sección generatriz está compuesta por dos áreas:</p>
+<ul style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+<li><strong style="color:#e2e8f0">Rectángulo</strong> — el taladro cilíndrico pasante</li>
+<li><strong style="color:#e2e8f0">Triángulo rectángulo</strong> — el cono del avellanado</li>
+</ul>
+<p style="margin-top:8px">Se aplica el <strong>Teorema de Pappus-Guldin</strong>:</p>
         \[
           V = 2\pi \cdot \sum(A_i \cdot x_i) = 2\pi \cdot (Q_{y1} + Q_{y2})
         \]
       </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Deducción de cotas</div>
-          <p>El taladro tiene \(\varnothing\,15\ \text{mm}\) → radio \(r = 7{,}5\ \text{mm}\). El avellanado llega a \(\varnothing\,25\ \text{mm}\) → radio exterior \(R = 12{,}5\ \text{mm}\).</p>
-          <p style="margin-top:6px">Base del triángulo (diferencia de radios): \(b = 12{,}5 - 7{,}5 = 5\ \text{mm}\).</p>
-          <p style="margin-top:6px">Ángulo 90° simétrico (45° a cada lado) → triángulo isósceles → altura \(= b = 5\ \text{mm}\).</p>
-        </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Área 1: rectángulo (taladro cilíndrico)</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Deducción de cotas</div>
+<p>El taladro tiene \(\varnothing\,15\ \text{mm}\) → radio \(r = 7{,}5\ \text{mm}\). El avellanado llega a \(\varnothing\,25\ \text{mm}\) → radio exterior \(R = 12{,}5\ \text{mm}\).</p>
+<p style="margin-top:6px">Base del triángulo (diferencia de radios): \(b = 12{,}5 - 7{,}5 = 5\ \text{mm}\).</p>
+<p style="margin-top:6px">Ángulo 90° simétrico (45° a cada lado) → triángulo isósceles → altura \(= b = 5\ \text{mm}\).</p>
+</div>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Área 1: rectángulo (taladro cilíndrico)</div>
           \[
             A_1 = 7{,}5 \times 20 = 150\ \text{mm}^2
           \]
@@ -1095,9 +1099,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             x_1 = \frac{7{,}5}{2} = 3{,}75\ \text{mm} \qquad Q_{y1} = 150 \times 3{,}75 = 562{,}5\ \text{mm}^3
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Área 2: triángulo rectángulo (cono del avellanado)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Área 2: triángulo rectángulo (cono del avellanado)</div>
           \[
             A_2 = \frac{5 \times 5}{2} = 12{,}5\ \text{mm}^2
           \]
@@ -1109,9 +1112,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             Q_{y2} = 12{,}5 \times \frac{27{,}5}{3} = \frac{343{,}75}{3}\ \text{mm}^3
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Aplicación de Pappus-Guldin</div>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Aplicación de Pappus-Guldin</div>
           \[
             V = 2\pi \left(562{,}5 + \frac{343{,}75}{3}\right)
               = 2\pi \left(\frac{1687{,}5 + 343{,}75}{3}\right)
@@ -1122,58 +1124,48 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             V = \frac{4062{,}5 \times 3{,}14159\ldots}{3} \approx 4254\ \text{mm}^3
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               V = \frac{4062{,}5\,\pi}{3} \approx 4254\ \text{mm}^3
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-8 -->
-
-<div class="ex-card" id="ex2-9">
-  <div class="ex-header" onclick="toggleEx('ex2-9')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.9 — Longitud del tramo \(CE\) para que \(G\) esté en \(C\)</h2>
-      <div class="ex-meta">Alambre continuo · Equilibrio de momentos estáticos · Centroide de arco · Dos casos</div>
+  <div class="topic-panel" id="ex2-9">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.9</div>
+      <h1 class="panel-title">Longitud del tramo \(CE\) para que \(G\) esté en \(C\)</h1>
+      <div class="panel-meta">Alambre continuo · Equilibrio de momentos estáticos · Centroide de arco · Dos casos</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       La figura muestra un alambre homogéneo delgado compuesto por un arco \(AB\) de radio \(r\) y ángulo total \(2\vartheta\), y una barra recta \(DE\) que va desde el punto \(D\) (borde interior del arco) hasta el extremo libre \(E\), pasando por \(C\). El tramo \(DC = r\) y el tramo \(CE = l\) es la incógnita.
-      <br><br>
-      Calcular \(l\) para que el centro de gravedad del conjunto se localice en \(C\):<br>
-      a) \(\vartheta = 15°\) &nbsp;&nbsp; b) \(\vartheta = 60°\)
+      <br/><br/>
+      Calcular \(l\) para que el centro de gravedad del conjunto se localice en \(C\):<br/>
+      a) \(\vartheta = 15°\)    b) \(\vartheta = 60°\)
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex09_fig.png" alt="Alambre D-A-C-E con arco radio r ángulo θ y tramo l" style="max-width:400px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Alambre homogéneo \(ABCDE\)</td></tr>
-          <tr><td>Arco \(AB\)</td><td>radio \(r\), ángulo total \(2\vartheta\)</td></tr>
-          <tr><td>Tramo \(DC\)</td><td>\(r\)</td></tr>
-          <tr><td>Tramo \(CE\)</td><td>\(l\) (incógnita)</td></tr>
-          <tr><td>Incógnita</td><td>longitud \(l\) y posición del CG</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>El alambre es un elemento <strong>unidimensional continuo</strong> — se trabaja con longitudes \(L_i\) en lugar de áreas.</p>
-        <p style="margin-top:8px">El centroide de un arco de circunferencia de radio \(r\) y semiángulo \(\theta\) (medido desde el eje de simetría) está a una distancia del centro de curvatura de:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Alambre D-A-C-E con arco radio r ángulo θ y tramo l" src="img/t2_ex09_fig.png" style="max-width:400px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Alambre homogéneo \(ABCDE\)</td></tr>
+<tr><td>Arco \(AB\)</td><td>radio \(r\), ángulo total \(2\vartheta\)</td></tr>
+<tr><td>Tramo \(DC\)</td><td>\(r\)</td></tr>
+<tr><td>Tramo \(CE\)</td><td>\(l\) (incógnita)</td></tr>
+<tr><td>Incógnita</td><td>longitud \(l\) y posición del CG</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>El alambre es un elemento <strong>unidimensional continuo</strong> — se trabaja con longitudes \(L_i\) en lugar de áreas.</p>
+<p style="margin-top:8px">El centroide de un arco de circunferencia de radio \(r\) y semiángulo \(\theta\) (medido desde el eje de simetría) está a una distancia del centro de curvatura de:</p>
         \[
           x_{arco} = \frac{r \sin\theta}{\theta}
         \]
@@ -1182,23 +1174,20 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           Q_{y1} + Q_{y2} = 0
         \]
       </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Sistema de referencia en \(C(0,0)\)</div>
-          <p>Se fija el origen en \(C\), que es el punto donde debe estar \(G\). Así la condición de equilibrio es simplemente \(\sum Q_y = 0\).</p>
-          <ul style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
-            <li>El arco \(AB\) queda a la <strong>izquierda</strong> de \(C\) → su centroide tiene coordenada \(x\) negativa</li>
-            <li>La barra \(DE\) va desde \(x = -r\) hasta \(x = l\)</li>
-          </ul>
-        </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Elemento 1: Arco \(AB\)</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Sistema de referencia en \(C(0,0)\)</div>
+<p>Se fija el origen en \(C\), que es el punto donde debe estar \(G\). Así la condición de equilibrio es simplemente \(\sum Q_y = 0\).</p>
+<ul style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+<li>El arco \(AB\) queda a la <strong>izquierda</strong> de \(C\) → su centroide tiene coordenada \(x\) negativa</li>
+<li>La barra \(DE\) va desde \(x = -r\) hasta \(x = l\)</li>
+</ul>
+</div>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Elemento 1: Arco \(AB\)</div>
           \[
             L_1 = r \cdot 2\theta = 2r\theta
           \]
@@ -1210,10 +1199,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             Q_{y1} = L_1 \cdot x_1 = 2r\theta \cdot \left(-\frac{r\sin\theta}{\theta}\right) = -2r^2\sin\theta
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Elemento 2: Barra recta \(DE\)</div>
-          <p>La barra va de \(x = -r\) (punto \(D\)) a \(x = l\) (punto \(E\)):</p>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Elemento 2: Barra recta \(DE\)</div>
+<p>La barra va de \(x = -r\) (punto \(D\)) a \(x = l\) (punto \(E\)):</p>
           \[
             L_2 = r + l
           \]
@@ -1225,9 +1213,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             Q_{y2} = L_2 \cdot x_2 = (r + l) \cdot \frac{l - r}{2} = \frac{l^2 - r^2}{2}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Ecuación de equilibrio → fórmula general</div>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Ecuación de equilibrio → fórmula general</div>
           \[
             Q_{y1} + Q_{y2} = 0 \implies -2r^2\sin\theta + \frac{l^2 - r^2}{2} = 0
           \]
@@ -1239,10 +1226,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{l = r\sqrt{1 + 4\sin\theta}}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 5 — Casos numéricos</div>
-          <p><strong>a) \(\vartheta = 15°\):</strong></p>
+<div class="paso">
+<div class="paso-titulo">Paso 5 — Casos numéricos</div>
+<p><strong>a) \(\vartheta = 15°\):</strong></p>
           \[
             l = r\sqrt{1 + 4\sin 15°} = r\sqrt{1 + 4 \times 0{,}2588} = r\sqrt{2{,}0352} \approx 1{,}427\,r
           \]
@@ -1251,10 +1237,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             l = r\sqrt{1 + 4\sin 60°} = r\sqrt{1 + 4 \times 0{,}866} = r\sqrt{4{,}464} \approx 2{,}11\,r
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               l = r\sqrt{1 + 4\sin\theta}
             \]
@@ -1262,61 +1247,50 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               \text{a)}\ l \approx 1{,}427\,r \qquad \text{b)}\ l \approx 2{,}11\,r
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-9 -->
-
-<div class="ex-card" id="ex2-10">
-  <div class="ex-header" onclick="toggleEx('ex2-10')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.10 — Volumen de revolución alrededor del eje \(e\)</h2>
-      <div class="ex-meta">Pappus-Guldin · Superposición rectángulo − triángulo · Eje excéntrico</div>
+  <div class="topic-panel" id="ex2-10">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.10</div>
+      <h1 class="panel-title">Volumen de revolución alrededor del eje \(e\)</h1>
+      <div class="panel-meta">Pappus-Guldin · Superposición rectángulo − triángulo · Eje excéntrico</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Obtener el volumen del cuerpo de revolución que se genera al hacer girar la superficie de la figura alrededor del eje \(e\).
       La figura es un triángulo rectángulo con ángulos de 45° y dimensiones \(R\) (base) y \(2R/3\) (altura), con un chaflán triangular en el eje \(e\).
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex10_fig.png" alt="Triángulo con eje e, ángulos 45°, dimensiones 2R/3 y R" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Triángulo rectángulo con ángulos de \(45°\)</td></tr>
-          <tr><td>Base</td><td>\(R\)</td></tr>
-          <tr><td>Altura</td><td>\(2R/3\)</td></tr>
-          <tr><td>Chaflán triangular</td><td>en el eje \(e\)</td></tr>
-          <tr><td>Incógnita</td><td>volumen del sólido de revolución respecto al eje \(e\)</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Se aplica el <strong>Teorema de Pappus-Guldin</strong> en su forma directa con el momento estático:</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Triángulo con eje e, ángulos 45°, dimensiones 2R/3 y R" src="img/t2_ex10_fig.png" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Triángulo rectángulo con ángulos de \(45°\)</td></tr>
+<tr><td>Base</td><td>\(R\)</td></tr>
+<tr><td>Altura</td><td>\(2R/3\)</td></tr>
+<tr><td>Chaflán triangular</td><td>en el eje \(e\)</td></tr>
+<tr><td>Incógnita</td><td>volumen del sólido de revolución respecto al eje \(e\)</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Se aplica el <strong>Teorema de Pappus-Guldin</strong> en su forma directa con el momento estático:</p>
         \[
           V = 2\pi \cdot Q_e \qquad \text{donde} \quad Q_e = \sum A_i \cdot x_i
         \]
         <p style="margin-top:8px">La figura se descompone por <strong>superposición</strong>: rectángulo sólido (positivo) menos triángulo de chaflán (negativo). El eje \(e\) actúa como eje \(y\), con \(x = 0\) en el eje de rotación.</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Figura 1: Rectángulo base (positivo)</div>
-          <p>Rectángulo de base \(R\) y altura \(2R/3\), apoyado sobre el eje \(e\):</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Figura 1: Rectángulo base (positivo)</div>
+<p>Rectángulo de base \(R\) y altura \(2R/3\), apoyado sobre el eje \(e\):</p>
           \[
             A_1 = R \cdot \frac{2R}{3} = \frac{2R^2}{3}
           \]
@@ -1328,10 +1302,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             Q_{e1} = A_1 \cdot x_1 = \frac{2R^2}{3} \cdot \frac{R}{2} = \frac{R^3}{3} = \frac{54R^3}{162}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Figura 2: Triángulo de chaflán (negativo)</div>
-          <p>El chaflán de 45° forma un triángulo isósceles (base = altura). Por proporcionalidad geométrica con las dimensiones totales de la figura (\(R\) de base, \(2R/3\) de altura), los catetos del triángulo son \(R/3\) cada uno:</p>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Figura 2: Triángulo de chaflán (negativo)</div>
+<p>El chaflán de 45° forma un triángulo isósceles (base = altura). Por proporcionalidad geométrica con las dimensiones totales de la figura (\(R\) de base, \(2R/3\) de altura), los catetos del triángulo son \(R/3\) cada uno:</p>
           \[
             A_2 = -\frac{1}{2} \cdot \frac{R}{3} \cdot \frac{R}{3} = -\frac{R^2}{18}
           \]
@@ -1343,71 +1316,59 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             Q_{e2} = A_2 \cdot x_2 = \left(-\frac{R^2}{18}\right) \cdot \frac{R}{9} = -\frac{R^3}{162}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Momento estático total</div>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Momento estático total</div>
           \[
             Q_e = Q_{e1} + Q_{e2} = \frac{54R^3}{162} - \frac{R^3}{162} = \frac{53R^3}{162}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 4 — Volumen por Pappus-Guldin</div>
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Volumen por Pappus-Guldin</div>
           \[
             V = 2\pi \cdot Q_e = 2\pi \cdot \frac{53R^3}{162} = \frac{53\pi R^3}{81}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               V = \frac{53\pi R^3}{81}
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-10 -->
-
-<div class="ex-card" id="ex2-11">
-  <div class="ex-header" onclick="toggleEx('ex2-11')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.11 — Momento de inercia de una barra homogénea</h2>
-      <div class="ex-meta">Integración directa · Teorema de Steiner · Eje en CG y en extremo</div>
+  <div class="topic-panel" id="ex2-11">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.11</div>
+      <h1 class="panel-title">Momento de inercia de una barra homogénea</h1>
+      <div class="panel-meta">Integración directa · Teorema de Steiner · Eje en CG y en extremo</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Hallar el momento de inercia de una barra homogénea de masa \(M\) y longitud \(L\) respecto al eje \(z\) perpendicular a la barra:
       <ol style="margin-top:8px;padding-left:20px;line-height:2">
-        <li>Eje \(z\) que pasa por su centro de gravedad.</li>
-        <li>Eje \(z\) que pasa por un extremo.</li>
-      </ol>
-    </div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Barra homogénea</td></tr>
-          <tr><td>Masa</td><td>\(M\)</td></tr>
-          <tr><td>Longitud</td><td>\(L\)</td></tr>
-          <tr><td>Caso a)</td><td>momento de inercia respecto al eje central</td></tr>
-          <tr><td>Caso b)</td><td>momento de inercia respecto al eje en un extremo</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Para una barra homogénea se define la <strong>densidad lineal de masa</strong> \(\lambda\) (constante):</p>
+<li>Eje \(z\) que pasa por su centro de gravedad.</li>
+<li>Eje \(z\) que pasa por un extremo.</li>
+</ol>
+</div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Barra homogénea</td></tr>
+<tr><td>Masa</td><td>\(M\)</td></tr>
+<tr><td>Longitud</td><td>\(L\)</td></tr>
+<tr><td>Caso a)</td><td>momento de inercia respecto al eje central</td></tr>
+<tr><td>Caso b)</td><td>momento de inercia respecto al eje en un extremo</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Para una barra homogénea se define la <strong>densidad lineal de masa</strong> \(\lambda\) (constante):</p>
         \[
           \lambda = \frac{M}{L} \qquad \Rightarrow \qquad dm = \lambda\, dx = \frac{M}{L}\,dx
         \]
@@ -1420,15 +1381,13 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           I_O = I_G + M \cdot d^2
         \]
       </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Caso A — Eje en el centro de gravedad \((I_G)\)</div>
-          <p>Origen en el CG: la barra se extiende de \(x = -L/2\) a \(x = +L/2\).</p>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Caso A — Eje en el centro de gravedad \((I_G)\)</div>
+<p>Origen en el CG: la barra se extiende de \(x = -L/2\) a \(x = +L/2\).</p>
           \[
             I_G = \int_{-L/2}^{L/2} x^2 \cdot \frac{M}{L}\,dx
                 = \frac{M}{L}\left[\frac{x^3}{3}\right]_{-L/2}^{L/2}
@@ -1441,10 +1400,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_G = \frac{ML^2}{12}}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Caso B — Eje en un extremo \((I_O)\) · Método 1: integración directa</div>
-          <p>Origen en el extremo: la barra se extiende de \(x = 0\) a \(x = L\).</p>
+<div class="paso">
+<div class="paso-titulo">Caso B — Eje en un extremo \((I_O)\) · Método 1: integración directa</div>
+<p>Origen en el extremo: la barra se extiende de \(x = 0\) a \(x = L\).</p>
           \[
             I_O = \int_0^L x^2 \cdot \frac{M}{L}\,dx
                 = \frac{M}{L}\left[\frac{x^3}{3}\right]_0^L
@@ -1454,10 +1412,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_O = \frac{ML^2}{3}}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Caso B — Eje en un extremo \((I_O)\) · Método 2: Teorema de Steiner</div>
-          <p>La distancia entre el CG y el extremo es \(d = L/2\). Aplicando Steiner sobre el resultado del Caso A:</p>
+<div class="paso">
+<div class="paso-titulo">Caso B — Eje en un extremo \((I_O)\) · Método 2: Teorema de Steiner</div>
+<p>La distancia entre el CG y el extremo es \(d = L/2\). Aplicando Steiner sobre el resultado del Caso A:</p>
           \[
             I_O = I_G + M \cdot d^2
                 = \frac{ML^2}{12} + M \cdot \left(\frac{L}{2}\right)^2
@@ -1469,76 +1426,64 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_O = \frac{ML^2}{3}} \checkmark
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               \text{a)}\ I_G = \frac{ML^2}{12} \qquad \text{b)}\ I_O = \frac{ML^2}{3}
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-11 -->
-
-<div class="ex-card" id="ex2-12">
-  <div class="ex-header" onclick="toggleEx('ex2-12')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.12 — Momento de inercia de un disco homogéneo</h2>
-      <div class="ex-meta">Anillos diferenciales · Teorema de ejes perpendiculares · Simetría</div>
+  <div class="topic-panel" id="ex2-12">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 2.12</div>
+      <h1 class="panel-title">Momento de inercia de un disco homogéneo</h1>
+      <div class="panel-meta">Anillos diferenciales · Teorema de ejes perpendiculares · Simetría</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Hallar el momento de inercia de un disco homogéneo de masa \(M\) y radio \(R\):
       <ol style="margin-top:8px;padding-left:20px;line-height:2">
-        <li>Respecto al eje \(z\) perpendicular al disco por su centro.</li>
-        <li>Respecto a un eje cualquiera en el plano \(xy\) que pase por su centro.</li>
-      </ol>
-    </div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Disco homogéneo</td></tr>
-          <tr><td>Masa</td><td>\(M\)</td></tr>
-          <tr><td>Radio</td><td>\(R\)</td></tr>
-          <tr><td>Caso a)</td><td>\(I_z\) eje perpendicular por el centro</td></tr>
-          <tr><td>Caso b)</td><td>\(I\) eje cualquiera en el plano \(xy\) por el centro</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Para un disco homogéneo se define la <strong>densidad superficial de masa</strong> \(\sigma\) (constante):</p>
+<li>Respecto al eje \(z\) perpendicular al disco por su centro.</li>
+<li>Respecto a un eje cualquiera en el plano \(xy\) que pase por su centro.</li>
+</ol>
+</div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Disco homogéneo</td></tr>
+<tr><td>Masa</td><td>\(M\)</td></tr>
+<tr><td>Radio</td><td>\(R\)</td></tr>
+<tr><td>Caso a)</td><td>\(I_z\) eje perpendicular por el centro</td></tr>
+<tr><td>Caso b)</td><td>\(I\) eje cualquiera en el plano \(xy\) por el centro</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Para un disco homogéneo se define la <strong>densidad superficial de masa</strong> \(\sigma\) (constante):</p>
         \[
           \sigma = \frac{M}{\pi R^2}
         \]
         <p style="margin-top:8px">Se usan <strong>coordenadas polares</strong>: el elemento diferencial de área es un anillo de radio \(r\) y espesor \(dr\), con área \(dA = 2\pi r\, dr\).</p>
-        <p style="margin-top:8px">El <strong>Teorema de ejes perpendiculares</strong> (lámina plana) establece:</p>
+<p style="margin-top:8px">El <strong>Teorema de ejes perpendiculares</strong> (lámina plana) establece:</p>
         \[
           I_z = I_x + I_y
         \]
         <p style="margin-top:8px">Combinado con la simetría del disco (\(I_x = I_y\)), permite obtener el momento diametral sin integración adicional.</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Caso A — Eje \(z\) perpendicular al disco \((I_z)\)</div>
-          <p>Masa del anillo diferencial de radio \(r\):</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Caso A — Eje \(z\) perpendicular al disco \((I_z)\)</div>
+<p>Masa del anillo diferencial de radio \(r\):</p>
           \[
             dm = \sigma \cdot dA = \frac{M}{\pi R^2} \cdot 2\pi r\, dr = \frac{2M}{R^2}\, r\, dr
           \]
@@ -1553,10 +1498,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_z = \frac{MR^2}{2}}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Caso B — Eje diametral en el plano \(xy\) \((I_x = I_y)\)</div>
-          <p><strong>Simetría:</strong> el disco es perfectamente circular y homogéneo, por lo que su resistencia a girar alrededor de cualquier eje diametral es idéntica:</p>
+<div class="paso">
+<div class="paso-titulo">Caso B — Eje diametral en el plano \(xy\) \((I_x = I_y)\)</div>
+<p><strong>Simetría:</strong> el disco es perfectamente circular y homogéneo, por lo que su resistencia a girar alrededor de cualquier eje diametral es idéntica:</p>
           \[
             I_x = I_y
           \]
@@ -1568,60 +1512,50 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_x = I_y = \frac{MR^2}{4}}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               \text{a)}\ I_z = \frac{MR^2}{2} \qquad \text{b)}\ I_x = I_y = \frac{MR^2}{4}
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-12 -->
-
-<div class="ex-card ex-card-exam" id="ex2-13">
-  <div class="ex-header" onclick="toggleEx('ex2-13')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.13 — Inercias y productos de inercia del rectángulo <span class="ex-badge">Nivel examen</span></h2>
-      <div class="ex-meta">Integración directa · Steiner · Sistemas \(xy\) (vértice) y \(x'y'\) (centroide)</div>
+  <div class="topic-panel" id="ex2-13">
+    <div class="panel-header panel-header-exam">
+      <div class="panel-tag panel-tag-exam">Ejercicio 2.13</div>
+      <h1 class="panel-title">Inercias y productos de inercia del rectángulo <span class="exam-badge">★ Nivel Examen</span></h1>
+      <div class="panel-meta">Integración directa · Steiner · Sistemas \(xy\) (vértice) y \(x'y'\) (centroide)</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Calcular para el rectángulo de dimensiones \(b \times h\) los momentos de inercia y los productos de inercia respecto a:
       <ul style="margin-top:8px;padding-left:20px;line-height:2">
-        <li>Sistema \(xy\): origen en el vértice inferior izquierdo \(O\).</li>
-        <li>Sistema \(x'y'\): origen en el centroide \(G\) (paralelo a \(xy\)).</li>
-      </ul>
-      <p style="margin-top:8px;color:#94a3b8;font-size:.88em">Nota: el rectángulo no tiene masa definida, solo dimensiones geométricas → se trabaja con <strong>momentos de inercia de área</strong> \([cm^4]\).</p>
-    </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex13_fig.png" alt="Rectángulo b×h con sistemas de referencia xy y x'y'" style="max-width:340px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Rectángulo plano</td></tr>
-          <tr><td>Base</td><td>\(b\)</td></tr>
-          <tr><td>Altura</td><td>\(h\)</td></tr>
-          <tr><td>Sistema \(xy\)</td><td>origen en vértice inferior izquierdo \(O\)</td></tr>
-          <tr><td>Sistema \(x'y'\)</td><td>origen en centroide \(G\)</td></tr>
-          <tr><td>Incógnitas</td><td>momentos e productos de inercia en ambos sistemas</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Los <strong>momentos de inercia de área</strong> miden la resistencia de una sección a doblarse alrededor de un eje:</p>
+<li>Sistema \(xy\): origen en el vértice inferior izquierdo \(O\).</li>
+<li>Sistema \(x'y'\): origen en el centroide \(G\) (paralelo a \(xy\)).</li>
+</ul>
+<p style="margin-top:8px;color:#94a3b8;font-size:.88em">Nota: el rectángulo no tiene masa definida, solo dimensiones geométricas → se trabaja con <strong>momentos de inercia de área</strong> \([cm^4]\).</p>
+</div>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Rectángulo b×h con sistemas de referencia xy y x'y'" src="img/t2_ex13_fig.png" style="max-width:340px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Rectángulo plano</td></tr>
+<tr><td>Base</td><td>\(b\)</td></tr>
+<tr><td>Altura</td><td>\(h\)</td></tr>
+<tr><td>Sistema \(xy\)</td><td>origen en vértice inferior izquierdo \(O\)</td></tr>
+<tr><td>Sistema \(x'y'\)</td><td>origen en centroide \(G\)</td></tr>
+<tr><td>Incógnitas</td><td>momentos e productos de inercia en ambos sistemas</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Los <strong>momentos de inercia de área</strong> miden la resistencia de una sección a doblarse alrededor de un eje:</p>
         \[
           I_x = \int y^2\, dA \qquad I_y = \int x^2\, dA \qquad C_{xy} = \int xy\, dA
         \]
@@ -1630,16 +1564,14 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           I_{x'} = I_x - A \cdot y_G^2 \qquad I_{y'} = I_y - A \cdot x_G^2 \qquad C_{x'y'} = C_{xy} - A \cdot x_G \cdot y_G
         \]
         <p style="margin-top:8px">El producto de inercia es nulo cuando los ejes son ejes de simetría de la figura.</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Sistema \(xy\) — Momento \(I_x\) (eje \(x\) en la base)</div>
-          <p>Tiras horizontales de anchura \(b\) y altura \(dy\) a distancia \(y\) del eje \(x\):</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Sistema \(xy\) — Momento \(I_x\) (eje \(x\) en la base)</div>
+<p>Tiras horizontales de anchura \(b\) y altura \(dy\) a distancia \(y\) del eje \(x\):</p>
           \[
             dA = b\, dy \qquad \Rightarrow \qquad I_x = \int_0^h y^2 \cdot b\, dy = b\left[\frac{y^3}{3}\right]_0^h
           \]
@@ -1647,10 +1579,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_x = \frac{bh^3}{3}}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Sistema \(xy\) — Momento \(I_y\) (eje \(y\) en el lado izquierdo)</div>
-          <p>Tiras verticales de altura \(h\) y anchura \(dx\) a distancia \(x\) del eje \(y\):</p>
+<div class="paso">
+<div class="paso-titulo">Sistema \(xy\) — Momento \(I_y\) (eje \(y\) en el lado izquierdo)</div>
+<p>Tiras verticales de altura \(h\) y anchura \(dx\) a distancia \(x\) del eje \(y\):</p>
           \[
             dA = h\, dx \qquad \Rightarrow \qquad I_y = \int_0^b x^2 \cdot h\, dx = h\left[\frac{x^3}{3}\right]_0^b
           \]
@@ -1658,9 +1589,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_y = \frac{hb^3}{3}}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Sistema \(xy\) — Producto de inercia \(C_{xy}\)</div>
+<div class="paso">
+<div class="paso-titulo">Sistema \(xy\) — Producto de inercia \(C_{xy}\)</div>
           \[
             C_{xy} = \int_0^b \int_0^h xy\, dy\, dx
                    = \int_0^b x \left[\frac{y^2}{2}\right]_0^h dx
@@ -1671,10 +1601,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{C_{xy} = \frac{b^2 h^2}{4}}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Sistema \(x'y'\) — Traslación al centroide \(G\) mediante Steiner</div>
-          <p>El centroide del rectángulo está en \(x_G = b/2\), \(y_G = h/2\). Área total \(A = bh\).</p>
+<div class="paso">
+<div class="paso-titulo">Sistema \(x'y'\) — Traslación al centroide \(G\) mediante Steiner</div>
+<p>El centroide del rectángulo está en \(x_G = b/2\), \(y_G = h/2\). Área total \(A = bh\).</p>
           \[
             I_{x'} = I_x - A \cdot y_G^2 = \frac{bh^3}{3} - bh \cdot \frac{h^2}{4} = \frac{bh^3}{3} - \frac{bh^3}{4} = \frac{4bh^3 - 3bh^3}{12}
           \]
@@ -1694,11 +1623,10 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{C_{x'y'} = 0}
           \]
           <p style="margin-top:8px;color:#94a3b8;font-size:.88em">El producto de inercia es cero porque \(x'\) e \(y'\) son ejes de simetría del rectángulo.</p>
-        </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+</div>
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               I_x = \frac{bh^3}{3} \quad I_y = \frac{hb^3}{3} \quad C_{xy} = \frac{b^2h^2}{4}
             \]
@@ -1706,63 +1634,52 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               I_{x'} = \frac{bh^3}{12} \quad I_{y'} = \frac{hb^3}{12} \quad C_{x'y'} = 0
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-13 -->
-
-<div class="ex-card ex-card-exam" id="ex2-14">
-  <div class="ex-header" onclick="toggleEx('ex2-14')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.14 — Momentos de inercia de superficie parabólica</h2>
-      <div class="ex-meta">Curva \(y = Kx^2\) · Tiras verticales para \(I_y\) · Tiras horizontales para \(I_x\)</div>
+  <div class="topic-panel" id="ex2-14">
+    <div class="panel-header panel-header-exam">
+      <div class="panel-tag panel-tag-exam">Ejercicio 2.14</div>
+      <h1 class="panel-title">Momentos de inercia de superficie parabólica <span class="exam-badge">★ Nivel Examen</span></h1>
+      <div class="panel-meta">Curva \(y = Kx^2\) · Tiras verticales para \(I_y\) · Tiras horizontales para \(I_x\)</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Calcular para la superficie de la figura los momentos de inercia respecto a los ejes \(x\) e \(y\).
       La región está limitada por el eje \(x = 0\), la recta \(y = b\) y la curva \(y = Kx^2\), con dimensiones \(a\) (ancho) y \(b\) (alto).
     </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex14_fig.png" alt="Superficie parabólica y=Kx² con dimensiones a y b" style="max-width:300px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Región</td><td>limitada por \(x=0\), \(y=b\) y curva \(y=Kx^2\)</td></tr>
-          <tr><td>Dimensiones</td><td>ancho \(a\), alto \(b\)</td></tr>
-          <tr><td>Incógnitas</td><td>\(I_x\) e \(I_y\) por integración</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>La constante \(K\) se obtiene del punto extremo \((a, b)\):</p>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Superficie parabólica y=Kx² con dimensiones a y b" src="img/t2_ex14_fig.png" style="max-width:300px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Región</td><td>limitada por \(x=0\), \(y=b\) y curva \(y=Kx^2\)</td></tr>
+<tr><td>Dimensiones</td><td>ancho \(a\), alto \(b\)</td></tr>
+<tr><td>Incógnitas</td><td>\(I_x\) e \(I_y\) por integración</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>La constante \(K\) se obtiene del punto extremo \((a, b)\):</p>
         \[
           b = K \cdot a^2 \implies K = \frac{b}{a^2} \qquad \Rightarrow \qquad y = \frac{b}{a^2}\,x^2
         \]
         <p style="margin-top:8px">Estrategia de integración:</p>
-        <ul style="margin-top:6px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
-          <li><strong style="color:#e2e8f0">Tiras verticales</strong> para \(I_y\): la altura de cada tira es \(b - y_{curva}\), directo.</li>
-          <li><strong style="color:#e2e8f0">Tiras horizontales</strong> para \(I_x\): el ancho es \(x(y)\) despejado de la curva. Evita aplicar Steiner a cada tira vertical.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Momento \(I_y\) — Tiras verticales</div>
-          <p>La tira vertical en \(x\) va desde la curva hasta \(y = b\), con altura \(h = b - \frac{b}{a^2}x^2\):</p>
+<ul style="margin-top:6px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+<li><strong style="color:#e2e8f0">Tiras verticales</strong> para \(I_y\): la altura de cada tira es \(b - y_{curva}\), directo.</li>
+<li><strong style="color:#e2e8f0">Tiras horizontales</strong> para \(I_x\): el ancho es \(x(y)\) despejado de la curva. Evita aplicar Steiner a cada tira vertical.</li>
+</ul>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Momento \(I_y\) — Tiras verticales</div>
+<p>La tira vertical en \(x\) va desde la curva hasta \(y = b\), con altura \(h = b - \frac{b}{a^2}x^2\):</p>
           \[
             dA = \left(b - \frac{b}{a^2}x^2\right)dx
           \]
@@ -1778,10 +1695,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_y = \frac{2ba^3}{15}}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Momento \(I_x\) — Tiras horizontales</div>
-          <p>Se despeja \(x\) en función de \(y\): la tira horizontal en \(y\) va de \(x = 0\) hasta la curva:</p>
+<div class="paso">
+<div class="paso-titulo">Momento \(I_x\) — Tiras horizontales</div>
+<p>Se despeja \(x\) en función de \(y\): la tira horizontal en \(y\) va de \(x = 0\) hasta la curva:</p>
           \[
             y = \frac{b}{a^2}x^2 \implies x = a\sqrt{\frac{y}{b}} = a \cdot y^{1/2} \cdot b^{-1/2}
           \]
@@ -1801,82 +1717,69 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_x = \frac{2ab^3}{7}}
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               I_x = \frac{2ab^3}{7} \qquad I_y = \frac{2ba^3}{15}
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-14 -->
-
-<div class="ex-card ex-card-exam" id="ex2-15">
-  <div class="ex-header" onclick="toggleEx('ex2-15')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.15 — Superficie plana hueca: CG, inercias y volumen</h2>
-      <div class="ex-meta">Marco rectangular hueco · Superposición · Steiner · Pappus-Guldin</div>
+  <div class="topic-panel" id="ex2-15">
+    <div class="panel-header panel-header-exam">
+      <div class="panel-tag panel-tag-exam">Ejercicio 2.15</div>
+      <h1 class="panel-title">Superficie plana hueca: CG, inercias y volumen <span class="exam-badge">★ Nivel Examen</span></h1>
+      <div class="panel-meta">Marco rectangular hueco · Superposición · Steiner · Pappus-Guldin</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Para la superficie plana hueca de la figura (marco rectangular), calcular:
       <ol style="margin-top:8px;padding-left:20px;line-height:2">
-        <li>Posición del centro de gravedad respecto al sistema \(x'y'\) (origen en vértice \(O\)).</li>
-        <li>Momentos de inercia respecto a los ejes \(x'\) e \(y'\).</li>
-        <li>Momentos de inercia respecto a los ejes \(x\) e \(y\) paralelos que pasan por \(G\).</li>
-        <li>Volumen generado al girar la superficie respecto al eje \(x'\).</li>
-      </ol>
-    </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex15_fig.png" alt="Superficie plana hueca rectangular con eje y', dimensiones 2cm y 6cm" style="max-width:300px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Marco rectangular (perfil hueco)</td></tr>
-          <tr><td>Incógnitas</td><td>CG y momentos \(I_{x\'}\), \(I_{y\'}\), \(I_x\), \(I_y\) respecto a ejes centrales y propios</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Se aplica <strong>superposición</strong>: rectángulo exterior (positivo) − rectángulo interior hueco (negativo). El orden óptimo de cálculo es:</p>
-        <ol style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
-          <li>Calcular las inercias centroidales de cada figura (\(bh^3/12\))</li>
-          <li>Combinar por superposición → inercias centroidales del conjunto</li>
-          <li>Aplicar Steiner para trasladar al vértice \(O\)</li>
-        </ol>
-        <p style="margin-top:8px">Steiner inverso (de centroide al vértice): \(I_{x'} = I_x + A \cdot y_G^2\)</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Descomposición y áreas</div>
-          <p><strong>Figura 1</strong> (rectángulo exterior): \(b_1 = 6\ \text{cm}\), \(h_1 = 10\ \text{cm}\)</p>
+<li>Posición del centro de gravedad respecto al sistema \(x'y'\) (origen en vértice \(O\)).</li>
+<li>Momentos de inercia respecto a los ejes \(x'\) e \(y'\).</li>
+<li>Momentos de inercia respecto a los ejes \(x\) e \(y\) paralelos que pasan por \(G\).</li>
+<li>Volumen generado al girar la superficie respecto al eje \(x'\).</li>
+</ol>
+</div>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Superficie plana hueca rectangular con eje y', dimensiones 2cm y 6cm" src="img/t2_ex15_fig.png" style="max-width:300px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Marco rectangular (perfil hueco)</td></tr>
+<tr><td>Incógnitas</td><td>CG y momentos \(I_{x\'}\), \(I_{y\'}\), \(I_x\), \(I_y\) respecto a ejes centrales y propios</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Se aplica <strong>superposición</strong>: rectángulo exterior (positivo) − rectángulo interior hueco (negativo). El orden óptimo de cálculo es:</p>
+<ol style="margin-top:8px;padding-left:18px;color:#94a3b8;font-size:.9em;line-height:2">
+<li>Calcular las inercias centroidales de cada figura (\(bh^3/12\))</li>
+<li>Combinar por superposición → inercias centroidales del conjunto</li>
+<li>Aplicar Steiner para trasladar al vértice \(O\)</li>
+</ol>
+<p style="margin-top:8px">Steiner inverso (de centroide al vértice): \(I_{x'} = I_x + A \cdot y_G^2\)</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Descomposición y áreas</div>
+<p><strong>Figura 1</strong> (rectángulo exterior): \(b_1 = 6\ \text{cm}\), \(h_1 = 10\ \text{cm}\)</p>
           \[A_1 = 6 \times 10 = 60\ \text{cm}^2 \qquad x_1 = 3\ \text{cm} \qquad y_1 = 5\ \text{cm}\]
           <p style="margin-top:8px"><strong>Figura 2</strong> (hueco interior): \(b_2 = 2\ \text{cm}\), \(h_2 = 6\ \text{cm}\) — negativo</p>
           \[A_2 = -(2 \times 6) = -12\ \text{cm}^2 \qquad x_2 = 3\ \text{cm} \qquad y_2 = 5\ \text{cm}\]
           \[A_{tot} = 60 - 12 = 48\ \text{cm}^2\]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Parte a — Centro de gravedad \((x_G,\, y_G)\)</div>
-          <p>Ambas figuras comparten el mismo centroide \((3, 5)\) por simetría, lo que simplifica el cálculo:</p>
+<div class="paso">
+<div class="paso-titulo">Parte a — Centro de gravedad \((x_G,\, y_G)\)</div>
+<p>Ambas figuras comparten el mismo centroide \((3, 5)\) por simetría, lo que simplifica el cálculo:</p>
           \[
             x_G = \frac{A_1 x_1 + A_2 x_2}{A_{tot}} = \frac{60 \cdot 3 + (-12) \cdot 3}{48} = \frac{180 - 36}{48} = \frac{144}{48} = 3\ \text{cm}
           \]
@@ -1884,10 +1787,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             y_G = \frac{A_1 y_1 + A_2 y_2}{A_{tot}} = \frac{60 \cdot 5 + (-12) \cdot 5}{48} = \frac{300 - 60}{48} = \frac{240}{48} = 5\ \text{cm}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Parte c — Inercias centroidales \((I_x,\, I_y)\) — se calcula antes que la parte b</div>
-          <p>Como los ejes centroidales \(x\) e \(y\) pasan exactamente por los centros de ambas figuras, no hace falta Steiner — superposición directa:</p>
+<div class="paso">
+<div class="paso-titulo">Parte c — Inercias centroidales \((I_x,\, I_y)\) — se calcula antes que la parte b</div>
+<p>Como los ejes centroidales \(x\) e \(y\) pasan exactamente por los centros de ambas figuras, no hace falta Steiner — superposición directa:</p>
           \[
             I_x = \frac{b_1 h_1^3}{12} - \frac{b_2 h_2^3}{12}
                 = \frac{6 \cdot 10^3}{12} - \frac{2 \cdot 6^3}{12}
@@ -1901,9 +1803,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
                 = 180 - 4 = 176\ \text{cm}^4
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Parte b — Inercias en el vértice \(O\): \((I_{x'},\, I_{y'})\) — Steiner</div>
+<div class="paso">
+<div class="paso-titulo">Parte b — Inercias en el vértice \(O\): \((I_{x'},\, I_{y'})\) — Steiner</div>
           \[
             I_{x'} = I_x + A_{tot} \cdot y_G^2 = 464 + 48 \cdot 5^2 = 464 + 1200 = 1664\ \text{cm}^4
           \]
@@ -1911,18 +1812,16 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             I_{y'} = I_y + A_{tot} \cdot x_G^2 = 176 + 48 \cdot 3^2 = 176 + 432 = 608\ \text{cm}^4
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Parte d — Volumen de revolución respecto al eje \(x'\) (Pappus-Guldin)</div>
-          <p>La distancia del centroide \(G\) al eje \(x'\) es \(d = y_G = 5\ \text{cm}\):</p>
+<div class="paso">
+<div class="paso-titulo">Parte d — Volumen de revolución respecto al eje \(x'\) (Pappus-Guldin)</div>
+<p>La distancia del centroide \(G\) al eje \(x'\) es \(d = y_G = 5\ \text{cm}\):</p>
           \[
             V = 2\pi \cdot d \cdot A_{tot} = 2\pi \cdot 5 \cdot 48 = 480\pi \approx 1508\ \text{cm}^3
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               \text{a)}\ x_G = 3\ \text{cm},\quad y_G = 5\ \text{cm}
             \]
@@ -1936,51 +1835,42 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               \text{d)}\ V = 480\pi \approx 1508\ \text{cm}^3
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-15 -->
-
-<div class="ex-card ex-card-exam" id="ex2-16">
-  <div class="ex-header" onclick="toggleEx('ex2-16')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.16 — Sistema articulado de barras en T <span class="ex-badge">Nivel examen</span></h2>
-      <div class="ex-meta">Dos barras homogéneas · CG del sistema · \(I_O\) directo · Steiner inverso para \(I_G\)</div>
+  <div class="topic-panel" id="ex2-16">
+    <div class="panel-header panel-header-exam">
+      <div class="panel-tag panel-tag-exam">Ejercicio 2.16</div>
+      <h1 class="panel-title">Sistema articulado de barras en T <span class="exam-badge">★ Nivel Examen</span></h1>
+      <div class="panel-meta">Dos barras homogéneas · CG del sistema · \(I_O\) directo · Steiner inverso para \(I_G\)</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Dos barras homogéneas en un plano vertical, soldadas en \(A\) formando una T y articuladas en \(O\). Masa de cada barra: 8 kg. Longitudes: barra horizontal \(OA = 0{,}25\ \text{m}\), barra vertical \(= 0{,}5\ \text{m}\) (0,25 m a cada lado de \(A\)).
       <ol style="margin-top:8px;padding-left:20px;line-height:2">
-        <li>Posición del centro de gravedad del sistema \(G\).</li>
-        <li>Momento de inercia del conjunto respecto a \(G\).</li>
-        <li>Momento de inercia del conjunto respecto a \(O\).</li>
-      </ol>
-    </div>
-    <div style="text-align:center;margin:14px 0 6px"><img src="img/t2_ex16_fig.png" alt="Sistema articulado T: barra OA articulada en O, barras de 0,25m" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"></div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Dos barras homogéneas soldadas en T, articuladas en \(O\)</td></tr>
-          <tr><td>Masa de cada barra</td><td>\(8\ \text{kg}\)</td></tr>
-          <tr><td>Longitud barra horizontal \(OA\)</td><td>\(0{,}25\ \text{m}\)</td></tr>
-          <tr><td>Longitud barra vertical</td><td>\(0{,}5\ \text{m}\) (0,25 m a cada lado de \(A\))</td></tr>
-          <tr><td>Incógnitas</td><td>CG del sistema; ángulo de equilibrio; \(I_O\)</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Para barras homogéneas, los momentos de inercia de referencia son:</p>
+<li>Posición del centro de gravedad del sistema \(G\).</li>
+<li>Momento de inercia del conjunto respecto a \(G\).</li>
+<li>Momento de inercia del conjunto respecto a \(O\).</li>
+</ol>
+</div>
+<div style="text-align:center;margin:14px 0 6px"><img alt="Sistema articulado T: barra OA articulada en O, barras de 0,25m" src="img/t2_ex16_fig.png" style="max-width:320px;width:100%;border-radius:8px;background:#fff;padding:8px"/></div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Dos barras homogéneas soldadas en T, articuladas en \(O\)</td></tr>
+<tr><td>Masa de cada barra</td><td>\(8\ \text{kg}\)</td></tr>
+<tr><td>Longitud barra horizontal \(OA\)</td><td>\(0{,}25\ \text{m}\)</td></tr>
+<tr><td>Longitud barra vertical</td><td>\(0{,}5\ \text{m}\) (0,25 m a cada lado de \(A\))</td></tr>
+<tr><td>Incógnitas</td><td>CG del sistema; ángulo de equilibrio; \(I_O\)</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Para barras homogéneas, los momentos de inercia de referencia son:</p>
         \[
           I_G = \frac{1}{12}mL^2 \quad \text{(eje por el centro)} \qquad I_O = \frac{1}{3}mL^2 \quad \text{(eje por un extremo)}
         \]
@@ -1989,15 +1879,13 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           I_G = I_O - M \cdot d_{OG}^2
         \]
       </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Centro de gravedad del sistema</div>
-          <p>Origen en \(O(0,0)\). Masas y centroides de cada barra:</p>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Centro de gravedad del sistema</div>
+<p>Origen en \(O(0,0)\). Masas y centroides de cada barra:</p>
           \[
             m_1 = 8\ \text{kg} \quad x_1 = \frac{0{,}25}{2} = 0{,}125\ \text{m} \quad y_1 = 0
           \]
@@ -2011,10 +1899,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             y_G = 0 \quad \text{(simetría)}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 2 — Momento de inercia respecto a \(O\)</div>
-          <p><strong>Barra 1</strong> (horizontal): extremo en \(O\), fórmula directa:</p>
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Momento de inercia respecto a \(O\)</div>
+<p><strong>Barra 1</strong> (horizontal): extremo en \(O\), fórmula directa:</p>
           \[
             I_{O1} = \frac{1}{3}m_1 L_1^2 = \frac{1}{3}(8)(0{,}25)^2 = \frac{8}{3} \cdot \frac{1}{16} = \frac{1}{6}\ \text{kg·m}^2
           \]
@@ -2029,9 +1916,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             \boxed{I_O = I_{O1} + I_{O2} = \frac{1}{6} + \frac{4}{6} = \frac{5}{6}\ \text{kg·m}^2}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 3 — Momento de inercia respecto a \(G\) (Steiner inverso)</div>
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Momento de inercia respecto a \(G\) (Steiner inverso)</div>
           \[
             I_G = I_O - M \cdot x_G^2 = \frac{5}{6} - 16 \cdot \left(\frac{3}{16}\right)^2 = \frac{5}{6} - 16 \cdot \frac{9}{256} = \frac{5}{6} - \frac{9}{16}
           \]
@@ -2039,59 +1925,49 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             I_G = \frac{40}{48} - \frac{27}{48} = \frac{13}{48} \approx 0{,}2708\ \text{kg·m}^2
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               x_G = \frac{3}{16}\ \text{m} \qquad I_O = \frac{5}{6}\ \text{kg·m}^2 \qquad I_G = \frac{13}{48} \approx 0{,}2708\ \text{kg·m}^2
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-16 -->
-
-<div class="ex-card ex-card-exam" id="ex2-17">
-  <div class="ex-header" onclick="toggleEx('ex2-17')">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2.17 — Rectángulo con agujero circular: CG, inercias y producto <span class="ex-badge">Nivel examen</span></h2>
-      <div class="ex-meta">Superposición · Steiner · Producto de inercia · \(35 \times 50\ \text{cm}\), \(R=10\ \text{cm}\)</div>
+  <div class="topic-panel" id="ex2-17">
+    <div class="panel-header panel-header-exam">
+      <div class="panel-tag panel-tag-exam">Ejercicio 2.17</div>
+      <h1 class="panel-title">Rectángulo con agujero circular: CG, inercias y producto <span class="exam-badge">★ Nivel Examen</span></h1>
+      <div class="panel-meta">Superposición · Steiner · Producto de inercia · \(35 \times 50\ \text{cm}\), \(R=10\ \text{cm}\)</div>
     </div>
-    <span class="ex-arrow">▼</span>
-  </div>
-  <div class="ex-body">
-
-    <div class="enunciado">
+<div class="enunciado">
       Calcular para la superficie plana de la figura (rectángulo 35×50 cm con agujero circular de radio \(R=10\ \text{cm}\) centrado en \((15, 30)\ \text{cm}\) desde \(O\)):
       <ol style="margin-top:8px;padding-left:20px;line-height:2">
-        <li>Posición del CG respecto a los ejes \(xy\) (origen en \(O\)).</li>
-        <li>Momentos de inercia \(I_x\) e \(I_y\) respecto a los ejes en \(O\).</li>
-        <li>Momentos de inercia centroidales \(I_{x'}\) e \(I_{y'}\) paralelos que pasan por \(G\).</li>
-        <li>Producto de inercia \(C_{x'y'}\) respecto a los ejes centroidales.</li>
-      </ol>
-    </div>
-
-    <div class="seccion s-datos sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
-      <div class="sec-body">
-        <table class="t-datos">
-          <tr><th>Variable</th><th>Valor</th></tr>
-          <tr><td>Figura</td><td>Rectángulo con agujero circular</td></tr>
-          <tr><td>Dimensiones del rectángulo</td><td>\(35 \times 50\ \text{cm}\)</td></tr>
-          <tr><td>Radio del agujero</td><td>\(R = 10\ \text{cm}\)</td></tr>
-          <tr><td>Centro del agujero</td><td>\((15,\,30)\ \text{cm}\) desde \(O\)</td></tr>
-          <tr><td>Incógnitas</td><td>CG; \(I_x\), \(I_y\) respecto a ejes por \(O\)</td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="seccion s-teoria sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
-      <div class="sec-body">
-        <p>Superposición: rectángulo exterior (positivo) − disco (negativo). Para el disco de radio \(R\):</p>
+<li>Posición del CG respecto a los ejes \(xy\) (origen en \(O\)).</li>
+<li>Momentos de inercia \(I_x\) e \(I_y\) respecto a los ejes en \(O\).</li>
+<li>Momentos de inercia centroidales \(I_{x'}\) e \(I_{y'}\) paralelos que pasan por \(G\).</li>
+<li>Producto de inercia \(C_{x'y'}\) respecto a los ejes centroidales.</li>
+</ol>
+</div>
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Variable</th><th>Valor</th></tr>
+<tr><td>Figura</td><td>Rectángulo con agujero circular</td></tr>
+<tr><td>Dimensiones del rectángulo</td><td>\(35 \times 50\ \text{cm}\)</td></tr>
+<tr><td>Radio del agujero</td><td>\(R = 10\ \text{cm}\)</td></tr>
+<tr><td>Centro del agujero</td><td>\((15,\,30)\ \text{cm}\) desde \(O\)</td></tr>
+<tr><td>Incógnitas</td><td>CG; \(I_x\), \(I_y\) respecto a ejes por \(O\)</td></tr>
+</table>
+</div>
+</div>
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Fundamento teórico <span class="sarr">▾</span></button>
+<div class="sec-body">
+<p>Superposición: rectángulo exterior (positivo) − disco (negativo). Para el disco de radio \(R\):</p>
         \[
           I_{x,\text{disco}} = \frac{\pi R^4}{4} \quad \text{(centroidal)} \qquad C_{xy,\text{disco}} = 0 \quad \text{(simetría)}
         \]
@@ -2100,16 +1976,14 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
           C_{xy,\text{rect}} = \frac{b^2 h^2}{4}
         \]
         <p style="margin-top:8px">Steiner para trasladar al centroide (inverso): \(I_{x'} = I_x - A_{tot} \cdot y_G^2\)</p>
-        <p style="margin-top:4px">Steiner para producto de inercia: \(C_{x'y'} = C_{xy} - A_{tot} \cdot x_G \cdot y_G\)</p>
-      </div>
-    </div>
-
-    <div class="seccion s-resolucion sec-open">
-      <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
-      <div class="sec-body">
-
-        <div class="paso">
-          <div class="paso-titulo">Paso 1 — Áreas y datos</div>
+<p style="margin-top:4px">Steiner para producto de inercia: \(C_{x'y'} = C_{xy} - A_{tot} \cdot x_G \cdot y_G\)</p>
+</div>
+</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución paso a paso <span class="sarr">▾</span></button>
+<div class="sec-body">
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Áreas y datos</div>
           \[
             A_1 = 35 \times 50 = 1750\ \text{cm}^2 \quad x_1 = 17{,}5\ \text{cm} \quad y_1 = 25\ \text{cm}
           \]
@@ -2120,9 +1994,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             A_{tot} = 1750 - 100\pi \approx 1435{,}84\ \text{cm}^2
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Parte a — Centro de gravedad</div>
+<div class="paso">
+<div class="paso-titulo">Parte a — Centro de gravedad</div>
           \[
             x_G = \frac{1750 \times 17{,}5 - 100\pi \times 15}{1750 - 100\pi}
                 = \frac{30625 - 1500\pi}{1750 - 100\pi}
@@ -2134,9 +2007,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
                 \approx \frac{34325{,}2}{1435{,}84} = 23{,}91\ \text{cm}
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Parte b — Momentos de inercia en \(O\)</div>
+<div class="paso">
+<div class="paso-titulo">Parte b — Momentos de inercia en \(O\)</div>
           \[
             I_x = \frac{35 \times 50^3}{3} - \left(\frac{\pi \times 10^4}{4} + 100\pi \times 30^2\right)
                 = \frac{4\,375\,000}{3} - 92500\pi \approx 1\,167\,736\ \text{cm}^4
@@ -2146,9 +2018,8 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
                 = \frac{2\,143\,750}{3} - 25000\pi \approx 636\,043\ \text{cm}^4
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Parte c — Inercias centroidales (Steiner inverso)</div>
+<div class="paso">
+<div class="paso-titulo">Parte c — Inercias centroidales (Steiner inverso)</div>
           \[
             I_{x'} = I_x - A_{tot} \cdot y_G^2 = 1\,167\,736 - 1435{,}84 \times 23{,}91^2 \approx 347\,157\ \text{cm}^4
           \]
@@ -2156,10 +2027,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
             I_{y'} = I_y - A_{tot} \cdot x_G^2 = 636\,043 - 1435{,}84 \times 18{,}05^2 \approx 168\,399\ \text{cm}^4
           \]
         </div>
-
-        <div class="paso">
-          <div class="paso-titulo">Parte d — Producto de inercia centroidal</div>
-          <p>Producto de inercia respecto a \(O\):</p>
+<div class="paso">
+<div class="paso-titulo">Parte d — Producto de inercia centroidal</div>
+<p>Producto de inercia respecto a \(O\):</p>
           \[
             C_{xy} = \frac{35^2 \times 50^2}{4} - (0 + 100\pi \times 15 \times 30)
                    = 765\,625 - 45000\pi \approx 624\,253\ \text{cm}^4
@@ -2171,10 +2041,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
                      \approx 4\,786\ \text{cm}^4
           \]
         </div>
-
-        <div class="resultado-final">
-          <div class="rf-label">Resultado</div>
-          <div class="rf-val">
+<div class="resultado-final">
+<div class="rf-label">Resultado</div>
+<div class="rf-val">
             \[
               x_G = 18{,}05\ \text{cm} \quad y_G = 23{,}91\ \text{cm}
             \]
@@ -2185,15 +2054,15 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
               I_{x'} \approx 347\,157\ \text{cm}^4 \quad I_{y'} \approx 168\,399\ \text{cm}^4 \quad C_{x'y'} \approx 4\,786\ \text{cm}^4
             \]
           </div>
-        </div>
-
-      </div>
-    </div>
-
+</div>
+</div>
+</div>
   </div>
-</div><!-- /ex2-17 -->
 
-</div><!-- /container -->
+  </main>
+</div>
+
+<div class="footer">Mecánica Aplicada · UPV/EHU · 2025–26 &nbsp;·&nbsp; <a href="../../index.html">Inicio</a></div>
 
 <script>
 function initKatex(){
@@ -2203,23 +2072,59 @@ function initKatex(){
       {left:'\\[',right:'\\]',display:true},
       {left:'$',right:'$',display:false},
       {left:'\\(',right:'\\)',display:false}
-    ],
-    throwOnError:false
+    ],throwOnError:false
   });
 }
 
-function toggleEx(id){
-  var card=document.getElementById(id);
-  card.classList.toggle('open');
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof renderMathInElement !== 'undefined'){
+    renderMathInElement(document.body,{
+      delimiters:[
+        {left:'$$',right:'$$',display:true},
+        {left:'\\[',right:'\\]',display:true},
+        {left:'$',right:'$',display:false},
+        {left:'\\(',right:'\\)',display:false}
+      ],throwOnError:false
+    });
+  }
+  var panels = document.querySelectorAll('.topic-panel');
+  if(panels.length > 0) showEx(panels[0].id);
+});
+
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.sb-item').forEach(function(b){b.classList.remove('active')});
+  var panel = document.getElementById(id);
+  if(panel) panel.classList.add('active');
+  var btn = document.querySelector('[data-id="'+id+'"]');
+  if(btn){
+    btn.classList.add('active');
+    var name = btn.querySelector('.sb-name');
+    var curr = document.getElementById('sbCurrent');
+    if(curr && name) curr.textContent = name.textContent;
+  }
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
 }
 
 function toggleSec(btn){
-  btn.parentElement.classList.toggle('sec-open');
+  btn.closest('.section-wrap').classList.toggle('sec-open');
 }
 
-// Tema picker
-var _tp=document.getElementById('temaPicker');
-document.addEventListener('click',function(e){if(_tp&&!_tp.contains(e.target))_tp.classList.remove('open');});
+function updateProgress(){
+  var bar = document.getElementById('readProgress');
+  if(!bar) return;
+  var scrolled = window.scrollY;
+  var total = document.body.scrollHeight - window.innerHeight;
+  bar.style.transform = 'scaleX('+(total>0?Math.min(scrolled/total,1):0)+')';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+
+document.addEventListener('click', function(e){
+  var picker = document.getElementById('temaPicker');
+  if(picker && !picker.contains(e.target)) picker.classList.remove('open');
+});
+
 </script>
 </body>
 </html>
