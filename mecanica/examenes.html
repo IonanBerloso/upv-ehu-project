@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>Exámenes · Mecánica Aplicada · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex()"></script>
+
+<style>
+#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
+#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
+#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
+#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
+#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
+#auth-input:focus{border-color:#c084fc}
+#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#c084fc;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
+#auth-btn:hover{background:#d4a0ff}
+#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
+#auth-logo{font-size:2em;margin-bottom:12px}
+</style>
+<script>
+(function(){
+  var HASH='52ed4a155ae39b8857d52e3c253776c0d5ab7245274be771b1ce0da1e2f02f58';
+  var KEY='upv_auth_mecanica';
+  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  function inject(){
+    var o=document.createElement('div');o.id='auth-overlay';
+    o.innerHTML='<div id="auth-box"><div id="auth-logo">⚙️</div><h2>Mecánica Aplicada</h2><p>Introduce la contraseña para acceder</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
+    document.body.appendChild(o);
+    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
+    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(function(){o.remove();},320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(function(){err.textContent='';},2000);}}
+    btn.addEventListener('click',attempt);inp.addEventListener('keydown',function(e){if(e.key==='Enter')attempt();});inp.focus();
+  }
+  if(sessionStorage.getItem(KEY)!==HASH){document.readyState==='loading'?document.addEventListener('DOMContentLoaded',inject):inject();}
+})();
+</script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--gold:#f59e0b;--green:#6bcb77;--blue:#7ecfff;--orange:#f4a261;--red:#f87171;
+  --transition:.2s;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* TEMA PICKER */
+.tema-picker{position:relative;margin-right:20px}
+.tema-picker-btn{background:#1a0a30;border:1px solid #3b1f6e;border-radius:20px;padding:4px 14px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s}
+.tema-picker-btn:hover{background:#240f44}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:#0d0d0d;border:1px solid #2a1a4a;border-radius:10px;padding:6px;min-width:250px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker.open .tema-dropdown{display:block}
+.td-item{display:block;padding:8px 12px;border-radius:6px;font-size:.8em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500}
+.td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:#1a0a30;color:var(--accent)}
+.td-item.td-active{color:var(--gold);background:#1a0f00;font-weight:700;border:1px solid #854d0e;pointer-events:none}
+.td-item.td-soon{color:#333;cursor:default}
+.td-sep{padding:4px 12px 2px;font-size:.65em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a3a6a;pointer-events:none;user-select:none;margin-top:2px}
+.td-sep-line{border:none;border-top:1px solid #1e1030;margin:4px 6px}
+.td-num{display:inline-block;width:24px;font-weight:700}
+.td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
+.td-item.td-active{color:var(--gold)}
+.td-item.td-active .td-num{color:var(--gold)}
+
+/* PAGE HEADER */
+.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
+.ph-type{display:inline-block;background:#1a0f00;border:1px solid #854d0e;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--gold);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
+.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
+.ph-tags{display:flex;flex-wrap:wrap;gap:6px}
+.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+
+/* CONTAINER */
+.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
+
+/* YEAR CARD */
+.year-card{background:var(--surface);border:1px solid #854d0e;border-radius:16px;margin-bottom:32px;overflow:hidden}
+.year-header{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;border-bottom:1px solid #2a1a00;transition:background var(--transition)}
+.year-header:hover{background:#0e0800}
+.year-header-left h2{font-size:1.1em;font-weight:700;color:var(--gold);margin-bottom:4px}
+.year-header-left .year-meta{font-size:.8em;color:var(--text3)}
+.year-badge{background:#1a0f00;border:1px solid #854d0e;border-radius:20px;padding:4px 12px;font-size:.75em;font-weight:700;color:var(--gold)}
+.year-arrow{color:#854d0e;font-size:1em;transition:.2s}
+.year-card.open .year-arrow{transform:rotate(180deg);color:var(--gold)}
+.year-body{display:none;padding:20px 22px}
+.year-card.open .year-body{display:block}
+
+/* EXAM SECTION */
+.exam-section{margin-bottom:28px}
+.exam-section-title{font-size:.72em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #2a1a00}
+
+/* QUESTION CARD */
+.q-card{background:#080808;border:1px solid #1a1a1a;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.q-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:flex-start;cursor:pointer;user-select:none;transition:background var(--transition);gap:12px}
+.q-header:hover{background:#0f0f0f}
+.q-title{font-size:.88em;font-weight:600;color:#e2e8f0;flex:1}
+.q-pts{background:#1a0f00;border:1px solid #854d0e;border-radius:12px;padding:2px 10px;font-size:.7em;font-weight:700;color:var(--gold);white-space:nowrap;flex-shrink:0}
+.q-arrow{color:#444;font-size:.85em;margin-left:8px;transition:.2s;flex-shrink:0}
+.q-card.open .q-arrow{transform:rotate(180deg);color:var(--gold)}
+.q-body{display:none;padding:0 16px 14px;border-top:1px solid #1a1a1a}
+.q-card.open .q-body{display:block}
+.q-text{font-size:.87em;line-height:1.8;color:#d0c8e8;margin-top:12px}
+.q-text ol,.q-text ul{padding-left:20px;margin-top:6px}
+.q-text li{margin-bottom:4px}
+.q-nota{background:#1a0f00;border-left:3px solid var(--gold);border-radius:4px;padding:8px 12px;font-size:.82em;color:#fde68a;margin-top:10px}
+
+/* FIGURE PLACEHOLDER */
+.fig-box{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:16px;margin-top:12px;text-align:center;font-size:.8em;color:#333;font-style:italic}
+.fig-box img{max-width:100%;border-radius:6px;margin-top:0}
+.fig-desc{font-size:.78em;color:#444;margin-top:6px}
+
+/* RESOLUCION */
+.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
+.sec-btn .sarr{transition:.2s}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
+.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
+.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
+.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
+.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
+.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
+.soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:16px;text-align:center;color:#333;font-size:.85em;font-style:italic;margin-top:12px}
+
+/* SEPARADOR CUATRIMESTRE */
+.cuatri-sep{display:flex;align-items:center;gap:12px;margin:24px 0 16px}
+.cuatri-sep-line{flex:1;border:none;border-top:1px solid #2a1a00}
+.cuatri-sep-label{font-size:.7em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5a3a00;white-space:nowrap}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:3px}
+.katex{font-size:1.05em}
+.katex-display{overflow-x:auto;overflow-y:hidden}
+@media(max-width:640px){.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="teoria.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Teoría
+  </a>
+  <span class="topbar-title">📝 Exámenes · Mecánica Aplicada</span>
+  <div class="tema-picker" id="temaPicker">
+    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">📝 Exámenes ▾</button>
+    <div class="tema-dropdown">
+      <span class="td-sep">1.er Cuatrimestre</span>
+      <a class="td-item td-available" href="ejercicios/tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
+      <a class="td-item td-available" href="ejercicios/tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
+      <a class="td-item td-available" href="ejercicios/tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
+      <a class="td-item td-available" href="ejercicios/tema4.html"><span class="td-num">T4</span> Rozamiento</a>
+      <a class="td-item td-available" href="ejercicios/tema5.html"><span class="td-num">T5</span> Cables</a>
+      <span class="td-item td-active"><span class="td-num">★</span> Exámenes</span>
+      <hr class="td-sep-line">
+      <span class="td-sep">2.º Cuatrimestre</span>
+      <a class="td-item td-available" href="ejercicios/tema6.html"><span class="td-num">T6</span> Resistencia de Mat.</a>
+      <a class="td-item td-available" href="ejercicios/tema7.html"><span class="td-num">T7</span> Cinemática del S.R.</a>
+      <a class="td-item td-available" href="ejercicios/tema8.html"><span class="td-num">T8</span> Mov. Plano del S.R.</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="ph-type">★ Exámenes Oficiales</div>
+  <h1>Exámenes · Mecánica Aplicada</h1>
+  <div class="ph-meta">Exámenes ordinarios y extraordinarios · UPV/EHU · Gipuzkoa</div>
+  <div class="ph-tags">
+    <span class="ph-tag">1 examen disponible</span>
+    <span class="ph-tag">Ordinario 2024-2025</span>
+    <span class="ph-tag">1er Cuatrimestre</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════ CURSO 2024-2025 ══════════════════════ -->
+  <div class="year-card open" id="curso2425">
+    <div class="year-header" onclick="toggleYear('curso2425')">
+      <div class="year-header-left">
+        <h2>Curso 2024–2025</h2>
+        <div class="year-meta">1 examen · Ordinario · 6 de junio de 2025</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="year-badge">2024–2025</span>
+        <span class="year-arrow">▼</span>
+      </div>
+    </div>
+    <div class="year-body">
+
+      <!-- EXAMEN ORDINARIO -->
+      <div class="exam-section">
+        <div class="exam-section-title">📄 Examen Ordinario · 1er Cuatrimestre · 6 junio 2025</div>
+
+        <!-- ── TEORÍA ── -->
+        <div class="cuatri-sep">
+          <hr class="cuatri-sep-line">
+          <span class="cuatri-sep-label">Parte de Teoría</span>
+          <hr class="cuatri-sep-line">
+        </div>
+
+        <!-- T1 -->
+        <div class="q-card open" id="q-2425-t1">
+          <div class="q-header" onclick="toggleQ('q-2425-t1')">
+            <span class="q-title">Pregunta 1 — Sistema de vectores deslizantes: resultante y eje central</span>
+            <span class="q-pts">1,5 p</span>
+            <span class="q-arrow">▼</span>
+          </div>
+          <div class="q-body">
+            <div class="q-text">
+              <p>En un sistema de vectores deslizantes, el momento resultante respecto al origen es \(\vec{M}_O = 2\hat{k}\). El eje central pasa por el punto \(E(0;\,1;\,0)\). La resultante y el momento mínimo son iguales, \(\vec{R} = \vec{M}_{\min}\). El sistema está formado por los vectores \(\vec{v}_1 = a\hat{i} + a\hat{j} + a\hat{k}\) y \(\vec{v}_2 = b\hat{j} + c\hat{k}\).</p>
+              <p style="margin-top:10px">Determinar:</p>
+              <ol type="a" style="margin-top:6px">
+                <li>La resultante \(\vec{R}\) y el invariante escalar \(r\).</li>
+                <li>Los parámetros \(a\), \(b\), \(c\).</li>
+              </ol>
+            </div>
+            <div class="soon">Resolución en preparación</div>
+          </div>
+        </div>
+
+        <!-- T2 -->
+        <div class="q-card open" id="q-2425-t2">
+          <div class="q-header" onclick="toggleQ('q-2425-t2')">
+            <span class="q-title">Pregunta 2 — Rueda sobre suelo: fuerza de rozamiento en función de \(F\)</span>
+            <span class="q-pts">1,5 p</span>
+            <span class="q-arrow">▼</span>
+          </div>
+          <div class="q-body">
+            <div class="q-text">
+              <p>La rueda de radio \(R\) de la figura. En su centro están aplicadas la fuerza conocida \(F\) (vertical), el momento \(5FR\) y la fuerza horizontal desconocida \(H\). Sabiendo que rueda hacia la derecha a velocidad constante y que el coeficiente de resistencia a la rodadura es \(\mu_r = 0{,}05R\), determinar la fuerza de rozamiento en función de \(F\), indicando su sentido.</p>
+              <div class="fig-box">
+                <svg viewBox="0 0 220 180" width="220" height="180" style="display:block;margin:0 auto">
+                  <!-- suelo -->
+                  <rect x="10" y="145" width="200" height="10" fill="#333" rx="2"/>
+                  <line x1="10" y1="145" x2="210" y2="145" stroke="#555" stroke-width="1"/>
+                  <!-- rueda -->
+                  <circle cx="110" cy="105" r="40" fill="none" stroke="#7ecfff" stroke-width="2"/>
+                  <circle cx="110" cy="105" r="3" fill="#7ecfff"/>
+                  <!-- contacto -->
+                  <circle cx="110" cy="145" r="3" fill="#f59e0b"/>
+                  <!-- flecha F vertical -->
+                  <line x1="110" y1="105" x2="110" y2="135" stroke="#f87171" stroke-width="2" marker-end="url(#arr-red)"/>
+                  <text x="116" y="126" font-size="11" fill="#f87171" font-family="Inter,sans-serif">F</text>
+                  <!-- momento 5FR -->
+                  <text x="68" y="88" font-size="10" fill="#c084fc" font-family="Inter,sans-serif">5FR</text>
+                  <path d="M85 80 Q95 68 105 74" stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arr-purple)"/>
+                  <!-- flecha H horizontal -->
+                  <line x1="110" y1="105" x2="155" y2="105" stroke="#7ecfff" stroke-width="2" marker-end="url(#arr-blue)"/>
+                  <text x="158" y="109" font-size="11" fill="#7ecfff" font-family="Inter,sans-serif">H</text>
+                  <defs>
+                    <marker id="arr-red" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#f87171"/></marker>
+                    <marker id="arr-blue" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7ecfff"/></marker>
+                    <marker id="arr-purple" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c084fc"/></marker>
+                  </defs>
+                </svg>
+                <div class="fig-desc">Rueda sobre suelo: fuerzas aplicadas en el centro</div>
+              </div>
+            </div>
+            <div class="soon">Resolución en preparación</div>
+          </div>
+        </div>
+
+        <!-- T3 -->
+        <div class="q-card open" id="q-2425-t3">
+          <div class="q-header" onclick="toggleQ('q-2425-t3')">
+            <span class="q-title">Pregunta 3 — Fuerza distribuida \(q(x)\): resultante y localización</span>
+            <span class="q-pts">1 p</span>
+            <span class="q-arrow">▼</span>
+          </div>
+          <div class="q-body">
+            <div class="q-text">
+              <p>Para una fuerza distribuida en la longitud \(q(x)\), deducir la resultante y la localización de la misma.</p>
+              <div class="q-nota">Pregunta teórica de deducción — desarrollo algebraico completo.</div>
+            </div>
+            <div class="soon">Resolución en preparación</div>
+          </div>
+        </div>
+
+        <!-- T4 -->
+        <div class="q-card open" id="q-2425-t4">
+          <div class="q-header" onclick="toggleQ('q-2425-t4')">
+            <span class="q-title">Pregunta 4 — Elemento diferencial de pieza prismática: ecuaciones de equilibrio \(q\), \(V\), \(M\)</span>
+            <span class="q-pts">1 p</span>
+            <span class="q-arrow">▼</span>
+          </div>
+          <div class="q-body">
+            <div class="q-text">
+              <p>Deducir las ecuaciones de equilibrio de un elemento diferencial de una pieza prismática, relacionando \(q\), \(V\) y \(M\).</p>
+              <div class="q-nota">Pregunta teórica de deducción — desarrollo algebraico completo.</div>
+            </div>
+            <div class="soon">Resolución en preparación</div>
+          </div>
+        </div>
+
+        <!-- ── EJERCICIOS ── -->
+        <div class="cuatri-sep">
+          <hr class="cuatri-sep-line">
+          <span class="cuatri-sep-label">Parte de Ejercicios</span>
+          <hr class="cuatri-sep-line">
+        </div>
+
+        <!-- EJ1 -->
+        <div class="q-card open" id="q-2425-e1">
+          <div class="q-header" onclick="toggleQ('q-2425-e1')">
+            <span class="q-title">Ejercicio 1 — Bloque cuadrado + muelle + cable catenaria + polea: \(T_0\), \(c\), longitudes, reacción en \(D\)</span>
+            <span class="q-pts">3 p</span>
+            <span class="q-arrow">▼</span>
+          </div>
+          <div class="q-body">
+            <div class="q-text">
+              <p>Un bloque cuadrado de masa \(M\) y lado \(L\) se encuentra articulado en un punto fijo \(D\). El bloque está unido en el punto \(E\) a un muelle ideal de constante elástica \(k = \dfrac{Mg}{2L}\), deformado \(L\). En el punto \(C\) está sujeto a un cable de peso por unidad de longitud \(w = \dfrac{Mg}{L}\) que se arrolla sobre la polea \(B\) de dimensiones despreciables y cuelga por el otro lado de la polea. El punto \(A\) está en la misma horizontal que \(D\). El ángulo del cable en \(C\) con la horizontal es de \(30°\). Se pide:</p>
+              <ol type="a" style="margin-top:10px">
+                <li><strong>(1 p)</strong> Fuerza mínima del cable \(T_0\) y parámetro de la catenaria \(c\).</li>
+                <li><strong>(1 p)</strong> Ángulo del cable con la horizontal en \(B\), en el lado derecho de la polea, y longitud del cable \(BC\).</li>
+                <li><strong>(1 p)</strong> Componentes de la reacción en \(D\) y distancia \(h\).</li>
+              </ol>
+              <div class="fig-box">
+                <svg viewBox="0 0 320 280" width="320" height="280" style="display:block;margin:0 auto">
+                  <!-- Suelo superior (apoyo B) -->
+                  <rect x="120" y="5" width="60" height="8" fill="#444" rx="1"/>
+                  <line x1="120" y1="13" x2="180" y2="13" stroke="#666" stroke-width="1.5"/>
+                  <!-- Polea B -->
+                  <circle cx="150" cy="22" r="9" fill="none" stroke="#7ecfff" stroke-width="1.5"/>
+                  <circle cx="150" cy="22" r="2" fill="#7ecfff"/>
+                  <text x="157" y="18" font-size="10" fill="#7ecfff" font-family="Inter,sans-serif">B</text>
+                  <!-- Bloque (cuadrado) -->
+                  <rect x="165" y="95" width="90" height="90" fill="#111" stroke="#3b1f6e" stroke-width="1.5" rx="3"/>
+                  <!-- Articulación D (abajo-izq del bloque) -->
+                  <circle cx="165" cy="185" r="4" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+                  <text x="155" y="200" font-size="10" fill="#f59e0b" font-family="Inter,sans-serif">D</text>
+                  <!-- punto A (misma horizontal que D, a la izquierda) -->
+                  <text x="30" y="189" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">A</text>
+                  <line x1="40" y1="185" x2="165" y2="185" stroke="#333" stroke-dasharray="4,3" stroke-width="1"/>
+                  <!-- Punto E (lado derecho del bloque, arriba) -->
+                  <circle cx="255" cy="95" r="3" fill="#6bcb77"/>
+                  <text x="260" y="93" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif">E</text>
+                  <!-- Muelle horizontal desde E -->
+                  <path d="M255,95 l8,0 l4,-6 l8,6 l8,-6 l8,6 l8,-6 l4,6 l8,0" stroke="#6bcb77" stroke-width="1.5" fill="none"/>
+                  <!-- Pared derecha -->
+                  <rect x="307" y="80" width="8" height="40" fill="#333" rx="1"/>
+                  <!-- etiqueta k -->
+                  <text x="263" y="80" font-size="9" fill="#6bcb77" font-family="Inter,sans-serif">k=Mg/2L</text>
+                  <!-- Punto C (esquina sup-izq del bloque) -->
+                  <circle cx="165" cy="95" r="3" fill="#f4a261"/>
+                  <text x="145" y="93" font-size="10" fill="#f4a261" font-family="Inter,sans-serif">C</text>
+                  <!-- Cable de C hacia la polea B: 30° con horizontal -->
+                  <line x1="165" y1="95" x2="150" y2="22" stroke="#f4a261" stroke-width="1.5" stroke-dasharray="5,3"/>
+                  <!-- Angulo 30° -->
+                  <path d="M165,95 l-15,0" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+                  <text x="142" y="106" font-size="9" fill="#94a3b8" font-family="Inter,sans-serif">30°</text>
+                  <!-- Cable del otro lado de la polea (cuelga verticalmente) -->
+                  <line x1="150" y1="31" x2="150" y2="70" stroke="#f4a261" stroke-width="1.5"/>
+                  <text x="155" y="55" font-size="9" fill="#f4a261" font-family="Inter,sans-serif">w=Mg/L</text>
+                  <!-- Cotas -->
+                  <!-- 2L/5 (altura de B sobre el nivel de C) -->
+                  <line x1="110" y1="22" x2="110" y2="95" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+                  <text x="88" y="62" font-size="9" fill="#555" font-family="Inter,sans-serif">2L/5</text>
+                  <!-- L (lado bloque) -->
+                  <line x1="260" y1="95" x2="260" y2="185" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+                  <text x="265" y="145" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+                  <!-- h (distancia horizontal de D al suelo de debajo) -->
+                  <line x1="165" y1="185" x2="165" y2="220" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+                  <line x1="185" y1="185" x2="185" y2="220" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+                  <line x1="165" y1="215" x2="185" y2="215" stroke="#555" stroke-width="1"/>
+                  <text x="170" y="230" font-size="9" fill="#555" font-family="Inter,sans-serif">h</text>
+                  <!-- Suelo inferior -->
+                  <rect x="50" y="220" width="220" height="8" fill="#333" rx="1"/>
+                  <!-- M etiqueta en bloque -->
+                  <text x="200" y="148" font-size="11" fill="#e2e8f0" font-family="Inter,sans-serif" font-weight="600">M, L</text>
+                </svg>
+                <div class="fig-desc">Bloque cuadrado articulado en D, muelle en E, cable catenaria BC con polea B</div>
+              </div>
+            </div>
+            <div class="soon">Resolución en preparación</div>
+          </div>
+        </div>
+
+        <!-- EJ2 -->
+        <div class="q-card open" id="q-2425-e2">
+          <div class="q-header" onclick="toggleQ('q-2425-e2')">
+            <span class="q-title">Ejercicio 2 — Viga ABCDE en T: DSL, diagramas N-V-M y tensiones normales</span>
+            <span class="q-pts">3 p</span>
+            <span class="q-arrow">▼</span>
+          </div>
+          <div class="q-body">
+            <div class="q-text">
+              <p>La viga \(ABCDE\) de sección transversal en T soporta las siguientes fuerzas:</p>
+              <ul style="margin-top:6px">
+                <li>Carga uniformemente distribuida de valor \(q_0 = \dfrac{4Mg}{L}\).</li>
+                <li>Carga concentrada horizontal de valor \(2Mg\) en la sección \(C\).</li>
+                <li>Momento de valor \(4MgL\) aplicado en la sección \(D\).</li>
+              </ul>
+              <p style="margin-top:10px">La viga tiene una articulación fija en \(A\) y en \(E\) está unida a un muelle de longitud no deformada nula, de constante \(k\) a determinar. Se pide:</p>
+              <ol type="a" style="margin-top:8px">
+                <li><strong>(0,75 p)</strong> Diagrama del sólido libre de la viga resuelto, indicando las reacciones que actúan sobre ella, la fuerza del muelle y su constante \(k\).</li>
+                <li><strong>(1,5 p)</strong> Diagramas de fuerzas axiales y cortantes y de momentos flectores en la viga. Determinar el momento máximo e indicar en qué sección ocurre.</li>
+                <li><strong>(0,75 p)</strong> Tensiones normales máxima y mínima en función de \(M\), \(g\), \(L\) y \(b\).</li>
+              </ol>
+              <div class="fig-box">
+                <svg viewBox="0 0 400 200" width="400" height="200" style="display:block;margin:0 auto">
+                  <!-- Viga horizontal ABCDE -->
+                  <rect x="40" y="90" width="280" height="10" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1.5" rx="2"/>
+                  <!-- Puntos A B C D E -->
+                  <text x="37" y="87" font-size="10" fill="#c084fc" font-family="Inter,sans-serif">A</text>
+                  <text x="107" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">B</text>
+                  <text x="177" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">C</text>
+                  <text x="247" y="87" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">D</text>
+                  <text x="317" y="87" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif">E</text>
+                  <!-- Articulación A -->
+                  <polygon points="40,100 30,118 50,118" fill="none" stroke="#c084fc" stroke-width="1.5"/>
+                  <line x1="25" y1="118" x2="55" y2="118" stroke="#c084fc" stroke-width="2"/>
+                  <!-- Carga distribuida q0 (de A a D) -->
+                  <defs>
+                    <marker id="arr-q" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#f4a261"/></marker>
+                  </defs>
+                  <!-- flechas q0 -->
+                  <line x1="55" y1="68" x2="55" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="80" y1="68" x2="80" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="105" y1="68" x2="105" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="130" y1="68" x2="130" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="155" y1="68" x2="155" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="180" y1="68" x2="180" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="205" y1="68" x2="205" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="230" y1="68" x2="230" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="250" y1="68" x2="250" y2="90" stroke="#f4a261" stroke-width="1.2" marker-end="url(#arr-q)"/>
+                  <line x1="42" y1="68" x2="252" y2="68" stroke="#f4a261" stroke-width="1.2"/>
+                  <text x="120" y="62" font-size="9" fill="#f4a261" font-family="Inter,sans-serif">q₀=4Mg/L</text>
+                  <!-- 2Mg horizontal en C -->
+                  <defs>
+                    <marker id="arr-h" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7ecfff"/></marker>
+                  </defs>
+                  <line x1="175" y1="95" x2="148" y2="95" stroke="#7ecfff" stroke-width="1.8" marker-end="url(#arr-h)"/>
+                  <text x="149" y="112" font-size="9" fill="#7ecfff" font-family="Inter,sans-serif">2Mg</text>
+                  <!-- Momento 4MgL en D (arco) -->
+                  <path d="M255 85 Q265 75 258 68" stroke="#c084fc" stroke-width="1.5" fill="none" marker-end="url(#arr-purple2)"/>
+                  <defs><marker id="arr-purple2" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#c084fc"/></marker></defs>
+                  <text x="268" y="73" font-size="9" fill="#c084fc" font-family="Inter,sans-serif">4MgL</text>
+                  <!-- Muelle en E (vertical) -->
+                  <path d="M320,100 l0,5 l-5,4 l10,4 l-10,4 l10,4 l-10,4 l5,4 l0,5" stroke="#6bcb77" stroke-width="1.5" fill="none"/>
+                  <rect x="312" y="134" width="18" height="5" fill="#333"/>
+                  <text x="328" y="120" font-size="9" fill="#6bcb77" font-family="Inter,sans-serif">k=?</text>
+                  <!-- cotas L entre puntos -->
+                  <text x="67" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+                  <text x="137" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+                  <text x="207" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+                  <text x="277" y="130" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
+                  <!-- Sección T (a la derecha) -->
+                  <rect x="355" y="60" width="30" height="8" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1"/>
+                  <rect x="366" y="68" width="8" height="30" fill="#1a0a30" stroke="#3b1f6e" stroke-width="1"/>
+                  <text x="348" y="57" font-size="9" fill="#94a3b8" font-family="Inter,sans-serif">Sección T</text>
+                  <text x="352" y="48" font-size="8" fill="#555" font-family="Inter,sans-serif">5b</text>
+                  <text x="388" y="73" font-size="8" fill="#555" font-family="Inter,sans-serif">b</text>
+                  <text x="388" y="90" font-size="8" fill="#555" font-family="Inter,sans-serif">5b</text>
+                  <text x="360" y="108" font-size="8" fill="#555" font-family="Inter,sans-serif">b</text>
+                </svg>
+                <div class="fig-desc">Viga ABCDE con sección en T — articulación en A, muelle en E</div>
+              </div>
+            </div>
+            <div class="soon">Resolución en preparación</div>
+          </div>
+        </div>
+
+      </div><!-- /exam-section -->
+    </div><!-- /year-body -->
+  </div><!-- /year-card -->
+
+</div><!-- /container -->
+
+<script>
+function initKatex(){
+  renderMathInElement(document.body,{
+    delimiters:[
+      {left:'\\[',right:'\\]',display:true},
+      {left:'\\(',right:'\\)',display:false}
+    ],
+    throwOnError:false
+  });
+}
+function toggleYear(id){
+  document.getElementById(id).classList.toggle('open');
+}
+function toggleQ(id){
+  document.getElementById(id).classList.toggle('open');
+}
+// Cerrar picker al hacer click fuera
+document.addEventListener('click',function(e){
+  var picker=document.getElementById('temaPicker');
+  if(picker && !picker.contains(e.target)) picker.classList.remove('open');
+});
+</script>
+</body>
+</html>
