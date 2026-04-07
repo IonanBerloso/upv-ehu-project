@@ -63,7 +63,7 @@ body{
   font-family:var(--ff);
   background:var(--bg);color:var(--text);
   font-size:13px;line-height:1.5;
-  padding:20px;
+  
 }
 .screen-topbar{
   display:flex;align-items:center;justify-content:space-between;
@@ -93,7 +93,7 @@ body{
 }
 .sheet-header h1{font-size:1em;font-weight:700;color:#f1f5f9;}
 .sheet-header p{font-size:.72em;color:var(--text3);}
-.sheet-header .badge{font-size:.68em;font-weight:700;color:var(--green);background:#001a0e;border:1px solid #003318;border-radius:8px;padding:2px 8px;}
+.sheet-header .badge{font-size:.68em;font-weight:700;color:var(--green);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:8px;padding:2px 8px;}
 
 /* COLUMN BLOCKS */
 .block{
@@ -157,15 +157,31 @@ body{
   .frow{padding:2px 0;}
   .katex{color:#000 !important;}
 }
+
+/* === POLISH v2 (screen only) === */
+@media screen {
+  .topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px;}
+  .topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none;}
+  .topbar-back:hover{color:var(--accent);}
+  .topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9;}
+  .topbar-print{margin-right:16px;padding:5px 14px;border-radius:20px;font-size:.76em;font-weight:600;cursor:pointer;transition:var(--transition);border:none;}
+  .page-wrap{padding:20px;}
+  td.num,td.r{font-family:var(--ff-mono);}
+}
+@media print {
+  .topbar{display:none!important;}
+}
+
 </style>
 </head>
 <body>
 
-<div class="screen-topbar">
-  <div style="display:flex;gap:14px;align-items:center;">
-    <a href="examenes.html">← Exámenes</a>
-    <a href="estrategia.html">🎯 Estrategia</a>
-  </div>
+<nav class="topbar">
+  <a href="examenes.html" class="topbar-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-right:2px"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Exámenes</a>
+  <span class="topbar-title">Formulario</span>
+  <button class="topbar-print" style="background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)" onclick="window.print()">&#128424; Imprimir / PDF</button>
+</nav>
+<div class="page-wrap">
   <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
 </div>
 
@@ -314,5 +330,6 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 </script>
+</div>
 </body>
 </html>
