@@ -223,6 +223,48 @@ code{font-family:var(--ff-mono);font-size:.85em;background:var(--surface2);paddi
   .content{margin-left:0;padding:20px 16px 40px}
   .sb-list{max-height:180px}
 }
+
+/* ─── STATUS DOTS ─── */
+.sb-dot{
+  width:6px;height:6px;border-radius:50%;flex-shrink:0;
+  display:inline-block;margin-right:2px;
+}
+.sb-dot-en-curso{background:#10b981;box-shadow:0 0 6px rgba(16,185,129,.6)}
+.sb-dot-pendiente{background:#374151}
+
+/* ─── TOPIC FADE TRANSITION ─── */
+@keyframes topicFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topic-panel.visible{animation:topicFadeIn .18s ease forwards}
+
+/* ─── READING PROGRESS BAR ─── */
+.read-progress{
+  position:fixed;top:52px;left:270px;right:0;height:2px;z-index:200;
+  background:linear-gradient(90deg,#7ECFFF,#a78bfa);
+  transform-origin:left;transform:scaleX(0);
+  transition:transform .08s linear;
+}
+
+/* ─── SIDEBAR ACTIVE TOPIC LABEL ─── */
+.sb-current{
+  font-size:.75em;font-weight:600;
+  color:var(--accent);
+  margin-top:6px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  min-height:1.1em;
+}
+
+/* ─── KEYBOARD SHORTCUT HINT ─── */
+.sb-kbd-hint{
+  font-size:.68em;color:var(--text3);
+  padding:8px 12px 4px;
+  border-top:1px solid var(--border);
+  text-align:center;flex-shrink:0;
+}
+kbd{
+  font-family:var(--ff-mono);font-size:.9em;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:3px;padding:1px 5px;color:var(--text2);
+}
 </style>
 </head>
 <body>
@@ -241,11 +283,13 @@ code{font-family:var(--ff-mono);font-size:.85em;background:var(--surface2);paddi
   </div>
 </div>
 
+<div class="read-progress" id="readProgress"></div>
 <div class="layout">
 
   <aside class="sidebar">
     <div class="sb-head">
       <div class="sb-title">17 temas</div>
+      <div class="sb-current" id="sbCurrent">T1 · Introducción</div>
       <div class="sb-search">
         <svg class="sb-search-icon" width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z"/></svg>
         <input class="sb-search-input" type="text" placeholder="Buscar tema&#8230;" oninput="filterSidebar(this.value)">
@@ -253,74 +297,92 @@ code{font-family:var(--ff-mono);font-size:.85em;background:var(--surface2);paddi
     </div>
     <div class="sb-list" id="sbList">
   <button class="sb-item active" onclick="showTopic('t1')" data-id="t1">
+    <span class="sb-dot sb-dot-en-curso"></span>
     <span class="sb-tag">T1</span>
     <span class="sb-name">Introducción</span>
   </button>
   <button class="sb-item" onclick="showTopic('t2')" data-id="t2">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T2</span>
     <span class="sb-name">Propiedades</span>
   </button>
   <button class="sb-item" onclick="showTopic('t3')" data-id="t3">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T3</span>
     <span class="sb-name">Estática</span>
   </button>
   <button class="sb-item exam" onclick="showTopic('t4')" data-id="t4">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T4</span>
     <span class="sb-name">Hidrostática <span class="sb-star">&#9733;</span></span>
   </button>
   <button class="sb-item exam" onclick="showTopic('t7')" data-id="t7">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T7</span>
     <span class="sb-name">Fuerzas superficiales <span class="sb-star">&#9733;</span></span>
   </button>
   <button class="sb-item" onclick="showTopic('t8')" data-id="t8">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T8</span>
     <span class="sb-name">Cuerpos cerrados</span>
   </button>
   <button class="sb-item" onclick="showTopic('t911')" data-id="t911">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T9-11</span>
     <span class="sb-name">Cinemática</span>
   </button>
   <button class="sb-item exam" onclick="showTopic('t12')" data-id="t12">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T12</span>
     <span class="sb-name">Bernoulli <span class="sb-star">&#9733;</span></span>
   </button>
   <button class="sb-item" onclick="showTopic('t13')" data-id="t13">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T13</span>
     <span class="sb-name">Medidores</span>
   </button>
   <button class="sb-item exam" onclick="showTopic('t14')" data-id="t14">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T14</span>
     <span class="sb-name">Cantidad de movimiento <span class="sb-star">&#9733;</span></span>
   </button>
   <button class="sb-item exam" onclick="showTopic('t15')" data-id="t15">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T15</span>
     <span class="sb-name">Aplicaciones QDM <span class="sb-star">&#9733;</span></span>
   </button>
   <button class="sb-item" onclick="showTopic('t16')" data-id="t16">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T16</span>
     <span class="sb-name">Análisis dimensional</span>
   </button>
   <button class="sb-item" onclick="showTopic('t17')" data-id="t17">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T17</span>
     <span class="sb-name">Viscosidad</span>
   </button>
   <button class="sb-item exam" onclick="showTopic('t18')" data-id="t18">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T18</span>
     <span class="sb-name">Pérdidas de carga <span class="sb-star">&#9733;</span></span>
   </button>
   <button class="sb-item exam" onclick="showTopic('t19')" data-id="t19">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T19</span>
     <span class="sb-name">Conducciones <span class="sb-star">&#9733;</span></span>
   </button>
   <button class="sb-item" onclick="showTopic('t21')" data-id="t21">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T21</span>
     <span class="sb-name">Canales</span>
   </button>
   <button class="sb-item" onclick="showTopic('t25')" data-id="t25">
+    <span class="sb-dot sb-dot-pendiente"></span>
     <span class="sb-tag">T25</span>
     <span class="sb-name">Bombeo</span>
   </button>
     </div>
+  <div class="sb-kbd-hint"><kbd>&uarr;</kbd><kbd>&darr;</kbd> navegar temas</div>
   </aside>
 
   <main class="content" id="mainContent">
@@ -617,18 +679,64 @@ code{font-family:var(--ff-mono);font-size:.85em;background:var(--surface2);paddi
     <h1 class="panel-title">Estática</h1>
   </div>
   <div class="panel-body">
-<div class="section">
+    <div class="section">
       <div class="section-label"><span>Ecuación fundamental de la estática</span></div>
-      <div class="fkey"><div class="flabel">Fluido en reposo — campo gravitatorio</div>$$p + \rho g z = \text{cte} \qquad \Leftrightarrow \qquad \frac{dp}{dz} = -\rho g$$</div>
+      <div class="fkey"><div class="flabel">Fluido en reposo — campo gravitatorio</div>$$p + ho g z = 	ext{cte} \qquad \Leftrightarrow \qquad rac{dp}{dz} = -ho g$$</div>
       <div class="prose">
         <p>Las superficies de igual presión (<b>superficies isobáricas</b>) son horizontales para fluido homogéneo en reposo. La presión <b>aumenta con la profundidad</b>.</p>
-        <p>Forma vectorial general (con cualquier campo de fuerzas): $\nabla p = \rho\,\vec{g}$.</p>
+        <p>Forma vectorial general: $
+abla p = ho\,ec{g}$. Para una profundidad $h$ bajo la superficie libre: $\Delta p = ho g h$.</p>
       </div>
     </div>
 
     <div class="section">
-      <div class="section-label"><span>Fluido incompresible ($\rho$ = cte)</span></div>
-      <div class="fblock"><div class="flabel">Diferencia de presión entre dos puntos</div>$$p_2 - p_1 = -\rho g(z_2 - z_1) = \rho g h \qquad (h = z_1 - z_2 > 0)$$</div>
+      <div class="section-label"><span>Tipos de presión</span></div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Presión absoluta</div>$$p_{	ext{abs}} = p_{	ext{atm}} + p_{	ext{man}}$$</div>
+        <div class="fblock"><div class="flabel">Presión de vacío</div>$$p_{	ext{vac}} = p_{	ext{atm}} - p_{	ext{abs}}$$</div>
+      </div>
+      <div class="box note">
+        <div class="box-title">Convenio UPV/EHU</div>
+        <ul>
+          <li><b>Presión manométrica</b> (o relativa): referida a la atmósfera. Puede ser positiva (presión) o negativa (depresión/vacío).</li>
+          <li><b>Presión absoluta</b>: siempre positiva. Se usa en termodinámica, gases y cavitación.</li>
+          <li>$p_{	ext{atm}} pprox 101\,325\ 	ext{Pa} pprox 10{,}33\ 	ext{m.c.a.} pprox 760\ 	ext{mmHg}$</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Instrumentos de medida de presión</span></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Instrumento</th><th>Mide</th><th>Principio</th></tr></thead>
+        <tbody>
+          <tr><td class="td-accent">Barómetro</td><td>Presión atmosférica absoluta</td><td>Columna de mercurio en vacío: $p_{	ext{atm}} = ho_{Hg}\,g\,h$</td></tr>
+          <tr><td class="td-accent">Piezómetro</td><td>Presión manométrica (baja)</td><td>Tubo abierto conectado a la tubería; la columna de agua sube $h = p/(ho g)$</td></tr>
+          <tr><td class="td-accent">Manómetro en U</td><td>Presión o diferencia de presiones</td><td>Equilibrio hidrostático con fluido manométrico ($ho_m$). $p_A - p_B = (ho_m - ho)g\,R$</td></tr>
+          <tr><td class="td-accent">Manómetro diferencial</td><td>$\Delta p$ entre dos puntos</td><td>Igual que manómetro en U aplicado a dos puntos distintos</td></tr>
+        </tbody>
+      </table></div>
+      <div class="fblock"><div class="flabel">Manómetro en U — ecuación general</div>$$p_A + ho_1 g z_1 = p_B + ho_m g z_m + ho_2 g z_2$$</div>
+      <div class="prose"><p>Truco: recorrer el circuito manométrico desde $A$ hasta $B$ sumando $+ho g \Delta z$ al bajar y $-ho g \Delta z$ al subir.</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Fluidos estratificados — presión en interfaz</span></div>
+      <div class="prose">
+        <p>Cuando hay capas de fluidos inmiscibles de densidades $ho_1, ho_2, \ldots$ apiladas, la presión en cualquier punto es:</p>
+      </div>
+      <div class="fkey"><div class="flabel">Presión acumulada bajo N capas</div>$$p = p_0 + \sum_{i=1}^{N} ho_i\,g\,h_i$$</div>
+      <div class="prose"><p>donde $h_i$ es el espesor de la capa $i$ y $p_0$ es la presión sobre la superficie libre (generalmente $p_{	ext{atm}}$ o 0 si se trabaja en manométricas).</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Principio de Pascal</span></div>
+      <div class="box info">
+        <div class="box-title">Enunciado</div>
+        <p>Un incremento de presión aplicado en cualquier punto de un fluido en reposo se transmite íntegramente a todos los puntos del fluido y a las paredes del recipiente.</p>
+      </div>
+      <div class="fkey"><div class="flabel">Prensa hidráulica</div>$$rac{F_1}{A_1} = rac{F_2}{A_2} \quad \Rightarrow \quad F_2 = F_1 rac{A_2}{A_1}$$</div>
+      <div class="prose"><p>Permite amplificar fuerzas. La energía se conserva: el émbolo pequeño recorre más distancia. Aplicaciones: prensas industriales, frenos hidráulicos, elevadores.</p></div>
     </div>
   </div>
 </div>
@@ -716,23 +824,60 @@ code{font-family:var(--ff-mono);font-size:.85em;background:var(--surface2);paddi
     <h1 class="panel-title">Cuerpos cerrados</h1>
   </div>
   <div class="panel-body">
-<div class="section">
-      <div class="section-label"><span>Fórmula de Barlow — Paredes a presión</span></div>
+    <div class="section">
+      <div class="section-label"><span>Recipientes a presión — pared delgada</span></div>
+      <div class="prose"><p>Válido cuando $e/D < 0{,}1$ (espesor $e$ mucho menor que el diámetro $D$). Las tensiones son uniformes en el espesor.</p></div>
       <div class="grid2">
-        <div class="fkey"><div class="flabel">Cilindro (diámetro D)</div>$$e = \frac{P \cdot D}{2\,\sigma_t}$$</div>
-        <div class="fkey"><div class="flabel">Esfera (diámetro D)</div>$$e = \frac{P \cdot D}{4\,\sigma_t}$$</div>
+        <div class="fkey"><div class="flabel">Cilindro — tensión circunferencial (Barlow)</div>$$\sigma_	heta = rac{P \cdot D}{2\,e} \qquad \Rightarrow \qquad e = rac{P \cdot D}{2\,\sigma_{	ext{adm}}}$$</div>
+        <div class="fkey"><div class="flabel">Cilindro — tensión axial (tapas planas)</div>$$\sigma_z = rac{P \cdot D}{4\,e} = rac{\sigma_	heta}{2}$$</div>
       </div>
-      <div class="prose"><p>$e$ = espesor mínimo de pared, $\sigma_t$ = tensión admisible del material. La esfera soporta el doble de presión que el cilindro con igual espesor.</p></div>
+      <div class="fkey"><div class="flabel">Esfera a presión</div>$$\sigma = rac{P \cdot D}{4\,e} \qquad \Rightarrow \qquad e = rac{P \cdot D}{4\,\sigma_{	ext{adm}}}$$</div>
+      <div class="box warn">
+        <div class="box-title">Comparación cilindro vs esfera</div>
+        <p>Para la misma presión y diámetro, la <b>esfera necesita la mitad del espesor</b> que el cilindro (más eficiente). La tensión circunferencial del cilindro es el doble que la axial → la fisura se propaga en dirección axial.</p>
+      </div>
+      <div class="prose"><p>$\sigma_{	ext{adm}} = \sigma_{	ext{rotura}} / n_s$, siendo $n_s$ el coeficiente de seguridad (típicamente 2–4 según la norma).</p></div>
     </div>
 
     <div class="section">
-      <div class="section-label"><span>Estabilidad en flotación</span></div>
+      <div class="section-label"><span>Fuerza sobre la tapa plana</span></div>
+      <div class="fkey"><div class="flabel">Resultante sobre tapa circular</div>$$F_{	ext{tapa}} = p \cdot A = p \cdot rac{\pi D^2}{4}$$</div>
       <div class="prose">
+        <p>Esta fuerza genera la tensión axial en el cilindro. Para recipientes con tapas semiesféricas, la tensión en la unión es más uniforme — por eso los depósitos industriales suelen tener tapas abombadas.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Fuerzas sobre superficies curvas sumergidas</span></div>
+      <div class="prose"><p>Para una superficie curva sumergida, se descomponen las fuerzas en componentes horizontal y vertical.</p></div>
+      <div class="grid2">
+        <div class="fblock"><div class="flabel">Componente horizontal</div>$$F_H = p_{CG} \cdot A_{	ext{proy,v}} = \gamma ar{h}\, A_{	ext{proy,v}}$$</div>
+        <div class="fblock"><div class="flabel">Componente vertical</div>$$F_V = \gamma \cdot V_{	ext{fluido sobre curva}}$$</div>
+      </div>
+      <div class="box info">
+        <div class="box-title">Regla mnemotécnica</div>
         <ul>
-          <li><b>Metacentro M</b>: punto de aplicación de la resultante del empuje al inclinar el cuerpo.</li>
-          <li>Si $M$ está <b>por encima</b> de G → flotación estable (par restaurador).</li>
-          <li>Si $M$ está <b>por debajo</b> de G → flotación inestable (el cuerpo vuelca).</li>
-          <li>Altura metacéntrica: $\overline{GM} = I_{\text{flot}}/V_{\text{desaloj}} - \overline{GC}$</li>
+          <li><b>$F_H$</b> = fuerza que actuaría sobre la <b>proyección plana vertical</b> de la superficie curva.</li>
+          <li><b>$F_V$</b> = peso del <b>volumen de fluido</b> (real o imaginario) situado encima de la superficie curva hasta la superficie libre.</li>
+          <li>Si el fluido está <em>debajo</em> de la superficie curva: $F_V$ apunta hacia <b>arriba</b> (empuje).</li>
+        </ul>
+      </div>
+      <div class="fkey"><div class="flabel">Resultante y ángulo</div>$$F_R = \sqrt{F_H^2 + F_V^2}, \qquad 	heta = rctan\!\left(rac{F_V}{F_H}ight)$$</div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Principio de Arquímedes — Empuje</span></div>
+      <div class="fkey"><div class="flabel">Empuje hidrostático</div>$$E = \gamma_f \cdot V_{	ext{sumergido}}$$</div>
+      <div class="prose">
+        <p>El empuje actúa en el <b>centro de carena</b> (centroide del volumen sumergido), dirigido verticalmente hacia arriba. Equilibrio de flotación: $E = W$ (peso del cuerpo).</p>
+      </div>
+      <div class="box note">
+        <div class="box-title">Estabilidad de cuerpos flotantes</div>
+        <ul>
+          <li><b>Metacentro M</b>: punto de intersección de la línea de acción del empuje (tras una pequeña inclinación $	heta$) con el eje de simetría.</li>
+          <li>Si $M$ está <b>por encima</b> del centro de gravedad $G$: estable.</li>
+          <li>Si $M$ está <b>por debajo</b> de $G$: inestable — el cuerpo vuelca.</li>
+          <li>Altura metacéntrica: $\overline{GM} = \overline{BM} - \overline{BG}$, siendo $\overline{BM} = I_{	ext{WP}} / V_{	ext{sum}}$.</li>
         </ul>
       </div>
     </div>
@@ -1019,16 +1164,67 @@ code{font-family:var(--ff-mono);font-size:.85em;background:var(--surface2);paddi
     <h1 class="panel-title">Cantidad de movimiento</h1>
   </div>
   <div class="panel-body">
-<div class="section">
-      <div class="section-label"><span>Ecuación de la QDM (Reynolds)</span></div>
-      <div class="fkey"><div class="flabel">Flujo estacionario e incompresible</div>$$\sum \vec{F} = \rho Q\,(\vec{v}_2 - \vec{v}_1) = \dot{m}\,(\vec{v}_2 - \vec{v}_1)$$</div>
-      <div class="prose"><p>$\sum \vec{F}$ incluye: fuerzas de presión en las secciones del VC, peso del fluido en el VC, y la <b>reacción</b> de la estructura $\vec{R}$. Proyectar en x e y por separado.</p></div>
+    <div class="section">
+      <div class="section-label"><span>Fundamento — Teorema de Reynolds</span></div>
+      <div class="prose">
+        <p>El teorema de transporte de Reynolds relaciona la variación de cualquier propiedad extensiva $B$ del sistema con lo que ocurre en el volumen de control (VC):</p>
+      </div>
+      <div class="fblock"><div class="flabel">Teorema de Reynolds (forma general)</div>$$rac{dB_{	ext{sistema}}}{dt} = rac{\partial}{\partial t}\!\int_{VC} eta\,ho\,dV + \oint_{SC} eta\,ho\,(ec{v}\cdot\hat{n})\,dA$$</div>
+      <div class="prose"><p>Para la cantidad de movimiento lineal: $B = mec{v}$, $eta = ec{v}$. Aplicando la 2ª ley de Newton al sistema ($\sum ec{F} = d(mec{v})/dt$):</p></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Ecuación de la QDM — Régimen estacionario</span></div>
+      <div class="fkey"><div class="flabel">Flujo estacionario e incompresible — una entrada, una salida</div>$$\sum ec{F} = \dot{m}\,(ec{v}_2 - ec{v}_1) = ho Q\,(ec{v}_2 - ec{v}_1)$$</div>
+      <div class="box warn">
+        <div class="box-title">Fuerzas que entran en $\sum ec{F}$</div>
+        <ul>
+          <li><b>Fuerzas de presión</b> en las secciones de entrada/salida del VC: $ec{F}_p = p_1 A_1 \hat{n}_1 + p_2 A_2 \hat{n}_2$ (presiones manométricas).</li>
+          <li><b>Peso</b> del fluido dentro del VC: $ec{W} = -ho g V_{VC}\,\hat{j}$.</li>
+          <li><b>Reacción de la estructura</b> $ec{R}$ sobre el fluido (lo que buscamos normalmente).</li>
+        </ul>
+      </div>
+      <div class="box note">
+        <div class="box-title">Convenio de signos</div>
+        <p>Las velocidades $ec{v}_1$ y $ec{v}_2$ llevan el sentido real del flujo. Las presiones en las secciones se toman como <b>manométricas</b> (relativas). El resultado $ec{R}$ es la fuerza del sólido sobre el fluido — la fuerza sobre la estructura es $-ec{R}$.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Procedimiento general de aplicación</span></div>
       <div class="steps">
-        <div class="step"><span class="step-n">1</span>Definir el volumen de control (VC).</div>
-        <div class="step"><span class="step-n">2</span>Aplicar continuidad: $Q_1 = Q_2$ (incompresible).</div>
-        <div class="step"><span class="step-n">3</span>Aplicar Bernoulli para obtener presiones en las secciones del VC.</div>
-        <div class="step"><span class="step-n">4</span>Proyectar $\sum F = \rho Q\,\Delta v$ en ejes x e y.</div>
-        <div class="step"><span class="step-n">5</span>Despejar la reacción $R_x$, $R_y$.</div>
+        <div class="step"><span class="step-n">1</span><span><b>Definir el volumen de control (VC)</b> — envolvente que incluye el fluido de interés. Identificar entradas y salidas.</span></div>
+        <div class="step"><span class="step-n">2</span><span><b>Ejes de referencia</b> — establecer sistema $x$-$y$ (y $z$ si es 3D). Proyectar todo en cada eje por separado.</span></div>
+        <div class="step"><span class="step-n">3</span><span><b>Aplicar continuidad</b> $ho_1 Q_1 = ho_2 Q_2$ (o $Q_1 = Q_2$ si incompresible) para obtener $v_1$ o $v_2$.</span></div>
+        <div class="step"><span class="step-n">4</span><span><b>Escribir la QDM en cada eje</b>: $\sum F_x = \dot{m}(v_{2x} - v_{1x})$, ídem en $y$.</span></div>
+        <div class="step"><span class="step-n">5</span><span><b>Resolver</b> para $R_x$ y $R_y$. La fuerza sobre la estructura es $F_x = -R_x$, $F_y = -R_y$.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>Aplicaciones típicas de examen</span></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Configuración</th><th>Clave de resolución</th></tr></thead>
+        <tbody>
+          <tr><td class="td-accent">Codo de 90°</td><td>$v_1 = v_2$ (misma sección); $F_x = pA + \dot{m}v$, $F_y = -(pA + \dot{m}v)$</td></tr>
+          <tr><td class="td-accent">Tobera / expansión</td><td>Aplicar Bernoulli para $p_2$, luego QDM. $p_2 pprox 0$ si chorro libre.</td></tr>
+          <tr><td class="td-accent">Chorro sobre placa plana</td><td>Placa perpendicular: solo hay $F_y$. Placa inclinada: descomponer $v_2$ en direcciones.</td></tr>
+          <tr><td class="td-accent">Chorro sobre álabe</td><td>Si el álabe se mueve a velocidad $u$: usar velocidades relativas $w = v - u$.</td></tr>
+          <tr><td class="td-accent">Reducción / bifurcación</td><td>Sumar contribuciones de cada ramal; caudales satisfacen continuidad $Q_1 = Q_2 + Q_3$.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>QDM angular — Momento cinético</span></div>
+      <div class="fkey"><div class="flabel">Momento de las fuerzas externas = variación del momento cinético</div>$$\sum ec{M}_O = \dot{m}\,(ec{r}_2 	imes ec{v}_2 - ec{r}_1 	imes ec{v}_1)$$</div>
+      <div class="prose">
+        <p>Se aplica cuando el flujo tiene componentes tangenciales (turbinas, bombas centrífugas, aspersores). $ec{r}$ es el vector posición desde el punto de referencia $O$ hasta la sección de interés.</p>
+      </div>
+      <div class="box info">
+        <div class="box-title">Ecuación de Euler para turbomáquinas</div>
+        $$H_u = rac{u_2 v_{u2} - u_1 v_{u1}}{g}$$
+        <p>donde $u$ = velocidad periférica del rodete, $v_u$ = componente circunferencial de la velocidad absoluta, $H_u$ = altura de Euler (trabajo específico). Base teórica del diseño de bombas y turbinas.</p>
       </div>
     </div>
   </div>
@@ -1598,15 +1794,43 @@ code{font-family:var(--ff-mono);font-size:.85em;background:var(--surface2);paddi
 </div>
 
 <script>
-function showTopic(id) {
-  document.querySelectorAll('.topic-panel').forEach(function(p){ p.style.display='none'; });
+/* ── Topic names for sidebar header ── */
+var TOPIC_NAMES = {
+  t1:'T1 · Introducción', t2:'T2 · Propiedades', t3:'T3 · Estática',
+  t4:'T4 · Hidrostática', t7:'T7 · Fuerzas superficiales',
+  t8:'T8 · Cuerpos cerrados', t911:'T9-11 · Cinemática',
+  t12:'T12 · Bernoulli', t13:'T13 · Medidores',
+  t14:'T14 · Cantidad de movimiento', t15:'T15 · Aplic. QDM',
+  t16:'T16 · Análisis dimensional', t17:'T17 · Viscosidad',
+  t18:'T18 · Pérdidas de carga', t19:'T19 · Conducciones',
+  t21:'T21 · Canales', t25:'T25 · Bombeo'
+};
+var TOPIC_IDS = ['t1','t2','t3','t4','t7','t8','t911','t12','t13','t14','t15','t16','t17','t18','t19','t21','t25'];
+
+function showTopic(id, save) {
+  // hide all
+  document.querySelectorAll('.topic-panel').forEach(function(p){
+    p.style.display='none';
+    p.classList.remove('visible');
+  });
+  // show target with animation
   var el = document.getElementById(id);
-  if (el) el.style.display = 'block';
+  if (el){ el.style.display='block'; requestAnimationFrame(function(){ el.classList.add('visible'); }); }
+  // update sidebar active
   document.querySelectorAll('.sb-item').forEach(function(btn){
     btn.classList.toggle('active', btn.dataset.id === id);
   });
+  // update header label
+  var lbl = document.getElementById('sbCurrent');
+  if (lbl) lbl.textContent = TOPIC_NAMES[id] || id;
+  // scroll to top
   window.scrollTo({top:0,behavior:'instant'});
+  // persist
+  if (save !== false) { try { localStorage.setItem('fluidos-teoria-topic', id); } catch(e){} }
+  // reset progress bar
+  updateProgress();
 }
+
 function filterSidebar(q) {
   q = q.toLowerCase().trim();
   document.querySelectorAll('.sb-item').forEach(function(btn){
@@ -1614,6 +1838,44 @@ function filterSidebar(q) {
     btn.style.display = btn.textContent.toLowerCase().includes(q) ? '' : 'none';
   });
 }
+
+/* ── Reading progress bar ── */
+function updateProgress() {
+  var bar = document.getElementById('readProgress');
+  if (!bar) return;
+  var scrolled = window.scrollY;
+  var total = document.documentElement.scrollHeight - window.innerHeight;
+  var pct = total > 0 ? Math.min(scrolled / total, 1) : 0;
+  bar.style.transform = 'scaleX(' + pct + ')';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+
+/* ── Keyboard navigation (up/down arrows) ── */
+document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT') return;
+  var visible = TOPIC_IDS.filter(function(id){
+    var btn = document.querySelector('.sb-item[data-id="'+id+'"]');
+    return btn && btn.style.display !== 'none';
+  });
+  var cur = TOPIC_IDS.find(function(id){ return document.getElementById(id) && document.getElementById(id).style.display !== 'none'; });
+  var idx = visible.indexOf(cur);
+  if (e.key === 'ArrowDown' && idx < visible.length - 1) { e.preventDefault(); showTopic(visible[idx+1]); scrollSidebarToActive(); }
+  if (e.key === 'ArrowUp' && idx > 0) { e.preventDefault(); showTopic(visible[idx-1]); scrollSidebarToActive(); }
+});
+
+function scrollSidebarToActive() {
+  var btn = document.querySelector('.sb-item.active');
+  if (btn) btn.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+/* ── Restore last topic from localStorage ── */
+(function(){
+  var saved;
+  try { saved = localStorage.getItem('fluidos-teoria-topic'); } catch(e){}
+  if (saved && document.getElementById(saved)) {
+    showTopic(saved, false);
+  }
+})();
 </script>
 </body>
 </html>
