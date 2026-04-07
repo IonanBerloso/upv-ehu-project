@@ -332,61 +332,150 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
                 <li><strong>(1 p)</strong> Ángulo del cable con la horizontal en \(B\), en el lado derecho de la polea, y longitud del cable \(BC\).</li>
                 <li><strong>(1 p)</strong> Componentes de la reacción en \(D\) y distancia \(h\).</li>
               </ol>
-              <div class="fig-box">
-                <svg viewBox="0 0 320 280" width="320" height="280" style="display:block;margin:0 auto">
-                  <!-- Suelo superior (apoyo B) -->
-                  <rect x="120" y="5" width="60" height="8" fill="#444" rx="1"/>
-                  <line x1="120" y1="13" x2="180" y2="13" stroke="#666" stroke-width="1.5"/>
-                  <!-- Polea B -->
-                  <circle cx="150" cy="22" r="9" fill="none" stroke="#7ecfff" stroke-width="1.5"/>
-                  <circle cx="150" cy="22" r="2" fill="#7ecfff"/>
-                  <text x="157" y="18" font-size="10" fill="#7ecfff" font-family="Inter,sans-serif">B</text>
-                  <!-- Bloque (cuadrado) -->
-                  <rect x="165" y="95" width="90" height="90" fill="#111" stroke="#3b1f6e" stroke-width="1.5" rx="3"/>
-                  <!-- Articulación D (abajo-izq del bloque) -->
-                  <circle cx="165" cy="185" r="4" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
-                  <text x="155" y="200" font-size="10" fill="#f59e0b" font-family="Inter,sans-serif">D</text>
-                  <!-- punto A (misma horizontal que D, a la izquierda) -->
-                  <text x="30" y="189" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">A</text>
-                  <line x1="40" y1="185" x2="165" y2="185" stroke="#333" stroke-dasharray="4,3" stroke-width="1"/>
-                  <!-- Punto E (lado derecho del bloque, arriba) -->
-                  <circle cx="255" cy="95" r="3" fill="#6bcb77"/>
-                  <text x="260" y="93" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif">E</text>
-                  <!-- Muelle horizontal desde E -->
-                  <path d="M255,95 l8,0 l4,-6 l8,6 l8,-6 l8,6 l8,-6 l4,6 l8,0" stroke="#6bcb77" stroke-width="1.5" fill="none"/>
-                  <!-- Pared derecha -->
-                  <rect x="307" y="80" width="8" height="40" fill="#333" rx="1"/>
-                  <!-- etiqueta k -->
-                  <text x="263" y="80" font-size="9" fill="#6bcb77" font-family="Inter,sans-serif">k=Mg/2L</text>
-                  <!-- Punto C (esquina sup-izq del bloque) -->
-                  <circle cx="165" cy="95" r="3" fill="#f4a261"/>
-                  <text x="145" y="93" font-size="10" fill="#f4a261" font-family="Inter,sans-serif">C</text>
-                  <!-- Cable de C hacia la polea B: 30° con horizontal -->
-                  <line x1="165" y1="95" x2="150" y2="22" stroke="#f4a261" stroke-width="1.5" stroke-dasharray="5,3"/>
-                  <!-- Angulo 30° -->
-                  <path d="M165,95 l-15,0" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
-                  <text x="142" y="106" font-size="9" fill="#94a3b8" font-family="Inter,sans-serif">30°</text>
-                  <!-- Cable del otro lado de la polea (cuelga verticalmente) -->
-                  <line x1="150" y1="31" x2="150" y2="70" stroke="#f4a261" stroke-width="1.5"/>
-                  <text x="155" y="55" font-size="9" fill="#f4a261" font-family="Inter,sans-serif">w=Mg/L</text>
-                  <!-- Cotas -->
-                  <!-- 2L/5 (altura de B sobre el nivel de C) -->
-                  <line x1="110" y1="22" x2="110" y2="95" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
-                  <text x="88" y="62" font-size="9" fill="#555" font-family="Inter,sans-serif">2L/5</text>
-                  <!-- L (lado bloque) -->
-                  <line x1="260" y1="95" x2="260" y2="185" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
-                  <text x="265" y="145" font-size="9" fill="#555" font-family="Inter,sans-serif">L</text>
-                  <!-- h (distancia horizontal de D al suelo de debajo) -->
-                  <line x1="165" y1="185" x2="165" y2="220" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
-                  <line x1="185" y1="185" x2="185" y2="220" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
-                  <line x1="165" y1="215" x2="185" y2="215" stroke="#555" stroke-width="1"/>
-                  <text x="170" y="230" font-size="9" fill="#555" font-family="Inter,sans-serif">h</text>
-                  <!-- Suelo inferior -->
-                  <rect x="50" y="220" width="220" height="8" fill="#333" rx="1"/>
-                  <!-- M etiqueta en bloque -->
-                  <text x="200" y="148" font-size="11" fill="#e2e8f0" font-family="Inter,sans-serif" font-weight="600">M, L</text>
+              <div class="fig-box" style="background:#06080f;padding:20px 16px">
+                <svg viewBox="0 0 430 285" width="100%" style="max-width:430px;display:block;margin:0 auto;overflow:visible">
+                  <defs>
+                    <!-- Hatching pattern -->
+                    <pattern id="hatch-e1" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+                      <line x1="0" y1="0" x2="0" y2="7" stroke="#4a4a4a" stroke-width="2.5"/>
+                    </pattern>
+                    <!-- Arrow para cotas -->
+                    <marker id="dim-r" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                      <path d="M0,0.5 L5,3 L0,5.5 Z" fill="#64748b"/>
+                    </marker>
+                    <marker id="dim-l" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+                      <path d="M5,0.5 L0,3 L5,5.5 Z" fill="#64748b"/>
+                    </marker>
+                    <marker id="dim-u" markerWidth="6" markerHeight="6" refX="3" refY="5" orient="auto">
+                      <path d="M0.5,5 L3,0 L5.5,5 Z" fill="#64748b"/>
+                    </marker>
+                    <marker id="dim-d" markerWidth="6" markerHeight="6" refX="3" refY="1" orient="auto">
+                      <path d="M0.5,0 L3,5 L5.5,0 Z" fill="#64748b"/>
+                    </marker>
+                  </defs>
+
+                  <!-- ══ TECHO (sobre B) ══ -->
+                  <!-- B está en (106, 88). Techo centrado sobre B -->
+                  <rect x="74" y="52" width="64" height="9" fill="url(#hatch-e1)"/>
+                  <line x1="74" y1="61" x2="138" y2="61" stroke="#888" stroke-width="1.8"/>
+
+                  <!-- ══ PARED DERECHA ══ -->
+                  <!-- Muelle va de E(252,130) a la pared. E es esquina sup-der del bloque. -->
+                  <!-- Bloque: C(168,122) E(252,122) bottom y=207 -->
+                  <rect x="358" y="100" width="10" height="60" fill="url(#hatch-e1)"/>
+                  <line x1="358" y1="100" x2="358" y2="160" stroke="#888" stroke-width="1.8"/>
+
+                  <!-- ══ SUELO (bajo D) ══ -->
+                  <!-- D en (210,207). Suelo en y=228 -->
+                  <rect x="158" y="228" width="115" height="9" fill="url(#hatch-e1)"/>
+                  <line x1="158" y1="228" x2="273" y2="228" stroke="#888" stroke-width="1.8"/>
+
+                  <!-- ══ BLOQUE CUADRADO (lado L=85px) ══ -->
+                  <!-- C(168,122) top-left, E(253,122) top-right, L=85 -->
+                  <rect x="168" y="122" width="85" height="85" fill="#0a0e1a" stroke="#c084fc" stroke-width="2"/>
+
+                  <!-- Etiqueta M (interior bloque) -->
+                  <text x="198" y="172" font-size="12" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="600">M</text>
+
+                  <!-- ══ PUNTO C (esquina sup-izq) ══ -->
+                  <circle cx="168" cy="122" r="3.5" fill="#f4a261"/>
+                  <text x="154" y="120" font-size="11" fill="#f4a261" font-family="Inter,sans-serif" font-weight="700">C</text>
+
+                  <!-- ══ PUNTO E (esquina sup-der) ══ -->
+                  <circle cx="253" cy="122" r="3.5" fill="#6bcb77"/>
+                  <text x="256" y="118" font-size="11" fill="#6bcb77" font-family="Inter,sans-serif" font-weight="700">E</text>
+
+                  <!-- ══ MUELLE (E → pared, horizontal, longitud L=85px) ══ -->
+                  <!-- E en (253,130), pared en x=358, la mitad del muelle va de 257 a 354 -->
+                  <line x1="253" y1="130" x2="260" y2="130" stroke="#6bcb77" stroke-width="1.8"/>
+                  <polyline points="260,130 265,119 273,141 281,119 289,141 297,119 305,141 313,119 321,130" stroke="#6bcb77" stroke-width="1.8" fill="none"/>
+                  <line x1="321" y1="130" x2="358" y2="130" stroke="#6bcb77" stroke-width="1.8"/>
+
+                  <!-- Etiquetas muelle -->
+                  <text x="264" y="110" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif" font-style="italic">k = Mg/2L</text>
+                  <text x="264" y="122" font-size="10" fill="#6bcb77" font-family="Inter,sans-serif" font-style="italic">L₀ = 0</text>
+
+                  <!-- Cota L del muelle (horizontal, debajo del muelle) -->
+                  <line x1="253" y1="145" x2="358" y2="145" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
+                  <line x1="253" y1="140" x2="253" y2="150" stroke="#64748b" stroke-width="1"/>
+                  <line x1="358" y1="140" x2="358" y2="150" stroke="#64748b" stroke-width="1"/>
+                  <text x="297" y="157" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
+
+                  <!-- ══ ARTICULACIÓN D (centro-inferior bloque) ══ -->
+                  <!-- D en x=210 (un poco a la derecha del centro del bloque: 168+42=210) -->
+                  <circle cx="210" cy="207" r="4.5" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+                  <!-- Triángulo pin hacia el suelo -->
+                  <polygon points="210,212 199,228 221,228" fill="none" stroke="#f59e0b" stroke-width="1.8"/>
+                  <text x="225" y="218" font-size="11" fill="#f59e0b" font-family="Inter,sans-serif" font-weight="700">D</text>
+
+                  <!-- ══ PUNTO A (misma horizontal que D, izquierda) ══ -->
+                  <!-- A en (50, 207) -->
+                  <text x="44" y="211" font-size="11" fill="#94a3b8" font-family="Inter,sans-serif" font-weight="700">A</text>
+                  <!-- Línea de cota horizontal A–D -->
+                  <line x1="56" y1="207" x2="168" y2="207" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+                  <!-- ══ POLEA B ══ -->
+                  <!-- B: 2L/5=34px sobre C(168,122), y 59px a la izquierda → B(109,88) -->
+                  <!-- Verificación ángulo: Δx=59, Δy=34 → atan(34/59)=30° ✓ -->
+                  <circle cx="109" cy="88" r="12" fill="#0a0e1a" stroke="#e2e8f0" stroke-width="2"/>
+                  <circle cx="109" cy="88" r="3.5" fill="#0a0e1a" stroke="#888" stroke-width="1.2"/>
+                  <!-- Cruz pequeña en el centro de la polea -->
+                  <line x1="105" y1="88" x2="113" y2="88" stroke="#666" stroke-width="1"/>
+                  <line x1="109" y1="84" x2="109" y2="92" stroke="#666" stroke-width="1"/>
+                  <text x="118" y="82" font-size="11" fill="#e2e8f0" font-family="Inter,sans-serif" font-weight="700">B</text>
+                  <!-- Línea de unión polea–techo -->
+                  <line x1="109" y1="61" x2="109" y2="76" stroke="#888" stroke-width="1.5"/>
+
+                  <!-- ══ CABLE BC (de C a la polea B, ángulo 30°) ══ -->
+                  <!-- C(168,122) → B(109,88): tangente en C con 30° sobre horizontal -->
+                  <line x1="168" y1="122" x2="115" y2="93" stroke="#f4a261" stroke-width="2"/>
+
+                  <!-- Arco ángulo 30° en C -->
+                  <path d="M 148,122 A 20,20 0 0,1 151,113" stroke="#94a3b8" stroke-width="1.2" fill="none"/>
+                  <text x="128" y="125" font-size="10" fill="#94a3b8" font-family="Inter,sans-serif">30°</text>
+                  <!-- Línea horizontal de referencia para el ángulo -->
+                  <line x1="140" y1="122" x2="168" y2="122" stroke="#64748b" stroke-width="0.8" stroke-dasharray="3,2"/>
+
+                  <!-- ══ CABLE colgante izquierdo de B (w = Mg/L) ══ -->
+                  <!-- Sale de la izquierda de la polea, cae vertical hacia A -->
+                  <line x1="100" y1="99" x2="57" y2="207" stroke="#f4a261" stroke-width="2"/>
+                  <!-- Etiqueta w -->
+                  <text x="52" y="148" font-size="10" fill="#f4a261" font-family="Inter,sans-serif" font-style="italic">w = Mg/L</text>
+
+                  <!-- ══ COTAS VERTICALES ══ -->
+                  <!-- Cota 2L/5: desde B(y=88) hasta C(y=122), a la izquierda (x=58) -->
+                  <line x1="58" y1="88" x2="58" y2="122" stroke="#64748b" stroke-width="0.9"/>
+                  <line x1="53" y1="88" x2="63" y2="88" stroke="#64748b" stroke-width="0.9"/>
+                  <line x1="53" y1="122" x2="63" y2="122" stroke="#64748b" stroke-width="0.9"/>
+                  <!-- Líneas de referencia horizontales -->
+                  <line x1="58" y1="88" x2="109" y2="88" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
+                  <line x1="58" y1="122" x2="168" y2="122" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
+                  <text x="30" y="110" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">2L/5</text>
+
+                  <!-- Cota L (altura bloque): desde C(y=122) hasta fondo(y=207), a la izquierda (x=58) -->
+                  <line x1="58" y1="125" x2="58" y2="204" stroke="#64748b" stroke-width="0.9"/>
+                  <line x1="53" y1="207" x2="63" y2="207" stroke="#64748b" stroke-width="0.9"/>
+                  <text x="30" y="170" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
+
+                  <!-- Cota horizontal L (bloque, de C a E), encima del bloque -->
+                  <line x1="168" y1="112" x2="253" y2="112" stroke="#64748b" stroke-width="0.9"/>
+                  <line x1="168" y1="107" x2="168" y2="117" stroke="#64748b" stroke-width="0.9"/>
+                  <line x1="253" y1="107" x2="253" y2="117" stroke="#64748b" stroke-width="0.9"/>
+                  <text x="210" y="108" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">L</text>
+
+                  <!-- ══ COTA h (horizontal, en la base del pin D) ══ -->
+                  <!-- h = distancia horizontal de la esquina izq del bloque hasta D -->
+                  <!-- Esquina izq base: (168,228). D en x=210. Δx=42 -->
+                  <line x1="168" y1="240" x2="210" y2="240" stroke="#64748b" stroke-width="0.9"/>
+                  <line x1="168" y1="235" x2="168" y2="245" stroke="#64748b" stroke-width="0.9"/>
+                  <line x1="210" y1="235" x2="210" y2="245" stroke="#64748b" stroke-width="0.9"/>
+                  <!-- Líneas de proyección verticales (punteadas) -->
+                  <line x1="168" y1="207" x2="168" y2="245" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
+                  <line x1="210" y1="228" x2="210" y2="245" stroke="#64748b" stroke-width="0.6" stroke-dasharray="2,3"/>
+                  <text x="189" y="258" font-size="10" fill="#64748b" font-family="Inter,sans-serif" text-anchor="middle">h</text>
+
                 </svg>
-                <div class="fig-desc">Bloque cuadrado articulado en D, muelle en E, cable catenaria BC con polea B</div>
+                <div class="fig-desc">Bloque \(M\) articulado en \(D\) — muelle en \(E\) — cable catenaria \(BC\) con polea \(B\) — ángulo 30° en \(C\)</div>
               </div>
             </div>
             <div class="soon">Resolución en preparación</div>
