@@ -3,145 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#131313">
 <title>EF Mayo 2024 · Mecánica de Fluidos · UPV/EHU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
   onload="initKatex()"></script>
-
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
+  --bg:#131313;--panel:rgba(255,255,255,.02);--surface:rgba(255,255,255,.04);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
   --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;--purple:#c084fc;--orange:#f4a261;--yellow:#ffd93d;
-  --transition:.2s;
+  --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;
+  --purple:#c084fc;--orange:#f4a261;--yellow:#ffd93d;
+  --sb-w:268px;--top-h:52px;
+  --tr:.18s cubic-bezier(.4,0,.2,1);
 }
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
-.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
-.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.65}
+#read-bar{position:fixed;top:0;left:0;z-index:999;height:2px;width:0;background:linear-gradient(90deg,#7ecfff,#c084fc);pointer-events:none;transition:width .08s}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--top-h);background:rgba(19,19,19,.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);text-decoration:none;white-space:nowrap;transition:color var(--tr)}
 .topbar-back:hover{color:var(--accent);text-decoration:none}
-.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbar-pill{margin-right:20px;background:#001a2e;border:1px solid #003366;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:#7ecfff;white-space:nowrap}
-.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
-.ph-type{display:inline-block;background:#001a2e;border:1px solid #003366;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:#7ecfff;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
-.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
-.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
-.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
-.ph-note{background:#1a1000;border:1px solid #3a2800;border-radius:8px;padding:10px 14px;font-size:.8em;color:#f4d080;font-style:italic}
-.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
-.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
-.jump-link:hover{background:#0a1a2e;color:var(--accent);border-color:var(--accent);text-decoration:none}
-.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
-.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
-.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
-.ex-header:hover{background:#111}
-.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
-.ex-meta{font-size:.78em;color:var(--text3)}
-.ex-pct{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44;border-radius:20px;padding:4px 12px;font-size:.78em;font-weight:700;white-space:nowrap}
-.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
-.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
-.ex-body{display:none;padding:0 20px 20px}
-.ex-card.open .ex-body{display:block}
-.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #333}
-.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
-.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
-.sec-btn .sarr{transition:.2s}
-.sec-open .sec-btn .sarr{transform:rotate(180deg)}
-.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
+.topbar-title{padding:0 18px;flex:1;font-size:.88em;font-weight:600;color:#d4eeff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-pill{margin-right:18px;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.25);border-radius:20px;padding:3px 12px;font-size:.7em;font-weight:600;color:#fb923c;white-space:nowrap}
+.layout{display:flex;position:fixed;top:var(--top-h);left:0;right:0;bottom:0}
+.sidebar{width:var(--sb-w);flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-exam-info{padding:16px 14px 12px;border-bottom:1px solid var(--border)}
+.sb-exam-type{font-size:.61em;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:#fb923c;margin-bottom:4px;font-family:'JetBrains Mono',monospace}
+.sb-exam-title{font-size:.86em;font-weight:700;color:#d4eeff;line-height:1.35;margin-bottom:3px}
+.sb-exam-meta{font-size:.69em;color:var(--text3);line-height:1.5}
+.sb-list{flex:1;overflow-y:auto;padding:6px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:7px;cursor:pointer;transition:background var(--tr);margin-bottom:1px;border:1px solid transparent}
+.sb-item:hover{background:rgba(126,207,255,.04)}
+.sb-item.active{background:rgba(126,207,255,.07);border-color:rgba(126,207,255,.18)}
+.sb-num{width:24px;height:24px;border-radius:5px;background:rgba(126,207,255,.05);border:1px solid rgba(126,207,255,.1);color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:.7em;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--tr)}
+.sb-item.active .sb-num{background:rgba(126,207,255,.14);border-color:rgba(126,207,255,.38);color:var(--accent)}
+.sb-label{flex:1;font-size:.77em;color:var(--text2);line-height:1.3}
+.sb-item.active .sb-label{color:#d4eeff;font-weight:600}
+.sb-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;opacity:.7}
+.sb-footer{padding:9px 12px;border-top:1px solid var(--border);font-size:.66em;color:var(--text3);font-family:'JetBrains Mono',monospace;text-align:center}
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.ex-panel{display:none;max-width:820px;margin:0 auto;padding:30px 32px 80px;animation:fadeIn .2s ease}
+.ex-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.ex-panel-header{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.ex-panel-num{font-family:'JetBrains Mono',monospace;font-size:.65em;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:rgba(126,207,255,.45);margin-bottom:8px}
+.ex-panel-header h2{font-size:1.3em;font-weight:700;color:#d4eeff;line-height:1.35;letter-spacing:-.2px;margin-bottom:5px}
+.ex-panel-meta{font-size:.78em;color:var(--text3)}
+.ex-panel-badges{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.ex-badge{padding:2px 10px;border-radius:20px;font-size:.67em;font-weight:600;font-family:'JetBrains Mono',monospace}
+.ex-badge-pct{background:rgba(126,207,255,.06);border:1px solid rgba(126,207,255,.18);color:var(--accent)}
+.ex-badge-solved{background:rgba(107,203,119,.06);border:1px solid rgba(107,203,119,.18);color:var(--green)}
+.enunciado{background:rgba(126,207,255,.025);border-radius:10px;padding:16px 18px;font-size:.89em;line-height:1.85;margin-bottom:0;border:1px solid rgba(126,207,255,.09);color:#cce0f0;white-space:pre-wrap}
+.ex-figure{margin:0 0 20px;padding:10px 16px 14px;background:rgba(0,0,0,.2);border:1px solid rgba(126,207,255,.09);border-top:none;border-radius:0 0 10px 10px}
+.ex-figure-label{font-size:.61em;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(126,207,255,.38);font-family:'JetBrains Mono',monospace;margin-bottom:9px}
+.ex-figure img{max-width:100%;max-height:360px;border-radius:6px;display:block;background:#fff;object-fit:contain}
+.enunciado:not(+ .ex-figure){margin-bottom:20px}
+.enunciado + .ex-figure{margin-bottom:20px}
+.seccion{margin-bottom:0;border-top:1px solid var(--border)}
+.sec-btn{width:100%;text-align:left;padding:11px 4px 11px 0;background:none;border:none;cursor:pointer;font-size:.82em;font-weight:600;color:var(--text2);transition:color var(--tr);display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif}
+.sec-btn:hover{color:var(--text)}
+.sec-icon{font-size:.9em;width:18px;text-align:center;flex-shrink:0}
+.sec-label{flex:1}
+.sec-chevron{margin-left:auto;color:var(--text3);font-size:.75em;transition:.2s}
+.sec-open .sec-chevron{transform:rotate(180deg)}
+.sec-body{display:none;padding:0 0 18px 28px;font-size:.87em;line-height:1.82}
 .sec-open .sec-body{display:block}
-.s-datos .sec-btn{background:#0a1a2e;color:var(--accent);border:1px solid #0d2a44}
-.s-datos .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
-.s-formulas .sec-btn{background:#1a0f00;color:var(--orange);border:1px solid #2a1800}
-.s-formulas .sec-body{background:#0f0800;border:1px solid #2a1800;border-top:none}
-.s-teoria .sec-btn{background:#0f0a1a;color:var(--purple);border:1px solid #1e1030}
-.s-teoria .sec-body{background:#080510;border:1px solid #1e1030;border-top:none}
-.s-resolucion .sec-btn{background:#001a0a;color:var(--green);border:1px solid #003318}
-.s-resolucion .sec-body{background:#00100a;border:1px solid #003318;border-top:none}
-.s-conclusiones .sec-btn{background:#1a1a00;color:var(--yellow);border:1px solid #2a2800}
-.s-conclusiones .sec-body{background:#0f0f00;border:1px solid #2a2800;border-top:none}
-.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
-.t-datos th{background:#0d2244;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #1a2a3a}
-.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#d0e8ff}
-.t-datos tr:nth-child(even) td{background:#040c18}
-.formula-box{background:#110800;border-left:3px solid var(--orange);border-radius:4px;padding:8px 14px;margin:6px 0;color:#ffe0c0;overflow-x:auto}
-.paso{margin-bottom:14px;padding:10px 14px;background:#001508;border-radius:8px;border-left:3px solid #2a5a30}
-.paso-titulo{color:var(--green);font-size:.8em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.resultado-final{background:#001a08;border:1px solid #2a6a30;border-radius:8px;padding:12px 16px;margin-top:12px}
-.rf-label{font-size:.72em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;font-weight:700}
-.rf-val{color:#c8ffcc;font-size:.92em;line-height:1.9}
-.concl-item{padding:6px 0 6px 14px;border-left:2px solid var(--yellow);margin-bottom:8px;font-size:.87em;color:#f0e080}
-.nota{background:#1a0a00;border:1px solid #3a1a00;border-radius:6px;padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:3px}
+.sec-open.s-datos .sec-btn{color:var(--accent)}
+.sec-open.s-formulas .sec-btn{color:var(--orange)}
+.sec-open.s-teoria .sec-btn{color:var(--purple)}
+.sec-open.s-resolucion .sec-btn{color:var(--green)}
+.sec-open.s-conclusiones .sec-btn{color:var(--yellow)}
+.t-datos{width:100%;border-collapse:collapse;font-size:.84em;margin:10px 0}
+.t-datos th{background:rgba(126,207,255,.06);color:var(--accent);padding:7px 12px;text-align:left;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.88em}
+.t-datos td{padding:6px 12px;border:1px solid rgba(126,207,255,.06);color:#c0d8ee}
+.t-datos tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+.formula-box{background:rgba(244,162,97,.04);border-left:2px solid rgba(244,162,97,.4);padding:8px 14px;margin:8px 0;color:#ffe0c0;overflow-x:auto}
+.formula-label{font-size:.67em;color:var(--orange);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.paso{margin-bottom:12px;padding:10px 14px 10px 16px;border-left:2px solid rgba(107,203,119,.25)}
+.paso-titulo{color:var(--green);font-size:.72em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-family:'JetBrains Mono',monospace}
+.resultado-final{background:rgba(107,203,119,.05);border:1px solid rgba(107,203,119,.2);border-radius:8px;padding:14px 18px;margin-top:16px}
+.rf-label{font-size:.67em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.rf-val{color:#b8f0c0;font-size:.9em;line-height:2.1}
+.concl-item{padding:6px 0 6px 14px;border-left:2px solid rgba(255,217,61,.28);margin-bottom:8px;font-size:.87em;color:#e8d870}
+.nota{background:rgba(244,162,97,.04);border:1px solid rgba(244,162,97,.14);border-radius:6px;padding:8px 14px;font-size:.79em;color:#e8b87a;margin-top:10px}
+.ex-nav{display:flex;justify-content:space-between;align-items:center;padding-top:28px;margin-top:32px;border-top:1px solid var(--border)}
+.ex-nav-btn{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:8px;font-size:.79em;font-weight:600;background:var(--panel);border:1px solid var(--border);color:var(--text2);cursor:pointer;text-decoration:none;transition:var(--tr)}
+.ex-nav-btn:hover{border-color:rgba(126,207,255,.3);color:var(--accent);background:rgba(126,207,255,.04);text-decoration:none}
+.ex-nav-btn.disabled{opacity:.25;pointer-events:none}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2a3a4a;border-radius:2px}
 .katex{font-size:1.05em}
-.katex-display{overflow-x:auto;overflow-y:hidden}
-@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:6px 0}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{display:block;position:static}
+  html,body{height:auto;overflow:auto}
+  .main{overflow:visible}
+  .ex-panel{display:block!important;padding:20px 16px 60px}
+  .topbar-pill{display:none}
+}
 </style>
 </head>
 <body>
 
+<div id="read-bar"></div>
+
 <nav class="topbar">
   <a class="topbar-back" href="../examenes.html">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Exámenes
+    Ex&aacute;menes
   </a>
   <span class="topbar-title">📝 Examen Final · 30 de Mayo de 2024</span>
-  <span class="topbar-pill">Ordinaria</span>
+  <span class="topbar-pill">Examen Parcial</span>
 </nav>
 
-<div class="page-header">
-  <div class="ph-type">Ordinaria</div>
-  <h1>Mecánica de Fluidos e Hidráulica</h1>
-  <div class="ph-meta">30 de Mayo de 2024 · Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU · Donostia-San Sebastián</div>
-  <div class="ph-tags">
-    <span class="ph-tag">Capilaridad anular</span>
-    <span class="ph-tag">Fuerzas en piezas</span>
-    <span class="ph-tag">Manómetros redundantes</span>
-    <span class="ph-tag">Compuerta cilíndrica</span>
-    <span class="ph-tag">Vaciado orificio</span>
-    <span class="ph-tag">Bombeo H-W</span>
-    <span class="ph-tag">Canales + semejanza</span>
-    <span class="ph-tag">Codo manómetro U</span>
-    <span class="ph-tag">8 ejercicios · 100%</span>
-  </div>
-  <div class="ph-note">⚠️ Las resoluciones usan <strong>g = 9,8 m/s²</strong>, coherente con el convenio UPV/EHU.</div>
-</div>
-
-<div class="jump-links">
-  <a class="jump-link" href="#ex1">Ej. 1 — Capilaridad anular</a>
-  <a class="jump-link" href="#ex2">Ej. 2 — Fuerzas en pieza especial</a>
-  <a class="jump-link" href="#ex3">Ej. 3 — Manómetros redundantes</a>
-  <a class="jump-link" href="#ej4">Ej. 4 — Compuerta ABC cilíndrica</a>
-  <a class="jump-link" href="#ej5">Ej. 5 — Vaciado de depósito</a>
-  <a class="jump-link" href="#ej6">Ej. 6 — Bombeo Hazen-Williams</a>
-  <a class="jump-link" href="#ej7">Ej. 7 — Canales + semejanza dinámica</a>
-  <a class="jump-link" href="#ej8">Ej. 8 — Codo con manómetro en U</a>
-</div>
-
-<div class="container">
-
-<!-- ═══ EJ 1 — CAPILARIDAD TUBO ANULAR (7,5%) ═══ -->
-<div class="ex-card open" id="ex1">
-  <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-header-left">
-      <h2>Ejercicio 1 · Capilaridad — sección anular cuadrado-círculo</h2>
-      <div class="ex-meta">Tensión superficial · Ascenso capilar · Sección compuesta</div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-exam-info">
+      <div class="sb-exam-type">Examen Parcial</div>
+      <div class="sb-exam-title">Mecánica de Fluidos e Hidráulica</div>
+      <div class="sb-exam-meta">Mayo 2024 · Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="ex-pct">7,5%</span><span class="ex-arrow">▼</span>
+    <div class="sb-list">
+    <div class="sb-item active" onclick="showPanel('panel-ex1')" id="sb-ex1">
+      <div class="sb-num">1</div>
+      <div class="sb-label">Capilaridad anular</div>
+      <div class="sb-dot"></div>
+    </div>
+    <div class="sb-item" onclick="showPanel('panel-ex2')" id="sb-ex2">
+      <div class="sb-num">2</div>
+      <div class="sb-label">Fuerzas en pieza especial</div>
+      <div class="sb-dot"></div>
+    </div>
+    <div class="sb-item" onclick="showPanel('panel-ex3')" id="sb-ex3">
+      <div class="sb-num">3</div>
+      <div class="sb-label">Manómetros redundantes</div>
+      <div class="sb-dot"></div>
+    </div>
+    <div class="sb-item" onclick="showPanel('panel-ej4')" id="sb-ej4">
+      <div class="sb-num">4</div>
+      <div class="sb-label">Compuerta ABC cilíndrica</div>
+      <div class="sb-dot"></div>
+    </div>
+    <div class="sb-item" onclick="showPanel('panel-ej5')" id="sb-ej5">
+      <div class="sb-num">5</div>
+      <div class="sb-label">Vaciado de depósito</div>
+      <div class="sb-dot"></div>
+    </div>
+    <div class="sb-item" onclick="showPanel('panel-ej6')" id="sb-ej6">
+      <div class="sb-num">6</div>
+      <div class="sb-label">Bombeo Hazen-Williams</div>
+      <div class="sb-dot"></div>
+    </div>
+    <div class="sb-item" onclick="showPanel('panel-ej7')" id="sb-ej7">
+      <div class="sb-num">7</div>
+      <div class="sb-label">Canales + semejanza dinámica</div>
+      <div class="sb-dot"></div>
+    </div>
+    <div class="sb-item" onclick="showPanel('panel-ej8')" id="sb-ej8">
+      <div class="sb-num">8</div>
+      <div class="sb-label">Codo con manómetro en U</div>
+      <div class="sb-dot"></div>
+    </div>
+    </div>
+    <div class="sb-footer">8 ejercicios &middot; 100% resuelto</div>
+  </aside>
+
+  <main class="main">
+    
+<div class="ex-panel active" id="panel-ex1" data-num="1">
+  <div class="ex-panel-header">
+    <div class="ex-panel-num">EJERCICIO 1 / 8</div>
+    <h2>Ejercicio 1 · Capilaridad — sección anular cuadrado-círculo</h2>
+    <div class="ex-panel-meta">Tensión superficial · Ascenso capilar · Sección compuesta</div>
+    <div class="ex-panel-badges">
+      <span class="ex-badge ex-badge-pct">7,5%</span>
+      <span class="ex-badge ex-badge-solved">&#10003; Resuelto</span>
     </div>
   </div>
-  <div class="ex-body">
-    <div class="enunciado">
+  <div class="enunciado">
 Se tienen dos tubos concéntricos: uno exterior de sección cuadrada de lado $b$ y uno interior circular de diámetro $D$. Hay fluido en el espacio anular entre ambos.<br><br>
 <strong>a)</strong> Dibujar la superficie libre en la sección B-B' e identificar las fuerzas que condicionan el ascenso o descenso capilar.<br>
 <strong>b)</strong> Deducir la expresión del ascenso/descenso capilar válida para cualquier fluido:<br>
@@ -149,6 +196,12 @@ $$h = \frac{\sigma\cos\theta\,(4b + \pi D)}{\gamma\!\left(b^2 - \dfrac{\pi D^2}{
 <strong>c)</strong> Para alcohol: $D = 2\ \text{mm}$, $b = 3\ \text{mm}$, $\sigma = 22{,}31 \times 10^{-3}\ \text{N/m}$, $\rho = 790\ \text{kg/m}^3$, $\theta = 0°$.<br><br>
 <strong>Resultado:</strong> $h = 1{,}334\ \text{mm}$
     </div>
+
+    <div class="ex-figure">
+      <div class="ex-figure-label">&#128196; Figura original (PDF)</div>
+      <img src="img/mayo2024_p49_fig1.png" alt="Figura del enunciado original (PDF)">
+    </div>
+
 
     <div class="seccion sec-open s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
@@ -243,26 +296,33 @@ $$h = \frac{\sigma\cos\theta\,(4b + \pi D)}{\gamma\!\left(b^2 - \dfrac{\pi D^2}{
         <div class="concl-item">La clave física: cuanto más estrecha la sección anular (menor $A$) y mayor el perímetro de contacto ($L_c$), mayor el ascenso — razón por la que los tejidos porosos y las raíces de las plantas capturan agua de forma muy eficiente.</div>
       </div>
     </div>
+  <div class="ex-nav">
+    <span class="ex-nav-btn disabled">&#8592; Anterior</span>
+    <span style="font-size:.72em;color:var(--text3);font-family:'JetBrains Mono',monospace">1 / 8</span>
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ex2')">Siguiente &#8594;</a>
   </div>
 </div>
-
-<!-- ═══ EJ 2 — FUERZAS EN PIEZA ESPECIAL (12,5%) ═══ -->
-<div class="ex-card open" id="ex2">
-  <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-header-left">
-      <h2>Ejercicio 2 · Cantidad de movimiento — pieza especial (codo + boquilla)</h2>
-      <div class="ex-meta">Bernoulli · QdM · Pérdidas locales · Fuerza resultante</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="ex-pct">12,5%</span><span class="ex-arrow">▼</span>
+<div class="ex-panel" id="panel-ex2" data-num="2">
+  <div class="ex-panel-header">
+    <div class="ex-panel-num">EJERCICIO 2 / 8</div>
+    <h2>Ejercicio 2 · Cantidad de movimiento — pieza especial (codo + boquilla)</h2>
+    <div class="ex-panel-meta">Bernoulli · QdM · Pérdidas locales · Fuerza resultante</div>
+    <div class="ex-panel-badges">
+      <span class="ex-badge ex-badge-pct">12,5%</span>
+      <span class="ex-badge ex-badge-solved">&#10003; Resuelto</span>
     </div>
   </div>
-  <div class="ex-body">
-    <div class="enunciado">
+  <div class="enunciado">
 Una pieza especial colocada al final de una tubería de agua consta de dos bocas de salida: una en el punto B con chorro horizontal y otra en C con chorro también horizontal. $P_A = 13{,}5\ \text{bar}$, $\phi_A = 125\ \text{mm}$, $\phi_B = 10\ \text{mm}$, $v_A = 0{,}8\ \text{m/s}$, $\alpha = 60°$ (ángulo de desvío del chorro hacia B), $c_{L,AB} = 0{,}7$.<br><br>
 <strong>Determinar</strong> la fuerza que debe ejercer el fluido sobre la pieza (módulo y dirección).<br><br>
 <strong>Resultados:</strong> $F = 16\,780{,}3\ \text{N}$; $\beta = 65°$
     </div>
+
+    <div class="ex-figure">
+      <div class="ex-figure-label">&#128196; Figura original (PDF)</div>
+      <img src="img/mayo2024_p49_fig2.png" alt="Figura del enunciado original (PDF)">
+    </div>
+
 
     <div class="seccion sec-open s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
@@ -348,22 +408,23 @@ Una pieza especial colocada al final de una tubería de agua consta de dos bocas
         <div class="concl-item">Para sujetar la pieza se necesita un anclaje capaz de resistir $\approx 16\,780\ \text{N}$ — equivalente al peso de 1,71 toneladas — lo que justifica el uso de bridas de alta resistencia.</div>
       </div>
     </div>
+  <div class="ex-nav">
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ex1')">&#8592; Anterior</a>
+    <span style="font-size:.72em;color:var(--text3);font-family:'JetBrains Mono',monospace">2 / 8</span>
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ex3')">Siguiente &#8594;</a>
   </div>
 </div>
-
-<!-- ═══ EJ 3 — MANÓMETROS REDUNDANTES (12,5%) ═══ -->
-<div class="ex-card open" id="ex3">
-  <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-header-left">
-      <h2>Ejercicio 3 · Manómetros redundantes — identificar lectura incorrecta</h2>
-      <div class="ex-meta">Hidrostática · Presión absoluta · Manómetro en U · Densidad</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="ex-pct">12,5%</span><span class="ex-arrow">▼</span>
+<div class="ex-panel" id="panel-ex3" data-num="3">
+  <div class="ex-panel-header">
+    <div class="ex-panel-num">EJERCICIO 3 / 8</div>
+    <h2>Ejercicio 3 · Manómetros redundantes — identificar lectura incorrecta</h2>
+    <div class="ex-panel-meta">Hidrostática · Presión absoluta · Manómetro en U · Densidad</div>
+    <div class="ex-panel-badges">
+      <span class="ex-badge ex-badge-pct">12,5%</span>
+      <span class="ex-badge ex-badge-solved">&#10003; Resuelto</span>
     </div>
   </div>
-  <div class="ex-body">
-    <div class="enunciado">
+  <div class="enunciado">
 Instalación con dos depósitos presurizados con manómetros redundantes (2 y 3). El manómetro de Bourdon de presiones absolutas $P_1$ mide $3{,}57\ \text{kgf/cm}^2$. Se sospecha que uno de los dos manómetros mide incorrectamente. Datos: $s_1 = 1{,}2$; $s_3 = 13{,}6$ (mercurio); $h_1 = 60\ \text{cm}$; $h_4 = 1{,}5\ \text{m}$; $R = 39{,}6\ \text{cm}$; $H = 400\ \text{mm}$.<br>
 $P_2 = 1{,}16\times10^5\ \text{Pa}$; $P_3 = 1{,}54\times10^5\ \text{Pa}$.<br><br>
 <strong>a)</strong> Justificar razonadamente cuál mide incorrectamente.<br>
@@ -465,22 +526,23 @@ $P_2 = 1{,}16\times10^5\ \text{Pa}$; $P_3 = 1{,}54\times10^5\ \text{Pa}$.<br><br
         <div class="concl-item">El depósito C está a presión subatmosférica ($P_C = 0{,}7\ \text{bar} < P_\text{atm} = 1{,}01325\ \text{bar}$) — es un depósito en vacío parcial. La densidad $s_4 = 4{,}3$ corresponde a un fluido muy denso en el tramo C de la instalación.</div>
       </div>
     </div>
+  <div class="ex-nav">
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ex2')">&#8592; Anterior</a>
+    <span style="font-size:.72em;color:var(--text3);font-family:'JetBrains Mono',monospace">3 / 8</span>
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej4')">Siguiente &#8594;</a>
   </div>
 </div>
-
-<!-- EJ4 -->
-<div class="ex-card open" id="ej4">
-  <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-header-left">
-      <h2>Ejercicio 4 · Compuerta cilíndrica ABC — Fuerzas hidrostáticas y reacción en el pivote</h2>
-      <div class="ex-meta">Superficie curva · F_H y F_V · Momento de bisagra · Presión de vacío</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="ex-pct">15%</span><span class="ex-arrow">▼</span>
+<div class="ex-panel" id="panel-ej4" data-num="4">
+  <div class="ex-panel-header">
+    <div class="ex-panel-num">EJERCICIO 4 / 8</div>
+    <h2>Ejercicio 4 · Compuerta cilíndrica ABC — Fuerzas hidrostáticas y reacción en el pivote</h2>
+    <div class="ex-panel-meta">Superficie curva · F_H y F_V · Momento de bisagra · Presión de vacío</div>
+    <div class="ex-panel-badges">
+      <span class="ex-badge ex-badge-pct">15%</span>
+      <span class="ex-badge ex-badge-solved">&#10003; Resuelto</span>
     </div>
   </div>
-  <div class="ex-body">
-    <div class="enunciado">
+  <div class="enunciado">
 Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una cámara presurizada. La cámara contiene un fluido de densidad relativa $s = 1{,}5$. Un vacuómetro situado en el punto A ($h_A = 1\ \text{m}$ de profundidad bajo la superficie libre del fluido) indica $P_{A,\text{vac}} = -14{,}7\ \text{kPa}$. El punto B está a $h_B = 2\ \text{m}$ de profundidad y el pivote C a $h_C = 2{,}5\ \text{m}$. La compuerta tiene anchura $b$ (dato de la figura).<br><br>
 <strong>Calcular:</strong><br>
 <strong>a)</strong> La distribución de presiones sobre la compuerta. Identificar el punto neutro.<br>
@@ -599,22 +661,23 @@ Se tiene una compuerta cilíndrica (arco de circunferencia) ABC que sella una c�
         </div>
       </div>
     </div>
+  <div class="ex-nav">
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ex3')">&#8592; Anterior</a>
+    <span style="font-size:.72em;color:var(--text3);font-family:'JetBrains Mono',monospace">4 / 8</span>
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej5')">Siguiente &#8594;</a>
   </div>
 </div>
-
-<!-- EJ5 -->
-<div class="ex-card open" id="ej5">
-  <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-header-left">
-      <h2>Ejercicio 5 · Vaciado de depósito rectangular — Torricelli, cuartos y coeficiente de contracción</h2>
-      <div class="ex-meta">Torricelli · Vaciado · Ecuación diferencial · Cuartos de vaciado</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="ex-pct">12,5%</span><span class="ex-arrow">▼</span>
+<div class="ex-panel" id="panel-ej5" data-num="5">
+  <div class="ex-panel-header">
+    <div class="ex-panel-num">EJERCICIO 5 / 8</div>
+    <h2>Ejercicio 5 · Vaciado de depósito rectangular — Torricelli, cuartos y coeficiente de contracción</h2>
+    <div class="ex-panel-meta">Torricelli · Vaciado · Ecuación diferencial · Cuartos de vaciado</div>
+    <div class="ex-panel-badges">
+      <span class="ex-badge ex-badge-pct">12,5%</span>
+      <span class="ex-badge ex-badge-solved">&#10003; Resuelto</span>
     </div>
   </div>
-  <div class="ex-body">
-    <div class="enunciado">
+  <div class="enunciado">
 Se tiene un depósito rectangular de base $a\times b = 30\times25\ \text{cm}$ con una altura inicial de agua $H = 1\ \text{m}$. En el fondo del depósito hay un orificio de diámetro $d = 25\ \text{mm}$ cuyo coeficiente de contracción es $c_c = 0{,}11$ (el fluido abandona el orificio con una sección contráida).<br><br>
 <strong>a)</strong> Deducir la expresión del tiempo necesario para vaciar el depósito desde una altura $H_i$ hasta $H_f$.<br>
 <strong>b)</strong> Dividir el volumen del depósito en cuatro cuartos iguales de altura ($\Delta h = 0{,}25\ \text{m}$). ¿Cuál es el cuarto que tarda más en vaciarse? ¿Y el siguiente?<br>
@@ -716,22 +779,23 @@ Se tiene un depósito rectangular de base $a\times b = 30\times25\ \text{cm}$ co
         </div>
       </div>
     </div>
+  <div class="ex-nav">
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej4')">&#8592; Anterior</a>
+    <span style="font-size:.72em;color:var(--text3);font-family:'JetBrains Mono',monospace">5 / 8</span>
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej6')">Siguiente &#8594;</a>
   </div>
 </div>
-
-<!-- EJ6 -->
-<div class="ex-card open" id="ej6">
-  <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-header-left">
-      <h2>Ejercicio 6 · Bombeo con Hazen-Williams — Curva de instalación y punto de trabajo</h2>
-      <div class="ex-meta">Hazen-Williams · Curva del sistema · Hierro galvanizado · Punto de trabajo</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="ex-pct">15%</span><span class="ex-arrow">▼</span>
+<div class="ex-panel" id="panel-ej6" data-num="6">
+  <div class="ex-panel-header">
+    <div class="ex-panel-num">EJERCICIO 6 / 8</div>
+    <h2>Ejercicio 6 · Bombeo con Hazen-Williams — Curva de instalación y punto de trabajo</h2>
+    <div class="ex-panel-meta">Hazen-Williams · Curva del sistema · Hierro galvanizado · Punto de trabajo</div>
+    <div class="ex-panel-badges">
+      <span class="ex-badge ex-badge-pct">15%</span>
+      <span class="ex-badge ex-badge-solved">&#10003; Resuelto</span>
     </div>
   </div>
-  <div class="ex-body">
-    <div class="enunciado">
+  <div class="enunciado">
 Se quiere bombear agua desde un depósito inferior (cota $z_1 = -6\ \text{m}$) hasta otro depósito superior (cota $z_2 = +24\ \text{m}$), dando un desnivel total de $\Delta z = 30\ \text{m}$. La red de tuberías de hierro galvanizado ($C_{HW} = 120$) está compuesta por:<br>
 · Aspiración: $L_a = 15\ \text{m}$, $D_a = 150\ \text{mm}$<br>
 · Impulsión: $L_i = 50\ \text{m}$, $D_i = 125\ \text{mm}$<br><br>
@@ -739,6 +803,12 @@ Se quiere bombear agua desde un depósito inferior (cota $z_1 = -6\ \text{m}$) h
 <strong>b)</strong> Calcular la altura manométrica requerida en el punto de trabajo $Q_{PT} = 80\ \text{l/s}$.<br><br>
 <strong>Resultados:</strong> $H_m = 30 + 5{,}84\times10^{-3}\,Q^{1{,}852}$; $H_m(80\ \text{l/s}) \approx 49{,}5\ \text{m}$
     </div>
+
+    <div class="ex-figure">
+      <div class="ex-figure-label">&#128196; Figura original (PDF)</div>
+      <img src="img/mayo2024_p51_fig1.png" alt="Figura del enunciado original (PDF)">
+    </div>
+
     <div class="seccion s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
       <div class="sec-body">
@@ -821,22 +891,23 @@ Se quiere bombear agua desde un depósito inferior (cota $z_1 = -6\ \text{m}$) h
         </div>
       </div>
     </div>
+  <div class="ex-nav">
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej5')">&#8592; Anterior</a>
+    <span style="font-size:.72em;color:var(--text3);font-family:'JetBrains Mono',monospace">6 / 8</span>
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej7')">Siguiente &#8594;</a>
   </div>
 </div>
-
-<!-- EJ7 -->
-<div class="ex-card open" id="ej7">
-  <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-header-left">
-      <h2>Ejercicio 7 · Análisis dimensional de canales — Semejanza dinámica y canal semicircular</h2>
-      <div class="ex-meta">Buckingham · Grupos adimensionales · Semejanza Re+Fr · Manning semicircular</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="ex-pct">10%</span><span class="ex-arrow">▼</span>
+<div class="ex-panel" id="panel-ej7" data-num="7">
+  <div class="ex-panel-header">
+    <div class="ex-panel-num">EJERCICIO 7 / 8</div>
+    <h2>Ejercicio 7 · Análisis dimensional de canales — Semejanza dinámica y canal semicircular</h2>
+    <div class="ex-panel-meta">Buckingham · Grupos adimensionales · Semejanza Re+Fr · Manning semicircular</div>
+    <div class="ex-panel-badges">
+      <span class="ex-badge ex-badge-pct">10%</span>
+      <span class="ex-badge ex-badge-solved">&#10003; Resuelto</span>
     </div>
   </div>
-  <div class="ex-body">
-    <div class="enunciado">
+  <div class="enunciado">
 La velocidad media $v$ en un canal depende del diámetro hidráulico $D$, la viscosidad dinámica $\mu$, la densidad $\rho$, la gravedad $g$, el coeficiente de Manning $n_M$, la pendiente $J$ y la longitud $L$.<br><br>
 <strong>a)</strong> Aplicar el teorema $\Pi$ de Vaschy-Buckingham. Usando $\rho$, $g$, $D$ como variables repetitivas, obtener los grupos adimensionales del sistema.<br>
 <strong>b)</strong> Para un modelo con factor de escala $\lambda = D_m/D_p = 0{,}4675$ que usa agua como fluido: ¿se puede lograr semejanza dinámica absoluta (Reynolds y Froude simultáneos)? Razonar la respuesta.<br>
@@ -968,28 +1039,35 @@ La velocidad media $v$ en un canal depende del diámetro hidráulico $D$, la vis
         </div>
       </div>
     </div>
+  <div class="ex-nav">
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej6')">&#8592; Anterior</a>
+    <span style="font-size:.72em;color:var(--text3);font-family:'JetBrains Mono',monospace">7 / 8</span>
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej8')">Siguiente &#8594;</a>
   </div>
 </div>
-
-<!-- EJ8 -->
-<div class="ex-card open" id="ej8">
-  <div class="ex-header" onclick="toggleEx(this)">
-    <div class="ex-header-left">
-      <h2>Ejercicio 8 · Codo con manómetro diferencial — Caudal y longitud equivalente en flujo laminar</h2>
-      <div class="ex-meta">Hagen-Poiseuille · Darcy-Weisbach laminar · Manómetro en U · Longitud equivalente codo</div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="ex-pct">15%</span><span class="ex-arrow">▼</span>
+<div class="ex-panel" id="panel-ej8" data-num="8">
+  <div class="ex-panel-header">
+    <div class="ex-panel-num">EJERCICIO 8 / 8</div>
+    <h2>Ejercicio 8 · Codo con manómetro diferencial — Caudal y longitud equivalente en flujo laminar</h2>
+    <div class="ex-panel-meta">Hagen-Poiseuille · Darcy-Weisbach laminar · Manómetro en U · Longitud equivalente codo</div>
+    <div class="ex-panel-badges">
+      <span class="ex-badge ex-badge-pct">15%</span>
+      <span class="ex-badge ex-badge-solved">&#10003; Resuelto</span>
     </div>
   </div>
-  <div class="ex-body">
-    <div class="enunciado">
+  <div class="enunciado">
 Una tubería de $D = 20\ \text{mm}$ transporta un fluido de densidad relativa $s = 1{,}2$ y viscosidad $\mu = 7{,}2\times10^{-2}\ \text{Pl} = 0{,}072\ \text{Pa}\!\cdot\!\text{s}$ (Poiseuille = Pa·s). La tubería tiene un tramo recto de $L = 0{,}75\ \text{m}$ seguido de un codo de radio de curvatura $R = 30\ \text{cm}$ ($R/D = 15$). Un manómetro diferencial de mercurio ($s_m = 13{,}6$) con lectura $H = 10\ \text{cm}$ mide la diferencia de presión total entre los puntos de toma (antes del tramo recto y después del codo).<br><br>
 <strong>a)</strong> Calcular la diferencia de presión medida por el manómetro.<br>
 <strong>b)</strong> Calcular el caudal y verificar que el régimen es laminar.<br>
 <strong>c)</strong> Calcular la longitud equivalente del codo.<br><br>
 <strong>Resultados:</strong> $Q = 1{,}027\ \text{l/s}$; $Re = 1\,090$ (laminar); $L_{eq} = 47{,}95\ \text{mm}$; $K_\text{codo} = 0{,}141$
     </div>
+
+    <div class="ex-figure">
+      <div class="ex-figure-label">&#128196; Figura original (PDF)</div>
+      <img src="img/mayo2024_p52_fig1.png" alt="Figura del enunciado original (PDF)">
+    </div>
+
     <div class="seccion s-datos">
       <button class="sec-btn" onclick="toggleSec(this)"><span>📋 Datos</span><span class="sarr">▼</span></button>
       <div class="sec-body">
@@ -1092,16 +1170,52 @@ Una tubería de $D = 20\ \text{mm}$ transporta un fluido de densidad relativa $s
         </div>
       </div>
     </div>
+  <div class="ex-nav">
+    <a class="ex-nav-btn" href="#" onclick="return showPanel('panel-ej7')">&#8592; Anterior</a>
+    <span style="font-size:.72em;color:var(--text3);font-family:'JetBrains Mono',monospace">8 / 8</span>
+    <span class="ex-nav-btn disabled">Siguiente &#8594;</span>
   </div>
 </div>
+  </main>
+</div>
 
-</div><!-- /container -->
-<footer style="text-align:center;padding:24px;font-size:.75em;color:var(--text3);border-top:1px solid var(--border)">Mecánica de Fluidos · UPV/EHU · Curso 2025–26</footer>
 <script>
-function initKatex(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}
-function toggleEx(h){const c=h.closest('.ex-card');c.classList.toggle('open');}
-function toggleSec(b){b.closest('.seccion').classList.toggle('sec-open');}
-document.querySelectorAll('.ex-card:not(.open) .seccion').forEach(s=>s.classList.remove('sec-open'));
+
+const mainEl = document.querySelector('.main');
+mainEl.addEventListener('scroll', () => {{
+  const pct = (mainEl.scrollTop / (mainEl.scrollHeight - mainEl.clientHeight)) * 100;
+  document.getElementById('read-bar').style.width = pct + '%';
+}});
+
+function showPanel(panelId) {{
+  document.querySelectorAll('.ex-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(s => s.classList.remove('active'));
+  const panel = document.getElementById(panelId);
+  if (panel) {{ panel.classList.add('active'); mainEl.scrollTop = 0; }}
+  const cardId = panelId.replace('panel-', '');
+  const sbItem = document.getElementById('sb-' + cardId);
+  if (sbItem) sbItem.classList.add('active');
+  sessionStorage.setItem('panel-mayo2024', panelId);
+  return false;
+}}
+
+const _saved = sessionStorage.getItem('panel-mayo2024');
+if (_saved && document.getElementById(_saved)) showPanel(_saved);
+
+function toggleSec(b) {{
+  b.closest('.seccion').classList.toggle('sec-open');
+}}
+
+function initKatex() {{
+  renderMathInElement(document.body, {{
+    delimiters: [
+      {{left:'$$',right:'$$',display:true}},
+      {{left:'$',right:'$',display:false}}
+    ],
+    throwOnError: false
+  }});
+}}
+
 </script>
 </body>
 </html>
