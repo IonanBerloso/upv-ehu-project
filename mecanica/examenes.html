@@ -186,6 +186,18 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .cuatri-sep-line{flex:1;border:none;border-top:1px solid #2a1a00}
 .cuatri-sep-label{font-size:.7em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#5a3a00;white-space:nowrap}
 
+/* SECCIONES RESOLUCIÓN */
+.s-datos .sec-btn{background:#0a1a2e;color:var(--blue);border:1px solid #0d3a5e}
+.s-datos .sec-body{background:#060d18;border:1px solid #0d3a5e;border-top:none}
+.s-teoria .sec-btn{background:#1a0a30;color:var(--accent);border:1px solid #3b1f6e}
+.s-teoria .sec-body{background:#0d0821;border:1px solid #3b1f6e;border-top:none}
+.t-datos{width:100%;border-collapse:collapse;font-size:.85em}
+.t-datos td{padding:5px 8px;vertical-align:top}
+.t-datos td:first-child{color:var(--text3);white-space:nowrap;padding-right:14px;width:45%}
+.t-datos td:last-child{color:var(--text);font-weight:500}
+.formula-box{background:#0a0520;border:1px solid #2a1a4a;border-radius:6px;padding:10px 14px;margin:8px 0;text-align:center}
+.paso-text{font-size:.86em;line-height:1.8;color:#d0c8e8;margin:6px 0}
+
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:3px}
@@ -393,7 +405,69 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
           <li>Los parámetros \(a\), \(b\), \(c\).</li>
         </ol>
       </div>
-      <div class="soon">Resolución en preparación</div>
+
+      <!-- RESOLUCIÓN -->
+      <div class="seccion s-datos sec-open">
+        <button class="sec-btn" onclick="toggleSec(this)">📋 Datos del problema <span class="sarr">▼</span></button>
+        <div class="sec-body">
+          <table class="t-datos">
+            <tr><td>Momento en el origen</td><td>\(\vec{M}_O = 2\hat{k}\)</td></tr>
+            <tr><td>Punto del eje central</td><td>\(E(0;\,1;\,0)\) &nbsp;→&nbsp; \(\overrightarrow{OE} = \hat{j}\)</td></tr>
+            <tr><td>Condición especial</td><td>\(\vec{R} = \vec{M}_{\min}\)</td></tr>
+            <tr><td>Vectores del sistema</td><td>\(\vec{v}_1 = a\hat{i}+a\hat{j}+a\hat{k}\), &nbsp; \(\vec{v}_2 = b\hat{j}+c\hat{k}\)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="seccion s-teoria sec-open">
+        <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría aplicada <span class="sarr">▼</span></button>
+        <div class="sec-body">
+          <div class="formula-box">\[\vec{M}_E = \vec{M}_O - \overrightarrow{OE}\times\vec{R}\quad\text{(cambio de centro de reducción)}\]</div>
+          <p class="paso-text">En cualquier punto del <strong>eje central</strong> el momento es mínimo y colineal con \(\vec{R}\): \(\vec{M}_E = \vec{M}_{\min}\). Con la condición del enunciado \(\vec{R}=\vec{M}_{\min}\) se tiene directamente \(\vec{M}_E = \vec{R}\).</p>
+          <div class="formula-box">\[\tau = \vec{R}\cdot\vec{M}_O\quad\text{(invariante escalar)}\]</div>
+        </div>
+      </div>
+
+      <div class="seccion s-resolucion sec-open">
+        <button class="sec-btn" onclick="toggleSec(this)">🔍 Resolución <span class="sarr">▼</span></button>
+        <div class="sec-body">
+
+          <div class="paso">
+            <strong>Apartado a) — Resultante \(\vec{R}\)</strong>
+            <p class="paso-text">Como \(E\) pertenece al eje central, \(\vec{M}_E = \vec{R}\). Sustituyendo en el cambio de centro:</p>
+            \[\vec{R} = \vec{M}_O - \overrightarrow{OE}\times\vec{R}\]
+            <p class="paso-text">Sea \(\vec{R}=R_x\hat{i}+R_y\hat{j}+R_z\hat{k}\). Calculamos el producto vectorial con \(\overrightarrow{OE}=\hat{j}\):</p>
+            \[\overrightarrow{OE}\times\vec{R} = \begin{vmatrix}\hat{i}&\hat{j}&\hat{k}\\0&1&0\\R_x&R_y&R_z\end{vmatrix} = R_z\hat{i} - R_x\hat{k}\]
+            <p class="paso-text">Sustituyendo \(\vec{M}_O=2\hat{k}\):</p>
+            \[R_x\hat{i}+R_y\hat{j}+R_z\hat{k} = 2\hat{k}-(R_z\hat{i}-R_x\hat{k}) = -R_z\hat{i}+(2+R_x)\hat{k}\]
+            <p class="paso-text">Igualando componente a componente:</p>
+            \[\text{X: }R_x = -R_z \qquad \text{Y: }R_y = 0 \qquad \text{Z: }R_z = 2+R_x\]
+            <p class="paso-text">De X en Z: \(R_z=2-R_z \;\Rightarrow\; 2R_z=2 \;\Rightarrow\; \boxed{R_z=1,\;R_x=-1}\).</p>
+          </div>
+
+          <div class="paso">
+            <strong>Apartado a) — Invariante escalar \(\tau\)</strong>
+            \[\tau = \vec{R}\cdot\vec{M}_O = (-\hat{i}+\hat{k})\cdot(2\hat{k}) = (-1)(0)+(0)(0)+(1)(2) = \boxed{2}\]
+          </div>
+
+          <div class="paso">
+            <strong>Apartado b) — Parámetros \(a\), \(b\), \(c\)</strong>
+            <p class="paso-text">La resultante es la suma libre de los vectores:</p>
+            \[\vec{R}=\vec{v}_1+\vec{v}_2 = a\hat{i}+(a+b)\hat{j}+(a+c)\hat{k}\]
+            <p class="paso-text">Igualando con \(\vec{R}=-\hat{i}+\hat{k}\):</p>
+            \[a=-1 \qquad a+b=0\;\Rightarrow\; b=1 \qquad a+c=1\;\Rightarrow\; c=2\]
+          </div>
+
+          <div class="resultado-final">
+            <div class="rf-label">Resultados</div>
+            <div class="rf-val">
+              \(\vec{R} = -\hat{i}+\hat{k}\) &emsp;·&emsp; \(\tau = 2\) &emsp;·&emsp; \(a=-1,\;\; b=1,\;\; c=2\)
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1260,6 +1334,9 @@ function filterYear(year, btn){
 
 function toggleQ(id){
   document.getElementById(id).classList.toggle('open');
+}
+function toggleSec(btn){
+  btn.closest('.seccion').classList.toggle('sec-open');
 }
 
 document.addEventListener('click',function(e){
