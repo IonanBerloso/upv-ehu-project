@@ -1,457 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
-<title>Teoría · Sistemas de Producción y Fabricación · UPV/EHU</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+#!/usr/bin/env python3
+# inject_temas.py — Replaces T2/T3/T4 stubs in teoria.html with full content
 
+import re, pathlib
 
+FILE = pathlib.Path(__file__).parent / "teoria.html"
+html = FILE.read_text(encoding="utf-8")
 
-
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--surface3:#161616;
-  --border:#1a1a1a;--border2:#222222;
-  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --accent:#14b8a6;--accent2:#0d9488;
-  --gold:#f59e0b;--gold2:#fbbf24;
-  --green:#22c55e;--red:#f43f5e;
-  --orange:#fb923c;--blue:#38bdf8;--purple:#c084fc;
-  --radius:10px;--radius-sm:6px;
-  --transition:.22s cubic-bezier(.4,0,.2,1);
-}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
-b,strong{color:#f1f5f9;font-weight:600}
-
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#0f766e;border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:#14b8a6}
-
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
-.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
-.topbar-back:hover{color:var(--accent);text-decoration:none}
-.topbar-title{padding:0 20px;flex:1;font-size:.92em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbar-meta{padding:0 20px;font-size:.75em;color:var(--text3);white-space:nowrap;display:flex;gap:12px;align-items:center}
-.topbar-meta .chip{background:var(--surface2);border:1px solid var(--border2);color:var(--accent);padding:3px 10px;border-radius:20px;font-size:.85em;font-weight:600}
-
-/* NAV TABS */
-.nav-tabs{position:sticky;top:56px;z-index:190;background:rgba(0,0,0,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 16px;overflow-x:auto;display:flex;gap:2px;align-items:center;height:44px;white-space:nowrap}
-.nav-tabs::-webkit-scrollbar{height:2px}
-.nav-tab{display:inline-flex;align-items:center;padding:6px 14px;border-radius:var(--radius-sm);font-size:.78em;font-weight:500;color:var(--text3);cursor:pointer;transition:all var(--transition);user-select:none;flex-shrink:0}
-.nav-tab:hover{color:var(--text2);background:var(--surface2)}
-.nav-tab.active{color:var(--text);background:rgba(20,184,166,.1);border-bottom:2px solid var(--accent)}
-
-/* CONTENT */
-.content{max-width:900px;margin:0 auto;padding:20px 16px 60px}
-
-/* ACCORDION */
-.tema{margin-bottom:10px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.tema-trigger{display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--surface);cursor:pointer;user-select:none;transition:background var(--transition)}
-.tema-trigger:hover{background:var(--surface2)}
-.tema-trigger.open{background:var(--surface2)}
-.tema-tag{font-size:.68em;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(20,184,166,.12);color:var(--accent);border:1px solid rgba(20,184,166,.25);white-space:nowrap;letter-spacing:.3px}
-.tema-name{flex:1;font-size:.95em;font-weight:600;color:#f1f5f9}
-.tema-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:.75em;transition:transform var(--transition);flex-shrink:0}
-.tema-trigger.open .tema-icon{transform:rotate(90deg)}
-.tema-body{display:none;background:var(--bg);border-top:1px solid var(--border);padding:24px 24px 20px}
-.tema-body.open{display:block}
-
-/* SECTIONS */
-.section{margin-bottom:28px}
-.section:last-child{margin-bottom:0}
-.section-label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.section-label::before{content:'';display:block;width:3px;height:18px;background:var(--orange);border-radius:2px;flex-shrink:0}
-.section-label span{font-size:.76em;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--orange)}
-
-.prose{font-size:.9em;line-height:1.8;color:#cbd5e1}
-.prose p{margin-bottom:10px}
-.prose ul,.prose ol{padding-left:20px;margin-bottom:10px}
-.prose li{margin-bottom:5px}
-.prose li::marker{color:var(--text3)}
-
-/* FORMULA BLOCKS */
-.fblock{background:#080808;border:1px solid rgba(20,184,166,.25);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 16px;margin:10px 0;overflow-x:auto}
-.fblock .flabel{font-size:.68em;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(20,184,166,.7);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
-.fkey{background:rgba(20,184,166,.04);border:1px solid rgba(20,184,166,.2);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 16px;margin:10px 0}
-.fkey .flabel{font-size:.68em;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(20,184,166,.8);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
-
-/* INFO BOXES */
-.box{border-radius:var(--radius-sm);padding:14px 16px;margin:12px 0;font-size:.87em;line-height:1.7}
-.box .box-title{font-weight:700;font-size:.85em;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.box ul{padding-left:18px}
-.box li{margin-bottom:4px}
-.box.info{background:rgba(20,184,166,.06);border:1px solid rgba(20,184,166,.2);color:#99f6e4}
-.box.info .box-title{color:var(--accent)}
-.box.warn{background:rgba(251,146,60,.06);border:1px solid rgba(251,146,60,.2);color:#fed7aa}
-.box.warn .box-title{color:var(--orange)}
-.box.danger{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);color:#fecdd3}
-.box.danger .box-title{color:var(--red)}
-.box.note{background:var(--surface2);border:1px solid var(--border2);color:#94a3b8}
-.box.note .box-title{color:var(--accent)}
-
-/* TABLES */
-.table-wrap{overflow-x:auto;margin:12px 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;font-size:.83em}
-th{background:var(--surface2);color:var(--accent);padding:9px 14px;text-align:left;font-weight:600;font-size:.8em;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border2)}
-td{padding:8px 14px;border-bottom:1px solid rgba(30,45,66,.5);color:#cbd5e1;vertical-align:top}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,.02)}
-.td-accent{color:var(--accent);font-weight:600}
-.td-gold{color:var(--gold);font-weight:600}
-.td-green{color:var(--green)}
-
-/* TWO-COL GRID */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0}
-@media(max-width:640px){.grid2{grid-template-columns:1fr}}
-
-/* STEPS */
-.steps{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin:10px 0}
-.step{display:flex;gap:12px;padding:5px 0;font-size:.87em;color:#94a3b8;align-items:baseline}
-.step-n{min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border2);border-radius:50%;font-size:.75em;font-weight:700;color:var(--orange);flex-shrink:0}
-.step b{color:#e2e8f0}
-
-/* INLINE HIGHLIGHTS */
-.hi{color:var(--accent);font-weight:600}
-.hi-g{color:var(--green);font-weight:600}
-.hi-y{color:var(--gold);font-weight:600}
-.hi-r{color:var(--red);font-weight:600}
-.hi-b{color:var(--blue);font-weight:600}
-.hi-p{color:var(--purple);font-weight:600}
-
-code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--surface2);padding:1px 5px;border-radius:3px;color:#5eead4}
-
-/* BADGE */
-.badge{display:inline-block;font-size:.72em;font-weight:600;padding:2px 8px;border-radius:20px}
-.badge-green{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25)}
-.badge-orange{background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.25)}
-.badge-blue{background:rgba(56,189,248,.12);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
-
-/* PROGRESS BAR */
-.progress-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent2),var(--blue));z-index:999;transition:width .1s;width:0%}
-
-/* SOON PLACEHOLDER */
-.soon-block{text-align:center;padding:40px 20px;color:#333;font-size:.88em;font-style:italic;border:1px dashed #1a1a1a;border-radius:var(--radius-sm)}
-
-/* FOOTER */
-.footer{text-align:center;padding:40px 20px;color:var(--text3);font-size:.78em}
-
-@media(max-width:600px){.topbar-meta{display:none}.content{padding:16px 12px 40px}}
-</style>
-</head>
-<body>
-
-<div class="progress-bar" id="progress"></div>
-
-<!-- TOPBAR -->
-<div class="topbar">
-  <a class="topbar-back" href="../index.html">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
-    Inicio
-  </a>
-  <span class="topbar-title">🏭 Sistemas de Producción y Fabricación — Teoría</span>
-  <div class="topbar-meta">
-    <span class="chip">4 temas</span>
-    <span style="color:var(--text3)">G. Urbikain Pelayo · UPV/EHU</span>
-    <a href="ejercicios/t1.html" style="display:flex;align-items:center;gap:5px;color:var(--accent);font-size:.78em;font-weight:600;text-decoration:none;background:rgba(255,217,61,.08);border:1px solid rgba(255,217,61,.25);padding:3px 10px;border-radius:20px;transition:.15s" onmouseover="this.style.background='rgba(255,217,61,.18)'" onmouseout="this.style.background='rgba(255,217,61,.08)'">
-      <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M9.5 2a.5.5 0 0 1 0 1H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V5.5a.5.5 0 0 1 1 0V14a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h4.5z"/><path d="M9.5 0a.5.5 0 0 1 .5.5V4H6a.5.5 0 0 1 0-1h3V.5a.5.5 0 0 1 .5-.5z"/></svg>
-      Ejercicios
-    </a>
-  </div>
-</div>
-
-<!-- NAV TABS -->
-<div class="nav-tabs" id="navTabs">
-  <div class="nav-tab active" onclick="scrollToTema(0)">T1 Torneado</div>
-  <div class="nav-tab" onclick="scrollToTema(1)">T2 Fresado</div>
-  <div class="nav-tab" onclick="scrollToTema(2)">T3 Taladrado</div>
-  <div class="nav-tab" onclick="scrollToTema(3)">T4 CNC</div>
-</div>
-
-<div class="content">
-
-<!-- ═══════════════════════════════════════════════════════
-     TEMA 1 — TORNEADO (FUNDAMENTOS DE MECANIZADO)
-═══════════════════════════════════════════════════════ -->
-<div class="tema" id="tema0">
-  <div class="tema-trigger open" onclick="toggleTema(this)">
-    <span class="tema-tag">T1</span>
-    <span class="tema-name">Fundamentos de Mecanizado — Torneado</span>
-    <span class="tema-icon">▶</span>
-  </div>
-  <div class="tema-body open">
-
-    <!-- 1. INTRODUCCIÓN -->
-    <div class="section">
-      <div class="section-label"><span>1 · Introducción</span></div>
-      <div class="prose">
-        <p>El <b>torneado</b> es un proceso de fabricación por <b>arranque de viruta con herramienta definida</b>, típico para piezas de revolución. Combina dos movimientos:</p>
-        <ul>
-          <li><span class="hi">Movimiento de corte (principal):</span> rotación de la pieza</li>
-          <li><span class="hi-y">Movimiento de avance:</span> traslación de la herramienta</li>
-        </ul>
-      </div>
-
-      <div class="box note" style="margin-top:12px">
-        <div class="box-title">Clasificación de procesos de fabricación de piezas metálicas</div>
-        <div class="grid2">
-          <div>
-            <ul style="padding-left:16px;font-size:.85em;color:#94a3b8">
-              <li><b style="color:#e2e8f0">Fundición</b>: en arena, en molde permanente</li>
-              <li><b style="color:#e2e8f0">Sinterizado</b></li>
-              <li><b style="color:#e2e8f0">Deformación plástica</b>: forja, laminación, extrusión, conformado de chapa</li>
-            </ul>
-          </div>
-          <div>
-            <ul style="padding-left:16px;font-size:.85em;color:#94a3b8">
-              <li><b style="color:#e2e8f0">Arranque de viruta</b>: herramienta definida, abrasivos, no convencionales</li>
-              <li><b style="color:#e2e8f0">Soldadura</b>: arco eléctrico (MIG/TIG/SMAW), resistencia, fricción</li>
-              <li><b style="color:#e2e8f0">Aditivo (impresión 3D)</b>: SLM, DED, FDM, fotopolimerización</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. ELEMENTOS DEL TORNO -->
-    <div class="section">
-      <div class="section-label"><span>2 · Elementos del torno</span></div>
-      <div class="prose">
-        <p>La <b>cadena cinemática</b> de la herramienta en un torno paralelo usa los ejes <span class="hi">X</span> (transversal) y <span class="hi">Z</span> (longitudinal). En tornos CNC se añade el eje <span class="hi-y">Y</span> y el eje rotacional <span class="hi-y">C</span> (para fresar).</p>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Elemento</th><th>Función</th><th>Notas</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="td-accent">Bancada</td><td>Estructura base fija</td><td>Mecanosoldada o monolítica (fundición gris)</td></tr>
-            <tr><td class="td-accent">Cabezal principal / husillo</td><td>Sujeta y gira la pieza</td><td>Motor integrado (built-in); curvas T cte y P cte</td></tr>
-            <tr><td class="td-accent">Plato de garras (chuck)</td><td>Agarre de la pieza</td><td>Típico: 3 garras (Schunk©)</td></tr>
-            <tr><td class="td-accent">Contrapunto / cabezal móvil</td><td>Soporte del extremo libre</td><td>Tailstock; necesario para L > 1,5D</td></tr>
-            <tr><td class="td-accent">Carro principal (Z)</td><td>Avance longitudinal</td><td>Accionado por husillo de bolas + servomotor</td></tr>
-            <tr><td class="td-accent">Carro transversal (X)</td><td>Avance radial</td><td>Controla el diámetro mecanizado</td></tr>
-            <tr><td class="td-accent">Chariot</td><td>Orientación angular</td><td>Solo en torno paralelo; no existe en CNC</td></tr>
-            <tr><td class="td-accent">Torreta portaherramientas</td><td>Cambio automático de herramienta</td><td>Multiherramientas; en CNC puede ser motorizada</td></tr>
-            <tr><td class="td-accent">Husillo de bolas (ball-screw)</td><td>Convierte rotación en traslación</td><td>Alta precisión y rendimiento; baja fricción</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 3. HERRAMIENTAS DE CORTE -->
-    <div class="section">
-      <div class="section-label"><span>3 · Herramientas de corte</span></div>
-
-      <div class="prose">
-        <p>Los <b>materiales de herramienta</b> se seleccionan según el compromiso <b>dureza (resistencia al desgaste) vs. tenacidad</b>. A mayor dureza, menor tenacidad.</p>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Material</th><th>Densidad [g/cm³]</th><th>Dureza [HV]</th><th>Cond. Térmica [W/mK]</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="td-accent">Acero rápido (HSS)</td><td>7,8</td><td>700–750</td><td>40</td></tr>
-            <tr><td class="td-accent">Metal duro (CW)</td><td>11–15</td><td>1 500–3 000</td><td>120</td></tr>
-            <tr><td class="td-accent">Cermet</td><td>—</td><td>~2 000</td><td>—</td></tr>
-            <tr><td class="td-accent">Cerámicas</td><td>3–4</td><td>4 000–4 500</td><td>30–100</td></tr>
-            <tr><td class="td-accent">CBN (Nitruro Boro Cúbico)</td><td>2,5–3,4</td><td>6 000</td><td>800–1 300</td></tr>
-            <tr><td class="td-accent">Diamante (PCD)</td><td>3,5</td><td>7 000</td><td>2 100</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="box info" style="margin-top:14px">
-        <div class="box-title">Fabricación placas de metal duro (CW)</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div>Polvo de carburos (WC + Co + Ti, Ta, Nb…) preparado para prensar</div></div>
-          <div class="step"><div class="step-n">2</div><div>Prensado en forma de placa</div></div>
-          <div class="step"><div class="step-n">3</div><div>Sinterizado: 8 h a 1 200–2 200 °C (reducción de volumen ~50%)</div></div>
-          <div class="step"><div class="step-n">4</div><div>Acabado + aplicación de recubrimientos (CVD/PVD) + control de calidad</div></div>
-        </div>
-      </div>
-
-      <div class="prose" style="margin-top:14px">
-        <p><b>Ángulos de la placa:</b> ángulo de posición \(\kappa_r\) (influye en distribución de fuerzas radial/axial), radio de placa \(r_\varepsilon\) (influye en rugosidad), ángulo de desprendimiento \(\gamma\) (positivo facilita corte, negativo da tenacidad).</p>
-        <p><b>Recubrimientos:</b> multicapa CVD/PVD — <span class="hi">TiN</span> (mejora dureza y reduce fricción) + <span class="hi">Al₂O₃</span> (barrera térmica) + <span class="hi">TiCN</span> (retrasa desgaste de incidencia). El verdadero posicionamiento de la placa lo da el portaherramientas (<em>cadena de rigidez</em>).</p>
-      </div>
-
-      <div class="box warn">
-        <div class="box-title">Desgaste de herramienta (tool wear) — Criterios ISO 3685:1993</div>
-        <ul>
-          <li><b>VB = 0,3 mm</b> → desgaste de flanco uniforme (criterio principal)</li>
-          <li><b>VB<sub>max</sub> = 0,6 mm</b> → desgaste no uniforme</li>
-          <li><b>KT = 0,06 + 0,3·f</b> → desgaste de cráter (f = avance en mm/rev)</li>
-        </ul>
-      </div>
-
-      <div class="fkey">
-        <div class="flabel">Ley de Taylor — Vida de herramienta</div>
-        \[ v_c \cdot T^n = C = \text{cte} \]
-        <div class="prose" style="margin-top:8px;font-size:.85em">
-          <ul>
-            <li>\(T\) — vida de herramienta (min); \(v_c\) — velocidad de corte (m/min)</li>
-            <li>Exponente \(n\): HSS 0,1–0,2 · Metal duro 0,2–0,5 · Cerámica 0,5–0,7</li>
-            <li><em>Mayor \(v_c\) → mayor temperatura → mayor desgaste → menor vida \(T\)</em></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="prose">
-        <p><b>Criterios de selección de placa (Sandvik Coromant):</b> 1) Elegir tipo de herramienta y denominación ISO (forma: R, S, C, W, T, D, V) según operación (desbaste/acabado). 2) Tabla f–a<sub>p</sub> para valores recomendados. 3) Tabla materiales vs. v<sub>c</sub> para interpolar velocidad. Verificar condición de potencia.</p>
-      </div>
-    </div>
-
-    <!-- 4. MATERIALES DE PIEZA -->
-    <div class="section">
-      <div class="section-label"><span>4 · Materiales de pieza</span></div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Grupo ISO</th><th>Material</th><th>Características de mecanizado</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><span class="badge badge-blue">P</span></td><td>Aceros (no inoxidables)</td><td>Viruta larga; más común; ps media</td></tr>
-            <tr><td><span class="badge badge-orange">M</span></td><td>Aceros inoxidables</td><td>Endurecimiento por deformación; ps media-alta</td></tr>
-            <tr><td><span style="color:#ef4444;font-weight:700">K</span></td><td>Fundición de acero</td><td>Viruta corta; ps baja</td></tr>
-            <tr><td><span class="badge badge-green">N</span></td><td>Aleaciones no férricas (Al, Cu…)</td><td>Muy blanda; ps muy baja; riesgo BUE</td></tr>
-            <tr><td><span style="color:#f59e0b;font-weight:700">S</span></td><td>Aleaciones termorresistentes (Inconel, Ti…)</td><td>Muy difícil; ps muy alta; baja conductividad</td></tr>
-            <tr><td><span style="color:#64748b;font-weight:700">H</span></td><td>Aceros templados (>45 HRC)</td><td>Durísimo; requiere CBN/cerámica</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="box note">
-        <div class="box-title">Maquinabilidad</div>
-        La <b>maquinabilidad</b> cuantifica la facilidad de mecanizado. Depende del material y del proceso. Se mide por la <b>fuerza específica de corte \(p_s\) [N/mm²]</b>: alta en H/S, media en P/M, baja en K/N.
-      </div>
-    </div>
-
-    <!-- 5. OPERACIONES -->
-    <div class="section">
-      <div class="section-label"><span>5 · Operaciones</span></div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Operación</th><th>Descripción</th><th>Movimiento</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="td-accent">Cilindrado exterior/interior</td><td>Reduce/amplía diámetro. Operación más común</td><td>Avance en Z (paralelo al eje)</td></tr>
-            <tr><td class="td-accent">Refrentado (face turning)</td><td>Genera superficie plana perpendicular al eje</td><td>Avance en X (radial)</td></tr>
-            <tr><td class="td-accent">Torneado cónico</td><td>Genera forma cónica con chariot girado ángulo α</td><td>Avance diagonal</td></tr>
-            <tr><td class="td-accent">Ranurado (grooving)</td><td>Ranura en la pieza. Herramienta lama</td><td>Plunge en X; prof. máx &lt; 8·l<sub>a</sub></td></tr>
-            <tr><td class="td-accent">Tronzado (parting)</td><td>Separar pieza del tocho</td><td>Plunge en X hasta centro</td></tr>
-            <tr><td class="td-accent">Roscado (threading)</td><td>Genera rosca sincronizando N y v<sub>f</sub></td><td>Avance en Z sincronizado</td></tr>
-            <tr><td class="td-accent">Perfilado (profile turning)</td><td>Superficies libres en plano XZ</td><td>Movimiento combinado X+Z; placas D, V</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 7. MÁQUINAS -->
-    <div class="section">
-      <div class="section-label"><span>7 · Máquinas</span></div>
-      <div class="table-wrap" style="overflow-x:auto">
-        <table>
-          <thead>
-            <tr><th>Tipo</th><th>CN</th><th>Potencia</th><th>N máx.</th><th>Pieza</th><th>Tirada</th><th>Precisión</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="td-accent">Torno paralelo</td><td>No</td><td>5 kW</td><td>2 000 rpm</td><td>Pequeña</td><td>Pieza única</td><td>Escasa</td></tr>
-            <tr><td class="td-accent">Multitasking (CNC)</td><td>Sí</td><td>15 kW</td><td>5 000 rpm</td><td>Pequeña–media</td><td>Media–grande</td><td>Excelente</td></tr>
-            <tr><td class="td-accent">Automático</td><td>Sí</td><td>5 kW</td><td>10 000 rpm</td><td>Pequeña</td><td>Muy grande</td><td>Excelente</td></tr>
-            <tr><td class="td-accent">Gran torno vertical (V)</td><td>Sí</td><td>>75 kW</td><td>500 rpm</td><td>Gran D (>5 m)</td><td>Pocas</td><td>Muy buena</td></tr>
-            <tr><td class="td-accent">Gran torno horizontal (H)</td><td>Sí</td><td>>75 kW</td><td>500 rpm</td><td>Gran L</td><td>Pocas</td><td>Muy buena</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="prose" style="margin-top:10px;font-size:.85em;color:#64748b">
-        <p>Tornos verticales: piezas aeronáuticas (discos, carcasas, anillos), eólico, >100 kW, Ø>5 m, 50–100 Tn. Empresas: BOST, Pietro Carnaghi, Starrag.</p>
-        <p>Tornos horizontales: Oil &amp; Gas (tubos), ejes marinos, cigüeñales, >100 kW, Ø 3 m, 100–200 Tn. Empresas: GURUTZPE, GEMINIS.</p>
-      </div>
-    </div>
-
-    <!-- 8. CÁLCULOS -->
-    <div class="section">
-      <div class="section-label"><span>8 · Cálculos</span></div>
-
-      <div class="fkey">
-        <div class="flabel">Parámetros de corte</div>
-        \[ v_c = \frac{\pi \cdot D \cdot N}{1000} \quad \text{[m/min]} \]
-        \[ v_f = f \cdot N \quad \text{[mm/min]} \]
-        \[ t_c = \frac{L_w}{v_f} \quad \text{[min]} \]
-        <div class="prose" style="margin-top:6px;font-size:.85em">
-          \(v_c\) velocidad de corte · \(D\) diámetro pieza [mm] · \(N\) revoluciones [rpm] ·
-          \(f\) avance [mm/rev] · \(v_f\) velocidad de avance [mm/min] · \(L_w\) longitud a mecanizar [mm]
-        </div>
-      </div>
-
-      <div class="fkey" style="margin-top:10px">
-        <div class="flabel">Parámetros de viruta (chip parameters)</div>
-        \[ h = f \cdot \sin\kappa_r \quad \text{(espesor viruta, mm)} \]
-        \[ b = \frac{a_p}{\sin\kappa_r} \quad \text{(longitud de corte, mm)} \]
-        \[ S_c = h \cdot b = f \cdot a_p \quad \text{(sección viruta, mm}^2\text{)} \]
-        <div class="prose" style="margin-top:6px;font-size:.85em">
-          \(a_p\) profundidad de corte [mm] · \(\kappa_r\) ángulo de posición de la placa
-        </div>
-      </div>
-
-      <div class="fkey" style="margin-top:10px">
-        <div class="flabel">Fuerza y potencia de corte</div>
-        \[ F_c = S_c \cdot p_s \quad \text{[N]} \]
-        \[ P_c = \frac{F_c \cdot v_c}{60\,000} \quad \text{[kW]} \]
-        <div class="prose" style="margin-top:6px;font-size:.85em">
-          \(p_s\) fuerza específica de corte [N/mm²] (depende del material) ·
-          En torneado hay 3 componentes: \(F_t\) (tangencial), \(F_a\) (axial/avance), \(F_r\) (radial/pasiva)
-        </div>
-      </div>
-
-      <div class="box info" style="margin-top:14px">
-        <div class="box-title">Procedimiento Sandvik para selección de parámetros</div>
-        <div class="steps">
-          <div class="step"><div class="step-n">1</div><div><b>Tipo de herramienta:</b> elegir geometría adecuada a la operación (desbaste/semi/acabado). Anotar denominación ISO y calidad (4 dígitos).</div></div>
-          <div class="step"><div class="step-n">2</div><div><b>Tabla f–a<sub>p</sub></b> (tabla en gris): apuntar valores recomendados. Puede corregirse a<sub>p</sub> según operación.</div></div>
-          <div class="step"><div class="step-n">3</div><div><b>Tabla materiales vs. v<sub>c</sub>:</b> interpolar para obtener v<sub>c</sub> adaptada al avance f. Comprobar condición de potencia.</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 9. AMARRES -->
-    <div class="section">
-      <div class="section-label"><span>9 · Amarres de pieza</span></div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Tipo de amarre</th><th>Condición L/D</th><th>Características</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="td-accent">Al aire (plato solo)</td><td>L &lt; 1,5D</td><td>Más simple; deflexión: \(\delta = PL^3/3EI\)</td></tr>
-            <tr><td class="td-accent">Plato + punto (contrapunto)</td><td>1,5D &lt; L &lt; 10D</td><td>Reduce deflexión; cuidado con dilatación térmica</td></tr>
-            <tr><td class="td-accent">Entre puntos</td><td>Piezas largas</td><td>Máxima rigidez axial; requiere taladro de centrado</td></tr>
-            <tr><td class="td-accent">Lunetas (steady rests)</td><td>L &lt; 12D</td><td>Soporte intermedio; fija o seguidor (con pieza)</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div><!-- /tema-body T1 -->
-</div><!-- /tema T1 -->
-
+# ─────────────────────────────────────────────────────────────────────────────
+T2 = """\
 <!-- ═══════════════════════════════════════════════════════
      TEMA 2 — FRESADO
 ═══════════════════════════════════════════════════════ -->
@@ -665,7 +221,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
 
       <div class="box note" style="margin-top:12px">
         <div class="box-title">Influencia del radio de esquina r<sub>ε</sub></div>
-        En fresas con radio de punta \(r_arepsilon\) (torique o ball nose), la rugosidad real se reduce notablemente respecto a la fórmula teórica. Un mayor \(r_arepsilon\) produce mejor acabado. Para fresas de punta esférica en superficies inclinadas, la rugosidad también depende del <b>step-over</b> lateral.
+        En fresas con radio de punta \(r_\varepsilon\) (torique o ball nose), la rugosidad real se reduce notablemente respecto a la fórmula teórica. Un mayor \(r_\varepsilon\) produce mejor acabado. Para fresas de punta esférica en superficies inclinadas, la rugosidad también depende del <b>step-over</b> lateral.
       </div>
     </div>
 
@@ -755,8 +311,10 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
     </div>
 
   </div><!-- /tema-body T2 -->
-</div><!-- /tema T2 -->
+</div><!-- /tema T2 -->"""
 
+# ─────────────────────────────────────────────────────────────────────────────
+T3 = """\
 <!-- ═══════════════════════════════════════════════════════
      TEMA 3 — TALADRADO
 ═══════════════════════════════════════════════════════ -->
@@ -890,7 +448,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
 
       <div class="fkey" style="margin-top:10px">
         <div class="flabel">Tiempo de mecanizado</div>
-        \[ L_{herr} = \frac{D/2}{	an\kappa_r} = \frac{D}{2	an\kappa_r} \quad \text{(punta broca, mm)} \]
+        \[ L_{herr} = \frac{D/2}{\tan\kappa_r} = \frac{D}{2\tan\kappa_r} \quad \text{(punta broca, mm)} \]
         \[ t_c^{pasante} = \frac{L_w + L_{herr}}{v_f} \quad t_c^{ciego} = \frac{L_{ciego}}{v_f} \quad \text{[min]} \]
         <div class="prose" style="margin-top:6px;font-size:.85em">
           \(L_w\) — espesor de la pieza [mm] · \(L_{herr}\) — longitud de la punta cónica de la broca (corrección geométrica) · \(\kappa_r = \frac{2\kappa_r}{2}\) — semángulo de punta
@@ -940,8 +498,10 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
     </div>
 
   </div><!-- /tema-body T3 -->
-</div><!-- /tema T3 -->
+</div><!-- /tema T3 -->"""
 
+# ─────────────────────────────────────────────────────────────────────────────
+T4 = """\
 <!-- ═══════════════════════════════════════════════════════
      TEMA 4 — CONTROL NUMÉRICO (CNC)
 ═══════════════════════════════════════════════════════ -->
@@ -1165,56 +725,35 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
     </div>
 
   </div><!-- /tema-body T4 -->
-</div><!-- /tema T4 -->
+</div><!-- /tema T4 -->"""
 
-</div><!-- /content -->
+# ─────────────────────────────────────────────────────────────────────────────
+# Replace T2 stub
+old_t2_start = """<!-- ═══════════════════════════════════════════════════════
+     TEMA 2 — FRESADO
+═══════════════════════════════════════════════════════ -->"""
+old_t2_end = """</div><!-- /tema T2 -->"""
 
-<div class="footer">Sistemas de Producción y Fabricación · G. Urbikain Pelayo · UPV/EHU · Curso 2025–26</div>
+old_t3_start = """<!-- ═══════════════════════════════════════════════════════
+     TEMA 3 — TALADRADO
+═══════════════════════════════════════════════════════ -->"""
+old_t3_end = """</div><!-- /tema T3 -->"""
 
-<script>
-// Progress bar
-window.addEventListener('scroll',function(){
-  var d=document.documentElement,h=d.scrollHeight-d.clientHeight,p=h>0?(d.scrollTop/h*100):0;
-  document.getElementById('progress').style.width=p+'%';
-});
+old_t4_start = """<!-- ═══════════════════════════════════════════════════════
+     TEMA 4 — CONTROL NUMÉRICO (CNC)
+═══════════════════════════════════════════════════════ -->"""
+old_t4_end = """</div><!-- /tema T4 -->"""
 
-// Accordion
-function toggleTema(trigger){
-  var body=trigger.nextElementSibling;
-  var isOpen=body.classList.contains('open');
-  // close all
-  document.querySelectorAll('.tema-body.open').forEach(function(b){b.classList.remove('open');});
-  document.querySelectorAll('.tema-trigger.open').forEach(function(t){t.classList.remove('open');});
-  if(!isOpen){body.classList.add('open');trigger.classList.add('open');}
-}
+def replace_block(text, start_marker, end_marker, replacement):
+    s = text.find(start_marker)
+    e = text.find(end_marker, s) + len(end_marker)
+    if s == -1 or e == -1:
+        raise ValueError(f"Marker not found: {start_marker[:40]!r}")
+    return text[:s] + replacement + text[e:]
 
-// Nav tabs
-var temas=document.querySelectorAll('.tema');
-var tabs=document.querySelectorAll('.nav-tab');
-function scrollToTema(i){
-  var el=document.getElementById('tema'+i);
-  if(!el)return;
-  // open it
-  var trigger=el.querySelector('.tema-trigger');
-  var body=el.querySelector('.tema-body');
-  document.querySelectorAll('.tema-body.open').forEach(function(b){b.classList.remove('open');});
-  document.querySelectorAll('.tema-trigger.open').forEach(function(t){t.classList.remove('open');});
-  body.classList.add('open');trigger.classList.add('open');
-  setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},50);
-  tabs.forEach(function(t){t.classList.remove('active');});
-  tabs[i].classList.add('active');
-}
+html = replace_block(html, old_t2_start, old_t2_end, T2)
+html = replace_block(html, old_t3_start, old_t3_end, T3)
+html = replace_block(html, old_t4_start, old_t4_end, T4)
 
-// Highlight active tab on scroll
-window.addEventListener('scroll',function(){
-  var scrollY=window.scrollY+120;
-  temas.forEach(function(t,i){
-    if(t.offsetTop<=scrollY){
-      tabs.forEach(function(tab){tab.classList.remove('active');});
-      if(tabs[i])tabs[i].classList.add('active');
-    }
-  });
-},{passive:true});
-</script>
-</body>
-</html>
+FILE.write_text(html, encoding="utf-8")
+print(f"Done. Written {len(html)} chars to {FILE}")

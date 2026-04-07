@@ -11,34 +11,8 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 
 <!-- ── AUTH ── -->
-<style>
-#auth-overlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center}
-#auth-box{background:#0d0d0d;border:1px solid #222;border-radius:14px;padding:40px 36px;width:320px;max-width:90vw;text-align:center}
-#auth-box h2{font-size:1.1em;color:#e2e8f0;margin-bottom:6px;font-weight:600}
-#auth-box p{font-size:.8em;color:#64748b;margin-bottom:24px}
-#auth-input{width:100%;padding:12px 16px;border-radius:8px;background:#161616;border:1px solid #333;color:#e2e8f0;font-size:1em;outline:none;text-align:center;letter-spacing:.1em}
-#auth-input:focus{border-color:#c084fc}
-#auth-btn{margin-top:14px;width:100%;padding:12px;border-radius:8px;background:#c084fc;color:#000;font-weight:700;font-size:.95em;border:none;cursor:pointer}
-#auth-btn:hover{background:#d4a0ff}
-#auth-error{margin-top:10px;color:#f43f5e;font-size:.8em;min-height:18px}
-#auth-logo{font-size:2em;margin-bottom:12px}
-</style>
-<script>
-(function(){
-  var HASH='52ed4a155ae39b8857d52e3c253776c0d5ab7245274be771b1ce0da1e2f02f58';
-  var KEY='upv_auth_mecanica';
-  async function sha256(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
-  function inject(){
-    var o=document.createElement('div');o.id='auth-overlay';
-    o.innerHTML='<div id="auth-box"><div id="auth-logo">⚙️</div><h2>Mecánica Aplicada</h2><p>Introduce la contraseña</p><input id="auth-input" type="password" placeholder="Contraseña" autocomplete="current-password"><button id="auth-btn">Entrar</button><div id="auth-error"></div></div>';
-    document.body.appendChild(o);
-    var inp=document.getElementById('auth-input'),btn=document.getElementById('auth-btn'),err=document.getElementById('auth-error');
-    async function attempt(){var h=await sha256(inp.value);if(h===HASH){sessionStorage.setItem(KEY,HASH);o.style.transition='opacity .3s';o.style.opacity='0';setTimeout(function(){o.remove();},320);}else{err.textContent='Contraseña incorrecta';inp.value='';inp.focus();setTimeout(function(){err.textContent='';},2000);}}
-    btn.addEventListener('click',attempt);inp.addEventListener('keydown',function(e){if(e.key==='Enter')attempt();});inp.focus();
-  }
-  if(sessionStorage.getItem(KEY)!==HASH){if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',inject);}else{inject();}}
-})();
-</script>
+
+
 
 <style>
 /* ── SCREEN STYLES ── */
