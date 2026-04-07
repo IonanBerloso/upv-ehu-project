@@ -1,179 +1,201 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#000000" name="theme-color"/>
 <title>T4 CNC - Ejercicios - Sistemas UPV/EHU</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-
-
-
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
-  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --accent:#ffd93d;--gold:#f59e0b;--green:#6bcb77;--blue:#7ecfff;--orange:#f4a261;--yellow:#ffd93d;
-  --transition:.2s;
+  --bg:#131313;
+  --surface:rgba(255,255,255,.04);
+  --surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#ffd93d;
+  --accent-dim:rgba(255,217,61,.10);
+  --accent-border:rgba(255,217,61,.25);
+  --gold:#f59e0b;
+  --gold-dim:rgba(245,158,11,.09);
+  --gold-border:rgba(245,158,11,.28);
+  --green:#10b981;
+  --blue:#38bdf8;
+  --orange:#fb923c;
+  --ff:'Space Grotesk',system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;
+  --radius-sm:6px;
+  --topbar-h:52px;
+  --sidebar-w:264px;
+  --transition:.22s cubic-bezier(.4,0,.2,1);
 }
 html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
-.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:var(--topbar-h)}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
 .topbar-back:hover{color:var(--accent);text-decoration:none}
-.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbar-pill{margin-right:20px;background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);white-space:nowrap}
+.topbar-back svg{transition:transform var(--transition)}
+.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* PAGE HEADER */
-.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
-.ph-type{display:inline-block;background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
-.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
-.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
-.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
-
-/* JUMP LINKS */
-.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
-.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
-.jump-link:hover{background:#1a1400;color:var(--accent);border-color:var(--accent);text-decoration:none}
-.jump-link-exam{background:#1a0f00;border-color:#854d0e;color:#fbbf24}
-.jump-link-exam:hover{background:#2a1a00;color:#fde68a;border-color:#f59e0b}
-
-/* CONTAINER */
-.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
-
-/* EX CARDS */
-.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
-.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
-.ex-header:hover{background:#111}
-.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
-.ex-meta{font-size:.78em;color:var(--text3)}
-.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
-.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
-.ex-body{display:none;padding:0 20px 20px}
-.ex-card.open .ex-body{display:block}
-
-/* ENUNCIADO */
-.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #222}
-
-/* SECCIONES */
-.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
-.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
-.sec-btn .sarr{transition:.2s}
-.sec-open .sec-btn .sarr{transform:rotate(180deg)}
-.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
-.sec-open .sec-body{display:block}
-.s-datos .sec-btn{background:#1a1400;color:var(--accent);border:1px solid #5c4200}
-.s-datos .sec-body{background:#0a0a0a;border:1px solid #5c4200;border-top:none}
-.s-pide .sec-btn{background:#0a1a2e;color:var(--blue);border:1px solid #0d2a44}
-.s-pide .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
-
-/* TABLAS */
-.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
-.t-datos th{background:#2a2000;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #5c4200}
-.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#e0d8a0}
-.t-datos tr:nth-child(even) td{background:#0a0a0a}
-
-/* PRÓXIMAMENTE */
-.soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:20px;text-align:center;color:#333;font-size:.85em;font-style:italic}
-
-/* RESOLUCIÓN */
-.resolucion{background:#030f07;border:1px solid #1a4a20;border-radius:8px;padding:14px 16px;margin-top:10px}
-.resolucion h3{color:#6bcb77;font-size:.82em;font-weight:700;margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #1a4a20;padding-bottom:7px}
-.resolucion h4{color:#a8e6b0;font-size:.82em;font-weight:600;margin:12px 0 4px}
-.res-formula{display:block;padding:6px 10px;background:#050f07;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82em;color:#a8e6b0;margin:4px 0 8px;white-space:pre-wrap;border-left:2px solid #1a6a30;line-height:1.8}
-.res-note{color:#64748b;font-size:.82em;font-style:italic;margin:4px 0 8px}
-.res-warn{color:#fbbf24;font-size:.83em;background:#0d0800;border:1px solid #3a2a00;border-radius:4px;padding:6px 10px;margin:6px 0;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
-.res-ok{color:#6bcb77;font-size:.84em;font-weight:600}
-.res-code{display:block;padding:10px 12px;background:#020a04;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.78em;color:#7dd87d;margin:6px 0;white-space:pre;line-height:1.65;overflow-x:auto;border:1px solid #0e3318}
-
-/* RESULTADO */
-.resultado-enunciado{background:#051a08;border:1px solid #1a4a20;border-radius:6px;padding:8px 14px;font-size:.83em;color:#8ecf94;margin-top:8px;border-left:3px solid #2a8a30}
-.res-label{font-weight:700;color:#aeedb4}
-
-/* NIVEL EXAMEN */
-.ex-card-exam{border-color:#854d0e}
-.ex-card-exam .ex-header:hover{background:#1a0f00}
-.ex-card-exam .ex-header-left h2{color:#fbbf24}
-.ex-card-exam.open .ex-arrow{color:#fbbf24}
-.exam-badge{display:inline-flex;align-items:center;gap:5px;background:#1a0f00;border:1px solid #854d0e;border-radius:20px;padding:3px 10px;font-size:.7em;font-weight:700;color:#fbbf24;margin-left:10px;vertical-align:middle;letter-spacing:.03em}
-
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#5c4200;border-radius:3px}
-
-/* TEMA PICKER */
-.tema-picker{position:relative;margin-right:20px}
-.tema-picker-btn{background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:4px 14px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s}
-.tema-picker-btn:hover{background:#261d00}
-.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:#0d0d0d;border:1px solid #3a2d00;border-radius:10px;padding:6px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+/* ── TEMA PICKER ── */
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-picker-btn:hover{background:rgba(255,217,61,.18)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:200px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
 .tema-picker.open .tema-dropdown{display:block}
-.td-item{display:block;padding:8px 12px;border-radius:6px;font-size:.8em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500}
-.td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:#1a1400;color:var(--accent)}
-.td-item.td-active{color:var(--accent);background:#1a1400;font-weight:700;pointer-events:none}
-.td-num{display:inline-block;width:24px;font-weight:700}
-.td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
-@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover,.td-item.td-available:hover{background:var(--accent-dim);color:var(--accent);text-decoration:none}
+.td-item.td-active,.td-item.td-available.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
+
+/* ── READING PROGRESS ── */
+.read-progress{position:fixed;top:var(--topbar-h);left:var(--sidebar-w);right:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--accent),var(--orange));transform-origin:left;transform:scaleX(0);transition:transform .08s linear}
+
+/* ── LAYOUT ── */
+.layout{display:flex;padding-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h))}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:var(--topbar-h);left:0;bottom:0;background:rgba(255,255,255,.025);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{width:100%;display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.78em;cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-item-exam{border-color:rgba(245,158,11,.15);color:var(--gold)}
+.sb-item-exam:hover{background:var(--gold-dim);color:var(--gold)}
+.sb-item-exam.active{background:var(--gold-dim);color:var(--gold);border-color:var(--gold-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:36px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-yellow{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.sb-link-yellow:hover{background:rgba(255,217,61,.18);text-decoration:none}
+
+/* ── CONTENT ── */
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
+
+/* ── TOPIC PANEL ── */
+.topic-panel{display:none;max-width:860px}
+.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PANEL HEADER ── */
+.panel-header{margin-bottom:22px;padding:14px 18px 16px;background:linear-gradient(135deg,var(--accent-dim) 0%,transparent 60%);border:1px solid rgba(255,217,61,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-title{font-size:1.25em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.exam-badge{display:inline-flex;align-items:center;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:20px;padding:2px 9px;font-size:.65em;font-weight:700;color:var(--gold);margin-left:8px;vertical-align:middle}
+
+/* ── ENUNCIADO ── */
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:12px;border-left:3px solid var(--accent-border)}
+
+/* ── RESULTADO ENUNCIADO ── */
+.resultado-enunciado{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-radius:var(--radius-sm);padding:8px 14px;font-size:.83em;color:#a7f3d0;margin-bottom:14px;border-left:3px solid rgba(16,185,129,.4)}
+.res-label{font-weight:700;color:#6ee7b7}
+
+/* ── SECTIONS ── */
+.section-wrap{margin-bottom:12px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.2);border-top:none}
+
+/* ── RESOLUTION CONTENT ── */
+.resolucion h3{display:none}
+.resolucion h4{color:var(--accent);font-size:.83em;font-weight:700;margin:12px 0 5px;letter-spacing:.04em}
+.resolucion p{margin-bottom:8px;font-size:.87em;color:var(--text2)}
+.res-formula{display:block;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:4px;font-family:var(--ff-mono);font-size:.79em;color:#e2e8f0;margin:4px 0 10px;white-space:pre-wrap;border-left:2px solid rgba(255,217,61,.3);line-height:1.8}
+.res-code{display:block;padding:10px 12px;background:#020a04;border-radius:6px;font-family:var(--ff-mono);font-size:.78em;color:#7dd87d;margin:6px 0;white-space:pre;line-height:1.65;overflow-x:auto;border:1px solid #0e3318}
+.res-note{color:#64748b;font-size:.82em;font-style:italic;margin:4px 0 8px}
+.res-warn{color:#fbbf24;font-size:.83em;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:4px;padding:6px 10px;margin:6px 0;white-space:pre-wrap;font-family:var(--ff-mono)}
+.res-ok{color:#10b981;font-size:.84em;font-weight:600}
+
 /* ── FIGURAS PDF ── */
-.fig-plano{background:#fff;border-radius:8px;padding:10px 12px;margin:14px 0 6px;text-align:center;border:1px solid #2a2a2a}
+.fig-plano{background:#fff;border-radius:8px;padding:10px 12px;margin:10px 0 14px;text-align:center;border:1px solid rgba(255,255,255,.12)}
 .fig-plano img{max-width:100%;height:auto;border-radius:4px;display:block;margin:0 auto}
 .fig-plano+.fig-plano{margin-top:4px}
+
+/* ── SOON ── */
+.soon{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:20px;text-align:center;color:var(--text3);font-size:.85em;font-style:italic}
+
+/* ── TABLES (inline tables in exercise content) ── */
+table th[style*="ffd93d"],table th[style*="FFD93D"]{background:var(--accent-dim)!important;color:var(--accent)!important;border-color:var(--accent-border)!important}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(255,217,61,.15);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,217,61,.3)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:20px 16px 40px}
+  .sb-list{max-height:200px}
+  .read-progress{left:0}
+}
 </style>
 </head>
 <body>
-
-<nav class="topbar">
-  <a class="topbar-back" href="../teoria.html">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Teor&iacute;a
-  </a>
-  <span class="topbar-title">&#127981; T4 &middot; CNC &mdash; Ejercicios</span>
-  <div class="tema-picker" id="temaPicker">
-    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T4 &#9662;</button>
-    <div class="tema-dropdown"><a class="td-item td-available" href="t1.html"><span class="td-num">T1</span> Torneado</a><a class="td-item td-available" href="t2.html"><span class="td-num">T2</span> Fresado</a><a class="td-item td-available" href="t3.html"><span class="td-num">T3</span> Taladrado</a><span class="td-item td-active"><span class="td-num">T4</span> CNC</span></div>
-  </div>
-</nav>
-
-<div class="page-header">
-  <div class="ph-type">Ejercicios Propuestos</div>
-  <h1>T4 &middot; Control Num&eacute;rico (CNC)</h1>
-  <div class="ph-meta">Sistemas de Producci&oacute;n y Fabricaci&oacute;n &middot; Curso 2025&ndash;26 &middot; UPV/EHU</div>
-  <div class="ph-tags"><span class="ph-tag">Programación CNC</span><span class="ph-tag">Interpolación circular</span><span class="ph-tag">Ciclos fijos</span><span class="ph-tag">Torneado</span><span class="ph-tag">Fresado</span><span class="ph-tag">13 ejercicios</span></div>
+<nav class="topbar"><a class="topbar-back" href="../teoria.html"><svg fill="none" height="16" viewbox="0 0 16 16" width="16"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a><span class="topbar-title">⚙️ Sistemas · T4 · CNC — Ejercicios</span><div class="tema-picker" id="temaPicker"><button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T4 ▾</button><div class="tema-dropdown"><a class="td-item" href="t1.html"><span class="td-num">T1</span> Torneado</a><a class="td-item" href="t2.html"><span class="td-num">T2</span> Fresado</a><a class="td-item" href="t3.html"><span class="td-num">T3</span> Taladrado</a><a class="td-item td-active" href="t4.html"><span class="td-num">T4</span> CNC</a></div></div></nav><div class="read-progress" id="readProgress"></div><div class="layout"><aside class="sidebar"><div class="sb-head"><div class="sb-subtitle">T4 · Control Numérico</div><div class="sb-current" id="sbCurrent">Torneado CNC — eje D57→M30×1,5, taladro D10</div></div>
+<div class="sb-list">
+<button class="sb-item" data-id="ex1" onclick="showEx('ex1')"><span class="sb-tag">T4.P1</span><span class="sb-name">Torneado CNC — eje D57→M30×1,5, taladro D10</span></button>
+<button class="sb-item" data-id="ex2" onclick="showEx('ex2')"><span class="sb-tag">T4.P2</span><span class="sb-name">Fresado CNC — ranuras curvas 120×70×18 mm</span></button>
+<button class="sb-item" data-id="ex3" onclick="showEx('ex3')"><span class="sb-tag">T4.P3</span><span class="sb-name">Fresado+taladrado — brida cuadrada Ø80 (100×100×35)</span></button>
+<button class="sb-item" data-id="ex4" onclick="showEx('ex4')"><span class="sb-tag">T4.P4</span><span class="sb-name">Fresado — brida circular D100, ranuras radiales</span></button>
+<button class="sb-item" data-id="ex5" onclick="showEx('ex5')"><span class="sb-tag">T4.P5</span><span class="sb-name">Fresado — placa grande 160×160×55 mm</span></button>
+<button class="sb-item" data-id="ex6" onclick="showEx('ex6')"><span class="sb-tag">T4.P6</span><span class="sb-name">Fresado — pieza con cruz y agujeros (65×65×25)</span></button>
+<button class="sb-item" data-id="ex7" onclick="showEx('ex7')"><span class="sb-tag">T4.P7</span><span class="sb-name">Fresado — pieza mixta cajeras+slot (100×100×30)</span></button>
+<button class="sb-item" data-id="ex8" onclick="showEx('ex8')"><span class="sb-tag">T4.P8</span><span class="sb-name">Fresado — pieza hexagonal con oval (55×45×25)</span></button>
+<button class="sb-item" data-id="ex9" onclick="showEx('ex9')"><span class="sb-tag">T4.P9</span><span class="sb-name">Fresado — pieza esquinas redondeadas R10 (66×66×25)</span></button>
+<button class="sb-item" data-id="ex10" onclick="showEx('ex10')"><span class="sb-tag">T4.P10</span><span class="sb-name">Fresado — cajera anidada compleja (100×100×25)</span></button>
+<button class="sb-item" data-id="ex11" onclick="showEx('ex11')"><span class="sb-tag">T4.P11</span><span class="sb-name">Fresado — cajera cuadrada R8 + patrón agujeros (86×86×35)</span></button>
+<button class="sb-item" data-id="ex12" onclick="showEx('ex12')"><span class="sb-tag">T4.P12</span><span class="sb-name">Fresado — disco cilíndrico D80 con contorneado tangencial</span></button>
+<button class="sb-item" data-id="ex13" onclick="showEx('ex13')"><span class="sb-tag">T4.P13</span><span class="sb-name">Fresado — pieza con patrón pétalos 80×80×30 (entrada tangenc…</span></button>
 </div>
-<div class="jump-links"><a class="jump-link" href="#ex1">T4.P1 &middot; Torneado eje D57</a><a class="jump-link" href="#ex2">T4.P2 &middot; Ranuras curvas 120&times;70</a><a class="jump-link" href="#ex3">T4.P3 &middot; Brida &Oslash;80 (100&times;100)</a><a class="jump-link" href="#ex4">T4.P4 &middot; Brida D100 ranuras</a><a class="jump-link" href="#ex5">T4.P5 &middot; Placa 160&times;160 PCDs</a><a class="jump-link" href="#ex6">T4.P6 &middot; Cruz 65&times;65</a><a class="jump-link" href="#ex7">T4.P7 &middot; Cajeras+slot 100&times;100</a><a class="jump-link" href="#ex8">T4.P8 &middot; Hexagonal oval 55&times;45</a><a class="jump-link" href="#ex9">T4.P9 &middot; Esquinas R10 66&times;66</a><a class="jump-link" href="#ex10">T4.P10 &middot; Cajera anidada 100&times;100</a><a class="jump-link" href="#ex11">T4.P11 &middot; Cajera R8 86&times;86</a><a class="jump-link" href="#ex12">T4.P12 &middot; Disco D80 tangencial</a><a class="jump-link" href="#ex13">T4.P13 &middot; P&eacute;talos 80&times;80 tangencial</a></div>
-<div class="container">
-
-<div class="ex-card" id="ex1">
-  <div class="ex-header" onclick="toggleEx('ex1')">
-    <div class="ex-header-left">
-      <h2>T4.P1 &middot; Torneado CNC &mdash; eje D57&rarr;M30&times;1,5, taladro D10</h2>
-      <div class="ex-meta">v<sub>c</sub>, N, f, ciclos de torneado, roscado G76, tronzado</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Eje con &Oslash;57, &Oslash;50, &Oslash;40, &Oslash;25, &Oslash;10, M30&times;1,5 y chaflanes 1,5&times;45&deg;. Dimensiones de partida: <b>D60 &times; L100 mm</b>.</p>
-<p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Torneado desbaste: v<sub>c</sub>=180 m/min; f=0,3 mm/rev</li><li>Torneado acabado: v<sub>c</sub>=180 m/min; f=0,3 mm/rev</li><li>Ranurado (b=2,2 mm): S=650 rpm; f=0,15 mm/rev</li><li>Taladrado D10: v<sub>c</sub>=120 m/min; f=0,1 mm/rev</li><li>Roscado M30&times;1,5</li><li>Tronzado: S=300 rpm; Z=2; f=0,1 mm/rev</li></ul>
+<div class="sb-footer"><a class="sb-link sb-link-yellow" href="../teoria.html"><svg fill="none" height="13" viewbox="0 0 16 16" width="13"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a></div></aside><main class="content"><div class="topic-panel" id="ex1">
+<div class="panel-header">
+<div class="panel-tag">T4.P1</div>
+<h1 class="panel-title">Torneado CNC — eje D57→M30×1,5, taladro D10</h1>
+<div class="panel-meta">v<sub>c</sub>, N, f, ciclos de torneado, roscado G76, tronzado</div>
 </div>
-    <div class="fig-plano"><img src="img/t4/p01_a.png" alt="p01_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Programa CNC — Torneado eje (Fanuc 0i)</h3>
-      <h4>Parámetros de corte</h4>
-      <span class="res-formula">Desbaste/Acabado: G96 S180 (CSS vc=180 m/min); F0,3
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Eje con Ø57, Ø50, Ø40, Ø25, Ø10, M30×1,5 y chaflanes 1,5×45°. Dimensiones de partida: <b>D60 × L100 mm</b>.</p>
+<p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Torneado desbaste: v<sub>c</sub>=180 m/min; f=0,3 mm/rev</li><li>Torneado acabado: v<sub>c</sub>=180 m/min; f=0,3 mm/rev</li><li>Ranurado (b=2,2 mm): S=650 rpm; f=0,15 mm/rev</li><li>Taladrado D10: v<sub>c</sub>=120 m/min; f=0,1 mm/rev</li><li>Roscado M30×1,5</li><li>Tronzado: S=300 rpm; Z=2; f=0,1 mm/rev</li></ul>
+</div>
+<div class="fig-plano"><img alt="p01_a" loading="lazy" src="img/t4/p01_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Programa CNC — Torneado eje (Fanuc 0i) <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Programa CNC — Torneado eje (Fanuc 0i)</h3>
+<h4>Parámetros de corte</h4>
+<span class="res-formula">Desbaste/Acabado: G96 S180 (CSS vc=180 m/min); F0,3
 Ranurado:  G97 S650; F0,15
 Taladrado: G97 S3820 (vc=120→N=120000/(π×10)=3820 rpm); F0,1
 Tronzado:  G97 S300; F0,1
 Roscado M30×1,5: G76 (paso=1,5 mm; fondo rosca ≈ Ø29,05 mm)</span>
-      <p class="res-note">Coordenadas Z negativas desde la cara frontal. Ajustar longitudes de tramos según el plano de la pieza.</p>
-      <span class="res-code">O0001 (EJE D57 M30X1.5 - TORNEADO CNC)
+<p class="res-note">Coordenadas Z negativas desde la cara frontal. Ajustar longitudes de tramos según el plano de la pieza.</p>
+<span class="res-code">O0001 (EJE D57 M30X1.5 - TORNEADO CNC)
 ;
 ; === T01 - DESBASTE (vc=180, f=0.3) ===
 N10  G28 U0 W0
@@ -214,7 +236,7 @@ N340 G80
 N400 T0404
 N410 G97 S650 M03
 N420 G00 X34. Z-LZran           ; posicion ranura (salida rosca)
-N430 G01 X27. F0.15             ; bajar hasta fondo ranura (D27 < D30)
+N430 G01 X27. F0.15             ; bajar hasta fondo ranura (D27 &lt; D30)
 N440 G04 P200                   ; dwell 0.2s (plano de fondo)
 N450 G01 X34. F0.3              ; retroceso rapido
 ;
@@ -234,36 +256,34 @@ N620 G00 X62. Z-99.             ; posicion tronzado (L total-1mm)
 N630 G01 X0. F0.1               ; tronzado hasta eje
 N640 G00 X80. Z100.
 N650 M05 M09 M30</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex2">
-  <div class="ex-header" onclick="toggleEx('ex2')">
-    <div class="ex-header-left">
-      <h2>T4.P2 &middot; Fresado CNC &mdash; ranuras curvas 120&times;70&times;18 mm</h2>
-      <div class="ex-meta">Interpolaci&oacute;n circular &middot; Planeado &middot; Fresado de ranuras sinusoidales</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Placa con dos ranuras sinusoidales (R12,5/R18,5/R11,5). Planeado de 5 mm por una cara. Dimensiones de partida: <b>120 &times; 70 &times; 18 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex2">
+<div class="panel-header">
+<div class="panel-tag">T4.P2</div>
+<h1 class="panel-title">Fresado CNC — ranuras curvas 120×70×18 mm</h1>
+<div class="panel-meta">Interpolación circular · Planeado · Fresado de ranuras sinusoidales</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Placa con dos ranuras sinusoidales (R12,5/R18,5/R11,5). Planeado de 5 mm por una cara. Dimensiones de partida: <b>120 × 70 × 18 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D8: v<sub>c</sub>=180 m/min; Z=2; f<sub>z</sub>=0,05 mm/Z/rev; L=45 mm</li><li>Fresa D20: v<sub>c</sub>=100 m/min; Z=6; f<sub>z</sub>=0,1 mm/Z/rev; L=60 mm</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p02_a.png" alt="p02_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Programa CNC — Ranuras curvas (Fanuc 0i)</h3>
-      <h4>Parámetros de corte</h4>
-      <span class="res-formula">Fresa D8  (ranuras): N = 180.000/(π×8)  = 7.162 rpm; vf = 7162×2×0,05 = 716 mm/min
+<div class="fig-plano"><img alt="p02_a" loading="lazy" src="img/t4/p02_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Programa CNC — Ranuras curvas (Fanuc 0i) <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Programa CNC — Ranuras curvas (Fanuc 0i)</h3>
+<h4>Parámetros de corte</h4>
+<span class="res-formula">Fresa D8  (ranuras): N = 180.000/(π×8)  = 7.162 rpm; vf = 7162×2×0,05 = 716 mm/min
 Fresa D20 (planeado): N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min</span>
-      <h4>Técnica clave: interpolación circular G2/G3</h4>
-      <p>Para una ranura con arcos de radio R, la sintaxis es:</p>
-      <span class="res-formula">G2 X_fin Y_fin R_radio F_avance   ; arco horario  (CW)
+<h4>Técnica clave: interpolación circular G2/G3</h4>
+<p>Para una ranura con arcos de radio R, la sintaxis es:</p>
+<span class="res-formula">G2 X_fin Y_fin R_radio F_avance   ; arco horario  (CW)
 G3 X_fin Y_fin R_radio F_avance   ; arco antihor. (CCW)
 ; alternativa con I,J (incrementales desde inicio hasta centro):
 G2 X_fin Y_fin I_incX J_incY F_avance</span>
-      <span class="res-code">O0002 (RANURAS CURVAS 120x70x18)
+<span class="res-code">O0002 (RANURAS CURVAS 120x70x18)
 ;
 ; === T01 - PLANEADO (fresa D20) ===
 T01 M06
@@ -300,32 +320,30 @@ G01 Z-8. F100
 ; (repetir estructura de arcos)
 ;
 G00 Z100. M05 M09 M30</span>
-      <p class="res-note">Las coordenadas exactas de X/Y requieren calcular los centros de arco desde el plano de la pieza.</p>
-    </div>
-  </div>
+<p class="res-note">Las coordenadas exactas de X/Y requieren calcular los centros de arco desde el plano de la pieza.</p>
 </div>
-<div class="ex-card" id="ex3">
-  <div class="ex-header" onclick="toggleEx('ex3')">
-    <div class="ex-header-left">
-      <h2>T4.P3 &middot; Fresado+taladrado &mdash; brida cuadrada &Oslash;80 (100&times;100&times;35)</h2>
-      <div class="ex-meta">Planeado &middot; Contorneado circular &middot; Ciclo de taladrado G81 &middot; Cajera rectangular</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Brida circular &Oslash;80 sobre base cuadrada, con taladros &Oslash;8,5 en PCD &Oslash;60 y cajera cuadrada interior 40&times;R5. Solo taladrado (sin roscado ni avellanado superior). Dimensiones de partida: <b>100 &times; 100 &times; 35 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex3">
+<div class="panel-header">
+<div class="panel-tag">T4.P3</div>
+<h1 class="panel-title">Fresado+taladrado — brida cuadrada Ø80 (100×100×35)</h1>
+<div class="panel-meta">Planeado · Contorneado circular · Ciclo de taladrado G81 · Cajera rectangular</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Brida circular Ø80 sobre base cuadrada, con taladros Ø8,5 en PCD Ø60 y cajera cuadrada interior 40×R5. Solo taladrado (sin roscado ni avellanado superior). Dimensiones de partida: <b>100 × 100 × 35 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D20: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm</li><li>Fresa D8: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm</li><li>Broca D8,5: v<sub>c</sub>=25 m/min; Z=2; f=0,1 mm/rev; L=60 mm</li></ul>
-<p style="font-size:.82em;color:#6b7280;font-style:italic">&iquest;C&oacute;mo realizar&iacute;as el avellanado/chafl&aacute;n de 1,5&times;45&deg;?</p></div>
-    <div class="fig-plano"><img src="img/t4/p03_a.png" alt="p03_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Programa CNC — Brida cuadrada Ø80 (Fanuc 0i)</h3>
-      <h4>Parámetros de corte</h4>
-      <span class="res-formula">Fresa D20 (planeado/contorno): N = 150.000/(π×20) = 2.387 rpm; vf = 2387×6×0,2 = 2.864 mm/min
+<p style="font-size:.82em;color:#6b7280;font-style:italic">¿Cómo realizarías el avellanado/chaflán de 1,5×45°?</p></div>
+<div class="fig-plano"><img alt="p03_a" loading="lazy" src="img/t4/p03_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Programa CNC — Brida cuadrada Ø80 (Fanuc 0i) <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Programa CNC — Brida cuadrada Ø80 (Fanuc 0i)</h3>
+<h4>Parámetros de corte</h4>
+<span class="res-formula">Fresa D20 (planeado/contorno): N = 150.000/(π×20) = 2.387 rpm; vf = 2387×6×0,2 = 2.864 mm/min
 Fresa D8  (cajera 40×R5):    N = 200.000/(π×8)  = 7.958 rpm; vf = 7958×3×0,1 = 2.387 mm/min
 Broca D8,5 (taladros PCD):   N = 25.000/(π×8,5)  = 936 rpm;  vf = 936×0,1 = 93,6 mm/min</span>
-      <span class="res-code">O0003 (BRIDA CUADRADA 100x100x35 - FRESADO)
+<span class="res-code">O0003 (BRIDA CUADRADA 100x100x35 - FRESADO)
 ; G54: origen en centro superior de la pieza, Z0 en cara planeada
 ;
 ; === T01 - PLANEADO (fresa D20, ap=5mm) ===
@@ -336,68 +354,31 @@ G97 S2387 M03 M08
 G01 Z-5. F200                  ; primera pasada planeado
 G01 X60. F2864
 G00 Z5.
-; (mas pasadas paralelas si D<ancho pieza)
-;
-; === T01 - CONTORNO CIRCULAR Ø80 ===
-; Entrada tangencial al circulo Ø80 (R=40) desde fuera
-G00 X0. Y-55.                   ; punto de entrada exterior
-G01 Z-Zcontorno F200            ; descender a profundidad contorno
-G02 X0. Y-40. I0. J15. F2864    ; arco 1/4 entrando tangencialmente (R15)
-G02 I0. J40.                    ; circulo completo Ø80 (I=-0, J=40)
-G02 X0. Y-55. I0. J-15.         ; arco 1/4 salida tangencial
-G01 Z5.
-;
-; === T02 - CAJERA 40x40 R5 ===
-T02 M06 (fresa D8)
-G43 Z5. H02
-G97 S7958 M03
-G00 X-15. Y0.                   ; inicio cajera (dentro)
-G01 Z-Zcajera F100              ; descender
-; Contorno cajera: rect. 40x40 con R5 en esquinas
-G01 X-15. Y-15. F2387
-G01 X15. Y-15.
-G01 X15. Y15.
-G01 X-15. Y15.
-G01 X-15. Y-15.
-; (mejorar con radios R5 en esquinas usando G2/G3)
-G00 Z5.
-;
-; === T03 - TALADRADO G81 (4 agujeros Ø8,5 en PCD Ø60) ===
-T03 M06 (broca D8.5)
-G43 Z5. H03
-G97 S936 M03
-G81 X30. Y0. Z-38. R2. F93.6   ; agujero a 0°   (R=30)
-X0. Y30.                        ; agujero a 90°
-X-30. Y0.                       ; agujero a 180°
-X0. Y-30.                       ; agujero a 270°
-G80                             ; cancelar ciclo fijo
-;
-G00 Z100. M05 M09 M30</span>
-      <p class="res-note">Para el chaflán 1,5×45° en los taladros: usar avellanador (ángulo 90°) en un ciclo G82 o G81 a la profundidad adecuada. Profundidades Z exactas según cota del plano.</p>
-    </div>
-  </div>
+; (mas pasadas paralelas si D<ancho (4="" (broca="" (dentro)="" (fresa="" (i="-0," (mejorar="" (r="30)" (r15)="" -="" 0°="" 1="" 180°="" 270°="" 4="" 40x40="" 90°="" ;="" a="" agujero="" agujeros="" al="" arco="" cajera="" cajera:="" cancelar="" ciclo="" circular="" circulo="" completo="" con="" contorno="" d8)="" d8.5)="" de="" descender="" desde="" en="" entrada="" entrando="" esquinas="" exterior="" f100="" f200="" f2387="" f2864="" f93.6="" fijo="" fuera="" g00="" g01="" g02="" g2="" g3)="" g43="" g80="" g81="" g97="" h02="" h03="" i0.="" inicio="" j="40)" j-15.="" j15.="" j40.="" m03="" m05="" m06="" m09="" m30<="" pcd="" pieza)="" profundidad="" punto="" r2.="" r5="" radios="" rect.="" s7958="" s936="" salida="" span="" taladrado="" tangencial="" tangencialmente="" usando="" x-15.="" x-30.="" x0.="" x15.="" x30.="" y-15.="" y-30.="" y-40.="" y-55.="" y0.="" y15.="" y30.="" z-38.="" z-zcajera="" z-zcontorno="" z100.="" z5.="" ø60)="T03" ø8,5="" ø80="">
+<p class="res-note">Para el chaflán 1,5×45° en los taladros: usar avellanador (ángulo 90°) en un ciclo G82 o G81 a la profundidad adecuada. Profundidades Z exactas según cota del plano.</p>
+</ancho></span>
 </div>
-<div class="ex-card" id="ex4">
-  <div class="ex-header" onclick="toggleEx('ex4')">
-    <div class="ex-header-left">
-      <h2>T4.P4 &middot; Fresado &mdash; brida circular D100, ranuras radiales</h2>
-      <div class="ex-meta">Planeado &middot; Ranuras radiales tipo T &middot; Patr&oacute;n PCD &middot; Cajera central</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Disco cil&iacute;ndrico con ranuras radiales tipo T, 6 agujeros en PCD y cajera central &Oslash;80/R30. Planeado de 5 mm. Dimensiones de partida: <b>D100 &times; 25 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex4">
+<div class="panel-header">
+<div class="panel-tag">T4.P4</div>
+<h1 class="panel-title">Fresado — brida circular D100, ranuras radiales</h1>
+<div class="panel-meta">Planeado · Ranuras radiales tipo T · Patrón PCD · Cajera central</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Disco cilíndrico con ranuras radiales tipo T, 6 agujeros en PCD y cajera central Ø80/R30. Planeado de 5 mm. Dimensiones de partida: <b>D100 × 25 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D30: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm</li><li>Fresa D8: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm</li><li>Brocas: definir a conveniencia</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p04_a.png" alt="p04_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">Fresa D30 (planeado/cajera): N = 150.000/(π×30) = 1.592 rpm; vf = 1592×6×0,2 = 1.911 mm/min
+<div class="fig-plano"><img alt="p04_a" loading="lazy" src="img/t4/p04_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">Fresa D30 (planeado/cajera): N = 150.000/(π×30) = 1.592 rpm; vf = 1592×6×0,2 = 1.911 mm/min
 Fresa D8  (ranuras radiales): N = 200.000/(π×8)  = 7.958 rpm; vf = 7958×3×0,1 = 2.387 mm/min</span>
-      <h4>Técnica: patrón angular de ranuras radiales</h4>
-      <span class="res-code">; Ranuras radiales en patron angular (ej. 6 ranuras c/60°)
+<h4>Técnica: patrón angular de ranuras radiales</h4>
+<span class="res-code">; Ranuras radiales en patron angular (ej. 6 ranuras c/60°)
 ; Usar G68 (rotacion de sistema de coordenadas) o calcular XY de cada ranura
 ;
 ; Opcion A: G68 (rotacion)
@@ -416,33 +397,31 @@ G01 Z-Zcajera F100
 G41 D01 G01 X0. Y-30. F1911  ; compensacion radio herramienta
 G02 I0. J30.              ; circulo
 G40 G01 X0. Y0.</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex5">
-  <div class="ex-header" onclick="toggleEx('ex5')">
-    <div class="ex-header-left">
-      <h2>T4.P5 &middot; Fresado &mdash; placa grande 160&times;160&times;55 mm</h2>
-      <div class="ex-meta">Patr&oacute;n circular de agujeros &middot; M&uacute;ltiples PCDs &middot; Cajeras</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Placa cuadrada con patr&oacute;n circular de agujeros en varias PCDs (&Oslash;100, &Oslash;60, &Oslash;8); cajeras y taladros de distintos di&aacute;metros. Planeado de 5 mm. Dimensiones de partida: <b>160 &times; 160 &times; 55 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex5">
+<div class="panel-header">
+<div class="panel-tag">T4.P5</div>
+<h1 class="panel-title">Fresado — placa grande 160×160×55 mm</h1>
+<div class="panel-meta">Patrón circular de agujeros · Múltiples PCDs · Cajeras</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Placa cuadrada con patrón circular de agujeros en varias PCDs (Ø100, Ø60, Ø8); cajeras y taladros de distintos diámetros. Planeado de 5 mm. Dimensiones de partida: <b>160 × 160 × 55 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D20: v<sub>c</sub>=100 m/min; Z=6; f<sub>z</sub>=0,1 mm/Z/rev; L=60 mm</li><li>Fresa D14: v<sub>c</sub>=180 m/min; Z=4; f<sub>z</sub>=0,05 mm/Z/rev; L=40 mm</li><li>Broca D8: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,05 mm/rev; L=70 mm</li><li>Broca D12: v<sub>c</sub>=22 m/min; Z=2; f<sub>z</sub>=0,05 mm/rev; L=65 mm</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p05_a.png" alt="p05_a" loading="lazy"></div>
-    <div class="fig-plano"><img src="img/t4/p05_b.png" alt="p05_b" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">Fresa D20 (planeado):   N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min
+<div class="fig-plano"><img alt="p05_a" loading="lazy" src="img/t4/p05_a.png"/></div>
+<div class="fig-plano"><img alt="p05_b" loading="lazy" src="img/t4/p05_b.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">Fresa D20 (planeado):   N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min
 Fresa D14 (cajeras/PCDs): N = 180.000/(π×14) = 4.093 rpm; vf = 4093×4×0,05 = 819 mm/min
 Broca D8  (agujeros): N = 25.000/(π×8)   = 995 rpm;  vf = 995×0,05 = 49,8 mm/min
 Broca D12 (agujeros): N = 22.000/(π×12)  = 584 rpm;  vf = 584×0,05 = 29,2 mm/min</span>
-      <h4>Técnica: patrón circular de agujeros (G81 + G68 o coordenadas)</h4>
-      <span class="res-code">; PCD Ø100 (R=50) con N agujeros cada 360/N grados:
+<h4>Técnica: patrón circular de agujeros (G81 + G68 o coordenadas)</h4>
+<span class="res-code">; PCD Ø100 (R=50) con N agujeros cada 360/N grados:
 ; Calcular cada posicion: X=R*cos(ang), Y=R*sin(ang)
 G81 R2. Z-Ztaladro F49.8
 X50.  Y0.                 ; 0°
@@ -453,31 +432,29 @@ X-25. Y-43.3              ; 240°
 X25.  Y-43.3              ; 300°
 G80
 ; PCD Ø60 (R=30) similar con sus angulos propios</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex6">
-  <div class="ex-header" onclick="toggleEx('ex6')">
-    <div class="ex-header-left">
-      <h2>T4.P6 &middot; Fresado &mdash; pieza con cruz y agujeros (65&times;65&times;25)</h2>
-      <div class="ex-meta">Forma en cruz &middot; Contorneado &middot; Agujero central &middot; Patr&oacute;n de esquinas</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Base cuadrada 65&times;65 con forma en cruz de brazos R15/R8, agujero central &Oslash;12, y 4 agujeros &Oslash;7 en esquinas. Planeado de 5 mm. Dimensiones de partida: <b>65 &times; 65 &times; 25 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex6">
+<div class="panel-header">
+<div class="panel-tag">T4.P6</div>
+<h1 class="panel-title">Fresado — pieza con cruz y agujeros (65×65×25)</h1>
+<div class="panel-meta">Forma en cruz · Contorneado · Agujero central · Patrón de esquinas</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Base cuadrada 65×65 con forma en cruz de brazos R15/R8, agujero central Ø12, y 4 agujeros Ø7 en esquinas. Planeado de 5 mm. Dimensiones de partida: <b>65 × 65 × 25 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D25: v<sub>c</sub>=200 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev</li><li>Fresa D6: v<sub>c</sub>=100 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev</li><li>Broca D7: v<sub>c</sub>=30 m/min; Z=2; f=0,1 mm/rev</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p06_a.png" alt="p06_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">Fresa D25 (planeado/contorno cruz): N = 200.000/(π×25) = 2.546 rpm; vf = 2546×6×0,2 = 3.056 mm/min
+<div class="fig-plano"><img alt="p06_a" loading="lazy" src="img/t4/p06_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">Fresa D25 (planeado/contorno cruz): N = 200.000/(π×25) = 2.546 rpm; vf = 2546×6×0,2 = 3.056 mm/min
 Fresa D6  (contorno interior/ranura): N = 100.000/(π×6) = 5.305 rpm; vf = 5305×3×0,1 = 1.592 mm/min
 Broca D7  (4 agujeros esquinas): N = 30.000/(π×7) = 1.364 rpm; vf = 1364×0,1 = 136 mm/min</span>
-      <h4>Técnica: contorno en forma de cruz (alternar G1 y G2/G3 para radios de entalle)</h4>
-      <span class="res-code">; Cruz con brazos R15 (convexo exterior) y R8 (concavo interior)
+<h4>Técnica: contorno en forma de cruz (alternar G1 y G2/G3 para radios de entalle)</h4>
+<span class="res-code">; Cruz con brazos R15 (convexo exterior) y R8 (concavo interior)
 ; Perfil exterior en 4 brazos: cada brazo = G01 recto + G03 arco R8 en esquina
 ; Entrar al contorno tangencialmente
 G00 X... Y...            ; punto de entrada exterior
@@ -490,32 +467,30 @@ G01 X... Y...            ; siguiente recto
 G40 G01 ...              ; desactivar compensacion
 ; Agujero central Ø12: G81 X0 Y0 Z-Prof R2 F136 (broca D7 o cambiar a broca D12)
 ; Agujeros Ø7 en esquinas (x=±a, y=±a): G81 en 4 posiciones</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex7">
-  <div class="ex-header" onclick="toggleEx('ex7')">
-    <div class="ex-header-left">
-      <h2>T4.P7 &middot; Fresado &mdash; pieza mixta cajeras+slot (100&times;100&times;30)</h2>
-      <div class="ex-meta">Cajeras circulares en esquinas &middot; Cajera rectangular central &middot; Chaflanes 4,5&deg;</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> 4 cajeras circulares &Oslash;25 en las esquinas, cajera rectangular central 30, agujero central &Oslash;10 y chaflanes 4,5&deg;. Planeado de 5 mm. Dimensiones de partida: <b>100 &times; 100 &times; 30 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex7">
+<div class="panel-header">
+<div class="panel-tag">T4.P7</div>
+<h1 class="panel-title">Fresado — pieza mixta cajeras+slot (100×100×30)</h1>
+<div class="panel-meta">Cajeras circulares en esquinas · Cajera rectangular central · Chaflanes 4,5°</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> 4 cajeras circulares Ø25 en las esquinas, cajera rectangular central 30, agujero central Ø10 y chaflanes 4,5°. Planeado de 5 mm. Dimensiones de partida: <b>100 × 100 × 30 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D25: v<sub>c</sub>=200 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev</li><li>Fresa D10: v<sub>c</sub>=100 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev</li><li>Fresa D4: v<sub>c</sub>=100 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev</li><li>Broca D10: v<sub>c</sub>=30 m/min; Z=2; f=0,1 mm/rev</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p07_a.png" alt="p07_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">Fresa D25 (cajeras Ø25 esquinas): N = 200.000/(π×25) = 2.546 rpm; vf = 2546×6×0,2 = 3.056 mm/min
+<div class="fig-plano"><img alt="p07_a" loading="lazy" src="img/t4/p07_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">Fresa D25 (cajeras Ø25 esquinas): N = 200.000/(π×25) = 2.546 rpm; vf = 2546×6×0,2 = 3.056 mm/min
 Fresa D10 (cajera central 30mm): N = 100.000/(π×10) = 3.183 rpm; vf = 3183×3×0,1 = 955 mm/min
 Fresa D4  (chaflanes 4,5°):    N = 100.000/(π×4)  = 7.958 rpm; vf = 7958×2×0,1 = 1.592 mm/min
 Broca D10 (agujero central):   N = 30.000/(π×10)  = 955 rpm;  vf = 955×0,1 = 95,5 mm/min</span>
-      <h4>Técnica: cajeras circulares en esquinas (G2 full circle)</h4>
-      <span class="res-code">; Cajeras Ø25 en esquinas (ej. en X=±37.5, Y=±37.5 de pieza 100x100)
+<h4>Técnica: cajeras circulares en esquinas (G2 full circle)</h4>
+<span class="res-code">; Cajeras Ø25 en esquinas (ej. en X=±37.5, Y=±37.5 de pieza 100x100)
 G81 X37.5 Y37.5 Z-5. R2. F95.5   ; predrill center
 G80
 ; Cajera circular fresa D25:
@@ -527,32 +502,30 @@ G00 Z5.
 ;
 ; Cajera rectangular central con G41/G42 + perfil rect.
 ; Chaflanes con fresa D4 segun angulo 4.5°</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex8">
-  <div class="ex-header" onclick="toggleEx('ex8')">
-    <div class="ex-header-left">
-      <h2>T4.P8 &middot; Fresado &mdash; pieza hexagonal con oval (55&times;45&times;25)</h2>
-      <div class="ex-meta">Contorno hexagonal interior &middot; Ranura oval &middot; Patr&oacute;n de agujeros PCD</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Base cuadrada 55&times;45 con contorno hexagonal interior, ranura oval central y 4 agujeros &Oslash;8 en PCD &Oslash;31,6 a 60&deg;. Planeado de 5 mm. Dimensiones de partida: <b>55 &times; 45 &times; 25 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex8">
+<div class="panel-header">
+<div class="panel-tag">T4.P8</div>
+<h1 class="panel-title">Fresado — pieza hexagonal con oval (55×45×25)</h1>
+<div class="panel-meta">Contorno hexagonal interior · Ranura oval · Patrón de agujeros PCD</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Base cuadrada 55×45 con contorno hexagonal interior, ranura oval central y 4 agujeros Ø8 en PCD Ø31,6 a 60°. Planeado de 5 mm. Dimensiones de partida: <b>55 × 45 × 25 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D20: v<sub>c</sub>=100 m/min; Z=6; f<sub>z</sub>=0,1 mm/Z/rev; L=60 mm</li><li>Fresa D5: v<sub>c</sub>=180 m/min; Z=4; f<sub>z</sub>=0,05 mm/Z/rev; L=40 mm</li><li>Broca D6: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,05 mm/rev; L=70 mm</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p08_a.png" alt="p08_a" loading="lazy"></div>
-    <div class="fig-plano"><img src="img/t4/p08_b.png" alt="p08_b" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">Fresa D20 (planeado/cajeras): N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min
+<div class="fig-plano"><img alt="p08_a" loading="lazy" src="img/t4/p08_a.png"/></div>
+<div class="fig-plano"><img alt="p08_b" loading="lazy" src="img/t4/p08_b.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">Fresa D20 (planeado/cajeras): N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min
 Fresa D5  (ranura oval / hexagono): N = 180.000/(π×5) = 11.459 rpm; vf = 11459×4×0,05 = 2.292 mm/min
 Broca D6  (4 agujeros): N = 25.000/(π×6) = 1.326 rpm; vf = 1326×0,05 = 66,3 mm/min</span>
-      <h4>Técnica: hexágono interior (6 lados rectos con G1) + oval (G1+G2)</h4>
-      <span class="res-code">; Hexagono regular (6 lados, angulo 60°):
+<h4>Técnica: hexágono interior (6 lados rectos con G1) + oval (G1+G2)</h4>
+<span class="res-code">; Hexagono regular (6 lados, angulo 60°):
 ; Vertices: X=R*cos(n*60+30), Y=R*sin(n*60+30) para n=0..5
 ; Con G41 (compensacion herramienta izquierda para interior)
 G41 D_D5 G00 X... Y...
@@ -575,31 +548,29 @@ G81 X15.8 Y0. Z-Prof R2 F66.3  ; 0°
 X7.9 Y13.7                     ; 60°
 ; etc.
 G80</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex9">
-  <div class="ex-header" onclick="toggleEx('ex9')">
-    <div class="ex-header-left">
-      <h2>T4.P9 &middot; Fresado &mdash; pieza esquinas redondeadas R10 (66&times;66&times;25)</h2>
-      <div class="ex-meta">Esquinas R10 &middot; Cajera rectangular con radios &middot; Agujeros en semicircunferencias</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Base cuadrada 66&times;66 con esquinas R10, cajera rectangular interior R4 y 4 agujeros &Oslash;4 en semica&iacute;rculos. Planeado de 5 mm. Dimensiones de partida: <b>66 &times; 66 &times; 25 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex9">
+<div class="panel-header">
+<div class="panel-tag">T4.P9</div>
+<h1 class="panel-title">Fresado — pieza esquinas redondeadas R10 (66×66×25)</h1>
+<div class="panel-meta">Esquinas R10 · Cajera rectangular con radios · Agujeros en semicircunferencias</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Base cuadrada 66×66 con esquinas R10, cajera rectangular interior R4 y 4 agujeros Ø4 en semicaírculos. Planeado de 5 mm. Dimensiones de partida: <b>66 × 66 × 25 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D25: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm</li><li>Fresa D6: v<sub>c</sub>=180 m/min; Z=4; f<sub>z</sub>=0,15 mm/Z/rev; L=30 mm</li><li>Broca D4: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,1 mm/rev; L=40 mm</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p09_a.png" alt="p09_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">Fresa D25 (planeado/contorno ext): N = 150.000/(π×25) = 1.909 rpm; vf = 1909×6×0,2 = 2.292 mm/min
+<div class="fig-plano"><img alt="p09_a" loading="lazy" src="img/t4/p09_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">Fresa D25 (planeado/contorno ext): N = 150.000/(π×25) = 1.909 rpm; vf = 1909×6×0,2 = 2.292 mm/min
 Fresa D6  (esquinas R10):     N = 180.000/(π×6)  = 9.549 rpm; vf = 9549×4×0,15 = 5.729 mm/min
 Broca D4  (4 agujeros Ø4):   N = 25.000/(π×4)   = 1.989 rpm; vf = 1989×0,1 = 199 mm/min</span>
-      <h4>Técnica: contorno cuadrado con esquinas R10 (G2/G3 en cada esquina)</h4>
-      <span class="res-code">; Pieza 66x66 con esquinas redondeadas R10
+<h4>Técnica: contorno cuadrado con esquinas R10 (G2/G3 en cada esquina)</h4>
+<span class="res-code">; Pieza 66x66 con esquinas redondeadas R10
 ; Contorno exterior (partiendo de punto medio de un lado):
 G41 D_D25 G00 X33. Y0.      ; punto entrada (medio lado inferior)
 G01 Z-Zperfil F100
@@ -611,32 +582,30 @@ G01 X33. Y-10.
 ; Cajera interior R4: rect 40x40 (aprox segun plano) con R4
 ; Agujeros Ø4 a mitad de cada lado (en los semicirculos):
 ; X=33*cos(ang), Y=33*sin(ang) segun plano</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex10">
-  <div class="ex-header" onclick="toggleEx('ex10')">
-    <div class="ex-header-left">
-      <h2>T4.P10 &middot; Fresado &mdash; cajera anidada compleja (100&times;100&times;25)</h2>
-      <div class="ex-meta">Cajera exterior &middot; Cajera interior anidada &middot; Agujeros de distintas profundidades</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Cajera exterior grande R10 + cajera interior R15/R10/R12 anidada + agujeros &Oslash;5 y &Oslash;8 de distintas profundidades. Planeado de 5 mm. Dimensiones de partida: <b>100 &times; 100 &times; 25 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex10">
+<div class="panel-header">
+<div class="panel-tag">T4.P10</div>
+<h1 class="panel-title">Fresado — cajera anidada compleja (100×100×25)</h1>
+<div class="panel-meta">Cajera exterior · Cajera interior anidada · Agujeros de distintas profundidades</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Cajera exterior grande R10 + cajera interior R15/R10/R12 anidada + agujeros Ø5 y Ø8 de distintas profundidades. Planeado de 5 mm. Dimensiones de partida: <b>100 × 100 × 25 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D40: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm</li><li>Fresa D16: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm</li><li>Fresa D4: v<sub>c</sub>=200 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev; L=15 mm</li><li>Broca D5: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,1 mm/rev; L=60 mm</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p10_a.png" alt="p10_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">D40 (planeado):  N = 150.000/(π×40) = 1.194 rpm  →  vf = 1194×6×0,2 = 1.433 mm/min
+<div class="fig-plano"><img alt="p10_a" loading="lazy" src="img/t4/p10_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">D40 (planeado):  N = 150.000/(π×40) = 1.194 rpm  →  vf = 1194×6×0,2 = 1.433 mm/min
 D16 (cajeras):   N = 200.000/(π×16) = 3.979 rpm  →  vf = 3979×3×0,1 = 1.194 mm/min
 D4  (cajera int):N = 200.000/(π×4) ≈ 15.000 rpm (límite máquina)  →  vf = 15000×2×0,1 = 3.000 mm/min
 D5  (taladros):  N = 25.000/(π×5)   = 1.592 rpm  →  vf = 1592×0,1 = 159 mm/min</span>
-      <h4>Secuencia: planeado → cajera ext R10 → cajera interior anidada → taladrado Ø5</h4>
-      <span class="res-code">O0010
+<h4>Secuencia: planeado → cajera ext R10 → cajera interior anidada → taladrado Ø5</h4>
+<span class="res-code">O0010
 ; ── T1: PLANEADO 5 mm (D40) ──────────────────────────────
 T1 M6
 G90 G54 G17 G21 G94
@@ -694,35 +663,33 @@ X-30. Y-30.              ; posición 4
 G80
 G00 Z50. M5 M9
 M30</span>
-      <p class="res-note">Nota: las cotas exactas de la cajera anidada (radios R15/R10/R12 y profundidades) y posiciones de los agujeros Ø5/Ø8 se extraen directamente del plano de la pieza.</p>
-    </div>
-  </div>
+<p class="res-note">Nota: las cotas exactas de la cajera anidada (radios R15/R10/R12 y profundidades) y posiciones de los agujeros Ø5/Ø8 se extraen directamente del plano de la pieza.</p>
 </div>
-<div class="ex-card" id="ex11">
-  <div class="ex-header" onclick="toggleEx('ex11')">
-    <div class="ex-header-left">
-      <h2>T4.P11 &middot; Fresado &mdash; cajera cuadrada R8 + patr&oacute;n agujeros (86&times;86&times;35)</h2>
-      <div class="ex-meta">Cajera cuadrada con radios &middot; Patr&oacute;n PCD &middot; Alv&eacute;olo central</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Cajera cuadrada 74&times;74 con R8 + 8 agujeros &Oslash;4 en PCD &Oslash;50 + agujero central D16 + alv&eacute;olo central R25 a cota Z-30. Planeado de 5 mm. Dimensiones de partida: <b>86 &times; 86 &times; 35 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex11">
+<div class="panel-header">
+<div class="panel-tag">T4.P11</div>
+<h1 class="panel-title">Fresado — cajera cuadrada R8 + patrón agujeros (86×86×35)</h1>
+<div class="panel-meta">Cajera cuadrada con radios · Patrón PCD · Alvéolo central</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Cajera cuadrada 74×74 con R8 + 8 agujeros Ø4 en PCD Ø50 + agujero central D16 + alvéolo central R25 a cota Z-30. Planeado de 5 mm. Dimensiones de partida: <b>86 × 86 × 35 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D25: v<sub>c</sub>=125 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm</li><li>Fresa D12: v<sub>c</sub>=160 m/min; Z=2; f<sub>z</sub>=0,15 mm/Z/rev; L=40 mm</li><li>Broca D4: v<sub>c</sub>=25 m/min; Z=2; f=0,1 mm/rev; L=40 mm</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p11_a.png" alt="p11_a" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">D25 (planeado/contorno): N = 125.000/(π×25) = 1.592 rpm  →  vf = 1592×6×0,2 = 1.910 mm/min
+<div class="fig-plano"><img alt="p11_a" loading="lazy" src="img/t4/p11_a.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">D25 (planeado/contorno): N = 125.000/(π×25) = 1.592 rpm  →  vf = 1592×6×0,2 = 1.910 mm/min
 D12 (cajera + alveolo):  N = 160.000/(π×12) = 4.244 rpm  →  vf = 4244×2×0,15 = 1.273 mm/min
 D4  (8 agujeros PCD):    N = 25.000/(π×4)   = 1.989 rpm  →  vf = 1989×0,1 = 199 mm/min</span>
-      <h4>PCD Ø50 (R=25): 8 agujeros a 45° → posiciones (R·cosθ, R·sinθ)</h4>
-      <span class="res-formula">0°: X25,0 Y0      45°: X17,68 Y17,68   90°: X0 Y25      135°: X-17,68 Y17,68
+<h4>PCD Ø50 (R=25): 8 agujeros a 45° → posiciones (R·cosθ, R·sinθ)</h4>
+<span class="res-formula">0°: X25,0 Y0      45°: X17,68 Y17,68   90°: X0 Y25      135°: X-17,68 Y17,68
 180°: X-25 Y0   225°: X-17,68 Y-17,68  270°: X0 Y-25   315°: X17,68 Y-17,68</span>
-      <h4>Secuencia: planeado → cajera cuadrada R8 → taladrado PCD → alveolo R25</h4>
-      <span class="res-code">O0011
+<h4>Secuencia: planeado → cajera cuadrada R8 → taladrado PCD → alveolo R25</h4>
+<span class="res-code">O0011
 ; ── T1: PLANEADO 5 mm (D25) ──────────────────────────────
 T1 M6
 G90 G54 G17 G21 G94
@@ -784,42 +751,40 @@ G03 I-22. J0.             ; círculo R22 (aproximación a R25)
 G40 G00 Z20.
 G00 Z50. M5 M9
 M30</span>
-      <p class="res-note">Nota: el alveolo final R25 requiere un pase de acabado con G41 al radio exacto según cota del plano. El agujero central D16 se puede terminar con fresa o con broca específica D16.</p>
-    </div>
-  </div>
+<p class="res-note">Nota: el alveolo final R25 requiere un pase de acabado con G41 al radio exacto según cota del plano. El agujero central D16 se puede terminar con fresa o con broca específica D16.</p>
 </div>
-<div class="ex-card" id="ex12">
-  <div class="ex-header" onclick="toggleEx('ex12')">
-    <div class="ex-header-left">
-      <h2>T4.P12 &middot; Fresado &mdash; disco cil&iacute;ndrico D80 con contorneado tangencial</h2>
-      <div class="ex-meta">G37/G38 o G2/G3 &middot; Entrada tangencial &middot; Contorneado circular &middot; Patr&oacute;n agujeros</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Disco D80 con contorneado circular D70, agujero central + 4 agujeros en PCD. Entrar de forma <b>tangencial</b> al contorno circular D70 (usando G37/G38 o bien G2/G3). Planeado de 5 mm. Dimensiones de partida: <b>tocho cil&iacute;ndrico D80 &times; 30 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex12">
+<div class="panel-header">
+<div class="panel-tag">T4.P12</div>
+<h1 class="panel-title">Fresado — disco cilíndrico D80 con contorneado tangencial</h1>
+<div class="panel-meta">G37/G38 o G2/G3 · Entrada tangencial · Contorneado circular · Patrón agujeros</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Disco D80 con contorneado circular D70, agujero central + 4 agujeros en PCD. Entrar de forma <b>tangencial</b> al contorno circular D70 (usando G37/G38 o bien G2/G3). Planeado de 5 mm. Dimensiones de partida: <b>tocho cilíndrico D80 × 30 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D30: v<sub>c</sub>=200 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev</li><li>Fresa D16: v<sub>c</sub>=200 m/min; Z=4; f<sub>z</sub>=0,2 mm/Z/rev</li><li>Fresa D8: v<sub>c</sub>=200 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev</li><li>Broca D8: v<sub>c</sub>=30 m/min; Z=2; f=0,1 mm/rev</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p12_a.png" alt="p12_a" loading="lazy"></div>
-    <div class="fig-plano"><img src="img/t4/p12_b.png" alt="p12_b" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">D30 (planeado):   N = 200.000/(π×30) = 2.122 rpm  →  vf = 2122×6×0,2 = 2.546 mm/min
+<div class="fig-plano"><img alt="p12_a" loading="lazy" src="img/t4/p12_a.png"/></div>
+<div class="fig-plano"><img alt="p12_b" loading="lazy" src="img/t4/p12_b.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">D30 (planeado):   N = 200.000/(π×30) = 2.122 rpm  →  vf = 2122×6×0,2 = 2.546 mm/min
 D16 (contorno D70):N = 200.000/(π×16) = 3.979 rpm →  vf = 3979×4×0,2 = 3.183 mm/min
 D8  (fresado fino): N = 200.000/(π×8)  = 7.958 rpm →  vf = 7958×2×0,1 = 1.592 mm/min
 D8  (taladros):     N = 30.000/(π×8)   = 1.194 rpm →  vf = 1194×0,1 = 119 mm/min</span>
-      <h4>★ Técnica clave: entrada tangencial al contorno circular D70</h4>
-      <p class="res-note">Para contornear un círculo sin marca de entrada: acercarse con arco G03 (radio r_e) cuyo centro esté en la prolongación del radio en el punto de tangencia, a distancia R+r_e del centro de la pieza.</p>
-      <span class="res-formula">Contorno D70 → R_pieza = 35 mm (programado con G41, fresa D16, R_fresa = 8 mm)
+<h4>★ Técnica clave: entrada tangencial al contorno circular D70</h4>
+<p class="res-note">Para contornear un círculo sin marca de entrada: acercarse con arco G03 (radio r_e) cuyo centro esté en la prolongación del radio en el punto de tangencia, a distancia R+r_e del centro de la pieza.</p>
+<span class="res-formula">Contorno D70 → R_pieza = 35 mm (programado con G41, fresa D16, R_fresa = 8 mm)
 Punto de tangencia T = (0, 35) [vértice superior del círculo]
 Centro arco de entrada C_e = (0, 35 + r_e) = (0, 45)  [con r_e = 10 mm elegido]
 Punto de arranque A = (10, 45)  [a 10 mm de C_e en +X]
 Arco entrada:  G03 de A(10,45) a T(0,35)  →  I = 0-10 = -10;  J = 45-45 = 0
 Arco contorno: G02 I0 J-35  (círculo CW completo desde T)
 Arco salida:   G03 de T(0,35) a (-10,45)  →  I = 0-0 = 0;  J = 45-35 = +10</span>
-      <span class="res-code">O0012
+<span class="res-code">O0012
 ; ── T1: PLANEADO 5 mm (D30) ──────────────────────────────
 T1 M6
 G90 G54 G17 G21 G94
@@ -858,39 +823,37 @@ X-25. Y0.
 X0.   Y-25.
 G80 G00 Z50. M5 M9
 M30</span>
-      <p class="res-note">El círculo completo G02 I0 J-35 recorre el contorno desde T=(0,35) hasta volver a T. La transición G03→G02 y G02→G03 es C1 continua (tangente compartida): no hay marca de entrada en la pieza.</p>
-    </div>
-  </div>
+<p class="res-note">El círculo completo G02 I0 J-35 recorre el contorno desde T=(0,35) hasta volver a T. La transición G03→G02 y G02→G03 es C1 continua (tangente compartida): no hay marca de entrada en la pieza.</p>
 </div>
-<div class="ex-card" id="ex13">
-  <div class="ex-header" onclick="toggleEx('ex13')">
-    <div class="ex-header-left">
-      <h2>T4.P13 &middot; Fresado &mdash; pieza con patr&oacute;n p&eacute;talos 80&times;80&times;30 (entrada tangencial)</h2>
-      <div class="ex-meta">Patr&oacute;n en cruz &middot; Entrada tangencial en contorneado &middot; Cajera central</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Base cuadrada 80&times;80 con esquinas R5, patr&oacute;n en cruz de 4 &ldquo;p&eacute;talos&rdquo; R10, agujero central &Oslash;10, 4 agujeros &Oslash;13 y cajera cuadrada central. Entrar de forma <b>tangencial</b> en todas las operaciones de contorneado. Planeado de 7 mm. Dimensiones de partida: <b>80 &times; 80 &times; 30 mm</b>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex13">
+<div class="panel-header">
+<div class="panel-tag">T4.P13</div>
+<h1 class="panel-title">Fresado — pieza con patrón pétalos 80×80×30 (entrada tangencial)</h1>
+<div class="panel-meta">Patrón en cruz · Entrada tangencial en contorneado · Cajera central</div>
+</div>
+<div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
+<p><b>Pieza:</b> Base cuadrada 80×80 con esquinas R5, patrón en cruz de 4 “pétalos” R10, agujero central Ø10, 4 agujeros Ø13 y cajera cuadrada central. Entrar de forma <b>tangencial</b> en todas las operaciones de contorneado. Planeado de 7 mm. Dimensiones de partida: <b>80 × 80 × 30 mm</b>.</p>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D18: v<sub>c</sub>=200 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev</li><li>Fresa D6: v<sub>c</sub>=200 m/min; Z=4; f<sub>z</sub>=0,2 mm/Z/rev</li><li>Broca D13: v<sub>c</sub>=30 m/min; Z=2; f=0,1 mm/rev</li><li>Broca D5: v<sub>c</sub>=35 m/min; Z=2; f=0,1 mm/rev</li></ul>
 </div>
-    <div class="fig-plano"><img src="img/t4/p13_a.png" alt="p13_a" loading="lazy"></div>
-    <div class="fig-plano"><img src="img/t4/p13_b.png" alt="p13_b" loading="lazy"></div>
-    
-    <div class="resolucion">
-      <h3>Parámetros de corte</h3>
-      <span class="res-formula">D18 (planeado/contorno):N = 200.000/(π×18) = 3.537 rpm  →  vf = 3537×6×0,2 = 4.244 mm/min
+<div class="fig-plano"><img alt="p13_a" loading="lazy" src="img/t4/p13_a.png"/></div>
+<div class="fig-plano"><img alt="p13_b" loading="lazy" src="img/t4/p13_b.png"/></div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Parámetros de corte</h3>
+<span class="res-formula">D18 (planeado/contorno):N = 200.000/(π×18) = 3.537 rpm  →  vf = 3537×6×0,2 = 4.244 mm/min
 D6  (pétalos R10):       N = 200.000/(π×6)  = 10.610 rpm →  vf = 10610×4×0,2 = 8.488 mm/min
 D13 (4 agujeros Ø13):   N = 30.000/(π×13)  =   735 rpm  →  vf = 735×0,1 = 73 mm/min
 D5  (agujero central Ø5):N = 35.000/(π×5)  = 2.228 rpm  →  vf = 2228×0,1 = 223 mm/min</span>
-      <h4>★ Técnica clave: entrada tangencial a cada pétalo circular R10</h4>
-      <p class="res-note">Cada pétalo es un círculo de R=10 centrado en uno de los 4 lados del cuadrado. La regla de entrada tangencial es: C_entrada = centro_pétalo + (R_pétalo + r_entrada) × dirección_radial. Con r_entrada = 5 mm:</p>
-      <span class="res-formula">Pétalo +Y: centro (0,25)  → C_e=(0,40)  A=(5,40)   G03 a (0,35) con I=-5,J=0   luego G02 I0,J=-10
+<h4>★ Técnica clave: entrada tangencial a cada pétalo circular R10</h4>
+<p class="res-note">Cada pétalo es un círculo de R=10 centrado en uno de los 4 lados del cuadrado. La regla de entrada tangencial es: C_entrada = centro_pétalo + (R_pétalo + r_entrada) × dirección_radial. Con r_entrada = 5 mm:</p>
+<span class="res-formula">Pétalo +Y: centro (0,25)  → C_e=(0,40)  A=(5,40)   G03 a (0,35) con I=-5,J=0   luego G02 I0,J=-10
 Pétalo +X: centro (25,0)  → C_e=(40,0)  A=(40,5)   G03 a (35,0) con I=0,J=-5   luego G02 I=-10,J=0
 Pétalo -Y: centro (0,-25) → C_e=(0,-40) A=(-5,-40) G03 a (0,-35) con I=5,J=0  luego G02 I0,J=10
 Pétalo -X: centro (-25,0) → C_e=(-40,0) A=(-40,-5) G03 a (-35,0) con I=0,J=5  luego G02 I=10,J=0</span>
-      <span class="res-code">O0013
+<span class="res-code">O0013
 ; ── T1: PLANEADO 7 mm (D18) ──────────────────────────────
 T1 M6
 G90 G54 G17 G21 G94
@@ -980,22 +943,53 @@ X0.  Y0.                   ; agujero central Ø5
 G80
 G00 Z50. M5 M9
 M30</span>
-      <p class="res-note">La entrada tangencial garantiza transición C1 (sin discontinuidad de dirección) al inicio de cada pétalo. El patrón se aplica igual a los 4 pétalos rotando 90° los parámetros de entrada.</p>
-    </div>
-  </div>
+<p class="res-note">La entrada tangencial garantiza transición C1 (sin discontinuidad de dirección) al inicio de cada pétalo. El patrón se aplica igual a los 4 pétalos rotando 90° los parámetros de entrada.</p>
 </div>
 </div>
+</div></main></div>
+
+
 
 <script>
-function toggleEx(id){
-  var card=document.getElementById(id);
-  card.classList.toggle('open');
+var _allPanels = document.querySelectorAll('.topic-panel');
+var _allItems  = document.querySelectorAll('.sb-item');
+var _sbCurrent = document.getElementById('sbCurrent');
+var _readProg  = document.getElementById('readProgress');
+
+function showEx(id) {
+  _allPanels.forEach(function(p){ p.classList.remove('active'); });
+  _allItems.forEach(function(b){ b.classList.remove('active'); });
+  var panel = document.getElementById(id);
+  var btn   = document.querySelector('[data-id="'+id+'"]');
+  if (panel) panel.classList.add('active');
+  if (btn)   btn.classList.add('active');
+  if (_sbCurrent && btn) _sbCurrent.textContent = btn.querySelector('.sb-name').textContent;
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
 }
-function toggleSec(btn){
+
+function toggleSec(btn) {
   btn.parentElement.classList.toggle('sec-open');
 }
-var _tp=document.getElementById('temaPicker');
-document.addEventListener('click',function(e){if(_tp&&!_tp.contains(e.target))_tp.classList.remove('open');});
+
+function updateProgress() {
+  if (!_readProg) return;
+  var el = document.querySelector('.topic-panel.active');
+  if (!el) { _readProg.style.transform='scaleX(0)'; return; }
+  var st = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+  _readProg.style.transform = 'scaleX('+(h>0?Math.min(st/h,1):0)+')';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+
+// Tema picker
+var _tp = document.getElementById('temaPicker');
+document.addEventListener('click', function(e){ if(_tp && !_tp.contains(e.target)) _tp.classList.remove('open'); });
+
+// Activate first exercise on load
+document.addEventListener('DOMContentLoaded', function(){
+  var first = document.querySelector('.sb-item');
+  if (first) showEx(first.getAttribute('data-id'));
+});
 </script>
 </body>
 </html>

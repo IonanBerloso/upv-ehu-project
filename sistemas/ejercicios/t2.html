@@ -1,264 +1,282 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#000000" name="theme-color"/>
 <title>T2 Fresado - Ejercicios - Sistemas UPV/EHU</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-
-
-
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
-  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --accent:#ffd93d;--gold:#f59e0b;--green:#6bcb77;--blue:#7ecfff;--orange:#f4a261;--yellow:#ffd93d;
-  --transition:.2s;
+  --bg:#131313;
+  --surface:rgba(255,255,255,.04);
+  --surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#ffd93d;
+  --accent-dim:rgba(255,217,61,.10);
+  --accent-border:rgba(255,217,61,.25);
+  --gold:#f59e0b;
+  --gold-dim:rgba(245,158,11,.09);
+  --gold-border:rgba(245,158,11,.28);
+  --green:#10b981;
+  --blue:#38bdf8;
+  --orange:#fb923c;
+  --ff:'Space Grotesk',system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;
+  --radius-sm:6px;
+  --topbar-h:52px;
+  --sidebar-w:264px;
+  --transition:.22s cubic-bezier(.4,0,.2,1);
 }
 html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
-.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:var(--topbar-h)}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
 .topbar-back:hover{color:var(--accent);text-decoration:none}
-.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbar-pill{margin-right:20px;background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);white-space:nowrap}
+.topbar-back svg{transition:transform var(--transition)}
+.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* PAGE HEADER */
-.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
-.ph-type{display:inline-block;background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
-.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
-.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
-.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
-
-/* JUMP LINKS */
-.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
-.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
-.jump-link:hover{background:#1a1400;color:var(--accent);border-color:var(--accent);text-decoration:none}
-.jump-link-exam{background:#1a0f00;border-color:#854d0e;color:#fbbf24}
-.jump-link-exam:hover{background:#2a1a00;color:#fde68a;border-color:#f59e0b}
-
-/* CONTAINER */
-.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
-
-/* EX CARDS */
-.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
-.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
-.ex-header:hover{background:#111}
-.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
-.ex-meta{font-size:.78em;color:var(--text3)}
-.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
-.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
-.ex-body{display:none;padding:0 20px 20px}
-.ex-card.open .ex-body{display:block}
-
-/* ENUNCIADO */
-.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #222}
-
-/* SECCIONES */
-.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
-.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
-.sec-btn .sarr{transition:.2s}
-.sec-open .sec-btn .sarr{transform:rotate(180deg)}
-.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
-.sec-open .sec-body{display:block}
-.s-datos .sec-btn{background:#1a1400;color:var(--accent);border:1px solid #5c4200}
-.s-datos .sec-body{background:#0a0a0a;border:1px solid #5c4200;border-top:none}
-.s-pide .sec-btn{background:#0a1a2e;color:var(--blue);border:1px solid #0d2a44}
-.s-pide .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
-
-/* TABLAS */
-.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
-.t-datos th{background:#2a2000;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #5c4200}
-.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#e0d8a0}
-.t-datos tr:nth-child(even) td{background:#0a0a0a}
-
-/* PRÓXIMAMENTE */
-.soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:20px;text-align:center;color:#333;font-size:.85em;font-style:italic}
-
-/* RESOLUCIÓN */
-.resolucion{background:#030f07;border:1px solid #1a4a20;border-radius:8px;padding:14px 16px;margin-top:10px}
-.resolucion h3{color:#6bcb77;font-size:.82em;font-weight:700;margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #1a4a20;padding-bottom:7px}
-.resolucion h4{color:#a8e6b0;font-size:.82em;font-weight:600;margin:12px 0 4px}
-.res-formula{display:block;padding:6px 10px;background:#050f07;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82em;color:#a8e6b0;margin:4px 0 8px;white-space:pre-wrap;border-left:2px solid #1a6a30;line-height:1.8}
-.res-note{color:#64748b;font-size:.82em;font-style:italic;margin:4px 0 8px}
-.res-warn{color:#fbbf24;font-size:.83em;background:#0d0800;border:1px solid #3a2a00;border-radius:4px;padding:6px 10px;margin:6px 0;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
-.res-ok{color:#6bcb77;font-size:.84em;font-weight:600}
-
-/* RESULTADO */
-.resultado-enunciado{background:#051a08;border:1px solid #1a4a20;border-radius:6px;padding:8px 14px;font-size:.83em;color:#8ecf94;margin-top:8px;border-left:3px solid #2a8a30}
-.res-label{font-weight:700;color:#aeedb4}
-
-/* NIVEL EXAMEN */
-.ex-card-exam{border-color:#854d0e}
-.ex-card-exam .ex-header:hover{background:#1a0f00}
-.ex-card-exam .ex-header-left h2{color:#fbbf24}
-.ex-card-exam.open .ex-arrow{color:#fbbf24}
-.exam-badge{display:inline-flex;align-items:center;gap:5px;background:#1a0f00;border:1px solid #854d0e;border-radius:20px;padding:3px 10px;font-size:.7em;font-weight:700;color:#fbbf24;margin-left:10px;vertical-align:middle;letter-spacing:.03em}
-
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#5c4200;border-radius:3px}
-
-/* TEMA PICKER */
-.tema-picker{position:relative;margin-right:20px}
-.tema-picker-btn{background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:4px 14px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s}
-.tema-picker-btn:hover{background:#261d00}
-.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:#0d0d0d;border:1px solid #3a2d00;border-radius:10px;padding:6px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+/* ── TEMA PICKER ── */
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-picker-btn:hover{background:rgba(255,217,61,.18)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:200px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
 .tema-picker.open .tema-dropdown{display:block}
-.td-item{display:block;padding:8px 12px;border-radius:6px;font-size:.8em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500}
-.td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:#1a1400;color:var(--accent)}
-.td-item.td-active{color:var(--accent);background:#1a1400;font-weight:700;pointer-events:none}
-.td-num{display:inline-block;width:24px;font-weight:700}
-.td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
-@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover,.td-item.td-available:hover{background:var(--accent-dim);color:var(--accent);text-decoration:none}
+.td-item.td-active,.td-item.td-available.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
+
+/* ── READING PROGRESS ── */
+.read-progress{position:fixed;top:var(--topbar-h);left:var(--sidebar-w);right:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--accent),var(--orange));transform-origin:left;transform:scaleX(0);transition:transform .08s linear}
+
+/* ── LAYOUT ── */
+.layout{display:flex;padding-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h))}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:var(--topbar-h);left:0;bottom:0;background:rgba(255,255,255,.025);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{width:100%;display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.78em;cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-item-exam{border-color:rgba(245,158,11,.15);color:var(--gold)}
+.sb-item-exam:hover{background:var(--gold-dim);color:var(--gold)}
+.sb-item-exam.active{background:var(--gold-dim);color:var(--gold);border-color:var(--gold-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:36px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-yellow{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.sb-link-yellow:hover{background:rgba(255,217,61,.18);text-decoration:none}
+
+/* ── CONTENT ── */
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
+
+/* ── TOPIC PANEL ── */
+.topic-panel{display:none;max-width:860px}
+.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PANEL HEADER ── */
+.panel-header{margin-bottom:22px;padding:14px 18px 16px;background:linear-gradient(135deg,var(--accent-dim) 0%,transparent 60%);border:1px solid rgba(255,217,61,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-title{font-size:1.25em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.exam-badge{display:inline-flex;align-items:center;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:20px;padding:2px 9px;font-size:.65em;font-weight:700;color:var(--gold);margin-left:8px;vertical-align:middle}
+
+/* ── ENUNCIADO ── */
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:12px;border-left:3px solid var(--accent-border)}
+
+/* ── RESULTADO ENUNCIADO ── */
+.resultado-enunciado{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-radius:var(--radius-sm);padding:8px 14px;font-size:.83em;color:#a7f3d0;margin-bottom:14px;border-left:3px solid rgba(16,185,129,.4)}
+.res-label{font-weight:700;color:#6ee7b7}
+
+/* ── SECTIONS ── */
+.section-wrap{margin-bottom:12px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.2);border-top:none}
+
+/* ── RESOLUTION CONTENT ── */
+.resolucion h3{display:none}
+.resolucion h4{color:var(--accent);font-size:.83em;font-weight:700;margin:12px 0 5px;letter-spacing:.04em}
+.resolucion p{margin-bottom:8px;font-size:.87em;color:var(--text2)}
+.res-formula{display:block;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:4px;font-family:var(--ff-mono);font-size:.79em;color:#e2e8f0;margin:4px 0 10px;white-space:pre-wrap;border-left:2px solid rgba(255,217,61,.3);line-height:1.8}
+.res-code{display:block;padding:10px 12px;background:#020a04;border-radius:6px;font-family:var(--ff-mono);font-size:.78em;color:#7dd87d;margin:6px 0;white-space:pre;line-height:1.65;overflow-x:auto;border:1px solid #0e3318}
+.res-note{color:#64748b;font-size:.82em;font-style:italic;margin:4px 0 8px}
+.res-warn{color:#fbbf24;font-size:.83em;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:4px;padding:6px 10px;margin:6px 0;white-space:pre-wrap;font-family:var(--ff-mono)}
+.res-ok{color:#10b981;font-size:.84em;font-weight:600}
+
 /* ── FIGURAS PDF ── */
-.fig-plano{background:#fff;border-radius:8px;padding:10px 12px;margin:14px 0 6px;text-align:center;border:1px solid #2a2a2a}
+.fig-plano{background:#fff;border-radius:8px;padding:10px 12px;margin:10px 0 14px;text-align:center;border:1px solid rgba(255,255,255,.12)}
 .fig-plano img{max-width:100%;height:auto;border-radius:4px;display:block;margin:0 auto}
 .fig-plano+.fig-plano{margin-top:4px}
+
+/* ── SOON ── */
+.soon{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:20px;text-align:center;color:var(--text3);font-size:.85em;font-style:italic}
+
+/* ── TABLES (inline tables in exercise content) ── */
+table th[style*="ffd93d"],table th[style*="FFD93D"]{background:var(--accent-dim)!important;color:var(--accent)!important;border-color:var(--accent-border)!important}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(255,217,61,.15);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,217,61,.3)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:20px 16px 40px}
+  .sb-list{max-height:200px}
+  .read-progress{left:0}
+}
 </style>
 </head>
 <body>
-
-<nav class="topbar">
-  <a class="topbar-back" href="../teoria.html">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Teor&iacute;a
-  </a>
-  <span class="topbar-title">&#127981; T2 &middot; Fresado &mdash; Ejercicios</span>
-  <div class="tema-picker" id="temaPicker">
-    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T2 &#9662;</button>
-    <div class="tema-dropdown"><a class="td-item td-available" href="t1.html"><span class="td-num">T1</span> Torneado</a><span class="td-item td-active"><span class="td-num">T2</span> Fresado</span><a class="td-item td-available" href="t3.html"><span class="td-num">T3</span> Taladrado</a><a class="td-item td-available" href="t4.html"><span class="td-num">T4</span> CNC</a></div>
-  </div>
-</nav>
-
-<div class="page-header">
-  <div class="ph-type">Ejercicios Propuestos</div>
-  <h1>T2 &middot; Fresado</h1>
-  <div class="ph-meta">Sistemas de Producci&oacute;n y Fabricaci&oacute;n &middot; Curso 2025&ndash;26 &middot; UPV/EHU</div>
-  <div class="ph-tags"><span class="ph-tag">Sección de viruta</span><span class="ph-tag">Espesor de viruta medio</span><span class="ph-tag">Planeado</span><span class="ph-tag">Escuadrado</span><span class="ph-tag">Organigrama</span><span class="ph-tag">9 ejercicios</span></div>
+<nav class="topbar"><a class="topbar-back" href="../teoria.html"><svg fill="none" height="16" viewbox="0 0 16 16" width="16"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a><span class="topbar-title">⚙️ Sistemas · T2 · Fresado — Ejercicios</span><div class="tema-picker" id="temaPicker"><button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T2 ▾</button><div class="tema-dropdown"><a class="td-item" href="t1.html"><span class="td-num">T1</span> Torneado</a><a class="td-item td-active" href="t2.html"><span class="td-num">T2</span> Fresado</a><a class="td-item" href="t3.html"><span class="td-num">T3</span> Taladrado</a><a class="td-item" href="t4.html"><span class="td-num">T4</span> CNC</a></div></div></nav><div class="read-progress" id="readProgress"></div><div class="layout"><aside class="sidebar"><div class="sb-head"><div class="sb-subtitle">T2 · Fresado</div><div class="sb-current" id="sbCurrent">Escuadrado — sección de viruta y fuerza máxima</div></div>
+<div class="sb-list">
+<button class="sb-item" data-id="ex1" onclick="showEx('ex1')"><span class="sb-tag">T2.P1</span><span class="sb-name">Escuadrado — sección de viruta y fuerza máxima</span></button>
+<button class="sb-item" data-id="ex2" onclick="showEx('ex2')"><span class="sb-tag">T2.P2</span><span class="sb-name">Escuadrado — S c,max y F c,max para distintos a e</span></button>
+<button class="sb-item" data-id="ex3" onclick="showEx('ex3')"><span class="sb-tag">T2.P3</span><span class="sb-name">Fresado de volumen 200×30×9 mm — selección herramienta y t c</span></button>
+<button class="sb-item" data-id="ex4" onclick="showEx('ex4')"><span class="sb-tag">T2.P4</span><span class="sb-name">Planeado — v f,max con restricción de potencia</span></button>
+<button class="sb-item" data-id="ex5" onclick="showEx('ex5')"><span class="sb-tag">T2.P5</span><span class="sb-name">Planeado + escuadrado bloque 200×60×100 mm</span></button>
+<button class="sb-item" data-id="ex6" onclick="showEx('ex6')"><span class="sb-tag">T2.P6</span><span class="sb-name">Organigrama D40×L170 — chavetero (fresado)</span></button>
+<button class="sb-item sb-item-exam" data-id="ex7" onclick="showEx('ex7')"><span class="sb-tag">T2.P7</span><span class="sb-name">Organigrama D50×L106 — M30×2 + chavetero</span></button>
+<button class="sb-item sb-item-exam" data-id="ex8" onclick="showEx('ex8')"><span class="sb-tag">T2.P8</span><span class="sb-name">Organigrama Ø65×L110 — M28×3,5 + chavetero (inox)</span></button>
+<button class="sb-item sb-item-exam" data-id="ex9" onclick="showEx('ex9')"><span class="sb-tag">T2.P9</span><span class="sb-name">Organigrama Ø75×185 — M20, M26, chaveta (con Tabla 1)</span></button>
 </div>
-<div class="jump-links"><a class="jump-link" href="#ex1">T2.P1 &middot; Escuadrado a<sub>e</sub> &oacute;ptimo</a><a class="jump-link" href="#ex2">T2.P2 &middot; S<sub>c,max</sub> tres casos</a><a class="jump-link" href="#ex3">T2.P3 &middot; Volumen 200&times;30&times;9</a><a class="jump-link" href="#ex4">T2.P4 &middot; Planeado v<sub>f,max</sub></a><a class="jump-link" href="#ex5">T2.P5 &middot; Planeado+escuadrado bloque</a><a class="jump-link" href="#ex6">T2.P6 &middot; Organigrama chavetero</a><a class="jump-link jump-link-exam" href="#ex7">&#9733; T2.P7 &middot; Organigrama D50</a><a class="jump-link jump-link-exam" href="#ex8">&#9733; T2.P8 &middot; Organigrama &Oslash;65 inox</a><a class="jump-link jump-link-exam" href="#ex9">&#9733; T2.P9 &middot; Organigrama &Oslash;75</a></div>
-<div class="container">
-
-<div class="ex-card" id="ex1">
-  <div class="ex-header" onclick="toggleEx('ex1')">
-    <div class="ex-header-left">
-      <h2>T2.P1 &middot; Escuadrado &mdash; secci&oacute;n de viruta y fuerza m&aacute;xima</h2>
-      <div class="ex-meta">Secci&oacute;n de viruta &middot; F<sub>c,max</sub> &middot; P<sub>c,max</sub> &middot; Profundidad radial &oacute;ptima</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>En una operaci&oacute;n de escuadrado se fija a<sub>p</sub> = 10 mm. Datos:</p>
+<div class="sb-footer"><a class="sb-link sb-link-yellow" href="../teoria.html"><svg fill="none" height="13" viewbox="0 0 16 16" width="13"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a></div></aside><main class="content"><div class="topic-panel" id="ex1">
+<div class="panel-header">
+<div class="panel-tag">T2.P1</div>
+<h1 class="panel-title">Escuadrado — sección de viruta y fuerza máxima</h1>
+<div class="panel-meta">Sección de viruta · F<sub>c,max</sub> · P<sub>c,max</sub> · Profundidad radial óptima</div>
+</div>
+<div class="enunciado"><p>En una operación de escuadrado se fija a<sub>p</sub> = 10 mm. Datos:</p>
 <ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
 <li>Radio de la fresa R = 10 mm (D = 20 mm).</li>
-<li>&Aacute;ngulo de posici&oacute;n del filo principal &kappa;<sub>r</sub> = 90&deg;.</li>
+<li>Ángulo de posición del filo principal κ<sub>r</sub> = 90°.</li>
 <li>Avance por diente f<sub>z</sub> = 0,04 mm/Z/rev.</li>
 <li>Velocidad de giro N = 2.500 rpm.</li>
-<li>Profundidad radial (intervalo): a<sub>e</sub> = 0,5 &ndash; 12 mm.</li>
-<li>Fuerza espec&iacute;fica de corte (constante): p<sub>s</sub> = 1.900 N/mm&sup2;.</li>
+<li>Profundidad radial (intervalo): a<sub>e</sub> = 0,5 – 12 mm.</li>
+<li>Fuerza específica de corte (constante): p<sub>s</sub> = 1.900 N/mm².</li>
 </ul>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
-<li>&iquest;Qu&eacute; profundidad de corte radial a<sub>e</sub> genera la mayor fuerza de corte y potencia?</li>
-<li>Calcular la fuerza de corte m&aacute;xima F<sub>c,max</sub> y la potencia de corte m&aacute;xima P<sub>c,max</sub> <b>por diente</b>.</li>
+<li>¿Qué profundidad de corte radial a<sub>e</sub> genera la mayor fuerza de corte y potencia?</li>
+<li>Calcular la fuerza de corte máxima F<sub>c,max</sub> y la potencia de corte máxima P<sub>c,max</sub> <b>por diente</b>.</li>
 </ol></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> b) F<sub>c</sub> = 760 N; P<sub>c</sub> = 2,0 kW</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <h4>a) ¿Qué a<sub>e</sub> genera la mayor fuerza?</h4>
-      <p>En fresado periférico (κ<sub>r</sub>=90°), el espesor instantáneo de viruta de un diente es h = f<sub>z</sub>·sin(θ). El máximo se alcanza cuando sin(θ) = 1, es decir, θ = 90°. Eso ocurre si el ángulo de salida θ<sub>e</sub> ≥ 90°, lo que se cumple cuando a<sub>e</sub> ≥ R:</p>
-      <span class="res-formula">θ<sub>e</sub> = arccos((R − a<sub>e</sub>)/R) ≥ 90°  ↔  a<sub>e</sub> ≥ R = 10 mm
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> b) F<sub>c</sub> = 760 N; P<sub>c</sub> = 2,0 kW</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<h4>a) ¿Qué a<sub>e</sub> genera la mayor fuerza?</h4>
+<p>En fresado periférico (κ<sub>r</sub>=90°), el espesor instantáneo de viruta de un diente es h = f<sub>z</sub>·sin(θ). El máximo se alcanza cuando sin(θ) = 1, es decir, θ = 90°. Eso ocurre si el ángulo de salida θ<sub>e</sub> ≥ 90°, lo que se cumple cuando a<sub>e</sub> ≥ R:</p>
+<span class="res-formula">θ<sub>e</sub> = arccos((R − a<sub>e</sub>)/R) ≥ 90°  ↔  a<sub>e</sub> ≥ R = 10 mm
 
 Para a<sub>e</sub> &lt; 10 mm → h<sub>max</sub> = f<sub>z</sub>·sin(θ<sub>e</sub>) &lt; f<sub>z</sub>  (fuerza menor)
 Para a<sub>e</sub> ≥ 10 mm → h<sub>max</sub> = f<sub>z</sub>                  (fuerza máxima)</span>
-      <p>La mayor fuerza se obtiene con <b>a<sub>e</sub> = 10–12 mm</b> (cualquier valor ≥ R da el mismo h<sub>max</sub>).</p>
-      <h4>b) F<sub>c,max</sub> y P<sub>c,max</sub> por diente (a<sub>e</sub> = 12 mm)</h4>
-      <span class="res-formula">h<sub>max</sub> = f<sub>z</sub> · sin(90°) = 0,04 mm/diente
+<p>La mayor fuerza se obtiene con <b>a<sub>e</sub> = 10–12 mm</b> (cualquier valor ≥ R da el mismo h<sub>max</sub>).</p>
+<h4>b) F<sub>c,max</sub> y P<sub>c,max</sub> por diente (a<sub>e</sub> = 12 mm)</h4>
+<span class="res-formula">h<sub>max</sub> = f<sub>z</sub> · sin(90°) = 0,04 mm/diente
 S<sub>c,max</sub> = a<sub>p</sub> · h<sub>max</sub> = 10 × 0,04 = 0,40 mm²
 F<sub>c,max</sub> = p<sub>s</sub> · S<sub>c,max</sub> = 1.900 × 0,40 = <b>760 N</b></span>
-      <p>Velocidad de corte: v<sub>c</sub> = π·D·N/1000 = π×20×2500/1000 = 157,1 m/min</p>
-      <span class="res-formula">P<sub>c,max</sub> = F<sub>c,max</sub> · v<sub>c</sub> / 60.000 = 760 × 157,1 / 60.000 = <b>2,0 kW</b></span>
-      <p class="res-note">Esta es la potencia instantánea de <u>un solo diente</u> en la posición de máximo espesor de viruta.</p>
-    </div>
-  </div>
+<p>Velocidad de corte: v<sub>c</sub> = π·D·N/1000 = π×20×2500/1000 = 157,1 m/min</p>
+<span class="res-formula">P<sub>c,max</sub> = F<sub>c,max</sub> · v<sub>c</sub> / 60.000 = 760 × 157,1 / 60.000 = <b>2,0 kW</b></span>
+<p class="res-note">Esta es la potencia instantánea de <u>un solo diente</u> en la posición de máximo espesor de viruta.</p>
 </div>
-<div class="ex-card" id="ex2">
-  <div class="ex-header" onclick="toggleEx('ex2')">
-    <div class="ex-header-left">
-      <h2>T2.P2 &middot; Escuadrado &mdash; S<sub>c,max</sub> y F<sub>c,max</sub> para distintos a<sub>e</sub></h2>
-      <div class="ex-meta">Secci&oacute;n de viruta m&aacute;xima &middot; Fuerza por diente &middot; Tres casos de a<sub>e</sub></div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Antes de realizar una operaci&oacute;n de fresado (escuadrado), se quiere estimar las fuerzas de corte sobre <u>cada diente</u>. Calcular la secci&oacute;n de viruta m&aacute;xima S<sub>c,max</sub> y la fuerza de corte m&aacute;xima F<sub>c,max</sub> en cada diente para los tres casos:</p>
+</div>
+</div>
+<div class="topic-panel" id="ex2">
+<div class="panel-header">
+<div class="panel-tag">T2.P2</div>
+<h1 class="panel-title">Escuadrado — S c,max y F c,max para distintos a e</h1>
+<div class="panel-meta">Sección de viruta máxima · Fuerza por diente · Tres casos de a<sub>e</sub></div>
+</div>
+<div class="enunciado"><p>Antes de realizar una operación de fresado (escuadrado), se quiere estimar las fuerzas de corte sobre <u>cada diente</u>. Calcular la sección de viruta máxima S<sub>c,max</sub> y la fuerza de corte máxima F<sub>c,max</sub> en cada diente para los tres casos:</p>
 <ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
-<li>Radio de la fresa R = 20 mm (D = 40 mm); a<sub>p</sub> = 2 mm; f<sub>z</sub> = 0,08 mm/Z/rev; &kappa;<sub>r</sub> = 90&deg;; p<sub>s</sub> = 2.900 N/mm&sup2;.</li>
-<li><b>a)</b> a<sub>e</sub> = 15 mm &nbsp;&nbsp; <b>b)</b> a<sub>e</sub> = 20 mm &nbsp;&nbsp; <b>c)</b> a<sub>e</sub> = 24 mm</li>
+<li>Radio de la fresa R = 20 mm (D = 40 mm); a<sub>p</sub> = 2 mm; f<sub>z</sub> = 0,08 mm/Z/rev; κ<sub>r</sub> = 90°; p<sub>s</sub> = 2.900 N/mm².</li>
+<li><b>a)</b> a<sub>e</sub> = 15 mm    <b>b)</b> a<sub>e</sub> = 20 mm    <b>c)</b> a<sub>e</sub> = 24 mm</li>
 </ul></div>
-    <div class="fig-plano"><img src="img/t2/p02_a.png" alt="p02_a" loading="lazy"></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) F<sub>c,max</sub> = 452,4 N &middot; b) F<sub>c,max</sub> = 464 N &middot; c) F<sub>c,max</sub> = 464 N</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <p>Datos comunes: R = 20 mm, a<sub>p</sub> = 2 mm, f<sub>z</sub> = 0,08 mm, κ<sub>r</sub> = 90°, p<sub>s</sub> = 2.900 N/mm².</p>
-      <p>Fórmula general: h<sub>max</sub> = f<sub>z</sub>·sin(θ<sub>e</sub>), donde θ<sub>e</sub> = arccos((R − a<sub>e</sub>)/R).</p>
-      <h4>a) a<sub>e</sub> = 15 mm &lt; R = 20 mm</h4>
-      <span class="res-formula">cos(θ<sub>e</sub>) = (R − a<sub>e</sub>)/R = (20 − 15)/20 = 0,25
+<div class="fig-plano"><img alt="p02_a" loading="lazy" src="img/t2/p02_a.png"/></div>
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) F<sub>c,max</sub> = 452,4 N · b) F<sub>c,max</sub> = 464 N · c) F<sub>c,max</sub> = 464 N</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<p>Datos comunes: R = 20 mm, a<sub>p</sub> = 2 mm, f<sub>z</sub> = 0,08 mm, κ<sub>r</sub> = 90°, p<sub>s</sub> = 2.900 N/mm².</p>
+<p>Fórmula general: h<sub>max</sub> = f<sub>z</sub>·sin(θ<sub>e</sub>), donde θ<sub>e</sub> = arccos((R − a<sub>e</sub>)/R).</p>
+<h4>a) a<sub>e</sub> = 15 mm &lt; R = 20 mm</h4>
+<span class="res-formula">cos(θ<sub>e</sub>) = (R − a<sub>e</sub>)/R = (20 − 15)/20 = 0,25
 θ<sub>e</sub> = arccos(0,25) = 75,5°
 sin(θ<sub>e</sub>) = √(1 − 0,25²) = √0,9375 = 0,9683
 
 h<sub>max</sub>   = f<sub>z</sub> · sin(θ<sub>e</sub>) = 0,08 × 0,9683 = 0,0775 mm
 S<sub>c,max</sub> = a<sub>p</sub> · h<sub>max</sub> = 2 × 0,0775 = 0,1549 mm²
 F<sub>c,max</sub> = p<sub>s</sub> · S<sub>c,max</sub> = 2.900 × 0,1549 ≈ <b>449–452 N</b></span>
-      <h4>b) a<sub>e</sub> = 20 mm = R (semisumersión)</h4>
-      <span class="res-formula">θ<sub>e</sub> = arccos(0/20) = arccos(0) = 90°
+<h4>b) a<sub>e</sub> = 20 mm = R (semisumersión)</h4>
+<span class="res-formula">θ<sub>e</sub> = arccos(0/20) = arccos(0) = 90°
 h<sub>max</sub>   = f<sub>z</sub> · sin(90°) = f<sub>z</sub> = 0,08 mm
 F<sub>c,max</sub> = p<sub>s</sub> · a<sub>p</sub> · f<sub>z</sub> = 2.900 × 2 × 0,08 = <b>464 N</b></span>
-      <h4>c) a<sub>e</sub> = 24 mm &gt; R (inmersión &gt; 50%)</h4>
-      <span class="res-formula">θ<sub>e</sub> = arccos((20−24)/20) = arccos(−0,2) = 101,5° &gt; 90°
+<h4>c) a<sub>e</sub> = 24 mm &gt; R (inmersión &gt; 50%)</h4>
+<span class="res-formula">θ<sub>e</sub> = arccos((20−24)/20) = arccos(−0,2) = 101,5° &gt; 90°
 → h<sub>max</sub> = f<sub>z</sub> (máximo en θ = 90°, no en la salida)
 F<sub>c,max</sub> = 2.900 × 2 × 0,08 = <b>464 N</b>  (igual que caso b)</span>
-      <p class="res-note">Para a<sub>e</sub> ≥ R, h<sub>max</sub> siempre es f<sub>z</sub>·sin(90°) = f<sub>z</sub> y F<sub>c,max</sub> no varía aunque aumente a<sub>e</sub>.</p>
-    </div>
-  </div>
+<p class="res-note">Para a<sub>e</sub> ≥ R, h<sub>max</sub> siempre es f<sub>z</sub>·sin(90°) = f<sub>z</sub> y F<sub>c,max</sub> no varía aunque aumente a<sub>e</sub>.</p>
 </div>
-<div class="ex-card" id="ex3">
-  <div class="ex-header" onclick="toggleEx('ex3')">
-    <div class="ex-header-left">
-      <h2>T2.P3 &middot; Fresado de volumen 200&times;30&times;9 mm &mdash; selecci&oacute;n herramienta y t<sub>c</sub></h2>
-      <div class="ex-meta">Selecci&oacute;n herramienta &middot; Pasadas axiales y radiales &middot; Tiempo m&iacute;nimo &middot; Potencia</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Se desea realizar la operaci&oacute;n de la figura para mecanizar un volumen <b>200 &times; 30 &times; 9 mm</b>. Se dispone de dos herramientas:</p>
+</div>
+</div>
+<div class="topic-panel" id="ex3">
+<div class="panel-header">
+<div class="panel-tag">T2.P3</div>
+<h1 class="panel-title">Fresado de volumen 200×30×9 mm — selección herramienta y t c</h1>
+<div class="panel-meta">Selección herramienta · Pasadas axiales y radiales · Tiempo mínimo · Potencia</div>
+</div>
+<div class="enunciado"><p>Se desea realizar la operación de la figura para mecanizar un volumen <b>200 × 30 × 9 mm</b>. Se dispone de dos herramientas:</p>
 <table style="width:100%;border-collapse:collapse;font-size:.83em;margin:10px 0">
-<thead><tr style="background:#111;color:#ffd93d"><th style="padding:6px 10px;border:1px solid #5c4200">Herramienta</th><th style="padding:6px 10px;border:1px solid #5c4200">D [mm]</th><th style="padding:6px 10px;border:1px solid #5c4200">Z</th><th style="padding:6px 10px;border:1px solid #5c4200">&kappa;<sub>r</sub></th><th style="padding:6px 10px;border:1px solid #5c4200">Condiciones</th></tr></thead>
+<thead><tr style="background:#111;color:#ffd93d"><th style="padding:6px 10px;border:1px solid #5c4200">Herramienta</th><th style="padding:6px 10px;border:1px solid #5c4200">D [mm]</th><th style="padding:6px 10px;border:1px solid #5c4200">Z</th><th style="padding:6px 10px;border:1px solid #5c4200">κ<sub>r</sub></th><th style="padding:6px 10px;border:1px solid #5c4200">Condiciones</th></tr></thead>
 <tbody>
-<tr style="color:#e0d8a0"><td style="padding:6px 10px;border:1px solid #1a1a2a">H1 (plaquitas)</td><td style="padding:6px 10px;border:1px solid #1a1a2a">40</td><td style="padding:6px 10px;border:1px solid #1a1a2a">5</td><td style="padding:6px 10px;border:1px solid #1a1a2a">90&deg;</td><td style="padding:6px 10px;border:1px solid #1a1a2a">N &le; 2.500 rpm; f<sub>z</sub> = 0,1–0,25 mm; a<sub>p</sub> &le; 4 mm; a<sub>e</sub>/D &le; 75%</td></tr>
-<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:6px 10px;border:1px solid #1a1a2a">H2 (mango)</td><td style="padding:6px 10px;border:1px solid #1a1a2a">16</td><td style="padding:6px 10px;border:1px solid #1a1a2a">4</td><td style="padding:6px 10px;border:1px solid #1a1a2a">90&deg;</td><td style="padding:6px 10px;border:1px solid #1a1a2a">v<sub>c</sub> = 300 m/min (fija); f<sub>z</sub> = 0,1–0,35 mm; a<sub>p</sub> &le; 10 mm; a<sub>p</sub>&middot;a<sub>e</sub> &le; 90</td></tr>
+<tr style="color:#e0d8a0"><td style="padding:6px 10px;border:1px solid #1a1a2a">H1 (plaquitas)</td><td style="padding:6px 10px;border:1px solid #1a1a2a">40</td><td style="padding:6px 10px;border:1px solid #1a1a2a">5</td><td style="padding:6px 10px;border:1px solid #1a1a2a">90°</td><td style="padding:6px 10px;border:1px solid #1a1a2a">N ≤ 2.500 rpm; f<sub>z</sub> = 0,1–0,25 mm; a<sub>p</sub> ≤ 4 mm; a<sub>e</sub>/D ≤ 75%</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:6px 10px;border:1px solid #1a1a2a">H2 (mango)</td><td style="padding:6px 10px;border:1px solid #1a1a2a">16</td><td style="padding:6px 10px;border:1px solid #1a1a2a">4</td><td style="padding:6px 10px;border:1px solid #1a1a2a">90°</td><td style="padding:6px 10px;border:1px solid #1a1a2a">v<sub>c</sub> = 300 m/min (fija); f<sub>z</sub> = 0,1–0,35 mm; a<sub>p</sub> ≤ 10 mm; a<sub>p</sub>·a<sub>e</sub> ≤ 90</td></tr>
 </tbody></table>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
-<li>Seleccionar la herramienta m&aacute;s adecuada para el m&iacute;nimo t<sub>c</sub>. Obtener v<sub>c</sub>, f<sub>z</sub>, a<sub>p</sub>, a<sub>e</sub>, n&ordm; de pasadas axiales y radiales, y t<sub>c</sub>.</li>
-<li>Misma pregunta si la potencia media de la m&aacute;quina es P<sub>m</sub> = 30 kW, tomando p&#772;<sub>s</sub> = 2.000 &middot; h<sub>max</sub><sup>&minus;0,3</sup>.</li>
+<li>Seleccionar la herramienta más adecuada para el mínimo t<sub>c</sub>. Obtener v<sub>c</sub>, f<sub>z</sub>, a<sub>p</sub>, a<sub>e</sub>, nº de pasadas axiales y radiales, y t<sub>c</sub>.</li>
+<li>Misma pregunta si la potencia media de la máquina es P<sub>m</sub> = 30 kW, tomando p̄<sub>s</sub> = 2.000 · h<sub>max</sub><sup>−0,3</sup>.</li>
 </ol></div>
-    <div class="fig-plano"><img src="img/t2/p03_a.png" alt="p03_a" loading="lazy"></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) H2; t<sub>c</sub> = 4,31 s &middot; b) H2; t<sub>c</sub> = 5,2 s</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <h4>a) Selección de herramienta y t<sub>c</sub> mínimo</h4>
-      <p><b>Análisis H2</b> (D=16mm, Z=4, v<sub>c</sub>=300m/min fija):</p>
-      <span class="res-formula">N = v<sub>c</sub>·1000/(π·D) = 300.000/(π×16) = 5.968 rpm
+<div class="fig-plano"><img alt="p03_a" loading="lazy" src="img/t2/p03_a.png"/></div>
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) H2; t<sub>c</sub> = 4,31 s · b) H2; t<sub>c</sub> = 5,2 s</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<h4>a) Selección de herramienta y t<sub>c</sub> mínimo</h4>
+<p><b>Análisis H2</b> (D=16mm, Z=4, v<sub>c</sub>=300m/min fija):</p>
+<span class="res-formula">N = v<sub>c</sub>·1000/(π·D) = 300.000/(π×16) = 5.968 rpm
 
 Geometría del volumen: 200×30×9 mm
 a<sub>p,max</sub> = 9 mm  (≤10 ✓);  nº pasadas axiales = 1
@@ -267,70 +285,66 @@ Pasadas radiales = 30/10 = 3
 
 f<sub>z,max</sub> = 0,35 mm → v<sub>f</sub> = N·Z·f<sub>z</sub> = 5968×4×0,35 = 8.355 mm/min
 t<sub>c</sub> = L·(n_rad×n_ax)/v<sub>f</sub> = 200×3/8355 = 0,0718 min = <b>4,31 s</b></span>
-      <p><b>Análisis H1</b> (D=40mm, Z=5, N≤2500rpm):</p>
-      <span class="res-formula">v<sub>f,H1</sub> = 2500×5×0,25 = 3.125 mm/min
+<p><b>Análisis H1</b> (D=40mm, Z=5, N≤2500rpm):</p>
+<span class="res-formula">v<sub>f,H1</sub> = 2500×5×0,25 = 3.125 mm/min
 a<sub>p,max</sub>=4mm → 3 pasadas axiales; a<sub>e,max</sub>=30mm → 1 pasada radial
 t<sub>c,H1</sub> = 200×3/3125 = 0,192 min = 11,5 s  (2,7× más lento) → NO elegir</span>
-      <p class="res-ok">Herramienta óptima: H2; t<sub>c</sub> = 4,31 s.</p>
-      <h4>b) Con restricción de potencia P<sub>m</sub> = 30 kW, p̄<sub>s</sub> = 2000·h<sub>max</sub><sup>−0,3</sup></h4>
-      <p>Se reduce f<sub>z</sub> hasta que la potencia media sea ≤ 30 kW. El f<sub>z</sub> óptimo se obtiene igualando:</p>
-      <span class="res-formula">P̄<sub>c</sub> = p̄<sub>s</sub>·a<sub>p</sub>·ā<sub>e,eq</sub>·v<sub>f</sub> / 60.000 ≤ 30 kW
+<p class="res-ok">Herramienta óptima: H2; t<sub>c</sub> = 4,31 s.</p>
+<h4>b) Con restricción de potencia P<sub>m</sub> = 30 kW, p̄<sub>s</sub> = 2000·h<sub>max</sub><sup>−0,3</sup></h4>
+<p>Se reduce f<sub>z</sub> hasta que la potencia media sea ≤ 30 kW. El f<sub>z</sub> óptimo se obtiene igualando:</p>
+<span class="res-formula">P̄<sub>c</sub> = p̄<sub>s</sub>·a<sub>p</sub>·ā<sub>e,eq</sub>·v<sub>f</sub> / 60.000 ≤ 30 kW
 
 Iterar: con la restricción de potencia se obtiene f<sub>z</sub> reducido → t<sub>c</sub> = <b>5,2 s</b></span>
-      <p class="res-note">El procedimiento de iteración detallado requiere los datos exactos de p̄<sub>s</sub>(h̄). Aplicar la fórmula de potencia media de fresado con espesor medio h̄ = 2·f<sub>z</sub>·a<sub>e</sub>/(θ·D).</p>
-    </div>
-  </div>
+<p class="res-note">El procedimiento de iteración detallado requiere los datos exactos de p̄<sub>s</sub>(h̄). Aplicar la fórmula de potencia media de fresado con espesor medio h̄ = 2·f<sub>z</sub>·a<sub>e</sub>/(θ·D).</p>
 </div>
-<div class="ex-card" id="ex4">
-  <div class="ex-header" onclick="toggleEx('ex4')">
-    <div class="ex-header-left">
-      <h2>T2.P4 &middot; Planeado &mdash; v<sub>f,max</sub> con restricci&oacute;n de potencia</h2>
-      <div class="ex-meta">Planeado &middot; Espesor medio de viruta &middot; Velocidad de avance m&aacute;xima</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Se desea realizar un <b>planeado</b> con gama continua de velocidades. Potencia nominal P = 35 kW; p&eacute;rdidas de rendimiento del 20%. Calcular la velocidad de avance m&aacute;xima v<sub>f,max</sub>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex4">
+<div class="panel-header">
+<div class="panel-tag">T2.P4</div>
+<h1 class="panel-title">Planeado — v f,max con restricción de potencia</h1>
+<div class="panel-meta">Planeado · Espesor medio de viruta · Velocidad de avance máxima</div>
+</div>
+<div class="enunciado"><p>Se desea realizar un <b>planeado</b> con gama continua de velocidades. Potencia nominal P = 35 kW; pérdidas de rendimiento del 20%. Calcular la velocidad de avance máxima v<sub>f,max</sub>.</p>
 <ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
-<li>D = 350 mm; Z = 12 dientes; &kappa;<sub>r</sub> = 60&deg;.</li>
+<li>D = 350 mm; Z = 12 dientes; κ<sub>r</sub> = 60°.</li>
 <li>Profundidad axial a<sub>p</sub> = 3 mm.</li>
-<li>Espesor de viruta m&aacute;ximo h<sub>max</sub> = 0,3 mm.</li>
-<li>Intervalo de velocidad de corte: 100 &ndash; 200 m/min.</li>
+<li>Espesor de viruta máximo h<sub>max</sub> = 0,3 mm.</li>
+<li>Intervalo de velocidad de corte: 100 – 200 m/min.</li>
 <li>Pieza a planear: 300 mm de anchura.</li>
 </ul>
-<p style="font-size:.82em;color:#6b7280">h&#772; = (2 &middot; f<sub>z</sub> &middot; a<sub>e</sub> &middot; sin &kappa;<sub>r</sub>) / (&theta; &middot; D)</p></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> v<sub>f</sub> = 679 mm/min</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <h4>Paso 1 — Avance máximo por diente (restricción h<sub>max</sub>)</h4>
-      <p>El espesor de viruta máximo es h<sub>max</sub> = f<sub>z</sub>·sin(κ<sub>r</sub>):</p>
-      <span class="res-formula">f<sub>z,max</sub> = h<sub>max</sub> / sin(κ<sub>r</sub>) = 0,3 / sin(60°) = 0,3 / 0,866 = 0,346 mm/diente</span>
-      <h4>Paso 2 — Velocidad de corte y de giro</h4>
-      <p>Para minimizar potencia por pasada se usa v<sub>c,min</sub> = 100 m/min. Para maximizar v<sub>f</sub> = N·Z·f<sub>z</sub> se usa v<sub>c,max</sub> = 200 m/min:</p>
-      <span class="res-formula">N<sub>max</sub> = v<sub>c,max</sub>·1000 / (π·D) = 200.000 / (π×350) = 181,8 rpm</span>
-      <h4>Paso 3 — Verificación restricción de potencia</h4>
-      <p>Potencia disponible: P<sub>útil</sub> = 35×0,8 = 28 kW. La potencia media de corte para planeado (a<sub>e</sub> = 300 mm, a<sub>p</sub> = 3 mm) limita f<sub>z</sub>. Igualando P̄<sub>c</sub> = 28 kW:</p>
-      <span class="res-formula">P̄<sub>c</sub> = p̄<sub>s</sub>·Z<sub>en corte</sub>·a<sub>p</sub>·h̄·v<sub>c</sub> / 60.000 = 28 kW
+<p style="font-size:.82em;color:#6b7280">h̄ = (2 · f<sub>z</sub> · a<sub>e</sub> · sin κ<sub>r</sub>) / (θ · D)</p></div>
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> v<sub>f</sub> = 679 mm/min</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<h4>Paso 1 — Avance máximo por diente (restricción h<sub>max</sub>)</h4>
+<p>El espesor de viruta máximo es h<sub>max</sub> = f<sub>z</sub>·sin(κ<sub>r</sub>):</p>
+<span class="res-formula">f<sub>z,max</sub> = h<sub>max</sub> / sin(κ<sub>r</sub>) = 0,3 / sin(60°) = 0,3 / 0,866 = 0,346 mm/diente</span>
+<h4>Paso 2 — Velocidad de corte y de giro</h4>
+<p>Para minimizar potencia por pasada se usa v<sub>c,min</sub> = 100 m/min. Para maximizar v<sub>f</sub> = N·Z·f<sub>z</sub> se usa v<sub>c,max</sub> = 200 m/min:</p>
+<span class="res-formula">N<sub>max</sub> = v<sub>c,max</sub>·1000 / (π·D) = 200.000 / (π×350) = 181,8 rpm</span>
+<h4>Paso 3 — Verificación restricción de potencia</h4>
+<p>Potencia disponible: P<sub>útil</sub> = 35×0,8 = 28 kW. La potencia media de corte para planeado (a<sub>e</sub> = 300 mm, a<sub>p</sub> = 3 mm) limita f<sub>z</sub>. Igualando P̄<sub>c</sub> = 28 kW:</p>
+<span class="res-formula">P̄<sub>c</sub> = p̄<sub>s</sub>·Z<sub>en corte</sub>·a<sub>p</sub>·h̄·v<sub>c</sub> / 60.000 = 28 kW
 
 Con a<sub>e</sub>=300mm, D=350mm → θ = arccos((175−300)/175) = 135,5° = 2,365 rad
 Z<sub>en corte</sub> = 12×2,365/(2π) = 4,51 dientes
 h̄ = 2·f<sub>z</sub>·a<sub>e</sub>·sin(κ<sub>r</sub>)/(θ·D) → depende de p̄<sub>s</sub>(material)
 
 Resolviendo con los datos del material: f<sub>z</sub> óptimo → v<sub>f</sub> = N·Z·f<sub>z</sub> = <b>679 mm/min</b></span>
-      <p class="res-note">El valor numérico exacto requiere p̄<sub>s</sub> del material (dato de tabla del curso).</p>
-    </div>
-  </div>
+<p class="res-note">El valor numérico exacto requiere p̄<sub>s</sub> del material (dato de tabla del curso).</p>
 </div>
-<div class="ex-card" id="ex5">
-  <div class="ex-header" onclick="toggleEx('ex5')">
-    <div class="ex-header-left">
-      <h2>T2.P5 &middot; Planeado + escuadrado bloque 200&times;60&times;100 mm</h2>
-      <div class="ex-meta">Selecci&oacute;n herramienta &middot; Par&aacute;metros de corte &middot; Potencia media &middot; p&#772;<sub>s</sub></div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Se desean ejecutar las operaciones de la figura en el menor tiempo posible, partiendo de un bloque prism&aacute;tico <b>200 &times; 60 &times; 100 mm</b>. Condiciones: a<sub>e</sub> &lt; 0,65&middot;D; F<sub>c,max</sub> &lt; 3.200 N; p<sub>s</sub> = 1.950 &middot; h<sup>&minus;0,23</sup>. Dos tipos de herramientas (&kappa;<sub>r</sub> = 45&deg; y &kappa;<sub>r</sub> = 90&deg;) con distintos D, Z, a<sub>p,max</sub> y N<sub>max</sub>. Dos calidades de placa con tabla h<sub>max</sub> &rarr; v<sub>c</sub>.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex5">
+<div class="panel-header">
+<div class="panel-tag">T2.P5</div>
+<h1 class="panel-title">Planeado + escuadrado bloque 200×60×100 mm</h1>
+<div class="panel-meta">Selección herramienta · Parámetros de corte · Potencia media · p̄<sub>s</sub></div>
+</div>
+<div class="enunciado"><p>Se desean ejecutar las operaciones de la figura en el menor tiempo posible, partiendo de un bloque prismático <b>200 × 60 × 100 mm</b>. Condiciones: a<sub>e</sub> &lt; 0,65·D; F<sub>c,max</sub> &lt; 3.200 N; p<sub>s</sub> = 1.950 · h<sup>−0,23</sup>. Dos tipos de herramientas (κ<sub>r</sub> = 45° y κ<sub>r</sub> = 90°) con distintos D, Z, a<sub>p,max</sub> y N<sub>max</sub>. Dos calidades de placa con tabla h<sub>max</sub> → v<sub>c</sub>.</p>
 <p><b>Operaciones:</b></p>
 <ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
 <li>Planeado: retirar 4,5 mm.</li>
@@ -338,136 +352,156 @@ Resolviendo con los datos del material: f<sub>z</sub> óptimo → v<sub>f</sub> 
 </ul>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
-<li>Elegir la herramienta m&aacute;s adecuada para cada operaci&oacute;n.</li>
-<li>Definir los par&aacute;metros de corte (a<sub>p</sub>, a<sub>e</sub>, f<sub>z</sub>, v<sub>c</sub>) y elegir calidad de placa.</li>
-<li>Calcular la potencia media P<sub>c</sub> para el planeado usando la fuerza media espec&iacute;fica p&#772;<sub>s</sub> = 2.000 &middot; (h&#772;)<sup>&minus;0,21</sup>.</li>
+<li>Elegir la herramienta más adecuada para cada operación.</li>
+<li>Definir los parámetros de corte (a<sub>p</sub>, a<sub>e</sub>, f<sub>z</sub>, v<sub>c</sub>) y elegir calidad de placa.</li>
+<li>Calcular la potencia media P<sub>c</sub> para el planeado usando la fuerza media específica p̄<sub>s</sub> = 2.000 · (h̄)<sup>−0,21</sup>.</li>
 </ol></div>
-    <div class="fig-plano"><img src="img/t2/p05_a.png" alt="p05_a" loading="lazy"></div>
-    <div class="fig-plano"><img src="img/t2/p05_b.png" alt="p05_b" loading="lazy"></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> Planeado: D=100,Z=7,a<sub>p</sub>=6mm,N=1130rpm,&kappa;<sub>r</sub>=45&deg; &mdash; Escuadrado: D=50,Z=4,N=7900rpm,&kappa;<sub>r</sub>=90&deg; &middot; b) v<sub>c</sub>=190/139 m/min &middot; c) P<sub>c</sub> = 13,6 kW</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <p class="res-note">Este ejercicio requiere las tablas de herramientas y calidades de placa del enunciado.</p>
-      <h4>Criterio de selección general</h4>
-      <p><b>Planeado</b> (retirar 4,5 mm sobre 200×60mm): necesita fresa de mayor diámetro para cubrir el ancho en pocas pasadas. Usar κ<sub>r</sub>=45° para reparto de carga. a<sub>e</sub> &lt; 0,65·D.</p>
-      <p><b>Escuadrado</b> (retirar 20 mm en vertical): necesita profundidad axial grande. Usar κ<sub>r</sub>=90° para fuerza radial cero. Minimizar t<sub>c</sub> maximizando a<sub>p</sub> y v<sub>f</sub>.</p>
-      <h4>a) Herramienta para planeado: D=100mm, Z=7, κ<sub>r</sub>=45°</h4>
-      <span class="res-formula">a<sub>e,max</sub> = 0,65×100 = 65mm → 1 pasada radial cubre 60mm ✓
+<div class="fig-plano"><img alt="p05_a" loading="lazy" src="img/t2/p05_a.png"/></div>
+<div class="fig-plano"><img alt="p05_b" loading="lazy" src="img/t2/p05_b.png"/></div>
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> Planeado: D=100,Z=7,a<sub>p</sub>=6mm,N=1130rpm,κ<sub>r</sub>=45° — Escuadrado: D=50,Z=4,N=7900rpm,κ<sub>r</sub>=90° · b) v<sub>c</sub>=190/139 m/min · c) P<sub>c</sub> = 13,6 kW</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<p class="res-note">Este ejercicio requiere las tablas de herramientas y calidades de placa del enunciado.</p>
+<h4>Criterio de selección general</h4>
+<p><b>Planeado</b> (retirar 4,5 mm sobre 200×60mm): necesita fresa de mayor diámetro para cubrir el ancho en pocas pasadas. Usar κ<sub>r</sub>=45° para reparto de carga. a<sub>e</sub> &lt; 0,65·D.</p>
+<p><b>Escuadrado</b> (retirar 20 mm en vertical): necesita profundidad axial grande. Usar κ<sub>r</sub>=90° para fuerza radial cero. Minimizar t<sub>c</sub> maximizando a<sub>p</sub> y v<sub>f</sub>.</p>
+<h4>a) Herramienta para planeado: D=100mm, Z=7, κ<sub>r</sub>=45°</h4>
+<span class="res-formula">a<sub>e,max</sub> = 0,65×100 = 65mm → 1 pasada radial cubre 60mm ✓
 N = v<sub>c</sub>·1000/(π·D) = 190.000/(π×100) = 605 rpm... → 1.130 rpm con v<sub>c</sub>=190 m/min</span>
-      <h4>a) Herramienta para escuadrado: D=50mm, Z=4, κ<sub>r</sub>=90°</h4>
-      <span class="res-formula">a<sub>p,max</sub> permite cubrir 20mm en pocas pasadas
+<h4>a) Herramienta para escuadrado: D=50mm, Z=4, κ<sub>r</sub>=90°</h4>
+<span class="res-formula">a<sub>p,max</sub> permite cubrir 20mm en pocas pasadas
 N = v<sub>c</sub>·1000/(π·D) = 139.000/(π×50) ≈ 885 rpm → N<sub>tabla</sub> = 7.900 rpm</span>
-      <h4>c) Potencia media en planeado</h4>
-      <span class="res-formula">h̄ = 2·f<sub>z</sub>·a<sub>e</sub>·sin(κ<sub>r</sub>)/(θ·D)
+<h4>c) Potencia media en planeado</h4>
+<span class="res-formula">h̄ = 2·f<sub>z</sub>·a<sub>e</sub>·sin(κ<sub>r</sub>)/(θ·D)
 p̄<sub>s</sub> = 2000·h̄<sup>−0,21</sup>
 P̄<sub>c</sub> = p̄<sub>s</sub>·a<sub>p</sub>·a<sub>e</sub>·v<sub>f</sub> / 60.000 = <b>13,6 kW</b></span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex6">
-  <div class="ex-header" onclick="toggleEx('ex6')">
-    <div class="ex-header-left">
-      <h2>T2.P6 &middot; Organigrama D40&times;L170 &mdash; chavetero (fresado)</h2>
-      <div class="ex-meta">Organigrama &middot; Potencia m&aacute;xima &middot; F<sub>c,max</sub> en chavetero</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Partiendo de un cilindro D40 &times; L170 mm se desea conseguir la pieza de la figura (eje escalonado con M30&times;2, &Oslash;28, &Oslash;33, &Oslash;34, &Oslash;30, &Oslash;28, &Oslash;26 y chavetero). Acabado N7 en todas las superficies. Material: acero al carbono UNE F114; CMC (Sandvik) 01.2; p<sub>s</sub> = 1.600 N/mm&sup2;. Potencia nominal: P = 15 kW.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex6">
+<div class="panel-header">
+<div class="panel-tag">T2.P6</div>
+<h1 class="panel-title">Organigrama D40×L170 — chavetero (fresado)</h1>
+<div class="panel-meta">Organigrama · Potencia máxima · F<sub>c,max</sub> en chavetero</div>
+</div>
+<div class="enunciado"><p>Partiendo de un cilindro D40 × L170 mm se desea conseguir la pieza de la figura (eje escalonado con M30×2, Ø28, Ø33, Ø34, Ø30, Ø28, Ø26 y chavetero). Acabado N7 en todas las superficies. Material: acero al carbono UNE F114; CMC (Sandvik) 01.2; p<sub>s</sub> = 1.600 N/mm². Potencia nominal: P = 15 kW.</p>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
 <li>Desarrollar el <b>organigrama</b> de la pieza (operaciones, herramientas, amarres).</li>
-<li>Teniendo en cuenta la potencia de la m&aacute;quina, se&ntilde;alar en qu&eacute; operaci&oacute;n se produce la potencia m&aacute;xima de corte y calcularla.</li>
-<li>Para el <b>chavetero</b>: p<sub>s</sub> = 2.500 N/mm&sup2; (constante), a<sub>p</sub> = 8 mm (profundidad ranura), f<sub>z</sub> = 0,15 mm/diente, fresa de 2 filos. Calcular F<sub>c,max</sub> en el fresado.</li>
+<li>Teniendo en cuenta la potencia de la máquina, señalar en qué operación se produce la potencia máxima de corte y calcularla.</li>
+<li>Para el <b>chavetero</b>: p<sub>s</sub> = 2.500 N/mm² (constante), a<sub>p</sub> = 8 mm (profundidad ranura), f<sub>z</sub> = 0,15 mm/diente, fresa de 2 filos. Calcular F<sub>c,max</sub> en el fresado.</li>
 </ol></div>
-    <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
-    <div class="resolucion">
-      <h3>Resolución parcial (apartado c — chavetero)</h3>
-      <p>Datos: p<sub>s</sub>=2.500 N/mm², a<sub>p</sub>=8mm, f<sub>z</sub>=0,15mm/diente, Z=2 filos. Operación de escuadrado con fresa de módulo (a<sub>e</sub>=D, ranura cerrada).</p>
-      <h4>Sección de viruta máxima y F<sub>c,max</sub></h4>
-      <span class="res-formula">Para ranura completa (a<sub>e</sub> = D): h<sub>max</sub> = f<sub>z</sub>·sin(90°) = f<sub>z</sub> = 0,15 mm
+<div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución parcial (apartado c — chavetero) <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución parcial (apartado c — chavetero)</h3>
+<p>Datos: p<sub>s</sub>=2.500 N/mm², a<sub>p</sub>=8mm, f<sub>z</sub>=0,15mm/diente, Z=2 filos. Operación de escuadrado con fresa de módulo (a<sub>e</sub>=D, ranura cerrada).</p>
+<h4>Sección de viruta máxima y F<sub>c,max</sub></h4>
+<span class="res-formula">Para ranura completa (a<sub>e</sub> = D): h<sub>max</sub> = f<sub>z</sub>·sin(90°) = f<sub>z</sub> = 0,15 mm
 S<sub>c,max</sub> = a<sub>p</sub> · h<sub>max</sub> = 8 × 0,15 = 1,20 mm²
 F<sub>c,max</sub> = p<sub>s</sub> · S<sub>c,max</sub> = 2.500 × 1,20 = <b>3.000 N</b>  (por diente)</span>
-      <p class="res-note">El organigrama completo requiere el plano de la pieza del enunciado.</p>
-    </div>
-  </div>
+<p class="res-note">El organigrama completo requiere el plano de la pieza del enunciado.</p>
 </div>
-<div class="ex-card ex-card-exam" id="ex7">
-  <div class="ex-header" onclick="toggleEx('ex7')">
-    <div class="ex-header-left">
-      <h2>T2.P7 &middot; Organigrama D50&times;L106 &mdash; M30&times;2 + chavetero <span class="exam-badge">&#9733; Ordinaria 2021-22</span></h2>
-      <div class="ex-meta">Organigrama &middot; Desbaste &Oslash;25&times;41 &middot; Potencia &middot; Rugosidad R<sub>t</sub>=8 &mu;m</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Partiendo de D50 &times; L106 mm se desea conseguir la pieza de la figura (eje con M30&times;2, escalones &Oslash;28/&Oslash;33/&Oslash;34/&Oslash;30/&Oslash;28/&Oslash;26 y chavetero). Material: acero al carbono UNE F114; CMC 01.2; p<sub>s</sub> = 1.600 N/mm&sup2;. Potencia P = 15 kW. Acabado N7.</p>
+</div>
+</div>
+<div class="topic-panel topic-panel-exam" id="ex7">
+<div class="panel-header panel-header-exam">
+<div class="panel-tag panel-tag-exam">T2.P7</div>
+<h1 class="panel-title">Organigrama D50×L106 — M30×2 + chavetero  <span class="exam-badge">★ Ordinaria 2021-22</span></h1>
+<div class="panel-meta">Organigrama · Desbaste Ø25×41 · Potencia · Rugosidad R<sub>t</sub>=8 μm</div>
+</div>
+<div class="enunciado"><p>Partiendo de D50 × L106 mm se desea conseguir la pieza de la figura (eje con M30×2, escalones Ø28/Ø33/Ø34/Ø30/Ø28/Ø26 y chavetero). Material: acero al carbono UNE F114; CMC 01.2; p<sub>s</sub> = 1.600 N/mm². Potencia P = 15 kW. Acabado N7.</p>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
 <li>Desarrollar el <b>organigrama</b> de la pieza (operaciones, herramientas, amarres).</li>
-<li>Teniendo en cuenta la potencia de la m&aacute;quina, obtener las condiciones de corte para el desbaste <b>&Oslash;25 &times; 41 mm</b>. Calcular la potencia de corte necesaria y el tiempo de mecanizado.</li>
-<li>Seleccionar la herramienta m&aacute;s adecuada para lograr R<sub>t</sub> = 8 &mu;m.</li>
+<li>Teniendo en cuenta la potencia de la máquina, obtener las condiciones de corte para el desbaste <b>Ø25 × 41 mm</b>. Calcular la potencia de corte necesaria y el tiempo de mecanizado.</li>
+<li>Seleccionar la herramienta más adecuada para lograr R<sub>t</sub> = 8 μm.</li>
 </ol></div>
-    <div class="fig-plano"><img src="img/t2/p07_a.png" alt="p07_a" loading="lazy"></div>
-    <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
-  </div>
+<div class="fig-plano"><img alt="p07_a" loading="lazy" src="img/t2/p07_a.png"/></div>
+<div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
+<div class="soon">Resolución próximamente…</div>
 </div>
-<div class="ex-card ex-card-exam" id="ex8">
-  <div class="ex-header" onclick="toggleEx('ex8')">
-    <div class="ex-header-left">
-      <h2>T2.P8 &middot; Organigrama &Oslash;65&times;L110 &mdash; M28&times;3,5 + chavetero (inox) <span class="exam-badge">&#9733; Ordinaria 2023-24</span></h2>
-      <div class="ex-meta">Acero inoxidable d&uacute;plex &middot; Organigrama &middot; Desbaste m&aacute;s problem&aacute;tico &middot; Caudal de viruta</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Partiendo de &Oslash;65 &times; L110 mm se desea conseguir la pieza de la figura (eje con M28&times;3,5, taladros interiores &Oslash;22/&Oslash;40, chavetero el&iacute;ptico 10&times;12 mm y chaflanes 2&times;45&deg;). Material: acero inoxidable (M), d&uacute;plex austen&iacute;tico-ferr&iacute;tico, soldable (&lt;C%0,05a); HB = 260; CMC (Sandvik) 05.52; p<sub>s</sub> = 2.450 N/mm&sup2;. Condiciones de acabado: pasada 0,5 mm. Rugosidad R<sub>t</sub> = f&sup2; / (8&middot;r<sub>&varepsilon;</sub>) &middot; 1.000. Taylor n = 0,2.</p>
+<div class="topic-panel topic-panel-exam" id="ex8">
+<div class="panel-header panel-header-exam">
+<div class="panel-tag panel-tag-exam">T2.P8</div>
+<h1 class="panel-title">Organigrama Ø65×L110 — M28×3,5 + chavetero (inox)  <span class="exam-badge">★ Ordinaria 2023-24</span></h1>
+<div class="panel-meta">Acero inoxidable dúplex · Organigrama · Desbaste más problemático · Caudal de viruta</div>
+</div>
+<div class="enunciado"><p>Partiendo de Ø65 × L110 mm se desea conseguir la pieza de la figura (eje con M28×3,5, taladros interiores Ø22/Ø40, chavetero elíptico 10×12 mm y chaflanes 2×45°). Material: acero inoxidable (M), dúplex austenítico-ferrítico, soldable (&lt;C%0,05a); HB = 260; CMC (Sandvik) 05.52; p<sub>s</sub> = 2.450 N/mm². Condiciones de acabado: pasada 0,5 mm. Rugosidad R<sub>t</sub> = f² / (8·r<sub>ϵ</sub>) · 1.000. Taylor n = 0,2.</p>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
 <li>Desarrollar el <b>organigrama</b> de operaciones (herramientas, amarres).</li>
-<li>Para el desbaste <b>m&aacute;s problem&aacute;tico</b> con P<sub>m&aacute;q</sub> = 6 kW: seleccionar herramienta, calcular t<sub>c</sub> m&iacute;nimo.</li>
-<li>Para el chavetero: D = 8 mm, Z = 2, v<sub>c</sub> = 125 m/min, a<sub>p</sub> = 8 mm, f<sub>z</sub> = 0,1 mm/rev/Z. Calcular F<sub>c,max</sub>, caudal de viruta Q<sub>c</sub> y P<sub>c</sub>. &iquest;Puede ejecutarse con la m&aacute;quina? Si no fuera posible, proponer 2&ndash;3 soluciones.</li>
+<li>Para el desbaste <b>más problemático</b> con P<sub>máq</sub> = 6 kW: seleccionar herramienta, calcular t<sub>c</sub> mínimo.</li>
+<li>Para el chavetero: D = 8 mm, Z = 2, v<sub>c</sub> = 125 m/min, a<sub>p</sub> = 8 mm, f<sub>z</sub> = 0,1 mm/rev/Z. Calcular F<sub>c,max</sub>, caudal de viruta Q<sub>c</sub> y P<sub>c</sub>. ¿Puede ejecutarse con la máquina? Si no fuera posible, proponer 2–3 soluciones.</li>
 </ol></div>
-    <div class="fig-plano"><img src="img/t2/p08_a.png" alt="p08_a" loading="lazy"></div>
-    <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
-  </div>
+<div class="fig-plano"><img alt="p08_a" loading="lazy" src="img/t2/p08_a.png"/></div>
+<div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
+<div class="soon">Resolución próximamente…</div>
 </div>
-<div class="ex-card ex-card-exam" id="ex9">
-  <div class="ex-header" onclick="toggleEx('ex9')">
-    <div class="ex-header-left">
-      <h2>T2.P9 &middot; Organigrama &Oslash;75&times;185 &mdash; M20, M26, chaveta (con Tabla 1) <span class="exam-badge">&#9733; Extraordinaria 2025-26</span></h2>
-      <div class="ex-meta">Organigrama &middot; Desbaste D42 &middot; Fresado de chaveta &middot; Potencia</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>(Ver tambi&eacute;n T1.P9 &mdash; mismo examen, mismo enunciado). Utilizando las herramientas de la <b>Tabla 1</b>, fabricar la pieza &Oslash;75 &times; 185 mm (M20&times;2,5, M26&times;3, chaveta &Oslash;26h6). p<sub>s</sub> = 3.000 N/mm&sup2;; torno paralelo N<sub>max</sub> = 1.800 rpm; P = 10 kW.</p>
+<div class="topic-panel topic-panel-exam" id="ex9">
+<div class="panel-header panel-header-exam">
+<div class="panel-tag panel-tag-exam">T2.P9</div>
+<h1 class="panel-title">Organigrama Ø75×185 — M20, M26, chaveta (con Tabla 1)  <span class="exam-badge">★ Extraordinaria 2025-26</span></h1>
+<div class="panel-meta">Organigrama · Desbaste D42 · Fresado de chaveta · Potencia</div>
+</div>
+<div class="enunciado"><p>(Ver también T1.P9 — mismo examen, mismo enunciado). Utilizando las herramientas de la <b>Tabla 1</b>, fabricar la pieza Ø75 × 185 mm (M20×2,5, M26×3, chaveta Ø26h6). p<sub>s</sub> = 3.000 N/mm²; torno paralelo N<sub>max</sub> = 1.800 rpm; P = 10 kW.</p>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
 <li>Desarrollar el <b>organigrama</b> (operaciones, herramientas, amarres, con croquis).</li>
 <li>Desbaste hasta D42 en L = 98 mm: seleccionar herramienta y condiciones de corte. Calcular P<sub>c</sub>.</li>
-<li>Calcular la potencia necesaria y t<sub>c</sub> para el <b>fresado de la chaveta</b>. Describir herramienta, m&aacute;quina y amarre.</li>
+<li>Calcular la potencia necesaria y t<sub>c</sub> para el <b>fresado de la chaveta</b>. Describir herramienta, máquina y amarre.</li>
 </ol></div>
-    <div class="fig-plano"><img src="img/t2/p09_a.png" alt="p09_a" loading="lazy"></div>
-    <div class="fig-plano"><img src="img/t2/p09_b.png" alt="p09_b" loading="lazy"></div>
-    <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
-  </div>
-</div>
-</div>
+<div class="fig-plano"><img alt="p09_a" loading="lazy" src="img/t2/p09_a.png"/></div>
+<div class="fig-plano"><img alt="p09_b" loading="lazy" src="img/t2/p09_b.png"/></div>
+<div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
+<div class="soon">Resolución próximamente…</div>
+</div></main></div>
+
+
 
 <script>
-function toggleEx(id){
-  var card=document.getElementById(id);
-  card.classList.toggle('open');
+var _allPanels = document.querySelectorAll('.topic-panel');
+var _allItems  = document.querySelectorAll('.sb-item');
+var _sbCurrent = document.getElementById('sbCurrent');
+var _readProg  = document.getElementById('readProgress');
+
+function showEx(id) {
+  _allPanels.forEach(function(p){ p.classList.remove('active'); });
+  _allItems.forEach(function(b){ b.classList.remove('active'); });
+  var panel = document.getElementById(id);
+  var btn   = document.querySelector('[data-id="'+id+'"]');
+  if (panel) panel.classList.add('active');
+  if (btn)   btn.classList.add('active');
+  if (_sbCurrent && btn) _sbCurrent.textContent = btn.querySelector('.sb-name').textContent;
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
 }
-function toggleSec(btn){
+
+function toggleSec(btn) {
   btn.parentElement.classList.toggle('sec-open');
 }
-var _tp=document.getElementById('temaPicker');
-document.addEventListener('click',function(e){if(_tp&&!_tp.contains(e.target))_tp.classList.remove('open');});
+
+function updateProgress() {
+  if (!_readProg) return;
+  var el = document.querySelector('.topic-panel.active');
+  if (!el) { _readProg.style.transform='scaleX(0)'; return; }
+  var st = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+  _readProg.style.transform = 'scaleX('+(h>0?Math.min(st/h,1):0)+')';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+
+// Tema picker
+var _tp = document.getElementById('temaPicker');
+document.addEventListener('click', function(e){ if(_tp && !_tp.contains(e.target)) _tp.classList.remove('open'); });
+
+// Activate first exercise on load
+document.addEventListener('DOMContentLoaded', function(){
+  var first = document.querySelector('.sb-item');
+  if (first) showEx(first.getAttribute('data-id'));
+});
 </script>
 </body>
 </html>

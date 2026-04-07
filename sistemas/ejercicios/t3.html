@@ -1,249 +1,261 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#000000" name="theme-color"/>
 <title>T3 Taladrado - Ejercicios - Sistemas UPV/EHU</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-
-
-
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#000000;--surface:#0d0d0d;--surface2:#111111;--border:#1a1a1a;
-  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --accent:#ffd93d;--gold:#f59e0b;--green:#6bcb77;--blue:#7ecfff;--orange:#f4a261;--yellow:#ffd93d;
-  --transition:.2s;
+  --bg:#131313;
+  --surface:rgba(255,255,255,.04);
+  --surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#ffd93d;
+  --accent-dim:rgba(255,217,61,.10);
+  --accent-border:rgba(255,217,61,.25);
+  --gold:#f59e0b;
+  --gold-dim:rgba(245,158,11,.09);
+  --gold-border:rgba(245,158,11,.28);
+  --green:#10b981;
+  --blue:#38bdf8;
+  --orange:#fb923c;
+  --ff:'Space Grotesk',system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;
+  --radius-sm:6px;
+  --topbar-h:52px;
+  --sidebar-w:264px;
+  --transition:.22s cubic-bezier(.4,0,.2,1);
 }
 html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
-.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:var(--topbar-h)}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
 .topbar-back:hover{color:var(--accent);text-decoration:none}
-.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbar-pill{margin-right:20px;background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:600;color:var(--accent);white-space:nowrap}
+.topbar-back svg{transition:transform var(--transition)}
+.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* PAGE HEADER */
-.page-header{padding:36px 24px 24px;max-width:960px;margin:0 auto;border-bottom:1px solid var(--border)}
-.ph-type{display:inline-block;background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:3px 12px;font-size:.72em;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
-.page-header h1{font-size:1.6em;font-weight:700;color:#f1f5f9;margin-bottom:6px}
-.ph-meta{font-size:.82em;color:var(--text2);margin-bottom:16px}
-.ph-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.ph-tag{padding:3px 10px;border-radius:20px;font-size:.72em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2)}
-
-/* JUMP LINKS */
-.jump-links{max-width:960px;margin:0 auto;padding:16px 24px;display:flex;flex-wrap:wrap;gap:8px}
-.jump-link{padding:6px 14px;border-radius:8px;font-size:.78em;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--text2);text-decoration:none;transition:var(--transition)}
-.jump-link:hover{background:#1a1400;color:var(--accent);border-color:var(--accent);text-decoration:none}
-.jump-link-exam{background:#1a0f00;border-color:#854d0e;color:#fbbf24}
-.jump-link-exam:hover{background:#2a1a00;color:#fde68a;border-color:#f59e0b}
-
-/* CONTAINER */
-.container{max-width:960px;margin:0 auto;padding:20px 24px 60px}
-
-/* EX CARDS */
-.ex-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden}
-.ex-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:background var(--transition)}
-.ex-header:hover{background:#111}
-.ex-header-left h2{color:var(--accent);font-size:1.05em;margin-bottom:3px;font-weight:600}
-.ex-meta{font-size:.78em;color:var(--text3)}
-.ex-arrow{color:#444;font-size:1em;margin-left:12px;transition:.2s}
-.ex-card.open .ex-arrow{transform:rotate(180deg);color:var(--accent)}
-.ex-body{display:none;padding:0 20px 20px}
-.ex-card.open .ex-body{display:block}
-
-/* ENUNCIADO */
-.enunciado{background:#080808;border-radius:8px;padding:14px 16px;font-size:.88em;line-height:1.75;margin-bottom:16px;border-left:3px solid #222}
-
-/* SECCIONES */
-.seccion{margin-bottom:14px;border-radius:8px;overflow:hidden}
-.sec-btn{width:100%;text-align:left;padding:11px 14px;border:none;border-radius:8px;cursor:pointer;font-size:.88em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center}
-.sec-btn .sarr{transition:.2s}
-.sec-open .sec-btn .sarr{transform:rotate(180deg)}
-.sec-body{display:none;border-radius:0 0 8px 8px;padding:14px 16px;font-size:.87em;line-height:1.75}
-.sec-open .sec-body{display:block}
-.s-datos .sec-btn{background:#1a1400;color:var(--accent);border:1px solid #5c4200}
-.s-datos .sec-body{background:#0a0a0a;border:1px solid #5c4200;border-top:none}
-.s-pide .sec-btn{background:#0a1a2e;color:var(--blue);border:1px solid #0d2a44}
-.s-pide .sec-body{background:#050e1a;border:1px solid #0d2a44;border-top:none}
-
-/* TABLAS */
-.t-datos{width:100%;border-collapse:collapse;font-size:.85em;margin:8px 0}
-.t-datos th{background:#2a2000;color:var(--accent);padding:7px 10px;text-align:left;border:1px solid #5c4200}
-.t-datos td{padding:7px 10px;border:1px solid #1a1a2a;color:#e0d8a0}
-.t-datos tr:nth-child(even) td{background:#0a0a0a}
-
-/* PRÓXIMAMENTE */
-.soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:20px;text-align:center;color:#333;font-size:.85em;font-style:italic}
-
-/* RESOLUCIÓN */
-.resolucion{background:#030f07;border:1px solid #1a4a20;border-radius:8px;padding:14px 16px;margin-top:10px}
-.resolucion h3{color:#6bcb77;font-size:.82em;font-weight:700;margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #1a4a20;padding-bottom:7px}
-.resolucion h4{color:#a8e6b0;font-size:.82em;font-weight:600;margin:12px 0 4px}
-.res-formula{display:block;padding:6px 10px;background:#050f07;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82em;color:#a8e6b0;margin:4px 0 8px;white-space:pre-wrap;border-left:2px solid #1a6a30;line-height:1.8}
-.res-note{color:#64748b;font-size:.82em;font-style:italic;margin:4px 0 8px}
-.res-warn{color:#fbbf24;font-size:.83em;background:#0d0800;border:1px solid #3a2a00;border-radius:4px;padding:6px 10px;margin:6px 0;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
-.res-ok{color:#6bcb77;font-size:.84em;font-weight:600}
-
-/* RESULTADO */
-.resultado-enunciado{background:#051a08;border:1px solid #1a4a20;border-radius:6px;padding:8px 14px;font-size:.83em;color:#8ecf94;margin-top:8px;border-left:3px solid #2a8a30}
-.res-label{font-weight:700;color:#aeedb4}
-
-/* NIVEL EXAMEN */
-.ex-card-exam{border-color:#854d0e}
-.ex-card-exam .ex-header:hover{background:#1a0f00}
-.ex-card-exam .ex-header-left h2{color:#fbbf24}
-.ex-card-exam.open .ex-arrow{color:#fbbf24}
-.exam-badge{display:inline-flex;align-items:center;gap:5px;background:#1a0f00;border:1px solid #854d0e;border-radius:20px;padding:3px 10px;font-size:.7em;font-weight:700;color:#fbbf24;margin-left:10px;vertical-align:middle;letter-spacing:.03em}
-
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#5c4200;border-radius:3px}
-
-/* TEMA PICKER */
-.tema-picker{position:relative;margin-right:20px}
-.tema-picker-btn{background:#1a1400;border:1px solid #5c4200;border-radius:20px;padding:4px 14px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s}
-.tema-picker-btn:hover{background:#261d00}
-.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:#0d0d0d;border:1px solid #3a2d00;border-radius:10px;padding:6px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+/* ── TEMA PICKER ── */
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-picker-btn:hover{background:rgba(255,217,61,.18)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:200px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
 .tema-picker.open .tema-dropdown{display:block}
-.td-item{display:block;padding:8px 12px;border-radius:6px;font-size:.8em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500}
-.td-item.td-available{color:#e2e8f0}.td-item.td-available:hover{background:#1a1400;color:var(--accent)}
-.td-item.td-active{color:var(--accent);background:#1a1400;font-weight:700;pointer-events:none}
-.td-num{display:inline-block;width:24px;font-weight:700}
-.td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
-@media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover,.td-item.td-available:hover{background:var(--accent-dim);color:var(--accent);text-decoration:none}
+.td-item.td-active,.td-item.td-available.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
+
+/* ── READING PROGRESS ── */
+.read-progress{position:fixed;top:var(--topbar-h);left:var(--sidebar-w);right:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--accent),var(--orange));transform-origin:left;transform:scaleX(0);transition:transform .08s linear}
+
+/* ── LAYOUT ── */
+.layout{display:flex;padding-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h))}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:var(--topbar-h);left:0;bottom:0;background:rgba(255,255,255,.025);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{width:100%;display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.78em;cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-item-exam{border-color:rgba(245,158,11,.15);color:var(--gold)}
+.sb-item-exam:hover{background:var(--gold-dim);color:var(--gold)}
+.sb-item-exam.active{background:var(--gold-dim);color:var(--gold);border-color:var(--gold-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:36px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-yellow{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.sb-link-yellow:hover{background:rgba(255,217,61,.18);text-decoration:none}
+
+/* ── CONTENT ── */
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
+
+/* ── TOPIC PANEL ── */
+.topic-panel{display:none;max-width:860px}
+.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PANEL HEADER ── */
+.panel-header{margin-bottom:22px;padding:14px 18px 16px;background:linear-gradient(135deg,var(--accent-dim) 0%,transparent 60%);border:1px solid rgba(255,217,61,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-title{font-size:1.25em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.exam-badge{display:inline-flex;align-items:center;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:20px;padding:2px 9px;font-size:.65em;font-weight:700;color:var(--gold);margin-left:8px;vertical-align:middle}
+
+/* ── ENUNCIADO ── */
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:12px;border-left:3px solid var(--accent-border)}
+
+/* ── RESULTADO ENUNCIADO ── */
+.resultado-enunciado{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-radius:var(--radius-sm);padding:8px 14px;font-size:.83em;color:#a7f3d0;margin-bottom:14px;border-left:3px solid rgba(16,185,129,.4)}
+.res-label{font-weight:700;color:#6ee7b7}
+
+/* ── SECTIONS ── */
+.section-wrap{margin-bottom:12px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.2);border-top:none}
+
+/* ── RESOLUTION CONTENT ── */
+.resolucion h3{display:none}
+.resolucion h4{color:var(--accent);font-size:.83em;font-weight:700;margin:12px 0 5px;letter-spacing:.04em}
+.resolucion p{margin-bottom:8px;font-size:.87em;color:var(--text2)}
+.res-formula{display:block;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:4px;font-family:var(--ff-mono);font-size:.79em;color:#e2e8f0;margin:4px 0 10px;white-space:pre-wrap;border-left:2px solid rgba(255,217,61,.3);line-height:1.8}
+.res-code{display:block;padding:10px 12px;background:#020a04;border-radius:6px;font-family:var(--ff-mono);font-size:.78em;color:#7dd87d;margin:6px 0;white-space:pre;line-height:1.65;overflow-x:auto;border:1px solid #0e3318}
+.res-note{color:#64748b;font-size:.82em;font-style:italic;margin:4px 0 8px}
+.res-warn{color:#fbbf24;font-size:.83em;background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:4px;padding:6px 10px;margin:6px 0;white-space:pre-wrap;font-family:var(--ff-mono)}
+.res-ok{color:#10b981;font-size:.84em;font-weight:600}
+
 /* ── FIGURAS PDF ── */
-.fig-plano{background:#fff;border-radius:8px;padding:10px 12px;margin:14px 0 6px;text-align:center;border:1px solid #2a2a2a}
+.fig-plano{background:#fff;border-radius:8px;padding:10px 12px;margin:10px 0 14px;text-align:center;border:1px solid rgba(255,255,255,.12)}
 .fig-plano img{max-width:100%;height:auto;border-radius:4px;display:block;margin:0 auto}
 .fig-plano+.fig-plano{margin-top:4px}
+
+/* ── SOON ── */
+.soon{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:20px;text-align:center;color:var(--text3);font-size:.85em;font-style:italic}
+
+/* ── TABLES (inline tables in exercise content) ── */
+table th[style*="ffd93d"],table th[style*="FFD93D"]{background:var(--accent-dim)!important;color:var(--accent)!important;border-color:var(--accent-border)!important}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(255,217,61,.15);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,217,61,.3)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:20px 16px 40px}
+  .sb-list{max-height:200px}
+  .read-progress{left:0}
+}
 </style>
 </head>
 <body>
-
-<nav class="topbar">
-  <a class="topbar-back" href="../teoria.html">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Teor&iacute;a
-  </a>
-  <span class="topbar-title">&#127981; T3 &middot; Taladrado &mdash; Ejercicios</span>
-  <div class="tema-picker" id="temaPicker">
-    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T3 &#9662;</button>
-    <div class="tema-dropdown"><a class="td-item td-available" href="t1.html"><span class="td-num">T1</span> Torneado</a><a class="td-item td-available" href="t2.html"><span class="td-num">T2</span> Fresado</a><span class="td-item td-active"><span class="td-num">T3</span> Taladrado</span><a class="td-item td-available" href="t4.html"><span class="td-num">T4</span> CNC</a></div>
-  </div>
-</nav>
-
-<div class="page-header">
-  <div class="ph-type">Ejercicios Propuestos</div>
-  <h1>T3 &middot; Taladrado</h1>
-  <div class="ph-meta">Sistemas de Producci&oacute;n y Fabricaci&oacute;n &middot; Curso 2025&ndash;26 &middot; UPV/EHU</div>
-  <div class="ph-tags"><span class="ph-tag">Momento torsor</span><span class="ph-tag">Selección de broca</span><span class="ph-tag">Potencia</span><span class="ph-tag">Caudal de viruta</span><span class="ph-tag">Organigrama</span><span class="ph-tag">6 ejercicios</span></div>
+<nav class="topbar"><a class="topbar-back" href="../teoria.html"><svg fill="none" height="16" viewbox="0 0 16 16" width="16"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a><span class="topbar-title">⚙️ Sistemas · T3 · Taladrado — Ejercicios</span><div class="tema-picker" id="temaPicker"><button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T3 ▾</button><div class="tema-dropdown"><a class="td-item" href="t1.html"><span class="td-num">T1</span> Torneado</a><a class="td-item" href="t2.html"><span class="td-num">T2</span> Fresado</a><a class="td-item td-active" href="t3.html"><span class="td-num">T3</span> Taladrado</a><a class="td-item" href="t4.html"><span class="td-num">T4</span> CNC</a></div></div></nav><div class="read-progress" id="readProgress"></div><div class="layout"><aside class="sidebar"><div class="sb-head"><div class="sb-subtitle">T3 · Taladrado</div><div class="sb-current" id="sbCurrent">Diámetro máximo de agujero — restricción potencia</div></div>
+<div class="sb-list">
+<button class="sb-item" data-id="ex1" onclick="showEx('ex1')"><span class="sb-tag">T3.P1</span><span class="sb-name">Diámetro máximo de agujero — restricción potencia</span></button>
+<button class="sb-item" data-id="ex2" onclick="showEx('ex2')"><span class="sb-tag">T3.P2</span><span class="sb-name">6 agujeros en fundición — selección herramienta y t c</span></button>
+<button class="sb-item" data-id="ex3" onclick="showEx('ex3')"><span class="sb-tag">T3.P3</span><span class="sb-name">8 agujeros ciegos D10 — fundición gris, P=2 kW</span></button>
+<button class="sb-item" data-id="ex4" onclick="showEx('ex4')"><span class="sb-tag">T3.P4</span><span class="sb-name">2 agujeros D16 — selección con M c,max</span></button>
+<button class="sb-item sb-item-exam" data-id="ex5" onclick="showEx('ex5')"><span class="sb-tag">T3.P5</span><span class="sb-name">Organigrama Ø50×L165 — AISI 1045, catálogo Sandvik</span></button>
+<button class="sb-item sb-item-exam" data-id="ex6" onclick="showEx('ex6')"><span class="sb-tag">T3.P6</span><span class="sb-name">Organigrama Ø85×L130 — acero herramientas, taladrado complej…</span></button>
 </div>
-<div class="jump-links"><a class="jump-link" href="#ex1">T3.P1 &middot; Di&aacute;metro m&aacute;ximo</a><a class="jump-link" href="#ex2">T3.P2 &middot; 6 agujeros fundici&oacute;n</a><a class="jump-link" href="#ex3">T3.P3 &middot; 8 agujeros ciegos D10</a><a class="jump-link" href="#ex4">T3.P4 &middot; 2 agujeros D16</a><a class="jump-link jump-link-exam" href="#ex5">&#9733; T3.P5 &middot; Organigrama &Oslash;50</a><a class="jump-link jump-link-exam" href="#ex6">&#9733; T3.P6 &middot; Organigrama &Oslash;85</a></div>
-<div class="container">
-
-<div class="ex-card" id="ex1">
-  <div class="ex-header" onclick="toggleEx('ex1')">
-    <div class="ex-header-left">
-      <h2>T3.P1 &middot; Di&aacute;metro m&aacute;ximo de agujero &mdash; restricci&oacute;n potencia</h2>
-      <div class="ex-meta">Momento torsor &middot; Di&aacute;metro m&aacute;ximo &middot; Taladradora de columna</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Se dan las condiciones para el mecanizado de un agujero: material acero de baja aleaci&oacute;n, p<sub>s</sub> = 2.200 N/mm&sup2;; m&aacute;quina: taladradora de columna P = 600 W, &eta; = 85%; condiciones de corte: v<sub>c</sub> = 25 m/min; f<sub>max</sub> = 0,18 mm/rev.</p>
-<p><b>Se pide:</b> Calcular el <b>momento torsor</b> M<sub>c</sub> y el <b>di&aacute;metro m&aacute;ximo</b> de agujero realizable en esas condiciones.</p></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> D = 12 mm; M<sub>c</sub> = 7,34 N&middot;m</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <p>Para taladrado con broca helicoidal de 2 filos (Z=2):</p>
-      <p style="font-size:.84em;color:#94a3b8">Sección de viruta por filo: S<sub>c</sub> = (f/2)·(D/2) = fD/4 &nbsp;|&nbsp; Torque total: M<sub>c</sub> = p<sub>s</sub>·f·D²/8 &nbsp;|&nbsp; ω = 2π·N/60</p>
-      <h4>Paso 1 — Par máximo disponible (desde la potencia)</h4>
-      <span class="res-formula">P<sub>útil</sub> = P · η = 600 × 0,85 = 510 W
+<div class="sb-footer"><a class="sb-link sb-link-yellow" href="../teoria.html"><svg fill="none" height="13" viewbox="0 0 16 16" width="13"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a></div></aside><main class="content"><div class="topic-panel" id="ex1">
+<div class="panel-header">
+<div class="panel-tag">T3.P1</div>
+<h1 class="panel-title">Diámetro máximo de agujero — restricción potencia</h1>
+<div class="panel-meta">Momento torsor · Diámetro máximo · Taladradora de columna</div>
+</div>
+<div class="enunciado"><p>Se dan las condiciones para el mecanizado de un agujero: material acero de baja aleación, p<sub>s</sub> = 2.200 N/mm²; máquina: taladradora de columna P = 600 W, η = 85%; condiciones de corte: v<sub>c</sub> = 25 m/min; f<sub>max</sub> = 0,18 mm/rev.</p>
+<p><b>Se pide:</b> Calcular el <b>momento torsor</b> M<sub>c</sub> y el <b>diámetro máximo</b> de agujero realizable en esas condiciones.</p></div>
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> D = 12 mm; M<sub>c</sub> = 7,34 N·m</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<p>Para taladrado con broca helicoidal de 2 filos (Z=2):</p>
+<p style="font-size:.84em;color:#94a3b8">Sección de viruta por filo: S<sub>c</sub> = (f/2)·(D/2) = fD/4  |  Torque total: M<sub>c</sub> = p<sub>s</sub>·f·D²/8  |  ω = 2π·N/60</p>
+<h4>Paso 1 — Par máximo disponible (desde la potencia)</h4>
+<span class="res-formula">P<sub>útil</sub> = P · η = 600 × 0,85 = 510 W
 N = v<sub>c</sub>·1000/(π·D) = 25.000/(π·D)  [rpm]
 ω = 2π·N/60 = 2·25.000/(60·D) = 833,3/D  [rad/s]
 
 M<sub>c,máx</sub> = P<sub>útil</sub>/ω = 510·D/833,3 = <b>0,612·D</b>  [N·m]  (proporcional a D)</span>
-      <h4>Paso 2 — Par requerido (desde la fuerza)</h4>
-      <span class="res-formula">M<sub>c</sub> = p<sub>s</sub>·f<sub>max</sub>·D² / 8  =  2200 × 0,18 × D² / 8  =  49,5·D²  [N·mm]
+<h4>Paso 2 — Par requerido (desde la fuerza)</h4>
+<span class="res-formula">M<sub>c</sub> = p<sub>s</sub>·f<sub>max</sub>·D² / 8  =  2200 × 0,18 × D² / 8  =  49,5·D²  [N·mm]
       =  0,0495·D²  [N·m]</span>
-      <h4>Paso 3 — Diámetro máximo (igualar par disponible y requerido)</h4>
-      <span class="res-formula">0,0495·D² = 0,612·D
+<h4>Paso 3 — Diámetro máximo (igualar par disponible y requerido)</h4>
+<span class="res-formula">0,0495·D² = 0,612·D
 D<sub>max</sub> = 0,612 / 0,0495 = 12,36 mm  →  <b>D = 12 mm</b></span>
-      <h4>Verificación: M<sub>c</sub> a D = 12 mm</h4>
-      <span class="res-formula">N = 25.000/(π×12) = 663 rpm;  ω = 69,4 rad/s
+<h4>Verificación: M<sub>c</sub> a D = 12 mm</h4>
+<span class="res-formula">N = 25.000/(π×12) = 663 rpm;  ω = 69,4 rad/s
 M<sub>c,disponible</sub> = P<sub>útil</sub>/ω = 510/69,4 = <b>7,34 N·m</b>  ✓
 M<sub>c,fuerza</sub>   = 2200×0,18×144/8 = 7.128 N·mm = 7,13 N·m  ≤ 7,34 N·m  ✓</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex2">
-  <div class="ex-header" onclick="toggleEx('ex2')">
-    <div class="ex-header-left">
-      <h2>T3.P2 &middot; 6 agujeros en fundici&oacute;n &mdash; selecci&oacute;n herramienta y t<sub>c</sub></h2>
-      <div class="ex-meta">Selecci&oacute;n broca &middot; Tiempo total &middot; 3&times;D18 + 3&times;D8</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Se desean mecanizar <b>6 agujeros pasantes</b> en una pieza de fundici&oacute;n de espesor 30 mm: 3 de D = 18 mm y 3 de D = 8 mm. p<sub>s</sub> = 2.900 N/mm&sup2;; taladradora P = 4 kW, &eta; = 70%; distancia de aproximaci&oacute;n = 2 mm.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex2">
+<div class="panel-header">
+<div class="panel-tag">T3.P2</div>
+<h1 class="panel-title">6 agujeros en fundición — selección herramienta y t c</h1>
+<div class="panel-meta">Selección broca · Tiempo total · 3×D18 + 3×D8</div>
+</div>
+<div class="enunciado"><p>Se desean mecanizar <b>6 agujeros pasantes</b> en una pieza de fundición de espesor 30 mm: 3 de D = 18 mm y 3 de D = 8 mm. p<sub>s</sub> = 2.900 N/mm²; taladradora P = 4 kW, η = 70%; distancia de aproximación = 2 mm.</p>
 <table style="width:100%;border-collapse:collapse;font-size:.82em;margin:10px 0">
 <thead><tr style="background:#111;color:#ffd93d"><th style="padding:5px 8px;border:1px solid #5c4200">Herramienta</th><th style="padding:5px 8px;border:1px solid #5c4200">L/D</th><th style="padding:5px 8px;border:1px solid #5c4200">D [mm]</th><th style="padding:5px 8px;border:1px solid #5c4200">f [mm/rev]</th><th style="padding:5px 8px;border:1px solid #5c4200">v<sub>c</sub> [m/min]</th></tr></thead>
 <tbody>
-<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-ca&ntilde;&oacute;n</td><td style="padding:5px 8px;border:1px solid #1a1a2a">20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">60</td></tr>
-<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas</td><td style="padding:5px 8px;border:1px solid #1a1a2a">2,5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,10&ndash;0,18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">80</td></tr>
-<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas</td><td style="padding:5px 8px;border:1px solid #1a1a2a">3,5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">80</td></tr>
-<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">90</td></tr>
-<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05&ndash;0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">90</td></tr>
+<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-cañón</td><td style="padding:5px 8px;border:1px solid #1a1a2a">20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05–0,10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">60</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas</td><td style="padding:5px 8px;border:1px solid #1a1a2a">2,5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,10–0,18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">80</td></tr>
+<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas</td><td style="padding:5px 8px;border:1px solid #1a1a2a">3,5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05–0,25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">80</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">8</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05–0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">90</td></tr>
+<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">18</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,05–0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">90</td></tr>
 </tbody></table>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
-<li>Seleccionar la(s) herramienta(s) m&aacute;s adecuada(s) y las condiciones de corte para el menor tiempo de mecanizado.</li>
-<li>Calcular el tiempo total m&iacute;nimo para mecanizar los 6 agujeros.</li>
+<li>Seleccionar la(s) herramienta(s) más adecuada(s) y las condiciones de corte para el menor tiempo de mecanizado.</li>
+<li>Calcular el tiempo total mínimo para mecanizar los 6 agujeros.</li>
 </ol></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) Broca helicoidal para ambas &mdash; D8: f=0,2 mm; D18: f=0,144 mm &middot; b) t<sub>c</sub> = 35,4 s</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <p>P<sub>útil</sub> = 4 × 0,70 = 2,8 kW = 2.800 W. Profundidad pasante = 30 mm; dist. apro. = 2 mm → longitud total por agujero = 30+2+2 = <b>34 mm</b> (2 mm de salida también).</p>
-      <h4>a) Selección herramienta para D18 — restricción de potencia</h4>
-      <p>Candidatas para D18: broca de plaquitas (v<sub>c</sub>=80m/min) y helicoidal (v<sub>c</sub>=90m/min). Calcular f<sub>max</sub> desde potencia para cada una:</p>
-      <span class="res-formula"><b>Helicoidal D18</b>: N = 90.000/(π×18) = 1.592 rpm; ω = 166,7 rad/s
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) Broca helicoidal para ambas — D8: f=0,2 mm; D18: f=0,144 mm · b) t<sub>c</sub> = 35,4 s</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<p>P<sub>útil</sub> = 4 × 0,70 = 2,8 kW = 2.800 W. Profundidad pasante = 30 mm; dist. apro. = 2 mm → longitud total por agujero = 30+2+2 = <b>34 mm</b> (2 mm de salida también).</p>
+<h4>a) Selección herramienta para D18 — restricción de potencia</h4>
+<p>Candidatas para D18: broca de plaquitas (v<sub>c</sub>=80m/min) y helicoidal (v<sub>c</sub>=90m/min). Calcular f<sub>max</sub> desde potencia para cada una:</p>
+<span class="res-formula"><b>Helicoidal D18</b>: N = 90.000/(π×18) = 1.592 rpm; ω = 166,7 rad/s
 M<sub>c,max</sub> = 2800/166,7 = 16.800 N·mm
 f<sub>max</sub> = M<sub>c,max</sub>·8/(p<sub>s</sub>·D²) = 16800×8/(2900×324) = 0,143 mm/rev
 v<sub>f</sub> = N·f = 1592×0,143 = <b>228 mm/min</b>
-
 <b>Plaquitas D18</b>: N = 80.000/(π×18) = 1.415 rpm; ω = 148,2 rad/s
 f<sub>max</sub> = 2800/148,2·8/(2900×324) = 0,161 mm/rev
 v<sub>f</sub> = 1415×0,161 = <b>228 mm/min</b>  (igual)</span>
-      <p>Ambas ofrecen v<sub>f</sub> idéntica. Se elige <b>broca helicoidal</b> (mayor L/D disponible).</p>
-      <h4>a) D8 — verificación de potencia</h4>
-      <span class="res-formula">Helicoidal D8: N = 90.000/(π×8) = 3.581 rpm; ω = 375 rad/s
+<p>Ambas ofrecen v<sub>f</sub> idéntica. Se elige <b>broca helicoidal</b> (mayor L/D disponible).</p>
+<h4>a) D8 — verificación de potencia</h4>
+<span class="res-formula">Helicoidal D8: N = 90.000/(π×8) = 3.581 rpm; ω = 375 rad/s
 M<sub>c</sub>(f=0,20) = 2900×0,20×64/8 = 4.640 N·mm = 4,64 N·m
 P<sub>c</sub> = 4,64×375 = 1.740 W &lt; 2.800 W  ✓  → f<sub>max</sub>=0,20mm es válido
 v<sub>f,D8</sub> = 3581×0,20 = <b>716 mm/min</b></span>
-      <h4>b) Tiempo total de mecanizado</h4>
-      <span class="res-formula">t<sub>D8</sub> = 3 agujeros × 34 mm / 716 mm/min = 0,1424 min = 8,5 s
+<h4>b) Tiempo total de mecanizado</h4>
+<span class="res-formula">t<sub>D8</sub> = 3 agujeros × 34 mm / 716 mm/min = 0,1424 min = 8,5 s
 t<sub>D18</sub> = 3 agujeros × 34 mm / 228 mm/min = 0,4474 min = 26,8 s
 t<sub>total</sub> = 8,5 + 26,8 = <b>35,4 s</b>  ✓</span>
-    </div>
-  </div>
 </div>
-<div class="ex-card" id="ex3">
-  <div class="ex-header" onclick="toggleEx('ex3')">
-    <div class="ex-header-left">
-      <h2>T3.P3 &middot; 8 agujeros ciegos D10 &mdash; fundici&oacute;n gris, P=2 kW</h2>
-      <div class="ex-meta">Selecci&oacute;n broca &middot; F<sub>c</sub> &middot; P<sub>c</sub> &middot; Caudal de viruta</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Se dispone de las siguientes herramientas para mecanizar <b>8 agujeros ciegos</b> D = 10 mm, profundidad 25 mm, en un taladro de columna de P = 2 kW, &eta; = 0,8. Material: fundici&oacute;n gris, p<sub>s</sub> = 2.850 N/mm&sup2;. Distancia de aproximaci&oacute;n = 5 mm.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex3">
+<div class="panel-header">
+<div class="panel-tag">T3.P3</div>
+<h1 class="panel-title">8 agujeros ciegos D10 — fundición gris, P=2 kW</h1>
+<div class="panel-meta">Selección broca · F<sub>c</sub> · P<sub>c</sub> · Caudal de viruta</div>
+</div>
+<div class="enunciado"><p>Se dispone de las siguientes herramientas para mecanizar <b>8 agujeros ciegos</b> D = 10 mm, profundidad 25 mm, en un taladro de columna de P = 2 kW, η = 0,8. Material: fundición gris, p<sub>s</sub> = 2.850 N/mm². Distancia de aproximación = 5 mm.</p>
 <table style="width:100%;border-collapse:collapse;font-size:.82em;margin:10px 0">
 <thead><tr style="background:#111;color:#ffd93d"><th style="padding:5px 8px;border:1px solid #5c4200">Herramienta</th><th style="padding:5px 8px;border:1px solid #5c4200">D [mm]</th><th style="padding:5px 8px;border:1px solid #5c4200">f [mm/rev]</th><th style="padding:5px 8px;border:1px solid #5c4200">v<sub>c</sub> [m/min]</th></tr></thead>
 <tbody>
@@ -251,20 +263,22 @@ t<sub>total</sub> = 8,5 + 26,8 = <b>35,4 s</b>  ✓</span>
 <tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal metal duro</td><td style="padding:5px 8px;border:1px solid #1a1a2a">6</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">70</td></tr>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal metal duro</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">70</td></tr>
 <tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas intercambiables</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,20</td><td style="padding:5px 8px;border:1px solid #1a1a2a">70</td></tr>
-<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-ca&ntilde;&oacute;n</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">60</td></tr>
+<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-cañón</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">0,10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">60</td></tr>
 </tbody></table>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
-<li>Seleccionar la(s) herramienta(s) m&aacute;s adecuada(s), calcular F<sub>c</sub> y P<sub>c</sub>. Razonar las decisiones.</li>
+<li>Seleccionar la(s) herramienta(s) más adecuada(s), calcular F<sub>c</sub> y P<sub>c</sub>. Razonar las decisiones.</li>
 <li>Calcular el tiempo de mecanizado t<sub>c</sub> y el caudal de viruta Q<sub>c</sub>.</li>
 </ol></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) P<sub>c</sub>=1,246 kW (D6); P<sub>c</sub>=0,665 kW (D10) &middot; b) t<sub>c</sub>=5,2 s; Q<sub>c</sub>=26,2/28,0 cm&sup3;/min</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <p>P<sub>útil</sub> = 2×0,8 = 1,6 kW. Agujero ciego D10, profundidad 25 mm, approx. 5 mm → L = 30 mm por agujero.</p>
-      <h4>a) Estrategia: pretaladrado D6 + ensanchado D10</h4>
-      <p>La broca D10 directamente puede exceder la potencia. Estrategia: pretaladrar con D6 (P<sub>c</sub> controlada) y luego D10.</p>
-      <span class="res-formula"><b>Broca helicoidal D6</b> (MD, v<sub>c</sub>=70m/min, f=0,25mm):
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) P<sub>c</sub>=1,246 kW (D6); P<sub>c</sub>=0,665 kW (D10) · b) t<sub>c</sub>=5,2 s; Q<sub>c</sub>=26,2/28,0 cm³/min</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<p>P<sub>útil</sub> = 2×0,8 = 1,6 kW. Agujero ciego D10, profundidad 25 mm, approx. 5 mm → L = 30 mm por agujero.</p>
+<h4>a) Estrategia: pretaladrado D6 + ensanchado D10</h4>
+<p>La broca D10 directamente puede exceder la potencia. Estrategia: pretaladrar con D6 (P<sub>c</sub> controlada) y luego D10.</p>
+<span class="res-formula"><b>Broca helicoidal D6</b> (MD, v<sub>c</sub>=70m/min, f=0,25mm):
 N = 70.000/(π×6) = 3.714 rpm;  ω = 389 rad/s
 M<sub>c</sub> = 2850×0,25×36/8 = 3.206 N·mm = 3,21 N·m
 P<sub>c</sub> = 3,21 × 389 = <b>1.246 W = 1,246 kW</b>  &lt; 1,6 kW  ✓
@@ -272,49 +286,48 @@ P<sub>c</sub> = 3,21 × 389 = <b>1.246 W = 1,246 kW</b>  &lt; 1,6 kW  ✓
 <b>Broca D10 después del pretaladrado D6</b> (corte anular):
 Sección efectiva reducida → menor M<sub>c</sub>
 P<sub>c</sub> = <b>0,665 kW</b>  &lt; 1,6 kW  ✓</span>
-      <h4>b) Tiempo de mecanizado y caudal de viruta</h4>
-      <span class="res-formula">v<sub>f,D6</sub> = 3714 × 0,25 = 928 mm/min
+<h4>b) Tiempo de mecanizado y caudal de viruta</h4>
+<span class="res-formula">v<sub>f,D6</sub> = 3714 × 0,25 = 928 mm/min
 t<sub>D6,total</sub> = 8 × 30/928 = 0,259 min = 15,5 s
 
 v<sub>f,D10</sub> → t<sub>D10,total</sub> → suma = <b>5,2 s por herramienta</b> (ver detalle curso)
 
 Q<sub>c,D6</sub> = (π×6²/4) × v<sub>f,D6</sub> / 1000 = 28,27 × 928/1000 = 26,2 cm³/min  ✓
 Q<sub>c,D10</sub> = (π×10²/4) × v<sub>f,D10</sub> / 1000 = 28,0 cm³/min  ✓</span>
-      <p class="res-note">La fórmula del caudal: Q<sub>c</sub> = (π·D²/4)·v<sub>f</sub> [mm³/min] ÷ 1000 = [cm³/min]</p>
-    </div>
-  </div>
+<p class="res-note">La fórmula del caudal: Q<sub>c</sub> = (π·D²/4)·v<sub>f</sub> [mm³/min] ÷ 1000 = [cm³/min]</p>
 </div>
-<div class="ex-card" id="ex4">
-  <div class="ex-header" onclick="toggleEx('ex4')">
-    <div class="ex-header-left">
-      <h2>T3.P4 &middot; 2 agujeros D16 &mdash; selecci&oacute;n con M<sub>c,max</sub></h2>
-      <div class="ex-meta">Selecci&oacute;n herramienta &middot; Momento torsor &middot; F<sub>c</sub> &middot; P<sub>c</sub> &middot; Decisiones</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Se desean mecanizar <b>2 agujeros D = 16 mm</b> en la pieza de la figura: uno ciego de profundidad 38 mm y uno pasante de 45 mm. &Aacute;ngulo de apertura de punta 140&deg;. Distancia de aproximaci&oacute;n = 3 mm.</p>
+</div>
+</div>
+<div class="topic-panel" id="ex4">
+<div class="panel-header">
+<div class="panel-tag">T3.P4</div>
+<h1 class="panel-title">2 agujeros D16 — selección con M c,max</h1>
+<div class="panel-meta">Selección herramienta · Momento torsor · F<sub>c</sub> · P<sub>c</sub> · Decisiones</div>
+</div>
+<div class="enunciado"><p>Se desean mecanizar <b>2 agujeros D = 16 mm</b> en la pieza de la figura: uno ciego de profundidad 38 mm y uno pasante de 45 mm. Ángulo de apertura de punta 140°. Distancia de aproximación = 3 mm.</p>
 <table style="width:100%;border-collapse:collapse;font-size:.82em;margin:10px 0">
-<thead><tr style="background:#111;color:#ffd93d"><th style="padding:5px 8px;border:1px solid #5c4200">Herramienta</th><th style="padding:5px 8px;border:1px solid #5c4200">L/D<sub>max</sub></th><th style="padding:5px 8px;border:1px solid #5c4200">Par&aacute;metros de corte</th></tr></thead>
+<thead><tr style="background:#111;color:#ffd93d"><th style="padding:5px 8px;border:1px solid #5c4200">Herramienta</th><th style="padding:5px 8px;border:1px solid #5c4200">L/D<sub>max</sub></th><th style="padding:5px 8px;border:1px solid #5c4200">Parámetros de corte</th></tr></thead>
 <tbody>
-<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca piloto D16, Z=2</td><td style="padding:5px 8px;border:1px solid #1a1a2a">[&mdash;]</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=15 m/min; f=0,08 mm/rev</td></tr>
-<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-ca&ntilde;&oacute;n D16, Z=1</td><td style="padding:5px 8px;border:1px solid #1a1a2a">25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=30 m/min; f=0,12 mm/rev</td></tr>
+<tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca piloto D16, Z=2</td><td style="padding:5px 8px;border:1px solid #1a1a2a">[—]</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=15 m/min; f=0,08 mm/rev</td></tr>
+<tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca-cañón D16, Z=1</td><td style="padding:5px 8px;border:1px solid #1a1a2a">25</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=30 m/min; f=0,12 mm/rev</td></tr>
 <tr style="color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca helicoidal D16, Z=2</td><td style="padding:5px 8px;border:1px solid #1a1a2a">10</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=20 m/min; f=0,12 mm/rev</td></tr>
 <tr style="background:#0a0a0a;color:#e0d8a0"><td style="padding:5px 8px;border:1px solid #1a1a2a">Broca de plaquitas D16, Z=2</td><td style="padding:5px 8px;border:1px solid #1a1a2a">5</td><td style="padding:5px 8px;border:1px solid #1a1a2a">v<sub>c</sub>=25 m/min; f=0,10 mm/rev</td></tr>
 </tbody></table>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
-<li>Si se desea realizar los dos agujeros con la misma herramienta, seleccionar razonablemente la m&aacute;s adecuada y calcular el tiempo total de mecanizado.</li>
-<li>Calcular S<sub>c</sub>, F<sub>c</sub>, momento torsor M<sub>c</sub> y P<sub>c</sub> para la herramienta elegida. p<sub>s</sub> = 2.700 N/mm&sup2;.</li>
-<li>Si el momento m&aacute;ximo estuviera limitado a M<sub>c,max</sub> = 8 N&middot;m, &iquest;qu&eacute; decisiones podr&iacute;an tomarse?</li>
+<li>Si se desea realizar los dos agujeros con la misma herramienta, seleccionar razonablemente la más adecuada y calcular el tiempo total de mecanizado.</li>
+<li>Calcular S<sub>c</sub>, F<sub>c</sub>, momento torsor M<sub>c</sub> y P<sub>c</sub> para la herramienta elegida. p<sub>s</sub> = 2.700 N/mm².</li>
+<li>Si el momento máximo estuviera limitado a M<sub>c,max</sub> = 8 N·m, ¿qué decisiones podrían tomarse?</li>
 </ol></div>
-    <div class="fig-plano"><img src="img/t3/p03_a.png" alt="p03_a" loading="lazy"></div>
-    <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) t<sub>m</sub> = 115 s &middot; b) S<sub>c</sub>=0,48 mm&sup2;; F<sub>c</sub>=1.296 N; M<sub>c</sub>=10,368 N&middot;m; P<sub>c</sub>=432 W &middot; c) [&mdash;]</div>
-    <div class="resolucion">
-      <h3>Resolución paso a paso</h3>
-      <h4>a) Selección de herramienta y tiempo total</h4>
-      <p>Se necesita UNA herramienta para los dos agujeros. El más profundo (ciego 38mm + pasante 45mm) define la L/D exigida. Ángulo de punta 140° → altura de la punta: h<sub>punta</sub> = D/(2·tan(70°)) = 16/(2×2,747) = 2,91 mm.</p>
-      <span class="res-formula">Candidatas: cañón (L/D=25 ✓), helicoidal (L/D=10 ✓), plaquitas (L/D=5 ✓), piloto (solo centrado)
+<div class="fig-plano"><img alt="p03_a" loading="lazy" src="img/t3/p03_a.png"/></div>
+<div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) t<sub>m</sub> = 115 s · b) S<sub>c</sub>=0,48 mm²; F<sub>c</sub>=1.296 N; M<sub>c</sub>=10,368 N·m; P<sub>c</sub>=432 W · c) [—]</div>
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
+<div class="sec-body">
+<h3>Resolución paso a paso</h3>
+<h4>a) Selección de herramienta y tiempo total</h4>
+<p>Se necesita UNA herramienta para los dos agujeros. El más profundo (ciego 38mm + pasante 45mm) define la L/D exigida. Ángulo de punta 140° → altura de la punta: h<sub>punta</sub> = D/(2·tan(70°)) = 16/(2×2,747) = 2,91 mm.</p>
+<span class="res-formula">Candidatas: cañón (L/D=25 ✓), helicoidal (L/D=10 ✓), plaquitas (L/D=5 ✓), piloto (solo centrado)
 
 Broca cañón requiere pretaladrado (broca piloto) → suma de tiempos mayor.
 Broca helicoidal: no requiere piloto, funciona sola.
@@ -326,8 +339,8 @@ Longitud ciego  (38mm): L<sub>c</sub> = 3 + 38 = 41 mm
 Longitud pasante (45mm): L<sub>p</sub> = 3 + 45 + 2,91 = 50,9 mm
 
 t<sub>m</sub> = (L<sub>c</sub> + L<sub>p</sub>)/v<sub>f</sub> = (41 + 50,9)/47,75 = 1,924 min = <b>115 s</b>  ✓</span>
-      <h4>b) Sección de viruta, fuerza, par y potencia</h4>
-      <span class="res-formula">S<sub>c</sub> por filo = (f/2) × (D/2) = 0,06 × 8 = <b>0,48 mm²</b>  ✓
+<h4>b) Sección de viruta, fuerza, par y potencia</h4>
+<span class="res-formula">S<sub>c</sub> por filo = (f/2) × (D/2) = 0,06 × 8 = <b>0,48 mm²</b>  ✓
 
 F<sub>c</sub> por filo = p<sub>s</sub> × S<sub>c</sub> = 2.700 × 0,48 = <b>1.296 N</b>  ✓
 
@@ -335,69 +348,92 @@ M<sub>c</sub> (2 filos) = Z × F<sub>c</sub> × (D/4) = 2 × 1.296 × 4 = 10.368
 
 ω = 2π × 397,9 / 60 = 41,68 rad/s
 P<sub>c</sub> = M<sub>c</sub> × ω = 10,368 × 41,68 = <b>432 W</b>  ✓</span>
-      <h4>c) Si M<sub>c,max</sub> = 8 N·m — posibles decisiones</h4>
-      <ul style="padding-left:18px;color:#94a3b8;font-size:.86em;line-height:2;margin-top:6px">
-        <li>Reducir el avance f hasta que M<sub>c</sub> ≤ 8 N·m: f' = 8.000/(Z·p<sub>s</sub>·D²/8) = 8000·4/(2·2700·256) ≈ 0,0924 mm/rev (menor productividad).</li>
-        <li>Usar una broca con menor D (predrill D12 + escariador/D16) para repartir el par.</li>
-        <li>Usar una broca cañón D16 (par más controlado a baja vc) si se puede añadir la broca piloto.</li>
-      </ul>
-    </div>
-  </div>
+<h4>c) Si M<sub>c,max</sub> = 8 N·m — posibles decisiones</h4>
+<ul style="padding-left:18px;color:#94a3b8;font-size:.86em;line-height:2;margin-top:6px">
+<li>Reducir el avance f hasta que M<sub>c</sub> ≤ 8 N·m: f' = 8.000/(Z·p<sub>s</sub>·D²/8) = 8000·4/(2·2700·256) ≈ 0,0924 mm/rev (menor productividad).</li>
+<li>Usar una broca con menor D (predrill D12 + escariador/D16) para repartir el par.</li>
+<li>Usar una broca cañón D16 (par más controlado a baja vc) si se puede añadir la broca piloto.</li>
+</ul>
 </div>
-<div class="ex-card ex-card-exam" id="ex5">
-  <div class="ex-header" onclick="toggleEx('ex5')">
-    <div class="ex-header-left">
-      <h2>T3.P5 &middot; Organigrama &Oslash;50&times;L165 &mdash; AISI 1045, cat&aacute;logo Sandvik <span class="exam-badge">&#9733; Extraordinaria 2021-22</span></h2>
-      <div class="ex-meta">Organigrama &middot; Cat&aacute;logo Sandvik &middot; Potencia m&aacute;xima &middot; F<sub>c</sub> &middot; t<sub>c</sub></div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Partiendo de D50 &times; L165 mm se desea conseguir la pieza de la figura (eje con escalonados, taladros interiores). Material: acero no aleado AISI 1045; CMC (Sandvik) 01.2; p<sub>s</sub> = 1.600 N/mm&sup2;. P<sub>nom</sub> = 13 kW. Herramientas de metal duro para torneado; HSS para otras. Dejar 0,5 mm para el acabado.</p>
+</div>
+</div>
+<div class="topic-panel topic-panel-exam" id="ex5">
+<div class="panel-header panel-header-exam">
+<div class="panel-tag panel-tag-exam">T3.P5</div>
+<h1 class="panel-title">Organigrama Ø50×L165 — AISI 1045, catálogo Sandvik  <span class="exam-badge">★ Extraordinaria 2021-22</span></h1>
+<div class="panel-meta">Organigrama · Catálogo Sandvik · Potencia máxima · F<sub>c</sub> · t<sub>c</sub></div>
+</div>
+<div class="enunciado"><p>Partiendo de D50 × L165 mm se desea conseguir la pieza de la figura (eje con escalonados, taladros interiores). Material: acero no aleado AISI 1045; CMC (Sandvik) 01.2; p<sub>s</sub> = 1.600 N/mm². P<sub>nom</sub> = 13 kW. Herramientas de metal duro para torneado; HSS para otras. Dejar 0,5 mm para el acabado.</p>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
 <li>Desarrollar el <b>organigrama</b> de la pieza (operaciones, herramientas, amarres).</li>
-<li>Usando el <b>cat&aacute;logo de Sandvik</b>, razonar en qu&eacute; operaci&oacute;n se consume mayor potencia; en ella: 1) par&aacute;metros de corte; 2) F<sub>c</sub>; 3) P<sub>c</sub>; 4) t<sub>c</sub>.</li>
+<li>Usando el <b>catálogo de Sandvik</b>, razonar en qué operación se consume mayor potencia; en ella: 1) parámetros de corte; 2) F<sub>c</sub>; 3) P<sub>c</sub>; 4) t<sub>c</sub>.</li>
 </ol></div>
-    <div class="fig-plano"><img src="img/t3/p05_a.png" alt="p05_a" loading="lazy"></div>
-    <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
-  </div>
+<div class="fig-plano"><img alt="p05_a" loading="lazy" src="img/t3/p05_a.png"/></div>
+<div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
+<div class="soon">Resolución próximamente…</div>
 </div>
-<div class="ex-card ex-card-exam" id="ex6">
-  <div class="ex-header" onclick="toggleEx('ex6')">
-    <div class="ex-header-left">
-      <h2>T3.P6 &middot; Organigrama &Oslash;85&times;L130 &mdash; acero herramientas, taladrado complejo <span class="exam-badge">&#9733; Extraordinaria 2023-24</span></h2>
-      <div class="ex-meta">Acero herramientas templado &middot; Organigrama &middot; Desbaste m&aacute;s problem&aacute;tico &middot; Broca bidiam&eacute;trica</div>
-    </div>
-    <span class="ex-arrow">&#9660;</span>
-  </div>
-  <div class="ex-body">
-    <div class="enunciado"><p>Partiendo de &Oslash;85 &times; L130 mm se desea conseguir la pieza de la figura (eje con &Oslash;64, &Oslash;52, &Oslash;32, cono R4, taladro &Oslash;28 y rosca M36&times;4, chaflanes 2&times;45&deg;). Material: acero de herramientas templado (ISO P); HB = 325; CMC (Sandvik) 03.21; p<sub>s</sub> = 3.000 N/mm&sup2;. Dejar 0,5 mm acabado. El cono se mecaniza en la primera mitad del proceso.</p>
+<div class="topic-panel topic-panel-exam" id="ex6">
+<div class="panel-header panel-header-exam">
+<div class="panel-tag panel-tag-exam">T3.P6</div>
+<h1 class="panel-title">Organigrama Ø85×L130 — acero herramientas, taladrado complejo  <span class="exam-badge">★ Extraordinaria 2023-24</span></h1>
+<div class="panel-meta">Acero herramientas templado · Organigrama · Desbaste más problemático · Broca bidiamétrica</div>
+</div>
+<div class="enunciado"><p>Partiendo de Ø85 × L130 mm se desea conseguir la pieza de la figura (eje con Ø64, Ø52, Ø32, cono R4, taladro Ø28 y rosca M36×4, chaflanes 2×45°). Material: acero de herramientas templado (ISO P); HB = 325; CMC (Sandvik) 03.21; p<sub>s</sub> = 3.000 N/mm². Dejar 0,5 mm acabado. El cono se mecaniza en la primera mitad del proceso.</p>
 <p><b>Se pide:</b></p>
 <ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
 <li>Desarrollar el <b>organigrama</b> de operaciones (herramientas, amarres).</li>
-<li>Para el <b>desbaste m&aacute;s problem&aacute;tico</b> con P<sub>m&aacute;q</sub> = 6 kW: seleccionar herramienta (tabla dada con &kappa;<sub>r</sub>=95&deg;/75&deg;/90&deg;) y calcular t<sub>c</sub> m&iacute;nimo.</li>
-<li>Para el taladrado: dos opciones: brocas D12 + D28 (2 etapas) o broca bidiam&eacute;trica D12&ndash;28 (1 etapa). Con P = 6 kW, seleccionar la opci&oacute;n m&aacute;s r&aacute;pida y calcular t<sub>c,min</sub>.</li>
+<li>Para el <b>desbaste más problemático</b> con P<sub>máq</sub> = 6 kW: seleccionar herramienta (tabla dada con κ<sub>r</sub>=95°/75°/90°) y calcular t<sub>c</sub> mínimo.</li>
+<li>Para el taladrado: dos opciones: brocas D12 + D28 (2 etapas) o broca bidiamétrica D12–28 (1 etapa). Con P = 6 kW, seleccionar la opción más rápida y calcular t<sub>c,min</sub>.</li>
 </ol></div>
-    <div class="fig-plano"><img src="img/t3/p06_a.png" alt="p06_a" loading="lazy"></div>
-    <div class="fig-plano"><img src="img/t3/p06_b.png" alt="p06_b" loading="lazy"></div>
-    <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
-  </div>
-</div>
-</div>
+<div class="fig-plano"><img alt="p06_a" loading="lazy" src="img/t3/p06_a.png"/></div>
+<div class="fig-plano"><img alt="p06_b" loading="lazy" src="img/t3/p06_b.png"/></div>
+<div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
+<div class="soon">Resolución próximamente…</div>
+</div></main></div>
+
+
 
 <script>
-function toggleEx(id){
-  var card=document.getElementById(id);
-  card.classList.toggle('open');
+var _allPanels = document.querySelectorAll('.topic-panel');
+var _allItems  = document.querySelectorAll('.sb-item');
+var _sbCurrent = document.getElementById('sbCurrent');
+var _readProg  = document.getElementById('readProgress');
+
+function showEx(id) {
+  _allPanels.forEach(function(p){ p.classList.remove('active'); });
+  _allItems.forEach(function(b){ b.classList.remove('active'); });
+  var panel = document.getElementById(id);
+  var btn   = document.querySelector('[data-id="'+id+'"]');
+  if (panel) panel.classList.add('active');
+  if (btn)   btn.classList.add('active');
+  if (_sbCurrent && btn) _sbCurrent.textContent = btn.querySelector('.sb-name').textContent;
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
 }
-function toggleSec(btn){
+
+function toggleSec(btn) {
   btn.parentElement.classList.toggle('sec-open');
 }
-var _tp=document.getElementById('temaPicker');
-document.addEventListener('click',function(e){if(_tp&&!_tp.contains(e.target))_tp.classList.remove('open');});
+
+function updateProgress() {
+  if (!_readProg) return;
+  var el = document.querySelector('.topic-panel.active');
+  if (!el) { _readProg.style.transform='scaleX(0)'; return; }
+  var st = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+  _readProg.style.transform = 'scaleX('+(h>0?Math.min(st/h,1):0)+')';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+
+// Tema picker
+var _tp = document.getElementById('temaPicker');
+document.addEventListener('click', function(e){ if(_tp && !_tp.contains(e.target)) _tp.classList.remove('open'); });
+
+// Activate first exercise on load
+document.addEventListener('DOMContentLoaded', function(){
+  var first = document.querySelector('.sb-item');
+  if (first) showEx(first.getAttribute('data-id'));
+});
 </script>
 </body>
 </html>
