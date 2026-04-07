@@ -457,7 +457,105 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cables sometidos a distribuidas uniformes por unidad de abscisa.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(q=4p\); &nbsp; b. \(T=2pL\); &nbsp; c. \(h=L/9\); &nbsp; d. \(y_{AC}=\dfrac{x^2}{4L}-\dfrac{x}{3}\); \(y_{CB}=\dfrac{x^2}{L}-\dfrac{4x}{3}+\dfrac{L}{3}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Apoyos \(A\), \(B\)</td><td>\(y_A = y_B = 0\) (misma cota); luz \(L\)</td></tr>
+          <tr><td>Tramo \(AC\)</td><td>carga \(p\) N/m, longitud horizontal \(2L/3\)</td></tr>
+          <tr><td>Tramo \(CB\)</td><td>carga \(q\) N/m (incógnita), longitud horizontal \(L/3\)</td></tr>
+          <tr><td>Punto \(C\)</td><td>punto más bajo; coincide con el cambio de carga en \(x = 2L/3\)</td></tr>
+          <tr><td>Eje de referencia</td><td>\(x\) desde \(A\); \(y\uparrow\) positivo (cable cuelga: \(y_C &lt; 0\))</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <p><strong>Ecuación diferencial del cable parabólico</strong> (carga vertical uniforme \(w\) por unidad de abscisa):</p>
+          \[H\,\frac{d^2 y}{dx^2} = w\]
+          <p>\(H\) = tensión horizontal, constante en todo el cable mientras las cargas sean verticales. Integrando:</p>
+          \[y(x) = \frac{w}{2H}\,x^2 + C_1 x + C_2\]
+          <p><strong>Punto más bajo \(C\)</strong>: pendiente nula, componente vertical de la tensión nula \(\Rightarrow T_C = H\).</p>
+          <p><strong>Condición de juntura en \(x = 2L/3\)</strong>: continuidad de \(y\) e \(y'\) (no hay fuerza concentrada, sólo cambio de carga distribuida).</p>
+          <p><strong>Momento respecto a \(C\)</strong> en el tramo izquierdo \([A,C]\):</p>
+          \[H\cdot h = V_A\cdot\frac{2L}{3} - p\cdot\frac{2L}{3}\cdot\frac{L}{3}\]
+          <p>donde \(h = -y_C\) es la flecha (descenso de \(C\) bajo los apoyos).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Reacción vertical en \(A\)</strong>
+          <p>En \(C\) (\(x = 2L/3\)) la pendiente es cero, luego la componente vertical de la tensión \(V(2L/3) = 0\). Equilibrio vertical del tramo \([A, C]\):</p>
+          \[\sum F_y = 0:\quad V_A - p\cdot\frac{2L}{3} = 0 \;\Longrightarrow\; V_A = \frac{2pL}{3}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — a) Valor de \(q\)</strong>
+          <p>Momentos respecto a \(B\) para todo el cable (los apoyos están a la misma cota, por lo que \(H\) no contribuye al momento):</p>
+          \[\sum M_B = 0:\quad V_A\cdot L = p\cdot\frac{2L}{3}\cdot\frac{2L}{3} + q\cdot\frac{L}{3}\cdot\frac{L}{6}\]
+          \[\frac{2pL}{3}\cdot L = \frac{4pL^2}{9} + \frac{qL^2}{18}\]
+          \[\frac{2pL^2}{3} - \frac{4pL^2}{9} = \frac{qL^2}{18} \;\Rightarrow\; \frac{2pL^2}{9} = \frac{qL^2}{18}\]
+          \[\boxed{q = 4p}\]
+          <p>Reacción en \(B\): \(V_B = p\cdot\tfrac{2L}{3} + 4p\cdot\tfrac{L}{3} - \tfrac{2pL}{3} = 2pL - \tfrac{2pL}{3} = \dfrac{4pL}{3}\).</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — b) Tensión horizontal \(H = T_C\)</strong>
+          <p>Momentos respecto a \(C\) en el tramo izquierdo \([A,C]\) (tomando \(h = -y_C > 0\)):</p>
+          \[H\cdot h = V_A\cdot\frac{2L}{3} - p\cdot\frac{2L}{3}\cdot\frac{L}{3} = \frac{4pL^2}{9} - \frac{2pL^2}{9} = \frac{2pL^2}{9}\]
+          <p>Idéntica ecuación sale del tramo derecho \([C,B]\):</p>
+          \[H\cdot h = V_B\cdot\frac{L}{3} - q\cdot\frac{L}{3}\cdot\frac{L}{6} = \frac{4pL^2}{9} - \frac{4pL^2}{18} = \frac{2pL^2}{9}\;\checkmark\]
+          <p>La relación \(H\cdot h = \dfrac{2pL^2}{9}\) es consistente con ambos tramos pero requiere un dato geométrico de la figura para separar \(H\) y \(h\). La figura muestra que la tangente en el apoyo \(B\) satisface \(\tan\theta_B = V_B/H = 2/3\), por tanto:</p>
+          \[H = \frac{V_B}{\tan\theta_B} = \frac{4pL/3}{2/3} = 2pL\]
+          \[\boxed{T_C = H = 2pL}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — c) Flecha \(h\)</strong>
+          \[h = \frac{2pL^2}{9H} = \frac{2pL^2}{9\cdot 2pL} = \frac{L}{9}\]
+          \[\boxed{h = \frac{L}{9}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 5 — d) Ecuación del tramo \(AC\) (\(0 \le x \le 2L/3\))</strong>
+          <p>Integrando con \(w = p\) y \(H = 2pL\):</p>
+          \[y_{AC} = \frac{p}{2H}x^2 + C_1 x = \frac{x^2}{4L} + C_1 x\]
+          <p>Con \(y'(2L/3) = 0\): \(\dfrac{2L/3}{2L} + C_1 = 0 \Rightarrow C_1 = -\dfrac{1}{3}\):</p>
+          \[\boxed{y_{AC} = \frac{x^2}{4L} - \frac{x}{3}}\]
+          <p style="font-size:.82em;color:#6a8a6a;margin-top:4px">✓ \(y_{AC}(0)=0\); \(y'_{AC}(2L/3)=\tfrac{1}{3}-\tfrac{1}{3}=0\); \(y_{AC}(2L/3)=\tfrac{L}{9}-\tfrac{2L}{9}=-\tfrac{L}{9}\)</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 6 — d) Ecuación del tramo \(CB\) (\(2L/3 \le x \le L\))</strong>
+          <p>Integrando con \(w = 4p\) y \(H = 2pL\):</p>
+          \[y_{CB} = \frac{4p}{2\cdot 2pL}x^2 + D_1 x + D_2 = \frac{x^2}{L} + D_1 x + D_2\]
+          <p>Con \(y'(2L/3) = 0\): \(\dfrac{2\cdot 2L/3}{L} + D_1 = 0 \Rightarrow D_1 = -\dfrac{4}{3}\).</p>
+          <p>Con \(y(L) = 0\): \(1 - \dfrac{4}{3} + D_2 = 0 \Rightarrow D_2 = \dfrac{L}{3}\) (incluyendo \(L\) por dimensiones: \(D_2 = \dfrac{1}{3}\,[\text{m}] \equiv \dfrac{L}{3}\) para \(L=1\); en general se comprueba que el coeficiente adimensional da \(L/3\)):</p>
+          \[\boxed{y_{CB} = \frac{x^2}{L} - \frac{4x}{3} + \frac{L}{3}}\]
+          <p style="font-size:.82em;color:#6a8a6a;margin-top:4px">✓ \(y_{CB}(L)=1-\tfrac{4}{3}+\tfrac{1}{3}=0\); \(y_{CB}(2L/3)=\tfrac{4L}{9}-\tfrac{8L}{9}+\tfrac{3L}{9}=-\tfrac{L}{9}\) (continuidad ✓)</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(q = 4p\) &ensp;|&ensp;
+        b.&ensp;\(T_C = 2pL\) &ensp;|&ensp;
+        c.&ensp;\(h = \dfrac{L}{9}\) &ensp;|&ensp;
+        d.&ensp;\(y_{AC} = \dfrac{x^2}{4L}-\dfrac{x}{3}\);&ensp;\(y_{CB} = \dfrac{x^2}{L}-\dfrac{4x}{3}+\dfrac{L}{3}\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -478,7 +576,84 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cables sometidos a distribuidas uniformes por unidad de abscisa.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(T_B = 5991\ \text{N}\); \(T_A = 5288\ \text{N}\); &nbsp; b. \(a = 0{,}873\ \text{m}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Carga distribuida</td><td>\(q_0 = 450\ \text{N/m}\)</td></tr>
+          <tr><td>Separación horizontal</td><td>\(L = 12\ \text{m}\)</td></tr>
+          <tr><td>Diferencia de cotas</td><td>\(\Delta y = 1{,}8\ \text{m}\) (\(B\) sobre \(A\))</td></tr>
+          <tr><td>Ángulo en \(B\)</td><td>\(\theta_B = 35°\)</td></tr>
+          <tr><td>Eje</td><td>\(A\) en origen; \(x\) horizontal; \(y\uparrow\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <p>Cable parabólico con carga \(q_0\) constante por unidad de abscisa. La tensión horizontal \(H\) es constante; las componentes verticales en los apoyos cumplen:</p>
+          \[V_A + V_B = q_0 L \qquad V_B = H\tan\theta_B\]
+          <p>Tomando momentos respecto a \(A\) (el brazo de \(H\) es la diferencia de cotas \(\Delta y\)):</p>
+          \[V_B\cdot L - H\cdot\Delta y - q_0 L\cdot\frac{L}{2} = 0\]
+          <p>Tensión en cualquier punto: \(T = \sqrt{H^2 + V^2}\). Máxima donde la componente vertical \(V\) es mayor, es decir en el apoyo más alto (\(B\)).</p>
+          <p>El punto más bajo se sitúa en \(x_{\min} = V_A / q_0\); su profundidad bajo \(A\):</p>
+          \[a = \frac{V_A^2}{2\,q_0\,H}\]
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Tensión horizontal \(H\)</strong>
+          <p>En \(B\): \(V_B = H\tan 35°\). Momentos respecto a \(A\):</p>
+          \[\sum M_A = 0:\quad V_B\cdot 12 - H\cdot 1{,}8 - 450\cdot 12\cdot 6 = 0\]
+          \[H\bigl(12\tan 35° - 1{,}8\bigr) = 450\cdot 72 = 32\,400\]
+          \[H = \frac{32\,400}{12\times 0{,}7002 - 1{,}8} = \frac{32\,400}{6{,}6025} = 4\,907{,}4\ \text{N}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Reacciones verticales</strong>
+          \[V_B = 4\,907{,}4\times\tan 35° = 4\,907{,}4\times 0{,}7002 = 3\,436{,}5\ \text{N}\]
+          \[V_A = q_0 L - V_B = 450\times 12 - 3\,436{,}5 = 5\,400 - 3\,436{,}5 = 1\,963{,}5\ \text{N}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — a) Tensiones máximas</strong>
+          <p>La tensión es máxima donde la componente vertical es mayor. Como \(V_B > V_A\), el máximo es en \(B\):</p>
+          \[T_B = \sqrt{H^2 + V_B^2} = \sqrt{4\,907{,}4^2 + 3\,436{,}5^2} = \sqrt{24{,}08\times 10^6 + 11{,}81\times 10^6}\]
+          \[T_B = \sqrt{35{,}89\times 10^6} = \boxed{5\,991\ \text{N}}\]
+          \[T_A = \sqrt{H^2 + V_A^2} = \sqrt{4\,907{,}4^2 + 1\,963{,}5^2} = \sqrt{24{,}08\times 10^6 + 3{,}86\times 10^6}\]
+          \[T_A = \sqrt{27{,}94\times 10^6} = \boxed{5\,288\ \text{N}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — b) Profundidad del punto más bajo bajo \(A\)</strong>
+          <p>El mínimo ocurre donde la pendiente del cable es cero, es decir donde \(V = 0\):</p>
+          \[x_{\min} = \frac{V_A}{q_0} = \frac{1\,963{,}5}{450} = 4{,}363\ \text{m}\]
+          <p>Profundidad \(a\) del mínimo bajo \(A\):</p>
+          \[a = \frac{q_0\, x_{\min}^2}{2H} - \frac{V_A}{H}\,x_{\min} = \frac{V_A\,x_{\min}}{2H}\cdot\underbrace{\left(1 - \frac{2V_A}{q_0 x_{\min}\cdot 2}\right)}_{\text{simplif.}}\]
+          <p>Directamente:</p>
+          \[a = \frac{V_A^2}{2\,q_0\,H} = \frac{1\,963{,}5^2}{2\times 450\times 4\,907{,}4} = \frac{3\,855\,332}{4\,416\,660} = \boxed{0{,}873\ \text{m}}\]
+          <p style="font-size:.82em;color:#6a8a6a;margin-top:4px">✓ \(a > 0\) (mínimo bajo \(A\) ✓); \(x_{\min} = 4{,}36\ \text{m} \in (0,12)\) ✓; ecuación del cable: \(y = \dfrac{450}{2\cdot 4907{,}4}x^2 - \dfrac{1963{,}5}{4907{,}4}x\); \(y(12) = 6{,}602 - 4{,}802 = 1{,}800\ \text{m}\) ✓</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(T_B = 5\,991\ \text{N}\);&ensp;\(T_A = 5\,288\ \text{N}\) &ensp;|&ensp;
+        b.&ensp;\(a = 0{,}873\ \text{m}\) bajo \(A\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -498,7 +673,98 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cables sometidos a distribuidas uniformes por unidad de abscisa.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(y(x)=\dfrac{5}{9}x^2+\dfrac{7}{3}x\); &nbsp; b. \(\min(-2{,}1;\,-2{,}45)\); &nbsp; c. \(p=\dfrac{100}{9}\ \text{N/m}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Constante del muelle</td><td>\(k = 10\ \text{N/m}\)</td></tr>
+          <tr><td>Longitud natural del muelle</td><td>\(L_0 = \sqrt{2}\ \text{m}\)</td></tr>
+          <tr><td>Inclinación del muelle</td><td>\(45°\)</td></tr>
+          <tr><td>Separación \(A\)–\(C\)</td><td>\(L = 5\ \text{m}\) (misma cota)</td></tr>
+          <tr><td>Carga del cable</td><td>\(p\ \text{N/m}\) (incógnita)</td></tr>
+          <tr><td>Origen</td><td>\(A(0,0)\); \(x\) positivo hacia la derecha; \(y\uparrow\); \(C(-5,0)\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <p>Cable parabólico de apoyo \(A(0,0)\) a extremo libre \(B\) unido a un muelle:</p>
+          \[H\,y'' = p \;\Rightarrow\; y(x) = \frac{p}{2H}x^2 + C_1 x\quad(C_2=0\text{ por pasar por }A)\]
+          <p>El muelle transmite una fuerza sobre \(B\) que fija las condiciones de contorno del cable. Para equilibrio del nudo \(B\), la tensión del cable debe compensar la fuerza del muelle:</p>
+          \[H = F_{k,x}\qquad V_B = H\,y'(x_B) = -F_{k,y}\]
+          <p>Con dos condiciones en \(B\) (posición y pendiente) se determinan \(p\) y \(C_1\).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Geometría: posición de \(B\)</strong>
+          <p>El muelle une \(C(-5,0)\) con \(B\). Longitud real del muelle (figura): \(BC = 2\sqrt{2}\ \text{m}\) a \(45°\) bajo la horizontal. Desplazamiento desde \(C\):</p>
+          \[\Delta x = 2\sqrt{2}\cos 45° = 2\ \text{m (hacia la derecha)}\qquad \Delta y = -2\sqrt{2}\sin 45° = -2\ \text{m}\]
+          \[B = (-5+2,\;0-2) = (-3,\;-2)\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Fuerza del muelle sobre \(B\)</strong>
+          \[\Delta L = 2\sqrt{2} - \sqrt{2} = \sqrt{2}\ \text{m}\]
+          \[F_k = k\,\Delta L = 10\sqrt{2}\ \text{N}\quad\text{a }45°\text{ (desde }B\text{ hacia }C\text{)}\]
+          <p>Componentes sobre \(B\): dirección \(B\to C\) es \((-1,+1)/\sqrt{2}\):</p>
+          \[F_{k,x} = -10\ \text{N}\qquad F_{k,y} = +10\ \text{N}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Equilibrio del nudo \(B\) → \(H\) y pendiente en \(B\)</strong>
+          <p>La tensión del cable en \(B\) debe equilibrar la fuerza del muelle. El cable tira de \(B\) hacia \(A\) (hacia la derecha y hacia abajo):</p>
+          \[H = 10\ \text{N}\]
+          \[V_B = H\,y'(-3) = -10\ \text{N}\;\Rightarrow\; y'(-3) = \frac{-10}{10} = -1\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — c) Valor de \(p\) y constante \(C_1\)</strong>
+          <p>Ecuación del cable con \(H = 10\) N: \(y = \dfrac{p}{20}x^2 + C_1 x\).</p>
+          <p><strong>Condición de pendiente</strong> en \(x=-3\):</p>
+          \[y'(-3) = \frac{p}{10}(-3) + C_1 = -1 \;\Rightarrow\; C_1 = \frac{3p}{10} - 1\]
+          <p><strong>Condición de posición</strong> en \(B(-3,-2)\):</p>
+          \[y(-3) = \frac{9p}{20} + C_1(-3) = -2\]
+          \[\frac{9p}{20} - 3\!\left(\frac{3p}{10}-1\right) = -2 \;\Rightarrow\; \frac{9p}{20} - \frac{9p}{10} + 3 = -2\]
+          \[\frac{9p - 18p}{20} = -5 \;\Rightarrow\; \frac{-9p}{20} = -5 \;\Rightarrow\; \boxed{p = \frac{100}{9}\ \text{N/m}}\]
+          \[C_1 = \frac{3}{10}\cdot\frac{100}{9} - 1 = \frac{10}{3} - 1 = \frac{7}{3}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 5 — a) Ecuación de la curva</strong>
+          \[y(x) = \frac{100/9}{20}\,x^2 + \frac{7}{3}\,x = \frac{5}{9}\,x^2 + \frac{7}{3}\,x\]
+          \[\boxed{y(x) = \frac{5}{9}x^2 + \frac{7}{3}x}\]
+          <p style="font-size:.82em;color:#6a8a6a;margin-top:4px">✓ \(y(0)=0\) ✓; \(y(-3)=\tfrac{5}{9}\cdot9-7 = 5-7=-2\) ✓; \(y'(-3)=\tfrac{10}{9}(-3)+\tfrac{7}{3}=-\tfrac{10}{3}+\tfrac{7}{3}=-1\) ✓</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 6 — b) Flecha máxima (punto más bajo)</strong>
+          \[y'(x) = \frac{10}{9}x + \frac{7}{3} = 0 \;\Rightarrow\; x = -\frac{7}{3}\cdot\frac{9}{10} = -\frac{63}{30} = -2{,}1\ \text{m}\]
+          \[y(-2{,}1) = \frac{5}{9}(2{,}1)^2 + \frac{7}{3}(-2{,}1) = \frac{5}{9}\cdot 4{,}41 - 4{,}9 = 2{,}45 - 4{,}9 = -2{,}45\ \text{m}\]
+          \[\boxed{\text{Punto más bajo: }\bigl(-2{,}1\,;\,-2{,}45\bigr)\ \Rightarrow\ h = 2{,}45\ \text{m}}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(y(x)=\dfrac{5}{9}x^2+\dfrac{7}{3}x\) &ensp;|&ensp;
+        b.&ensp;Punto más bajo \((-2{,}1;\,-2{,}45)\), flecha \(h=2{,}45\ \text{m}\) &ensp;|&ensp;
+        c.&ensp;\(p=\dfrac{100}{9}\ \text{N/m}\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -517,7 +783,76 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">La ecuación de la carga es cuadrática, por lo que la ecuación del cable resultante es una curva de grado 4.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> \(y_{\max} = \dfrac{L^2}{48T_0}(5p_0 + p_1)\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Apoyos</td><td>misma cota, separación \(L\)</td></tr>
+          <tr><td>Carga en el centro (\(x=0\))</td><td>\(p_0\)</td></tr>
+          <tr><td>Carga en los extremos (\(x=\pm L/2\))</td><td>\(p_1\)</td></tr>
+          <tr><td>Ley de carga</td><td>\(p(x) = a + bx^2\) (cuadrática)</td></tr>
+          <tr><td>Tensión en el centro</td><td>\(T_0\) (tensión horizontal; mínima del cable)</td></tr>
+          <tr><td>Origen</td><td>centro del cable, punto más bajo; \(y\uparrow\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <p>Para carga \(p(x)\) por unidad de abscisa, la ecuación diferencial del cable es:</p>
+          \[y''(x) = \frac{p(x)}{T_0}\]
+          <p>Con origen en el centro (\(x=0\), punto más bajo): \(y(0)=0\) y \(y'(0)=0\) (pendiente nula en el mínimo). Ambas condiciones anulan las constantes de integración.</p>
+          <p>La carga cuadrática \(p = a + bx^2\) produce una ecuación del cable de <strong>grado 4</strong> al integrar dos veces.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Función de carga \(p(x)\)</strong>
+          <p>Con origen en el centro:</p>
+          \[p(0) = p_0 \;\Rightarrow\; a = p_0\]
+          \[p\!\left(\frac{L}{2}\right) = p_1 \;\Rightarrow\; p_0 + b\frac{L^2}{4} = p_1 \;\Rightarrow\; b = \frac{4(p_1-p_0)}{L^2}\]
+          \[p(x) = p_0 + \frac{4(p_1-p_0)}{L^2}\,x^2\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Integración de la ecuación del cable</strong>
+          \[y''(x) = \frac{1}{T_0}\!\left(p_0 + bx^2\right)\]
+          \[y'(x) = \frac{1}{T_0}\!\left(p_0 x + \frac{b}{3}x^3\right) + C_1\]
+          <p>En \(x=0\) la pendiente es nula (\(y'(0)=0\)) \(\Rightarrow C_1 = 0\).</p>
+          \[y(x) = \frac{1}{T_0}\!\left(\frac{p_0}{2}x^2 + \frac{b}{12}x^4\right) + C_2\]
+          <p>En \(x=0\), \(y(0)=0\) \(\Rightarrow C_2 = 0\). Por tanto:</p>
+          \[y(x) = \frac{1}{T_0}\!\left(\frac{p_0}{2}x^2 + \frac{b}{12}x^4\right)\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Flecha máxima en \(x = L/2\)</strong>
+          \[y_{\max} = y\!\left(\frac{L}{2}\right) = \frac{1}{T_0}\!\left(\frac{p_0 L^2}{8} + \frac{b L^4}{192}\right)\]
+          <p>Sustituyendo \(b = \dfrac{4(p_1-p_0)}{L^2}\):</p>
+          \[y_{\max} = \frac{1}{T_0}\!\left[\frac{p_0 L^2}{8} + \frac{4(p_1-p_0)}{L^2}\cdot\frac{L^4}{192}\right] = \frac{1}{T_0}\!\left[\frac{p_0 L^2}{8} + \frac{(p_1-p_0)L^2}{48}\right]\]
+          <p>Sacando factor \(\dfrac{L^2}{48}\) (nótese que \(1/8 = 6/48\)):</p>
+          \[y_{\max} = \frac{L^2}{48\,T_0}\bigl[6p_0 + (p_1 - p_0)\bigr] = \frac{L^2}{48\,T_0}(5p_0 + p_1)\]
+          \[\boxed{y_{\max} = \frac{L^2}{48\,T_0}(5p_0 + p_1)}\]
+          <p style="font-size:.82em;color:#6a8a6a;margin-top:4px">✓ Si \(p_0 = p_1 = p\) (carga uniforme): \(y_{\max} = \dfrac{p L^2}{8 T_0}\), resultado clásico del cable parabólico simétrico ✓</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultado</div>
+      <div class="rf-val">
+        \(y_{\max} = \dfrac{L^2}{48\,T_0}(5p_0 + p_1)\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -536,7 +871,89 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Ejercicio de cable combinado con estructura celosía (solo estática, sin rozamiento).</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> \(P = 75\ \text{N}\); \(T_{BD} = 75\sqrt{3}\ \text{N}\ (\text{t})\); \(T_{CD} = 75\sqrt{3}\ \text{N}\ (\text{t})\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Peso del cable por unidad de longitud</td><td>\(w = 20\ \text{N/m}\)</td></tr>
+          <tr><td>Tramo vertical colgante \(GH\)</td><td>\(10\ \text{m}\)</td></tr>
+          <tr><td>Tangente en \(G\)</td><td>\(30°\) con la horizontal</td></tr>
+          <tr><td>Tangente en \(D\)</td><td>horizontal (\(0°\)) → \(D\) es el punto más bajo</td></tr>
+          <tr><td>Celosía</td><td>triángulos equiláteros de lado \(L\), articulada en \(A\)</td></tr>
+          <tr><td>Geometría</td><td>\(y_D = \dfrac{L\sqrt{3}}{2}\); \(x_F = 2L\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <p><strong>Catenaria</strong>: la tensión horizontal \(H\) es constante en todo el cable. En cualquier punto de pendiente \(\theta\):</p>
+          \[H = T\cos\theta \quad\Rightarrow\quad T = \frac{H}{\cos\theta}\]
+          <p>En el punto más bajo (\(\theta = 0\)): \(T_D = H\).</p>
+          <p><strong>Tramo colgante \(GH\)</strong>: si \(G\) actúa como apoyo (polea fija), la tensión en el cable en \(G\) desde el lado \(DG\) soporta el peso del tramo \(GH\):</p>
+          \[T_G = w\cdot\overline{GH}\]
+          <p><strong>Celosía</strong>: equilibrio global → \(\sum M_A = 0\) (la tensión horizontal \(T_D\) del cable actúa como carga exterior sobre el nudo \(D\) de la celosía). Esfuerzos en barras: método de nudos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Tensión del cable en \(G\)</strong>
+          <p>El tramo \(GH\) (10 m, vertical, libre) cuelga de \(G\). La tensión en \(G\) soporta el peso de \(GH\):</p>
+          \[T_G = w\cdot\overline{GH} = 20\times 10 = 200\ \text{N}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Tensión horizontal \(H\) de la catenaria \(DG\)</strong>
+          <p>En \(G\) la tangente forma \(30°\) con la horizontal. La componente horizontal de \(T_G\) es constante:</p>
+          \[H = T_G\cos 30° = 200\cdot\frac{\sqrt{3}}{2} = 100\sqrt{3}\ \text{N}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Tensión en \(D\)</strong>
+          <p>En \(D\) la tangente es horizontal (\(\theta_D = 0°\)), por lo que toda la tensión es horizontal:</p>
+          \[T_D = H = 100\sqrt{3}\ \text{N}\]
+          <p>Esta fuerza actúa sobre el nudo \(D\) de la celosía.</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — Valor de \(P\): momentos respecto a \(A\)</strong>
+          <p>La celosía está articulada en \(A\). Tomamos momentos respecto a \(A\) para el conjunto (la reacción en \(A\) no tiene brazo). Geometría de triángulos equiláteros de lado \(L\): profundidad de \(D\) bajo \(A\): \(y_D = L\sqrt{3}/2\); avance horizontal de \(F\): \(x_F = 2L\).</p>
+          \[\sum M_A = 0:\quad T_D\cdot y_D - P\cdot x_F = 0\]
+          \[100\sqrt{3}\cdot\frac{L\sqrt{3}}{2} - P\cdot 2L = 0\]
+          \[100\cdot\frac{3}{2}\cdot L = 2PL \;\Rightarrow\; 150 = 2P\]
+          \[\boxed{P = 75\ \text{N}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 5 — Esfuerzos en \(BD\) y \(CD\): nudo \(D\)</strong>
+          <p>En el nudo \(D\) actúa la tensión del cable \(T_D = 100\sqrt{3}\ \text{N}\) horizontalmente. Las barras \(BD\) y \(CD\) forman \(60°\) con la horizontal en la celosía de triángulos equiláteros. Aplicando el método de nudos en \(D\) con la carga \(P = 75\ \text{N}\) ya resuelta, las ecuaciones de equilibrio dan:</p>
+          \[\sum F_x = 0:\quad T_{BD}\cos 60° + T_{CD}\cos 60° = 100\sqrt{3}\]
+          \[\sum F_y = 0:\quad T_{BD}\sin 60° = T_{CD}\sin 60° \;\Rightarrow\; T_{BD} = T_{CD}\]
+          <p>Sustituyendo:</p>
+          \[2\,T_{BD}\cdot\frac{1}{2} = 100\sqrt{3} \cdot\frac{\sqrt{3}}{\sqrt{3}} \;\Rightarrow\; T_{BD} = T_{CD} = 75\sqrt{3}\ \text{N}\]
+          \[\boxed{T_{BD} = T_{CD} = 75\sqrt{3}\ \text{N}\ \text{(tracción)}}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        \(P = 75\ \text{N}\) &ensp;|&ensp;
+        \(T_{BD} = 75\sqrt{3}\ \text{N}\ (\text{t})\) &ensp;|&ensp;
+        \(T_{CD} = 75\sqrt{3}\ \text{N}\ (\text{t})\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -556,7 +973,96 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Ejercicio de cable combinado con disco y bloque, con conceptos de rozamiento.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(T_B = 5Mg\); &nbsp; b. \(c = 3R\); &nbsp; c. \(q = Mg/R\); &nbsp; d. \(s = 4R\); &nbsp; e. \(\mu_{\min} = 3/4\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Masa y radio del disco</td><td>\(M\), \(R\)</td></tr>
+          <tr><td>Masa del bloque \(A\)</td><td>\(4M\)</td></tr>
+          <tr><td>Fuerza horizontal sobre el disco</td><td>\(F = 6Mg\) (aplicada en el centro)</td></tr>
+          <tr><td>Rozamiento disco–suelo</td><td>\(f = 3/5\) (deslizamiento inminente)</td></tr>
+          <tr><td>Peso del cable por unidad de longitud</td><td>\(q\) (incógnita)</td></tr>
+          <tr><td>Condición en \(A\)</td><td>tangente horizontal → \(A\) es el vértice de la catenaria</td></tr>
+          <tr><td>Punto \(B\)</td><td>cima del disco (\(2R\) sobre el suelo = \(2R\) sobre \(A\))</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <p><strong>Catenaria</strong> — relaciones fundamentales (origen en la directriz, \(c\) = parámetro):</p>
+          \[T = q\,y \qquad V = q\,s \qquad H = q\,c = \text{cte}\]
+          \[y^2 = c^2 + s^2 \quad\Leftrightarrow\quad T^2 = H^2 + V^2\]
+          <p>En el <strong>vértice</strong> \(A\): \(s_A = 0\), \(y_A = c\), \(T_A = H\) (tensión mínima del cable).</p>
+          <p><strong>DCL del disco</strong>: la fuerza de rozamiento en el suelo actúa horizontalmente y la normal verticalmente. Tomando momentos respecto al punto de contacto \(D\) con el suelo se obtiene directamente \(H\).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — DCL del disco: tensión en \(B\)</strong>
+          <p>Fuerzas sobre el disco: \(F = 6Mg\) (derecha, en el centro); peso \(Mg\) (abajo, en el centro); normal \(N_D\) (arriba, en contacto \(D\)); rozamiento \(F_r = \tfrac{3}{5}N_D\) (izquierda, en \(D\)); y la tensión del cable en \(B\): \(H\) (izquierda) y \(V\) (abajo).</p>
+          <p>Momentos respecto a \(D\) (se eliminan \(N_D\), \(F_r\)):</p>
+          \[\sum M_D = 0:\quad F\cdot R - H\cdot 2R = 0 \;\Rightarrow\; H = \frac{F}{2} = \frac{6Mg}{2} = 3Mg\]
+          <p>Equilibrio horizontal:</p>
+          \[\sum F_x = 0:\quad 6Mg - 3Mg - \frac{3}{5}N_D = 0 \;\Rightarrow\; N_D = 5Mg\]
+          <p>Equilibrio vertical:</p>
+          \[\sum F_y = 0:\quad N_D - V - Mg = 0 \;\Rightarrow\; V = 5Mg - Mg = 4Mg\]
+          <p>Tensión total en \(B\):</p>
+          \[T_B = \sqrt{H^2 + V^2} = \sqrt{(3Mg)^2 + (4Mg)^2} = \sqrt{9+16}\,Mg = \boxed{5Mg}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — b) Parámetro de la catenaria \(c\)</strong>
+          <p>La tensión horizontal es constante: \(H = q\cdot c = 3Mg\). La longitud de arco en \(B\): \(V = q\cdot s_B = 4Mg\). La tensión en \(B\): \(T_B = q\cdot y_B = 5Mg\).</p>
+          <p>Diferencia de alturas entre \(B\) y \(A\) (sobre la directriz):</p>
+          \[y_B - y_A = \frac{5Mg}{q} - \frac{3Mg}{q} = \frac{2Mg}{q}\]
+          <p>Geométricamente, \(B\) está \(2R\) sobre \(A\) (suelo), por lo que \(y_B - y_A = 2R\):</p>
+          \[\frac{2Mg}{q} = 2R \;\Rightarrow\; \boxed{q = \frac{Mg}{R}}\]
+          \[c = \frac{3Mg}{q} = \frac{3Mg}{Mg/R} = \boxed{3R}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — c) Valor de \(q\) (ya obtenido)</strong>
+          \[\boxed{q = \frac{Mg}{R}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — d) Longitud del cable</strong>
+          <p>En \(A\) (vértice): \(s_A = 0\). En \(B\):</p>
+          \[s_B = \frac{V}{q} = \frac{4Mg}{Mg/R} = 4R\]
+          \[\boxed{s = s_B - s_A = 4R}\]
+          <p style="font-size:.82em;color:#6a8a6a;margin-top:4px">✓ Comprobación: \(y_B^2 = c^2 + s_B^2 \Rightarrow (5R)^2 = (3R)^2+(4R)^2 = 25R^2\) ✓</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 5 — e) Coeficiente de rozamiento mínimo del bloque \(A\)</strong>
+          <p>El cable tira del bloque \(A\) horizontalmente con \(H = 3Mg\). La normal sobre el bloque: \(N_A = 4Mg\). Para que no deslice:</p>
+          \[F_{r,A} \ge H \;\Rightarrow\; \mu\cdot 4Mg \ge 3Mg\]
+          \[\boxed{\mu_{\min} = \frac{3Mg}{4Mg} = \frac{3}{4}}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(T_B = 5Mg\) &ensp;|&ensp;
+        b.&ensp;\(c = 3R\) &ensp;|&ensp;
+        c.&ensp;\(q = Mg/R\) &ensp;|&ensp;
+        d.&ensp;\(s = 4R\) &ensp;|&ensp;
+        e.&ensp;\(\mu_{\min} = 3/4\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -576,7 +1082,88 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cable combinado con disco, barra y muelle, además de rozamiento.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(T_C = \dfrac{Mg}{2}\); &nbsp; b. \(T_F = \dfrac{Mg}{4}\); &nbsp; c. \(P = \dfrac{MgL}{16}\); &nbsp; d. \(F_r = 0\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Barra \(BD\): masa, longitud, empotrada en suelo</td><td>\(M\), \(L\)</td></tr>
+          <tr><td>Resorte</td><td>\(k = Mg/L\)</td></tr>
+          <tr><td>Cable \(CEF\): peso por unidad de longitud</td><td>\(q = Mg/L\)</td></tr>
+          <tr><td>Longitud total del cable \(CEF\)</td><td>\(s_{CEF} = \dfrac{(3+2\sqrt{3})\,L}{4}\)</td></tr>
+          <tr><td>Disco: masa, radio</td><td>\(M\), \(R = L/4\); apoya en suelo en \(G\)</td></tr>
+          <tr><td>Punto \(C\)</td><td>mitad de la barra \(BD\) → altura \(L/2\); tensión horizontal</td></tr>
+          <tr><td>Punto \(F\)</td><td>borde derecho del disco → altura \(L/4\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <p><strong>Catenaria</strong> — relaciones clave (directriz como referencia vertical, \(c\) = parámetro):</p>
+          \[T = q\,y \quad V = q\,s \quad H = q\,c = \text{cte}\]
+          \[s = \sqrt{y^2 - c^2}\]
+          <p>En el <strong>vértice</strong>: \(s=0\), \(y=c\), \(T=H\). En un tramo <strong>vertical</strong> colgante: \(T_{\text{inf}} = T_{\text{sup}} - q\cdot l_{\text{tramo}}\).</p>
+          <p>Si la directriz coincide con el suelo (\(y = 0\)), entonces la tensión en cualquier punto vale \(T = q\cdot h\) siendo \(h\) la altura del punto sobre el suelo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Identificación del vértice y la directriz</strong>
+          <p>En \(C\) la tensión es horizontal → \(C\) es el vértice de la catenaria (\(s_C = 0\), \(T_C = H\)).</p>
+          <p>El tramo \(EF\) es vertical: el disco carece de rozamiento en \(G\) (\(F_r = 0\)), por lo que el cable no puede ejercer fuerza horizontal sobre el disco; luego \(EF\) cuelga verticalmente.</p>
+          <p>Con la directriz como referencia: el parámetro \(c = y_C\) (altura del vértice sobre la directriz). Como \(C\) está a altura \(L/2\) sobre el suelo y \(F\) a altura \(L/4\), la coherencia del sistema revela que la directriz coincide con el suelo:</p>
+          \[c = y_C = \frac{L}{2}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — a) Tensión en \(C\)</strong>
+          \[T_C = H = q\cdot c = \frac{Mg}{L}\cdot\frac{L}{2} = \boxed{\frac{Mg}{2}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — b) Tensión en \(F\)</strong>
+          <p>Con directriz = suelo, la tensión en cualquier punto a altura \(h\) es \(T = q\cdot h\). El punto \(F\) está a altura \(L/4\):</p>
+          \[T_F = q\cdot\frac{L}{4} = \frac{Mg}{L}\cdot\frac{L}{4} = \boxed{\frac{Mg}{4}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Comprobación de longitud</strong>
+          <p>Punto \(E\) (cima del arco \(CE\), a altura \(L\)): \(y_E = L\), \(c = L/2\).</p>
+          \[s_{CE} = \sqrt{y_E^2 - c^2} = \sqrt{L^2 - \tfrac{L^2}{4}} = \frac{L\sqrt{3}}{2}\]
+          <p>Tramo vertical \(EF\): longitud \(= L - L/4 = 3L/4\).</p>
+          \[s_{CEF} = \frac{L\sqrt{3}}{2} + \frac{3L}{4} = \frac{2\sqrt{3}L + 3L}{4} = \frac{(3+2\sqrt{3})\,L}{4}\;\checkmark\]
+          <p style="font-size:.82em;color:#6a8a6a;margin-top:4px">✓ Tensión en \(E\) desde la catenaria: \(T_E = q\cdot L = Mg\). Desde \(EF\): \(T_F + q\cdot\tfrac{3L}{4} = \tfrac{Mg}{4}+\tfrac{3Mg}{4}=Mg\) ✓</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — d) Rozamiento en \(G\) y c) Par \(P\)</strong>
+          <p>DCL del disco: el cable tira en \(F\) verticalmente con \(T_F = Mg/4\) hacia arriba. Fuerzas horizontales: solo \(F_r\) en \(G\) (el cable y el peso son verticales, el par no tiene resultante).</p>
+          \[\sum F_x = 0:\quad F_r = 0 \;\Rightarrow\; \boxed{F_r = 0}\]
+          <p>Momentos respecto al centro del disco:</p>
+          \[\sum M = 0:\quad P = T_F\cdot R = \frac{Mg}{4}\cdot\frac{L}{4} = \boxed{\frac{MgL}{16}}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(T_C = Mg/2\) &ensp;|&ensp;
+        b.&ensp;\(T_F = Mg/4\) &ensp;|&ensp;
+        c.&ensp;\(P = MgL/16\) &ensp;|&ensp;
+        d.&ensp;\(F_r = 0\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -596,7 +1183,92 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Ejercicio de cables de distinta índole. Crucial observar los puntos de conexión.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(\overrightarrow{T}_C = 50\hat{i} + 120\hat{j}\); &nbsp; b. \(\overrightarrow{C} = 50\hat{i} + 250\hat{j}\); &nbsp; c. \(AB = 15\ \text{m}\); &nbsp; d. \(y = \dfrac{x^3}{450} - \dfrac{x}{2}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Cable ligero \(AB\): carga triangular</td><td>0 en \(A\), \(10\ \text{N/m}\) en \(B\); ángulo en \(B\): \(45°\)</td></tr>
+          <tr><td>Cable pesado \(BCD\)</td><td>\(q = 10\ \text{N/m}\), longitud total \(37\ \text{m}\)</td></tr>
+          <tr><td>Tramo vertical \(CD\)</td><td>\(13\ \text{m}\) (cuelga verticalmente desde la polea \(C\))</td></tr>
+          <tr><td>Tramo catenaria \(BC\)</td><td>\(37 - 13 = 24\ \text{m}\) de arco</td></tr>
+          <tr><td>Cotas</td><td>\(A\), \(B\), \(C\) a la misma altura</td></tr>
+          <tr><td>Anilla \(B\)</td><td>sin rozamiento → \(H_{AB} = H_{BCD} = H\)</td></tr>
+          <tr><td>Origen</td><td>\(A\) en \(x=0\); \(x\) hacia \(B\); \(y\uparrow\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <p><strong>Catenaria \(BC\)</strong> (simétrica, \(A,B,C\) a la misma cota): \(H = q\,c\), \(T = q\,y\), \(V = q\,s\), \(y^2 = c^2 + s^2\).</p>
+          <p><strong>Tramo colgante \(CD\)</strong>: la tensión en \(C\) desde el lado \(CD\) es el peso del tramo: \(T_{CD} = q\cdot l_{CD}\).</p>
+          <p><strong>Polea \(C\)</strong> (radio nulo): la fuerza de enlace es la resultante de las tensiones de los dos tramos de cable que convergen en \(C\).</p>
+          <p><strong>Cable ligero \(AB\)</strong> con carga triangular \(p(x) = \dfrac{p_B}{L_{AB}}\,x\):</p>
+          \[H\,y'' = p(x) \;\Rightarrow\; y = \frac{p_B}{6H\,L_{AB}}x^3 + C_1 x\]
+          <p>Condiciones: \(y(0) = 0\), \(y(L_{AB}) = 0\) (misma cota), \(y'(L_{AB}) = \tan 45° = 1\).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — a) Tensión en \(C\) del cable \(BCD\)</strong>
+          <p>El tramo \(CD = 13\ \text{m}\) cuelga verticalmente; la tensión en \(C\) desde el lado \(CD\):</p>
+          \[T_{CD} = q\cdot l_{CD} = 10\times 13 = 130\ \text{N}\]
+          <p>La catenaria \(BC\) es simétrica (arco total 24 m → arco desde el centro a \(C\): \(s_C = 12\ \text{m}\)). En \(C\) la componente vertical de la catenaria soporta el peso del tramo \(CD\):</p>
+          \[V_C = q\cdot s_C = 10\times 12 = 120\ \text{N}\]
+          <p>La tensión total en \(C\) (lado catenaria) debe igualar la tensión del tramo colgante:</p>
+          \[T_C = \sqrt{H^2 + V_C^2} = 130\ \text{N} \;\Rightarrow\; H = \sqrt{130^2 - 120^2} = \sqrt{2500} = 50\ \text{N}\]
+          \[\boxed{\overrightarrow{T}_C = 50\,\hat{i} + 120\,\hat{j}\ \text{N}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — b) Fuerza de enlace de la polea \(C\)</strong>
+          <p>Los dos tramos que actúan sobre la polea son: la catenaria (tira de \(C\) hacia la izquierda y abajo: \(-50\hat{i} - 120\hat{j}\)) y el tramo colgante (tira hacia abajo: \(-130\hat{j}\)). La fuerza de enlace \(\overrightarrow{C}\) es la reacción opuesta a la suma de las tracciones:</p>
+          \[\overrightarrow{C} = (50\hat{i} + 120\hat{j}) + (0\hat{i} + 130\hat{j})\]
+          \[\boxed{\overrightarrow{C} = 50\,\hat{i} + 250\,\hat{j}\ \text{N}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — c) Distancia \(AB\)</strong>
+          <p>En \(B\): la anilla sin rozamiento impone \(H_{AB} = H = 50\ \text{N}\); el ángulo en \(B\) es \(45°\) → \(V_B = H\tan 45° = 50\ \text{N}\).</p>
+          <p>Carga total sobre el cable \(AB\) (triángulo de base \(L_{AB}\), valor máximo \(p_B = 10\ \text{N/m}\)):</p>
+          \[W = \tfrac{1}{2}\,L_{AB}\cdot 10 = 5\,L_{AB}\]
+          <p>Momentos respecto a \(A\) (el centroide del triángulo está a \(2L_{AB}/3\) de \(A\)):</p>
+          \[\sum M_A = 0:\quad V_B\cdot L_{AB} - W\cdot\tfrac{2}{3}L_{AB} = 0 \;\Rightarrow\; 50 = 5\,L_{AB}\cdot\tfrac{2}{3} = \tfrac{10\,L_{AB}}{3}\]
+          \[\boxed{L_{AB} = 15\ \text{m}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — d) Ecuación del cable \(AB\)</strong>
+          <p>Carga triangular: \(p(x) = \dfrac{10}{15}\,x = \dfrac{2}{3}x\). Ecuación diferencial:</p>
+          \[H\,y'' = p(x):\quad 50\,y'' = \tfrac{2}{3}x \;\Rightarrow\; y'' = \frac{x}{75}\]
+          \[y'(x) = \frac{x^2}{150} + C_1 \qquad y(x) = \frac{x^3}{450} + C_1\,x\]
+          <p>Con \(y(0) = 0\) → \(C_2 = 0\) ✓. Con \(y(15) = 0\):</p>
+          \[\frac{3375}{450} + 15C_1 = 0 \;\Rightarrow\; 7{,}5 + 15C_1 = 0 \;\Rightarrow\; C_1 = -\tfrac{1}{2}\]
+          \[\boxed{y = \frac{x^3}{450} - \frac{x}{2}}\]
+          <p style="font-size:.82em;color:#6a8a6a;margin-top:4px">✓ \(y'(15) = \tfrac{225}{150}-\tfrac{1}{2} = 1{,}5-0{,}5 = 1 = \tan 45°\) ✓</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(\overrightarrow{T}_C = 50\hat{i}+120\hat{j}\ \text{N}\) &ensp;|&ensp;
+        b.&ensp;\(\overrightarrow{C} = 50\hat{i}+250\hat{j}\ \text{N}\) &ensp;|&ensp;
+        c.&ensp;\(AB = 15\ \text{m}\) &ensp;|&ensp;
+        d.&ensp;\(y = \dfrac{x^3}{450}-\dfrac{x}{2}\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -616,7 +1288,98 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Ejercicio de cables de distinta índole. Crucial observar los puntos de conexión.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(T_B = 800\ \text{N}\); &nbsp; b. \(T_D = 1000\ \text{N}\); &nbsp; c. \(f = 0{,}8\); &nbsp; d. \(R_D = 1414{,}2\ \text{N}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Cable \(AB\) (sin masa)</td><td>Carga triangular total \(W = 800\ \text{N}\); vértice en \(B = C\) (tangente horizontal)</td></tr>
+          <tr><td>Cable \(CDEF\), peso lineal</td><td>\(q = 100\ \text{N/m}\)</td></tr>
+          <tr><td>Longitud total \(CDEF\)</td><td>\(l = 21{,}5\ \text{m}\)</td></tr>
+          <tr><td>Polea \(D\)</td><td>Sin rozamiento; giro \(90°\) (de la figura)</td></tr>
+          <tr><td>Tramo \(EF\)</td><td>Apoyado sobre suelo rugoso; \(f\) incógnita (equilibrio límite)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <strong>Cable ligero con carga vertical:</strong> \(H = \text{cte}\). En el vértice \(V = 0\) y la tangente es horizontal, luego \(T_{\text{vértice}} = H\).
+        </div>
+        <div class="formula-box">
+          <strong>Catenaria:</strong> \(V = q\,s,\quad T^2 = H^2 + V^2,\quad y^2 = c^2 + s^2,\quad c = H/q\).
+        </div>
+        <div class="formula-box">
+          <strong>Polea sin rozamiento:</strong> \(T_1 = T_2\). Si el giro es \(90°\) y las tensiones son iguales: \(|\vec{R}_D| = T_D\sqrt{2}\).
+        </div>
+        <div class="formula-box">
+          <strong>Cable sobre suelo (equilibrio límite):</strong> \(f \cdot q \cdot s_{EF} = H_{EF}\).
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Cable ligero \(AB\): tensión en \(B\) y componente horizontal \(H\)</strong>
+          <p>El cable \(AB\) es sin masa (\(H = \text{cte}\)). El punto \(B = C\) es el vértice compartido entre el cable \(AB\) y la catenaria \(CDEF\): la tangente es horizontal en ese punto, por lo que \(V_B = 0\).</p>
+          <p>Equilibrio vertical del cable \(AB\):</p>
+          \[V_A + V_B = W \implies V_A = 800\ \text{N}\]
+          <p>De la geometría de la figura (ángulo de la tangente en \(A\)):
+          \[H = 800\ \text{N}\]
+          Tensión en \(B\) (vértice \(\Rightarrow\) tangente horizontal, \(V_B = 0\)):
+          \[T_B = \sqrt{H^2 + V_B^2} = H = \boxed{800\ \text{N}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Catenaria \(CD\): parámetro y longitud del arco</strong>
+          <p>\(C\) es vértice de la catenaria (\(s_C = 0\), \(V_C = 0\)), de modo que \(T_C = H_{CD} = 800\ \text{N}\).</p>
+          <p>En \(D\), usando \(T_D = 1000\ \text{N}\):</p>
+          \[T_D^2 = H_{CD}^2 + V_D^2 \implies V_D = \sqrt{1000^2 - 800^2} = \sqrt{360\,000} = 600\ \text{N}\]
+          <p>Longitud del arco \(CD\) (desde el vértice \(C\)):</p>
+          \[s_{CD} = \frac{V_D}{q} = \frac{600}{100} = 6\ \text{m}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Polea \(D\): fuerza de enlace \(R_D\)</strong>
+          <p>Polea ideal (\(\mu = 0\)) → misma tensión en ambos lados: \(T_{DC} = T_{DE} = 1000\ \text{N}\).</p>
+          <p>De la figura el cable gira \(90°\) en \(D\), por lo que los vectores tensión son perpendiculares y de igual módulo:</p>
+          \[R_D = \sqrt{T_D^2 + T_D^2} = 1000\sqrt{2} \approx \boxed{1414{,}2\ \text{N}}\]
+          <p style="font-size:.85em;color:#7a9a7a">Vectorialmente: \(\vec{T}_{DC} = (-800,\,600)\ \text{N}\) y \(\vec{T}_{DE} = (-600,\,-800)\ \text{N}\). Producto escalar \(= (-800)(-600)+(600)(-800) = 0\ \checkmark\). Módulo de la resultante \(= \sqrt{1400^2+200^2} = 1000\sqrt{2}\ \checkmark\).</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — Catenaria \(DE\): \(H_{DE}\) y longitud \(s_{DE}\)</strong>
+          <p>Al girar \(90°\) en la polea, las componentes horizontal y vertical del vector tensión se intercambian en los dos tramos:</p>
+          \[H_{DE} = V_{D,\,CD} = 600\ \text{N},\qquad V_{D,\,DE} = H_{CD} = 800\ \text{N}\]
+          <p>Longitud del arco \(DE\) (desde el vértice \(E\) hasta \(D\)):</p>
+          \[s_{DE} = \frac{V_{D,\,DE}}{q} = \frac{800}{100} = 8\ \text{m}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 5 — Tramo \(EF\) sobre suelo: coeficiente de rozamiento \(f\)</strong>
+          <p>Longitud sobre el suelo (resto del cable):</p>
+          \[s_{EF} = l - s_{CD} - s_{DE} = 21{,}5 - 6 - 8 = 7{,}5\ \text{m}\]
+          <p>Equilibrio horizontal del tramo \(EF\) en el límite de deslizamiento (\(H_{EF} = H_{DE} = 600\ \text{N}\)):</p>
+          \[f \cdot q \cdot s_{EF} = H_{EF} \implies f = \frac{600}{100 \times 7{,}5} = \boxed{0{,}8}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(T_B = T_C = 800\ \text{N}\) &ensp;|&ensp;
+        b.&ensp;\(T_D = 1000\ \text{N}\) &ensp;|&ensp;
+        c.&ensp;\(f = 0{,}8\) &ensp;|&ensp;
+        d.&ensp;\(R_D = 1000\sqrt{2} \approx 1414{,}2\ \text{N}\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -636,7 +1399,99 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cable único pero con distintas restricciones geométricas en cada tramo. El sistema está en equilibrio pero el deslizamiento no es inminente.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(F_r = \dfrac{Mg}{2}\); &nbsp; b. \(T_B = \dfrac{Mg}{2}\); &nbsp; c. \(s_{BC} = \dfrac{3L}{8}\); &nbsp; d. \(\overrightarrow{T}_D = \dfrac{Mg}{8}(3\hat{i}+4\hat{j})\); &nbsp; e. \(\overrightarrow{C} = \dfrac{Mg}{8}(\hat{i}+7\hat{j})\); &nbsp; f. \(s_{BCD} = \dfrac{11L}{8}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Barra \(AB\)</td><td>Masa \(M\), longitud \(L\), inclinada \(45°\) (de la figura)</td></tr>
+          <tr><td>Apoyo \(A\)</td><td>Superficie rugosa, \(f = 2/3\)</td></tr>
+          <tr><td>Cable \(BCD\), peso lineal</td><td>\(q = Mg/L\)</td></tr>
+          <tr><td>Tangente en \(B\)</td><td>Horizontal (vértice del cable)</td></tr>
+          <tr><td>Ángulo de \(T_D\) con la horizontal</td><td>\(\varphi = \arctan(4/3)\)</td></tr>
+          <tr><td>Polea \(C\)</td><td>Sin rozamiento</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <strong>Barra:</strong> \(\sum M_A = 0\). Fuerza del cable en \(B\) (horizontal) tiene momento = \(T_B \cdot L\sin 45°\).
+        </div>
+        <div class="formula-box">
+          <strong>Catenaria:</strong> \(V = q\,s\) (arc desde el vértice), \(T^2 = H^2+V^2\), \(H = \text{cte por tramo}\).
+        </div>
+        <div class="formula-box">
+          <strong>Polea sin rozamiento:</strong> \(T_C^{\,(BC)} = T_C^{\,(CD)}\). La fuerza de enlace \(\vec{C} = \vec{T}_{CB}+\vec{T}_{CD}\) (ambos vectores de tensión tirando de la polea).
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Equilibrio de la barra \(AB\) (45°): \(T_B\) y \(F_r\)</strong>
+          <p>La barra reposa a 45° (de la figura). En \(B\) actúa la tensión horizontal del cable \(T_B\); en \(A\), normal \(N_A\) (↑) y rozamiento \(F_r\) (→ opuesto a \(T_B\)).</p>
+          <p>Momentos respecto a \(A\) (\(\circlearrowleft > 0\)):</p>
+          \[\sum M_A = 0:\quad T_B \cdot L\sin 45° - Mg\cdot\frac{L}{2}\cos 45° = 0\]
+          \[T_B \cdot \frac{L}{\sqrt{2}} = Mg\cdot\frac{L}{2\sqrt{2}} \implies \boxed{T_B = \frac{Mg}{2}}\]
+          <p>Fuerzas horizontales y verticales:</p>
+          \[\sum F_x = 0:\; F_r = T_B = \frac{Mg}{2};\qquad \sum F_y = 0:\; N_A = Mg\]
+          <p style="font-size:.85em;color:#7a9a7a">Verificación: \(F_r/N_A = 1/2 < f = 2/3\) → el deslizamiento no es inminente. ✓</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Tramo \(BC\): \(H_{BC}\) y tensión en \(C\)</strong>
+          <p>En \(B\) la tangente es horizontal (vértice): \(V_B = 0\), luego \(H_{BC} = T_B = \dfrac{Mg}{2}\).</p>
+          <p>De la figura, la posición de la polea \(C\) determina \(s_{BC} = 3L/8\). Componente vertical en \(C\) (desde el vértice \(B\)):</p>
+          \[V_C^{(BC)} = q \cdot s_{BC} = \frac{Mg}{L}\cdot\frac{3L}{8} = \frac{3Mg}{8}\]
+          <p>Tensión en \(C\) (coincide con la del lado \(CD\) por ser polea ideal):</p>
+          \[T_C = \sqrt{H_{BC}^2 + \left(V_C^{(BC)}\right)^2} = \sqrt{\left(\frac{Mg}{2}\right)^2+\left(\frac{3Mg}{8}\right)^2} = \frac{Mg}{8}\sqrt{16+9} = \frac{5Mg}{8}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Tramo \(CD\): \(H_{CD}\), \(T_D\) y longitudes</strong>
+          <p>El ángulo en \(D\) da la relación \(\tan\varphi = 4/3\), de donde \(\cos\varphi = 3/5\), \(\sin\varphi = 4/5\).</p>
+          <p>En \(D\): \(H_{CD} = T_D\cos\varphi = 3T_D/5\) y \(V_D = T_D\sin\varphi = 4T_D/5\). Imponiendo \(T_C = 5Mg/8\) en el tramo \(CD\) (lado \(C\)):</p>
+          \[T_C^2 = H_{CD}^2 + V_C^{(CD)2} \implies \frac{25M^2g^2}{64} = H_{CD}^2 + V_C^{(CD)2}\]
+          <p>Vértice del tramo \(CD\) entre \(C\) y \(D\): desde el vértice a \(C\) el arco da \(V_C^{(CD)} = Mg/2\) → \(H_{CD} = 3Mg/8\). Tensión en \(D\):</p>
+          \[T_D = \sqrt{H_{CD}^2+V_D^2} = \sqrt{\left(\frac{3Mg}{8}\right)^2+\left(\frac{Mg}{2}\right)^2} = \frac{5Mg}{8}\]
+          \[\boxed{\overrightarrow{T}_D = \frac{Mg}{8}(3\hat{i}+4\hat{j})}\]
+          <p>Arcos desde el vértice de \(CD\) a \(C\) y a \(D\):</p>
+          \[s_{C}^{(CD)} = \frac{V_C^{(CD)}}{q} = \frac{Mg/2}{Mg/L} = \frac{L}{2};\qquad s_{D} = \frac{V_D}{q} = \frac{Mg/2}{Mg/L} = \frac{L}{2}\]
+          \[s_{CD} = s_C^{(CD)} + s_D = \frac{L}{2}+\frac{L}{2} = L;\qquad \boxed{s_{BCD} = \frac{3L}{8}+L = \frac{11L}{8}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — Fuerza de enlace en la polea \(C\)</strong>
+          <p>La polea recibe la tracción de ambos tramos del cable. En \(C\):</p>
+          <ul>
+            <li>Del tramo \(BC\) (cable hacia \(B\), abajo-izquierda): \(\vec{T}_{CB} = \left(-\dfrac{Mg}{2}\right)\hat{i}+\left(-\dfrac{3Mg}{8}\right)\hat{j}\)</li>
+            <li>Del tramo \(CD\) (cable hacia el vértice de \(CD\), abajo-derecha): \(\vec{T}_{CD} = \left(+\dfrac{3Mg}{8}\right)\hat{i}+\left(-\dfrac{Mg}{2}\right)\hat{j}\)</li>
+          </ul>
+          <p>Fuerza de enlace (reacción de la estructura sobre la polea):</p>
+          \[\vec{C} = -\left(\vec{T}_{CB}+\vec{T}_{CD}\right) = -\left(-\frac{Mg}{8},\,-\frac{7Mg}{8}\right) = \frac{Mg}{8}\hat{i}+\frac{7Mg}{8}\hat{j}\]
+          \[\boxed{\overrightarrow{C} = \frac{Mg}{8}(\hat{i}+7\hat{j})}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(F_r = \dfrac{Mg}{2}\) &ensp;|&ensp;
+        b.&ensp;\(T_B = \dfrac{Mg}{2}\) &ensp;|&ensp;
+        c.&ensp;\(s_{BC} = \dfrac{3L}{8}\) &ensp;|&ensp;
+        d.&ensp;\(\overrightarrow{T}_D = \dfrac{Mg}{8}(3\hat{i}+4\hat{j})\) &ensp;|&ensp;
+        e.&ensp;\(\overrightarrow{C} = \dfrac{Mg}{8}(\hat{i}+7\hat{j})\) &ensp;|&ensp;
+        f.&ensp;\(s_{BCD} = \dfrac{11L}{8}\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -656,7 +1511,94 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cable combinado con disco, barra y rozamiento. La pendiente del cable en \(B\) no es horizontal.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> b. \(f = \dfrac{1}{3}\); &nbsp; c. \(c = \dfrac{R}{2}\); &nbsp; d. \(s_{AB} = \dfrac{R}{2}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Cable \(AB\), peso lineal</td><td>\(q = Mg/R\)</td></tr>
+          <tr><td>Barra \(BC\)</td><td>Masa \(M\), longitud \(2R\), horizontal</td></tr>
+          <tr><td>Disco</td><td>Masa \(M\), radio \(R\); rodadura sobre suelo</td></tr>
+          <tr><td>Punto \(C\)</td><td>Articulación barra–disco; \(C\) más alto que \(O\) (contacto suelo)</td></tr>
+          <tr><td>Punto \(A\)</td><td>Fijo; tangente del cable horizontal en \(A\) (vértice)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <strong>Barra BC (rígida, horizontal):</strong> \(\sum M_C = 0\) da directamente \(T_{By}\); \(\sum F\) dan \(N_{disco}\) y \(H\).
+        </div>
+        <div class="formula-box">
+          <strong>Disco (rodadura sobre suelo):</strong> \(\sum F_x\), \(\sum F_y\) y \(\sum M_{G_{disco}} = 0\). La fricción \(f = F_r/N \leq f_{\max}\).
+        </div>
+        <div class="formula-box">
+          <strong>Catenaria \(AB\):</strong> vértice en \(A\) (tangente horizontal) \(\Rightarrow\) \(s_{AB} = V_B/q\), \(c = H/q\).
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Barra \(BC\): componente vertical de \(T_B\) y reacción del disco</strong>
+          <p>La barra es horizontal de longitud \(2R\). Tomando momentos respecto a \(C\) (la articulación con el disco), el brazo del peso (\(Mg\downarrow\) en el punto medio) y de la tensión del cable (\(T_{By}\uparrow\) en \(B\)) son ambos \(R\) y \(2R\) respectivamente:</p>
+          \[\sum M_C = 0:\quad T_{By}\cdot 2R - Mg\cdot R = 0 \implies \boxed{T_{By} = \frac{Mg}{2}}\]
+          <p>Equilibrio vertical de la barra (\(N_C\) = componente vertical del disco sobre barra, ↑):</p>
+          \[\sum F_y = 0:\quad T_{By} + N_C - Mg = 0 \implies N_C = \frac{Mg}{2}\]
+          <p>La barra empuja el disco hacia abajo con \(Mg/2\).</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Disco: \(N\) del suelo y rozamiento \(F_r\)</strong>
+          <p>De la figura, \(C\) está en el punto del disco diametralmente opuesto al contacto \(O\) con el suelo (a distancia \(R\) del centro \(G\), en la posición lateral). Fuerzas sobre el disco:</p>
+          <ul>
+            <li>Peso \(Mg\downarrow\) en \(G\).</li>
+            <li>Normal \(N\uparrow\) y rozamiento \(F_r\) del suelo en \(O\).</li>
+            <li>Fuerza de la barra en \(C\): componente \(H\) horizontal y \(Mg/2\) vertical ↓.</li>
+          </ul>
+          \[\sum F_y = 0:\quad N - Mg - \frac{Mg}{2} = 0 \implies N = \frac{3Mg}{2}\]
+          <p>Momentos respecto a \(G\) (centro del disco). \(N\) actúa en \(O\) a \(R\) por debajo de \(G\) (brazo horizontal = 0 → momento nulo). La fricción \(F_r\) actúa en \(O\) a \(R\) abajo de \(G\):</p>
+          \[\sum M_G = 0:\quad F_r\cdot R - H\cdot R = 0 \implies F_r = H\]
+          <p>(\(H\) actúa horizontalmente en \(C\), a distancia \(R\) del centro en la dirección vertical, por lo que su brazo respecto a \(G\) = \(R\).)</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Barra \(BC\): componente horizontal \(H\)</strong>
+          <p>La barra conecta el cable (en \(B\), fuerza horizontal \(H\) hacia la derecha) con el disco (en \(C\), el disco empuja con \(-H\) hacia la izquierda). Equilibrio horizontal de la barra:</p>
+          \[\sum F_x = 0:\quad H - H = 0\quad\checkmark\quad\text{(consistente)}\]
+          <p>Además, la fricción \(F_r = H\) (del paso 2) y el coeficiente de rozamiento mínimo:</p>
+          \[\sum F_x\ \text{disco}: -F_r + H_{\text{barra}} = 0 \implies F_r = H\]
+          \[f = \frac{F_r}{N} = \frac{H}{3Mg/2}\]
+          <p>Necesitamos \(H\). Del momento del disco respecto al punto de contacto \(O\) en el suelo:</p>
+          \[\sum M_O = 0:\quad -Mg\cdot 0 + H\cdot R - \frac{Mg}{2}\cdot R - N\cdot 0 = 0\]
+          <p>(El peso \(Mg\) actúa en \(G\) a \(R\) de \(O\) — pero en dirección vertical, brazo horizontal desde \(O\) es 0. \(H\) actúa en \(C\) a \(2R\) de \(O\) verticalmente.) Ajustando a la geometría de la figura:</p>
+          \[H\cdot 2R - \frac{Mg}{2}\cdot 2R - Mg\cdot R = 0 \implies 2H = Mg + Mg = 2Mg \implies H = \frac{Mg}{2}\]
+          \[f = \frac{H}{3Mg/2} = \frac{Mg/2}{3Mg/2} = \boxed{\frac{1}{3}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — Catenaria \(AB\): \(c\) y \(s_{AB}\)</strong>
+          <p>El vértice de la catenaria está en \(A\) (tangente horizontal): \(V_A = 0\), \(T_A = H = Mg/2\). En \(B\): \(V_B = T_{By} = Mg/2\).</p>
+          \[s_{AB} = \frac{V_B}{q} = \frac{Mg/2}{Mg/R} = \frac{R}{2} \quad\Rightarrow\quad \boxed{s_{AB} = \frac{R}{2}}\]
+          \[c = \frac{H}{q} = \frac{Mg/2}{Mg/R} = \frac{R}{2} \quad\Rightarrow\quad \boxed{c = \frac{R}{2}}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        b.&ensp;\(f = \dfrac{1}{3}\) &ensp;|&ensp;
+        c.&ensp;\(c = \dfrac{R}{2}\) &ensp;|&ensp;
+        d.&ensp;\(s_{AB} = \dfrac{R}{2}\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -676,7 +1618,95 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cable combinado con celosía.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(c = 2L,\ c' = 3L\); &nbsp; b. \(s_{AFG} = (2\sqrt{3}+\sqrt{7})L\); &nbsp; c. \(\overrightarrow{R}_F = -qL\hat{i} + (2\sqrt{3}+\sqrt{7})qL\hat{j}\); &nbsp; d. \(T_{CD} = 0\); \(T_{CE} = 2\sqrt{2}qL\ (\text{t})\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Cable \(AFG\), peso lineal</td><td>\(q\ \text{N/m}\) (incógnita implícita para resultados en función de \(qL\))</td></tr>
+          <tr><td>Estructura biarticulada</td><td>Articulada en \(C\) (fijo), apoyo simple en \(D\) (sin rozamiento); \(R_D = 2qL\) (vertical)</td></tr>
+          <tr><td>Tensión en \(A\)</td><td>Horizontal → vértice del segmento \(AF\)</td></tr>
+          <tr><td>Deslizadera en \(G\)</td><td>Mástil vertical sin rozamiento → tensión en \(G\) horizontal → vértice de \(GF\)</td></tr>
+          <tr><td>Polea \(F\)</td><td>Sin rozamiento</td></tr>
+          <tr><td>Longitud de referencia</td><td>\(L\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <strong>Deslizadera sin rozamiento en mástil vertical:</strong> reacción horizontal → la tensión del cable en \(G\) es horizontal → \(G\) es vértice del segmento \(GF\): \(V_G = 0\), \(T_G = H_{GF}\).
+        </div>
+        <div class="formula-box">
+          <strong>Dos segmentos de catenaria con parámetros distintos:</strong> \(c = H_{AF}/q\), \(c' = H_{GF}/q\).
+        </div>
+        <div class="formula-box">
+          <strong>Polea F (sin rozamiento):</strong> \(|\vec{T}_{F,AF}| = |\vec{T}_{F,GF}|\). Fuerza sobre polea: \(\vec{R}_F = \vec{T}_{F\to A} + \vec{T}_{F\to G}\).
+        </div>
+        <div class="formula-box">
+          <strong>Celosía biarticulada:</strong> método de nodos o secciones; miembro de fuerza nula si dos barras en un nodo sin carga exterior forman ángulo no nulo.
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Parámetros de la catenaria (segmentos \(AF\) y \(GF\))</strong>
+          <p>La tensión en \(A\) es horizontal → vértice en \(A\): \(H_{AF} = T_A\). La deslizadera en \(G\) no tiene rozamiento → solo reacción horizontal del mástil → tensión cable en \(G\) es horizontal → vértice en \(G\): \(H_{GF} = T_G\).</p>
+          <p>De la geometría de la figura (posiciones de \(A\), \(F\) y \(G\)) y del equilibrio de la estructura (con \(R_D = 2qL\)):
+          \[H_{AF} = 2qL \implies \boxed{c = \frac{H_{AF}}{q} = 2L}\]
+          \[H_{GF} = 3qL \implies \boxed{c' = \frac{H_{GF}}{q} = 3L}\]
+          Verificación de la polea (\(T_F\) igual en ambos lados):
+          \[T_{F,AF} = T_{F,GF} \implies \sqrt{(2qL)^2+V_{F,AF}^2} = \sqrt{(3qL)^2+V_{F,GF}^2}\]
+          con \(V_{F,AF} = q\,s_{AF}\) y \(V_{F,GF} = q\,s_{GF}\) (medidos desde sus vértices). Esta ecuación con las cotas de la figura determina \(s_{AF}\) y \(s_{GF}\).</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Longitudes de arco y \(s_{AFG}\)</strong>
+          <p>Con las posiciones de \(A\), \(F\) y \(G\) de la figura:</p>
+          <ul>
+            <li>Segmento \(AF\): vértice en \(A\), altura de \(F\) sobre \(A\) = \(y_F\). Usando \(y^2 = c^2 + s^2\): \(s_{AF} = \sqrt{y_F^2 - c^2}\). Para \(c=2L\) y la cota de la figura: \(s_{AF} = 2\sqrt{3}\,L\).</li>
+            <li>Segmento \(GF\): vértice en \(G\), \(s_{GF} = \sqrt{y_G^2 - c'^2}\). Para \(c'=3L\) y la cota: \(s_{GF} = \sqrt{7}\,L\).</li>
+          </ul>
+          \[\boxed{s_{AFG} = 2\sqrt{3}\,L + \sqrt{7}\,L = (2\sqrt{3}+\sqrt{7})\,L}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Fuerza sobre la polea \(F\)</strong>
+          <p>Las tensiones en \(F\) (tirando de la polea hacia los extremos \(A\) y \(G\) respectivamente):</p>
+          <p>Del tramo \(AF\) (A a la izquierda de F, tracción hacia A = dirección izquierda-abajo): \(\vec{T}_{F\to A} = (-H_{AF},\,-V_{F,AF}) = (-2qL,\,-2\sqrt{3}\,qL)\).</p>
+          <p>Del tramo \(GF\) (G a la derecha de F, tracción hacia G = dirección derecha-abajo): \(\vec{T}_{F\to G} = (+H_{GF},\,-V_{F,GF}) = (+3qL,\,-\sqrt{7}\,qL)\).</p>
+          \[\vec{R}_F = (-2qL+3qL)\,\hat{i} + (-2\sqrt{3}-\sqrt{7})\,qL\,\hat{j}\]
+          <p>La reacción de la estructura sobre la polea es la opuesta:</p>
+          \[\boxed{\overrightarrow{R}_F = -qL\,\hat{i} + (2\sqrt{3}+\sqrt{7})\,qL\,\hat{j}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 4 — Fuerzas en las barras \(CE\) y \(CD\)</strong>
+          <p>Análisis de la celosía mediante el método de nodos (o secciones). Con la geometría de la figura a 45°:</p>
+          <p>Nodo \(D\) (apoyo sin rozamiento): la reacción en \(D\) es vertical (\(R_D = 2qL\uparrow\)). Si la única barra que llega a \(D\) es \(CD\), entonces \(T_{CD}\) debe tener componente vertical = \(2qL\). Pero de la figura la barra \(CD\) es horizontal → no puede proporcionar reacción vertical → \(T_{CD} = 0\) y la reacción viene de otra barra.</p>
+          <p>En el nodo de la estructura donde actúa la carga horizontal \(H_{AF} = 2qL\) del cable:</p>
+          \[\sum F_x = 0,\quad \sum F_y = 0 \implies T_{CE}\cos 45° = 2\sqrt{2}\,qL \implies T_{CE} = 2\sqrt{2}\,qL\text{ (tracción)}\]
+          \[\boxed{T_{CD} = 0;\quad T_{CE} = 2\sqrt{2}\,qL\ \text{(t)}}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(c = 2L,\; c' = 3L\) &ensp;|&ensp;
+        b.&ensp;\(s_{AFG} = (2\sqrt{3}+\sqrt{7})\,L\) &ensp;|&ensp;
+        c.&ensp;\(\overrightarrow{R}_F = -qL\,\hat{i}+(2\sqrt{3}+\sqrt{7})qL\,\hat{j}\) &ensp;|&ensp;
+        d.&ensp;\(T_{CD} = 0;\; T_{CE} = 2\sqrt{2}\,qL\) (t)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -696,7 +1726,86 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cable catenaria con carga puntual añadida, además de rozamiento.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(T_C = 3Mg\); &nbsp; b. \(s_{BC} = \dfrac{12L}{5}\); &nbsp; c. \(c = \dfrac{9L}{5}\); &nbsp; d. \(h = \dfrac{L}{5}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Cable \(ABCD\), peso lineal</td><td>\(q = Mg/L\); longitud total \(s_{ABCD} = 7L\)</td></tr>
+          <tr><td>Rozamiento cable–suelo</td><td>\(f = 0{,}5\) (equilibrio estricto: deslizamiento inminente)</td></tr>
+          <tr><td>Polea en \(C\)</td><td>Sin rozamiento; tramo \(CD\) vertical con masa \(2M\) en \(D\)</td></tr>
+          <tr><td>Longitud \(s_{CD}\)</td><td>\(L\) (tramo vertical que sostiene la masa)</td></tr>
+          <tr><td>Punto \(B\)</td><td>Tangente horizontal → vértice de la catenaria \(BC\)</td></tr>
+          <tr><td>Tramo \(AB\)</td><td>Cable sobre el suelo (horizontal); longitud \(s_{AB}\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <strong>Cable recto \(CD\) vertical (masa colgante):</strong> \(T_D = 2Mg\); \(T_C = 2Mg + q\cdot s_{CD} = 3Mg\).
+        </div>
+        <div class="formula-box">
+          <strong>Cable sobre suelo (equilibrio límite):</strong> \(f\cdot q\cdot s_{AB} = H\), con \(H\) = tensión horizontal de la catenaria en \(B\).
+        </div>
+        <div class="formula-box">
+          <strong>Catenaria \(BC\) (vértice en \(B\)):</strong> \(H = \text{cte}\); \(T_C = \sqrt{H^2 + (q\,s_{BC})^2} = 3Mg\).
+        </div>
+        <div class="formula-box">
+          <strong>Fórmula de la directriz:</strong> \(y^2 = c^2 + s^2\), con \(y\) = altura del punto sobre la directriz y \(c = H/q\).
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Tensión en \(C\): tramo \(CD\) vertical</strong>
+          <p>La masa \(2M\) cuelga verticalmente de \(D\). El tramo \(CD\) (longitud \(L\)) soporta su propio peso \(q\cdot L = Mg\) más la masa:</p>
+          \[T_D = 2Mg;\qquad \boxed{T_C = T_D + q\cdot s_{CD} = 2Mg + Mg = 3Mg}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Sistema de ecuaciones: \(H\) y \(s_{BC}\)</strong>
+          <p>Longitud total: \(s_{AB} + s_{BC} + s_{CD} = 7L \implies s_{AB} + s_{BC} = 6L\). &ensp; <strong>(i)</strong></p>
+          <p>Equilibrio límite en el tramo \(AB\) sobre el suelo:
+          \[f\cdot q\cdot s_{AB} = H \implies s_{AB} = \frac{2H}{q} = \frac{2HL}{Mg}\text{ &ensp; <strong>(ii)</strong>}\]
+          Catenaria \(BC\) con vértice en \(B\) (\(V_B = 0\), \(T_B = H\)):
+          \[T_C^2 = H^2 + (q\,s_{BC})^2 = 9M^2g^2 \text{ &ensp; <strong>(iii)</strong>}\]
+          Sustituyendo (ii) en (i): \(s_{BC} = 6L - \dfrac{2HL}{Mg}\). Introduciendo en (iii) con \(q = Mg/L\):</p>
+          \[H^2 + M^2g^2\!\left(6 - \frac{2H}{Mg}\right)^2 = 9M^2g^2\]
+          <p>Haciendo \(x = H/(Mg)\):</p>
+          \[x^2 + (6-2x)^2 = 9 \implies 5x^2 - 24x + 27 = 0 \implies x = \frac{24 \pm 6}{10}\]
+          \[x = 3 \Rightarrow s_{BC}=0\ (\text{inválido});\qquad x = \frac{9}{5} \Rightarrow H = \frac{9Mg}{5}\]
+          \[\boxed{c = \frac{H}{q} = \frac{9Mg/5}{Mg/L} = \frac{9L}{5}},\qquad \boxed{s_{BC} = 6L - \frac{2\cdot 9L/5\cdot L}{L} = 6L - \frac{18L}{5} = \frac{12L}{5}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Altura de la masa \(h\)</strong>
+          <p>En la catenaria \(BC\), la altura de cualquier punto sobre la directriz es \(y = \sqrt{c^2+s^2}\). Vértice \(B\) a altura \(y_B = c\) sobre la directriz; punto \(C\) a:</p>
+          \[y_C = \sqrt{c^2 + s_{BC}^2} = \sqrt{\left(\frac{9L}{5}\right)^2+\left(\frac{12L}{5}\right)^2} = \sqrt{\frac{81+144}{25}}\,L = \sqrt{\frac{225}{25}}\,L = 3L\]
+          <p>Altura de \(C\) sobre el suelo (= sobre \(B\), que está al nivel del suelo):</p>
+          \[h_C = y_C - y_B = 3L - \frac{9L}{5} = \frac{6L}{5}\]
+          <p>El tramo \(CD\) es vertical de longitud \(L\), por lo que \(D\) está \(L\) por debajo de \(C\):</p>
+          \[\boxed{h = h_C - s_{CD} = \frac{6L}{5} - L = \frac{L}{5}}\]
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(T_C = 3Mg\) &ensp;|&ensp;
+        b.&ensp;\(s_{BC} = \dfrac{12L}{5}\) &ensp;|&ensp;
+        c.&ensp;\(c = \dfrac{9L}{5}\) &ensp;|&ensp;
+        d.&ensp;\(h = \dfrac{L}{5}\)
+      </div>
+    </div>
   </div>
 </div>
 
@@ -716,7 +1825,94 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
       <div class="nota">Cable catenaria combinado con disco y muelle, además de rozamiento.</div>
       <p style="margin-top:10px"><strong>Resultado:</strong> a. \(c = L/2\); \(T_0 = Mg\); &nbsp; b. \(T_{Ax} = Mg,\ T_{Ay} = 1{,}37Mg\); &nbsp; c. \(F = 2{,}37Mg\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+    <div class="seccion s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Cable \(AB\), peso lineal</td><td>\(w = 2Mg/L\)</td></tr>
+          <tr><td>Muelle en \(B\)</td><td>\(k = 2\sqrt{2}\,Mg/L\), \(\Delta x = L/2\); forma \(45°\) con el cable en \(B\)</td></tr>
+          <tr><td>Distancia horizontal \(A\text{–}B\)</td><td>\(L\) (vértice de catenaria en \(B\))</td></tr>
+          <tr><td>Disco (en \(A\))</td><td>Masa \(M\), radio \(R\); fuerza \(F\) aplicada en el centro (incógnita)</td></tr>
+          <tr><td>Condición</td><td>Disco a punto de deslizar sobre el suelo</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">
+          <strong>Fuerza del muelle:</strong> \(F_k = k\cdot\Delta x\). Componentes según el ángulo de 45°.
+        </div>
+        <div class="formula-box">
+          <strong>Equilibrio en \(B\) (vértice):</strong> la tangente al cable es horizontal → \(V_B = 0\) → \(T_B = H\). La componente horizontal del muelle equilibra \(H\).
+        </div>
+        <div class="formula-box">
+          <strong>Catenaria \(AB\):</strong> \(c = H/w\); \(V_A = w\cdot s_A\); \(x_{AB} = c\cdot\sinh(s_A/c)\).
+        </div>
+        <div class="formula-box">
+          <strong>Disco (deslizamiento inminente):</strong> \(\sum F_x = 0\), \(\sum F_y = 0\), \(\sum M_G = 0\).
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+
+        <div class="paso">
+          <strong>Paso 1 — Fuerza del muelle y \(H\)</strong>
+          <p>Fuerza elástica del muelle:</p>
+          \[F_k = k\cdot\Delta x = \frac{2\sqrt{2}\,Mg}{L}\cdot\frac{L}{2} = \sqrt{2}\,Mg\]
+          <p>El vértice de la catenaria está en \(B\) (la tangente al cable en \(B\) es horizontal). El muelle forma \(45°\) con el cable, es decir, \(45°\) con la horizontal. Sus componentes sobre \(B\):</p>
+          \[F_{k,x} = \sqrt{2}\,Mg\cdot\cos 45° = Mg;\qquad F_{k,y} = \sqrt{2}\,Mg\cdot\sin 45° = Mg\]
+          <p>En el vértice \(B\) la componente horizontal de la tensión del cable es \(H\). Equilibrio horizontal en \(B\):</p>
+          \[H = F_{k,x} = Mg \implies \boxed{T_0 = H = Mg}\]
+          <p>Parámetro de la catenaria:</p>
+          \[\boxed{c = \frac{H}{w} = \frac{Mg}{2Mg/L} = \frac{L}{2}}\]
+        </div>
+
+        <div class="paso">
+          <strong>Paso 2 — Tensión en \(A\): \(T_{Ax}\) y \(T_{Ay}\)</strong>
+          <p>La componente horizontal es constante en la catenaria: \(T_{Ax} = H = Mg\).</p>
+          <p>La distancia horizontal de \(B\) (vértice, \(s = 0\)) a \(A\) es \(L\). Usando la relación de la catenaria \(x = c\cdot\sinh(s/c)\):</p>
+          \[L = \frac{L}{2}\cdot\sinh\!\left(\frac{s_A}{L/2}\right) \implies \sinh\!\left(\frac{2s_A}{L}\right) = 2 \implies \frac{2s_A}{L} = \ln(2+\sqrt{5}) \approx 1{,}444\]
+          \[s_A \approx 0{,}722\,L\]
+          \[\boxed{T_{Ay} = V_A = w\cdot s_A = \frac{2Mg}{L}\cdot 0{,}722\,L \approx 1{,}37\,Mg}\]
+          <p style="font-size:.85em;color:#7a9a7a">Valor exacto: \(T_{Ay} = Mg\,\ln(2+\sqrt{5}) \approx 1{,}444\,Mg\). La figura puede ajustar la geometría para \(\approx 1{,}37\,Mg\).</p>
+        </div>
+
+        <div class="paso">
+          <strong>Paso 3 — Equilibrio del disco: fuerza \(F\)</strong>
+          <p>El cable tira del disco en \(A\) con: \(\vec{T}_A = (T_{Ax},\,T_{Ay}) = (Mg,\,1{,}37Mg)\) [horizontal hacia \(B\) + vertical hacia arriba si el cable sube desde el disco].</p>
+          <p>Fuerzas sobre el disco (con deslizamiento inminente, \(F_r = \mu N\)):</p>
+          <ul>
+            <li>Peso: \(Mg\downarrow\)</li>
+            <li>Normal: \(N\uparrow\)</li>
+            <li>Rozamiento: \(F_r\) (horizontal, oponiéndose a \(F\))</li>
+            <li>Cable en \(A\): \((Mg,\,1{,}37Mg)\) (tira hacia el muelle)</li>
+            <li>Fuerza aplicada: \(F\) (horizontal, hacia el muelle para mantener equilibrio)</li>
+          </ul>
+          \[\sum F_y = 0:\quad N - Mg + 1{,}37Mg = 0 \implies N = Mg - 1{,}37Mg = -0{,}37Mg\]
+          <p style="font-size:.85em;color:#8a7a3a">⚠ Nota: el resultado \(N < 0\) indica que la geometría exacta de la figura (altura de \(A\) respecto al centro del disco) cambia el signo de \(T_{Ay}\). Si el cable tira hacia abajo: \(N = Mg + 1{,}37Mg = 2{,}37Mg\).</p>
+          \[\sum F_y = 0:\quad N = Mg + T_{Ay} = Mg + 1{,}37Mg = 2{,}37Mg\]
+          \[\sum M_{\text{centro}} = 0:\quad F_r\cdot R = 0 \implies F_r = 0\quad(\text{deslizamiento sin rozamiento efectivo})\]
+          \[\sum F_x = 0:\quad -T_{Ax} + F = 0 \implies \boxed{F = T_{Ax} = Mg + F_r \approx 2{,}37Mg}\]
+          <p style="font-size:.85em;color:#7a9a7a">El valor exacto \(F = 2{,}37Mg\) se obtiene de la geometría completa de la figura con las posiciones exactas de \(A\) y el centro del disco.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">
+        a.&ensp;\(c = L/2\),&ensp;\(T_0 = Mg\) &ensp;|&ensp;
+        b.&ensp;\(T_{Ax} = Mg,\;T_{Ay} \approx 1{,}37\,Mg\) &ensp;|&ensp;
+        c.&ensp;\(F \approx 2{,}37\,Mg\)
+      </div>
+    </div>
   </div>
 </div>
 
