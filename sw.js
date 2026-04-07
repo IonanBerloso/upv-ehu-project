@@ -1,4 +1,4 @@
-const CACHE = 'upv-study-hub-v11';
+const CACHE = 'upv-study-hub-v12';
 
 const PRECACHE = [
   '/upv-ehu-project/',
