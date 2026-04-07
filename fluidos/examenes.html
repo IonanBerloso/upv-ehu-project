@@ -4,473 +4,440 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#131313">
-<title>Ex&aacute;menes · Mec&aacute;nica de Fluidos · UPV/EHU</title>
+<title>Ex&aacute;menes &middot; Mec&aacute;nica de Fluidos &middot; UPV/EHU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --bg:#131313;--panel:rgba(255,255,255,.02);--surface:rgba(255,255,255,.04);
   --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
   --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --accent:#7ecfff;--gold:#f59e0b;--green:#6bcb77;--purple:#c084fc;
-  --tr:.18s cubic-bezier(.4,0,.2,1);
+  --accent:#7ecfff;--green:#6bcb77;--purple:#c084fc;--gold:#f59e0b;
+  --sb:280px;--top:52px;
+  --tr:.15s cubic-bezier(.4,0,.2,1);
 }
-html{scroll-behavior:smooth}
-body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
 
-/* topbar */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
-.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);text-decoration:none;transition:color var(--tr)}
-.topbar-back:hover{color:var(--accent);text-decoration:none}
-.topbar-title{padding:0 18px;flex:1;font-size:.9em;font-weight:600;color:#d4eeff}
-.topbar-right{display:flex;align-items:center;gap:8px;padding-right:18px}
-.tb-pill{padding:3px 12px;border-radius:20px;font-size:.7em;font-weight:600;background:rgba(107,203,119,.08);border:1px solid rgba(107,203,119,.25);color:var(--green);white-space:nowrap;text-decoration:none}
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--top);
+  background:rgba(19,19,19,.95);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center}
+.tb-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;
+  color:var(--text2);font-size:.82em;font-weight:500;
+  border-right:1px solid var(--border);text-decoration:none;white-space:nowrap;
+  transition:color var(--tr)}
+.tb-back:hover{color:var(--accent);text-decoration:none}
+.tb-title{padding:0 18px;flex:1;font-size:.9em;font-weight:600;color:#d4eeff;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-right{display:flex;align-items:center;gap:8px;padding-right:18px}
+.tb-pill{padding:3px 12px;border-radius:20px;font-size:.69em;font-weight:600;
+  background:rgba(107,203,119,.08);border:1px solid rgba(107,203,119,.2);
+  color:var(--green);white-space:nowrap;text-decoration:none;transition:var(--tr)}
 .tb-pill:hover{background:rgba(107,203,119,.15);text-decoration:none;color:var(--green)}
-.tb-teoria{padding:3px 12px;border-radius:20px;font-size:.7em;font-weight:600;background:rgba(126,207,255,.06);border:1px solid rgba(126,207,255,.2);color:var(--accent);white-space:nowrap;text-decoration:none;display:flex;align-items:center;gap:5px}
+.tb-teoria{padding:3px 12px;border-radius:20px;font-size:.69em;font-weight:600;
+  background:rgba(126,207,255,.06);border:1px solid rgba(126,207,255,.18);
+  color:var(--accent);white-space:nowrap;text-decoration:none;
+  display:flex;align-items:center;gap:5px;transition:var(--tr)}
 .tb-teoria:hover{background:rgba(126,207,255,.12);text-decoration:none;color:var(--accent)}
 
-/* page header */
-.page-header{max-width:1100px;margin:0 auto;padding:40px 24px 28px;border-bottom:1px solid var(--border)}
-.page-header h1{font-size:1.75em;font-weight:700;color:#f1f5f9;letter-spacing:-.3px;margin-bottom:8px}
-.page-header p{color:var(--text2);font-size:.9em;max-width:600px;line-height:1.7;margin-bottom:22px}
-.tools-grid{display:flex;flex-wrap:wrap;gap:8px}
-.tool-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:8px;font-size:.8em;font-weight:600;text-decoration:none;transition:var(--tr);border:1px solid;white-space:nowrap}
-.tool-btn:hover{filter:brightness(1.15);text-decoration:none}
-.t-purple{background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.25);color:#a78bfa}
-.t-cyan{background:rgba(126,207,255,.07);border-color:rgba(126,207,255,.25);color:var(--accent)}
-.t-orange{background:rgba(251,146,60,.07);border-color:rgba(251,146,60,.25);color:#fb923c}
-.t-green{background:rgba(107,203,119,.07);border-color:rgba(107,203,119,.25);color:var(--green)}
-.t-red{background:rgba(248,113,113,.07);border-color:rgba(248,113,113,.25);color:#f87171}
-.t-blue{background:rgba(34,211,238,.07);border-color:rgba(34,211,238,.25);color:#22d3ee}
-.t-gold{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.25);color:var(--gold)}
+/* ── LAYOUT ── */
+.layout{display:flex;position:fixed;top:var(--top);left:0;right:0;bottom:0}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sb);flex-shrink:0;background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:22px 18px 16px;border-bottom:1px solid var(--border)}
+.sb-head h2{font-size:1em;font-weight:700;color:#d4eeff;margin-bottom:4px}
+.sb-head p{font-size:.75em;color:var(--text3);line-height:1.5}
+
+/* filters inside sidebar */
+.sb-filters{padding:14px 18px;border-bottom:1px solid var(--border)}
+.sb-filter-label{font-size:.62em;font-weight:700;letter-spacing:.6px;
+  text-transform:uppercase;color:var(--text3);
+  font-family:'JetBrains Mono',monospace;margin-bottom:8px}
+.fb-group{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.fb-group:last-child{margin-bottom:0}
+.fb{padding:3px 11px;border-radius:6px;font-size:.74em;font-weight:600;
+  border:1px solid var(--border);background:transparent;
+  color:var(--text2);cursor:pointer;transition:var(--tr);
+  font-family:'Space Grotesk',sans-serif}
+.fb:hover{border-color:var(--accent);color:var(--accent);background:rgba(126,207,255,.05)}
+.fb.active{background:rgba(126,207,255,.1);border-color:rgba(126,207,255,.3);color:var(--accent)}
 
 /* stats */
-.stats{max-width:1100px;margin:0 auto;padding:20px 24px;display:flex;flex-wrap:wrap;gap:12px}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:10px}
-.stat-n{font-family:'JetBrains Mono',monospace;font-size:1.15em;font-weight:700;color:var(--accent)}
-.stat-l{font-size:.78em;color:var(--text3)}
+.sb-stats{padding:14px 18px;border-bottom:1px solid var(--border);
+  display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sb-stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:8px 12px}
+.sb-stat-n{font-family:'JetBrains Mono',monospace;font-size:1.05em;font-weight:700;
+  color:var(--accent);display:block}
+.sb-stat-l{font-size:.68em;color:var(--text3)}
 
-/* filter bar */
-.filters{max-width:1100px;margin:0 auto;padding:0 24px 20px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
-.filter-label{font-size:.74em;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-right:2px}
-.fb{padding:4px 12px;border-radius:6px;font-size:.76em;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:var(--tr);font-family:'Space Grotesk',sans-serif}
-.fb:hover{border-color:var(--accent);color:var(--accent);background:rgba(126,207,255,.05)}
-.fb.active{background:rgba(126,207,255,.1);border-color:rgba(126,207,255,.35);color:var(--accent)}
+/* tools */
+.sb-tools{flex:1;overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:4px}
+.sb-tools-label{font-size:.62em;font-weight:700;letter-spacing:.6px;
+  text-transform:uppercase;color:var(--text3);
+  font-family:'JetBrains Mono',monospace;margin-bottom:6px}
+.tool-link{display:flex;align-items:center;gap:9px;padding:7px 10px;
+  border-radius:7px;font-size:.78em;font-weight:500;
+  color:var(--text2);text-decoration:none;
+  transition:var(--tr);border:1px solid transparent}
+.tool-link:hover{background:rgba(var(--tc-rgb),.06);color:var(--tc);
+  border-color:rgba(var(--tc-rgb),.2);text-decoration:none;
+  background:color-mix(in srgb, var(--tc) 8%, transparent);
+  border-color:color-mix(in srgb, var(--tc) 30%, transparent)}
+.tool-link:hover{color:var(--tc)}
 
-/* grid */
-.exam-grid{max-width:1100px;margin:0 auto;padding:4px 24px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.main-inner{max-width:860px;margin:0 auto;padding:28px 32px 80px}
 
-/* exam card */
-.ec{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:border-color var(--tr),transform var(--tr),box-shadow var(--tr)}
-.ec.solved{cursor:pointer}
-.ec.solved:hover{border-color:rgba(126,207,255,.3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
-.ec.locked{opacity:.45}
-.ec-top{padding:16px 18px 12px}
-.ec-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
-.ec-type-badge{padding:2px 10px;border-radius:20px;font-size:.67em;font-weight:700;letter-spacing:.4px;border:1px solid;font-family:'JetBrains Mono',monospace}
-.ec-status-badge{padding:2px 9px;border-radius:20px;font-size:.67em;font-weight:700;background:rgba(107,203,119,.07);border:1px solid rgba(107,203,119,.2);color:var(--green)}
-.ec-fig-badge{padding:2px 9px;border-radius:20px;font-size:.67em;font-weight:600;background:rgba(126,207,255,.05);border:1px solid rgba(126,207,255,.15);color:rgba(126,207,255,.6)}
-.ec-date{font-size:1em;font-weight:700;color:#d4eeff;margin-bottom:3px}
-.ec-curso{font-size:.72em;color:var(--text3)}
-.ec-tags{padding:0 18px 10px;display:flex;flex-wrap:wrap;gap:5px}
-.ec-tag{padding:2px 9px;border-radius:20px;font-size:.68em;font-weight:500;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--text2)}
-.ec-exlist{padding:0 18px 10px;border-top:1px solid var(--border);padding-top:10px;flex:1}
-.ec-ex{display:flex;align-items:flex-start;gap:7px;font-size:.77em;color:var(--text2);padding:2px 0;line-height:1.4}
-.ec-ex-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:5px;opacity:.6}
-.ec-ex-more{font-size:.72em;color:var(--text3);padding-top:4px;font-family:'JetBrains Mono',monospace}
-.ec-foot{padding:12px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
-.ec-count{font-size:.74em;color:var(--text3);font-family:'JetBrains Mono',monospace}
-.ec-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:7px;font-size:.78em;font-weight:600;background:rgba(126,207,255,.07);border:1px solid rgba(126,207,255,.2);color:var(--accent);text-decoration:none;transition:var(--tr)}
-.ec-btn:hover{background:rgba(126,207,255,.15);text-decoration:none;color:var(--accent)}
+/* year group */
+.year-group{margin-bottom:8px}
+.year-group.hidden{display:none}
+.year-label{display:flex;align-items:center;gap:10px;
+  padding:8px 0 6px;margin-bottom:4px}
+.year-label span:first-child{font-family:'JetBrains Mono',monospace;font-size:.8em;
+  font-weight:700;color:var(--text3);letter-spacing:.5px}
+.year-count{font-family:'JetBrains Mono',monospace;font-size:.68em;
+  color:var(--text3);background:var(--surface);
+  border:1px solid var(--border);border-radius:10px;
+  padding:1px 8px}
+.year-rows{display:flex;flex-direction:column;gap:4px;margin-bottom:16px}
+
+/* exam row */
+.exam-row{display:flex;align-items:center;gap:16px;
+  padding:13px 16px;border-radius:10px;
+  background:var(--surface);border:1px solid var(--border);
+  text-decoration:none;color:var(--text);
+  transition:border-color var(--tr),background var(--tr),transform var(--tr);
+  cursor:pointer}
+.exam-row:hover{border-color:rgba(126,207,255,.3);
+  background:rgba(126,207,255,.04);
+  transform:translateX(3px);text-decoration:none;color:var(--text)}
+.exam-row.hidden{display:none}
+
+.r-left{flex-shrink:0;min-width:160px}
+.r-date{font-size:.88em;font-weight:600;color:#d4eeff;margin-bottom:4px}
+.r-badges{display:flex;align-items:center;gap:5px}
+.type-pill{padding:1px 9px;border-radius:20px;font-size:.63em;font-weight:700;
+  letter-spacing:.3px;border:1px solid;
+  font-family:'JetBrains Mono',monospace}
+.r-fig{font-size:.8em;opacity:.5}
+
+.r-tags{flex:1;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.r-tag{padding:2px 8px;border-radius:20px;font-size:.68em;font-weight:500;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  color:var(--text2)}
+.r-tag-more{font-size:.65em;color:var(--text3);
+  font-family:'JetBrains Mono',monospace;padding:0 4px}
+
+.r-count{flex-shrink:0;font-size:.7em;color:var(--text3);
+  font-family:'JetBrains Mono',monospace;white-space:nowrap;min-width:70px;text-align:right}
+.r-arrow{flex-shrink:0;color:var(--text3);transition:color var(--tr),transform var(--tr)}
+.exam-row:hover .r-arrow{color:var(--accent);transform:translateX(3px)}
 
 /* no results */
-.no-results{text-align:center;padding:60px 20px;color:var(--text3);font-size:.9em;display:none}
+.no-results{text-align:center;padding:60px 20px;color:var(--text3);
+  font-size:.88em;display:none}
 
-::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:#2a3a4a;border-radius:2px}
 
-@media(max-width:640px){
-  .exam-grid{grid-template-columns:1fr;padding:4px 16px 60px}
-  .page-header{padding:24px 16px 20px}
-  .stats,.filters{padding-left:16px;padding-right:16px}
-  .topbar-right .tb-pill{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{display:block;position:static}
+  html,body{height:auto;overflow:auto}
+  .main{overflow:visible}
+  .main-inner{padding:20px 16px 60px}
+  .exam-row{flex-wrap:wrap;gap:8px}
+  .r-count{display:none}
 }
 </style>
 </head>
 <body>
 
 <nav class="topbar">
-  <a class="topbar-back" href="../index.html">
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <a class="tb-back" href="../index.html">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+      <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
     Inicio
   </a>
-  <span class="topbar-title">&#127754; Mec&aacute;nica de Fluidos &mdash; Ex&aacute;menes Resueltos</span>
-  <div class="topbar-right">
-    <span class="tb-pill">Curso 2025&ndash;26</span>
+  <span class="tb-title">&#127754; Mec&aacute;nica de Fluidos &mdash; Ex&aacute;menes Resueltos</span>
+  <div class="tb-right">
+    <span class="tb-pill">2025&ndash;26</span>
     <a class="tb-teoria" href="teoria.html">
-      <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/></svg>
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+      </svg>
       Teor&iacute;a
     </a>
   </div>
 </nav>
 
-<div class="page-header">
-  <h1>Ex&aacute;menes Resueltos</h1>
-  <p>Ex&aacute;menes reales de convocatorias anteriores resueltos paso a paso con teor&iacute;a, f&oacute;rmulas y conclusiones. Los ex&aacute;menes de 2022 en adelante incluyen las figuras originales del PDF.</p>
-  <div class="tools-grid">
-    <a class="tool-btn t-purple" href="estrategia.html">&#127919; Estrategia &mdash; 25 tipos de problema</a>
-    <a class="tool-btn t-cyan"   href="propiedades.html">&#128202; Propiedades de fluidos</a>
-    <a class="tool-btn t-orange" href="colebrook.html">&#128295; Calculadora Colebrook</a>
-    <a class="tool-btn t-green"  href="formulario.html">&#128196; Formulario imprimible</a>
-    <a class="tool-btn t-red"    href="errores.html">&#9888;&#65039; Errores frecuentes</a>
-    <a class="tool-btn t-purple" href="banco.html">&#128218; Banco por tema</a>
-    <a class="tool-btn t-blue"   href="bombas-calc.html">&#9881;&#65039; Curvas bomba-sistema</a>
-    <a class="tool-btn t-gold"   href="simulacro.html">&#9201; Simulacro de examen</a>
-  </div>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-head">
+      <h2>Ex&aacute;menes Resueltos</h2>
+      <p>Convocatorias 2020&ndash;2025 con teor&iacute;a, f&oacute;rmulas y resoluciones paso a paso.</p>
+    </div>
+
+    <div class="sb-filters">
+      <div class="sb-filter-label">A&ntilde;o</div>
+      <div class="fb-group">
+        <button class="fb year active" onclick="setYear('all',this)">Todos</button>
+        <button class="fb year" onclick="setYear('2025',this)">2025</button>
+        <button class="fb year" onclick="setYear('2024',this)">2024</button>
+        <button class="fb year" onclick="setYear('2023',this)">2023</button>
+        <button class="fb year" onclick="setYear('2022',this)">2022</button>
+        <button class="fb year" onclick="setYear('2021',this)">2021</button>
+        <button class="fb year" onclick="setYear('2020',this)">2020</button>
+      </div>
+      <div class="sb-filter-label">Tipo</div>
+      <div class="fb-group">
+        <button class="fb type active" onclick="setType('all',this)">Todos</button>
+        <button class="fb type" onclick="setType('parcial',this)">Parcial</button>
+        <button class="fb type" onclick="setType('ordinaria',this)">Ordinaria</button>
+        <button class="fb type" onclick="setType('extraordinaria',this)">Extraordinaria</button>
+      </div>
+    </div>
+
+    <div class="sb-stats">
+      <div class="sb-stat"><span class="sb-stat-n">15</span><span class="sb-stat-l">ex&aacute;menes</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">6</span><span class="sb-stat-l">cursos</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">2020&ndash;25</span><span class="sb-stat-l">periodo</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">&#128247; 2022+</span><span class="sb-stat-l">figuras PDF</span></div>
+    </div>
+
+    <div class="sb-tools">
+      <div class="sb-tools-label">Recursos</div>
+<a class="tool-link" href="estrategia.html" style="--tc:#a78bfa">&#127919; Estrategia de examen</a>
+<a class="tool-link" href="propiedades.html" style="--tc:#7ecfff">&#128202; Propiedades de fluidos</a>
+<a class="tool-link" href="colebrook.html" style="--tc:#fb923c">&#128295; Calculadora Colebrook</a>
+<a class="tool-link" href="formulario.html" style="--tc:#6bcb77">&#128196; Formulario imprimible</a>
+<a class="tool-link" href="errores.html" style="--tc:#f87171">&#9888; Errores frecuentes</a>
+<a class="tool-link" href="banco.html" style="--tc:#a78bfa">&#128218; Banco por tema</a>
+<a class="tool-link" href="bombas-calc.html" style="--tc:#22d3ee">&#9881; Curvas bomba-sistema</a>
+<a class="tool-link" href="simulacro.html" style="--tc:#f59e0b">&#9201; Simulacro de examen</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="main-inner">
+      <div class="year-group" data-year="2025">
+  <div class="year-label"><span>2025</span><span class="year-count">2</span></div>
+  <div class="year-rows"><a class="exam-row" href="examenes/mayo2025.html" data-type="ordinaria" data-year="2025">
+      <div class="r-left">
+        <div class="r-date">29 de Mayo de 2025</div>
+        <div class="r-badges"><span class="type-pill" style="color:#c084fc;background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.3)">Ordinaria</span><span class="r-fig">&#128247;</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Fuerzas articuladas</span> <span class="r-tag">Capilaridad</span> <span class="r-tag">Micromanómetros</span> <span class="r-tag">Canal compuesto</span> <span class="r-tag">Análisis dim.</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">9 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/junio2025ef.html" data-type="extraordinaria" data-year="2025">
+      <div class="r-left">
+        <div class="r-date">23 de Junio de 2025</div>
+        <div class="r-badges"><span class="type-pill" style="color:#fb923c;background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.3)">Extraordinaria</span><span class="r-fig">&#128247;</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">CO₂ gas ideal</span> <span class="r-tag">Bomba Hazen-Williams</span> <span class="r-tag">Manometría</span> <span class="r-tag">Análisis dim.</span> <span class="r-tag">Red petróleo</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">9 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a></div>
+</div>
+<div class="year-group" data-year="2024">
+  <div class="year-label"><span>2024</span><span class="year-count">2</span></div>
+  <div class="year-rows"><a class="exam-row" href="examenes/mayo2024.html" data-type="ordinaria" data-year="2024">
+      <div class="r-left">
+        <div class="r-date">30 de Mayo de 2024</div>
+        <div class="r-badges"><span class="type-pill" style="color:#c084fc;background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.3)">Ordinaria</span><span class="r-fig">&#128247;</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Capilaridad</span> <span class="r-tag">Fuerzas</span> <span class="r-tag">Manometría</span> <span class="r-tag">Compuerta curva</span> <span class="r-tag">Vaciado</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">8 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/junio2024ef.html" data-type="extraordinaria" data-year="2024">
+      <div class="r-left">
+        <div class="r-date">24 de Junio de 2024</div>
+        <div class="r-badges"><span class="type-pill" style="color:#fb923c;background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.3)">Extraordinaria</span><span class="r-fig">&#128247;</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Compresibilidad</span> <span class="r-tag">Gabarra flotante</span> <span class="r-tag">Micromanómetro</span> <span class="r-tag">Venturímetro</span> <span class="r-tag">Análisis dim.</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">8 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a></div>
+</div>
+<div class="year-group" data-year="2023">
+  <div class="year-label"><span>2023</span><span class="year-count">2</span></div>
+  <div class="year-rows"><a class="exam-row" href="examenes/junio2023.html" data-type="ordinaria" data-year="2023">
+      <div class="r-left">
+        <div class="r-date">1 de Junio de 2023</div>
+        <div class="r-badges"><span class="type-pill" style="color:#c084fc;background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.3)">Ordinaria</span><span class="r-fig">&#128247;</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Micromanómetro</span> <span class="r-tag">Codo-boquilla QdM</span> <span class="r-tag">Depósito cerrado</span> <span class="r-tag">Compresibilidad</span> <span class="r-tag">Venturimetro</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">9 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/junio2023ef.html" data-type="extraordinaria" data-year="2023">
+      <div class="r-left">
+        <div class="r-date">26 de Junio de 2023</div>
+        <div class="r-badges"><span class="type-pill" style="color:#fb923c;background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.3)">Extraordinaria</span><span class="r-fig">&#128247;</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Capilaridad rectangular</span> <span class="r-tag">Manometría depósito</span> <span class="r-tag">Tubería submarina</span> <span class="r-tag">Chorro placa</span> <span class="r-tag">Semejanza Mach</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">9 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a></div>
+</div>
+<div class="year-group" data-year="2022">
+  <div class="year-label"><span>2022</span><span class="year-count">2</span></div>
+  <div class="year-rows"><a class="exam-row" href="examenes/junio2022.html" data-type="ordinaria" data-year="2022">
+      <div class="r-left">
+        <div class="r-date">2 de Junio de 2022</div>
+        <div class="r-badges"><span class="type-pill" style="color:#c084fc;background:rgba(192,132,252,.12);border-color:rgba(192,132,252,.3)">Examen Final</span><span class="r-fig">&#128247;</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Flujo laminar</span> <span class="r-tag">Compresibilidad</span> <span class="r-tag">Manning</span> <span class="r-tag">Manómetro diferencial</span> <span class="r-tag">Compuerta curva</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">11 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/junio2022ef.html" data-type="extraordinaria" data-year="2022">
+      <div class="r-left">
+        <div class="r-date">27 de Junio de 2022</div>
+        <div class="r-badges"><span class="type-pill" style="color:#fb923c;background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.3)">Extraordinaria</span><span class="r-fig">&#128247;</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Capilaridad</span> <span class="r-tag">Oleohidráulica</span> <span class="r-tag">Fuerzas hidrostáticas</span> <span class="r-tag">Bifurcación</span> <span class="r-tag">Semejanza Re-Fr</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">9 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a></div>
+</div>
+<div class="year-group" data-year="2021">
+  <div class="year-label"><span>2021</span><span class="year-count">4</span></div>
+  <div class="year-rows"><a class="exam-row" href="examenes/abril2021.html" data-type="parcial" data-year="2021">
+      <div class="r-left">
+        <div class="r-date">16 de Abril de 2021</div>
+        <div class="r-badges"><span class="type-pill" style="color:#7ecfff;background:rgba(126,207,255,.12);border-color:rgba(126,207,255,.3)">Examen Parcial</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">V/F Propiedades</span> <span class="r-tag">Micromanómetro</span> <span class="r-tag">Compuerta curva</span> <span class="r-tag">Depósito presurizado</span></div>
+      <div class="r-count">4 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/mayo2021.html" data-type="parcial" data-year="2021">
+      <div class="r-left">
+        <div class="r-date">7 de Mayo de 2021</div>
+        <div class="r-badges"><span class="type-pill" style="color:#7ecfff;background:rgba(126,207,255,.12);border-color:rgba(126,207,255,.3)">Examen Parcial</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Red de bombeo</span> <span class="r-tag">Venturímetro + Pitot</span> <span class="r-tag">Fuerzas sobre álabe</span> <span class="r-tag">Análisis dimensional</span></div>
+      <div class="r-count">4 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/junio2021.html" data-type="parcial" data-year="2021">
+      <div class="r-left">
+        <div class="r-date">3 de Junio de 2021</div>
+        <div class="r-badges"><span class="type-pill" style="color:#7ecfff;background:rgba(126,207,255,.12);border-color:rgba(126,207,255,.3)">Examen Parcial</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Turbomáquinas teoría</span> <span class="r-tag">Válvula asiento plano</span> <span class="r-tag">Golpe de ariete</span> <span class="r-tag">Trasvase HG</span> <span class="r-tag">Canal ramales</span><span class="r-tag-more">+1</span></div>
+      <div class="r-count">6 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/junio2021ef.html" data-type="extraordinaria" data-year="2021">
+      <div class="r-left">
+        <div class="r-date">28 de Junio de 2021</div>
+        <div class="r-badges"><span class="type-pill" style="color:#fb923c;background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.3)">Examen Final</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Fuerzas hidrostáticas</span> <span class="r-tag">Coef. descarga</span> <span class="r-tag">Manning</span> <span class="r-tag">Golpe de ariete</span> <span class="r-tag">Elevador hidráulico</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">8 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a></div>
+</div>
+<div class="year-group" data-year="2020">
+  <div class="year-label"><span>2020</span><span class="year-count">3</span></div>
+  <div class="year-rows"><a class="exam-row" href="examenes/mayo2020.html" data-type="parcial" data-year="2020">
+      <div class="r-left">
+        <div class="r-date">8 de Mayo de 2020</div>
+        <div class="r-badges"><span class="type-pill" style="color:#7ecfff;background:rgba(126,207,255,.12);border-color:rgba(126,207,255,.3)">Examen Parcial</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Gas ideal</span> <span class="r-tag">Hidrostática</span> <span class="r-tag">Bernoulli</span> <span class="r-tag">Fuerzas hidrost.</span> <span class="r-tag">Vaciado</span></div>
+      <div class="r-count">5 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/junio2020.html" data-type="parcial" data-year="2020">
+      <div class="r-left">
+        <div class="r-date">4 de Junio de 2020</div>
+        <div class="r-badges"><span class="type-pill" style="color:#7ecfff;background:rgba(126,207,255,.12);border-color:rgba(126,207,255,.3)">Examen Parcial</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Cantidad de movimiento</span> <span class="r-tag">Análisis dimensional</span> <span class="r-tag">Canal Manning</span> <span class="r-tag">Bombeo H-W</span> <span class="r-tag">Red tuberías</span></div>
+      <div class="r-count">5 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a>
+<a class="exam-row" href="examenes/junio2020ef.html" data-type="extraordinaria" data-year="2020">
+      <div class="r-left">
+        <div class="r-date">29 de Junio de 2020</div>
+        <div class="r-badges"><span class="type-pill" style="color:#fb923c;background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.3)">Examen Final</span></div>
+      </div>
+      <div class="r-tags"><span class="r-tag">Embrague hidráulico</span> <span class="r-tag">Manometría</span> <span class="r-tag">Flotación</span> <span class="r-tag">Bernoulli</span> <span class="r-tag">Análisis dimensional</span><span class="r-tag-more">+2</span></div>
+      <div class="r-count">8 ejercicios ·</div>
+      <div class="r-arrow">
+        <svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </a></div>
 </div>
 
-<div class="stats">
-  <div class="stat"><span class="stat-n">15</span><span class="stat-l">ex&aacute;menes resueltos</span></div>
-  <div class="stat"><span class="stat-n">6</span><span class="stat-l">cursos acad&eacute;micos</span></div>
-  <div class="stat"><span class="stat-n">2020&ndash;2025</span><span class="stat-l">periodo cubierto</span></div>
-  <div class="stat"><span class="stat-n">&#128247;</span><span class="stat-l">figuras PDF en 2022+</span></div>
-</div>
+      <div class="no-results" id="no-results">No hay ex&aacute;menes para este filtro.</div>
+    </div>
+  </main>
 
-<div class="filters">
-  <span class="filter-label">A&ntilde;o</span>
-  <button class="fb year active" onclick="setYear('all',this)">Todos</button>
-  <button class="fb year" onclick="setYear('2020',this)">2020</button>
-  <button class="fb year" onclick="setYear('2021',this)">2021</button>
-  <button class="fb year" onclick="setYear('2022',this)">2022</button>
-  <button class="fb year" onclick="setYear('2023',this)">2023</button>
-  <button class="fb year" onclick="setYear('2024',this)">2024</button>
-  <button class="fb year" onclick="setYear('2025',this)">2025</button>
-  <div class="filter-sep"></div>
-  <span class="filter-label">Tipo</span>
-  <button class="fb type active" onclick="setType('all',this)">Todos</button>
-  <button class="fb type" onclick="setType('parcial',this)">Parcial</button>
-  <button class="fb type" onclick="setType('ordinaria',this)">Ordinaria</button>
-  <button class="fb type" onclick="setType('extraordinaria',this)">Extraordinaria</button>
 </div>
-
-<div class="exam-grid" id="grid">
-  <div class="ec solved" data-type="parcial" data-year="2020" onclick="go('examenes/mayo2020.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(126,207,255,.08);border-color:rgba(126,207,255,.25);color:#7ecfff">Examen Parcial</span>
-        
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">8 de Mayo de 2020</div>
-      <div class="ec-curso">Grados Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Gas ideal</span><span class="ec-tag">Hidrostática</span><span class="ec-tag">Bernoulli</span><span class="ec-tag">Fuerzas hidrost.</span><span class="ec-tag">Vaciado</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Gas ideal en recipiente rígido</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Laboratorio submarino</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Sistema bomba + boquilla</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Tubo de helio bajo fluido</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Vaciado de tanque cerrado</span></div></div>
-    <div class="ec-foot">
-      <span class="ec-count">5 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/mayo2020.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="parcial" data-year="2020" onclick="go('examenes/junio2020.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(126,207,255,.08);border-color:rgba(126,207,255,.25);color:#7ecfff">Examen Parcial</span>
-        
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">4 de Junio de 2020</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Cantidad de movimiento</span><span class="ec-tag">Análisis dimensional</span><span class="ec-tag">Canal Manning</span><span class="ec-tag">Bombeo H-W</span><span class="ec-tag">Red tuberías</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Chorro sobre álabe móvil (180°)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Análisis dimensional (módulo Marte)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Canal montaña + tubería Barlow</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Instalación bombeo (NPSH, curvas)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Red de tuberías (2 nodos)</span></div></div>
-    <div class="ec-foot">
-      <span class="ec-count">5 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2020.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="extraordinaria" data-year="2020" onclick="go('examenes/junio2020ef.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:#fb923c">Examen Final</span>
-        
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">29 de Junio de 2020</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Embrague hidráulico</span><span class="ec-tag">Manometría</span><span class="ec-tag">Flotación</span><span class="ec-tag">Bernoulli</span><span class="ec-tag">Análisis dimensional</span><span class="ec-tag">Darcy-Weisbach</span><span class="ec-tag">Red tuberías</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Embrague hidráulico viscoso</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Manometría 3 depósitos + isotermo</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Flotación cilindro+cono dos fluidos</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Bernoulli + tobera + cono</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Análisis dimensional turbobomba</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Darcy-Weisbach + turbina</span></div><div class="ec-ex-more">+2 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">8 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2020ef.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="parcial" data-year="2021" onclick="go('examenes/abril2021.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(126,207,255,.08);border-color:rgba(126,207,255,.25);color:#7ecfff">Examen Parcial</span>
-        
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">16 de Abril de 2021</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">V/F Propiedades</span><span class="ec-tag">Micromanómetro</span><span class="ec-tag">Compuerta curva</span><span class="ec-tag">Depósito presurizado</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Verdadero / Falso (6 afirmaciones)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Micromanómetro inmiscibles</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Compuerta articulada OABO</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Depósito queroseno / butano</span></div></div>
-    <div class="ec-foot">
-      <span class="ec-count">4 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/abril2021.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="parcial" data-year="2021" onclick="go('examenes/mayo2021.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(126,207,255,.08);border-color:rgba(126,207,255,.25);color:#7ecfff">Examen Parcial</span>
-        
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">7 de Mayo de 2021</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Red de bombeo</span><span class="ec-tag">Venturímetro + Pitot</span><span class="ec-tag">Fuerzas sobre álabe</span><span class="ec-tag">Análisis dimensional</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Instalación bombeo mirinda (red boquillas)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Venturímetro + Pitot en gasolina</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Depósito + álabe + carro (cantidad de movimiento)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Análisis dimensional (virus / mercurio)</span></div></div>
-    <div class="ec-foot">
-      <span class="ec-count">4 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/mayo2021.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="parcial" data-year="2021" onclick="go('examenes/junio2021.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(126,207,255,.08);border-color:rgba(126,207,255,.25);color:#7ecfff">Examen Parcial</span>
-        
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">3 de Junio de 2021</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Turbomáquinas teoría</span><span class="ec-tag">Válvula asiento plano</span><span class="ec-tag">Golpe de ariete</span><span class="ec-tag">Trasvase HG</span><span class="ec-tag">Canal ramales</span><span class="ec-tag">Bombeo + cavitación</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Turbomáquinas: rellenar huecos</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Válvula de asiento plano</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Golpe de ariete con válvula de retención</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Trasvase A→B por gravedad (Darcy-Weisbach)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Red de canales con central hidroeléctrica</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Instalación de bombeo con cavitación</span></div></div>
-    <div class="ec-foot">
-      <span class="ec-count">6 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2021.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="extraordinaria" data-year="2021" onclick="go('examenes/junio2021ef.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:#fb923c">Examen Final</span>
-        
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">28 de Junio de 2021</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Fuerzas hidrostáticas</span><span class="ec-tag">Coef. descarga</span><span class="ec-tag">Manning</span><span class="ec-tag">Golpe de ariete</span><span class="ec-tag">Elevador hidráulico</span><span class="ec-tag">Análisis dimensional</span><span class="ec-tag">Pelton</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Fuerzas hidrostáticas presa dos fluidos</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Coeficiente de velocidad orificio</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Aliviadero con rampas (Manning)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Tubería + golpe de ariete</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Elevador hidráulico taller</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Análisis dimensional ala</span></div><div class="ec-ex-more">+2 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">8 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2021ef.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="ordinaria" data-year="2022" onclick="go('examenes/junio2022.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(192,132,252,.08);border-color:rgba(192,132,252,.25);color:#c084fc">Examen Final</span>
-        <span class="ec-fig-badge">&#128247; Con figuras</span>
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">2 de Junio de 2022</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Flujo laminar</span><span class="ec-tag">Compresibilidad</span><span class="ec-tag">Manning</span><span class="ec-tag">Manómetro diferencial</span><span class="ec-tag">Compuerta curva</span><span class="ec-tag">Venturimetro</span><span class="ec-tag">Chorro-cono</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Flujo laminar: perfil de velocidades y tensiones</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Presión en el fondo del océano (compresibilidad)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Canal rectangular Manning + material</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Manómetro diferencial Helio + s=3 + Hg</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Compuerta cuarto de círculo con F exterior</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Venturimetro: relación entre dos manómetros</span></div><div class="ec-ex-more">+5 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">11 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2022.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="extraordinaria" data-year="2022" onclick="go('examenes/junio2022ef.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:#fb923c">Extraordinaria</span>
-        <span class="ec-fig-badge">&#128247; Con figuras</span>
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">27 de Junio de 2022</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Capilaridad</span><span class="ec-tag">Oleohidráulica</span><span class="ec-tag">Fuerzas hidrostáticas</span><span class="ec-tag">Bifurcación</span><span class="ec-tag">Semejanza Re-Fr</span><span class="ec-tag">Vertederos</span><span class="ec-tag">Transvasamiento</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Capilaridad en vasos de árbol de 30 m</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Sistema oleohidráulico 3 coches</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Prisma triangular + esfera, dos fluidos</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Bernoulli + QdM en bifurcación Y</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Semejanza hidrodinámica Re y Fr</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Vertedero pared delgada y gruesa</span></div><div class="ec-ex-more">+3 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">9 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2022ef.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="ordinaria" data-year="2023" onclick="go('examenes/junio2023.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(192,132,252,.08);border-color:rgba(192,132,252,.25);color:#c084fc">Ordinaria</span>
-        <span class="ec-fig-badge">&#128247; Con figuras</span>
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">1 de Junio de 2023</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Micromanómetro</span><span class="ec-tag">Codo-boquilla QdM</span><span class="ec-tag">Depósito cerrado</span><span class="ec-tag">Compresibilidad</span><span class="ec-tag">Venturimetro</span><span class="ec-tag">Semejanza gas</span><span class="ec-tag">Canal óptimo</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Micromanómetro inclinado (3 fluidos)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Codo + boquilla: Bernoulli y cantidad de movimiento</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Depósito cerrado con dos fluidos estratificados</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Compresibilidad: cubo chatarra + bidón aceite</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Venturímetro agua-glicol + rotámetro de purga</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Semejanza dinámica en modelo de gas</span></div><div class="ec-ex-more">+3 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">9 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2023.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="extraordinaria" data-year="2023" onclick="go('examenes/junio2023ef.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:#fb923c">Extraordinaria</span>
-        <span class="ec-fig-badge">&#128247; Con figuras</span>
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">26 de Junio de 2023</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Capilaridad rectangular</span><span class="ec-tag">Manometría depósito</span><span class="ec-tag">Tubería submarina</span><span class="ec-tag">Chorro placa</span><span class="ec-tag">Semejanza Mach</span><span class="ec-tag">Red bombeo etanol</span><span class="ec-tag">Canales Manning</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Capilaridad en tubo sección rectangular</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Depósito con agua, aceite y aire a presión</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Tubería submarina anclada con hormigón</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Chorro de agua sobre placa fija</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Semejanza dinámica avión a 12 000 m</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Red de bombeo con etanol (Darcy-Weisbach)</span></div><div class="ec-ex-more">+3 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">9 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2023ef.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="ordinaria" data-year="2024" onclick="go('examenes/mayo2024.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(192,132,252,.08);border-color:rgba(192,132,252,.25);color:#c084fc">Ordinaria</span>
-        <span class="ec-fig-badge">&#128247; Con figuras</span>
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">30 de Mayo de 2024</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Capilaridad</span><span class="ec-tag">Fuerzas</span><span class="ec-tag">Manometría</span><span class="ec-tag">Compuerta curva</span><span class="ec-tag">Vaciado</span><span class="ec-tag">Hazen-Williams</span><span class="ec-tag">Análisis dim.</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Capilaridad en ranura anular</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Fuerzas sobre pieza especial sumergida</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Manómetros redundantes: identificar el incorrecto</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Compuerta cilíndrica ABC con vacuómetro</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Vaciado depósito rectangular (Torricelli)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Bombeo con Hazen-Williams</span></div><div class="ec-ex-more">+2 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">8 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/mayo2024.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="extraordinaria" data-year="2024" onclick="go('examenes/junio2024ef.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:#fb923c">Extraordinaria</span>
-        <span class="ec-fig-badge">&#128247; Con figuras</span>
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">24 de Junio de 2024</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Compresibilidad</span><span class="ec-tag">Gabarra flotante</span><span class="ec-tag">Micromanómetro</span><span class="ec-tag">Venturímetro</span><span class="ec-tag">Análisis dim.</span><span class="ec-tag">Red tuberías</span><span class="ec-tag">Canal calzada</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Compresibilidad: caída de presión por fuga</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Gabarra Athletic: flotabilidad e inversión</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Micromanómetro con dos fluidos inmiscibles</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Venturímetro inclinado 30° + rotámetro</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Análisis dimensional: bomba interplanetaria</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Red PVC con bomba y 3 boquillas paralelas</span></div><div class="ec-ex-more">+2 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">8 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2024ef.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="ordinaria" data-year="2025" onclick="go('examenes/mayo2025.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(192,132,252,.08);border-color:rgba(192,132,252,.25);color:#c084fc">Ordinaria</span>
-        <span class="ec-fig-badge">&#128247; Con figuras</span>
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">29 de Mayo de 2025</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">Fuerzas articuladas</span><span class="ec-tag">Capilaridad</span><span class="ec-tag">Micromanómetros</span><span class="ec-tag">Canal compuesto</span><span class="ec-tag">Análisis dim.</span><span class="ec-tag">Central hidroeléctrica</span><span class="ec-tag">Flyboard</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — Fuerzas hidrostáticas sobre dos cuerpos articulados con tope</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Tubo piezométrico presurizado + capilaridad tubo cuadrado</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Comparación micromanómetros: inmiscibles vs. inclinado</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Canal sección compuesta con partes curvas (Manning)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Análisis dimensional: compuerta presa (8 vars, 5 Π)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Central hidroeléctrica: 3 turbinas en paralelo (Darcy-Weisbach)</span></div><div class="ec-ex-more">+3 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">9 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/mayo2025.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="ec solved" data-type="extraordinaria" data-year="2025" onclick="go('examenes/junio2025ef.html')">
-    <div class="ec-top">
-      <div class="ec-badges">
-        <span class="ec-type-badge" style="background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:#fb923c">Extraordinaria</span>
-        <span class="ec-fig-badge">&#128247; Con figuras</span>
-        <span class="ec-status-badge">&#10003; Resuelto</span>
-      </div>
-      <div class="ec-date">23 de Junio de 2025</div>
-      <div class="ec-curso">Grados Ing. Civil e Industriales · 2º Curso · UPV/EHU</div>
-    </div>
-    <div class="ec-tags"><span class="ec-tag">CO₂ gas ideal</span><span class="ec-tag">Bomba Hazen-Williams</span><span class="ec-tag">Manometría</span><span class="ec-tag">Análisis dim.</span><span class="ec-tag">Red petróleo</span><span class="ec-tag">Compuerta ABCD</span><span class="ec-tag">Canal hexágono</span></div>
-    <div class="ec-exlist"><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 1 — CO₂ gas ideal isotérmico: presión, densidad, compresibilidad</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 2 — Bomba INP 150/200 + depósito presurizado + cavitación + válvula</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 3 — Manómetros depósitos presurizados (presión abs. vs. manométrica)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 4 — Análisis dimensional: vertedero en V (4 vars, 2 Π)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 5 — Red bombas en paralelo: petróleo crudo (Darcy-Weisbach)</span></div><div class="ec-ex"><div class="ec-ex-dot"></div><span>Ej. 6 — Fuerzas hidrostáticas compuerta ABCD + vacuómetro</span></div><div class="ec-ex-more">+3 más</div></div>
-    <div class="ec-foot">
-      <span class="ec-count">9 ejercicios ·</span>
-      <a class="ec-btn" href="examenes/junio2025ef.html" onclick="event.stopPropagation()">
-        Ver examen
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-    </div>
-  </div>
-</div>
-<div class="no-results" id="no-results">No hay ex&aacute;menes para este filtro.</div>
 
 <script>
 let _year = 'all', _type = 'all';
 
 function applyFilters() {
   let visible = 0;
-  document.querySelectorAll('#grid .ec').forEach(c => {
-    const ok = (_year==='all' || c.dataset.year===_year) &&
-               (_type==='all' || c.dataset.type===_type);
-    c.style.display = ok ? '' : 'none';
-    if (ok) visible++;
+  document.querySelectorAll('.year-group').forEach(g => {
+    let gVisible = 0;
+    g.querySelectorAll('.exam-row').forEach(r => {
+      const ok = (_year==='all' || r.dataset.year===_year) &&
+                 (_type==='all' || r.dataset.type===_type);
+      r.classList.toggle('hidden', !ok);
+      if (ok) gVisible++;
+    });
+    g.classList.toggle('hidden', gVisible === 0);
+    visible += gVisible;
   });
   document.getElementById('no-results').style.display = visible ? 'none' : 'block';
 }
@@ -488,10 +455,6 @@ function setType(v, btn) {
   btn.classList.add('active');
   applyFilters();
 }
-
-function go(href) { window.location.href = href; }
-
-applyFilters();
 </script>
 </body>
 </html>
