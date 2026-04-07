@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>Guía de Matemáticas · EHU·LAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<style>
+/* ── TOKENS ── */
+:root{
+  --bg:#131313;
+  --surface:#1c1c1c;
+  --surface2:#222;
+  --border:rgba(255,255,255,.07);
+  --accent:#4ade80;
+  --accent-dim:rgba(74,222,128,.08);
+  --accent-border:rgba(74,222,128,.22);
+  --fluidos:#7ECFFF;
+  --mecanica:#C084FC;
+  --sistemas:#FCD34D;
+  --gold:#f59e0b;
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#475569;
+  --ff:'Space Grotesk',sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+  --sidebar-w:230px;
+  --radius:10px;
+  --radius-sm:6px;
+  --transition:.15s ease;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:200;
+  height:52px;display:flex;align-items:center;gap:14px;
+  padding:0 24px;
+  background:rgba(13,13,13,.95);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-back{
+  display:flex;align-items:center;gap:6px;
+  font-size:.78em;font-weight:600;color:var(--text2);
+  padding:5px 10px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);
+  transition:color var(--transition),background var(--transition);
+}
+.topbar-back:hover{color:var(--text);background:var(--surface)}
+.topbar-title{font-size:.9em;font-weight:700;color:var(--text)}
+.topbar-badge{
+  margin-left:auto;font-family:var(--ff-mono);font-size:.62em;font-weight:700;
+  padding:3px 10px;border-radius:20px;letter-spacing:.06em;
+  background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border);
+}
+
+/* ── LAYOUT ── */
+.layout{display:flex;padding-top:0;min-height:calc(100vh - 52px)}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  position:fixed;top:52px;left:0;bottom:0;
+  background:rgba(255,255,255,.018);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.sb-head{padding:16px 14px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-title{font-size:.78em;font-weight:700;color:var(--accent);margin-bottom:2px}
+.sb-sub{font-size:.66em;color:var(--text3);font-family:var(--ff-mono);letter-spacing:.06em}
+.sb-list{flex:1;overflow-y:auto;padding:8px 8px 20px}
+.sb-item{
+  width:100%;display:flex;align-items:center;gap:10px;
+  padding:8px 10px;border-radius:var(--radius-sm);
+  background:none;border:1px solid transparent;
+  color:var(--text2);font-family:var(--ff);font-size:.8em;
+  cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:3px;
+}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-num{
+  font-family:var(--ff-mono);font-size:.68em;font-weight:700;
+  min-width:22px;text-align:center;
+  background:rgba(255,255,255,.06);border-radius:4px;padding:1px 4px;
+  color:inherit;opacity:.8;flex-shrink:0;
+}
+.sb-item.active .sb-num{background:rgba(74,222,128,.15)}
+.sb-name{flex:1;font-weight:500;line-height:1.3}
+.sb-footer{padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0}
+.sb-progress-label{font-family:var(--ff-mono);font-size:.6em;color:var(--text3);letter-spacing:.08em;margin-bottom:6px;text-transform:uppercase}
+.sb-progress-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.sb-progress-fill{height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width .4s ease}
+
+/* ── CONTENT ── */
+.content{flex:1;margin-left:var(--sidebar-w);padding:40px 52px 80px;min-width:0}
+
+/* ── TOPIC PANEL ── */
+.topic-panel{display:none;max-width:820px}
+.topic-panel.active{display:block;animation:fadeIn .18s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PANEL HEADER ── */
+.panel-header{
+  margin-bottom:36px;padding:20px 24px 22px;
+  background:linear-gradient(135deg,rgba(74,222,128,.05) 0%,transparent 60%);
+  border:1px solid rgba(74,222,128,.15);
+  border-left:3px solid var(--accent);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.panel-level{
+  font-family:var(--ff-mono);font-size:.65em;font-weight:700;
+  color:var(--accent);opacity:.7;letter-spacing:1.2px;margin-bottom:6px;text-transform:uppercase;
+}
+.panel-title{font-size:1.6em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;margin-bottom:6px}
+.panel-desc{font-size:.9em;color:var(--text2);line-height:1.6}
+.panel-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.ptag{
+  font-family:var(--ff-mono);font-size:.6em;font-weight:700;padding:2px 8px;
+  border-radius:20px;letter-spacing:.04em;
+}
+.ptag-f{background:rgba(126,207,255,.1);color:var(--fluidos);border:1px solid rgba(126,207,255,.2)}
+.ptag-m{background:rgba(192,132,252,.1);color:var(--mecanica);border:1px solid rgba(192,132,252,.2)}
+.ptag-s{background:rgba(252,211,77,.1);color:var(--sistemas);border:1px solid rgba(252,211,77,.2)}
+
+/* ── SECTIONS ── */
+.section{margin-bottom:40px}
+.section-title{
+  font-size:1.05em;font-weight:700;color:var(--text);
+  margin-bottom:16px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.section-title::before{
+  content:'';width:3px;height:18px;border-radius:2px;
+  background:var(--accent);flex-shrink:0;
+}
+
+/* ── PROSE ── */
+.prose{font-size:.9em;color:var(--text2);line-height:1.75}
+.prose p{margin-bottom:12px}
+.prose p:last-child{margin-bottom:0}
+.prose strong,.prose b{color:var(--text);font-weight:600}
+.prose ul{padding-left:20px;margin-bottom:12px}
+.prose li{margin-bottom:5px}
+
+/* ── HIGHLIGHT BOXES ── */
+.box{border-radius:var(--radius-sm);padding:16px 18px;margin:16px 0;border:1px solid}
+.box-title{font-family:var(--ff-mono);font-size:.65em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.box.key{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.2)}
+.box.key .box-title{color:var(--accent)}
+.box.why{background:rgba(126,207,255,.05);border-color:rgba(126,207,255,.15)}
+.box.why .box-title{color:var(--fluidos)}
+.box.warn{background:rgba(251,191,36,.05);border-color:rgba(251,191,36,.2)}
+.box.warn .box-title{color:#fbbf24}
+.box.exam{background:rgba(192,132,252,.05);border-color:rgba(192,132,252,.2)}
+.box.exam .box-title{color:var(--mecanica)}
+
+/* ── STEPS ── */
+.steps{display:flex;flex-direction:column;gap:0;margin:16px 0}
+.step{display:flex;gap:16px;position:relative}
+.step:not(:last-child)::after{
+  content:'';position:absolute;left:15px;top:34px;bottom:0;
+  width:1px;background:var(--border);
+}
+.step-num{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  background:var(--accent-dim);border:1px solid var(--accent-border);
+  color:var(--accent);font-family:var(--ff-mono);font-size:.72em;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:2px;position:relative;z-index:1;
+}
+.step-body{flex:1;padding-bottom:20px}
+.step-title{font-size:.88em;font-weight:700;color:var(--text);margin-bottom:6px}
+.step-content{font-size:.85em;color:var(--text2);line-height:1.65}
+
+/* ── MATH DISPLAY ── */
+.math-block{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:16px 20px;
+  margin:12px 0;overflow-x:auto;text-align:center;
+  font-size:1.05em;
+}
+.math-inline{display:inline}
+
+/* ── EXAMPLE CARD ── */
+.example{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);margin:20px 0;overflow:hidden;
+}
+.example-head{
+  padding:12px 18px;background:rgba(255,255,255,.03);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.example-icon{font-size:1em}
+.example-label{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.example-title{font-size:.88em;font-weight:700;color:var(--text);margin-left:auto}
+.example-body{padding:18px}
+.example-body .prose{font-size:.86em}
+
+/* ── SUBJECT BADGE ── */
+.sbadge{
+  font-family:var(--ff-mono);font-size:.6em;font-weight:700;
+  padding:2px 8px;border-radius:4px;vertical-align:middle;margin-left:6px;
+}
+.sbadge-f{background:rgba(126,207,255,.1);color:var(--fluidos)}
+.sbadge-m{background:rgba(192,132,252,.1);color:var(--mecanica)}
+.sbadge-s{background:rgba(252,211,77,.1);color:var(--sistemas)}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:.83em}
+th{background:rgba(255,255,255,.04);color:var(--text);font-weight:600;
+   padding:9px 14px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:8px 14px;color:var(--text2);border-bottom:1px solid rgba(255,255,255,.04)}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--text);font-weight:500}
+.td-accent{color:var(--accent)!important}
+.td-f{color:var(--fluidos)!important}
+.td-m{color:var(--mecanica)!important}
+.td-s{color:var(--sistemas)!important}
+
+/* ── FORMULA REF ── */
+.formula-ref{
+  display:flex;align-items:center;gap:12px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:12px 16px;margin:8px 0;
+}
+.formula-ref .math-part{flex:1;font-size:1em}
+.formula-ref .desc-part{font-size:.78em;color:var(--text2);flex:1;text-align:right}
+
+/* ── READING PROGRESS ── */
+.read-progress{
+  position:fixed;top:52px;left:var(--sidebar-w);right:0;height:2px;z-index:150;
+  background:linear-gradient(90deg,var(--accent),#7ECFFF);
+  transform-origin:left;transform:scaleX(0);transition:transform .08s linear;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:24px 18px 60px}
+  .sb-list{max-height:200px}
+  .read-progress{left:0}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a class="topbar-back" href="../index.html">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
+    Inicio
+  </a>
+  <span class="topbar-title">Guía de Matemáticas · <span style="color:var(--accent)">Ingeniería</span></span>
+  <span class="topbar-badge">6 NIVELES</span>
+</div>
+
+<div class="read-progress" id="readProgress"></div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-title">Ruta de aprendizaje</div>
+      <div class="sb-sub">De cero al examen</div>
+    </div>
+    <div class="sb-list">
+      <button class="sb-item" onclick="showPanel('m0')" data-id="m0">
+        <span class="sb-num">M0</span>
+        <span class="sb-name">Álgebra y fracciones</span>
+      </button>
+      <button class="sb-item" onclick="showPanel('m1')" data-id="m1">
+        <span class="sb-num">M1</span>
+        <span class="sb-name">Sistemas de ecuaciones</span>
+      </button>
+      <button class="sb-item" onclick="showPanel('m2')" data-id="m2">
+        <span class="sb-num">M2</span>
+        <span class="sb-name">Trigonometría</span>
+      </button>
+      <button class="sb-item" onclick="showPanel('m3')" data-id="m3">
+        <span class="sb-num">M3</span>
+        <span class="sb-name">Vectores</span>
+      </button>
+      <button class="sb-item" onclick="showPanel('m4')" data-id="m4">
+        <span class="sb-num">M4</span>
+        <span class="sb-name">Derivadas</span>
+      </button>
+      <button class="sb-item" onclick="showPanel('m5')" data-id="m5">
+        <span class="sb-num">M5</span>
+        <span class="sb-name">Integrales</span>
+      </button>
+    </div>
+    <div class="sb-footer">
+      <div class="sb-progress-label">Tu progreso</div>
+      <div class="sb-progress-bar"><div class="sb-progress-fill" id="progressFill"></div></div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+<!-- ══════════════════════════════════════════════════════
+     M0 — ÁLGEBRA Y FRACCIONES
+══════════════════════════════════════════════════════ -->
+<div class="topic-panel" id="m0">
+  <div class="panel-header">
+    <div class="panel-level">Nivel M0 · Punto de partida</div>
+    <h1 class="panel-title">Álgebra y fracciones</h1>
+    <p class="panel-desc">Todo empieza aquí. Si sabes despejar una variable y operar con fracciones, puedes calcular velocidades de corte, convertir unidades y resolver la mitad de los problemas de Fluidos.</p>
+    <div class="panel-tags">
+      <span class="ptag ptag-s">Sistemas</span>
+      <span class="ptag ptag-f">Fluidos</span>
+      <span class="ptag ptag-m">Mecánica</span>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 1 -->
+  <div class="section">
+    <div class="section-title">¿Qué es despejar una variable?</div>
+    <div class="prose">
+      <p>Una ecuación es una <strong>balanza</strong>: lo que haces en un lado lo tienes que hacer en el otro para que siga equilibrada. Despejar significa aislar la incógnita que buscas en un lado de la igualdad.</p>
+      <p>Regla de oro: <strong>la operación que "acompaña" a la variable, se elimina haciendo la operación inversa</strong> en ambos lados.</p>
+    </div>
+
+    <div class="box key">
+      <div class="box-title">Operaciones inversas</div>
+      <div class="prose">
+        <ul>
+          <li>La suma se elimina <strong>restando</strong></li>
+          <li>La multiplicación se elimina <strong>dividiendo</strong></li>
+          <li>El cuadrado se elimina <strong>sacando raíz cuadrada</strong></li>
+          <li>La potencia $e^x$ se elimina aplicando <strong>logaritmo</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2 -->
+  <div class="section">
+    <div class="section-title">Despejar paso a paso</div>
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">⚙️</span>
+        <span class="example-label">Ejemplo real</span>
+        <span class="example-title">Velocidad de husillo en Sistemas <span class="sbadge sbadge-s">Sistemas</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose">
+          <p>La fórmula de la velocidad de corte es:</p>
+        </div>
+        <div class="math-block">$$v_c = \frac{\pi \cdot D \cdot N}{1000}$$</div>
+        <div class="prose"><p>donde $v_c$ es la velocidad de corte (m/min), $D$ el diámetro (mm) y $N$ las rpm. En el examen te dan $v_c$ y $D$, y te piden $N$:</p></div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Multiplicar ambos lados por 1000</div>
+              <div class="step-content">Eliminamos el divisor 1000 del lado derecho</div>
+              <div class="math-block">$$v_c \cdot 1000 = \pi \cdot D \cdot N$$</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Dividir ambos lados por $\pi \cdot D$</div>
+              <div class="step-content">Eliminamos lo que multiplica a $N$</div>
+              <div class="math-block">$$N = \frac{1000 \cdot v_c}{\pi \cdot D}$$</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Sustituir números</div>
+              <div class="step-content">Si $v_c = 80$ m/min y $D = 50$ mm:</div>
+              <div class="math-block">$$N = \frac{1000 \cdot 80}{\pi \cdot 50} = \frac{80000}{157{,}08} \approx 509 \text{ rpm}$$</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3 -->
+  <div class="section">
+    <div class="section-title">Fracciones — sumar, multiplicar, simplificar</div>
+    <div class="prose">
+      <p>Muchas fórmulas de ingeniería son fracciones dentro de fracciones. Estas son las reglas que necesitas:</p>
+    </div>
+
+    <div class="box key">
+      <div class="box-title">Reglas esenciales de fracciones</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Operación</th><th>Regla</th><th>Ejemplo</th></tr></thead>
+          <tbody>
+            <tr><td>Multiplicar</td><td>Numerador × Numerador, Denominador × Denominador</td><td>$\dfrac{2}{3}\cdot\dfrac{4}{5}=\dfrac{8}{15}$</td></tr>
+            <tr><td>Dividir</td><td>Multiplicar por el inverso</td><td>$\dfrac{2}{3}\div\dfrac{4}{5}=\dfrac{2}{3}\cdot\dfrac{5}{4}=\dfrac{10}{12}=\dfrac{5}{6}$</td></tr>
+            <tr><td>Sumar (mismo denom.)</td><td>Sumar numeradores</td><td>$\dfrac{2}{5}+\dfrac{1}{5}=\dfrac{3}{5}$</td></tr>
+            <tr><td>Sumar (distinto denom.)</td><td>Buscar denominador común</td><td>$\dfrac{1}{2}+\dfrac{1}{3}=\dfrac{3}{6}+\dfrac{2}{6}=\dfrac{5}{6}$</td></tr>
+            <tr><td>Fracción de fracción</td><td>$\dfrac{a/b}{c/d}=\dfrac{a}{b}\cdot\dfrac{d}{c}=\dfrac{ad}{bc}$</td><td>$\dfrac{P/\gamma}{v^2/2g}=\dfrac{2gP}{\gamma v^2}$</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">💧</span>
+        <span class="example-label">Ejemplo real</span>
+        <span class="example-title">Bernoulli: despejar velocidad <span class="sbadge sbadge-f">Fluidos</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose"><p>La ecuación de Bernoulli entre dos puntos es:</p></div>
+        <div class="math-block">$$\frac{P_1}{\gamma} + z_1 + \frac{v_1^2}{2g} = \frac{P_2}{\gamma} + z_2 + \frac{v_2^2}{2g}$$</div>
+        <div class="prose">
+          <p>Si el punto 1 es un depósito grande ($v_1 \approx 0$), $P_1 = P_2 = P_{atm}$ (presiones iguales) y $z_1 - z_2 = h$, la ecuación se simplifica a:</p>
+        </div>
+        <div class="math-block">$$h = \frac{v_2^2}{2g} \quad\Longrightarrow\quad v_2 = \sqrt{2gh}$$</div>
+        <div class="prose"><p>Despeje: $v_2^2 = 2gh$ → raíz cuadrada en ambos lados → $v_2 = \sqrt{2 \cdot 9{,}8 \cdot h}$. Con $h = 5$ m: $v_2 = \sqrt{98} \approx 9{,}9$ m/s.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4 -->
+  <div class="section">
+    <div class="section-title">Conversión de unidades</div>
+    <div class="prose">
+      <p>En ingeniería las unidades son parte del cálculo. El método más seguro es escribir las unidades como fracciones y cancelarlas:</p>
+    </div>
+    <div class="math-block">$$Q = 36\,\frac{\text{m}^3}{\text{h}} \cdot \frac{1\,\text{h}}{3600\,\text{s}} = \frac{36}{3600}\,\frac{\text{m}^3}{\text{s}} = 0{,}01\,\frac{\text{m}^3}{\text{s}}$$</div>
+    <div class="box warn">
+      <div class="box-title">Conversiones frecuentes en examen</div>
+      <div class="prose">
+        <ul>
+          <li>$1\,\text{bar} = 10^5\,\text{Pa}$ &nbsp;·&nbsp; $1\,\text{atm} = 101325\,\text{Pa}$</li>
+          <li>$1\,\text{m.c.a.} = 9800\,\text{Pa}$ &nbsp;·&nbsp; $p\,[\text{m.c.a.}] = p\,[\text{Pa}] / 9800$</li>
+          <li>$1\,\text{L/s} = 0{,}001\,\text{m}^3/\text{s}$ &nbsp;·&nbsp; $1\,\text{m}^3/\text{h} = 1/3600\,\text{m}^3/\text{s}$</li>
+          <li>$1\,\text{kW} = 1000\,\text{W} = 1000\,\text{J/s}$ &nbsp;·&nbsp; $1\,\text{CV} = 745{,}7\,\text{W}$</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /m0 -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     M1 — SISTEMAS DE ECUACIONES
+══════════════════════════════════════════════════════ -->
+<div class="topic-panel" id="m1">
+  <div class="panel-header">
+    <div class="panel-level">Nivel M1</div>
+    <h1 class="panel-title">Sistemas de ecuaciones</h1>
+    <p class="panel-desc">En Mecánica y Fluidos casi todos los problemas acaban siendo 2 o 3 ecuaciones con 2 o 3 incógnitas. Dominar esto te resuelve el 80% de los exámenes.</p>
+    <div class="panel-tags">
+      <span class="ptag ptag-f">Fluidos</span>
+      <span class="ptag ptag-m">Mecánica</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">¿Qué es un sistema de ecuaciones?</div>
+    <div class="prose">
+      <p>Un sistema es un conjunto de ecuaciones que deben cumplirse <strong>todas a la vez</strong>. Hay tantas incógnitas como ecuaciones.</p>
+      <p>Tienes dos métodos principales: <strong>sustitución</strong> y <strong>eliminación</strong>. Ambos llevan al mismo resultado.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Método de sustitución</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Despejar una variable en una ecuación</div>
+          <div class="step-content">De la ecuación más sencilla, aísla $x$ o $y$.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Sustituir en la otra ecuación</div>
+          <div class="step-content">Reemplaza esa variable en la segunda ecuación. Ahora tienes una sola incógnita.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Resolver y deshacer la sustitución</div>
+          <div class="step-content">Resuelve la ecuación con una incógnita. Luego sustituye para encontrar la otra.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">💧</span>
+        <span class="example-label">Ejemplo real</span>
+        <span class="example-title">Bernoulli + Continuidad <span class="sbadge sbadge-f">Fluidos</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose">
+          <p>Una tubería pasa de diámetro $D_1 = 0{,}1$ m a $D_2 = 0{,}05$ m. La presión en el punto 1 es $P_1 = 2\cdot10^5$ Pa, $z_1 = z_2$. Calcular $v_2$ y $P_2$.</p>
+          <p><strong>Ecuación 1 — Continuidad:</strong> El caudal se conserva</p>
+        </div>
+        <div class="math-block">$$A_1 v_1 = A_2 v_2 \quad\Rightarrow\quad \frac{\pi(0{,}1)^2}{4}\,v_1 = \frac{\pi(0{,}05)^2}{4}\,v_2$$</div>
+        <div class="prose"><p>Simplificando: $0{,}01\,v_1 = 0{,}0025\,v_2 \;\Rightarrow\; v_2 = 4\,v_1$ &nbsp;&nbsp;— <em>ecuación (1)</em></p>
+        <p><strong>Ecuación 2 — Bernoulli</strong> ($z_1=z_2$, dividir por $\rho g = 9800$ N/m³):</p></div>
+        <div class="math-block">$$\frac{P_1}{\rho g} + \frac{v_1^2}{2g} = \frac{P_2}{\rho g} + \frac{v_2^2}{2g}$$</div>
+        <div class="prose"><p>Sustituimos $v_2 = 4v_1$ de la ecuación (1):</p></div>
+        <div class="math-block">$$\frac{2\cdot10^5}{9800} + \frac{v_1^2}{19{,}6} = \frac{P_2}{9800} + \frac{(4v_1)^2}{19{,}6}$$</div>
+        <div class="prose"><p>Ahora hay una sola incógnita $v_1$. Si también sabemos el caudal $Q = 0{,}01$ m³/s → $v_1 = Q/A_1 = 0{,}01/0{,}00785 = 1{,}27$ m/s → $v_2 = 5{,}09$ m/s → $P_2 \approx 1{,}88\cdot10^5$ Pa.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Método de eliminación</div>
+    <div class="prose">
+      <p>Suma o resta las ecuaciones para eliminar una variable. Útil cuando los coeficientes son iguales o fáciles de igualar.</p>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">⚖️</span>
+        <span class="example-label">Ejemplo real</span>
+        <span class="example-title">Equilibrio de fuerzas <span class="sbadge sbadge-m">Mecánica</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose">
+          <p>Un sólido está en equilibrio bajo dos fuerzas desconocidas $R_A$ y $R_B$. Las ecuaciones de equilibrio son:</p>
+        </div>
+        <div class="math-block">$$\begin{cases} R_A + R_B = 500 \\ 2\,R_A - R_B = 100 \end{cases}$$</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Sumar las dos ecuaciones</div>
+              <div class="step-content">$R_B$ desaparece: $(R_A + R_B) + (2R_A - R_B) = 500 + 100$</div>
+              <div class="math-block">$$3\,R_A = 600 \;\Rightarrow\; R_A = 200\,\text{N}$$</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Sustituir para encontrar $R_B$</div>
+              <div class="math-block">$$R_B = 500 - R_A = 500 - 200 = 300\,\text{N}$$</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Sistema 3×3 — regla de Cramer simplificada</div>
+    <div class="prose">
+      <p>Cuando tienes 3 ecuaciones y 3 incógnitas (ocurre en Mecánica 3D), la forma más sistemática es la <strong>regla de Cramer</strong> o la eliminación progresiva. En examen suele ser más rápido reducir a 2×2 usando la ecuación más sencilla primero.</p>
+    </div>
+    <div class="box warn">
+      <div class="box-title">Truco de examen</div>
+      <div class="prose">
+        <p>Si una ecuación solo tiene una incógnita, resuélvela primero. Eso reduce el sistema de 3×3 a 2×2 de inmediato.</p>
+      </div>
+    </div>
+  </div>
+</div><!-- /m1 -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     M2 — TRIGONOMETRÍA
+══════════════════════════════════════════════════════ -->
+<div class="topic-panel" id="m2">
+  <div class="panel-header">
+    <div class="panel-level">Nivel M2</div>
+    <h1 class="panel-title">Trigonometría</h1>
+    <p class="panel-desc">Sin trigonometría no hay Mecánica. Cada fuerza tiene un ángulo; cada ángulo tiene seno y coseno. Si dominas esto, las proyecciones de fuerzas y los momentos se vuelven mecánicos.</p>
+    <div class="panel-tags">
+      <span class="ptag ptag-m">Mecánica</span>
+      <span class="ptag ptag-f">Fluidos</span>
+      <span class="ptag ptag-s">Sistemas</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">El triángulo rectángulo</div>
+    <div class="prose">
+      <p>Todo parte del triángulo rectángulo. Si $\theta$ es uno de los ángulos agudos:</p>
+    </div>
+    <div class="math-block">$$\sin\theta = \frac{\text{opuesto}}{\text{hipotenusa}} \qquad \cos\theta = \frac{\text{adyacente}}{\text{hipotenusa}} \qquad \tan\theta = \frac{\text{opuesto}}{\text{adyacente}} = \frac{\sin\theta}{\cos\theta}$$</div>
+    <div class="box key">
+      <div class="box-title">Mnemotecnia — SOH·CAH·TOA</div>
+      <div class="prose">
+        <p><strong>S</strong>eno = <strong>O</strong>puesto / <strong>H</strong>ipotenusa &nbsp;·&nbsp; <strong>C</strong>oseno = <strong>A</strong>dyacente / <strong>H</strong>ipotenusa &nbsp;·&nbsp; <strong>T</strong>angente = <strong>O</strong>puesto / <strong>A</strong>dyacente</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Valores que debes saber de memoria</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ángulo</th><th>$\sin\theta$</th><th>$\cos\theta$</th><th>$\tan\theta$</th></tr></thead>
+        <tbody>
+          <tr><td>0°</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>30°</td><td>$1/2$</td><td>$\sqrt{3}/2 \approx 0{,}866$</td><td>$1/\sqrt{3} \approx 0{,}577$</td></tr>
+          <tr><td>45°</td><td>$\sqrt{2}/2 \approx 0{,}707$</td><td>$\sqrt{2}/2 \approx 0{,}707$</td><td>1</td></tr>
+          <tr><td>60°</td><td>$\sqrt{3}/2 \approx 0{,}866$</td><td>$1/2$</td><td>$\sqrt{3} \approx 1{,}732$</td></tr>
+          <tr><td>90°</td><td>1</td><td>0</td><td>$\infty$</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box warn">
+      <div class="box-title">Truco para recordarlo</div>
+      <div class="prose">
+        <p>$\sin$ va de 0 a 1 al pasar de 0° a 90°. $\cos$ va de 1 a 0. Los valores son $\dfrac{\sqrt{0}}{2},\,\dfrac{\sqrt{1}}{2},\,\dfrac{\sqrt{2}}{2},\,\dfrac{\sqrt{3}}{2},\,\dfrac{\sqrt{4}}{2}$ para 0°, 30°, 45°, 60°, 90°.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Funciones inversas — encontrar el ángulo</div>
+    <div class="prose">
+      <p>Si sabes el valor del seno/coseno/tangente y quieres el ángulo, usas las funciones inversas:</p>
+    </div>
+    <div class="math-block">$$\theta = \arcsin(x) \qquad \theta = \arccos(x) \qquad \theta = \arctan\!\left(\frac{y}{x}\right)$$</div>
+    <div class="prose"><p>En la calculadora: tecla <code>sin⁻¹</code>, <code>cos⁻¹</code>, <code>tan⁻¹</code> (o <code>atan</code>). La más usada en examen es <strong>arctan</strong>.</p></div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">⚖️</span>
+        <span class="example-label">Ejemplo real</span>
+        <span class="example-title">Proyección de una fuerza <span class="sbadge sbadge-m">Mecánica</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose">
+          <p>Una fuerza $\vec{F}$ de módulo $|\vec{F}| = 500$ N forma un ángulo $\theta = 35°$ con el eje horizontal. Sus componentes son:</p>
+        </div>
+        <div class="math-block">$$F_x = 500\cos35° = 500 \cdot 0{,}819 = 409{,}6\,\text{N} \qquad F_y = 500\sin35° = 500 \cdot 0{,}574 = 286{,}8\,\text{N}$$</div>
+        <div class="prose">
+          <p>Al revés: si solo te dan $F_x = 400$ N y $F_y = 300$ N y piden el módulo y el ángulo:</p>
+        </div>
+        <div class="math-block">$$|\vec{F}| = \sqrt{400^2 + 300^2} = \sqrt{250000} = 500\,\text{N} \qquad \theta = \arctan\!\left(\frac{300}{400}\right) = \arctan(0{,}75) = 36{,}9°$$</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Identidades que aparecen en examen</div>
+    <div class="math-block">$$\sin^2\theta + \cos^2\theta = 1 \qquad \tan\theta = \frac{\sin\theta}{\cos\theta}$$</div>
+    <div class="math-block">$$\sin(90°-\theta) = \cos\theta \qquad \cos(90°-\theta) = \sin\theta$$</div>
+    <div class="math-block">$$\text{Teorema de Pitágoras:}\quad c^2 = a^2 + b^2$$</div>
+  </div>
+</div><!-- /m2 -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     M3 — VECTORES
+══════════════════════════════════════════════════════ -->
+<div class="topic-panel" id="m3">
+  <div class="panel-header">
+    <div class="panel-level">Nivel M3</div>
+    <h1 class="panel-title">Vectores</h1>
+    <p class="panel-desc">En Mecánica Aplicada, todo es vectorial: fuerzas, momentos, reacciones. El producto vectorial (cross product) es la operación que más aparece en examen y la que más confunde — aquí la desmontamos paso a paso.</p>
+    <div class="panel-tags">
+      <span class="ptag ptag-m">Mecánica</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">¿Qué es un vector?</div>
+    <div class="prose">
+      <p>Un vector tiene <strong>módulo</strong> (tamaño), <strong>dirección</strong> y <strong>sentido</strong>. Se escribe como suma de componentes en los ejes:</p>
+    </div>
+    <div class="math-block">$$\vec{A} = A_x\,\vec{i} + A_y\,\vec{j} + A_z\,\vec{k}$$</div>
+    <div class="prose">
+      <p>donde $\vec{i}$, $\vec{j}$, $\vec{k}$ son los vectores unitarios en x, y, z. El <strong>módulo</strong> (longitud del vector) es:</p>
+    </div>
+    <div class="math-block">$$|\vec{A}| = \sqrt{A_x^2 + A_y^2 + A_z^2}$$</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Producto escalar (dot product)</div>
+    <div class="prose">
+      <p>El resultado es un <strong>número</strong>, no un vector. Mide cuánto "se parecen" dos vectores en dirección:</p>
+    </div>
+    <div class="math-block">$$\vec{A} \cdot \vec{B} = A_x B_x + A_y B_y + A_z B_z = |\vec{A}||\vec{B}|\cos\theta$$</div>
+    <div class="box why">
+      <div class="box-title">¿Para qué sirve en examen?</div>
+      <div class="prose">
+        <ul>
+          <li><strong>Proyección de una fuerza</strong> sobre un eje $\vec{u}$: $F_u = \vec{F}\cdot\hat{u}$</li>
+          <li><strong>Ángulo entre dos fuerzas</strong>: $\cos\theta = \dfrac{\vec{A}\cdot\vec{B}}{|\vec{A}||\vec{B}|}$</li>
+          <li><strong>Momento de un par</strong> respecto a un eje</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">⚖️</span>
+        <span class="example-label">Ejemplo</span>
+        <span class="example-title">Ángulo entre dos fuerzas <span class="sbadge sbadge-m">Mecánica</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose"><p>$\vec{F}_1 = 3\vec{i} + 4\vec{j}$ N y $\vec{F}_2 = 1\vec{i} - 2\vec{j}$ N. Calcular el ángulo entre ellas:</p></div>
+        <div class="math-block">$$\vec{F}_1\cdot\vec{F}_2 = 3(1) + 4(-2) = 3 - 8 = -5$$</div>
+        <div class="math-block">$$|\vec{F}_1| = \sqrt{9+16} = 5 \qquad |\vec{F}_2| = \sqrt{1+4} = \sqrt{5}$$</div>
+        <div class="math-block">$$\cos\theta = \frac{-5}{5\sqrt{5}} = \frac{-1}{\sqrt{5}} \;\Rightarrow\; \theta = \arccos\!\left(\frac{-1}{\sqrt{5}}\right) \approx 116{,}6°$$</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Producto vectorial (cross product)</div>
+    <div class="prose">
+      <p>El resultado es un <strong>vector</strong> perpendicular a los dos. Es la operación clave para calcular momentos de fuerza:</p>
+    </div>
+    <div class="math-block">$$\vec{M}_O = \vec{r} \times \vec{F}$$</div>
+    <div class="prose"><p>Se calcula como el <strong>determinante</strong> de una matriz 3×3:</p></div>
+    <div class="math-block">$$\vec{A}\times\vec{B} = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\A_x&A_y&A_z\\B_x&B_y&B_z\end{vmatrix} = (A_yB_z-A_zB_y)\,\vec{i} - (A_xB_z-A_zB_x)\,\vec{j} + (A_xB_y-A_yB_x)\,\vec{k}$$</div>
+
+    <div class="box key">
+      <div class="box-title">Cómo expandir el determinante — regla de Sarrus</div>
+      <div class="prose">
+        <p>Para la componente $\vec{i}$: tapa la fila y columna de $\vec{i}$, calcula el determinante 2×2 de lo que queda.</p>
+        <ul>
+          <li>Componente $\vec{i}$: $+(A_y B_z - A_z B_y)$</li>
+          <li>Componente $\vec{j}$: $-(A_x B_z - A_z B_x)$ &nbsp;← <strong>ojo al signo menos</strong></li>
+          <li>Componente $\vec{k}$: $+(A_x B_y - A_y B_x)$</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">⚖️</span>
+        <span class="example-label">Ejemplo real</span>
+        <span class="example-title">Momento de una fuerza respecto a un punto <span class="sbadge sbadge-m">Mecánica</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose">
+          <p>Una fuerza $\vec{F} = 200\vec{i} - 300\vec{j}$ N se aplica en el punto $A = (2, 3, 0)$ m. Calcular el momento respecto al origen O:</p>
+          <p>El vector de posición es $\vec{r}_{OA} = 2\vec{i} + 3\vec{j} + 0\vec{k}$:</p>
+        </div>
+        <div class="math-block">$$\vec{M}_O = \vec{r}\times\vec{F} = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\2&3&0\\200&-300&0\end{vmatrix}$$</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">i</div>
+            <div class="step-body">
+              <div class="step-title">Componente $\vec{i}$</div>
+              <div class="math-block">$$+(3\cdot0 - 0\cdot(-300)) = 0$$</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">j</div>
+            <div class="step-body">
+              <div class="step-title">Componente $\vec{j}$ (con signo $-$)</div>
+              <div class="math-block">$$-(2\cdot0 - 0\cdot200) = 0$$</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">k</div>
+            <div class="step-body">
+              <div class="step-title">Componente $\vec{k}$</div>
+              <div class="math-block">$$+(2\cdot(-300) - 3\cdot200) = -600 - 600 = -1200\,\text{N·m}$$</div>
+            </div>
+          </div>
+        </div>
+        <div class="prose"><p>Resultado: $\vec{M}_O = -1200\,\vec{k}$ N·m. El signo negativo indica sentido horario visto desde arriba.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Propiedades importantes</div>
+    <div class="math-block">$$|\vec{A}\times\vec{B}| = |\vec{A}||\vec{B}|\sin\theta \qquad \vec{A}\times\vec{B} = -(\vec{B}\times\vec{A})$$</div>
+    <div class="math-block">$$\vec{i}\times\vec{j}=\vec{k} \qquad \vec{j}\times\vec{k}=\vec{i} \qquad \vec{k}\times\vec{i}=\vec{j}$$</div>
+    <div class="box warn">
+      <div class="box-title">Error más común</div>
+      <div class="prose"><p>El signo de la componente $\vec{j}$ lleva un $-$ delante. Olvidarlo es el error más frecuente en examen.</p></div>
+    </div>
+  </div>
+</div><!-- /m3 -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     M4 — DERIVADAS
+══════════════════════════════════════════════════════ -->
+<div class="topic-panel" id="m4">
+  <div class="panel-header">
+    <div class="panel-level">Nivel M4</div>
+    <h1 class="panel-title">Derivadas</h1>
+    <p class="panel-desc">La derivada mide cómo cambia algo cuando otra cosa cambia. En Fluidos aparece en gradientes de presión y viscosidad. En Mecánica, en vigas y cinemática. No necesitas derivar expresiones complejas — necesitas entender qué significa y usar la tabla.</p>
+    <div class="panel-tags">
+      <span class="ptag ptag-f">Fluidos</span>
+      <span class="ptag ptag-m">Mecánica</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">¿Qué es una derivada?</div>
+    <div class="prose">
+      <p>La derivada de $f(x)$ en un punto es la <strong>pendiente de la recta tangente</strong> a la curva en ese punto. También se puede interpretar como la <strong>tasa de cambio instantánea</strong>:</p>
+    </div>
+    <div class="math-block">$$f'(x) = \frac{df}{dx} = \lim_{\Delta x \to 0}\frac{f(x+\Delta x)-f(x)}{\Delta x}$$</div>
+    <div class="prose">
+      <p>En física: si $s(t)$ es la posición, su derivada $v = \dfrac{ds}{dt}$ es la velocidad. Si $v(t)$ es la velocidad, su derivada $a = \dfrac{dv}{dt}$ es la aceleración.</p>
+    </div>
+
+    <div class="box why">
+      <div class="box-title">¿Dónde aparece en tus asignaturas?</div>
+      <div class="prose">
+        <ul>
+          <li><strong>Fluidos — gradiente de presión:</strong> $\dfrac{dp}{dz} = -\rho g$ → "la presión disminuye a razón de $\rho g$ por metro de altura"</li>
+          <li><strong>Fluidos — ley de Newton de la viscosidad:</strong> $\tau = \mu\dfrac{dv}{dy}$ → "el esfuerzo cortante depende de cómo varía la velocidad con la distancia"</li>
+          <li><strong>Mecánica — vigas:</strong> $\dfrac{dV}{dx} = -q(x)$ y $\dfrac{dM}{dx} = V(x)$ → relaciones entre carga, cortante y momento</li>
+          <li><strong>Mecánica — cinemática:</strong> $\omega = \dfrac{d\theta}{dt}$, $\alpha = \dfrac{d\omega}{dt}$</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Tabla de derivadas básicas</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Función $f(x)$</th><th>Derivada $f'(x)$</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td>$c$ (constante)</td><td>$0$</td><td>$(5)' = 0$</td></tr>
+          <tr><td>$x^n$</td><td>$n\,x^{n-1}$</td><td>$(x^3)' = 3x^2$</td></tr>
+          <tr><td>$\sqrt{x} = x^{1/2}$</td><td>$\dfrac{1}{2\sqrt{x}}$</td><td>$(\sqrt{x})' = \dfrac{1}{2\sqrt{x}}$</td></tr>
+          <tr><td>$\dfrac{1}{x} = x^{-1}$</td><td>$-\dfrac{1}{x^2}$</td><td>$(1/x)' = -1/x^2$</td></tr>
+          <tr><td>$e^x$</td><td>$e^x$</td><td>$(e^x)' = e^x$</td></tr>
+          <tr><td>$e^{ax}$</td><td>$a\,e^{ax}$</td><td>$(e^{3x})' = 3e^{3x}$</td></tr>
+          <tr><td>$\ln x$</td><td>$\dfrac{1}{x}$</td><td>$(\ln x)' = 1/x$</td></tr>
+          <tr><td>$\sin x$</td><td>$\cos x$</td><td>$(\sin x)' = \cos x$</td></tr>
+          <tr><td>$\cos x$</td><td>$-\sin x$</td><td>$(\cos x)' = -\sin x$</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Reglas de derivación</div>
+
+    <div class="box key">
+      <div class="box-title">Regla de la cadena — la más importante</div>
+      <div class="prose">
+        <p>Para derivar una función compuesta $f(g(x))$: derivada de lo de fuera × derivada de lo de dentro.</p>
+      </div>
+      <div class="math-block">$$[f(g(x))]' = f'(g(x)) \cdot g'(x)$$</div>
+      <div class="prose"><p><strong>Ejemplo:</strong> $(x^2 + 3)^5$. Lo de fuera: $u^5 \to 5u^4$. Lo de dentro: $x^2+3 \to 2x$. Resultado: $5(x^2+3)^4 \cdot 2x = 10x(x^2+3)^4$</p></div>
+    </div>
+
+    <div class="box key">
+      <div class="box-title">Regla del producto</div>
+      <div class="math-block">$$[f(x)\cdot g(x)]' = f'(x)\,g(x) + f(x)\,g'(x)$$</div>
+    </div>
+
+    <div class="box key">
+      <div class="box-title">Regla del cociente</div>
+      <div class="math-block">$$\left[\frac{f(x)}{g(x)}\right]' = \frac{f'(x)\,g(x) - f(x)\,g'(x)}{[g(x)]^2}$$</div>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">💧</span>
+        <span class="example-label">Ejemplo real</span>
+        <span class="example-title">Verificar la ley de la viscosidad <span class="sbadge sbadge-f">Fluidos</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose">
+          <p>El perfil de velocidades en un flujo laminar entre placas es $v(y) = \dfrac{1}{2\mu}\dfrac{dp}{dx}(y^2 - h^2)$. El esfuerzo cortante es $\tau = \mu\dfrac{dv}{dy}$. Calculamos $\dfrac{dv}{dy}$:</p>
+        </div>
+        <div class="math-block">$$\frac{dv}{dy} = \frac{1}{2\mu}\frac{dp}{dx}\cdot 2y = \frac{y}{\mu}\frac{dp}{dx}$$</div>
+        <div class="prose"><p>Por tanto: $\tau = \mu \cdot \dfrac{y}{\mu}\dfrac{dp}{dx} = y\dfrac{dp}{dx}$. El esfuerzo crece linealmente con la distancia $y$ a la pared.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Máximos y mínimos — la derivada se anula</div>
+    <div class="prose">
+      <p>Un punto donde $f'(x) = 0$ es un candidato a máximo o mínimo. Esto aparece en problemas de optimización (velocidad de corte óptima, dimensión óptima de tubería, etc.).</p>
+    </div>
+    <div class="math-block">$$f'(x) = 0 \;\Rightarrow\; \text{candidato a extremo}$$</div>
+    <div class="prose"><p>Si $f''(x) < 0$: máximo. Si $f''(x) > 0$: mínimo.</p></div>
+  </div>
+</div><!-- /m4 -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     M5 — INTEGRALES
+══════════════════════════════════════════════════════ -->
+<div class="topic-panel" id="m5">
+  <div class="panel-header">
+    <div class="panel-level">Nivel M5 · Cima de la ruta</div>
+    <h1 class="panel-title">Integrales</h1>
+    <p class="panel-desc">La integral es la operación inversa de la derivada. En tus asignaturas la necesitas principalmente para entender los momentos de inercia en Mecánica. En examen usas tablas — aquí aprendes a leerlas y a aplicarlas.</p>
+    <div class="panel-tags">
+      <span class="ptag ptag-m">Mecánica</span>
+      <span class="ptag ptag-f">Fluidos</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">¿Qué es una integral?</div>
+    <div class="prose">
+      <p>La integral definida de $f(x)$ entre $a$ y $b$ es el <strong>área bajo la curva</strong> entre esos dos puntos:</p>
+    </div>
+    <div class="math-block">$$\int_a^b f(x)\,dx = \text{área entre la curva y el eje X}$$</div>
+    <div class="prose">
+      <p>La integral indefinida (sin límites) es la <strong>función primitiva</strong> — la función cuya derivada es $f(x)$:</p>
+    </div>
+    <div class="math-block">$$\int f(x)\,dx = F(x) + C \qquad \text{donde } F'(x) = f(x)$$</div>
+    <div class="prose"><p>La constante $C$ aparece porque hay infinitas funciones que tienen la misma derivada (diferenciadas en una constante).</p></div>
+
+    <div class="box why">
+      <div class="box-title">¿Dónde aparece en tus asignaturas?</div>
+      <div class="prose">
+        <ul>
+          <li><strong>Mecánica — Momento de inercia:</strong> $I_x = \displaystyle\int_A y^2\,dA$ — "suma" de todas las áreas ponderadas por el cuadrado de su distancia al eje</li>
+          <li><strong>Mecánica — Centroide de área:</strong> $\bar{x} = \dfrac{\displaystyle\int x\,dA}{A}$</li>
+          <li><strong>Fluidos — Derivar la ecuación de Bernoulli</strong> desde $dp/dz = -\rho g$ integrando en altura</li>
+          <li><strong>Mecánica — Cinemática:</strong> de $a(t)$ integrar para obtener $v(t)$ e $s(t)$</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Tabla de integrales inmediatas</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Función $f(x)$</th><th>Integral $\int f(x)\,dx$</th></tr></thead>
+        <tbody>
+          <tr><td>$c$ (constante)</td><td>$cx + C$</td></tr>
+          <tr><td>$x^n$ (con $n\neq-1$)</td><td>$\dfrac{x^{n+1}}{n+1} + C$</td></tr>
+          <tr><td>$\dfrac{1}{x}$</td><td>$\ln|x| + C$</td></tr>
+          <tr><td>$e^x$</td><td>$e^x + C$</td></tr>
+          <tr><td>$e^{ax}$</td><td>$\dfrac{1}{a}e^{ax} + C$</td></tr>
+          <tr><td>$\sin x$</td><td>$-\cos x + C$</td></tr>
+          <tr><td>$\cos x$</td><td>$\sin x + C$</td></tr>
+          <tr><td>$\dfrac{1}{\sqrt{a^2-x^2}}$</td><td>$\arcsin\!\dfrac{x}{a} + C$</td></tr>
+          <tr><td>$\dfrac{1}{a^2+x^2}$</td><td>$\dfrac{1}{a}\arctan\!\dfrac{x}{a} + C$</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box warn">
+      <div class="box-title">Regla de oro — integral de potencia</div>
+      <div class="prose">
+        <p>La más usada: $\displaystyle\int x^n\,dx = \dfrac{x^{n+1}}{n+1}$. Se incrementa el exponente en 1 y se divide entre ese nuevo exponente.</p>
+        <p>Ejemplo: $\displaystyle\int y^2\,dy = \dfrac{y^3}{3}$. Esto es justo lo que aparece al calcular el momento de inercia de una sección rectangular.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Integral definida — cómo evaluarla</div>
+    <div class="prose"><p>Calcula la primitiva y luego evalúa en los límites (límite superior menos límite inferior):</p></div>
+    <div class="math-block">$$\int_a^b f(x)\,dx = \Big[F(x)\Big]_a^b = F(b) - F(a)$$</div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">⚖️</span>
+        <span class="example-label">Ejemplo real</span>
+        <span class="example-title">Momento de inercia de un rectángulo <span class="sbadge sbadge-m">Mecánica</span></span>
+      </div>
+      <div class="example-body">
+        <div class="prose">
+          <p>Una sección rectangular de ancho $b$ y altura $h$ tiene el eje X en su base. El momento de inercia respecto al eje X es:</p>
+        </div>
+        <div class="math-block">$$I_x = \int_A y^2\,dA$$</div>
+        <div class="prose"><p>Cada franja horizontal de ancho $b$ y altura $dy$ tiene área $dA = b\,dy$. Integramos desde $y=0$ hasta $y=h$:</p></div>
+        <div class="math-block">$$I_x = \int_0^h y^2 \cdot b\,dy = b\int_0^h y^2\,dy = b\left[\frac{y^3}{3}\right]_0^h = b\cdot\frac{h^3}{3} = \frac{bh^3}{3}$$</div>
+        <div class="prose"><p>Resultado conocido: $I_x = \dfrac{bh^3}{3}$. Si el eje pasa por el centroide (a $h/2$): aplicar Steiner $I_c = I_x - Ad^2 = \dfrac{bh^3}{3} - bh\left(\dfrac{h}{2}\right)^2 = \dfrac{bh^3}{12}$.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Integración por partes</div>
+    <div class="prose"><p>Para integrales del tipo $\displaystyle\int u\,dv$ cuando ninguna regla directa funciona:</p></div>
+    <div class="math-block">$$\int u\,dv = u\,v - \int v\,du$$</div>
+    <div class="prose">
+      <p>Criterio para elegir $u$ (orden de prioridad): <strong>L · I · P · E · T</strong></p>
+      <ul>
+        <li><strong>L</strong>ogarítmicas → $u = \ln x$</li>
+        <li><strong>I</strong>nversas trigonométricas → $u = \arctan x$</li>
+        <li><strong>P</strong>olinomios → $u = x^n$</li>
+        <li><strong>E</strong>xponenciales → $u = e^x$</li>
+        <li><strong>T</strong>rigonométricas → $u = \sin x$</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <div class="example-head">
+        <span class="example-icon">📐</span>
+        <span class="example-label">Ejemplo</span>
+        <span class="example-title">Integral por partes — $\int x\,e^x\,dx$</span>
+      </div>
+      <div class="example-body">
+        <div class="prose"><p>Elegimos $u = x$ (polinomio primero) y $dv = e^x\,dx$:</p></div>
+        <div class="math-block">$$u = x \;\Rightarrow\; du = dx \qquad dv = e^x\,dx \;\Rightarrow\; v = e^x$$</div>
+        <div class="math-block">$$\int x\,e^x\,dx = x\,e^x - \int e^x\,dx = x\,e^x - e^x + C = e^x(x-1) + C$$</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Resumen de la ruta completa</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Nivel</th><th>Tema</th><th>Para qué lo necesitas</th></tr></thead>
+        <tbody>
+          <tr><td class="td-accent">M0</td><td>Álgebra y fracciones</td><td>Todas las asignaturas — base de todo</td></tr>
+          <tr><td class="td-accent">M1</td><td>Sistemas de ecuaciones</td><td>Equilibrio en Mecánica, Bernoulli+Continuidad en Fluidos</td></tr>
+          <tr><td class="td-accent">M2</td><td>Trigonometría</td><td>Proyecciones de fuerzas en Mecánica, ángulos en Sistemas</td></tr>
+          <tr><td class="td-accent">M3</td><td>Vectores</td><td>Momentos y fuerzas en 3D — núcleo de Mecánica</td></tr>
+          <tr><td class="td-accent">M4</td><td>Derivadas</td><td>Gradientes en Fluidos, vigas y cinemática en Mecánica</td></tr>
+          <tr><td class="td-accent">M5</td><td>Integrales</td><td>Momentos de inercia en Mecánica, ecuaciones de Fluidos</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="box key">
+      <div class="box-title">Ruta mínima para aprobar</div>
+      <div class="prose">
+        <ul>
+          <li><strong>Sistemas:</strong> solo necesitas M0 sólidamente</li>
+          <li><strong>Fluidos:</strong> M0 + M1 imprescindibles; M4 a nivel conceptual</li>
+          <li><strong>Mecánica:</strong> M0 + M1 + M2 + M3 imprescindibles; M4–M5 a nivel tabla</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div><!-- /m5 -->
+
+  </main>
+</div><!-- /layout -->
+
+<div style="text-align:center;padding:30px 20px;color:var(--text3);font-size:.72em;font-family:var(--ff-mono)">
+  EHU·LAB · Guía de Matemáticas · Ingeniería &nbsp;·&nbsp; <a href="../index.html" style="color:#475569">Inicio</a>
+</div>
+
+<script>
+var TOTAL_PANELS = 6;
+var panelOrder = ['m0','m1','m2','m3','m4','m5'];
+var visitedPanels = new Set();
+
+function showPanel(id){
+  document.querySelectorAll('.topic-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.sb-item').forEach(function(b){b.classList.remove('active')});
+  var panel = document.getElementById(id);
+  if(panel){ panel.classList.add('active'); }
+  var btn = document.querySelector('[data-id="'+id+'"]');
+  if(btn){ btn.classList.add('active'); }
+  visitedPanels.add(id);
+  updateProgress();
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+function updateProgress(){
+  var pct = Math.round((visitedPanels.size / TOTAL_PANELS) * 100);
+  var fill = document.getElementById('progressFill');
+  if(fill){ fill.style.width = pct + '%'; }
+  var bar = document.getElementById('readProgress');
+  if(bar){
+    var scrolled = window.scrollY;
+    var total = document.body.scrollHeight - window.innerHeight;
+    var sp = total > 0 ? Math.min(scrolled/total,1) : 0;
+    bar.style.transform = 'scaleX('+sp+')';
+  }
+}
+
+window.addEventListener('scroll', updateProgress, {passive:true});
+
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof renderMathInElement !== 'undefined'){
+    renderMathInElement(document.body,{
+      delimiters:[
+        {left:'$$',right:'$$',display:true},
+        {left:'$',right:'$',display:false}
+      ],
+      throwOnError:false
+    });
+  }
+  showPanel('m0');
+});
+</script>
+</body>
+</html>
