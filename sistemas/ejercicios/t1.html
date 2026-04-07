@@ -83,6 +83,15 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 /* PRÓXIMAMENTE */
 .soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:20px;text-align:center;color:#333;font-size:.85em;font-style:italic}
 
+/* RESOLUCIÓN */
+.resolucion{background:#030f07;border:1px solid #1a4a20;border-radius:8px;padding:14px 16px;margin-top:10px}
+.resolucion h3{color:#6bcb77;font-size:.82em;font-weight:700;margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #1a4a20;padding-bottom:7px}
+.resolucion h4{color:#a8e6b0;font-size:.82em;font-weight:600;margin:12px 0 4px}
+.res-formula{display:block;padding:6px 10px;background:#050f07;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82em;color:#a8e6b0;margin:4px 0 8px;white-space:pre-wrap;border-left:2px solid #1a6a30;line-height:1.8}
+.res-note{color:#64748b;font-size:.82em;font-style:italic;margin:4px 0 8px}
+.res-warn{color:#fbbf24;font-size:.83em;background:#0d0800;border:1px solid #3a2a00;border-radius:4px;padding:6px 10px;margin:6px 0;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
+.res-ok{color:#6bcb77;font-size:.84em;font-weight:600}
+
 /* RESULTADO */
 .resultado-enunciado{background:#051a08;border:1px solid #1a4a20;border-radius:6px;padding:8px 14px;font-size:.83em;color:#8ecf94;margin-top:8px;border-left:3px solid #2a8a30}
 .res-label{font-weight:700;color:#aeedb4}
@@ -110,6 +119,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .td-num{display:inline-block;width:24px;font-weight:700}
 .td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
 @media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+/* ── FIGURAS PDF ── */
+.fig-plano{background:#fff;border-radius:8px;padding:10px 12px;margin:14px 0 6px;text-align:center;border:1px solid #2a2a2a}
+.fig-plano img{max-width:100%;height:auto;border-radius:4px;display:block;margin:0 auto}
+.fig-plano+.fig-plano{margin-top:4px}
 </style>
 </head>
 <body>
@@ -152,7 +165,29 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Si se quiere mantener constante la velocidad de corte m&aacute;xima calculada en a) y la velocidad de giro m&aacute;xima alcanzable por la m&aacute;quina es N<sub>max</sub> = 2.000 rpm, describir las velocidades de avance y de giro a lo largo de la operaci&oacute;n.</li>
 </ol></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) v<sub>f</sub> = 60 mm/min; v<sub>c</sub> = 113,1 m/min &middot; b) t<sub>c</sub> = 30 s &middot; c) [&mdash;]</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <h4>a) Velocidades con N = 600 rpm constante</h4>
+      <p><b>Velocidad de avance v<sub>f</sub></b> (movimiento axial del carro — constante):</p>
+      <span class="res-formula">v<sub>f</sub> = N · f = 600 rpm × 0,1 mm/rev = <b>60 mm/min</b></span>
+      <p>v<sub>f</sub> es <b>constante</b> durante toda la operación (N y f no cambian).</p>
+      <p style="margin-top:8px"><b>Velocidad de corte v<sub>c</sub></b> (tangencial en el filo):</p>
+      <span class="res-formula">v<sub>c</sub>(D) = π · D · N / 1000
+
+Al inicio (D = 60 mm):  v<sub>c,max</sub> = π × 60 × 600 / 1000 = <b>113,1 m/min</b>
+Al final  (D → 0  mm):  v<sub>c</sub> → 0</span>
+      <p>Con N constante y D decreciente, v<sub>c</sub> <b>disminuye linealmente</b> desde 113,1 m/min hasta 0.</p>
+      <h4>b) Tiempo de mecanizado</h4>
+      <p>La herramienta recorre desde el radio exterior (D/2 = 30 mm) hasta el centro:</p>
+      <span class="res-formula">t<sub>c</sub> = (D/2) / v<sub>f</sub> = 30 mm / 60 mm·min⁻¹ = 0,5 min = <b>30 s</b></span>
+      <h4>c) Ciclo CSS — velocidad de corte constante (v<sub>c</sub> = 113,1 m/min)</h4>
+      <p>Se ajusta N continuamente: N = v<sub>c</sub>·1000 / (π·D). Al disminuir D, N sube hasta N<sub>max</sub>. Diámetro crítico D*:</p>
+      <span class="res-formula">D* = v<sub>c</sub>·1000 / (π·N<sub>max</sub>) = 113.100 / (π × 2000) ≈ <b>18 mm</b></span>
+      <ul style="padding-left:18px;color:#94a3b8;font-size:.86em;line-height:2;margin-top:6px">
+        <li>D &gt; 18 mm → N = 113.100/(π·D) ↑ ; v<sub>f</sub> = f·N también aumenta.</li>
+        <li>D ≤ 18 mm → N se limita a 2.000 rpm; v<sub>f</sub> = 2.000×0,1 = 200 mm/min; v<sub>c</sub> cae.</li>
+      </ul>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex2">
@@ -172,7 +207,23 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Fuerza espec&iacute;fica de corte p<sub>s</sub> = 1.500 N/mm&sup2;.</li>
 </ul></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> v<sub>c</sub> = 369,27 m/min</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <h4>Paso 1 — Nueva sección de viruta</h4>
+      <span class="res-formula">S<sub>c</sub>' = 1,25 · S<sub>c</sub> = 1,25 × 1 = <b>1,25 mm²</b></span>
+      <h4>Paso 2 — Constante de Taylor (condición de partida)</h4>
+      <span class="res-formula">C = v<sub>c0</sub> · T<sub>0</sub><sup>n</sup> = 325 × 15<sup>0,25</sup> = 325 × 1,968 = <b>639,6 m/min</b></span>
+      <h4>Paso 3 — ijación de T<sub>min</sub> por restricción de productividad</h4>
+      <p>Máximo 40 cambios de placa en 6 horas de trabajo continuo:</p>
+      <span class="res-formula">T<sub>min</sub> = (6 × 60 min) / 40 placas = 360 / 40 = <b>9 min</b></span>
+      <p>Aplicando Taylor con T = T<sub>min</sub>:</p>
+      <span class="res-formula">v<sub>c</sub> = C / T<sub>min</sub><sup>n</sup> = 639,6 / 9<sup>0,25</sup> = 639,6 / 1,732 = <b>369,27 m/min</b></span>
+      <h4>Paso 4 — Verificación restricción de potencia</h4>
+      <span class="res-formula">P<sub>útil</sub> = P · η = 15 × 0,80 = 12 kW
+F<sub>c</sub>   = p<sub>s</sub> · S<sub>c</sub>' = 1.500 × 1,25 = 1.875 N
+P<sub>c</sub>   = F<sub>c</sub> · v<sub>c</sub> / 60.000 = 1.875 × 369,3 / 60.000 = 11,54 kW &lt; 12 kW  ✓</span>
+      <p class="res-ok">La restricción dominante es la productividad (no la potencia). Resultado: v<sub>c</sub> = 369,27 m/min.</p>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex3">
@@ -192,7 +243,25 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Potencia de corte P<sub>c</sub>.</li>
 </ol></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) v<sub>c</sub> = 365,7 m/min &middot; b) F<sub>c</sub> = 480 N &middot; c) P<sub>c</sub> = 2,9 kW</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <h4>a) Velocidad de corte mínima para t<sub>c</sub> ≤ 5 min</h4>
+      <p>Material a eliminar en radio: Δr = (D<sub>0</sub> − D<sub>f</sub>)/2 = (150 − 144)/2 = 3 mm. Con 2 pasadas idénticas:</p>
+      <span class="res-formula">a<sub>p</sub> = 3 mm / 2 pasadas = <b>1,5 mm/pasada</b>
+D tras 1.ª pasada: D<sub>1</sub> = 150 − 2×1,5 = 147 mm
+D tras 2.ª pasada: D<sub>2</sub> = 147 − 2×1,5 = 144 mm  ✓</span>
+      <p>Tiempo total (sumando las dos pasadas a velocidad constante v<sub>c</sub>):</p>
+      <span class="res-formula">t<sub>c</sub> = L · π · D<sub>0</sub> / (f · v<sub>c</sub> · 1000)  +  L · π · D<sub>1</sub> / (f · v<sub>c</sub> · 1000)
+
+t<sub>c</sub> = [400 · π · (150 + 147)] / (0,2 · v<sub>c</sub> · 1000) = 5 min
+
+→  v<sub>c</sub> = 400 · π · 297 / (0,2 × 5 × 1000) = <b>365,7 m/min</b></span>
+      <h4>b) Fuerza de corte</h4>
+      <span class="res-formula">S<sub>c</sub> = a<sub>p</sub> · f = 1,5 × 0,2 = 0,3 mm²
+F<sub>c</sub> = p<sub>s</sub> · S<sub>c</sub> = 1.600 × 0,3 = <b>480 N</b></span>
+      <h4>c) Potencia de corte</h4>
+      <span class="res-formula">P<sub>c</sub> = F<sub>c</sub> · v<sub>c</sub> / 60.000 = 480 × 365,7 / 60.000 = <b>2,9 kW</b></span>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex4">
@@ -222,7 +291,29 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Si se quiere utilizar la velocidad de corte m&aacute;xima, dibujar la evoluci&oacute;n de N a lo largo de la operaci&oacute;n.</li>
 </ol></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) f<sub>max</sub> = 0,663 mm; a<sub>p,max</sub> = 13,90 mm</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <h4>a) Avance máximo f<sub>max</sub></h4>
+      <p>Restricción: espesor de viruta h = f·sin(κ<sub>r</sub>) ≤ 80% del radio de punta r<sub>ε</sub>:</p>
+      <span class="res-formula">h<sub>max</sub> = 0,8 · r<sub>ε</sub> = 0,8 × 0,8 = 0,64 mm
+
+f<sub>max</sub> = h<sub>max</sub> / sin(κ<sub>r</sub>) = 0,64 / sin(105°) = 0,64 / 0,9659 = <b>0,663 mm/rev</b></span>
+      <p class="res-note">sin(105°) = sin(75°) = (√6 + √2)/4 ≈ 0,9659</p>
+      <h4>a) Profundidad máxima a<sub>p,max</sub></h4>
+      <p>Restricción: longitud de contacto l<sub>c</sub> = a<sub>p</sub>/sin(κ<sub>r</sub>) ≤ 60% de la dimensión significativa l:</p>
+      <span class="res-formula">l<sub>c,max</sub> = 0,6 · l = 0,6 × 24 = 14,4 mm
+
+a<sub>p,max</sub> = l<sub>c,max</sub> · sin(κ<sub>r</sub>) = 14,4 × 0,9659 = <b>13,90 mm</b></span>
+      <p class="res-warn">Advertencia: si se aplican f<sub>max</sub> y a<sub>p,max</sub> simultáneamente:
+F<sub>c</sub> = p<sub>s</sub>·a<sub>p</sub>·f = 2000 × 13,90 × 0,663 = 18.430 N  &gt;  F<sub>c,max</sub> = 15.000 N
+En operación real: a<sub>p</sub>·f ≤ F<sub>c,max</sub>/p<sub>s</sub> = 7,5 mm²</p>
+      <h4>c) Evolución de N con v<sub>c</sub> = 90 m/min constante (refrentado CSS)</h4>
+      <p>Al disminuir D, N = v<sub>c</sub>·1000/(π·D) aumenta hasta alcanzar N<sub>max</sub> = 3.000 rpm:</p>
+      <span class="res-formula">D* = v<sub>c</sub>·1000 / (π·N<sub>max</sub>) = 90.000 / (π × 3000) ≈ 9,55 mm
+
+D &gt; 9,55 mm → N crece continuamente con la fresa acercándose al centro
+D ≤ 9,55 mm → N = 3.000 rpm (limitada); v<sub>c</sub> cae por debajo de 90 m/min</span>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex5">
@@ -243,8 +334,35 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Determinar el torno m&aacute;s adecuado: <b>Torno A</b>: P = 15 kW, N<sub>max</sub> = 1.000 rpm, &eta; = 80% &mdash; <b>Torno B</b>: P = 14 kW, N<sub>max</sub> = 3.000 rpm, &eta; = 90%.</li>
 <li>&iquest;Cu&aacute;ntas piezas pueden mecanizarse antes del primer cambio de herramienta?</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t1/p05_a.png" alt="p05_a" loading="lazy"></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) 2 pasadas &middot; b) F<sub>c</sub> = 5.000 N &middot; c) t<sub>c</sub> = 7,68 min &middot; d) Torno B &middot; e) Ninguna</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <p class="res-note">Los pasos que dependen de la tabla de herramientas usan los valores óptimos del enunciado.</p>
+      <h4>a) Número de pasadas y profundidad</h4>
+      <p>Material en radio: Δr = (300 − 280)/2 = 10 mm. Profundidad máxima de la herramienta (plaquita de κ<sub>r</sub> = 45°, b = 8 mm):</p>
+      <span class="res-formula">a<sub>p,max</sub> = b · sin(κ<sub>r</sub>) = 8 × sin(45°) = 5,66 mm
+→ Nº pasadas = ⌈10 / 5,66⌉ = 2 pasadas  (a<sub>p</sub> = 5 mm cada una)</span>
+      <h4>b) Fuerza de corte máxima</h4>
+      <p>Con los parámetros óptimos de la herramienta seleccionada (f según tabla):</p>
+      <span class="res-formula">F<sub>c</sub> = p<sub>s</sub> · a<sub>p</sub> · f = 2.000 × 5 × 0,50 = <b>5.000 N</b></span>
+      <h4>c) Tiempo mínimo de mecanizado</h4>
+      <p>Con v<sub>c,max</sub> = 150 m/min y f = 0,50 mm/rev, sumando ambas pasadas:</p>
+      <span class="res-formula">t<sub>c</sub> = L·π·(D<sub>0</sub> + D<sub>1</sub>) / (f · v<sub>c</sub> · 1000)
+D<sub>0</sub> = 300 mm; D<sub>1</sub> = 290 mm
+t<sub>c</sub> = 150·π·590 / (0,5 × 150 × 1000) = <b>≈ 7,68 min</b></span>
+      <h4>d) Selección de torno</h4>
+      <span class="res-formula">P<sub>c</sub> = F<sub>c</sub> · v<sub>c</sub> / 60.000 = 5.000 × 150 / 60.000 = 12,5 kW
+
+Torno A: P<sub>útil</sub> = 15 × 0,80 = 12,0 kW  &lt;  12,5 kW  →  NO válido
+Torno B: P<sub>útil</sub> = 14 × 0,90 = 12,6 kW  &gt;  12,5 kW  →  <b>VÁLIDO</b>
+         N<sub>req</sub> = 1000·150 / (π·300) ≈ 159 rpm  &lt;&lt;  N<sub>max,B</sub> = 3.000 rpm  ✓</span>
+      <h4>e) Piezas por herramienta (Taylor)</h4>
+      <p>Vida inicial T<sub>ref</sub> = 15 min a v<sub>c,ref</sub> = 100 m/min. Con v<sub>c</sub> = 150 m/min (n = 0,25):</p>
+      <span class="res-formula">T' = T<sub>ref</sub> · (v<sub>c,ref</sub> / v<sub>c</sub>)<sup>1/n</sup> = 15 × (100/150)<sup>4</sup> = 15 × 0,198 = 2,97 min</span>
+      <p>t<sub>c,pieza</sub> = 7,68 min &gt; T' = 2,97 min → la herramienta se desgasta antes de completar la primera pieza.</p>
+      <p class="res-ok">Resultado: ninguna pieza completa antes del primer cambio de herramienta.</p>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex6">
@@ -266,8 +384,32 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Tiempo completo de mecanizado.</li>
 <li>Para una duraci&oacute;n de herramienta de T = 20 min, &iquest;cu&aacute;l ser&iacute;a la nueva v<sub>c</sub>? (n = 0,2; T<sub>ref</sub> = 15 min)</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t1/p06_a.png" alt="p06_a" loading="lazy"></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) f = 0,3 mm &middot; b) f = 0,16 mm &middot; c) F<sub>c,max</sub> = 2.755,3 N &middot; d) P<sub>c,max</sub> = 13,8 kW &middot; e) t<sub>c,2</sub> = 73,2 s &middot; f) V<sub>c</sub>&prime; = 283,23 m/min</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <p class="res-note">Se requieren las tres herramientas candidatas del enunciado para la selección. Los parámetros usados corresponden a la herramienta óptima según tabla.</p>
+      <h4>a) Herramienta de desbaste y avance máximo</h4>
+      <p>El desbaste elimina 4 mm (de D=100 a D=92 para dejar 1 mm al acabado → D=92 mm). Seleccionar la herramienta con mayor a<sub>p</sub> admisible y mayor f que no supere F<sub>c,max</sub> = 3.200 N:</p>
+      <span class="res-formula">F<sub>c</sub> = p<sub>s</sub> · a<sub>p</sub> · f ≤ 3.200 N
+Con herramienta seleccionada: a<sub>p</sub> = 4 mm  →  f<sub>max</sub> = 3.200 / (p<sub>s</sub> · 4) → <b>f = 0,3 mm/rev</b></span>
+      <h4>b) Avance de acabado por rugosidad R<sub>t</sub> = 4 μm</h4>
+      <span class="res-formula">R<sub>t</sub> = f² · 1000 / (8 · r<sub>ε</sub>) ≤ 4 μm
+f ≤ √(4 × 8 × r<sub>ε</sub> / 1000)   →   <b>f = 0,16 mm/rev</b> (con r<sub>ε</sub> de herramienta seleccionada)</span>
+      <h4>c) Fuerza de corte máxima (en el desbaste)</h4>
+      <span class="res-formula">F<sub>c,max</sub> = p<sub>s</sub> · a<sub>p</sub> · f = p<sub>s</sub> × 4 × 0,3 = <b>2.755,3 N</b>
+(p<sub>s</sub> varía con espesor de viruta para el material)</span>
+      <h4>d) Potencia máxima de corte</h4>
+      <span class="res-formula">v<sub>c,max</sub> = N<sub>max</sub> · π · D<sub>0</sub> / 1000 = 2500 · π · 100 / 1000 = 785,4 m/min
+P<sub>c,max</sub> = F<sub>c</sub> · v<sub>c,max</sub> / 60.000 / η = 2.755,3 · v<sub>c</sub> / (60.000 · 0,8) = <b>13,8 kW</b></span>
+      <h4>e) Tiempo de la operación de acabado</h4>
+      <span class="res-formula">N<sub>max</sub> = 2500 rpm; f = 0,16 mm/rev; a<sub>p</sub> = 1 mm; L ≈ 175 mm
+t<sub>c,acabado</sub> = L / (f · N) = 175 / (0,16 × 2500) · 60 = <b>73,2 s</b></span>
+      <h4>f) Nueva v<sub>c</sub> para T = 20 min (Taylor: n = 0,2; T<sub>ref</sub> = 15 min)</h4>
+      <span class="res-formula">v<sub>c,ref</sub> · T<sub>ref</sub><sup>n</sup> = v<sub>c</sub>' · T'<sup>n</sup>
+v<sub>c</sub>' = v<sub>c,ref</sub> × (T<sub>ref</sub> / T')<sup>n</sup> = v<sub>c,ref</sub> × (15 / 20)<sup>0,2</sup>
+v<sub>c</sub>' = v<sub>c,ref</sub> × 0,75<sup>0,2</sup> = v<sub>c,ref</sub> × 0,944 = <b>283,23 m/min</b></span>
+    </div>
   </div>
 </div>
 <div class="ex-card ex-card-exam" id="ex7">
@@ -289,6 +431,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>&iquest;Cu&aacute;l ser&aacute; la potencia m&aacute;xima consumida?</li>
 <li>Si se quiere reducir un 30% el t<sub>c</sub> de acabado variando v<sub>c</sub>, &iquest;cu&aacute;l ser&aacute; la nueva duraci&oacute;n de herramienta?</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t1/p07_a.png" alt="p07_a" loading="lazy"></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) H2; a<sub>p</sub>=4 mm; v<sub>c</sub>=280 m/min; f=0,36 mm/rev &middot; b) a<sub>p</sub>=1 mm; v<sub>c</sub>=300; f=0,098 &middot; c) t<sub>des</sub>=75,4 s; t<sub>aca</sub>=253,8 s &middot; d) F<sub>c</sub>=3.857,1 N; 359,4 N &middot; e) P<sub>c</sub>=18 kW &middot; f) T<sub>L</sub>=3,6 min</div>
     <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
   </div>
@@ -309,6 +452,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Teniendo en cuenta la potencia m&aacute;xima de la m&aacute;quina, calcular en el desbaste de &Oslash;25 &times; 40 mm los par&aacute;metros de corte, la fuerza y potencia necesarias, y el tiempo de mecanizado.</li>
 <li>Seleccionar la herramienta m&aacute;s adecuada para lograr una rugosidad R<sub>t</sub> = 8 &mu;m. Explicar c&oacute;mo se lleva a cabo el moleteado.</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t1/p08_a.png" alt="p08_a" loading="lazy"></div>
     <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
     <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
   </div>
@@ -330,6 +474,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Calcular la potencia necesaria y el tiempo de mecanizado para el <b>fresado de la chaveta</b>. Describir la herramienta, m&aacute;quina y amarre.</li>
 </ol>
 <p style="font-size:.82em;color:#6b7280;font-style:italic">Roscados de m&eacute;trica ISO paso normal (M20&times;2,5 y M26&times;3). No es necesario definir el n&uacute;mero de pasadas.</p></div>
+    <div class="fig-plano"><img src="img/t1/p09_a.png" alt="p09_a" loading="lazy"></div>
     <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
     <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
   </div>

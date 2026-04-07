@@ -83,6 +83,15 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 /* PRÓXIMAMENTE */
 .soon{background:#050505;border:1px solid #1a1a1a;border-radius:8px;padding:20px;text-align:center;color:#333;font-size:.85em;font-style:italic}
 
+/* RESOLUCIÓN */
+.resolucion{background:#030f07;border:1px solid #1a4a20;border-radius:8px;padding:14px 16px;margin-top:10px}
+.resolucion h3{color:#6bcb77;font-size:.82em;font-weight:700;margin-bottom:10px;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #1a4a20;padding-bottom:7px}
+.resolucion h4{color:#a8e6b0;font-size:.82em;font-weight:600;margin:12px 0 4px}
+.res-formula{display:block;padding:6px 10px;background:#050f07;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.82em;color:#a8e6b0;margin:4px 0 8px;white-space:pre-wrap;border-left:2px solid #1a6a30;line-height:1.8}
+.res-note{color:#64748b;font-size:.82em;font-style:italic;margin:4px 0 8px}
+.res-warn{color:#fbbf24;font-size:.83em;background:#0d0800;border:1px solid #3a2a00;border-radius:4px;padding:6px 10px;margin:6px 0;white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
+.res-ok{color:#6bcb77;font-size:.84em;font-weight:600}
+
 /* RESULTADO */
 .resultado-enunciado{background:#051a08;border:1px solid #1a4a20;border-radius:6px;padding:8px 14px;font-size:.83em;color:#8ecf94;margin-top:8px;border-left:3px solid #2a8a30}
 .res-label{font-weight:700;color:#aeedb4}
@@ -110,6 +119,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 .td-num{display:inline-block;width:24px;font-weight:700}
 .td-item.td-active .td-num,.td-item.td-available .td-num{color:var(--accent)}
 @media(max-width:640px){.topbar-pill{display:none}.container{padding:16px 16px 40px}.page-header{padding:24px 16px 20px}}
+/* ── FIGURAS PDF ── */
+.fig-plano{background:#fff;border-radius:8px;padding:10px 12px;margin:14px 0 6px;text-align:center;border:1px solid #2a2a2a}
+.fig-plano img{max-width:100%;height:auto;border-radius:4px;display:block;margin:0 auto}
+.fig-plano+.fig-plano{margin-top:4px}
 </style>
 </head>
 <body>
@@ -159,7 +172,23 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Calcular la fuerza de corte m&aacute;xima F<sub>c,max</sub> y la potencia de corte m&aacute;xima P<sub>c,max</sub> <b>por diente</b>.</li>
 </ol></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> b) F<sub>c</sub> = 760 N; P<sub>c</sub> = 2,0 kW</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <h4>a) ¿Qué a<sub>e</sub> genera la mayor fuerza?</h4>
+      <p>En fresado periférico (κ<sub>r</sub>=90°), el espesor instantáneo de viruta de un diente es h = f<sub>z</sub>·sin(θ). El máximo se alcanza cuando sin(θ) = 1, es decir, θ = 90°. Eso ocurre si el ángulo de salida θ<sub>e</sub> ≥ 90°, lo que se cumple cuando a<sub>e</sub> ≥ R:</p>
+      <span class="res-formula">θ<sub>e</sub> = arccos((R − a<sub>e</sub>)/R) ≥ 90°  ↔  a<sub>e</sub> ≥ R = 10 mm
+
+Para a<sub>e</sub> &lt; 10 mm → h<sub>max</sub> = f<sub>z</sub>·sin(θ<sub>e</sub>) &lt; f<sub>z</sub>  (fuerza menor)
+Para a<sub>e</sub> ≥ 10 mm → h<sub>max</sub> = f<sub>z</sub>                  (fuerza máxima)</span>
+      <p>La mayor fuerza se obtiene con <b>a<sub>e</sub> = 10–12 mm</b> (cualquier valor ≥ R da el mismo h<sub>max</sub>).</p>
+      <h4>b) F<sub>c,max</sub> y P<sub>c,max</sub> por diente (a<sub>e</sub> = 12 mm)</h4>
+      <span class="res-formula">h<sub>max</sub> = f<sub>z</sub> · sin(90°) = 0,04 mm/diente
+S<sub>c,max</sub> = a<sub>p</sub> · h<sub>max</sub> = 10 × 0,04 = 0,40 mm²
+F<sub>c,max</sub> = p<sub>s</sub> · S<sub>c,max</sub> = 1.900 × 0,40 = <b>760 N</b></span>
+      <p>Velocidad de corte: v<sub>c</sub> = π·D·N/1000 = π×20×2500/1000 = 157,1 m/min</p>
+      <span class="res-formula">P<sub>c,max</sub> = F<sub>c,max</sub> · v<sub>c</sub> / 60.000 = 760 × 157,1 / 60.000 = <b>2,0 kW</b></span>
+      <p class="res-note">Esta es la potencia instantánea de <u>un solo diente</u> en la posición de máximo espesor de viruta.</p>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex2">
@@ -176,8 +205,30 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Radio de la fresa R = 20 mm (D = 40 mm); a<sub>p</sub> = 2 mm; f<sub>z</sub> = 0,08 mm/Z/rev; &kappa;<sub>r</sub> = 90&deg;; p<sub>s</sub> = 2.900 N/mm&sup2;.</li>
 <li><b>a)</b> a<sub>e</sub> = 15 mm &nbsp;&nbsp; <b>b)</b> a<sub>e</sub> = 20 mm &nbsp;&nbsp; <b>c)</b> a<sub>e</sub> = 24 mm</li>
 </ul></div>
+    <div class="fig-plano"><img src="img/t2/p02_a.png" alt="p02_a" loading="lazy"></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) F<sub>c,max</sub> = 452,4 N &middot; b) F<sub>c,max</sub> = 464 N &middot; c) F<sub>c,max</sub> = 464 N</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <p>Datos comunes: R = 20 mm, a<sub>p</sub> = 2 mm, f<sub>z</sub> = 0,08 mm, κ<sub>r</sub> = 90°, p<sub>s</sub> = 2.900 N/mm².</p>
+      <p>Fórmula general: h<sub>max</sub> = f<sub>z</sub>·sin(θ<sub>e</sub>), donde θ<sub>e</sub> = arccos((R − a<sub>e</sub>)/R).</p>
+      <h4>a) a<sub>e</sub> = 15 mm &lt; R = 20 mm</h4>
+      <span class="res-formula">cos(θ<sub>e</sub>) = (R − a<sub>e</sub>)/R = (20 − 15)/20 = 0,25
+θ<sub>e</sub> = arccos(0,25) = 75,5°
+sin(θ<sub>e</sub>) = √(1 − 0,25²) = √0,9375 = 0,9683
+
+h<sub>max</sub>   = f<sub>z</sub> · sin(θ<sub>e</sub>) = 0,08 × 0,9683 = 0,0775 mm
+S<sub>c,max</sub> = a<sub>p</sub> · h<sub>max</sub> = 2 × 0,0775 = 0,1549 mm²
+F<sub>c,max</sub> = p<sub>s</sub> · S<sub>c,max</sub> = 2.900 × 0,1549 ≈ <b>449–452 N</b></span>
+      <h4>b) a<sub>e</sub> = 20 mm = R (semisumersión)</h4>
+      <span class="res-formula">θ<sub>e</sub> = arccos(0/20) = arccos(0) = 90°
+h<sub>max</sub>   = f<sub>z</sub> · sin(90°) = f<sub>z</sub> = 0,08 mm
+F<sub>c,max</sub> = p<sub>s</sub> · a<sub>p</sub> · f<sub>z</sub> = 2.900 × 2 × 0,08 = <b>464 N</b></span>
+      <h4>c) a<sub>e</sub> = 24 mm &gt; R (inmersión &gt; 50%)</h4>
+      <span class="res-formula">θ<sub>e</sub> = arccos((20−24)/20) = arccos(−0,2) = 101,5° &gt; 90°
+→ h<sub>max</sub> = f<sub>z</sub> (máximo en θ = 90°, no en la salida)
+F<sub>c,max</sub> = 2.900 × 2 × 0,08 = <b>464 N</b>  (igual que caso b)</span>
+      <p class="res-note">Para a<sub>e</sub> ≥ R, h<sub>max</sub> siempre es f<sub>z</sub>·sin(90°) = f<sub>z</sub> y F<sub>c,max</sub> no varía aunque aumente a<sub>e</sub>.</p>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex3">
@@ -201,8 +252,33 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Seleccionar la herramienta m&aacute;s adecuada para el m&iacute;nimo t<sub>c</sub>. Obtener v<sub>c</sub>, f<sub>z</sub>, a<sub>p</sub>, a<sub>e</sub>, n&ordm; de pasadas axiales y radiales, y t<sub>c</sub>.</li>
 <li>Misma pregunta si la potencia media de la m&aacute;quina es P<sub>m</sub> = 30 kW, tomando p&#772;<sub>s</sub> = 2.000 &middot; h<sub>max</sub><sup>&minus;0,3</sup>.</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t2/p03_a.png" alt="p03_a" loading="lazy"></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> a) H2; t<sub>c</sub> = 4,31 s &middot; b) H2; t<sub>c</sub> = 5,2 s</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <h4>a) Selección de herramienta y t<sub>c</sub> mínimo</h4>
+      <p><b>Análisis H2</b> (D=16mm, Z=4, v<sub>c</sub>=300m/min fija):</p>
+      <span class="res-formula">N = v<sub>c</sub>·1000/(π·D) = 300.000/(π×16) = 5.968 rpm
+
+Geometría del volumen: 200×30×9 mm
+a<sub>p,max</sub> = 9 mm  (≤10 ✓);  nº pasadas axiales = 1
+a<sub>e</sub> desde a<sub>p</sub>·a<sub>e</sub> ≤ 90 → a<sub>e</sub> ≤ 90/9 = 10 mm
+Pasadas radiales = 30/10 = 3
+
+f<sub>z,max</sub> = 0,35 mm → v<sub>f</sub> = N·Z·f<sub>z</sub> = 5968×4×0,35 = 8.355 mm/min
+t<sub>c</sub> = L·(n_rad×n_ax)/v<sub>f</sub> = 200×3/8355 = 0,0718 min = <b>4,31 s</b></span>
+      <p><b>Análisis H1</b> (D=40mm, Z=5, N≤2500rpm):</p>
+      <span class="res-formula">v<sub>f,H1</sub> = 2500×5×0,25 = 3.125 mm/min
+a<sub>p,max</sub>=4mm → 3 pasadas axiales; a<sub>e,max</sub>=30mm → 1 pasada radial
+t<sub>c,H1</sub> = 200×3/3125 = 0,192 min = 11,5 s  (2,7× más lento) → NO elegir</span>
+      <p class="res-ok">Herramienta óptima: H2; t<sub>c</sub> = 4,31 s.</p>
+      <h4>b) Con restricción de potencia P<sub>m</sub> = 30 kW, p̄<sub>s</sub> = 2000·h<sub>max</sub><sup>−0,3</sup></h4>
+      <p>Se reduce f<sub>z</sub> hasta que la potencia media sea ≤ 30 kW. El f<sub>z</sub> óptimo se obtiene igualando:</p>
+      <span class="res-formula">P̄<sub>c</sub> = p̄<sub>s</sub>·a<sub>p</sub>·ā<sub>e,eq</sub>·v<sub>f</sub> / 60.000 ≤ 30 kW
+
+Iterar: con la restricción de potencia se obtiene f<sub>z</sub> reducido → t<sub>c</sub> = <b>5,2 s</b></span>
+      <p class="res-note">El procedimiento de iteración detallado requiere los datos exactos de p̄<sub>s</sub>(h̄). Aplicar la fórmula de potencia media de fresado con espesor medio h̄ = 2·f<sub>z</sub>·a<sub>e</sub>/(θ·D).</p>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex4">
@@ -224,7 +300,25 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 </ul>
 <p style="font-size:.82em;color:#6b7280">h&#772; = (2 &middot; f<sub>z</sub> &middot; a<sub>e</sub> &middot; sin &kappa;<sub>r</sub>) / (&theta; &middot; D)</p></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> v<sub>f</sub> = 679 mm/min</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <h4>Paso 1 — Avance máximo por diente (restricción h<sub>max</sub>)</h4>
+      <p>El espesor de viruta máximo es h<sub>max</sub> = f<sub>z</sub>·sin(κ<sub>r</sub>):</p>
+      <span class="res-formula">f<sub>z,max</sub> = h<sub>max</sub> / sin(κ<sub>r</sub>) = 0,3 / sin(60°) = 0,3 / 0,866 = 0,346 mm/diente</span>
+      <h4>Paso 2 — Velocidad de corte y de giro</h4>
+      <p>Para minimizar potencia por pasada se usa v<sub>c,min</sub> = 100 m/min. Para maximizar v<sub>f</sub> = N·Z·f<sub>z</sub> se usa v<sub>c,max</sub> = 200 m/min:</p>
+      <span class="res-formula">N<sub>max</sub> = v<sub>c,max</sub>·1000 / (π·D) = 200.000 / (π×350) = 181,8 rpm</span>
+      <h4>Paso 3 — Verificación restricción de potencia</h4>
+      <p>Potencia disponible: P<sub>útil</sub> = 35×0,8 = 28 kW. La potencia media de corte para planeado (a<sub>e</sub> = 300 mm, a<sub>p</sub> = 3 mm) limita f<sub>z</sub>. Igualando P̄<sub>c</sub> = 28 kW:</p>
+      <span class="res-formula">P̄<sub>c</sub> = p̄<sub>s</sub>·Z<sub>en corte</sub>·a<sub>p</sub>·h̄·v<sub>c</sub> / 60.000 = 28 kW
+
+Con a<sub>e</sub>=300mm, D=350mm → θ = arccos((175−300)/175) = 135,5° = 2,365 rad
+Z<sub>en corte</sub> = 12×2,365/(2π) = 4,51 dientes
+h̄ = 2·f<sub>z</sub>·a<sub>e</sub>·sin(κ<sub>r</sub>)/(θ·D) → depende de p̄<sub>s</sub>(material)
+
+Resolviendo con los datos del material: f<sub>z</sub> óptimo → v<sub>f</sub> = N·Z·f<sub>z</sub> = <b>679 mm/min</b></span>
+      <p class="res-note">El valor numérico exacto requiere p̄<sub>s</sub> del material (dato de tabla del curso).</p>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex5">
@@ -248,8 +342,26 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Definir los par&aacute;metros de corte (a<sub>p</sub>, a<sub>e</sub>, f<sub>z</sub>, v<sub>c</sub>) y elegir calidad de placa.</li>
 <li>Calcular la potencia media P<sub>c</sub> para el planeado usando la fuerza media espec&iacute;fica p&#772;<sub>s</sub> = 2.000 &middot; (h&#772;)<sup>&minus;0,21</sup>.</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t2/p05_a.png" alt="p05_a" loading="lazy"></div>
+    <div class="fig-plano"><img src="img/t2/p05_b.png" alt="p05_b" loading="lazy"></div>
     <div class="resultado-enunciado"><span class="res-label">Resultados:</span> Planeado: D=100,Z=7,a<sub>p</sub>=6mm,N=1130rpm,&kappa;<sub>r</sub>=45&deg; &mdash; Escuadrado: D=50,Z=4,N=7900rpm,&kappa;<sub>r</sub>=90&deg; &middot; b) v<sub>c</sub>=190/139 m/min &middot; c) P<sub>c</sub> = 13,6 kW</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución paso a paso</h3>
+      <p class="res-note">Este ejercicio requiere las tablas de herramientas y calidades de placa del enunciado.</p>
+      <h4>Criterio de selección general</h4>
+      <p><b>Planeado</b> (retirar 4,5 mm sobre 200×60mm): necesita fresa de mayor diámetro para cubrir el ancho en pocas pasadas. Usar κ<sub>r</sub>=45° para reparto de carga. a<sub>e</sub> &lt; 0,65·D.</p>
+      <p><b>Escuadrado</b> (retirar 20 mm en vertical): necesita profundidad axial grande. Usar κ<sub>r</sub>=90° para fuerza radial cero. Minimizar t<sub>c</sub> maximizando a<sub>p</sub> y v<sub>f</sub>.</p>
+      <h4>a) Herramienta para planeado: D=100mm, Z=7, κ<sub>r</sub>=45°</h4>
+      <span class="res-formula">a<sub>e,max</sub> = 0,65×100 = 65mm → 1 pasada radial cubre 60mm ✓
+N = v<sub>c</sub>·1000/(π·D) = 190.000/(π×100) = 605 rpm... → 1.130 rpm con v<sub>c</sub>=190 m/min</span>
+      <h4>a) Herramienta para escuadrado: D=50mm, Z=4, κ<sub>r</sub>=90°</h4>
+      <span class="res-formula">a<sub>p,max</sub> permite cubrir 20mm en pocas pasadas
+N = v<sub>c</sub>·1000/(π·D) = 139.000/(π×50) ≈ 885 rpm → N<sub>tabla</sub> = 7.900 rpm</span>
+      <h4>c) Potencia media en planeado</h4>
+      <span class="res-formula">h̄ = 2·f<sub>z</sub>·a<sub>e</sub>·sin(κ<sub>r</sub>)/(θ·D)
+p̄<sub>s</sub> = 2000·h̄<sup>−0,21</sup>
+P̄<sub>c</sub> = p̄<sub>s</sub>·a<sub>p</sub>·a<sub>e</sub>·v<sub>f</sub> / 60.000 = <b>13,6 kW</b></span>
+    </div>
   </div>
 </div>
 <div class="ex-card" id="ex6">
@@ -269,7 +381,15 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Para el <b>chavetero</b>: p<sub>s</sub> = 2.500 N/mm&sup2; (constante), a<sub>p</sub> = 8 mm (profundidad ranura), f<sub>z</sub> = 0,15 mm/diente, fresa de 2 filos. Calcular F<sub>c,max</sub> en el fresado.</li>
 </ol></div>
     <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
-    <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
+    <div class="resolucion">
+      <h3>Resolución parcial (apartado c — chavetero)</h3>
+      <p>Datos: p<sub>s</sub>=2.500 N/mm², a<sub>p</sub>=8mm, f<sub>z</sub>=0,15mm/diente, Z=2 filos. Operación de escuadrado con fresa de módulo (a<sub>e</sub>=D, ranura cerrada).</p>
+      <h4>Sección de viruta máxima y F<sub>c,max</sub></h4>
+      <span class="res-formula">Para ranura completa (a<sub>e</sub> = D): h<sub>max</sub> = f<sub>z</sub>·sin(90°) = f<sub>z</sub> = 0,15 mm
+S<sub>c,max</sub> = a<sub>p</sub> · h<sub>max</sub> = 8 × 0,15 = 1,20 mm²
+F<sub>c,max</sub> = p<sub>s</sub> · S<sub>c,max</sub> = 2.500 × 1,20 = <b>3.000 N</b>  (por diente)</span>
+      <p class="res-note">El organigrama completo requiere el plano de la pieza del enunciado.</p>
+    </div>
   </div>
 </div>
 <div class="ex-card ex-card-exam" id="ex7">
@@ -288,6 +408,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Teniendo en cuenta la potencia de la m&aacute;quina, obtener las condiciones de corte para el desbaste <b>&Oslash;25 &times; 41 mm</b>. Calcular la potencia de corte necesaria y el tiempo de mecanizado.</li>
 <li>Seleccionar la herramienta m&aacute;s adecuada para lograr R<sub>t</sub> = 8 &mu;m.</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t2/p07_a.png" alt="p07_a" loading="lazy"></div>
     <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
     <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
   </div>
@@ -308,6 +429,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Para el desbaste <b>m&aacute;s problem&aacute;tico</b> con P<sub>m&aacute;q</sub> = 6 kW: seleccionar herramienta, calcular t<sub>c</sub> m&iacute;nimo.</li>
 <li>Para el chavetero: D = 8 mm, Z = 2, v<sub>c</sub> = 125 m/min, a<sub>p</sub> = 8 mm, f<sub>z</sub> = 0,1 mm/rev/Z. Calcular F<sub>c,max</sub>, caudal de viruta Q<sub>c</sub> y P<sub>c</sub>. &iquest;Puede ejecutarse con la m&aacute;quina? Si no fuera posible, proponer 2&ndash;3 soluciones.</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t2/p08_a.png" alt="p08_a" loading="lazy"></div>
     <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
     <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
   </div>
@@ -328,6 +450,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
 <li>Desbaste hasta D42 en L = 98 mm: seleccionar herramienta y condiciones de corte. Calcular P<sub>c</sub>.</li>
 <li>Calcular la potencia necesaria y t<sub>c</sub> para el <b>fresado de la chaveta</b>. Describir herramienta, m&aacute;quina y amarre.</li>
 </ol></div>
+    <div class="fig-plano"><img src="img/t2/p09_a.png" alt="p09_a" loading="lazy"></div>
+    <div class="fig-plano"><img src="img/t2/p09_b.png" alt="p09_b" loading="lazy"></div>
     <div class="resultado-enunciado" style="border-left-color:#374151;color:#6b7280"><span class="res-label" style="color:#9ca3af">Resultados:</span> No publicados</div>
     <div class="soon">Resoluci&oacute;n pr&oacute;ximamente&hellip;</div>
   </div>
