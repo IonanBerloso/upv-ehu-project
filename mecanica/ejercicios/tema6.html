@@ -304,9 +304,125 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
     </div>
     <div class="enunciado">
       <p>Viga biapoyada en \(A\) y \(B\) de longitud total \(L\). Se aplica una carga puntual \(P\) a una distancia \(a\) de \(A\) (con \(b = L - a\)). Calcular y dibujar los diagramas de esfuerzos cortantes y momentos flectores.</p>
-      <div class="nota">Resultado general: \(Q_{AX} = Pb/L\); \(M_{\max} = Pab/L\) bajo la carga.</div>
+      <div class="nota">Resultado general: \(R_A = Pb/L\); \(R_B = Pa/L\); \(M_{\max} = Pab/L\) bajo la carga.</div>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- FIGURA: esquema viga -->
+    <p style="font-size:.72em;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Figura — Viga biapoyada con carga puntual</p>
+    <svg viewBox="0 0 500 132" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+      <!-- beam -->
+      <rect x="80" y="58" width="340" height="9" fill="#94a3b8" rx="2"/>
+      <!-- pin A -->
+      <polygon points="80,67 65,90 95,90" fill="rgba(192,132,252,.5)" stroke="#c084fc" stroke-width="1.2"/>
+      <line x1="54" y1="91" x2="106" y2="91" stroke="#c084fc" stroke-width="2.5"/>
+      <!-- roller B -->
+      <polygon points="420,67 405,90 435,90" fill="rgba(56,189,248,.5)" stroke="#38bdf8" stroke-width="1.2"/>
+      <circle cx="420" cy="95" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+      <line x1="405" y1="101" x2="435" y2="101" stroke="#38bdf8" stroke-width="2.5"/>
+      <!-- load P (placed at ~60% = x=284) -->
+      <line x1="284" y1="12" x2="284" y2="56" stroke="#fb923c" stroke-width="2.5"/>
+      <polygon points="278,56 290,56 284,67" fill="#fb923c"/>
+      <text x="290" y="17" fill="#fb923c" font-size="15" font-family="Space Grotesk,sans-serif" font-weight="700">P</text>
+      <!-- reactions -->
+      <line x1="80" y1="112" x2="80" y2="70" stroke="#10b981" stroke-width="2"/>
+      <polygon points="75,70 85,70 80,58" fill="#10b981"/>
+      <text x="58" y="126" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">R_A</text>
+      <line x1="420" y1="112" x2="420" y2="70" stroke="#10b981" stroke-width="2"/>
+      <polygon points="415,70 425,70 420,58" fill="#10b981"/>
+      <text x="398" y="126" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">R_B</text>
+      <!-- labels -->
+      <text x="74" y="52" fill="#c084fc" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      <text x="414" y="52" fill="#38bdf8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">B</text>
+      <text x="280" y="52" fill="#fb923c" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">C</text>
+      <!-- dim a -->
+      <line x1="80" y1="108" x2="284" y2="108" stroke="#64748b" stroke-width="1"/>
+      <polygon points="80,106 80,110 73,108" fill="#64748b"/>
+      <polygon points="284,106 284,110 291,108" fill="#64748b"/>
+      <text x="182" y="122" fill="#64748b" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-style="italic">a</text>
+      <!-- dim b -->
+      <line x1="284" y1="108" x2="420" y2="108" stroke="#64748b" stroke-width="1"/>
+      <polygon points="284,106 284,110 277,108" fill="#64748b"/>
+      <polygon points="420,106 420,110 427,108" fill="#64748b"/>
+      <text x="352" y="122" fill="#64748b" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-style="italic">b</text>
+    </svg>
+
+    <div class="section-wrap s-resolucion sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📐 Resolución paso a paso <span class="sarr">▼</span></button>
+    <div class="sec-body">
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Cálculo de reacciones</div>
+      <p>Sólido libre con reacciones verticales en \(A\) y \(B\). No hay fuerzas horizontales.</p>
+      <p><strong>Momentos respecto a \(A\):</strong></p>
+      <div class="formula-box">\[\sum M_A = 0:\quad R_B\cdot L - P\cdot a = 0 \implies \boxed{R_B = \frac{Pa}{L}}\]</div>
+      <p><strong>Equilibrio vertical:</strong></p>
+      <div class="formula-box">\[\sum F_y = 0:\quad R_A + R_B = P \implies \boxed{R_A = P - \frac{Pa}{L} = \frac{Pb}{L}}\]</div>
+      <div class="nota">Comprobación: si \(a = b = L/2\) (carga centrada) → \(R_A = R_B = P/2\) ✓</div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Diagrama de esfuerzo cortante Q(x)</div>
+      <p>Cortamos en cada tramo y aplicamos equilibrio de la parte izquierda:</p>
+      <p><strong>Tramo AC</strong> \((0 \le x \le a)\): solo actúa \(R_A\) →</p>
+      <div class="formula-box">\[Q = +R_A = +\frac{Pb}{L} = \text{cte.}\quad (+)\]</div>
+      <p><strong>Tramo CB</strong> \((a \le x \le L)\): actúan \(R_A\) y \(-P\) →</p>
+      <div class="formula-box">\[Q = R_A - P = \frac{Pb}{L} - P = -\frac{Pa}{L} = \text{cte.}\quad (-)\]</div>
+      <p>Existe un <strong>salto de valor \(P\)</strong> en la sección de aplicación de la carga.</p>
+      <p style="margin-top:10px;font-size:.8em;font-weight:700;color:var(--text2)">Diagrama Q(x):</p>
+      <svg viewBox="0 0 500 108" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:4px 0 10px">
+        <line x1="60" y1="64" x2="460" y2="64" stroke="#334155" stroke-width="1.5"/>
+        <!-- positive block -->
+        <rect x="80" y="18" width="204" height="46" fill="rgba(56,189,248,.14)" stroke="none"/>
+        <line x1="80" y1="64" x2="80" y2="18" stroke="#38bdf8" stroke-width="2"/>
+        <line x1="80" y1="18" x2="284" y2="18" stroke="#38bdf8" stroke-width="2"/>
+        <!-- jump -->
+        <line x1="284" y1="18" x2="284" y2="107" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- negative block -->
+        <rect x="284" y="64" width="136" height="43" fill="rgba(251,113,133,.14)" stroke="none"/>
+        <line x1="284" y1="107" x2="420" y2="107" stroke="#fb7185" stroke-width="2"/>
+        <line x1="420" y1="107" x2="420" y2="64" stroke="#fb7185" stroke-width="2"/>
+        <!-- labels -->
+        <text x="178" y="14" fill="#38bdf8" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">+Pb/L</text>
+        <text x="348" y="105" fill="#fb7185" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">−Pa/L</text>
+        <text x="78" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">A</text>
+        <text x="284" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">C</text>
+        <text x="418" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">B</text>
+        <text x="456" y="67" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">Q</text>
+      </svg>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Diagrama de momento flector M(x)</div>
+      <p>El momento flector se obtiene integrando el cortante (área bajo la curva Q):</p>
+      <p><strong>Tramo AC</strong> \((0 \le x \le a)\): Q constante positivo → M crece linealmente:</p>
+      <div class="formula-box">\[M(x) = R_A\cdot x = \frac{Pb}{L}\cdot x \quad\text{(de 0 a }\tfrac{Pab}{L}\text{)}\]</div>
+      <p><strong>Tramo CB</strong> \((a \le x \le L)\): Q constante negativo → M decrece linealmente:</p>
+      <div class="formula-box">\[M(x) = R_A\cdot x - P(x-a) = \frac{Pa}{L}(L-x)\quad\text{(de }\tfrac{Pab}{L}\text{ a }0\text{)}\]</div>
+      <p>El máximo ocurre <strong>bajo la carga</strong>, en \(x = a\):</p>
+      <div class="formula-box">\[M_{\max} = \frac{Pab}{L}\]</div>
+      <p style="margin-top:10px;font-size:.8em;font-weight:700;color:var(--text2)">Diagrama M(x):</p>
+      <svg viewBox="0 0 500 108" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:4px 0 10px">
+        <line x1="60" y1="92" x2="460" y2="92" stroke="#334155" stroke-width="1.5"/>
+        <polygon points="80,92 284,14 420,92" fill="rgba(16,185,129,.15)" stroke="none"/>
+        <line x1="80" y1="92" x2="284" y2="14" stroke="#10b981" stroke-width="2"/>
+        <line x1="284" y1="14" x2="420" y2="92" stroke="#10b981" stroke-width="2"/>
+        <line x1="284" y1="14" x2="284" y2="92" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="294" y="13" fill="#10b981" font-size="12" font-family="Space Grotesk,sans-serif">M_max = Pab/L</text>
+        <text x="78" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">A</text>
+        <text x="284" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">C</text>
+        <text x="418" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">B</text>
+        <text x="456" y="95" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">M</text>
+      </svg>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados generales</div>
+      <div class="rf-val">\(R_A = \dfrac{Pb}{L}\) &nbsp;·&nbsp; \(R_B = \dfrac{Pa}{L}\)</div>
+      <div class="rf-val">\(M_{\max} = \dfrac{Pab}{L}\) &nbsp;(bajo la carga, en \(x = a\))</div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.2 ═══════════════ -->
@@ -319,7 +435,143 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
     <div class="enunciado">
       <p>Viga apoyada en \(A\) y \(B\). Se aplican dos cargas: \(10\ \text{Tn}\) a \(3\ \text{m}\) de \(A\) y \(6\ \text{Tn}\) a \(7\ \text{m}\) de \(A\). La distancia total \(A\)–\(B\) es \(12\ \text{m}\). Calcular las reacciones en \(A\) y \(B\) y dibujar los diagramas de esfuerzos cortantes y momentos flectores.</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- FIGURA: escala 340px = 12m → 1m = 28.33px; A=x80, 3m=x165, 7m=x278, B=x420 -->
+    <p style="font-size:.72em;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Figura — Viga biapoyada con dos cargas puntuales</p>
+    <svg viewBox="0 0 500 132" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+      <rect x="80" y="58" width="340" height="9" fill="#94a3b8" rx="2"/>
+      <!-- pin A -->
+      <polygon points="80,67 65,90 95,90" fill="rgba(192,132,252,.5)" stroke="#c084fc" stroke-width="1.2"/>
+      <line x1="54" y1="91" x2="106" y2="91" stroke="#c084fc" stroke-width="2.5"/>
+      <!-- roller B -->
+      <polygon points="420,67 405,90 435,90" fill="rgba(56,189,248,.5)" stroke="#38bdf8" stroke-width="1.2"/>
+      <circle cx="420" cy="95" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+      <line x1="405" y1="101" x2="435" y2="101" stroke="#38bdf8" stroke-width="2.5"/>
+      <!-- 10 Tn at 3m (x=165) -->
+      <line x1="165" y1="10" x2="165" y2="56" stroke="#fb923c" stroke-width="2.5"/>
+      <polygon points="159,56 171,56 165,67" fill="#fb923c"/>
+      <text x="170" y="15" fill="#fb923c" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">10 Tn</text>
+      <!-- 6 Tn at 7m (x=278) -->
+      <line x1="278" y1="16" x2="278" y2="56" stroke="#fbbf24" stroke-width="2.5"/>
+      <polygon points="272,56 284,56 278,67" fill="#fbbf24"/>
+      <text x="283" y="22" fill="#fbbf24" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">6 Tn</text>
+      <!-- reactions -->
+      <line x1="80" y1="112" x2="80" y2="70" stroke="#10b981" stroke-width="2"/>
+      <polygon points="75,70 85,70 80,58" fill="#10b981"/>
+      <text x="55" y="126" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">10 Tn</text>
+      <line x1="420" y1="112" x2="420" y2="70" stroke="#10b981" stroke-width="2"/>
+      <polygon points="415,70 425,70 420,58" fill="#10b981"/>
+      <text x="396" y="126" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">6 Tn</text>
+      <!-- labels -->
+      <text x="74" y="52" fill="#c084fc" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      <text x="414" y="52" fill="#38bdf8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">B</text>
+      <!-- dim lines -->
+      <line x1="80" y1="106" x2="165" y2="106" stroke="#64748b" stroke-width="1"/>
+      <polygon points="80,104 80,108 73,106" fill="#64748b"/>
+      <polygon points="165,104 165,108 172,106" fill="#64748b"/>
+      <text x="123" y="119" fill="#64748b" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">3 m</text>
+      <line x1="165" y1="106" x2="278" y2="106" stroke="#64748b" stroke-width="1"/>
+      <polygon points="165,104 165,108 158,106" fill="#64748b"/>
+      <polygon points="278,104 278,108 285,106" fill="#64748b"/>
+      <text x="222" y="119" fill="#64748b" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">4 m</text>
+      <line x1="278" y1="106" x2="420" y2="106" stroke="#64748b" stroke-width="1"/>
+      <polygon points="278,104 278,108 271,106" fill="#64748b"/>
+      <polygon points="420,104 420,108 427,106" fill="#64748b"/>
+      <text x="349" y="119" fill="#64748b" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">5 m</text>
+    </svg>
+
+    <div class="section-wrap s-datos sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Carga \(P_1\)</td><td>\(10\ \text{Tn}\) en \(x = 3\ \text{m}\)</td></tr>
+        <tr><td>Carga \(P_2\)</td><td>\(6\ \text{Tn}\) en \(x = 7\ \text{m}\)</td></tr>
+        <tr><td>Longitud total \(L\)</td><td>\(12\ \text{m}\)</td></tr>
+      </table>
+    </div>
+    </div>
+
+    <div class="section-wrap s-resolucion sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📐 Resolución paso a paso <span class="sarr">▼</span></button>
+    <div class="sec-body">
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Reacciones en A y B</div>
+      <p><strong>Momentos respecto a \(A\):</strong></p>
+      <div class="formula-box">\[\sum M_A = 0:\quad R_B\cdot 12 = 10\cdot 3 + 6\cdot 7 = 30 + 42 = 72\ \text{Tn}{\cdot}\text{m} \implies \boxed{R_B = 6\ \text{Tn}}\]</div>
+      <p><strong>Equilibrio vertical:</strong></p>
+      <div class="formula-box">\[\sum F_y = 0:\quad R_A + 6 = 10 + 6 = 16 \implies \boxed{R_A = 10\ \text{Tn}}\]</div>
+      <div class="nota">Comprobación: \(\sum M_B = 10\cdot9 + 6\cdot5 - R_A\cdot12 = 90+30-120 = 0\) ✓</div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Diagrama de cortante Q(x)</div>
+      <p>Cortamos en cada tramo y sumamos fuerzas a la izquierda:</p>
+      <p><strong>Tramo 0–3 m:</strong> \(Q = +R_A = +10\ \text{Tn}\)</p>
+      <p><strong>Tramo 3–7 m:</strong> \(Q = R_A - P_1 = 10 - 10 = 0\ \text{Tn}\) → zona de cortante nulo</p>
+      <p><strong>Tramo 7–12 m:</strong> \(Q = R_A - P_1 - P_2 = 10 - 10 - 6 = -6\ \text{Tn}\)</p>
+      <svg viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <line x1="60" y1="64" x2="460" y2="64" stroke="#334155" stroke-width="1.5"/>
+        <!-- 0-3m positive (x80-165) height=10Tn → 46px -->
+        <rect x="80" y="18" width="85" height="46" fill="rgba(56,189,248,.14)" stroke="none"/>
+        <line x1="80" y1="64" x2="80" y2="18" stroke="#38bdf8" stroke-width="2"/>
+        <line x1="80" y1="18" x2="165" y2="18" stroke="#38bdf8" stroke-width="2"/>
+        <line x1="165" y1="18" x2="165" y2="64" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,3"/>
+        <!-- 3-7m Q=0 (x165-278) on baseline -->
+        <line x1="165" y1="64" x2="278" y2="64" stroke="#38bdf8" stroke-width="2.5"/>
+        <!-- jump at 7m -->
+        <line x1="278" y1="64" x2="278" y2="92" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- 7-12m negative (x278-420) height=6Tn → 28px -->
+        <rect x="278" y="64" width="142" height="28" fill="rgba(251,113,133,.14)" stroke="none"/>
+        <line x1="278" y1="92" x2="420" y2="92" stroke="#fb7185" stroke-width="2"/>
+        <line x1="420" y1="92" x2="420" y2="64" stroke="#fb7185" stroke-width="2"/>
+        <!-- value labels -->
+        <text x="122" y="14" fill="#38bdf8" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">+10 Tn</text>
+        <text x="348" y="108" fill="#fb7185" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">−6 Tn</text>
+        <text x="220" y="60" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">Q = 0</text>
+        <!-- x labels -->
+        <text x="78" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">A</text>
+        <text x="163" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">3m</text>
+        <text x="276" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">7m</text>
+        <text x="418" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">B</text>
+        <text x="456" y="67" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">Q</text>
+      </svg>
+      <div class="nota">Entre las dos cargas el cortante es nulo: el momento flector es constante en ese tramo.</div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Diagrama de momento flector M(x)</div>
+      <p><strong>En \(x = 0\):</strong> \(M = 0\)</p>
+      <p><strong>En \(x = 3\ \text{m}\):</strong> \(M = R_A\cdot 3 = 10\cdot 3 = 30\ \text{Tn}{\cdot}\text{m}\)</p>
+      <p><strong>En \(x = 7\ \text{m}\):</strong> \(M = 10\cdot7 - 10\cdot4 = 70 - 40 = 30\ \text{Tn}{\cdot}\text{m}\) → constante entre las cargas</p>
+      <p><strong>En \(x = 12\ \text{m}\):</strong> \(M = 0\)</p>
+      <svg viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <line x1="60" y1="92" x2="460" y2="92" stroke="#334155" stroke-width="1.5"/>
+        <!-- M(0)=0 → M(3)=30Tn·m → M(7)=30Tn·m → M(12)=0 ; max=30→height=62px -->
+        <polygon points="80,92 165,30 278,30 420,92" fill="rgba(16,185,129,.15)" stroke="none"/>
+        <line x1="80" y1="92" x2="165" y2="30" stroke="#10b981" stroke-width="2"/>
+        <line x1="165" y1="30" x2="278" y2="30" stroke="#10b981" stroke-width="2"/>
+        <line x1="278" y1="30" x2="420" y2="92" stroke="#10b981" stroke-width="2"/>
+        <line x1="165" y1="30" x2="165" y2="92" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="278" y1="30" x2="278" y2="92" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="221" y="26" fill="#10b981" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">30 Tn·m (cte.)</text>
+        <text x="78" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">A</text>
+        <text x="163" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">3m</text>
+        <text x="276" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">7m</text>
+        <text x="418" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">B</text>
+        <text x="456" y="95" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">M</text>
+      </svg>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">\(R_A = 10\ \text{Tn}\) · \(R_B = 6\ \text{Tn}\)</div>
+      <div class="rf-val">\(M_{\max} = 30\ \text{Tn}{\cdot}\text{m}\) &nbsp;(constante entre \(x = 3\ \text{m}\) y \(x = 7\ \text{m}\))</div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.3 ═══════════════ -->
@@ -333,7 +585,113 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
       <p>Viga biapoyada en \(A\) y \(B\) de longitud \(L\). Carga uniformemente distribuida \(q\) en toda la longitud. Calcular los diagramas de esfuerzos cortantes y momentos flectores.</p>
       <div class="nota">Resultado general: \(R_A = R_B = qL/2\); \(M_{\max} = qL^2/8\) en el centro.</div>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <p style="font-size:.72em;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Figura — Viga con carga uniformemente distribuida</p>
+    <svg viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+      <rect x="80" y="70" width="340" height="9" fill="#94a3b8" rx="2"/>
+      <!-- pin A -->
+      <polygon points="80,79 65,102 95,102" fill="rgba(192,132,252,.5)" stroke="#c084fc" stroke-width="1.2"/>
+      <line x1="54" y1="103" x2="106" y2="103" stroke="#c084fc" stroke-width="2.5"/>
+      <!-- roller B -->
+      <polygon points="420,79 405,102 435,102" fill="rgba(56,189,248,.5)" stroke="#38bdf8" stroke-width="1.2"/>
+      <circle cx="420" cy="107" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+      <line x1="405" y1="113" x2="435" y2="113" stroke="#38bdf8" stroke-width="2.5"/>
+      <!-- distributed load arrows (every 28px from x=94 to x=406) -->
+      <line x1="94" y1="28" x2="94" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="90,68 98,68 94,78" fill="#fb923c"/>
+      <line x1="122" y1="28" x2="122" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="118,68 126,68 122,78" fill="#fb923c"/>
+      <line x1="150" y1="28" x2="150" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="146,68 154,68 150,78" fill="#fb923c"/>
+      <line x1="178" y1="28" x2="178" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="174,68 182,68 178,78" fill="#fb923c"/>
+      <line x1="206" y1="28" x2="206" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="202,68 210,68 206,78" fill="#fb923c"/>
+      <line x1="234" y1="28" x2="234" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="230,68 238,68 234,78" fill="#fb923c"/>
+      <line x1="262" y1="28" x2="262" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="258,68 266,68 262,78" fill="#fb923c"/>
+      <line x1="290" y1="28" x2="290" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="286,68 294,68 290,78" fill="#fb923c"/>
+      <line x1="318" y1="28" x2="318" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="314,68 322,68 318,78" fill="#fb923c"/>
+      <line x1="346" y1="28" x2="346" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="342,68 350,68 346,78" fill="#fb923c"/>
+      <line x1="374" y1="28" x2="374" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="370,68 378,68 374,78" fill="#fb923c"/>
+      <line x1="402" y1="28" x2="402" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="398,68 406,68 402,78" fill="#fb923c"/>
+      <!-- top line of distributed load -->
+      <line x1="80" y1="28" x2="420" y2="28" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="248" y="20" fill="#fb923c" font-size="13" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">q (N/m)</text>
+      <!-- reactions -->
+      <line x1="80" y1="124" x2="80" y2="82" stroke="#10b981" stroke-width="2"/>
+      <polygon points="75,82 85,82 80,70" fill="#10b981"/>
+      <text x="52" y="138" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">qL/2</text>
+      <line x1="420" y1="124" x2="420" y2="82" stroke="#10b981" stroke-width="2"/>
+      <polygon points="415,82 425,82 420,70" fill="#10b981"/>
+      <text x="396" y="138" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">qL/2</text>
+      <text x="74" y="64" fill="#c084fc" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      <text x="414" y="64" fill="#38bdf8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">B</text>
+      <!-- dim L -->
+      <line x1="80" y1="120" x2="420" y2="120" stroke="#64748b" stroke-width="1"/>
+      <polygon points="80,118 80,122 73,120" fill="#64748b"/>
+      <polygon points="420,118 420,122 427,120" fill="#64748b"/>
+      <text x="250" y="134" fill="#64748b" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-style="italic">L</text>
+    </svg>
+
+    <div class="section-wrap s-resolucion sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📐 Resolución paso a paso <span class="sarr">▼</span></button>
+    <div class="sec-body">
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Reacciones (por simetría)</div>
+      <p>La viga y la carga son simétricas respecto al centro: \(R_A = R_B\).</p>
+      <div class="formula-box">\[\sum F_y = 0:\quad R_A + R_B = q\cdot L \implies \boxed{R_A = R_B = \frac{qL}{2}}\]</div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Diagrama de cortante Q(x)</div>
+      <p>Cortante en la sección \(x\) (parte izquierda):</p>
+      <div class="formula-box">\[Q(x) = R_A - q\cdot x = \frac{qL}{2} - qx = q\!\left(\frac{L}{2}-x\right)\]</div>
+      <p>Es una función <strong>lineal decreciente</strong>. Se anula en el centro \(x = L/2\):</p>
+      <p>\(Q(0) = +qL/2\) · \(Q(L/2) = 0\) · \(Q(L) = -qL/2\)</p>
+      <svg viewBox="0 0 500 108" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <line x1="60" y1="64" x2="460" y2="64" stroke="#334155" stroke-width="1.5"/>
+        <!-- positive triangle (left half) -->
+        <polygon points="80,64 80,14 250,64" fill="rgba(56,189,248,.14)" stroke="none"/>
+        <line x1="80" y1="14" x2="250" y2="64" stroke="#38bdf8" stroke-width="2"/>
+        <line x1="80" y1="64" x2="80" y2="14" stroke="#38bdf8" stroke-width="2"/>
+        <!-- negative triangle (right half) -->
+        <polygon points="250,64 420,64 420,14" fill="rgba(251,113,133,.14)" stroke="none"/>
+        <line x1="250" y1="64" x2="420" y2="14" stroke="#fb7185" stroke-width="2"/>
+        <line x1="420" y1="64" x2="420" y2="14" stroke="#fb7185" stroke-width="2"/>
+        <!-- labels -->
+        <text x="78" y="10" fill="#38bdf8" font-size="12" font-family="Space Grotesk,sans-serif">+qL/2</text>
+        <text x="424" y="10" fill="#fb7185" font-size="12" font-family="Space Grotesk,sans-serif">−qL/2</text>
+        <text x="78" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">A</text>
+        <text x="250" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">L/2</text>
+        <text x="418" y="78" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">B</text>
+        <text x="456" y="67" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">Q</text>
+      </svg>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Diagrama de momento flector M(x)</div>
+      <p>Integrando el cortante (o por equilibrio directo):</p>
+      <div class="formula-box">\[M(x) = R_A\cdot x - q\cdot\frac{x^2}{2} = \frac{qLx}{2} - \frac{qx^2}{2} = \frac{qx(L-x)}{2}\]</div>
+      <p>Es una <strong>parábola</strong> de segundo grado, cóncava hacia abajo. El máximo se obtiene derivando e igualando a cero (o simplemente evaluando en el centro):</p>
+      <div class="formula-box">\[M_{\max} = M\!\left(\frac{L}{2}\right) = \frac{q\cdot\frac{L}{2}\cdot\frac{L}{2}}{2} = \frac{qL^2}{8}\]</div>
+      <svg viewBox="0 0 500 108" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <line x1="60" y1="92" x2="460" y2="92" stroke="#334155" stroke-width="1.5"/>
+        <!-- parabola approximation with cubic bezier -->
+        <path d="M80,92 Q250,10 420,92" fill="rgba(16,185,129,.15)" stroke="#10b981" stroke-width="2"/>
+        <line x1="250" y1="10" x2="250" y2="92" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="258" y="10" fill="#10b981" font-size="12" font-family="Space Grotesk,sans-serif">M_max = qL²/8</text>
+        <text x="78" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">A</text>
+        <text x="250" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">L/2</text>
+        <text x="418" y="106" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">B</text>
+        <text x="456" y="95" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">M</text>
+      </svg>
+      <div class="nota">La parábola es simétrica. El punto de máximo momento coincide con la sección donde \(Q = 0\), es decir, el centro de la viga.</div>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados generales</div>
+      <div class="rf-val">\(R_A = R_B = \dfrac{qL}{2}\)</div>
+      <div class="rf-val">\(Q(x) = q\!\left(\dfrac{L}{2}-x\right)\) (lineal) · \(M_{\max} = \dfrac{qL^2}{8}\) (en \(x = L/2\))</div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.4 ═══════════════ -->
@@ -347,7 +705,112 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
       <p>Viga biapoyada en \(A\) y \(B\) de longitud \(L\). Se aplica un momento concentrado \(M_0\) a una distancia \(a\) de \(A\) (\(b = L - a\)). Calcular y dibujar los diagramas de esfuerzos cortantes y momentos flectores.</p>
       <div class="nota">El diagrama de \(Q\) es constante en cada tramo; el diagrama de \(M\) presenta un salto de valor \(M_0\) en el punto de aplicación.</div>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <p style="font-size:.72em;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Figura — Viga con momento concentrado M₀</p>
+    <svg viewBox="0 0 500 132" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+      <rect x="80" y="58" width="340" height="9" fill="#94a3b8" rx="2"/>
+      <polygon points="80,67 65,90 95,90" fill="rgba(192,132,252,.5)" stroke="#c084fc" stroke-width="1.2"/>
+      <line x1="54" y1="91" x2="106" y2="91" stroke="#c084fc" stroke-width="2.5"/>
+      <polygon points="420,67 405,90 435,90" fill="rgba(56,189,248,.5)" stroke="#38bdf8" stroke-width="1.2"/>
+      <circle cx="420" cy="95" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+      <line x1="405" y1="101" x2="435" y2="101" stroke="#38bdf8" stroke-width="2.5"/>
+      <!-- moment arc at C (x=220) -->
+      <path d="M 220,30 A 22,22 0 1 1 198,52" fill="none" stroke="#c084fc" stroke-width="2.5"/>
+      <polygon points="198,52 192,44 204,45" fill="#c084fc"/>
+      <text x="230" y="26" fill="#c084fc" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="700">M₀</text>
+      <!-- reactions (R_A up, R_B down since only moment) -->
+      <line x1="80" y1="112" x2="80" y2="70" stroke="#10b981" stroke-width="2"/>
+      <polygon points="75,70 85,70 80,58" fill="#10b981"/>
+      <text x="50" y="126" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">M₀/L ↑</text>
+      <line x1="420" y1="58" x2="420" y2="100" stroke="#fb7185" stroke-width="2"/>
+      <polygon points="415,100 425,100 420,112" fill="#fb7185"/>
+      <text x="396" y="126" fill="#fb7185" font-size="11" font-family="Space Grotesk,sans-serif">M₀/L ↓</text>
+      <text x="74" y="52" fill="#c084fc" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      <text x="414" y="52" fill="#38bdf8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">B</text>
+      <text x="214" y="78" fill="#c084fc" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">C</text>
+      <!-- dim lines -->
+      <line x1="80" y1="106" x2="220" y2="106" stroke="#64748b" stroke-width="1"/>
+      <polygon points="80,104 80,108 73,106" fill="#64748b"/>
+      <polygon points="220,104 220,108 227,106" fill="#64748b"/>
+      <text x="150" y="120" fill="#64748b" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-style="italic">a</text>
+      <line x1="220" y1="106" x2="420" y2="106" stroke="#64748b" stroke-width="1"/>
+      <polygon points="220,104 220,108 213,106" fill="#64748b"/>
+      <polygon points="420,104 420,108 427,106" fill="#64748b"/>
+      <text x="320" y="120" fill="#64748b" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-style="italic">b</text>
+    </svg>
+
+    <div class="section-wrap s-resolucion sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📐 Resolución paso a paso <span class="sarr">▼</span></button>
+    <div class="sec-body">
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Reacciones</div>
+      <p>Solo actúa un momento \(M_0\) (sin cargas transversales): \(\sum F_y = 0 \implies R_A + R_B = 0\), luego \(R_A = -R_B\).</p>
+      <p>Tomando momentos respecto a \(A\) (considerando \(M_0\) en sentido antihorario positivo):</p>
+      <div class="formula-box">\[\sum M_A = 0:\quad -R_B\cdot L + M_0 = 0 \implies \boxed{R_B = \frac{M_0}{L}\ \downarrow}\]</div>
+      <div class="formula-box">\[\boxed{R_A = \frac{M_0}{L}\ \uparrow}\]</div>
+      <div class="nota">Las reacciones son iguales, opuestas y perpendiculares — forman un par que equilibra a \(M_0\).</div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Diagrama de cortante Q(x)</div>
+      <p>No hay cargas distribuidas ni puntuales: el cortante es <strong>constante</strong> en toda la viga.</p>
+      <div class="formula-box">\[Q(x) = R_A = \frac{M_0}{L} = \text{cte.}\quad\text{(en todo }0\le x\le L\text{)}\]</div>
+      <svg viewBox="0 0 500 90" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <line x1="60" y1="55" x2="460" y2="55" stroke="#334155" stroke-width="1.5"/>
+        <rect x="80" y="18" width="340" height="37" fill="rgba(56,189,248,.14)" stroke="none"/>
+        <line x1="80" y1="55" x2="80" y2="18" stroke="#38bdf8" stroke-width="2"/>
+        <line x1="80" y1="18" x2="420" y2="18" stroke="#38bdf8" stroke-width="2"/>
+        <line x1="420" y1="18" x2="420" y2="55" stroke="#38bdf8" stroke-width="2"/>
+        <text x="248" y="14" fill="#38bdf8" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">+M₀/L (constante)</text>
+        <text x="78" y="69" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">A</text>
+        <text x="418" y="69" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">B</text>
+        <text x="456" y="58" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">Q</text>
+      </svg>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Diagrama de momento flector M(x)</div>
+      <p><strong>Tramo AC</strong> \((0 \le x \le a)\):</p>
+      <div class="formula-box">\[M(x) = R_A\cdot x = \frac{M_0}{L}\cdot x\quad\text{(lineal, de 0 a }\frac{M_0 a}{L}\text{)}\]</div>
+      <p><strong>En \(x = a^-\):</strong> \(M = M_0 a/L\)</p>
+      <p><strong>En \(x = a^+\):</strong> El momento aplicado produce un <strong>salto de \(-M_0\)</strong>:</p>
+      <div class="formula-box">\[M(a^+) = \frac{M_0 a}{L} - M_0 = -\frac{M_0 b}{L}\]</div>
+      <p><strong>Tramo CB</strong> \((a \le x \le L)\):</p>
+      <div class="formula-box">\[M(x) = R_A\cdot x - M_0 = \frac{M_0}{L}\cdot x - M_0 = M_0\!\left(\frac{x}{L}-1\right)\quad\text{(lineal, de }-\frac{M_0 b}{L}\text{ a }0\text{)}\]</div>
+      <svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <!-- baseline -->
+        <line x1="60" y1="72" x2="460" y2="72" stroke="#334155" stroke-width="1.5"/>
+        <!-- left triangle (positive, x=80 to x=220) -->
+        <polygon points="80,72 220,30 220,72" fill="rgba(16,185,129,.15)" stroke="none"/>
+        <line x1="80" y1="72" x2="220" y2="30" stroke="#10b981" stroke-width="2"/>
+        <line x1="220" y1="30" x2="220" y2="72" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- right triangle (negative, x=220 to x=420) -->
+        <polygon points="220,72 220,108 420,72" fill="rgba(251,113,133,.14)" stroke="none"/>
+        <line x1="220" y1="108" x2="420" y2="72" stroke="#fb7185" stroke-width="2"/>
+        <line x1="220" y1="72" x2="220" y2="108" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- jump arrow -->
+        <line x1="224" y1="30" x2="224" y2="108" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="2,2"/>
+        <text x="228" y="70" fill="#fbbf24" font-size="11" font-family="Space Grotesk,sans-serif">salto M₀</text>
+        <!-- labels -->
+        <text x="230" y="28" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">+M₀a/L</text>
+        <text x="230" y="116" fill="#fb7185" font-size="11" font-family="Space Grotesk,sans-serif">−M₀b/L</text>
+        <text x="78" y="86" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">A</text>
+        <text x="220" y="86" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">C</text>
+        <text x="418" y="86" fill="#94a3b8" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">B</text>
+        <text x="456" y="75" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">M</text>
+      </svg>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados generales</div>
+      <div class="rf-val">\(R_A = M_0/L\ \uparrow\) · \(R_B = M_0/L\ \downarrow\)</div>
+      <div class="rf-val">\(Q = M_0/L\) (constante) · Salto en \(M\) de valor \(M_0\) en \(x = a\)</div>
+      <div class="rf-val">\(M_{\max}\) positivo \(= M_0 a/L\) · \(M_{\max}\) negativo \(= -M_0 b/L\)</div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.5 ═══════════════ -->
@@ -360,7 +823,154 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
     <div class="enunciado">
       <p>Viga con carga distribuida \(q = 2000\ \text{kg/m}\) en los primeros \(2\ \text{m}\), carga puntual de \(2000\ \text{kg}\) a \(7\ \text{m}\) del extremo izquierdo, y apoyos en \(A\) y \(B\). Longitudes de tramos: \(2\ \text{m} + 5\ \text{m} + 3\ \text{m}\). Calcular los diagramas de esfuerzos cortantes y momentos flectores.</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- escala: 340px = 10m → 34px/m ; A=x80, 2m=x148, 7m=x318, B=x420 -->
+    <p style="font-size:.72em;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Figura — Viga con distribución en primer tramo + carga puntual</p>
+    <svg viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+      <rect x="80" y="70" width="340" height="9" fill="#94a3b8" rx="2"/>
+      <polygon points="80,79 65,102 95,102" fill="rgba(192,132,252,.5)" stroke="#c084fc" stroke-width="1.2"/>
+      <line x1="54" y1="103" x2="106" y2="103" stroke="#c084fc" stroke-width="2.5"/>
+      <polygon points="420,79 405,102 435,102" fill="rgba(56,189,248,.5)" stroke="#38bdf8" stroke-width="1.2"/>
+      <circle cx="420" cy="107" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+      <line x1="405" y1="113" x2="435" y2="113" stroke="#38bdf8" stroke-width="2.5"/>
+      <!-- distributed load 0-2m (x80-148) -->
+      <line x1="80" y1="36" x2="148" y2="36" stroke="#fb923c" stroke-width="1.5"/>
+      <line x1="90" y1="36" x2="90" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="86,68 94,68 90,78" fill="#fb923c"/>
+      <line x1="108" y1="36" x2="108" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="104,68 112,68 108,78" fill="#fb923c"/>
+      <line x1="126" y1="36" x2="126" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="122,68 130,68 126,78" fill="#fb923c"/>
+      <line x1="144" y1="36" x2="144" y2="68" stroke="#fb923c" stroke-width="1.5"/><polygon points="140,68 148,68 144,78" fill="#fb923c"/>
+      <text x="114" y="28" fill="#fb923c" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">2000 kg/m</text>
+      <!-- point load at 7m (x=318) -->
+      <line x1="318" y1="22" x2="318" y2="68" stroke="#fbbf24" stroke-width="2.5"/>
+      <polygon points="312,68 324,68 318,79" fill="#fbbf24"/>
+      <text x="323" y="18" fill="#fbbf24" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">2000 kg</text>
+      <!-- reactions -->
+      <line x1="80" y1="124" x2="80" y2="82" stroke="#10b981" stroke-width="2"/>
+      <polygon points="75,82 85,82 80,70" fill="#10b981"/>
+      <text x="48" y="138" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">4200 kg</text>
+      <line x1="420" y1="124" x2="420" y2="82" stroke="#10b981" stroke-width="2"/>
+      <polygon points="415,82 425,82 420,70" fill="#10b981"/>
+      <text x="396" y="138" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">1800 kg</text>
+      <text x="74" y="64" fill="#c084fc" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      <text x="414" y="64" fill="#38bdf8" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">B</text>
+      <!-- dim lines -->
+      <line x1="80" y1="118" x2="148" y2="118" stroke="#64748b" stroke-width="1"/>
+      <polygon points="80,116 80,120 73,118" fill="#64748b"/>
+      <polygon points="148,116 148,120 155,118" fill="#64748b"/>
+      <text x="114" y="131" fill="#64748b" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">2 m</text>
+      <line x1="148" y1="118" x2="318" y2="118" stroke="#64748b" stroke-width="1"/>
+      <polygon points="148,116 148,120 141,118" fill="#64748b"/>
+      <polygon points="318,116 318,120 325,118" fill="#64748b"/>
+      <text x="233" y="131" fill="#64748b" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">5 m</text>
+      <line x1="318" y1="118" x2="420" y2="118" stroke="#64748b" stroke-width="1"/>
+      <polygon points="318,116 318,120 311,118" fill="#64748b"/>
+      <polygon points="420,116 420,120 427,118" fill="#64748b"/>
+      <text x="369" y="131" fill="#64748b" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">3 m</text>
+    </svg>
+
+    <div class="section-wrap s-datos sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Carga distribuida \(q\)</td><td>\(2000\ \text{kg/m}\) en \(0 \le x \le 2\ \text{m}\)</td></tr>
+        <tr><td>Carga puntual \(P\)</td><td>\(2000\ \text{kg}\) en \(x = 7\ \text{m}\)</td></tr>
+        <tr><td>Longitud total \(L\)</td><td>\(10\ \text{m}\)</td></tr>
+        <tr><td>Apoyo \(A\)</td><td>\(x = 0\ \text{m}\) (articulado)</td></tr>
+        <tr><td>Apoyo \(B\)</td><td>\(x = 10\ \text{m}\) (móvil)</td></tr>
+      </table>
+    </div>
+    </div>
+
+    <div class="section-wrap s-resolucion sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📐 Resolución paso a paso <span class="sarr">▼</span></button>
+    <div class="sec-body">
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Reacciones</div>
+      <p>Resultante de la carga distribuida: \(F_q = 2000\cdot 2 = 4000\ \text{kg}\) actuando en \(x = 1\ \text{m}\) (centroide).</p>
+      <p><strong>Momentos respecto a \(A\):</strong></p>
+      <div class="formula-box">\[\sum M_A = 0:\quad R_B\cdot 10 = 4000\cdot 1 + 2000\cdot 7 = 4000 + 14000 = 18000\ \text{kg}{\cdot}\text{m} \implies \boxed{R_B = 1800\ \text{kg}}\]</div>
+      <div class="formula-box">\[\sum F_y = 0:\quad R_A = 4000 + 2000 - 1800 = \boxed{4200\ \text{kg}}\]</div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Diagrama de cortante Q(x)</div>
+      <p><strong>Tramo 0–2 m</strong> (distribución activa): \(Q(x) = 4200 - 2000x\)</p>
+      <p>→ \(Q(0) = 4200\ \text{kg}\) · \(Q(2) = 4200 - 4000 = 200\ \text{kg}\)</p>
+      <p><strong>Tramo 2–7 m</strong> (sin cargas): \(Q = 200\ \text{kg}\) (constante)</p>
+      <p><strong>Tramo 7–10 m</strong> (tras la puntual): \(Q = 200 - 2000 = -1800\ \text{kg}\) (constante)</p>
+      <svg viewBox="0 0 500 115" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <!-- escala: 340px=10m → 34px/m; A=x80,2m=x148,7m=x318,B=x420 -->
+        <!-- Q_max=4200→height ~ 4200/4200*60=60px; Q=200→3px; Q=-1800→26px -->
+        <line x1="60" y1="72" x2="460" y2="72" stroke="#334155" stroke-width="1.5"/>
+        <!-- 0-2m trapezoid (Q goes from 4200 to 200) -->
+        <polygon points="80,72 80,12 148,69 148,72" fill="rgba(56,189,248,.14)" stroke="none"/>
+        <line x1="80" y1="72" x2="80" y2="12" stroke="#38bdf8" stroke-width="2"/>
+        <line x1="80" y1="12" x2="148" y2="69" stroke="#38bdf8" stroke-width="2"/>
+        <line x1="148" y1="69" x2="148" y2="72" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2,2"/>
+        <!-- 2-7m thin positive rect (Q=200≈3px) -->
+        <rect x="148" y="69" width="170" height="3" fill="rgba(56,189,248,.3)" stroke="none"/>
+        <line x1="148" y1="69" x2="318" y2="69" stroke="#38bdf8" stroke-width="2"/>
+        <!-- jump at 7m -->
+        <line x1="318" y1="69" x2="318" y2="98" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <!-- 7-10m negative (Q=-1800≈26px) -->
+        <rect x="318" y="72" width="102" height="26" fill="rgba(251,113,133,.14)" stroke="none"/>
+        <line x1="318" y1="98" x2="420" y2="98" stroke="#fb7185" stroke-width="2"/>
+        <line x1="420" y1="98" x2="420" y2="72" stroke="#fb7185" stroke-width="2"/>
+        <!-- labels -->
+        <text x="78" y="8" fill="#38bdf8" font-size="11" font-family="Space Grotesk,sans-serif">+4200</text>
+        <text x="152" y="65" fill="#38bdf8" font-size="10" font-family="Space Grotesk,sans-serif">+200</text>
+        <text x="348" y="112" fill="#fb7185" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">−1800</text>
+        <text x="78" y="86" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk,sans-serif">A</text>
+        <text x="148" y="86" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk,sans-serif">2m</text>
+        <text x="318" y="86" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk,sans-serif">7m</text>
+        <text x="418" y="86" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk,sans-serif">B</text>
+        <text x="456" y="75" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">Q</text>
+      </svg>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Diagrama de momento flector M(x)</div>
+      <p><strong>\(x = 0\):</strong> \(M = 0\)</p>
+      <p><strong>Tramo 0–2 m</strong> (parábola): \(M(x) = 4200x - 1000x^2\)</p>
+      <p>→ \(M(2) = 8400 - 4000 = 4400\ \text{kg}{\cdot}\text{m}\)</p>
+      <p><strong>Tramo 2–7 m</strong> (lineal, pendiente +200): \(M(7) = 4400 + 200\cdot5 = 5400\ \text{kg}{\cdot}\text{m}\)</p>
+      <p><strong>Tramo 7–10 m</strong> (lineal, pendiente −1800): \(M(10) = 5400 - 1800\cdot3 = 0\) ✓</p>
+      <svg viewBox="0 0 500 115" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <line x1="60" y1="92" x2="460" y2="92" stroke="#334155" stroke-width="1.5"/>
+        <!-- parabola 0-2m: from (80,92) to (148,60) approx (M_max_global=5400→scale) -->
+        <!-- scale: 5400kg·m → 75px height; 4400→61px; 0→0 -->
+        <path d="M80,92 Q114,31 148,65" fill="rgba(16,185,129,.15)" stroke="#10b981" stroke-width="2"/>
+        <line x1="80" y1="92" x2="80" y2="92"/>
+        <!-- fill the parabola area -->
+        <path d="M80,92 Q114,31 148,65 L148,92 Z" fill="rgba(16,185,129,.1)" stroke="none"/>
+        <!-- linear 2-7m from (148,65) to (318,17) -->
+        <line x1="148" y1="65" x2="318" y2="17" stroke="#10b981" stroke-width="2"/>
+        <polygon points="80,92 148,65 318,17 318,92" fill="rgba(16,185,129,.08)" stroke="none"/>
+        <!-- linear 7-10m from (318,17) to (420,92) -->
+        <line x1="318" y1="17" x2="420" y2="92" stroke="#10b981" stroke-width="2"/>
+        <polygon points="318,17 420,92 318,92" fill="rgba(16,185,129,.08)" stroke="none"/>
+        <!-- value labels -->
+        <text x="152" y="62" fill="#10b981" font-size="10" font-family="Space Grotesk,sans-serif">4400</text>
+        <text x="322" y="15" fill="#10b981" font-size="11" font-family="Space Grotesk,sans-serif">5400 kg·m</text>
+        <line x1="318" y1="17" x2="318" y2="92" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="78" y="106" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk,sans-serif">A</text>
+        <text x="148" y="106" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk,sans-serif">2m</text>
+        <text x="318" y="106" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk,sans-serif">7m</text>
+        <text x="418" y="106" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk,sans-serif">B</text>
+        <text x="456" y="95" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">M</text>
+      </svg>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">\(R_A = 4200\ \text{kg}\) · \(R_B = 1800\ \text{kg}\)</div>
+      <div class="rf-val">\(M_{\max} = 5400\ \text{kg}{\cdot}\text{m}\) en \(x = 7\ \text{m}\) (bajo la carga puntual)</div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.6 ═══════════════ -->
