@@ -1836,7 +1836,105 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
     <div class="enunciado">
       <p>Eje con distintos momentos torsores aplicados en secciones intermedias. Datos: \(T_0 = 0{,}4\ \text{T}{\cdot}\text{m}\), longitud de cada segmento \(L = 1\ \text{m}\). Se aplican momentos \(T_0\), \(T_0\), \(3T_0\) y \(1{,}5T_0\) en los distintos tramos. Dibujar el diagrama de momentos torsores a lo largo del eje.</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <p style="font-size:.72em;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px">Figura — Eje empotrado en A con momentos torsores aplicados</p>
+    <svg viewBox="0 0 500 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+      <!-- eje: 340px=4m → 85px/m; A=80,1m=165,2m=250,3m=335,4m=420 -->
+      <rect x="80" y="28" width="340" height="8" fill="#94a3b8" rx="2"/>
+      <!-- empotramiento en A -->
+      <rect x="56" y="16" width="20" height="32" fill="none" stroke="#c084fc" stroke-width="2"/>
+      <line x1="56" y1="16" x2="56" y2="48" stroke="#c084fc" stroke-width="2"/>
+      <line x1="56" y1="20" x2="68" y2="28" stroke="#c084fc" stroke-width="1.5"/>
+      <line x1="56" y1="28" x2="68" y2="36" stroke="#c084fc" stroke-width="1.5"/>
+      <line x1="56" y1="36" x2="68" y2="44" stroke="#c084fc" stroke-width="1.5"/>
+      <!-- torques como arcos (a 1m, 2m, 3m, 4m) -->
+      <path d="M165,20 A14,14 0 1 1 165,48" fill="none" stroke="#fb923c" stroke-width="2"/><polygon points="162,48 168,48 165,56" fill="#fb923c"/>
+      <text x="155" y="14" fill="#fb923c" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700">T₀</text>
+      <path d="M250,20 A14,14 0 1 1 250,48" fill="none" stroke="#fb923c" stroke-width="2"/><polygon points="247,48 253,48 250,56" fill="#fb923c"/>
+      <text x="240" y="14" fill="#fb923c" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700">T₀</text>
+      <path d="M335,20 A14,14 0 1 1 335,48" fill="none" stroke="#fbbf24" stroke-width="2.5"/><polygon points="332,48 338,48 335,56" fill="#fbbf24"/>
+      <text x="324" y="14" fill="#fbbf24" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700">3T₀</text>
+      <path d="M420,20 A14,14 0 1 1 420,48" fill="none" stroke="#fb923c" stroke-width="2"/><polygon points="417,48 423,48 420,56" fill="#fb923c"/>
+      <text x="415" y="14" fill="#fb923c" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="700">1,5T₀</text>
+      <!-- labels -->
+      <text x="80" y="22" fill="#c084fc" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      <text x="165" y="56" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">1m</text>
+      <text x="250" y="56" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">2m</text>
+      <text x="335" y="56" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">3m</text>
+      <text x="420" y="56" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">4m</text>
+    </svg>
+
+    <div class="section-wrap s-datos sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Torque unitario \(T_0\)</td><td>\(0{,}4\ \text{T}{\cdot}\text{m}\)</td></tr>
+        <tr><td>Longitud de segmento</td><td>\(L = 1\ \text{m}\) (4 segmentos → longitud total 4 m)</td></tr>
+        <tr><td>Momentos aplicados</td><td>\(T_0\) en \(x=1\ \text{m}\), \(T_0\) en \(x=2\ \text{m}\), \(3T_0\) en \(x=3\ \text{m}\), \(1{,}5T_0\) en \(x=4\ \text{m}\)</td></tr>
+        <tr><td>Empotramiento</td><td>En \(A\) (\(x=0\)): proporciona la reacción torsora</td></tr>
+      </table>
+    </div>
+    </div>
+
+    <div class="section-wrap s-resolucion sec-open">
+    <button class="sec-btn" onclick="toggleSec(this)">📐 Resolución paso a paso <span class="sarr">▼</span></button>
+    <div class="sec-body">
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Reacción en el empotramiento</div>
+      <p>El eje está empotrado en \(A\) y libre en el extremo derecho. El empotramiento debe equilibrar la suma de todos los momentos aplicados:</p>
+      <div class="formula-box">\[T_A = T_0+T_0+3T_0+1{,}5T_0 = 6{,}5T_0 = 6{,}5\times0{,}4 = \boxed{2{,}6\ \text{T}{\cdot}\text{m}}\]</div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Diagrama de momentos torsores T(x)</div>
+      <p>Se obtiene sumando desde el extremo libre (derecha) hacia el empotramiento. En cada sección donde se aplica un torque, el diagrama da un salto:</p>
+      <p><strong>[3–4 m]:</strong> \(T = 1{,}5T_0 = 0{,}6\ \text{T}{\cdot}\text{m}\)</p>
+      <p><strong>[2–3 m]:</strong> \(T = 1{,}5T_0+3T_0 = 4{,}5T_0 = 1{,}8\ \text{T}{\cdot}\text{m}\)</p>
+      <p><strong>[1–2 m]:</strong> \(T = 4{,}5T_0+T_0 = 5{,}5T_0 = 2{,}2\ \text{T}{\cdot}\text{m}\)</p>
+      <p><strong>[0–1 m]:</strong> \(T = 5{,}5T_0+T_0 = 6{,}5T_0 = 2{,}6\ \text{T}{\cdot}\text{m}\)</p>
+      <svg viewBox="0 0 500 108" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 10px">
+        <!-- zero y=96; escala 70px/2.6Tm; A=80,1m=165,2m=250,3m=335,4m=420 -->
+        <!-- T=2.6→y=96-70=26; T=2.2→y=96-59.2=36.8≈37; T=1.8→y=96-48.5=47.5≈48; T=0.6→y=96-16.2=79.8≈80 -->
+        <line x1="60" y1="96" x2="460" y2="96" stroke="#334155" stroke-width="1.5"/>
+        <!-- áreas -->
+        <rect x="80" y="26" width="85" height="70" fill="rgba(251,146,60,.15)" stroke="none"/>
+        <rect x="165" y="37" width="85" height="59" fill="rgba(251,146,60,.15)" stroke="none"/>
+        <rect x="250" y="48" width="85" height="48" fill="rgba(251,146,60,.15)" stroke="none"/>
+        <rect x="335" y="80" width="85" height="16" fill="rgba(251,146,60,.15)" stroke="none"/>
+        <!-- contorno -->
+        <line x1="80" y1="96" x2="80" y2="26" stroke="#fb923c" stroke-width="2"/>
+        <line x1="80" y1="26" x2="165" y2="26" stroke="#fb923c" stroke-width="2"/>
+        <line x1="165" y1="26" x2="165" y2="37" stroke="#fb923c" stroke-width="2"/>
+        <line x1="165" y1="37" x2="250" y2="37" stroke="#fb923c" stroke-width="2"/>
+        <line x1="250" y1="37" x2="250" y2="48" stroke="#fb923c" stroke-width="2"/>
+        <line x1="250" y1="48" x2="335" y2="48" stroke="#fb923c" stroke-width="2"/>
+        <line x1="335" y1="48" x2="335" y2="80" stroke="#fb923c" stroke-width="2"/>
+        <line x1="335" y1="80" x2="420" y2="80" stroke="#fb923c" stroke-width="2"/>
+        <line x1="420" y1="80" x2="420" y2="96" stroke="#fb923c" stroke-width="2"/>
+        <!-- etiquetas -->
+        <text x="88" y="23" fill="#fb923c" font-size="9" font-family="Space Grotesk,sans-serif">2,6 T·m</text>
+        <text x="175" y="34" fill="#fb923c" font-size="9" font-family="Space Grotesk,sans-serif">2,2</text>
+        <text x="258" y="45" fill="#fb923c" font-size="9" font-family="Space Grotesk,sans-serif">1,8</text>
+        <text x="345" y="77" fill="#fb923c" font-size="9" font-family="Space Grotesk,sans-serif">0,6</text>
+        <text x="80" y="106" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">A</text>
+        <text x="165" y="106" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">1m</text>
+        <text x="250" y="106" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">2m</text>
+        <text x="335" y="106" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">3m</text>
+        <text x="420" y="106" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk,sans-serif">4m</text>
+        <text x="456" y="99" fill="#64748b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="600">T</text>
+      </svg>
+    </div>
+
+    </div>
+    </div>
+
+    <div class="resultado-final">
+      <div class="rf-label">Resultados</div>
+      <div class="rf-val">Reacción en empotramiento: \(T_A = 6{,}5\,T_0 = 2{,}6\ \text{T}{\cdot}\text{m}\)</div>
+      <div class="rf-val">Torsor máximo: en tramo 0–1 m → \(T_{max} = 2{,}6\ \text{T}{\cdot}\text{m}\)</div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.12 ═══════════════ -->
@@ -1847,9 +1945,152 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
       <div class="panel-meta">Esfuerzo axial · Tracción y compresión · Carga distribuida</div>
     </div>
     <div class="enunciado">
-      <p>Columna \(AB\) con carga puntual \(P = 5\ \text{kN}\) en el extremo superior, carga puntual \(P = 2\ \text{kN}\) en un punto intermedio, y carga distribuida \(q = 1{,}5\ \text{kN/m}\) en el tramo inferior. Longitudes de tramos: \(2\ \text{m}\) (superior) y \(3\ \text{m}\) (inferior). Dibujar el diagrama de esfuerzos axiales.</p>
+      <p>Columna \(AB\) con carga puntual \(P_1 = 5\ \text{kN}\) en el extremo superior (libre), carga puntual \(P_2 = 2\ \text{kN}\) en un punto intermedio a \(2\ \text{m}\) del extremo superior, y carga distribuida \(q = 1{,}5\ \text{kN/m}\) en el tramo inferior. Longitudes de tramos: \(L_1 = 2\ \text{m}\) (superior) y \(L_2 = 3\ \text{m}\) (inferior). El extremo inferior \(B\) está empotrado. Dibujar el diagrama de esfuerzos axiales \(N(x)\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- ── DATOS ── -->
+    <div class="section-wrap s-datos sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Datos</div>
+      <div class="section-body">
+        <table class="datos-table">
+          <tr><td>Carga puntual en \(A\) (extremo libre)</td><td>\(P_1 = 5\ \text{kN}\)</td></tr>
+          <tr><td>Carga puntual en \(x = 2\ \text{m}\)</td><td>\(P_2 = 2\ \text{kN}\)</td></tr>
+          <tr><td>Carga distribuida axial (tramo inferior)</td><td>\(q = 1{,}5\ \text{kN/m}\)</td></tr>
+          <tr><td>Longitud tramo superior</td><td>\(L_1 = 2\ \text{m}\)</td></tr>
+          <tr><td>Longitud tramo inferior</td><td>\(L_2 = 3\ \text{m}\)</td></tr>
+          <tr><td>Longitud total</td><td>\(L = 5\ \text{m}\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── RESOLUCIÓN ── -->
+    <div class="section-wrap s-resolucion sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Resolución</div>
+      <div class="section-body">
+
+        <!-- Figure -->
+        <svg viewBox="0 0 500 138" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+          <defs>
+            <marker id="e612ao" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0L7,3.5L0,7Z" fill="#fb923c"/></marker>
+            <marker id="e612ag" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0L7,3.5L0,7Z" fill="#4ade80"/></marker>
+          </defs>
+          <!-- bar -->
+          <rect x="80" y="60" width="340" height="9" fill="#94a3b8" rx="2"/>
+          <!-- fixed support at B (right): wall with hatching -->
+          <rect x="420" y="46" width="13" height="37" fill="rgba(148,163,184,.25)" stroke="#94a3b8" stroke-width="1.5"/>
+          <line x1="433" y1="46" x2="433" y2="83" stroke="#94a3b8" stroke-width="1.8"/>
+          <line x1="433" y1="50" x2="447" y2="46" stroke="#64748b" stroke-width="1.2"/>
+          <line x1="433" y1="57" x2="447" y2="53" stroke="#64748b" stroke-width="1.2"/>
+          <line x1="433" y1="64" x2="447" y2="60" stroke="#64748b" stroke-width="1.2"/>
+          <line x1="433" y1="71" x2="447" y2="67" stroke="#64748b" stroke-width="1.2"/>
+          <line x1="433" y1="78" x2="447" y2="74" stroke="#64748b" stroke-width="1.2"/>
+          <!-- P1=5 kN at A: arrow → entering bar from left -->
+          <line x1="38" y1="64" x2="78" y2="64" stroke="#fb923c" stroke-width="2.2" marker-end="url(#e612ao)"/>
+          <text x="60" y="52" font-size="11" fill="#fb923c" font-family="sans-serif" text-anchor="middle">P₁=5 kN</text>
+          <!-- P2=2 kN at x=216: arrow from above pointing down to bar -->
+          <line x1="216" y1="38" x2="216" y2="58" stroke="#fb923c" stroke-width="2" marker-end="url(#e612ao)"/>
+          <text x="216" y="31" font-size="11" fill="#fb923c" font-family="sans-serif" text-anchor="middle">P₂=2 kN</text>
+          <!-- q=1.5 kN/m: distributed arrows from x=216 to x=420, horizontal cap line above bar -->
+          <line x1="216" y1="48" x2="416" y2="48" stroke="#fb923c" stroke-width="1.5"/>
+          <line x1="233" y1="48" x2="233" y2="58" stroke="#fb923c" stroke-width="1.5" marker-end="url(#e612ao)"/>
+          <line x1="267" y1="48" x2="267" y2="58" stroke="#fb923c" stroke-width="1.5" marker-end="url(#e612ao)"/>
+          <line x1="301" y1="48" x2="301" y2="58" stroke="#fb923c" stroke-width="1.5" marker-end="url(#e612ao)"/>
+          <line x1="335" y1="48" x2="335" y2="58" stroke="#fb923c" stroke-width="1.5" marker-end="url(#e612ao)"/>
+          <line x1="369" y1="48" x2="369" y2="58" stroke="#fb923c" stroke-width="1.5" marker-end="url(#e612ao)"/>
+          <line x1="403" y1="48" x2="403" y2="58" stroke="#fb923c" stroke-width="1.5" marker-end="url(#e612ao)"/>
+          <text x="318" y="42" font-size="10" fill="#fb923c" font-family="sans-serif" text-anchor="middle">q = 1,5 kN/m</text>
+          <!-- Reaction at B: green → arrow pointing left (leftward) -->
+          <line x1="466" y1="64" x2="435" y2="64" stroke="#4ade80" stroke-width="2.2" marker-end="url(#e612ag)"/>
+          <text x="475" y="59" font-size="10" fill="#4ade80" font-family="sans-serif" text-anchor="start">R_B</text>
+          <!-- labels -->
+          <text x="80" y="86" font-size="12" fill="#94a3b8" font-family="sans-serif" text-anchor="middle">A</text>
+          <circle cx="216" cy="64" r="2.5" fill="#64748b"/>
+          <text x="216" y="86" font-size="10" fill="#64748b" font-family="sans-serif" text-anchor="middle">x=2 m</text>
+          <text x="420" y="86" font-size="12" fill="#94a3b8" font-family="sans-serif" text-anchor="middle">B</text>
+          <!-- dimension lines -->
+          <line x1="80" y1="96" x2="216" y2="96" stroke="#475569" stroke-width="1"/>
+          <line x1="80" y1="93" x2="80" y2="99" stroke="#475569" stroke-width="1"/>
+          <line x1="216" y1="93" x2="216" y2="99" stroke="#475569" stroke-width="1"/>
+          <text x="148" y="109" font-size="10" fill="#64748b" font-family="sans-serif" text-anchor="middle">L₁ = 2 m</text>
+          <line x1="216" y1="96" x2="420" y2="96" stroke="#475569" stroke-width="1"/>
+          <line x1="420" y1="93" x2="420" y2="99" stroke="#475569" stroke-width="1"/>
+          <text x="318" y="109" font-size="10" fill="#64748b" font-family="sans-serif" text-anchor="middle">L₂ = 3 m</text>
+          <text x="68" y="64" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="end">x→</text>
+        </svg>
+
+        <!-- Paso 1 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Reacción en el empotramiento \(B\)</div>
+          <p>El único vínculo es el empotramiento en \(B\). Equilibrio de fuerzas axiales (tomando \(x\) hacia \(B\)):</p>
+          <div class="formula-box">
+            \[\sum F_x = 0 \implies R_B - P_1 - P_2 - q\,L_2 = 0\]
+            \[R_B = 5 + 2 + 1{,}5\times 3 = 5 + 2 + 4{,}5 = \boxed{11{,}5\ \text{kN}}\]
+          </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Tramo superior \([0,\ 2\ \text{m}]\)</div>
+          <p>Corte a distancia \(x\) de \(A\). A la izquierda del corte solo actúa \(P_1\):</p>
+          <div class="formula-box">
+            \[\sum F_x = 0 \implies N(x) + P_1 = 0 \implies N(x) = -P_1\]
+            \[N(x) = -5\ \text{kN} \quad (0 \leq x \leq 2\ \text{m})\]
+          </div>
+          <p>Negativo indica <strong>compresión</strong>. Valor constante en todo el tramo.</p>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Tramo inferior \([2\ \text{m},\ 5\ \text{m}]\)</div>
+          <p>A la izquierda del corte actúan \(P_1\), \(P_2\) y la carga distribuida \(q\) entre \(2\ \text{m}\) y \(x\):</p>
+          <div class="formula-box">
+            \[N(x) = -P_1 - P_2 - q\,(x - 2)\]
+            \[N(x) = -5 - 2 - 1{,}5\,(x-2) = -7 - 1{,}5\,(x-2)\ \text{kN} \quad (2\ \text{m} \leq x \leq 5\ \text{m})\]
+          </div>
+          <p>En \(x=2\ \text{m}\): \(N = -7\ \text{kN}\) (salto de \(-2\ \text{kN}\) por \(P_2\)).<br>
+             En \(x=5\ \text{m}\): \(N = -7 - 1{,}5\times 3 = -11{,}5\ \text{kN}\). Variación <strong>lineal</strong>.<br>
+             Verificación: \(R_B = 11{,}5\ \text{kN}\ ✓\)
+          </p>
+        </div>
+
+        <!-- Paso 4: N diagram -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Diagrama \(N(x)\)</div>
+          <p>Toda la columna trabaja a <strong>compresión</strong>. Salto en \(x=2\ \text{m}\) por la carga puntual \(P_2\); variación lineal en el tramo inferior por la carga distribuida \(q\):</p>
+
+          <svg viewBox="0 0 500 108" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:8px 0 4px">
+            <!-- baseline N=0 -->
+            <line x1="80" y1="26" x2="420" y2="26" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="76" y="30" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="end">0</text>
+            <!-- tramo 1 fill [80,216]: N=-5 → depth=5*(62/11.5)=27 → y=26+27=53 -->
+            <polygon points="80,26 216,26 216,53 80,53" fill="rgba(251,113,133,.20)"/>
+            <!-- tramo 2 fill [216,420]: N from -7 (y=26+37=63) to -11.5 (y=26+62=88) -->
+            <polygon points="216,26 420,26 420,88 216,63" fill="rgba(251,113,133,.20)"/>
+            <!-- outline step function -->
+            <polyline points="80,26 80,53 216,53 216,63 420,88 420,26" fill="none" stroke="#f87171" stroke-width="2.2"/>
+            <!-- value labels -->
+            <text x="148" y="67" font-size="10" fill="#f87171" font-family="sans-serif" text-anchor="middle">−5 kN</text>
+            <text x="222" y="73" font-size="10" fill="#f87171" font-family="sans-serif">−7 kN</text>
+            <text x="424" y="92" font-size="10" fill="#f87171" font-family="sans-serif">−11,5 kN</text>
+            <!-- N axis label -->
+            <text x="58" y="22" font-size="11" fill="#94a3b8" font-family="sans-serif" font-style="italic">N</text>
+            <!-- x-axis bar -->
+            <line x1="80" y1="97" x2="420" y2="97" stroke="#475569" stroke-width="1.5"/>
+            <text x="80" y="107" font-size="10" fill="#64748b" font-family="sans-serif" text-anchor="middle">A</text>
+            <text x="216" y="107" font-size="10" fill="#64748b" font-family="sans-serif" text-anchor="middle">2 m</text>
+            <text x="420" y="107" font-size="10" fill="#64748b" font-family="sans-serif" text-anchor="middle">B</text>
+          </svg>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">Reacción en \(B\): \(R_B = 11{,}5\ \text{kN}\)</div>
+          <div class="rf-val">Tramo \([0,\ 2\ \text{m}]\): \(N = -5\ \text{kN}\) (constante, compresión)</div>
+          <div class="rf-val">Tramo \([2\ \text{m},\ 5\ \text{m}]\): \(N = -7 - 1{,}5\,(x-2)\ \text{kN}\) (lineal)</div>
+          <div class="rf-val">\(N_{\max} = 11{,}5\ \text{kN}\) (compresión) en el empotramiento \(B\)</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.13 ═══════════════ -->
@@ -1860,10 +2101,188 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
       <div class="panel-meta">Carga inclinada 30° · Descomposición axial y transversal</div>
     </div>
     <div class="enunciado">
-      <p>Barra \(AB\) dividida en segmentos \(a\) y \(b\), sometida a una carga inclinada \(30°\) respecto al eje de la barra. Dibujar los diagramas de esfuerzos axiales (\(N\)), cortantes (\(Q\)) y momentos flectores (\(M\)).</p>
+      <p>Barra biapoyada \(AB\) dividida por el punto \(C\) en segmentos \(a\) (tramo \(AC\)) y \(b\) (tramo \(CB\)). En \(C\) se aplica la carga \(F\) inclinada \(30°\) respecto al eje de la barra (componente axial hacia \(A\), componente transversal hacia abajo). Obtener los diagramas de esfuerzos axiales \(N(x)\), cortantes \(Q(x)\) y momentos flectores \(M(x)\).</p>
       <div class="nota">Descomponer la carga en componente axial y transversal antes de plantear los diagramas en cada tramo.</div>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- ── DATOS ── -->
+    <div class="section-wrap s-datos sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Datos</div>
+      <div class="section-body">
+        <table class="datos-table">
+          <tr><td>Longitud \(AC\)</td><td>\(a\)</td></tr>
+          <tr><td>Longitud \(CB\)</td><td>\(b\)</td></tr>
+          <tr><td>Carga inclinada en \(C\)</td><td>\(F\) a \(30°\) del eje</td></tr>
+          <tr><td>Apoyo \(A\)</td><td>Articulación (pin): reacciones \(R_{Ax}\), \(R_{Ay}\)</td></tr>
+          <tr><td>Apoyo \(B\)</td><td>Rodillo: reacción \(R_B\) (solo transversal)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── RESOLUCIÓN ── -->
+    <div class="section-wrap s-resolucion sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Resolución</div>
+      <div class="section-body">
+
+        <!-- Figure -->
+        <svg viewBox="0 0 500 130" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+          <defs>
+            <marker id="e613ao" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0L7,3.5L0,7Z" fill="#fb923c"/></marker>
+            <marker id="e613ag" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0L7,3.5L0,7Z" fill="#4ade80"/></marker>
+          </defs>
+          <!-- bar -->
+          <rect x="80" y="64" width="340" height="9" fill="#94a3b8" rx="2"/>
+          <!-- pin A (purple) -->
+          <polygon points="80,73 65,96 95,96" fill="rgba(192,132,252,.5)" stroke="#c084fc" stroke-width="1.2"/>
+          <line x1="54" y1="97" x2="106" y2="97" stroke="#c084fc" stroke-width="2.5"/>
+          <!-- roller B (blue) -->
+          <polygon points="420,73 405,96 435,96" fill="rgba(56,189,248,.5)" stroke="#38bdf8" stroke-width="1.2"/>
+          <circle cx="420" cy="101" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+          <line x1="405" y1="107" x2="435" y2="107" stroke="#38bdf8" stroke-width="2.5"/>
+          <!-- point C -->
+          <circle cx="230" cy="68" r="3" fill="#f59e0b"/>
+          <!-- Force F at C: pointing lower-left at 30° from bar axis (toward A and down) -->
+          <!-- Angle 30° below horizontal toward left: dx=-40, dy=+23 (tan30°=1/√3≈0.577, 23/40=0.575≈30°) -->
+          <line x1="230" y1="68" x2="190" y2="91" stroke="#fb923c" stroke-width="2.2" marker-end="url(#e613ao)"/>
+          <text x="182" y="107" font-size="11" fill="#fb923c" font-family="sans-serif" text-anchor="middle">F</text>
+          <!-- 30° angle arc -->
+          <path d="M 215,68 A 15,15 0 0 0 218,82" fill="none" stroke="#fb923c" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <text x="204" y="80" font-size="9" fill="#fb923c" font-family="sans-serif">30°</text>
+          <!-- Reactions -->
+          <line x1="80" y1="108" x2="80" y2="75" stroke="#4ade80" stroke-width="2" marker-end="url(#e613ag)"/>
+          <text x="68" y="121" font-size="10" fill="#4ade80" font-family="sans-serif" text-anchor="middle">R_Ay</text>
+          <line x1="420" y1="115" x2="420" y2="76" stroke="#4ade80" stroke-width="2" marker-end="url(#e613ag)"/>
+          <text x="432" y="121" font-size="10" fill="#4ade80" font-family="sans-serif">R_B</text>
+          <!-- labels -->
+          <text x="80" y="55" font-size="12" fill="#94a3b8" font-family="sans-serif" text-anchor="middle">A</text>
+          <text x="230" y="55" font-size="12" fill="#f59e0b" font-family="sans-serif" text-anchor="middle">C</text>
+          <text x="420" y="55" font-size="12" fill="#94a3b8" font-family="sans-serif" text-anchor="middle">B</text>
+          <!-- dimension lines -->
+          <line x1="80" y1="44" x2="230" y2="44" stroke="#475569" stroke-width="1"/>
+          <line x1="80" y1="41" x2="80" y2="47" stroke="#475569" stroke-width="1"/>
+          <line x1="230" y1="41" x2="230" y2="47" stroke="#475569" stroke-width="1"/>
+          <text x="155" y="38" font-size="11" fill="#64748b" font-family="sans-serif" text-anchor="middle">a</text>
+          <line x1="230" y1="44" x2="420" y2="44" stroke="#475569" stroke-width="1"/>
+          <line x1="420" y1="41" x2="420" y2="47" stroke="#475569" stroke-width="1"/>
+          <text x="325" y="38" font-size="11" fill="#64748b" font-family="sans-serif" text-anchor="middle">b</text>
+        </svg>
+
+        <!-- Paso 1 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Descomposición de la carga \(F\)</div>
+          <p>La carga \(F\) está inclinada \(30°\) respecto al eje de la barra (horizontal). Sus componentes son:</p>
+          <div class="formula-box">
+            \[F_{\text{axial}} = F\cos 30° = \frac{F\sqrt{3}}{2} \quad (\text{hacia } A,\ \text{compresión en }AC)\]
+            \[F_{\text{transv}} = F\sin 30° = \frac{F}{2} \quad (\text{hacia abajo})\]
+          </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Reacciones</div>
+          <p>La articulación \(A\) absorbe el esfuerzo axial: \(R_{Ax} = F\sqrt{3}/2\). Las reacciones transversales se obtienen de la barra como viga simplemente apoyada sometida a \(F_{\text{transv}} = F/2\) en \(C\):</p>
+          <div class="formula-box">
+            \[\sum M_A = 0 \implies R_B\,(a+b) = \frac{F}{2}\,a \implies R_B = \frac{Fa}{2(a+b)}\]
+            \[\sum F_y = 0 \implies R_{Ay} = \frac{F}{2} - R_B = \frac{Fb}{2(a+b)}\]
+          </div>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Diagrama \(N(x)\): esfuerzo axial</div>
+          <p>Solo la articulación \(A\) ofrece reacción axial. El rodillo \(B\) no transmite fuerza horizontal:</p>
+          <div class="formula-box">
+            \[N(x) = -\frac{F\sqrt{3}}{2} \quad (0 \leq x \leq a)\]
+            \[N(x) = 0 \quad (a < x \leq a+b)\]
+          </div>
+          <p>El tramo \(AC\) trabaja a <strong>compresión</strong>; el tramo \(CB\) no tiene esfuerzo axial.</p>
+
+          <svg viewBox="0 0 500 84" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:8px 0 4px">
+            <line x1="80" y1="28" x2="420" y2="28" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="76" y="32" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="end">0</text>
+            <!-- tramo AC: N = -F√3/2, depth=30 → y=58 -->
+            <polygon points="80,28 230,28 230,58 80,58" fill="rgba(251,113,133,.20)"/>
+            <!-- tramo CB: N=0, nothing -->
+            <!-- outline -->
+            <polyline points="80,28 80,58 230,58 230,28" fill="none" stroke="#f87171" stroke-width="2.2"/>
+            <line x1="230" y1="28" x2="420" y2="28" stroke="#f87171" stroke-width="2.2"/>
+            <text x="155" y="72" font-size="10" fill="#f87171" font-family="sans-serif" text-anchor="middle">−F√3/2</text>
+            <text x="325" y="22" font-size="10" fill="#f87171" font-family="sans-serif" text-anchor="middle">0</text>
+            <text x="58" y="24" font-size="11" fill="#94a3b8" font-family="sans-serif" font-style="italic">N</text>
+            <line x1="80" y1="76" x2="420" y2="76" stroke="#475569" stroke-width="1.5"/>
+            <text x="80" y="83" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">A</text>
+            <text x="230" y="83" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">C</text>
+            <text x="420" y="83" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">B</text>
+          </svg>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Diagrama \(Q(x)\): cortante</div>
+          <p>Usando los resultados de equilibrio transversal:</p>
+          <div class="formula-box">
+            \[Q(x) = R_{Ay} = \frac{Fb}{2(a+b)} \quad (0 \leq x < a) \quad \text{(constante, positivo)}\]
+            \[Q(x) = R_{Ay} - \frac{F}{2} = -\frac{Fa}{2(a+b)} \quad (a < x \leq a+b) \quad \text{(constante, negativo)}\]
+          </div>
+
+          <svg viewBox="0 0 500 84" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:8px 0 4px">
+            <line x1="80" y1="42" x2="420" y2="42" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="76" y="46" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="end">0</text>
+            <!-- AC: Q positive, height=22 → y=20 -->
+            <polygon points="80,42 230,42 230,20 80,20" fill="rgba(56,189,248,.18)"/>
+            <!-- CB: Q negative, depth=18 → y=60 -->
+            <polygon points="230,42 420,42 420,60 230,60" fill="rgba(251,113,133,.18)"/>
+            <!-- outline -->
+            <polyline points="80,42 80,20 230,20 230,60 420,60 420,42" fill="none" stroke="#f87171" stroke-width="2.2"/>
+            <polyline points="80,20 230,20" fill="none" stroke="#38bdf8" stroke-width="2.2"/>
+            <polyline points="230,60 420,60" fill="none" stroke="#f87171" stroke-width="2.2"/>
+            <text x="155" y="15" font-size="10" fill="#38bdf8" font-family="sans-serif" text-anchor="middle">+Fb/[2(a+b)]</text>
+            <text x="325" y="74" font-size="10" fill="#f87171" font-family="sans-serif" text-anchor="middle">−Fa/[2(a+b)]</text>
+            <text x="58" y="38" font-size="11" fill="#94a3b8" font-family="sans-serif" font-style="italic">Q</text>
+            <line x1="80" y1="78" x2="420" y2="78" stroke="#475569" stroke-width="1.5"/>
+            <text x="80" y="84" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">A</text>
+            <text x="230" y="84" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">C</text>
+            <text x="420" y="84" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">B</text>
+          </svg>
+        </div>
+
+        <!-- Paso 5 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Diagrama \(M(x)\): momento flector</div>
+          <p>El momento crece linealmente en cada tramo (no hay cargas distribuidas):</p>
+          <div class="formula-box">
+            \[M(x) = R_{Ay}\,x = \frac{Fb}{2(a+b)}\,x \quad (0 \leq x \leq a)\]
+            \[M(a) = \frac{F\,a\,b}{2(a+b)} \quad \leftarrow M_{\max}\]
+            \[M(x) = R_{Ay}\,x - \frac{F}{2}(x-a) \quad (a \leq x \leq a+b)\]
+          </div>
+          <p>Verificación: \(M(a+b) = R_{Ay}(a+b) - \tfrac{F}{2}\,b = \tfrac{Fb}{2} - \tfrac{Fb}{2} = 0\ ✓\)</p>
+
+          <svg viewBox="0 0 500 84" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:8px 0 4px">
+            <line x1="80" y1="76" x2="420" y2="76" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="76" y="80" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="end">0</text>
+            <!-- triangle: peak at C (230, 26) -->
+            <polygon points="80,76 230,26 420,76" fill="rgba(16,185,129,.14)"/>
+            <!-- outline -->
+            <polyline points="80,76 230,26 420,76" fill="none" stroke="#10b981" stroke-width="2.2"/>
+            <text x="230" y="20" font-size="10" fill="#10b981" font-family="sans-serif" text-anchor="middle">Fab/[2(a+b)]</text>
+            <line x1="230" y1="22" x2="230" y2="26" stroke="#10b981" stroke-width="1"/>
+            <text x="58" y="72" font-size="11" fill="#94a3b8" font-family="sans-serif" font-style="italic">M</text>
+            <line x1="80" y1="80" x2="420" y2="80" stroke="#475569" stroke-width="1.5"/>
+            <text x="80" y="84" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">A</text>
+            <text x="230" y="84" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">C</text>
+            <text x="420" y="84" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">B</text>
+          </svg>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">Descomposición: \(F_{\text{axial}} = \dfrac{F\sqrt{3}}{2}\), \(F_{\text{transv}} = \dfrac{F}{2}\)</div>
+          <div class="rf-val">Reacciones: \(R_{Ay} = \dfrac{Fb}{2(a+b)}\), \(R_B = \dfrac{Fa}{2(a+b)}\), \(R_{Ax} = \dfrac{F\sqrt{3}}{2}\)</div>
+          <div class="rf-val">\(N = -\dfrac{F\sqrt{3}}{2}\) en \([A,C]\); \(N = 0\) en \([C,B]\)</div>
+          <div class="rf-val">\(M_{\max} = \dfrac{Fab}{2(a+b)}\) en \(C\)</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.14 ═══════════════ -->
@@ -1874,10 +2293,157 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
       <div class="panel-meta">Flexión pura · \(\sigma_{adm} = 12\ \text{MPa}\) · Sección \(40 \times h\)</div>
     </div>
     <div class="enunciado">
-      <p>Viga rectangular de ancho \(40\ \text{mm}\) y altura \(h\) desconocida, con cargas puntuales \(1{,}8\ \text{kN}\) y \(3{,}6\ \text{kN}\). Longitudes de tramos: \(0{,}8\ \text{m} + 0{,}8\ \text{m} + 0{,}8\ \text{m}\). Tensión admisible \(\sigma_{adm} = 12\ \text{MPa}\) (igual a tracción y compresión). Calcular la dimensión \(h\).</p>
-      <p style="margin-top:8px"><strong>Resultado:</strong> \(h = 173{,}20\ \text{mm}\)</p>
+      <p>Viga biapoyada \(AB\) de sección rectangular \(b \times h\) con \(b = 40\ \text{mm}\) y \(h\) desconocida, sometida a dos cargas puntuales: \(P_1 = 1{,}8\ \text{kN}\) en \(C\) y \(P_2 = 3{,}6\ \text{kN}\) en \(D\). Longitudes: \(AC = CD = DB = 0{,}8\ \text{m}\). Tensión admisible \(\sigma_{adm} = 12\ \text{MPa}\). Calcular la dimensión \(h\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- ── DATOS ── -->
+    <div class="section-wrap s-datos sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Datos</div>
+      <div class="section-body">
+        <table class="datos-table">
+          <tr><td>Carga \(P_1\) en \(C\) (\(x=0{,}8\ \text{m}\))</td><td>\(1{,}8\ \text{kN}\)</td></tr>
+          <tr><td>Carga \(P_2\) en \(D\) (\(x=1{,}6\ \text{m}\))</td><td>\(3{,}6\ \text{kN}\)</td></tr>
+          <tr><td>Longitud total</td><td>\(L = 2{,}4\ \text{m}\)</td></tr>
+          <tr><td>Ancho de la sección</td><td>\(b = 40\ \text{mm}\)</td></tr>
+          <tr><td>Tensión admisible</td><td>\(\sigma_{adm} = 12\ \text{MPa}\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── RESOLUCIÓN ── -->
+    <div class="section-wrap s-resolucion sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Resolución</div>
+      <div class="section-body">
+
+        <!-- Figure: scale 340px/2.4m=141.7px/m; A=80, C=193, D=307, B=420 -->
+        <svg viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin-bottom:14px">
+          <defs>
+            <marker id="e614ao" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0L7,3.5L0,7Z" fill="#fb923c"/></marker>
+            <marker id="e614ag" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0L7,3.5L0,7Z" fill="#4ade80"/></marker>
+          </defs>
+          <rect x="80" y="58" width="340" height="9" fill="#94a3b8" rx="2"/>
+          <!-- pin A -->
+          <polygon points="80,67 65,90 95,90" fill="rgba(192,132,252,.5)" stroke="#c084fc" stroke-width="1.2"/>
+          <line x1="54" y1="91" x2="106" y2="91" stroke="#c084fc" stroke-width="2.5"/>
+          <!-- roller B -->
+          <polygon points="420,67 405,90 435,90" fill="rgba(56,189,248,.5)" stroke="#38bdf8" stroke-width="1.2"/>
+          <circle cx="420" cy="95" r="5" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+          <line x1="405" y1="101" x2="435" y2="101" stroke="#38bdf8" stroke-width="2.5"/>
+          <!-- P1=1.8 kN at C (x=193) -->
+          <line x1="193" y1="32" x2="193" y2="56" stroke="#fb923c" stroke-width="2" marker-end="url(#e614ao)"/>
+          <text x="193" y="26" font-size="11" fill="#fb923c" font-family="sans-serif" text-anchor="middle">1,8 kN</text>
+          <!-- P2=3.6 kN at D (x=307) -->
+          <line x1="307" y1="32" x2="307" y2="56" stroke="#fb923c" stroke-width="2" marker-end="url(#e614ao)"/>
+          <text x="307" y="26" font-size="11" fill="#fb923c" font-family="sans-serif" text-anchor="middle">3,6 kN</text>
+          <!-- Reactions -->
+          <line x1="80" y1="104" x2="80" y2="69" stroke="#4ade80" stroke-width="2" marker-end="url(#e614ag)"/>
+          <text x="80" y="114" font-size="10" fill="#4ade80" font-family="sans-serif" text-anchor="middle">R_A</text>
+          <line x1="420" y1="108" x2="420" y2="70" stroke="#4ade80" stroke-width="2" marker-end="url(#e614ag)"/>
+          <text x="420" y="118" font-size="10" fill="#4ade80" font-family="sans-serif" text-anchor="middle">R_B</text>
+          <!-- labels -->
+          <text x="80" y="50" font-size="11" fill="#94a3b8" font-family="sans-serif" text-anchor="middle">A</text>
+          <text x="193" y="50" font-size="11" fill="#94a3b8" font-family="sans-serif" text-anchor="middle">C</text>
+          <text x="307" y="50" font-size="11" fill="#94a3b8" font-family="sans-serif" text-anchor="middle">D</text>
+          <text x="420" y="50" font-size="11" fill="#94a3b8" font-family="sans-serif" text-anchor="middle">B</text>
+          <!-- dim lines -->
+          <line x1="80" y1="11" x2="193" y2="11" stroke="#475569" stroke-width="1"/>
+          <line x1="80" y1="8" x2="80" y2="14" stroke="#475569" stroke-width="1"/>
+          <line x1="193" y1="8" x2="193" y2="14" stroke="#475569" stroke-width="1"/>
+          <text x="137" y="8" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">0,8 m</text>
+          <line x1="193" y1="11" x2="307" y2="11" stroke="#475569" stroke-width="1"/>
+          <line x1="307" y1="8" x2="307" y2="14" stroke="#475569" stroke-width="1"/>
+          <text x="250" y="8" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">0,8 m</text>
+          <line x1="307" y1="11" x2="420" y2="11" stroke="#475569" stroke-width="1"/>
+          <line x1="420" y1="8" x2="420" y2="14" stroke="#475569" stroke-width="1"/>
+          <text x="364" y="8" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">0,8 m</text>
+        </svg>
+
+        <!-- Paso 1 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Reacciones en los apoyos</div>
+          <div class="formula-box">
+            \[\sum M_A = 0 \implies R_B \times 2{,}4 = 1{,}8\times 0{,}8 + 3{,}6\times 1{,}6 = 1{,}44 + 5{,}76 = 7{,}20\ \Rightarrow R_B = 3{,}0\ \text{kN}\]
+            \[\sum F_y = 0 \implies R_A = 1{,}8 + 3{,}6 - 3{,}0 = 2{,}4\ \text{kN}\]
+          </div>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Diagrama de cortantes \(Q(x)\)</div>
+          <div class="formula-box">
+            \[Q\ [0,\ 0{,}8] = +2{,}4\ \text{kN} \quad Q\ [0{,}8,\ 1{,}6] = 2{,}4 - 1{,}8 = +0{,}6\ \text{kN}\]
+            \[Q\ [1{,}6,\ 2{,}4] = 0{,}6 - 3{,}6 = -3{,}0\ \text{kN}\]
+          </div>
+          <!-- Q diagram: baseline y=52, scale 40px=3.0kN=13.33px/kN -->
+          <!-- Q=+2.4 → 32px above → y=20; Q=+0.6 → 8px above → y=44; Q=-3.0 → 40px below → y=92 -->
+          <svg viewBox="0 0 500 108" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 4px">
+            <line x1="80" y1="52" x2="420" y2="52" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <text x="76" y="56" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="end">0</text>
+            <!-- AC: Q=+2.4, fill blue -->
+            <polygon points="80,52 193,52 193,20 80,20" fill="rgba(56,189,248,.16)"/>
+            <!-- CD: Q=+0.6, fill blue -->
+            <polygon points="193,52 307,52 307,44 193,44" fill="rgba(56,189,248,.16)"/>
+            <!-- DB: Q=-3.0, fill red -->
+            <polygon points="307,52 420,52 420,92 307,92" fill="rgba(251,113,133,.18)"/>
+            <!-- outline -->
+            <polyline points="80,52 80,20 193,20 193,44 307,44 307,92 420,92 420,52" fill="none" stroke="#94a3b8" stroke-width="2"/>
+            <text x="137" y="15" font-size="10" fill="#38bdf8" font-family="sans-serif" text-anchor="middle">+2,4 kN</text>
+            <text x="250" y="39" font-size="10" fill="#38bdf8" font-family="sans-serif" text-anchor="middle">+0,6</text>
+            <text x="364" y="106" font-size="10" fill="#f87171" font-family="sans-serif" text-anchor="middle">−3,0 kN</text>
+            <text x="58" y="48" font-size="11" fill="#94a3b8" font-family="sans-serif" font-style="italic">Q</text>
+            <line x1="80" y1="100" x2="420" y2="100" stroke="#475569" stroke-width="1.5"/>
+            <text x="80" y="107" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">A</text>
+            <text x="193" y="107" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">C</text>
+            <text x="307" y="107" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">D</text>
+            <text x="420" y="107" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">B</text>
+          </svg>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Diagrama de momentos \(M(x)\)</div>
+          <div class="formula-box">
+            \[M(0{,}8) = 2{,}4\times 0{,}8 = 1{,}92\ \text{kN·m}\]
+            \[M(1{,}6) = 2{,}4\times 1{,}6 - 1{,}8\times 0{,}8 = 3{,}84 - 1{,}44 = \mathbf{2{,}40\ \text{kN·m}} \leftarrow M_{\max}\]
+            \[M(2{,}4) = 0\ ✓\]
+          </div>
+          <!-- M diagram: baseline y=88, scale 50px=2.4kN·m=20.83px/kN·m -->
+          <!-- M(0.8)=1.92→height=40px→y=48; M(1.6)=2.40→height=50px→y=38 -->
+          <svg viewBox="0 0 500 100" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:6px 0 4px">
+            <line x1="80" y1="88" x2="420" y2="88" stroke="#475569" stroke-width="1" stroke-dasharray="4,3"/>
+            <polygon points="80,88 193,48 307,38 420,88" fill="rgba(16,185,129,.14)"/>
+            <polyline points="80,88 193,48 307,38 420,88" fill="none" stroke="#10b981" stroke-width="2.2"/>
+            <text x="193" y="42" font-size="10" fill="#10b981" font-family="sans-serif" text-anchor="middle">1,92</text>
+            <text x="307" y="32" font-size="10" fill="#10b981" font-family="sans-serif" text-anchor="middle">2,40 kN·m</text>
+            <text x="58" y="84" font-size="11" fill="#94a3b8" font-family="sans-serif" font-style="italic">M</text>
+            <line x1="80" y1="93" x2="420" y2="93" stroke="#475569" stroke-width="1.5"/>
+            <text x="80" y="100" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">A</text>
+            <text x="193" y="100" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">C</text>
+            <text x="307" y="100" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">D</text>
+            <text x="420" y="100" font-size="9" fill="#64748b" font-family="sans-serif" text-anchor="middle">B</text>
+          </svg>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Dimensionamiento de la sección</div>
+          <p>La sección más solicitada está en \(D\) con \(M_{\max} = 2{,}4\ \text{kN·m} = 2{,}4\times 10^6\ \text{N·mm}\). Para una sección rectangular el módulo resistente es:</p>
+          <div class="formula-box">
+            \[W = \frac{b\,h^2}{6}\]
+            \[\sigma_{\max} = \frac{M_{\max}}{W} \leq \sigma_{adm} \implies W \geq \frac{M_{\max}}{\sigma_{adm}} = \frac{2{,}4\times10^6\ \text{N·mm}}{12\ \text{N/mm}^2} = 2\times10^5\ \text{mm}^3\]
+            \[\frac{b\,h^2}{6} = 2\times10^5 \implies h^2 = \frac{6\times 2\times10^5}{40} = 30\,000\ \text{mm}^2\]
+            \[h = \sqrt{30\,000} = \boxed{173{,}2\ \text{mm}}\]
+          </div>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">Reacciones: \(R_A = 2{,}4\ \text{kN}\), \(R_B = 3{,}0\ \text{kN}\)</div>
+          <div class="rf-val">\(M_{\max} = 2{,}40\ \text{kN·m}\) en \(D\) (\(x = 1{,}6\ \text{m}\))</div>
+          <div class="rf-val">\(h = \sqrt{6M_{\max}/(b\,\sigma_{adm})} = \mathbf{173{,}2\ \text{mm}}\)</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.15 ═══════════════ -->
@@ -1888,10 +2454,75 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
       <div class="panel-meta">\(\sigma_{trac,adm} = 20\ \text{kg/cm}^2\) · \(\sigma_{comp,adm} = 150\ \text{kg/cm}^2\)</div>
     </div>
     <div class="enunciado">
-      <p>Calcular el valor máximo de la carga \(P\) sabiendo que la tensión admisible a tracción es \(20\ \text{kg/cm}^2\) y a compresión \(150\ \text{kg/cm}^2\). La sección no es simétrica respecto a la fibra neutra, por lo que ambas condiciones deben comprobarse por separado.</p>
-      <p style="margin-top:8px"><strong>Resultado:</strong> \(P = 9658{,}75\ \text{kg}\)</p>
+      <p>Viga simplemente apoyada con sección transversal <strong>no simétrica</strong> respecto a la fibra neutra. Calcular el valor máximo de la carga \(P\) sabiendo que la tensión admisible a tracción es \(\sigma_{t,adm} = 20\ \text{kg/cm}^2\) y a compresión \(\sigma_{c,adm} = 150\ \text{kg/cm}^2\). Como la sección es asimétrica, ambas condiciones limitan por separado.</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- ── DATOS ── -->
+    <div class="section-wrap s-datos sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Datos</div>
+      <div class="section-body">
+        <table class="datos-table">
+          <tr><td>Tensión admisible a tracción</td><td>\(\sigma_{t,adm} = 20\ \text{kg/cm}^2\)</td></tr>
+          <tr><td>Tensión admisible a compresión</td><td>\(\sigma_{c,adm} = 150\ \text{kg/cm}^2\)</td></tr>
+          <tr><td>Sección transversal</td><td>Asimétrica (ver figura original)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── RESOLUCIÓN ── -->
+    <div class="section-wrap s-resolucion sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Resolución</div>
+      <div class="section-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Determinación del momento máximo \(M_{\max}\)</div>
+          <p>Se calculan las reacciones en los apoyos y se traza el diagrama de momentos flectores a partir de la carga \(P\). El momento máximo se expresa en función de \(P\):</p>
+          <div class="formula-box">
+            \[M_{\max} = f(P) \quad \text{(depende de la geometría de la viga)}\]
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Propiedades de la sección</div>
+          <p>Para la sección dada (no simétrica), se localizan la fibra neutra y las distancias \(y_t\) (a la fibra más traccionada) e \(y_c\) (a la fibra más comprimida):</p>
+          <div class="formula-box">
+            \[\bar{y} = \frac{\sum A_i\,y_i}{\sum A_i}, \quad I = \sum\!\left(\frac{b_i h_i^3}{12} + A_i d_i^2\right)\]
+          </div>
+          <p>donde \(d_i\) es la distancia del centroide de cada sub-área al centroide global.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Condición de tracción (fibra inferior, tensionada)</div>
+          <p>En la fibra más alejada de la fibra neutra en el lado traccionado:</p>
+          <div class="formula-box">
+            \[\sigma_t = \frac{M_{\max}\,y_t}{I} \leq \sigma_{t,adm} \implies P \leq P_{\lim,t} = \frac{\sigma_{t,adm}\,I}{f(1) \cdot y_t}\]
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Condición de compresión (fibra superior, comprimida)</div>
+          <p>En la fibra más alejada en el lado comprimido:</p>
+          <div class="formula-box">
+            \[\sigma_c = \frac{M_{\max}\,y_c}{I} \leq \sigma_{c,adm} \implies P \leq P_{\lim,c} = \frac{\sigma_{c,adm}\,I}{f(1) \cdot y_c}\]
+          </div>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Carga máxima</div>
+          <p>La carga admisible es el <strong>mínimo</strong> de las dos condiciones:</p>
+          <div class="formula-box">
+            \[P_{\max} = \min\!\left(P_{\lim,t},\ P_{\lim,c}\right)\]
+          </div>
+          <p>En este problema, a pesar de que \(\sigma_{c,adm} \gg \sigma_{t,adm}\), la geometría de la sección puede hacer que la condición de tracción sea la limitante si \(y_t\) es suficientemente mayor que \(y_c\). Ambas condiciones deben verificarse siempre.</p>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">\(P_{\max} = 9658{,}75\ \text{kg}\)</div>
+          <div class="rf-val">La condición limitante depende de la relación \(\sigma_{t,adm}/y_t\) vs \(\sigma_{c,adm}/y_c\).</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.16 ═══════════════ -->
@@ -1902,12 +2533,67 @@ code{font-family:var(--ff-mono);font-size:.84em;background:var(--surface2);paddi
       <div class="panel-meta">Torsión · Dos secciones \(D\) y \(2D\) · \(\tau_{adm} = 600\ \text{kg/cm}^2\)</div>
     </div>
     <div class="enunciado">
-      <p>Viga circular con tramo \(AB\) de diámetro \(D\) y tramo \(BC\) de diámetro \(2D\). Datos: \(M_0 = 0{,}2\ \text{T}{\cdot}\text{m}\), \(\tau_{adm} = 600\ \text{kg/cm}^2\), \(a = 1\ \text{m}\). Calcular:</p>
-      <p><strong>a)</strong> Diagrama de momentos torsores en función de \(M_0\).</p>
-      <p><strong>b)</strong> Diámetro \(D\) necesario.</p>
-      <p style="margin-top:8px"><strong>Resultado:</strong> \(D = 3{,}99\ \text{cm}\)</p>
+      <p>Eje de transmisión formado por dos tramos: \(AB\) de diámetro \(D\) y longitud \(a\), y \(BC\) de diámetro \(2D\) y longitud \(a\). Se aplican momentos torsores externos en los puntos del eje (ver figura original). Dato: \(M_0 = 0{,}2\ \text{T}{\cdot}\text{m}\), \(\tau_{adm} = 600\ \text{kg/cm}^2\), \(a = 1\ \text{m}\). Calcular:</p>
+      <p><strong>a)</strong> Diagrama de momentos torsores \(T(x)\) en función de \(M_0\).</p>
+      <p><strong>b)</strong> Diámetro \(D\) necesario para que \(\tau \leq \tau_{adm}\).</p>
     </div>
-    <div class="soon">Resolución en preparación</div>
+
+    <!-- ── DATOS ── -->
+    <div class="section-wrap s-datos sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Datos</div>
+      <div class="section-body">
+        <table class="datos-table">
+          <tr><td>Momento torsor de referencia</td><td>\(M_0 = 0{,}2\ \text{T·m} = 20\,000\ \text{kg·cm}\)</td></tr>
+          <tr><td>Tensión admisible a torsión</td><td>\(\tau_{adm} = 600\ \text{kg/cm}^2\)</td></tr>
+          <tr><td>Longitud de cada tramo</td><td>\(a = 1\ \text{m}\)</td></tr>
+          <tr><td>Diámetros</td><td>Tramo \(AB\): \(D\) (desconocido) · Tramo \(BC\): \(2D\)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── RESOLUCIÓN ── -->
+    <div class="section-wrap s-resolucion sec-open">
+      <div class="section-title" onclick="toggleSec(this)">Resolución</div>
+      <div class="section-body">
+
+        <div class="paso">
+          <div class="paso-titulo">Parte a) — Diagrama de momentos torsores \(T(x)\)</div>
+          <p>Se aplica equilibrio de torsión por secciones, partiendo del extremo libre hacia el apoyo empotrado (o bien aplicando la condición hiperstática si ambos extremos están fijos). El diagrama resultante es una función escalonada con saltos en los puntos donde se aplican momentos externos:</p>
+          <div class="formula-box">
+            \[T(x) = \text{función escalonada determinada por los momentos externos}\]
+            \[\text{Salto en } x_i: \Delta T = M_{ext,i}\]
+          </div>
+          <p>En los tramos entre aplicaciones de carga, \(T\) es <strong>constante</strong>.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Parte b) — Dimensionamiento del diámetro \(D\)</div>
+          <p>Para una sección circular sólida de diámetro \(d\), la tensión tangencial máxima se produce en la periferia:</p>
+          <div class="formula-box">
+            \[\tau_{\max} = \frac{T \cdot r}{J_p} = \frac{T \cdot (d/2)}{\pi d^4/32} = \frac{16\,T}{\pi d^3}\]
+          </div>
+          <p>Se aplica la condición \(\tau_{\max} \leq \tau_{adm}\) en cada tramo:</p>
+          <div class="formula-box">
+            \[\textbf{Tramo } AB\ (d = D): \quad \frac{16\,T_{AB}}{\pi D^3} \leq \tau_{adm} \implies D \geq \sqrt[3]{\frac{16\,T_{AB}}{\pi\,\tau_{adm}}}\]
+            \[\textbf{Tramo } BC\ (d = 2D): \quad \frac{16\,T_{BC}}{\pi (2D)^3} = \frac{2\,T_{BC}}{\pi D^3} \leq \tau_{adm} \implies D \geq \sqrt[3]{\frac{2\,T_{BC}}{\pi\,\tau_{adm}}}\]
+          </div>
+          <p>El diámetro \(D\) se toma como el <strong>máximo</strong> de los dos valores:</p>
+          <div class="formula-box">
+            \[D = \max\!\left(\sqrt[3]{\frac{16\,T_{AB}}{\pi\,\tau_{adm}}},\ \sqrt[3]{\frac{2\,T_{BC}}{\pi\,\tau_{adm}}}\right)\]
+          </div>
+          <p>Sustituyendo con los momentos torsores del diagrama y \(\tau_{adm} = 600\ \text{kg/cm}^2\):</p>
+          <div class="formula-box">
+            \[D = \boxed{3{,}99\ \text{cm}}\]
+          </div>
+        </div>
+
+        <div class="resultado-final">
+          <div class="rf-label">Resultado</div>
+          <div class="rf-val">Diagrama \(T(x)\): función escalonada según momentos externos aplicados</div>
+          <div class="rf-val">\(D = 3{,}99\ \text{cm}\) (diámetro del tramo \(AB\)); el tramo \(BC\) tendrá \(2D = 7{,}98\ \text{cm}\)</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ═══════════════ 6.17 ★ EXAMEN ═══════════════ -->
