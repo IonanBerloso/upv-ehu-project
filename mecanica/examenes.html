@@ -19,22 +19,76 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#131313;--surface:#1c1c1c;--surface2:#222;--surface3:#2a2a2a;
+  --bg:#131313;--panel:rgba(255,255,255,.02);--surface:rgba(255,255,255,.04);--surface2:#222;
   --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.09);
   --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
   --accent:#c084fc;--accent-dim:rgba(192,132,252,.08);--accent-border:rgba(192,132,252,.25);
   --gold:#f59e0b;--gold-dim:rgba(245,158,11,.08);--green:#10b981;--blue:#7ecfff;--orange:#f4a261;--red:#f87171;
-  --purple:#a78bfa;--radius:12px;--transition:.2s cubic-bezier(.4,0,.2,1);
+  --purple:#a78bfa;--radius:12px;--transition:.15s cubic-bezier(.4,0,.2,1);
   --ff:'Space Grotesk',sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --sb:270px;--top:52px;
 }
-html{scroll-behavior:smooth}
-body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
-.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--top);background:rgba(19,19,19,.95);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);text-decoration:none;white-space:nowrap;transition:color var(--transition)}
 .topbar-back:hover{color:var(--accent);text-decoration:none}
-.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-title{padding:0 18px;flex:1;font-size:.9em;font-weight:600;color:#d4c8ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── LAYOUT ── */
+.layout{display:flex;position:fixed;top:var(--top);left:0;right:0;bottom:0}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sb);flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:20px 18px 14px;border-bottom:1px solid var(--border)}
+.sb-head h2{font-size:1em;font-weight:700;color:#d4c8ff;margin-bottom:4px}
+.sb-head p{font-size:.75em;color:var(--text3);line-height:1.5}
+.sb-filters{padding:12px 18px;border-bottom:1px solid var(--border)}
+.sb-filter-label{font-size:.62em;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);font-family:var(--ff-mono);margin-bottom:7px;margin-top:10px;display:block}
+.sb-filter-label:first-child{margin-top:0}
+.fb-group{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+.fb{padding:3px 11px;border-radius:6px;font-size:.74em;font-weight:600;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:var(--transition);font-family:var(--ff)}
+.fb:hover{border-color:var(--accent);color:var(--accent);background:rgba(192,132,252,.05)}
+.fb.active{background:rgba(192,132,252,.1);border-color:var(--accent-border);color:var(--accent)}
+.sb-stats{padding:12px 18px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sb-stat{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:7px 10px}
+.sb-stat-n{font-family:var(--ff-mono);font-size:1em;font-weight:700;color:var(--accent);display:block}
+.sb-stat-l{font-size:.67em;color:var(--text3)}
+.sb-tools{flex:1;overflow-y:auto;padding:12px 18px;display:flex;flex-direction:column;gap:3px}
+.sb-tools-label{font-size:.62em;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);font-family:var(--ff-mono);margin-bottom:6px}
+.tool-link{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:7px;font-size:.78em;font-weight:500;color:var(--text2);text-decoration:none;transition:var(--transition);border:1px solid transparent}
+.tool-link:hover{background:color-mix(in srgb, var(--tc) 8%, transparent);border-color:color-mix(in srgb, var(--tc) 30%, transparent);color:var(--tc);text-decoration:none}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.main-inner{max-width:820px;margin:0 auto;padding:24px 28px 80px}
+
+/* ── YEAR GROUP ── */
+.year-group{margin-bottom:6px}
+.year-group.hidden{display:none}
+.year-label{display:flex;align-items:center;gap:10px;padding:6px 0 4px;margin-bottom:4px}
+.year-label span:first-child{font-family:var(--ff-mono);font-size:.78em;font-weight:700;color:var(--text3);letter-spacing:.4px}
+.year-count{font-family:var(--ff-mono);font-size:.66em;color:var(--text3);background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:10px;padding:1px 8px}
+.year-rows{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+
+/* ── EXAM ROW ── */
+.exam-row{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);text-decoration:none;color:var(--text);transition:border-color var(--transition),background var(--transition),transform var(--transition);cursor:pointer;width:100%;text-align:left;font-family:var(--ff)}
+.exam-row:hover{border-color:rgba(192,132,252,.35);background:rgba(192,132,252,.04);transform:translateX(3px)}
+.exam-row.hidden{display:none}
+.exam-row.active-row{border-color:var(--accent);background:rgba(192,132,252,.06)}
+.r-left{flex-shrink:0;min-width:150px}
+.r-date{font-size:.88em;font-weight:600;color:#d4c8ff;margin-bottom:4px}
+.r-badges{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.type-pill{padding:1px 9px;border-radius:20px;font-size:.63em;font-weight:700;letter-spacing:.3px;border:1px solid;font-family:var(--ff-mono)}
+.status-pill{font-size:.63em;color:var(--green);font-weight:600;font-family:var(--ff-mono)}
+.r-tags{flex:1;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.r-tag{padding:2px 8px;border-radius:20px;font-size:.68em;font-weight:500;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--text2)}
+.r-tag-more{font-size:.65em;color:var(--text3);font-family:var(--ff-mono);padding:0 4px}
+.r-count{flex-shrink:0;font-size:.7em;color:var(--text3);font-family:var(--ff-mono);white-space:nowrap;min-width:60px;text-align:right}
+.r-arrow{flex-shrink:0;color:var(--text3);transition:color var(--transition),transform var(--transition)}
+.exam-row:hover .r-arrow{color:var(--accent);transform:translateX(3px)}
 
 /* TEMA PICKER */
 .tema-picker{position:relative;margin-right:20px}
@@ -53,70 +107,13 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
 .td-item.td-active{color:var(--gold)}
 .td-item.td-active .td-num{color:var(--gold)}
 
-/* PAGE HEADER */
-.page-header{padding:36px 24px 24px;max-width:1100px;margin:0 auto;border-bottom:1px solid var(--border)}
-.page-header h1{font-size:1.8em;font-weight:700;color:#f1f5f9;margin-bottom:8px}
-.page-header p{color:var(--text2);font-size:.9em;max-width:640px;line-height:1.7}
-
-/* STATS ROW */
-.stats-row{display:flex;flex-wrap:wrap;gap:16px;max-width:1100px;margin:0 auto;padding:24px}
-.stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:30px;padding:8px 18px;display:flex;align-items:center;gap:8px;font-size:.82em}
-.stat-pill .snum{font-weight:700;font-size:1.1em;color:var(--accent)}
-.stat-pill .slabel{color:var(--text3)}
-
-/* FILTER BAR */
-.filter-bar{max-width:1100px;margin:0 auto;padding:0 24px 20px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.filter-label{font-size:.78em;color:var(--text3);margin-right:4px}
-.filter-btn{padding:5px 14px;border-radius:20px;font-size:.78em;font-weight:600;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:var(--transition)}
-.filter-btn:hover,.filter-btn.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent)}
-
-/* SECTION DIVIDER */
-.section-divider{max-width:1100px;margin:0 auto;padding:16px 24px 8px;display:flex;align-items:center;gap:12px}
-.section-divider h2{font-size:.85em;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3);white-space:nowrap}
-.section-divider::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* EXAM GRID */
-.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;max-width:1100px;margin:0 auto;padding:0 24px 32px}
-
-/* EXAM CARD */
-.exam-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:var(--transition);display:flex;flex-direction:column;cursor:pointer}
-.exam-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 32px rgba(192,132,252,.08)}
-.exam-card.active-card{border-color:var(--accent);box-shadow:0 0 0 2px rgba(192,132,252,.18)}
-
-/* Card header */
-.ec-header{padding:20px 20px 14px}
-.ec-type-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.ec-type{font-size:.7em;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:3px 10px;border-radius:20px}
-.type-ordinaria{background:rgba(245,158,11,.08);color:var(--gold);border:1px solid rgba(245,158,11,.25)}
-.type-enero{background:rgba(126,207,255,.06);color:var(--blue);border:1px solid rgba(126,207,255,.2)}
-.ec-status{font-size:.7em;font-weight:700;letter-spacing:.4px;padding:3px 10px;border-radius:20px}
-.status-done{background:rgba(16,185,129,.06);color:var(--green);border:1px solid rgba(16,185,129,.2)}
-.ec-date{font-size:1.15em;font-weight:700;color:#f1f5f9;margin-bottom:4px}
-.ec-curso{font-size:.78em;color:var(--text3)}
-
-/* Topics */
-.ec-topics{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 14px}
-.ec-tag{padding:3px 10px;border-radius:20px;font-size:.7em;font-weight:600;background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
-
-/* Exercises list */
-.ec-exercises{padding:12px 20px 14px;border-top:1px solid var(--border)}
-.ec-ex-row{display:flex;align-items:center;gap:8px;font-size:.8em;color:var(--text2);padding:3px 0}
-.ec-ex-row .ex-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
-
-/* Card footer */
-.ec-footer{margin-top:auto;padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
-.ec-score{font-size:.78em;color:var(--text3)}
-.ec-score span{color:var(--gold);font-weight:700}
-.ec-open-btn{padding:8px 16px;border-radius:8px;font-size:.8em;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:var(--transition);border:1px solid var(--accent);background:var(--accent-dim);color:var(--accent);cursor:pointer;font-family:var(--ff)}
-.ec-open-btn:hover{background:rgba(192,132,252,.18)}
-
-/* EXAM CONTENT */
-.exam-content{display:none;max-width:960px;margin:0 auto;padding:0 24px 60px}
+/* ── EXAM CONTENT ── */
+.exam-content{display:none;padding:0 0 60px}
 .exam-content.visible{display:block}
-.content-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding:20px;background:var(--surface);border:1px solid var(--accent-border);border-radius:12px;gap:16px}
-.content-header-title{font-size:1em;font-weight:700;color:var(--gold);margin-bottom:4px}
-.content-header-meta{font-size:.8em;color:var(--text3)}
-.close-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text2);cursor:pointer;font-size:.82em;font-weight:600;transition:var(--transition);white-space:nowrap;flex-shrink:0;font-family:var(--ff)}
+.content-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding:16px 18px;background:rgba(192,132,252,.04);border:1px solid var(--accent-border);border-radius:12px;gap:16px}
+.content-header-title{font-size:.95em;font-weight:700;color:var(--gold);margin-bottom:4px}
+.content-header-meta{font-size:.78em;color:var(--text3)}
+.close-btn{background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:7px 13px;color:var(--text2);cursor:pointer;font-size:.8em;font-weight:600;transition:var(--transition);white-space:nowrap;flex-shrink:0;font-family:var(--ff)}
 .close-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* EXAM INTERNALS */
@@ -174,177 +171,171 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
 .formula-box{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:6px;padding:10px 14px;margin:8px 0;text-align:center}
 .paso-text{font-size:.86em;line-height:1.8;color:#d0c8e8;margin:6px 0}
 
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:3px}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#3b1f6e;border-radius:2px}
 .katex{font-size:1.05em}
 .katex-display{overflow-x:auto;overflow-y:hidden}
-@media(max-width:640px){
-  .page-header h1{font-size:1.4em}
-  .exam-grid{grid-template-columns:1fr;padding:0 16px 24px}
-  .stats-row{padding:16px}
-  .exam-content{padding:0 16px 40px}
+@media(max-width:768px){
+  .sidebar{display:none}
+  .layout{display:block;position:static}
+  html,body{height:auto;overflow:auto}
+  .main{overflow:visible}
+  .main-inner{padding:16px 14px 60px}
+  .exam-row{flex-wrap:wrap;gap:8px}
+  .r-count{display:none}
 }
 </style>
 </head>
 <body>
 
 <nav class="topbar">
-  <a class="topbar-back" href="teoria.html">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Teoría
+  <a class="topbar-back" href="../index.html">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Inicio
   </a>
-  <span class="topbar-title">📝 Exámenes · Mecánica Aplicada</span>
-  <div class="tema-picker" id="temaPicker">
-    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">📝 Exámenes ▾</button>
-    <div class="tema-dropdown">
-      <span class="td-sep">1.er Cuatrimestre</span>
-      <a class="td-item td-available" href="ejercicios/tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
-      <a class="td-item td-available" href="ejercicios/tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
-      <a class="td-item td-available" href="ejercicios/tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
-      <a class="td-item td-available" href="ejercicios/tema4.html"><span class="td-num">T4</span> Rozamiento</a>
-      <a class="td-item td-available" href="ejercicios/tema5.html"><span class="td-num">T5</span> Cables</a>
-      <span class="td-item td-active"><span class="td-num">★</span> Exámenes</span>
-      <hr class="td-sep-line">
-      <span class="td-sep">2.º Cuatrimestre</span>
-      <a class="td-item " href="ejercicios/tema6.html"><span class="td-num">T6</span> Resistencia de Mat.</a>
-      <a class="td-item " href="ejercicios/tema7.html"><span class="td-num">T7</span> Cinemática del S.R.</a>
-      <a class="td-item " href="ejercicios/tema8.html"><span class="td-num">T8</span> Mov. Plano del S.R.</a>
+  <span class="topbar-title">⚙️ Mecánica Aplicada &mdash; Exámenes Resueltos</span>
+  <div style="padding-right:18px">
+    <div class="tema-picker" id="temaPicker">
+      <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">📝 Exámenes ▾</button>
+      <div class="tema-dropdown">
+        <span class="td-sep">1.er Cuatrimestre</span>
+        <a class="td-item td-available" href="ejercicios/tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
+        <a class="td-item td-available" href="ejercicios/tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
+        <a class="td-item td-available" href="ejercicios/tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
+        <a class="td-item td-available" href="ejercicios/tema4.html"><span class="td-num">T4</span> Rozamiento</a>
+        <a class="td-item td-available" href="ejercicios/tema5.html"><span class="td-num">T5</span> Cables</a>
+        <span class="td-item td-active"><span class="td-num">★</span> Exámenes</span>
+        <hr class="td-sep-line">
+        <span class="td-sep">2.º Cuatrimestre</span>
+        <a class="td-item td-available" href="ejercicios/tema6.html"><span class="td-num">T6</span> Resistencia de Mat.</a>
+        <a class="td-item td-available" href="ejercicios/tema7.html"><span class="td-num">T7</span> Cinemática del S.R.</a>
+        <a class="td-item td-available" href="ejercicios/tema8.html"><span class="td-num">T8</span> Mov. Plano del S.R.</a>
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- PAGE HEADER -->
-<div class="page-header">
-  <h1>Exámenes Resueltos</h1>
-  <p>Exámenes oficiales de convocatorias anteriores con enunciados completos y figuras SVG. Haz clic en una tarjeta para ver el examen completo.</p>
-</div>
+<div class="layout">
 
-<!-- STATS -->
-<div class="stats-row">
-  <div class="stat-pill"><span class="snum">3</span><span class="slabel">exámenes disponibles</span></div>
-  <div class="stat-pill"><span class="snum">3</span><span class="slabel">cursos académicos</span></div>
-  <div class="stat-pill"><span class="snum">2018–2025</span><span class="slabel">periodo cubierto</span></div>
-</div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-head">
+      <h2>Exámenes Resueltos</h2>
+      <p>Convocatorias 2018–2025 con enunciados, figuras SVG y resoluciones paso a paso.</p>
+    </div>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <span class="filter-label">Año:</span>
-  <button class="filter-btn year-btn active" onclick="filterYear('all',this)">Todos</button>
-  <button class="filter-btn year-btn" onclick="filterYear('2425',this)">2024–25</button>
-  <button class="filter-btn year-btn" onclick="filterYear('2324',this)">2023–24</button>
-  <button class="filter-btn year-btn" onclick="filterYear('1819',this)">2018–19</button>
-</div>
-
-<!-- SECTION DIVIDER -->
-<div class="section-divider"><h2>Disponibles</h2></div>
-
-<!-- EXAM GRID -->
-<div class="exam-grid" id="exam-grid">
-
-  <!-- CARD 2024-25 -->
-  <div class="exam-card" id="card-2425" data-year="2425" onclick="openExam('content-2425','card-2425')">
-    <div class="ec-header">
-      <div class="ec-type-row">
-        <span class="ec-type type-ordinaria">Ordinaria</span>
-        <span class="ec-status status-done">✓ Enunciados</span>
+    <div class="sb-filters">
+      <span class="sb-filter-label">Año</span>
+      <div class="fb-group">
+        <button class="fb active" onclick="setYear('all',this)">Todos</button>
+        <button class="fb" onclick="setYear('2425',this)">2024–25</button>
+        <button class="fb" onclick="setYear('2324',this)">2023–24</button>
+        <button class="fb" onclick="setYear('1819',this)">2018–19</button>
       </div>
-      <div class="ec-date">6 de Junio de 2025</div>
-      <div class="ec-curso">1.er Cuatrimestre · Estática · UPV/EHU Gipuzkoa</div>
-    </div>
-    <div class="ec-topics">
-      <span class="ec-tag">Vectores</span>
-      <span class="ec-tag">Rozamiento</span>
-      <span class="ec-tag">Catenaria</span>
-      <span class="ec-tag">Vigas</span>
-      <span class="ec-tag">Tensiones</span>
-    </div>
-    <div class="ec-exercises">
-      <div class="ec-ex-row"><span class="ex-dot"></span>T1 — Sistema de vectores: resultante y eje central</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>T2 — Rueda sobre suelo: fuerza de rozamiento</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>T3 — Fuerza distribuida \(q(x)\): resultante</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>T4 — Elemento diferencial: ecuaciones \(q\), \(V\), \(M\)</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>E1 — Bloque + muelle + cable catenaria + polea</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>E2 — Viga ABCDE en T: diagramas N-V-M y tensiones</div>
-    </div>
-    <div class="ec-footer">
-      <span class="ec-score">4 teoría + 2 ejercicios · Curso <span>2024–25</span></span>
-      <span class="ec-open-btn">
-        Ver examen
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </div>
-  </div>
-
-  <!-- CARD 2023-24 -->
-  <div class="exam-card" id="card-2324" data-year="2324" onclick="openExam('content-2324','card-2324')">
-    <div class="ec-header">
-      <div class="ec-type-row">
-        <span class="ec-type type-enero">Enero</span>
-        <span class="ec-status status-done">✓ Enunciados</span>
+      <span class="sb-filter-label">Tipo</span>
+      <div class="fb-group">
+        <button class="fb active" onclick="setType('all',this)">Todos</button>
+        <button class="fb" onclick="setType('ordinaria',this)">Ordinaria</button>
+        <button class="fb" onclick="setType('enero',this)">Enero</button>
       </div>
-      <div class="ec-date">17 de Enero de 2024</div>
-      <div class="ec-curso">1.er Cuatrimestre · Estática · UPV/EHU Gipuzkoa</div>
     </div>
-    <div class="ec-topics">
-      <span class="ec-tag">Vectores</span>
-      <span class="ec-tag">Catenaria</span>
-      <span class="ec-tag">Rozamiento</span>
-      <span class="ec-tag">Vigas</span>
-      <span class="ec-tag">Torsión</span>
-    </div>
-    <div class="ec-exercises">
-      <div class="ec-ex-row"><span class="ex-dot"></span>T1 — Sistema de 3 vectores: momento en el origen</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>T2 — Cable pesado: deducción de \(s\) y \(T\)</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>T3 — Disco en plano inclinado: \(F_{\min}\) y \(\mu_{k,\min}\)</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>T4 — Torsión sección circular: tensiones y \(M_t\)</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>E1 — Barra AC + resorte + cable catenaria BD</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>E2 — Barra AB + disco: reacciones y momento \(P\)</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>E3 — Viga ABCD: diagramas V-M, tensión normal, dim. \(e\)</div>
-    </div>
-    <div class="ec-footer">
-      <span class="ec-score">4 teoría + 3 ejercicios · Curso <span>2023–24</span></span>
-      <span class="ec-open-btn">
-        Ver examen
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </div>
-  </div>
 
-  <!-- CARD 2018-19 -->
-  <div class="exam-card" id="card-1819" data-year="1819" onclick="openExam('content-1819','card-1819')">
-    <div class="ec-header">
-      <div class="ec-type-row">
-        <span class="ec-type type-ordinaria">Ordinaria</span>
-        <span class="ec-status status-done">✓ Enunciados</span>
-      </div>
-      <div class="ec-date">30 de Mayo de 2019</div>
-      <div class="ec-curso">1.er Cuatrimestre · Estática · UPV/EHU Gipuzkoa</div>
+    <div class="sb-stats">
+      <div class="sb-stat"><span class="sb-stat-n">3</span><span class="sb-stat-l">exámenes</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">3</span><span class="sb-stat-l">cursos</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">2018–25</span><span class="sb-stat-l">periodo</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">★ SVG</span><span class="sb-stat-l">figuras</span></div>
     </div>
-    <div class="ec-topics">
-      <span class="ec-tag">Catenaria</span>
-      <span class="ec-tag">Virial</span>
-      <span class="ec-tag">Inercia</span>
-      <span class="ec-tag">Vigas</span>
-      <span class="ec-tag">Rozamiento</span>
-    </div>
-    <div class="ec-exercises">
-      <div class="ec-ex-row"><span class="ex-dot"></span>T1 — Cable propio peso: ecuación catenaria y \(T\)</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>T2 — Virial de un vector respecto a \(O\)</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>T3 — Momento inercia medio disco: ejes X y X'</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>E1 — Viga ACD con rótula B: reacciones, V-M, tensiones</div>
-      <div class="ec-ex-row"><span class="ex-dot"></span>E2 — Tres medias esferas: distancia \(x\) máxima equilibrio</div>
-    </div>
-    <div class="ec-footer">
-      <span class="ec-score">3 teoría + 2 ejercicios · Curso <span>2018–19</span></span>
-      <span class="ec-open-btn">
-        Ver examen
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </div>
-  </div>
 
-</div><!-- /exam-grid -->
+    <div class="sb-tools">
+      <div class="sb-tools-label">Recursos</div>
+      <a class="tool-link" href="ejercicios/index.html" style="--tc:#c084fc">📚 Ejercicios por tema</a>
+      <a class="tool-link" href="teoria.html" style="--tc:#7ecfff">📖 Teoría y fórmulas</a>
+      <a class="tool-link" href="../index.html" style="--tc:#6bcb77">🏠 Inicio</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="main-inner">
+
+      <!-- LISTA DE EXÁMENES -->
+      <div id="exam-list">
+
+        <div class="year-group" data-year="2425">
+          <div class="year-label"><span>2024–25</span><span class="year-count">1</span></div>
+          <div class="year-rows">
+            <button class="exam-row" id="row-2425" data-year="2425" data-type="ordinaria" onclick="openExam('content-2425','row-2425')">
+              <div class="r-left">
+                <div class="r-date">6 de Junio de 2025</div>
+                <div class="r-badges">
+                  <span class="type-pill" style="color:#f59e0b;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)">Ordinaria</span>
+                  <span class="status-pill">✓ Enunciados</span>
+                </div>
+              </div>
+              <div class="r-tags">
+                <span class="r-tag">Vectores</span>
+                <span class="r-tag">Rozamiento</span>
+                <span class="r-tag">Catenaria</span>
+                <span class="r-tag">Vigas</span>
+                <span class="r-tag">Tensiones</span>
+              </div>
+              <div class="r-count">4T + 2E ·</div>
+              <div class="r-arrow"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="year-group" data-year="2324">
+          <div class="year-label"><span>2023–24</span><span class="year-count">1</span></div>
+          <div class="year-rows">
+            <button class="exam-row" id="row-2324" data-year="2324" data-type="enero" onclick="openExam('content-2324','row-2324')">
+              <div class="r-left">
+                <div class="r-date">17 de Enero de 2024</div>
+                <div class="r-badges">
+                  <span class="type-pill" style="color:#7ecfff;background:rgba(126,207,255,.08);border-color:rgba(126,207,255,.25)">Enero</span>
+                  <span class="status-pill">✓ Enunciados</span>
+                </div>
+              </div>
+              <div class="r-tags">
+                <span class="r-tag">Vectores</span>
+                <span class="r-tag">Catenaria</span>
+                <span class="r-tag">Rozamiento</span>
+                <span class="r-tag">Vigas</span>
+                <span class="r-tag">Torsión</span>
+              </div>
+              <div class="r-count">4T + 3E ·</div>
+              <div class="r-arrow"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="year-group" data-year="1819">
+          <div class="year-label"><span>2018–19</span><span class="year-count">1</span></div>
+          <div class="year-rows">
+            <button class="exam-row" id="row-1819" data-year="1819" data-type="ordinaria" onclick="openExam('content-1819','row-1819')">
+              <div class="r-left">
+                <div class="r-date">30 de Mayo de 2019</div>
+                <div class="r-badges">
+                  <span class="type-pill" style="color:#f59e0b;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)">Ordinaria</span>
+                  <span class="status-pill">✓ Resuelto</span>
+                </div>
+              </div>
+              <div class="r-tags">
+                <span class="r-tag">Catenaria</span>
+                <span class="r-tag">Virial</span>
+                <span class="r-tag">Inercia</span>
+                <span class="r-tag">Vigas</span>
+                <span class="r-tag">Rozamiento</span>
+              </div>
+              <div class="r-count">3T + 2E ·</div>
+              <div class="r-arrow"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /exam-list -->
 
 <!-- ══════════════════════ CONTENIDO EXAMEN 2024-2025 ══════════════════════ -->
 <div class="exam-content" id="content-2425">
@@ -353,7 +344,7 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
       <div class="content-header-title">📄 Examen Ordinario · 1er Cuatrimestre · 6 junio 2025</div>
       <div class="content-header-meta">Curso 2024–2025 · UPV/EHU Gipuzkoa · 4 preguntas de teoría + 2 ejercicios</div>
     </div>
-    <button class="close-btn" onclick="closeExam('content-2425','card-2425')">✕ Cerrar</button>
+    <button class="close-btn" onclick="closeExam('content-2425','row-2425')">← Volver</button>
   </div>
 
   <div class="exam-section-title" style="margin-bottom:18px">Examen 2024–2025</div>
@@ -745,7 +736,7 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
       <div class="content-header-title">📄 Examen Enero · Estática · 17 enero 2024</div>
       <div class="content-header-meta">Curso 2023–2024 · UPV/EHU Gipuzkoa · 4 preguntas de teoría + 3 ejercicios</div>
     </div>
-    <button class="close-btn" onclick="closeExam('content-2324','card-2324')">✕ Cerrar</button>
+    <button class="close-btn" onclick="closeExam('content-2324','row-2324')">← Volver</button>
   </div>
 
   <div class="exam-section-title" style="margin-bottom:18px">Examen 2023–2024</div>
@@ -1035,7 +1026,7 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
       <div class="content-header-title">📄 Examen Ordinario · 1er Cuatrimestre · 30 mayo 2019</div>
       <div class="content-header-meta">Curso 2018–2019 · UPV/EHU Gipuzkoa · 3 preguntas de teoría + 2 ejercicios</div>
     </div>
-    <button class="close-btn" onclick="closeExam('content-1819','card-1819')">✕ Cerrar</button>
+    <button class="close-btn" onclick="closeExam('content-1819','row-1819')">← Volver</button>
   </div>
 
   <div class="exam-section-title" style="margin-bottom:18px">Examen 2018–2019</div>
@@ -1505,6 +1496,11 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100
 
 </div><!-- /content-1819 -->
 
+    </div><!-- /main-inner -->
+  </main>
+
+</div><!-- /layout -->
+
 <script>
 function initKatex(){
   renderMathInElement(document.body,{
@@ -1516,42 +1512,42 @@ function initKatex(){
   });
 }
 
-function openExam(contentId, cardId){
+function openExam(contentId, rowId){
   var content = document.getElementById(contentId);
-  var card = document.getElementById(cardId);
-  var isOpen = content.classList.contains('visible');
-
-  // Close all
+  var row = document.getElementById(rowId);
+  // Hide list, show content
+  document.getElementById('exam-list').style.display = 'none';
   document.querySelectorAll('.exam-content').forEach(function(c){ c.classList.remove('visible'); });
-  document.querySelectorAll('.exam-card').forEach(function(c){ c.classList.remove('active-card'); });
-
-  if(!isOpen){
-    content.classList.add('visible');
-    card.classList.add('active-card');
-    setTimeout(function(){ content.scrollIntoView({behavior:'smooth',block:'start'}); }, 50);
-  }
+  document.querySelectorAll('.exam-row').forEach(function(r){ r.classList.remove('active-row'); });
+  content.classList.add('visible');
+  if(row) row.classList.add('active-row');
+  // Scroll main to top
+  var main = document.querySelector('.main');
+  if(main) main.scrollTop = 0;
 }
 
-function closeExam(contentId, cardId){
+function closeExam(contentId, rowId){
   document.getElementById(contentId).classList.remove('visible');
-  document.getElementById(cardId).classList.remove('active-card');
-  document.getElementById('exam-grid').scrollIntoView({behavior:'smooth',block:'start'});
+  var row = document.getElementById(rowId);
+  if(row) row.classList.remove('active-row');
+  document.getElementById('exam-list').style.display = '';
+  var main = document.querySelector('.main');
+  if(main) main.scrollTop = 0;
 }
 
-function filterYear(year, btn){
-  document.querySelectorAll('.year-btn').forEach(function(b){ b.classList.remove('active'); });
+function setYear(year, btn){
+  document.querySelectorAll('.sidebar .fb.active[onclick^="setYear"]').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
-  document.querySelectorAll('.exam-card').forEach(function(card){
-    if(year === 'all' || card.dataset.year === year){
-      card.style.display = '';
-    } else {
-      card.style.display = 'none';
-      // Close content if its card is hidden
-      var cId = 'content-' + card.dataset.year;
-      var content = document.getElementById(cId);
-      if(content) content.classList.remove('visible');
-      card.classList.remove('active-card');
-    }
+  document.querySelectorAll('#exam-list .year-group').forEach(function(g){
+    g.classList.toggle('hidden', year !== 'all' && g.dataset.year !== year);
+  });
+}
+
+function setType(type, btn){
+  document.querySelectorAll('.sidebar .fb.active[onclick^="setType"]').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.exam-row').forEach(function(row){
+    row.classList.toggle('hidden', type !== 'all' && row.dataset.type !== type);
   });
 }
 
