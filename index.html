@@ -329,6 +329,28 @@ footer a:hover{color:var(--text2)}
 }
 .plan-note strong{color:var(--text2)}
 
+/* checkboxes dentro del plan */
+.plan-check{display:flex;align-items:center;justify-content:center;margin-top:8px;cursor:pointer;width:100%}
+.plan-check input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.plan-check-box{
+  width:20px;height:20px;border-radius:5px;flex-shrink:0;
+  border:1.5px solid rgba(255,255,255,.15);background:rgba(0,0,0,.35);
+  display:flex;align-items:center;justify-content:center;
+  transition:.15s;font-size:11px;font-weight:700;line-height:1;
+}
+.plan-check:hover .plan-check-box{border-color:rgba(255,255,255,.35)}
+.plan-check input:checked + .plan-check-box{border-color:currentColor;content:''}
+.plan-check input:checked + .plan-check-box::after{content:'✓'}
+.plan-accent-f .plan-check{color:var(--fluidos)}
+.plan-accent-m .plan-check{color:var(--mecanica)}
+.plan-accent-s .plan-check{color:var(--sistemas)}
+.plan-accent-f .plan-check input:checked + .plan-check-box{background:rgba(126,207,255,.18)}
+.plan-accent-m .plan-check input:checked + .plan-check-box{background:rgba(192,132,252,.18)}
+.plan-accent-s .plan-check input:checked + .plan-check-box{background:rgba(252,211,77,.18)}
+/* fila completada: sutil opacidad */
+.plan-row.done-row .plan-row-topic{opacity:.45}
+.plan-row.done-row .plan-row-action{opacity:.35}
+
 @media(max-width:640px){
   .plan-row{grid-template-columns:1fr}
   .plan-row-week{border-left:none!important;border-bottom:1px solid var(--border)}
@@ -410,38 +432,38 @@ footer a:hover{color:var(--text2)}
       <!-- ══ FLUIDOS ══ -->
       <div class="plan-panel visible" id="pp-f">
         <div class="plan-grid">
-          <div class="plan-row plan-accent-f">
-            <div class="plan-row-week"><span class="plan-wnum">S1</span><span class="plan-wdates">8–13 abr</span></div>
+          <div class="plan-row plan-accent-f" id="pr-f-0">
+            <div class="plan-row-week"><span class="plan-wnum">S1</span><span class="plan-wdates">8–13 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Hidrostática — presión y fuerzas</div>T4 + T7 (superficies planas y curvas)</div>
             <div class="plan-row-action">teoria.html T4/T7 · estrategia.html cards 1–4 · Leer mayo2025.html para calibrar nivel</div>
           </div>
-          <div class="plan-row plan-accent-f">
-            <div class="plan-row-week"><span class="plan-wnum">S2</span><span class="plan-wdates">14–20 abr</span></div>
+          <div class="plan-row plan-accent-f" id="pr-f-1">
+            <div class="plan-row-week"><span class="plan-wnum">S2</span><span class="plan-wdates">14–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Bernoulli + continuidad</div>T12 ideal y con pérdidas</div>
             <div class="plan-row-action">teoria.html T12 · estrategia cards 6–7 · exámenes mayo2024 + junio2023 (solo Bernoulli)</div>
           </div>
-          <div class="plan-row plan-accent-f">
-            <div class="plan-row-week"><span class="plan-wnum">S3</span><span class="plan-wdates">21–27 abr</span></div>
+          <div class="plan-row plan-accent-f" id="pr-f-2">
+            <div class="plan-row-week"><span class="plan-wnum">S3</span><span class="plan-wdates">21–27 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">QdM — cantidad de movimiento</div>T14/T15: chorros, codos, álabes</div>
             <div class="plan-row-action">teoria.html T14/T15 · estrategia cards 8–9 · examen junio2022: problema QdM completo</div>
           </div>
-          <div class="plan-row plan-accent-f">
-            <div class="plan-row-week"><span class="plan-wnum">S4</span><span class="plan-wdates">28 abr–4 may</span></div>
+          <div class="plan-row plan-accent-f" id="pr-f-3">
+            <div class="plan-row-week"><span class="plan-wnum">S4</span><span class="plan-wdates">28 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Tuberías y pérdidas</div>T18/T19: Darcy-Weisbach, Colebrook, serie/paralelo</div>
             <div class="plan-row-action">teoria T18/T19 · estrategia cards 10–13 · colebrook.html — practica hasta &lt;3 min/iteración</div>
           </div>
-          <div class="plan-row plan-accent-f">
-            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span></div>
+          <div class="plan-row plan-accent-f" id="pr-f-4">
+            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Bombas hidráulicas</div>Punto de funcionamiento, NPSH, serie/paralelo</div>
             <div class="plan-row-action">estrategia cards 15–18 · bombas-calc.html · examen junio2024ef completo cronometrado</div>
           </div>
-          <div class="plan-row plan-accent-f">
-            <div class="plan-row-week"><span class="plan-wnum">S6</span><span class="plan-wdates">12–18 may</span></div>
+          <div class="plan-row plan-accent-f" id="pr-f-5">
+            <div class="plan-row-week"><span class="plan-wnum">S6</span><span class="plan-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Simulacros completos</div>Exámenes reales 2022, 2023ef, mayo2021</div>
             <div class="plan-row-action">2 horas cronometradas sin mirar nada · Corregir con las soluciones · Anotar errores</div>
           </div>
-          <div class="plan-row plan-accent-f">
-            <div class="plan-row-week"><span class="plan-wnum">S7</span><span class="plan-wdates">19–27 may</span></div>
+          <div class="plan-row plan-accent-f" id="pr-f-6">
+            <div class="plan-row-week"><span class="plan-wnum">S7</span><span class="plan-wdates">19–27 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Revisión y consolidación</div>Solo puntos débiles del simulacro</div>
             <div class="plan-row-action">formulario.html — memorizar fórmulas clave · No estudiar materia nueva · Descanso 26-27</div>
           </div>
@@ -454,38 +476,38 @@ footer a:hover{color:var(--text2)}
       <!-- ══ MECÁNICA ══ -->
       <div class="plan-panel" id="pp-m">
         <div class="plan-grid">
-          <div class="plan-row plan-accent-m">
-            <div class="plan-row-week"><span class="plan-wnum">S1</span><span class="plan-wdates">8–13 abr</span></div>
+          <div class="plan-row plan-accent-m" id="pr-m-0">
+            <div class="plan-row-week"><span class="plan-wnum">S1</span><span class="plan-wdates">8–13 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">T6 — Resistencia de Materiales</div>Flexión, torsión, diagramas V-M, tensiones</div>
             <div class="plan-row-action">teoria.html T6 · resolver E2-2425 y E3-2324 de examenes.html sin mirar resolución</div>
           </div>
-          <div class="plan-row plan-accent-m">
-            <div class="plan-row-week"><span class="plan-wnum">S2</span><span class="plan-wdates">14–20 abr</span></div>
+          <div class="plan-row plan-accent-m" id="pr-m-1">
+            <div class="plan-row-week"><span class="plan-wnum">S2</span><span class="plan-wdates">14–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">T5 Cables + T4 Rozamiento</div>Catenaria, cable pesado, rozamiento estático/dinámico</div>
             <div class="plan-row-action">ejercicios tema5.html + tema4.html — los más repetidos en preguntas cortas T del examen</div>
           </div>
-          <div class="plan-row plan-accent-m">
-            <div class="plan-row-week"><span class="plan-wnum">S3</span><span class="plan-wdates">21–27 abr</span></div>
+          <div class="plan-row plan-accent-m" id="pr-m-2">
+            <div class="plan-row-week"><span class="plan-wnum">S3</span><span class="plan-wdates">21–27 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">T7/T8 — Cinemática y Dinámica</div>CIR, campo de velocidades, movimiento plano</div>
             <div class="plan-row-action">teoria.html T7-T8 · buscar ejercicios en PDFs de clase — hueco más importante del temario</div>
           </div>
-          <div class="plan-row plan-accent-m">
-            <div class="plan-row-week"><span class="plan-wnum">S4</span><span class="plan-wdates">28 abr–4 may</span></div>
+          <div class="plan-row plan-accent-m" id="pr-m-3">
+            <div class="plan-row-week"><span class="plan-wnum">S4</span><span class="plan-wdates">28 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">T3 Estática + Simulacro</div>Equilibrio de sólido rígido, DSL, reacciones</div>
             <div class="plan-row-action">tema3.html · Examen 2024-25 completo cronometrado (2h) sin ver resoluciones</div>
           </div>
-          <div class="plan-row plan-accent-m">
-            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span></div>
+          <div class="plan-row plan-accent-m" id="pr-m-4">
+            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Corrección simulacro + T1/T2</div>Vectores, sistemas de fuerzas, geometría de masas</div>
             <div class="plan-row-action">tema1.html + tema2.html — repaso de inercias, centroide, producto vectorial</div>
           </div>
-          <div class="plan-row plan-accent-m">
-            <div class="plan-row-week"><span class="plan-wnum">S6</span><span class="plan-wdates">12–18 may</span></div>
+          <div class="plan-row plan-accent-m" id="pr-m-5">
+            <div class="plan-row-week"><span class="plan-wnum">S6</span><span class="plan-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Exámenes 2023-24 + 2018-19</div>Simulacros completos con corrección</div>
             <div class="plan-row-action">Resolver, corregir con examenes.html · Identificar patrones repetidos en E1/E2/E3</div>
           </div>
-          <div class="plan-row plan-accent-m">
-            <div class="plan-row-week"><span class="plan-wnum">S7–S8</span><span class="plan-wdates">19 may–4 jun</span></div>
+          <div class="plan-row plan-accent-m" id="pr-m-6">
+            <div class="plan-row-week"><span class="plan-wnum">S7–S8</span><span class="plan-wdates">19 may–4 jun</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Repaso final</div>Solo puntos débiles + formulario</div>
             <div class="plan-row-action">formulario.html · fórmulas de sección T, diagramas V-M, rozamiento · No materia nueva</div>
           </div>
@@ -498,38 +520,38 @@ footer a:hover{color:var(--text2)}
       <!-- ══ SISTEMAS ══ -->
       <div class="plan-panel" id="pp-s">
         <div class="plan-grid">
-          <div class="plan-row plan-accent-s">
-            <div class="plan-row-week"><span class="plan-wnum">S1–S2</span><span class="plan-wdates">8–20 abr</span></div>
+          <div class="plan-row plan-accent-s" id="pr-s-0">
+            <div class="plan-row-week"><span class="plan-wnum">S1–S2</span><span class="plan-wdates">8–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Aparcado — foco en Fluidos</div>Examen 28 mayo, prioridad absoluta</div>
             <div class="plan-row-action">No dedicar tiempo a Sistemas hasta pasar el examen de Fluidos</div>
           </div>
-          <div class="plan-row plan-accent-s">
-            <div class="plan-row-week"><span class="plan-wnum">S3–S4</span><span class="plan-wdates">21 abr–4 may</span></div>
+          <div class="plan-row plan-accent-s" id="pr-s-1">
+            <div class="plan-row-week"><span class="plan-wnum">S3–S4</span><span class="plan-wdates">21 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">T1 Torneado + T2 Fresado</div>Parámetros de corte, velocidades, avances</div>
             <div class="plan-row-action">teoria.html T1-T2 · fórmulas Vc, n, f, ap · repasar mientras estudias Fluidos en paralelo ligero</div>
           </div>
-          <div class="plan-row plan-accent-s">
-            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span></div>
+          <div class="plan-row plan-accent-s" id="pr-s-2">
+            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">T3 Taladrado + T4 CNC</div>Ciclos de mecanizado, programación básica G-code</div>
             <div class="plan-row-action">teoria.html T3-T4 · ejercicios numéricos de cálculo de tiempo de mecanizado</div>
           </div>
-          <div class="plan-row plan-accent-s">
-            <div class="plan-row-week"><span class="plan-wnum">S6</span><span class="plan-wdates">12–18 may</span></div>
+          <div class="plan-row plan-accent-s" id="pr-s-3">
+            <div class="plan-row-week"><span class="plan-wnum">S6</span><span class="plan-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">T5 Rectificado + T6 Fundición</div>Rugosidad, tolerancias, procesos de fundición</div>
             <div class="plan-row-action">teoria.html T5-T6 · relación Ra-parámetros de corte · defectos en fundición</div>
           </div>
-          <div class="plan-row plan-accent-s">
-            <div class="plan-row-week"><span class="plan-wnum">S7</span><span class="plan-wdates">19–25 may</span></div>
+          <div class="plan-row plan-accent-s" id="pr-s-4">
+            <div class="plan-row-week"><span class="plan-wnum">S7</span><span class="plan-wdates">19–25 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">T7–T8 Metrología + Def. plástica</div>Calibres, tolerancias ISO, forja, estampado</div>
             <div class="plan-row-action">teoria.html T7-T8 · sistema ISO tolerancias · principales procesos de deformación plástica</div>
           </div>
-          <div class="plan-row plan-accent-s">
-            <div class="plan-row-week"><span class="plan-wnum">S8</span><span class="plan-wdates">26 may–4 jun</span></div>
+          <div class="plan-row plan-accent-s" id="pr-s-5">
+            <div class="plan-row-week"><span class="plan-wnum">S8</span><span class="plan-wdates">26 may–4 jun</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Simulacro + repaso global</div>Exámenes reales anteriores</div>
             <div class="plan-row-action">ejercicios.html · exámenes de convocatorias previas · fórmulas de corte de memoria</div>
           </div>
-          <div class="plan-row plan-accent-s">
-            <div class="plan-row-week"><span class="plan-wnum">S9</span><span class="plan-wdates">5–9 jun</span></div>
+          <div class="plan-row plan-accent-s" id="pr-s-6">
+            <div class="plan-row-week"><span class="plan-wnum">S9</span><span class="plan-wdates">5–9 jun</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
             <div class="plan-row-topic"><div class="plan-topic-name">Última semana</div>Solo consolidación</div>
             <div class="plan-row-action">Repasar errores del simulacro · formulario de corte · descanso 8 jun · examen 10 jun</div>
           </div>
@@ -554,14 +576,13 @@ footer a:hover{color:var(--text2)}
         <p class="card-desc">Hidrostática, Bernoulli, tuberías, bombas y análisis dimensional</p>
       </div>
       <div class="mastery">
-        <!-- r=30 → circunferencia=188.5 · 60% → offset=75.4 -->
         <svg viewBox="0 0 80 80" width="74" height="74">
           <circle cx="40" cy="40" r="30" fill="none" stroke="#1e2e3e" stroke-width="5.5"/>
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#7ECFFF" stroke-width="5.5"
-            stroke-dasharray="188.5" stroke-dashoffset="75.4"
+          <circle id="ring-f" cx="40" cy="40" r="30" fill="none" stroke="#7ECFFF" stroke-width="5.5"
+            stroke-dasharray="188.5" stroke-dashoffset="188.5"
             stroke-linecap="round" transform="rotate(-90 40 40)"/>
         </svg>
-        <span class="mastery-pct">60%</span>
+        <span class="mastery-pct" id="pct-f">0%</span>
         <span class="mastery-lbl">Progreso</span>
       </div>
     </div>
@@ -604,14 +625,13 @@ footer a:hover{color:var(--text2)}
         <p class="card-desc">Vectorial, geometría de masas, estática, rozamiento y cables</p>
       </div>
       <div class="mastery">
-        <!-- 55% → offset=84.8 -->
         <svg viewBox="0 0 80 80" width="74" height="74">
           <circle cx="40" cy="40" r="30" fill="none" stroke="#2a1a3e" stroke-width="5.5"/>
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#C084FC" stroke-width="5.5"
-            stroke-dasharray="188.5" stroke-dashoffset="84.8"
+          <circle id="ring-m" cx="40" cy="40" r="30" fill="none" stroke="#C084FC" stroke-width="5.5"
+            stroke-dasharray="188.5" stroke-dashoffset="188.5"
             stroke-linecap="round" transform="rotate(-90 40 40)"/>
         </svg>
-        <span class="mastery-pct">55%</span>
+        <span class="mastery-pct" id="pct-m">0%</span>
         <span class="mastery-lbl">Progreso</span>
       </div>
     </div>
@@ -654,14 +674,13 @@ footer a:hover{color:var(--text2)}
         <p class="card-desc">Torneado, fresado, taladrado, CNC y procesos de fabricación</p>
       </div>
       <div class="mastery">
-        <!-- 40% → offset=113.1 -->
         <svg viewBox="0 0 80 80" width="74" height="74">
           <circle cx="40" cy="40" r="30" fill="none" stroke="#2a1f00" stroke-width="5.5"/>
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#FCD34D" stroke-width="5.5"
-            stroke-dasharray="188.5" stroke-dashoffset="113.1"
+          <circle id="ring-s" cx="40" cy="40" r="30" fill="none" stroke="#FCD34D" stroke-width="5.5"
+            stroke-dasharray="188.5" stroke-dashoffset="188.5"
             stroke-linecap="round" transform="rotate(-90 40 40)"/>
         </svg>
-        <span class="mastery-pct">40%</span>
+        <span class="mastery-pct" id="pct-s">0%</span>
         <span class="mastery-lbl">Progreso</span>
       </div>
     </div>
@@ -720,6 +739,46 @@ footer a:hover{color:var(--text2)}
 </div><!-- /page-wrap -->
 
 <script>
+// ── PLAN DE ESTUDIO ──
+var PLAN_TOTAL = 7; // tareas por asignatura
+
+function updateProgress(sub){
+  var checked = 0;
+  for(var i=0;i<PLAN_TOTAL;i++){
+    var key = 'plan-'+sub+'-'+i;
+    if(localStorage.getItem(key)==='1') checked++;
+  }
+  var pct = Math.round(checked/PLAN_TOTAL*100);
+  var ring = document.getElementById('ring-'+sub);
+  var pctEl = document.getElementById('pct-'+sub);
+  if(ring) ring.setAttribute('stroke-dashoffset', (188.5*(1-pct/100)).toFixed(1));
+  if(pctEl) pctEl.textContent = pct+'%';
+}
+
+function onPlanCheck(input){
+  var sub = input.getAttribute('data-sub');
+  var idx = input.getAttribute('data-idx');
+  localStorage.setItem('plan-'+sub+'-'+idx, input.checked?'1':'0');
+  var row = document.getElementById('pr-'+sub+'-'+idx);
+  if(row) row.classList.toggle('done-row', input.checked);
+  updateProgress(sub);
+}
+
+function loadPlanState(){
+  ['f','m','s'].forEach(function(sub){
+    for(var i=0;i<PLAN_TOTAL;i++){
+      var val = localStorage.getItem('plan-'+sub+'-'+i);
+      if(val==='1'){
+        var inp = document.querySelector('input[data-sub="'+sub+'"][data-idx="'+i+'"]');
+        if(inp){ inp.checked=true; }
+        var row = document.getElementById('pr-'+sub+'-'+i);
+        if(row) row.classList.add('done-row');
+      }
+    }
+    updateProgress(sub);
+  });
+}
+
 // Plan toggle
 function togglePlan(){
   var body = document.getElementById('planBody');
@@ -737,6 +796,9 @@ function switchPlan(id, btn){
   document.getElementById('pp-'+id).classList.add('visible');
   btn.className = 'plan-tab active-'+id;
 }
+
+// Init plan on load
+loadPlanState();
 
 // PWA install prompt
 let deferredPrompt;
