@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual T1 - Cálculo Vectorial | Mecánica Aplicada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e1a;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.12);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--blue:#38bdf8;--orange:#fb923c;--red:#ef4444;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;--radius-sm:6px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+
+.container{max-width:860px;margin:0 auto;padding:20px 24px 80px}
+
+/* Header */
+.manual-header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border2);margin-bottom:32px}
+.manual-header h1{font-size:1.8em;font-weight:700;color:var(--gold);margin-bottom:6px}
+.manual-header .subtitle{color:var(--text2);font-size:.95em}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--text3);font-size:.85em}
+.back-link:hover{color:var(--accent)}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}
+.toc h2{font-size:1.05em;color:var(--gold);margin-bottom:10px;font-weight:600}
+.toc ol{padding-left:20px}
+.toc li{margin:4px 0;color:var(--text2);font-size:.9em}
+.toc a{color:var(--text)}
+
+/* Sections */
+.section{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section h2{font-size:1.35em;font-weight:700;color:var(--accent);margin-bottom:14px;padding-top:8px}
+.section h3{font-size:1.1em;font-weight:600;color:var(--gold);margin:20px 0 10px}
+.section h4{font-size:1em;font-weight:600;color:var(--blue);margin:16px 0 8px}
+
+/* Formula boxes */
+.formula-box{background:rgba(192,132,252,.06);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:14px 18px;margin:12px 0}
+.formula-box.gold{background:var(--gold-dim);border-color:var(--gold-border)}
+.formula-box.blue{background:rgba(56,189,248,.06);border-color:rgba(56,189,248,.28)}
+.formula-box.green{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.28)}
+.formula-box .label{font-size:.8em;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.formula-box .label.purple{color:var(--accent)}
+.formula-box .label.gold{color:var(--gold)}
+.formula-box .label.blue{color:var(--blue)}
+.formula-box .label.green{color:var(--green)}
+
+/* Warning/tip boxes */
+.tip{background:rgba(16,185,129,.06);border-left:3px solid var(--green);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.warning{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.danger{background:rgba(239,68,68,.06);border-left:3px solid var(--red);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.step-num{display:inline-block;background:var(--accent);color:#000;font-weight:700;font-size:.75em;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+.step-num.gold{background:var(--gold)}
+
+/* Decision tree */
+.decision{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.decision .q{font-weight:600;color:var(--orange);margin-bottom:8px}
+.decision .branch{padding-left:16px;border-left:2px solid var(--border2);margin:6px 0}
+.decision .branch .label{font-weight:600;font-size:.85em}
+.decision .branch .yes{color:var(--green)}
+.decision .branch .no{color:var(--red)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}
+th,td{padding:8px 12px;border:1px solid var(--border2);text-align:left}
+th{background:var(--surface2);color:var(--gold);font-weight:600;font-size:.85em}
+td{color:var(--text)}
+
+/* Cross product table */
+.cross-table{max-width:280px;margin:8px auto}
+.cross-table td{text-align:center;padding:6px 10px}
+
+/* Exercise type cards */
+.ex-type{background:var(--surface);border:1px solid var(--gold-border);border-radius:var(--radius);padding:16px 20px;margin:12px 0}
+.ex-type .tag{display:inline-block;background:var(--gold-dim);color:var(--gold);font-weight:600;font-size:.75em;padding:2px 10px;border-radius:10px;margin-bottom:8px}
+
+p{margin:6px 0}
+ul,ol{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+strong{color:var(--text)}
+code{font-family:var(--ff-mono);background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:.88em}
+
+.footer{text-align:center;padding:24px;color:var(--text3);font-size:.8em;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="tema1.html" class="back-link">&larr; Volver a ejercicios Tema 1</a>
+
+<div class="manual-header">
+  <h1>Manual de Ejercicios de Examen</h1>
+  <div class="subtitle">Tema 1 &mdash; Fundamentos de Calculo Vectorial &middot; Mecanica Aplicada UPV/EHU</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#herramientas">Las 6 herramientas que necesitas</a></li>
+    <li><a href="#tipos">Los 3 tipos de ejercicio de examen</a></li>
+    <li><a href="#tipo-a">Tipo A: Momentos en 3 puntos (1.15, 1.16, 1.17)</a></li>
+    <li><a href="#tipo-b">Tipo B: Combinar sistemas (1.13, 1.14)</a></li>
+    <li><a href="#tipo-c">Tipo C: Vectores paralelos (1.18)</a></li>
+    <li><a href="#resumen">Checklist final antes del examen</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: HERRAMIENTAS -->
+<!-- ============================================ -->
+<div class="section" id="herramientas">
+<h2>1. Las 6 herramientas que necesitas</h2>
+<p>Todo ejercicio de examen del Tema 1 se resuelve combinando estas 6 herramientas. Aprende estas y podras resolver cualquier cosa.</p>
+
+<h3>H1. Producto vectorial (producto cruz)</h3>
+<p>Es la operacion fundamental. Si no la dominas, no puedes hacer nada. Calcula el momento de una fuerza respecto a un punto.</p>
+
+<div class="formula-box">
+<div class="label purple">Formula del producto cruz con determinante</div>
+$$\vec{a} \times \vec{b} = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\a_x&a_y&a_z\\b_x&b_y&b_z\end{vmatrix} = (a_y b_z - a_z b_y)\,\vec{i} - (a_x b_z - a_z b_x)\,\vec{j} + (a_x b_y - a_y b_x)\,\vec{k}$$
+</div>
+
+<p>Tabla de productos basicos que <strong>debes saber de memoria</strong>:</p>
+<table class="cross-table">
+<tr><th>$\times$</th><th>$\vec{i}$</th><th>$\vec{j}$</th><th>$\vec{k}$</th></tr>
+<tr><th>$\vec{i}$</th><td>$\vec{0}$</td><td>$\vec{k}$</td><td>$-\vec{j}$</td></tr>
+<tr><th>$\vec{j}$</th><td>$-\vec{k}$</td><td>$\vec{0}$</td><td>$\vec{i}$</td></tr>
+<tr><th>$\vec{k}$</th><td>$\vec{j}$</td><td>$-\vec{i}$</td><td>$\vec{0}$</td></tr>
+</table>
+
+<div class="tip"><strong>Truco:</strong> Sigue el ciclo $\vec{i} \to \vec{j} \to \vec{k} \to \vec{i}$. En orden da positivo ($\vec{i}\times\vec{j} = +\vec{k}$). En orden inverso da negativo ($\vec{j}\times\vec{i} = -\vec{k}$).</div>
+
+<h3>H2. Campo de momentos (traslado de momentos)</h3>
+<p>Permite calcular el momento en un punto si conoces el momento en otro punto y la resultante. Es LA formula mas importante del tema:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Campo de momentos &mdash; la formula mas usada</div>
+$$\vec{M}_Q = \vec{M}_P + \overrightarrow{QP} \times \vec{R}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px"><strong>Atencion al sentido:</strong> el vector va del punto <strong>nuevo</strong> al punto <strong>viejo</strong>. Si conoces $\vec{M}_P$ y quieres $\vec{M}_Q$, el vector es $\overrightarrow{QP}$ (de Q hacia P, el que ya conoces).</p>
+</div>
+
+<div class="warning"><strong>Error tipico:</strong> Confundir la direccion del vector. Si lo pones al reves, el signo del momento cambia. <br>Regla: <code>M_nuevo = M_conocido + (nuevo&rarr;conocido) &times; R</code></div>
+
+<p>Forma alternativa equivalente:</p>
+$$\vec{M}_Q = \vec{M}_P - \overrightarrow{PQ} \times \vec{R}$$
+
+<p>O bien, reorganizando para despejar la resultante:</p>
+<div class="formula-box blue">
+<div class="label blue">Despejar R a partir de dos momentos conocidos</div>
+$$\overrightarrow{PQ} \times \vec{R} = \vec{M}_P - \vec{M}_Q$$
+</div>
+
+<h3>H3. Propiedad equiproyectiva</h3>
+<p>La proyeccion del momento sobre la recta que une dos puntos es siempre la misma, independientemente del punto elegido:</p>
+
+<div class="formula-box">
+<div class="label purple">Propiedad equiproyectiva</div>
+$$\vec{M}_P \cdot \overrightarrow{PQ} = \vec{M}_Q \cdot \overrightarrow{PQ}$$
+</div>
+
+<div class="tip"><strong>Para que sirve:</strong> Cuando te dan momentos en varios puntos con componentes desconocidas ($a$, $b$, $c$...), esta propiedad te da ecuaciones para encontrarlas. Es un simple <strong>producto escalar</strong> &mdash; solo multiplicar y sumar.</div>
+
+<h3>H4. Invariante escalar $\tau$</h3>
+<p>Es un numero que vale lo mismo en cualquier punto del espacio:</p>
+
+<div class="formula-box">
+<div class="label purple">Invariante escalar</div>
+$$\tau = \vec{R} \cdot \vec{M}_P \quad \text{(vale lo mismo en cualquier punto } P \text{)}$$
+</div>
+
+<h3>H5. Momento minimo y eje central</h3>
+<p>En el eje central el momento es minimo y paralelo a $\vec{R}$:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Momento minimo</div>
+$$\vec{M}_{\min} = \frac{\tau}{|\vec{R}|^2}\,\vec{R}$$
+</div>
+
+<p>Si el <strong>eje central pasa por un punto $O$</strong>, entonces $\vec{M}_O = \vec{M}_{\min}$ (paralelo a $\vec{R}$).</p>
+
+<h3>H6. Ecuaciones del eje central</h3>
+<p>El eje central es el lugar geometrico de puntos donde el momento vale $\vec{M}_{\min}$. Para encontrarlo:</p>
+
+<div class="step">
+<span class="step-num">1</span> Calcula $\vec{M}_{\min} = \frac{\tau}{|\vec{R}|^2}\,\vec{R}$
+</div>
+<div class="step">
+<span class="step-num">2</span> Impone que en un punto generico $P(x,y,z)$ el momento sea $\vec{M}_{\min}$:
+$$\vec{M}_A + \vec{R} \times \overrightarrow{AP} = \vec{M}_{\min}$$
+donde $A$ es un punto donde ya conoces el momento.
+</div>
+<div class="step">
+<span class="step-num">3</span> Esto da 3 ecuaciones (componentes $\vec{i}$, $\vec{j}$, $\vec{k}$), pero solo 2 son independientes &rarr; dan las <strong>2 ecuaciones de la recta</strong> en el espacio.
+</div>
+
+<div class="tip"><strong>Atajo:</strong> Si $\vec{M}_{\min}$ coincide exactamente con $\vec{M}_A$ en un punto $A$ que ya conoces, entonces $A$ esta en el eje central. La recta pasa por $A$ y tiene la direccion de $\vec{R}$. Escribes directamente:
+$$\frac{x - x_A}{R_x} = \frac{y - y_A}{R_y} = \frac{z - z_A}{R_z}$$
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: TIPOS -->
+<!-- ============================================ -->
+<div class="section" id="tipos">
+<h2>2. Los 3 tipos de ejercicio de examen</h2>
+<p>Todos los ejercicios del 1.13 al 1.18 encajan en uno de estos 3 patrones:</p>
+
+<div class="ex-type">
+<span class="tag">TIPO A &mdash; El mas frecuente</span>
+<h4>Te dan momentos en 2-3 puntos, algunos con incognitas</h4>
+<p><strong>Ejercicios:</strong> 1.15, 1.16, 1.17</p>
+<p><strong>Piden:</strong> valores de las incognitas &rarr; resultante $\vec{R}$ &rarr; eje central o invariante</p>
+<p><strong>Herramientas:</strong> H3 (equiproyectiva) + H2 (campo de momentos) + H5/H6 (eje central)</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO B</span>
+<h4>Te dan datos de un sistema y piden reconstruir los vectores</h4>
+<p><strong>Ejercicios:</strong> 1.13, 1.14</p>
+<p><strong>Piden:</strong> componentes de vectores desconocidos, o combinar dos sistemas</p>
+<p><strong>Herramientas:</strong> H2 (campo de momentos) + H4 (invariante) + H5 (momento minimo)</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO C</span>
+<h4>Vectores paralelos con restricciones geometricas</h4>
+<p><strong>Ejercicios:</strong> 1.18</p>
+<p><strong>Piden:</strong> vector desconocido + punto de aplicacion</p>
+<p><strong>Herramientas:</strong> Proporcionalidad ($\vec{v}_1 = \lambda\,\vec{v}_2$) + modulo resultante + momento en origen</p>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: TIPO A -->
+<!-- ============================================ -->
+<div class="section" id="tipo-a">
+<h2>3. Tipo A: Momentos en 3 puntos</h2>
+<p><strong>Patron:</strong> Te dan $\vec{M}_A$, $\vec{M}_B$, $\vec{M}_C$ en tres puntos, con algunas componentes desconocidas ($a$, $b$, $c$...). Te piden encontrar esas incognitas, la resultante y el eje central.</p>
+
+<h3>Paso 1 &mdash; Encontrar las incognitas con equiproyectiva</h3>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<p>Para cada par de puntos $(P, Q)$:</p>
+<ol>
+<li>Calcula $\overrightarrow{PQ} = Q - P$</li>
+<li>Calcula $\vec{M}_P \cdot \overrightarrow{PQ}$ (producto escalar)</li>
+<li>Calcula $\vec{M}_Q \cdot \overrightarrow{PQ}$ (producto escalar)</li>
+<li>Iguala ambos resultados &rarr; obtienes una ecuacion para las incognitas</li>
+</ol>
+</div>
+
+<p><strong>Con 3 puntos tienes 3 pares:</strong> (A,B), (A,C) y (B,C). Eso da 3 ecuaciones para las 3 incognitas.</p>
+
+<div class="warning"><strong>Estrategia:</strong> Empieza por el par que involucre <strong>menos incognitas</strong>. Normalmente (A,B) te da una incognita directamente, (A,C) te da otra, y (B,C) la tercera.</div>
+
+<p><strong>Ejemplo concreto</strong> (ejercicio 1.15):</p>
+<p>Datos: $\vec{M}_A = \vec{i}+\vec{j}-\vec{k}$ en $A(0,0,0)$; $\vec{M}_B = 2\vec{i}+a\vec{j}+b\vec{k}$ en $B(1,1,0)$; $\vec{M}_C = -4\vec{i}+c\vec{k}$ en $C(0,0,1)$</p>
+
+<p>Par (A,B): $\overrightarrow{AB} = (1,1,0)$</p>
+$$\vec{M}_A \cdot \overrightarrow{AB} = 1 \cdot 1 + 1 \cdot 1 + (-1) \cdot 0 = 2$$
+$$\vec{M}_B \cdot \overrightarrow{AB} = 2 \cdot 1 + a \cdot 1 + b \cdot 0 = 2 + a$$
+$$2 = 2 + a \implies \boxed{a = 0}$$
+
+<p>Asi de directo. Repites con los otros pares para $b$ y $c$.</p>
+
+<h3>Paso 2 &mdash; Encontrar la resultante $\vec{R}$</h3>
+<p>Una vez conocidos todos los momentos, usa el <strong>campo de momentos</strong> entre dos puntos:</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+$$\overrightarrow{PQ} \times \vec{R} = \vec{M}_P - \vec{M}_Q$$
+<p>El lado derecho lo conoces (numeros). El lado izquierdo es un producto vectorial con $\vec{R}$ como incognita. Igualando componentes obtienes ecuaciones para $R_x$, $R_y$, $R_z$.</p>
+</div>
+
+<div class="warning"><strong>Atencion:</strong> Un solo par de puntos suele dar solo 2 de las 3 componentes de $\vec{R}$ (porque el producto vectorial con un vector 2D pierde una dimension). Si te falta una componente, <strong>usa otro par de puntos</strong>.</div>
+
+<h3>Paso 3 &mdash; Eje central</h3>
+<p>Con $\vec{R}$ y algun $\vec{M}$ conocido:</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li>$\tau = \vec{R} \cdot \vec{M}_A$ (producto escalar con cualquier punto conocido)</li>
+<li>$|\vec{R}|^2 = R_x^2 + R_y^2 + R_z^2$</li>
+<li>$\vec{M}_{\min} = \dfrac{\tau}{|\vec{R}|^2}\,\vec{R}$</li>
+<li>Comprueba si $\vec{M}_{\min}$ coincide con algun momento conocido. Si $\vec{M}_{\min} = \vec{M}_A$ &rarr; el eje central pasa por $A$, y su direccion es $\vec{R}$. Escribe la ecuacion de la recta directamente.</li>
+<li>Si no coincide con ningun punto conocido, impone: $\vec{M}_A + \vec{R} \times \overrightarrow{AP} = \vec{M}_{\min}$ y saca las 2 ecuaciones de la recta.</li>
+</ol>
+</div>
+
+<h3>Diagrama de decision &mdash; Tipo A</h3>
+<div class="decision">
+<div class="q">Te dan momentos en 2-3 puntos con incognitas?</div>
+<div class="branch">
+  <span class="label yes">SI &rarr;</span> Usa <strong>equiproyectiva</strong> para encontrar incognitas
+  <div class="branch" style="margin-top:8px">
+    <span class="label">Despues &rarr;</span> Usa <strong>campo de momentos</strong> entre 2 puntos para hallar $\vec{R}$
+    <div class="branch" style="margin-top:8px">
+      <span class="label">Despues &rarr;</span> <strong>Calcula</strong> $\tau$, $\vec{M}_{\min}$, escribe eje central
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: TIPO B -->
+<!-- ============================================ -->
+<div class="section" id="tipo-b">
+<h2>4. Tipo B: Reconstruir o combinar sistemas</h2>
+<p>Hay dos variantes:</p>
+
+<h3>Variante B1: Te dan $\vec{R}$ y $\vec{M}_O$ del sistema &mdash; encuentra los vectores (ej. 1.13)</h3>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Condicion de resultante:</strong> $\vec{v}_A + \vec{v}_B = \vec{R}$ &rarr; igualar componente a componente</li>
+<li><strong>Condicion de momento:</strong> $\vec{r}_A \times \vec{v}_A + \vec{r}_B \times \vec{v}_B = \vec{M}_O$ &rarr; calcular cada producto vectorial e igualar</li>
+<li>Juntas ambas condiciones dan un <strong>sistema de ecuaciones lineales</strong>. Resolver.</li>
+</ol>
+</div>
+
+<p><strong>Ejemplo</strong> (ejercicio 1.13): Dos vectores $\vec{v}_A$ y $\vec{v}_B$ sin componente $\vec{i}$, aplicados en puntos sobre el eje $x$. Tienes 4 incognitas ($v_{Ay}$, $v_{Az}$, $v_{By}$, $v_{Bz}$) y la condicion de resultante + momento te da exactamente 4 ecuaciones.</p>
+
+<div class="tip"><strong>Clave:</strong> Cuando $\vec{r} = r\,\vec{i}$ (puntos sobre el eje $x$), el producto vectorial se simplifica mucho:
+$$r\,\vec{i} \times (F_y\,\vec{j} + F_z\,\vec{k}) = r\,F_y\,\vec{k} - r\,F_z\,\vec{j}$$
+Solo invierte las componentes y cambia un signo.</div>
+
+<h3>Variante B2: Combinar dos sistemas (ej. 1.14)</h3>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Referencia ambos al mismo punto</strong> (normalmente el origen O)</li>
+<li>Para S1: si el eje central pasa por O, el momento en O es el minimo:
+$$\vec{M}_{O,1} = \frac{\tau_1}{|\vec{R}_1|^2}\,\vec{R}_1$$</li>
+<li>Para S2: si te dan el momento en otro punto $A$, trasladalo a O:
+$$\vec{M}_{O,2} = \vec{M}_{A,2} + \overrightarrow{OA} \times \vec{R}_2$$</li>
+<li><strong>Suma todo:</strong>
+$$\vec{R} = \vec{R}_1 + \vec{R}_2, \qquad \vec{M}_O = \vec{M}_{O,1} + \vec{M}_{O,2}$$</li>
+<li>$\tau = \vec{R} \cdot \vec{M}_O$</li>
+</ol>
+</div>
+
+<div class="danger"><strong>Error frecuente en el traslado:</strong> Confundir $\overrightarrow{OA}$ con $\overrightarrow{AO}$. El campo de momentos dice:
+$$\vec{M}_O = \vec{M}_A + \overrightarrow{OA} \times \vec{R}$$
+El vector va <strong>del punto nuevo al punto viejo</strong> (de $O$ donde quieres saber, hacia $A$ donde ya sabes). PERO cuidado: esta formula tiene el signo invertido respecto a la formula general. Lo mas seguro es derivarla siempre desde:
+$$\vec{M}_O = \vec{M}_A - \overrightarrow{AO} \times \vec{R}$$
+Elige la que te resulte mas natural, pero <strong>se consistente</strong>.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: TIPO C -->
+<!-- ============================================ -->
+<div class="section" id="tipo-c">
+<h2>5. Tipo C: Vectores paralelos</h2>
+<p>Caso especial donde los vectores son proporcionales entre si.</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Proporcionalidad:</strong> Si $\vec{v}_1 \parallel \vec{v}_2$, entonces $\vec{v}_1 = \lambda\,\vec{v}_2$ para algun escalar $\lambda$.</li>
+<li><strong>Modulo de la resultante:</strong> $|\vec{R}|^2 = |\vec{v}_1 + \vec{v}_2|^2 = \text{dato}$ &rarr; despeja $\lambda$.
+<p style="margin-top:4px;color:var(--text2);font-size:.9em">Normalmente sale una ecuacion cuadratica con dos soluciones. Guarda ambas y comprueba cual es compatible con los demas datos.</p></li>
+<li><strong>Momento en el origen:</strong> $\vec{M}_O = \vec{r}_1 \times \vec{v}_1 + \vec{r}_2 \times \vec{v}_2$. Calcula $\vec{r}_2 \times \vec{v}_2$ (conocido), restalo de $\vec{M}_O$ para obtener $\vec{r}_1 \times \vec{v}_1$.</li>
+<li><strong>Punto de aplicacion:</strong>
+  <ul>
+    <li>Si $\vec{r}_1 \times \vec{v}_1 = \vec{0}$ &rarr; el punto esta en la linea de accion del vector: $\vec{r}_1 = \beta\,\vec{v}_1$</li>
+    <li>Usa las restricciones geometricas (plano, eje, etc.) para encontrar $\beta$</li>
+  </ul>
+</li>
+</ol>
+</div>
+
+<p><strong>Ejemplo</strong> (ejercicio 1.18): $\vec{v}_2 = 6\vec{i}+3\vec{k}$, $|\vec{R}| = \sqrt{80}$, puntos en el plano $2x+z=0$.</p>
+<p>Ponemos $\vec{v}_1 = \lambda(6\vec{i}+3\vec{k})$. La resultante es $\vec{R} = 6(\lambda+1)\vec{i} + 3(\lambda+1)\vec{k}$.</p>
+$$|\vec{R}|^2 = 36(\lambda+1)^2 + 9(\lambda+1)^2 = 45(\lambda+1)^2 = 80$$
+$$(\lambda+1)^2 = \frac{16}{9} \implies \lambda = \frac{1}{3} \text{ o } \lambda = -\frac{7}{3}$$
+
+<p>Se comprueba cual es compatible calculando el momento y comparando con $\vec{M}_O$.</p>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: CHECKLIST -->
+<!-- ============================================ -->
+<div class="section" id="resumen">
+<h2>6. Checklist antes del examen</h2>
+
+<h3>Domina estas operaciones (sin pensar)</h3>
+<table>
+<tr><th>Operacion</th><th>Cuando se usa</th><th>Practica hasta que...</th></tr>
+<tr><td>Producto escalar $\vec{a}\cdot\vec{b}$</td><td>Equiproyectiva, invariante $\tau$</td><td>Lo hagas en 10 segundos</td></tr>
+<tr><td>Producto vectorial $\vec{a}\times\vec{b}$</td><td>Momentos, campo de momentos, eje central</td><td>No necesites la tabla</td></tr>
+<tr><td>Determinante $3\times3$</td><td>Producto vectorial con vectores de 3 componentes</td><td>No te equivoques de signo</td></tr>
+</table>
+
+<h3>Ante un ejercicio de examen, preguntate:</h3>
+<div class="decision">
+<div class="q">1. Que me dan?</div>
+<div class="branch"><span class="label">Momentos en 3 puntos con incognitas</span> &rarr; <strong>Tipo A</strong></div>
+<div class="branch"><span class="label">Resultante + momento + vectores a encontrar</span> &rarr; <strong>Tipo B</strong></div>
+<div class="branch"><span class="label">Vectores paralelos + restricciones</span> &rarr; <strong>Tipo C</strong></div>
+</div>
+
+<div class="decision">
+<div class="q">2. Necesito encontrar incognitas de los momentos?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Equiproyectiva (H3)</div>
+<div class="branch"><span class="label no">NO</span> &rarr; Ve directo a campo de momentos (H2)</div>
+</div>
+
+<div class="decision">
+<div class="q">3. Necesito la resultante?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Campo de momentos entre 2 puntos: $\overrightarrow{PQ}\times\vec{R} = \vec{M}_P - \vec{M}_Q$</div>
+</div>
+
+<div class="decision">
+<div class="q">4. Me piden el eje central?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Calcula $\tau$, $\vec{M}_{\min}$, comprueba si coincide con algun punto conocido</div>
+</div>
+
+<h3>Errores que cuestan puntos</h3>
+<table>
+<tr><th>Error</th><th>Consecuencia</th><th>Como evitarlo</th></tr>
+<tr><td>Signo mal en el producto vectorial</td><td>Todo lo que sigue sale mal</td><td>Comprueba con $\vec{i}\times\vec{j}=\vec{k}$</td></tr>
+<tr><td>Direccion del vector en campo de momentos</td><td>Momento con signo opuesto</td><td>Escribe siempre de donde a donde va</td></tr>
+<tr><td>Usar solo 1 par de puntos para hallar $\vec{R}$</td><td>Te falta una componente</td><td>Usa 2 pares de puntos</td></tr>
+<tr><td>Olvidar que $\tau$ es un escalar, no un vector</td><td>Te lias en el calculo</td><td>$\tau = \vec{R}\cdot\vec{M}$ es un producto escalar &rarr; numero</td></tr>
+<tr><td>No comprobar la solucion</td><td>Pierdes la oportunidad de detectar errores</td><td>Verifica $\tau$ en dos puntos distintos</td></tr>
+</table>
+
+<h3>Verificaciones rapidas</h3>
+<div class="formula-box green">
+<div class="label green">Comprobaciones para no entregar errores</div>
+<ul>
+<li><strong>Invariante escalar:</strong> Calcula $\tau = \vec{R}\cdot\vec{M}$ en dos puntos distintos. Si da diferente, tienes un error.</li>
+<li><strong>Campo de momentos:</strong> Si encontraste $\vec{R}$, verifica que $\vec{M}_A + \overrightarrow{AB}\times\vec{R} = \vec{M}_B$ con los valores ya obtenidos.</li>
+<li><strong>Eje central:</strong> Un punto del eje central cumple que su momento es paralelo a $\vec{R}$ (producto vectorial $\vec{M}\times\vec{R} = \vec{0}$).</li>
+</ul>
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">Manual Tema 1 &middot; Mecanica Aplicada &middot; UPV/EHU &middot; 2025&ndash;26</div>
+
+</body>
+</html>
