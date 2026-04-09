@@ -465,8 +465,8 @@ body::after{
     <div class="sb-cat">Sistema</div>
     <div class="nav active" onclick="scrollToTop()"><span class="nav-ic">▣</span>Dashboard</div>
     <div class="nav" onclick="openPlan()"><span class="nav-ic">◈</span>Plan de Estudio</div>
-    <div class="nav" onclick="scrollToSection('stats')"><span class="nav-ic">◉</span>Progreso</div>
-    <div class="nav" onclick="scrollToSection('tools')"><span class="nav-ic">◎</span>Herramientas</div>
+    <div class="nav" onclick="openPlanAndScroll('stats')"><span class="nav-ic">◉</span>Progreso</div>
+    <div class="nav" onclick="openPlanAndScroll('tools')"><span class="nav-ic">◎</span>Herramientas</div>
 
     <div class="sb-cat">Asignaturas</div>
     <div class="nav c-c"><span class="nav-ic">◆</span>Mecánica de Fluidos</div>
@@ -943,6 +943,16 @@ function switchPlan(id, btn){
 ══════════════════════════════ */
 function scrollToTop(){
   document.getElementById('main-scroll').scrollTo({top:0, behavior:'smooth'});
+}
+
+function openPlanAndScroll(id){
+  var body = document.getElementById('planBody');
+  var chev = document.getElementById('planChev');
+  if(!body.classList.contains('open')){
+    body.classList.add('open');
+    chev.classList.add('open');
+  }
+  setTimeout(function(){ scrollToSection(id); }, 50);
 }
 
 function openPlan(){
