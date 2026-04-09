@@ -233,20 +233,28 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px
         <button class="fb" onclick="setYear('2425',this)">2024–25</button>
         <button class="fb" onclick="setYear('2324',this)">2023–24</button>
         <button class="fb" onclick="setYear('1819',this)">2018–19</button>
+        <button class="fb" onclick="setYear('1718',this)">2017–18</button>
       </div>
       <span class="sb-filter-label">Tipo</span>
       <div class="fb-group">
         <button class="fb active" onclick="setType('all',this)">Todos</button>
         <button class="fb" onclick="setType('ordinaria',this)">Ordinaria</button>
         <button class="fb" onclick="setType('enero',this)">Enero</button>
+        <button class="fb" onclick="setType('extraordinaria',this)">Extraord.</button>
+      </div>
+      <span class="sb-filter-label">Cuatrimestre</span>
+      <div class="fb-group">
+        <button class="fb active" onclick="setCuatri('all',this)">Todos</button>
+        <button class="fb" onclick="setCuatri('c1',this)">1C · Estática</button>
+        <button class="fb" onclick="setCuatri('c2',this)">2C · Dinámica</button>
       </div>
     </div>
 
     <div class="sb-stats">
-      <div class="sb-stat"><span class="sb-stat-n">3</span><span class="sb-stat-l">exámenes</span></div>
-      <div class="sb-stat"><span class="sb-stat-n">3</span><span class="sb-stat-l">cursos</span></div>
-      <div class="sb-stat"><span class="sb-stat-n">2018–25</span><span class="sb-stat-l">periodo</span></div>
-      <div class="sb-stat"><span class="sb-stat-n">★ SVG</span><span class="sb-stat-l">figuras</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">8</span><span class="sb-stat-l">exámenes</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">4</span><span class="sb-stat-l">cursos</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">2017–25</span><span class="sb-stat-l">periodo</span></div>
+      <div class="sb-stat"><span class="sb-stat-n">PDF</span><span class="sb-stat-l">disponible</span></div>
     </div>
 
     <div class="sb-tools">
@@ -264,10 +272,13 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px
       <!-- LISTA DE EXÁMENES -->
       <div id="exam-list">
 
+        <!-- ── 1C · ESTÁTICA ── -->
+        <div class="cuatri-sep"><hr class="cuatri-sep-line"><span class="cuatri-sep-label">1.er Cuatrimestre · Estática</span><hr class="cuatri-sep-line"></div>
+
         <div class="year-group" data-year="2425">
-          <div class="year-label"><span>2024–25</span><span class="year-count">1</span></div>
+          <div class="year-label"><span>2024–25</span><span class="year-count">2</span></div>
           <div class="year-rows">
-            <button class="exam-row" id="row-2425" data-year="2425" data-type="ordinaria" onclick="openExam('content-2425','row-2425')">
+            <button class="exam-row" id="row-2425" data-year="2425" data-type="ordinaria" data-cuatri="c1" onclick="openExam('content-2425','row-2425')">
               <div class="r-left">
                 <div class="r-date">6 de Junio de 2025</div>
                 <div class="r-badges">
@@ -285,13 +296,25 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px
               <div class="r-count">4T + 2E ·</div>
               <div class="r-arrow"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             </button>
+            <button class="exam-row" id="row-2425ext" data-year="2425" data-type="extraordinaria" data-cuatri="c1" onclick="openPDF('examenes/2425_EXTRAORD_EST.pdf')">
+              <div class="r-left">
+                <div class="r-date">Extraordinaria 2024–25</div>
+                <div class="r-badges">
+                  <span class="type-pill" style="color:#f87171;background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.3)">Extraordinaria</span>
+                  <span class="status-pill">📄 PDF</span>
+                </div>
+              </div>
+              <div class="r-tags"><span class="r-tag">1C · Estática</span></div>
+              <div class="r-count">PDF ·</div>
+              <div class="r-arrow">↗</div>
+            </button>
           </div>
         </div>
 
         <div class="year-group" data-year="2324">
           <div class="year-label"><span>2023–24</span><span class="year-count">1</span></div>
           <div class="year-rows">
-            <button class="exam-row" id="row-2324" data-year="2324" data-type="enero" onclick="openExam('content-2324','row-2324')">
+            <button class="exam-row" id="row-2324" data-year="2324" data-type="enero" data-cuatri="c1" onclick="openExam('content-2324','row-2324')">
               <div class="r-left">
                 <div class="r-date">17 de Enero de 2024</div>
                 <div class="r-badges">
@@ -313,9 +336,9 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px
         </div>
 
         <div class="year-group" data-year="1819">
-          <div class="year-label"><span>2018–19</span><span class="year-count">1</span></div>
+          <div class="year-label"><span>2018–19</span><span class="year-count">2</span></div>
           <div class="year-rows">
-            <button class="exam-row" id="row-1819" data-year="1819" data-type="ordinaria" onclick="openExam('content-1819','row-1819')">
+            <button class="exam-row" id="row-1819" data-year="1819" data-type="ordinaria" data-cuatri="c1" onclick="openExam('content-1819','row-1819')">
               <div class="r-left">
                 <div class="r-date">30 de Mayo de 2019</div>
                 <div class="r-badges">
@@ -333,6 +356,69 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px
               <div class="r-count">3T + 2E ·</div>
               <div class="r-arrow"><svg width="14" height="14" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             </button>
+            <button class="exam-row" id="row-1819est2" data-year="1819" data-type="ordinaria" data-cuatri="c1" onclick="openPDF('examenes/2018_19_MA_Est(2).pdf')">
+              <div class="r-left">
+                <div class="r-date">2018–19 · Modelo 2</div>
+                <div class="r-badges">
+                  <span class="type-pill" style="color:#f59e0b;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)">Ordinaria</span>
+                  <span class="status-pill">📄 PDF</span>
+                </div>
+              </div>
+              <div class="r-tags"><span class="r-tag">1C · Estática</span></div>
+              <div class="r-count">PDF ·</div>
+              <div class="r-arrow">↗</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── 2C · DINÁMICA ── -->
+        <div class="cuatri-sep"><hr class="cuatri-sep-line"><span class="cuatri-sep-label">2.º Cuatrimestre · Dinámica</span><hr class="cuatri-sep-line"></div>
+
+        <div class="year-group" data-year="1819">
+          <div class="year-label"><span>2018–19</span><span class="year-count">2</span></div>
+          <div class="year-rows">
+            <button class="exam-row" id="row-1819din" data-year="1819" data-type="ordinaria" data-cuatri="c2" onclick="openPDF('examenes/2018_19_MA_Din.pdf')">
+              <div class="r-left">
+                <div class="r-date">2018–19 · Modelo 1</div>
+                <div class="r-badges">
+                  <span class="type-pill" style="color:#f59e0b;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)">Ordinaria</span>
+                  <span class="status-pill">📄 PDF</span>
+                </div>
+              </div>
+              <div class="r-tags"><span class="r-tag">2C · Dinámica</span></div>
+              <div class="r-count">PDF ·</div>
+              <div class="r-arrow">↗</div>
+            </button>
+            <button class="exam-row" id="row-1819din2" data-year="1819" data-type="ordinaria" data-cuatri="c2" onclick="openPDF('examenes/2018_19_MA_Din(2).pdf')">
+              <div class="r-left">
+                <div class="r-date">2018–19 · Modelo 2</div>
+                <div class="r-badges">
+                  <span class="type-pill" style="color:#f59e0b;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)">Ordinaria</span>
+                  <span class="status-pill">📄 PDF</span>
+                </div>
+              </div>
+              <div class="r-tags"><span class="r-tag">2C · Dinámica</span></div>
+              <div class="r-count">PDF ·</div>
+              <div class="r-arrow">↗</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="year-group" data-year="1718">
+          <div class="year-label"><span>2017–18</span><span class="year-count">1</span></div>
+          <div class="year-rows">
+            <button class="exam-row" id="row-1718din" data-year="1718" data-type="ordinaria" data-cuatri="c2" onclick="openPDF('examenes/2017_18_MA_Din.pdf')">
+              <div class="r-left">
+                <div class="r-date">2017–18</div>
+                <div class="r-badges">
+                  <span class="type-pill" style="color:#f59e0b;background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)">Ordinaria</span>
+                  <span class="status-pill">📄 PDF</span>
+                </div>
+              </div>
+              <div class="r-tags"><span class="r-tag">2C · Dinámica</span></div>
+              <div class="r-count">PDF ·</div>
+              <div class="r-arrow">↗</div>
+            </button>
           </div>
         </div>
 
@@ -345,7 +431,10 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px
       <div class="content-header-title">📄 Examen Ordinario · 1er Cuatrimestre · 6 junio 2025</div>
       <div class="content-header-meta">Curso 2024–2025 · UPV/EHU Gipuzkoa · 4 preguntas de teoría + 2 ejercicios</div>
     </div>
-    <button class="close-btn" onclick="closeExam('content-2425','row-2425')">← Volver</button>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <a class="close-btn" href="examenes/2425_ORD_EST.pdf" target="_blank" style="text-decoration:none">⬇ PDF</a>
+      <button class="close-btn" onclick="closeExam('content-2425','row-2425')">← Volver</button>
+    </div>
   </div>
 
   <div class="exam-section-title" style="margin-bottom:18px">Examen 2024–2025</div>
@@ -1084,10 +1173,13 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px
 <div class="exam-content" id="content-2324">
   <div class="content-header">
     <div>
-      <div class="content-header-title">📄 Examen Enero · Estática · 17 enero 2024</div>
+      <div class="content-header-title">📄 Examen Enero · 1er Cuatrimestre · 17 enero 2024</div>
       <div class="content-header-meta">Curso 2023–2024 · UPV/EHU Gipuzkoa · 4 preguntas de teoría + 3 ejercicios</div>
     </div>
-    <button class="close-btn" onclick="closeExam('content-2324','row-2324')">← Volver</button>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <a class="close-btn" href="examenes/2324_ENERO_EST.pdf" target="_blank" style="text-decoration:none">⬇ PDF</a>
+      <button class="close-btn" onclick="closeExam('content-2324','row-2324')">← Volver</button>
+    </div>
   </div>
 
   <div class="exam-section-title" style="margin-bottom:18px">Examen 2023–2024</div>
@@ -1847,7 +1939,10 @@ body{font-family:var(--ff);background:var(--bg);color:var(--text);font-size:15px
       <div class="content-header-title">📄 Examen Ordinario · 1er Cuatrimestre · 30 mayo 2019</div>
       <div class="content-header-meta">Curso 2018–2019 · UPV/EHU Gipuzkoa · 3 preguntas de teoría + 2 ejercicios</div>
     </div>
-    <button class="close-btn" onclick="closeExam('content-1819','row-1819')">← Volver</button>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <a class="close-btn" href="examenes/2018_19_MA_Est.pdf" target="_blank" style="text-decoration:none">⬇ PDF</a>
+      <button class="close-btn" onclick="closeExam('content-1819','row-1819')">← Volver</button>
+    </div>
   </div>
 
   <div class="exam-section-title" style="margin-bottom:18px">Examen 2018–2019</div>
@@ -2356,21 +2451,55 @@ function closeExam(contentId, rowId){
   if(main) main.scrollTop = 0;
 }
 
-function setYear(year, btn){
-  document.querySelectorAll('.sidebar .fb.active[onclick^="setYear"]').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
+var activeYear='all', activeType='all', activeCuatri='all';
+
+function applyFilters(){
   document.querySelectorAll('#exam-list .year-group').forEach(function(g){
-    g.classList.toggle('hidden', year !== 'all' && g.dataset.year !== year);
+    var yearOk = activeYear==='all' || g.dataset.year===activeYear;
+    var hasVisible = false;
+    g.querySelectorAll('.exam-row').forEach(function(row){
+      var ok = yearOk
+        && (activeType==='all' || row.dataset.type===activeType)
+        && (activeCuatri==='all' || row.dataset.cuatri===activeCuatri);
+      row.classList.toggle('hidden', !ok);
+      if(ok) hasVisible = true;
+    });
+    g.classList.toggle('hidden', !yearOk || !hasVisible);
+  });
+  // Show/hide cuatri separators
+  document.querySelectorAll('#exam-list .cuatri-sep').forEach(function(sep){
+    var next = sep.nextElementSibling;
+    var visible = false;
+    while(next && !next.classList.contains('cuatri-sep')){
+      if(!next.classList.contains('hidden')) visible = true;
+      next = next.nextElementSibling;
+    }
+    sep.style.display = visible ? '' : 'none';
   });
 }
 
-function setType(type, btn){
-  document.querySelectorAll('.sidebar .fb.active[onclick^="setType"]').forEach(function(b){ b.classList.remove('active'); });
+function setYear(year, btn){
+  document.querySelectorAll('.sidebar .fb[onclick^="setYear"]').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
-  document.querySelectorAll('.exam-row').forEach(function(row){
-    row.classList.toggle('hidden', type !== 'all' && row.dataset.type !== type);
-  });
+  activeYear = year;
+  applyFilters();
 }
+
+function setType(type, btn){
+  document.querySelectorAll('.sidebar .fb[onclick^="setType"]').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  activeType = type;
+  applyFilters();
+}
+
+function setCuatri(cuatri, btn){
+  document.querySelectorAll('.sidebar .fb[onclick^="setCuatri"]').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  activeCuatri = cuatri;
+  applyFilters();
+}
+
+function openPDF(path){ window.open(path, '_blank'); }
 
 function toggleQ(id){
   document.getElementById(id).classList.toggle('open');
