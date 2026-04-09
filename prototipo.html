@@ -3,553 +3,837 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EHU·LAB — Command Center [PROTOTIPO]</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>EHU·LAB — Command Center v2</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ════════════════════════════════════════════════════
+   TOKENS
+   ════════════════════════════════════════════════════ */
 :root{
-  --green:#00ff9d;
-  --cyan:#00f0ff;
-  --purple:#c084fc;
-  --amber:#fbbf24;
-  --bg:#0a0a0a;
-  --surface:#111111;
-  --surface2:#181818;
-  --border:rgba(255,255,255,0.06);
-  --text:#e2e8f0;
-  --text2:#94a3b8;
-  --text3:#475569;
+  --green   : #00ff9d;
+  --green-d  : rgba(0,255,157,0.12);
+  --green-glow: 0 0 12px rgba(0,255,157,0.5),0 0 40px rgba(0,255,157,0.15);
+  --cyan    : #00f0ff;
+  --cyan-d   : rgba(0,240,255,0.12);
+  --cyan-glow : 0 0 12px rgba(0,240,255,0.5),0 0 40px rgba(0,240,255,0.15);
+  --purple  : #b47fff;
+  --purple-d : rgba(180,127,255,0.12);
+  --purple-glow:0 0 12px rgba(180,127,255,0.5),0 0 40px rgba(180,127,255,0.15);
+  --amber   : #f5b942;
+  --amber-d  : rgba(245,185,66,0.12);
+  --red     : #ff4560;
+  --bg      : #080808;
+  --bg1     : #0e0e0e;
+  --bg2     : #131313;
+  --bg3     : #181818;
+  --line    : rgba(255,255,255,0.055);
+  --line-g   : rgba(0,255,157,0.12);
+  --txt     : #d4dde8;
+  --txt2    : #6d7f93;
+  --txt3    : #3a4553;
+  --font-mono: 'JetBrains Mono',monospace;
+  --font-ui : 'Space Grotesk',sans-serif;
 }
 
+/* ════════════════════════════════════════════════════
+   RESET & BASE
+   ════════════════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{
-  font-family:'JetBrains Mono',monospace;
-  background:var(--bg);
-  color:var(--text);
-  display:flex;
-  flex-direction:column;
-}
+body{font-family:var(--font-mono);background:var(--bg);color:var(--txt)}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,255,157,0.18);border-radius:2px}
 
-/* Grid texture */
+/* ── LAYER STACK ── */
+/* z0: bg effects | z1: layout | z10: topbar */
+
+/* Fine grid */
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
-    linear-gradient(rgba(0,255,157,0.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,255,157,0.018) 1px,transparent 1px);
-  background-size:44px 44px;
+    linear-gradient(rgba(0,255,157,0.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,157,0.022) 1px,transparent 1px);
+  background-size:48px 48px;
+  animation:grid-drift 90s linear infinite;
 }
+@keyframes grid-drift{0%{background-position:0 0}100%{background-position:48px 48px}}
 
-/* Ambient glows */
+/* Scanlines */
 body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse 600px 400px at -10% -10%,rgba(0,240,255,0.04) 0%,transparent 70%),
-    radial-gradient(ellipse 500px 400px at 110% 110%,rgba(192,132,252,0.04) 0%,transparent 70%);
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:2;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
 }
 
-.z1{position:relative;z-index:1}
+/* Ambient blobs */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0}
+.amb-a{position:absolute;width:700px;height:500px;top:-200px;left:-150px;
+  background:radial-gradient(ellipse,rgba(0,240,255,0.05) 0%,transparent 65%);
+  animation:amb-pulse 8s ease-in-out infinite alternate}
+.amb-b{position:absolute;width:600px;height:500px;bottom:-200px;right:-100px;
+  background:radial-gradient(ellipse,rgba(180,127,255,0.05) 0%,transparent 65%);
+  animation:amb-pulse 11s ease-in-out infinite alternate-reverse}
+.amb-c{position:absolute;width:400px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(ellipse,rgba(0,255,157,0.025) 0%,transparent 65%)}
+@keyframes amb-pulse{0%{opacity:.6;transform:scale(1)}100%{opacity:1;transform:scale(1.12)}}
 
-/* ── TOPBAR ── */
+/* ════════════════════════════════════════════════════
+   TOPBAR
+   ════════════════════════════════════════════════════ */
 .topbar{
-  height:48px;flex-shrink:0;
-  background:rgba(10,10,10,0.96);
-  border-bottom:1px solid rgba(0,255,157,0.1);
-  backdrop-filter:blur(20px);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 24px;
   position:relative;z-index:10;
+  height:52px;flex-shrink:0;
+  background:rgba(8,8,8,0.97);
+  border-bottom:1px solid var(--line-g);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  box-shadow:0 0 30px rgba(0,255,157,0.04),inset 0 -1px 0 rgba(0,255,157,0.08);
 }
-.topbar-logo{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:1.05em;font-weight:700;letter-spacing:.08em;
-  color:var(--text);
+/* Top accent line */
+.topbar::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--cyan) 30%,var(--green) 60%,transparent 100%);
+  opacity:.45;
 }
-.topbar-logo em{color:var(--green);font-style:normal}
-.topbar-tag{font-size:.58em;letter-spacing:.16em;color:var(--text3);margin-left:10px;text-transform:uppercase}
-.topbar-right{display:flex;align-items:center;gap:20px}
+.tb-left{display:flex;align-items:center;gap:16px}
+.tb-logo{
+  font-family:var(--font-ui);font-size:1.1em;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--txt);
+}
+.tb-logo em{color:var(--green);font-style:normal;text-shadow:var(--green-glow)}
+.tb-ver{
+  font-size:.52em;letter-spacing:.14em;color:var(--txt3);
+  border:1px solid var(--line-g);padding:2px 7px;border-radius:3px;
+  text-transform:uppercase;
+}
+.tb-sep{width:1px;height:20px;background:var(--line);margin:0 4px}
 
-/* Global countdown */
-.global-cd{display:flex;align-items:center;gap:8px;font-size:.68em}
-.gc-label{color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
-.gc-val{font-weight:700;color:var(--cyan);font-size:1.1em}
-.gc-sep{color:var(--text3);opacity:.5}
-.gc-sub{font-size:.78em;color:var(--text3)}
-
-/* Status */
-.sys-status{display:flex;align-items:center;gap:7px;font-size:.6em;letter-spacing:.1em;color:var(--green);text-transform:uppercase}
+/* HUD row */
+.tb-hud{display:flex;align-items:center;gap:24px}
+.hud-block{display:flex;align-items:center;gap:9px}
+.hud-label{font-size:.54em;letter-spacing:.12em;color:var(--txt3);text-transform:uppercase}
+.hud-val{
+  font-size:.82em;font-weight:700;color:var(--cyan);
+  text-shadow:0 0 8px rgba(0,240,255,0.6);
+  letter-spacing:.04em;
+}
+.hud-unit{font-size:.54em;color:var(--txt3);margin-left:-5px;margin-right:3px}
+.hud-sub{font-size:.62em;color:var(--txt2);border-left:1px solid var(--line);padding-left:9px}
+.sys-status{display:flex;align-items:center;gap:6px;font-size:.58em;
+  letter-spacing:.1em;color:var(--green);text-transform:uppercase;
+  text-shadow:0 0 8px rgba(0,255,157,0.4)}
 .sys-dot{width:6px;height:6px;border-radius:50%;background:var(--green);
-  animation:pulse-dot 2.4s ease-in-out infinite;
-  box-shadow:0 0 6px var(--green)}
-@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.25}}
+  box-shadow:var(--green-glow);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:var(--green-glow)}50%{opacity:.2;box-shadow:none}}
 
-/* ── LAYOUT ── */
-.layout{display:flex;flex:1;overflow:hidden;position:relative;z-index:1}
+/* ════════════════════════════════════════════════════
+   LAYOUT
+   ════════════════════════════════════════════════════ */
+.shell{display:flex;flex:1;overflow:hidden;position:relative;z-index:1}
 
-/* ── SIDEBAR ── */
+/* ════════════════════════════════════════════════════
+   SIDEBAR
+   ════════════════════════════════════════════════════ */
 .sidebar{
-  width:256px;flex-shrink:0;
-  background:rgba(12,12,12,0.97);
-  border-right:1px solid rgba(0,255,157,0.08);
-  display:flex;flex-direction:column;
-  overflow-y:auto;
+  width:260px;flex-shrink:0;
+  background:rgba(10,10,10,0.98);
+  border-right:1px solid var(--line-g);
+  display:flex;flex-direction:column;overflow-y:auto;
+  position:relative;
 }
-.sb-brand{
-  padding:18px 20px 14px;
-  border-bottom:1px solid rgba(255,255,255,0.05);
+/* Right edge accent */
+.sidebar::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(0,255,157,0.2) 30%,rgba(0,240,255,0.15) 70%,transparent);
+  pointer-events:none;
 }
-.sb-brand-eye{font-size:.56em;letter-spacing:.16em;color:var(--text3);text-transform:uppercase;margin-bottom:3px}
-.sb-brand-course{font-size:.7em;color:var(--text2)}
+.sb-head{padding:20px 20px 16px;border-bottom:1px solid var(--line)}
+.sb-course{
+  font-family:var(--font-ui);font-size:.65em;font-weight:700;
+  color:var(--txt);letter-spacing:.06em;margin-bottom:3px;
+}
+.sb-meta{font-size:.56em;color:var(--txt3);letter-spacing:.08em}
 
-.sb-section-label{
-  font-size:.54em;letter-spacing:.16em;color:var(--text3);
+.sb-cat{
+  font-size:.48em;letter-spacing:.2em;color:var(--txt3);
   text-transform:uppercase;padding:14px 20px 5px;
+  display:flex;align-items:center;gap:8px;
 }
+.sb-cat::after{content:'';flex:1;height:1px;background:var(--line)}
 
-.nav-item{
-  display:flex;align-items:center;gap:9px;
-  padding:9px 20px;font-size:.7em;letter-spacing:.06em;
-  color:var(--text3);cursor:pointer;
-  border-left:2px solid transparent;
-  transition:.15s;text-transform:uppercase;
+/* Nav items */
+.nav{display:flex;align-items:center;gap:10px;padding:9px 20px;
+  font-size:.67em;letter-spacing:.05em;color:var(--txt3);cursor:pointer;
+  border-left:2px solid transparent;transition:all .18s;text-transform:uppercase;
+  position:relative;
 }
-.nav-item:hover{color:var(--text2);background:rgba(255,255,255,0.025)}
-.nav-item.active{color:var(--green);border-left-color:var(--green);background:rgba(0,255,157,0.05)}
-.nav-icon{font-size:.9em;opacity:.7}
+.nav:hover{color:var(--txt2);background:rgba(255,255,255,0.02);border-left-color:var(--txt3)}
+.nav.active{
+  color:var(--green);border-left-color:var(--green);
+  background:linear-gradient(90deg,rgba(0,255,157,0.07) 0%,transparent 100%);
+  text-shadow:0 0 10px rgba(0,255,157,0.35);
+}
+.nav.active .nav-icon{color:var(--green);text-shadow:0 0 8px rgba(0,255,157,0.6)}
+.nav-icon{font-size:1em;width:14px;text-align:center;transition:.18s}
+.nav-cyan{color:rgba(0,240,255,0.6) !important}
+.nav-cyan:hover{color:var(--cyan) !important;text-shadow:0 0 8px rgba(0,240,255,0.3) !important}
+.nav-purple{color:rgba(180,127,255,0.6) !important}
+.nav-purple:hover{color:var(--purple) !important;text-shadow:0 0 8px rgba(180,127,255,0.3) !important}
+.nav-amber{color:rgba(245,185,66,0.6) !important}
+.nav-amber:hover{color:var(--amber) !important;text-shadow:0 0 8px rgba(245,185,66,0.3) !important}
 
 .nav-sub{
-  padding:3px 20px 3px 40px;
-  font-size:.6em;color:var(--text3);cursor:pointer;transition:.12s;
+  padding:4px 20px 4px 48px;font-size:.58em;
+  color:var(--txt3);cursor:pointer;transition:.14s;
 }
-.nav-sub:hover{color:var(--text2)}
-.nav-sub::before{content:'↳ ';opacity:.4}
+.nav-sub:hover{color:var(--txt2)}
+.nav-sub::before{content:'└ ';opacity:.3;font-size:.9em}
 
-.sb-bottom{
-  margin-top:auto;padding:14px 20px;
-  border-top:1px solid rgba(255,255,255,0.05);
+/* Sidebar bottom panel */
+.sb-foot{
+  margin-top:auto;padding:16px 20px;
+  border-top:1px solid var(--line);
+  background:rgba(0,0,0,.3);
 }
-.sb-bottom-label{font-size:.56em;letter-spacing:.08em;color:var(--text3);text-transform:uppercase}
-.sb-bottom-val{font-size:.62em;color:var(--text2);margin-top:2px}
+.sb-foot-time{font-size:.64em;color:var(--txt2);margin-bottom:6px}
+.sb-foot-row{display:flex;align-items:center;gap:6px;margin-top:6px}
+.sb-foot-label{font-size:.55em;color:var(--txt3);text-transform:uppercase;letter-spacing:.1em}
 
-/* ── MAIN ── */
-.main{flex:1;overflow-y:auto;padding:28px 32px 40px}
-.main::-webkit-scrollbar{width:3px}
-.main::-webkit-scrollbar-track{background:transparent}
-.main::-webkit-scrollbar-thumb{background:rgba(0,255,157,0.15);border-radius:2px}
-
-/* Section label */
-.section-label{
-  display:flex;align-items:center;gap:10px;
-  font-size:.58em;letter-spacing:.16em;color:var(--text3);text-transform:uppercase;
-  margin-bottom:16px;
+/* Sidebar exam block */
+.sb-exam-block{
+  margin:10px 14px;padding:10px 12px;
+  background:rgba(0,240,255,0.04);
+  border:1px solid rgba(0,240,255,0.1);
+  border-radius:6px;
 }
-.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.sb-exam-next{font-size:.54em;letter-spacing:.1em;color:var(--txt3);text-transform:uppercase;margin-bottom:4px}
+.sb-exam-name{font-size:.68em;color:var(--cyan);font-weight:700;margin-bottom:2px}
+.sb-exam-date{font-size:.6em;color:var(--txt2)}
 
-/* ── SUBJECT CARDS ── */
-.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+/* ════════════════════════════════════════════════════
+   MAIN
+   ════════════════════════════════════════════════════ */
+.main{flex:1;overflow-y:auto;padding:28px 32px 52px;display:flex;flex-direction:column;gap:28px}
+
+/* Section header */
+.sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:-4px}
+.sec-hdr-label{
+  font-size:.52em;letter-spacing:.2em;color:var(--txt3);
+  text-transform:uppercase;flex-shrink:0;
+}
+.sec-hdr-line{flex:1;height:1px;background:linear-gradient(90deg,var(--line-g),transparent)}
+.sec-hdr-code{font-size:.5em;color:var(--txt3);letter-spacing:.1em;margin-left:6px}
+
+/* ════════════════════════════════════════════════════
+   SUBJECT CARDS
+   ════════════════════════════════════════════════════ */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 
 .scard{
-  background:var(--surface);
-  border-radius:12px;border:1px solid var(--border);
+  background:var(--bg1);
+  border-radius:14px;
+  border:1px solid var(--line);
   display:flex;flex-direction:column;
-  transition:.2s;overflow:hidden;position:relative;
+  position:relative;overflow:hidden;
+  transition:border-color .25s,box-shadow .25s,transform .2s;
+  cursor:pointer;
 }
+/* Top edge glow line */
+.scard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;z-index:1;
+  transition:opacity .25s;
+}
+/* Corner brackets */
 .scard::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  content:'';position:absolute;bottom:0;right:0;
+  width:20px;height:20px;
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  border-radius:0 0 14px 0;
+  transition:border-color .25s;
 }
-.scard-f{border-color:rgba(0,240,255,0.12)}
-.scard-f::after{background:linear-gradient(90deg,transparent,rgba(0,240,255,0.6),transparent)}
-.scard-f:hover{border-color:rgba(0,240,255,0.3);box-shadow:0 4px 32px rgba(0,240,255,0.07),0 0 0 1px rgba(0,240,255,0.06)}
 
-.scard-m{border-color:rgba(192,132,252,0.12)}
-.scard-m::after{background:linear-gradient(90deg,transparent,rgba(192,132,252,0.6),transparent)}
-.scard-m:hover{border-color:rgba(192,132,252,0.3);box-shadow:0 4px 32px rgba(192,132,252,0.07),0 0 0 1px rgba(192,132,252,0.06)}
+/* Fluid – cyan */
+.scard-f::before{background:linear-gradient(90deg,transparent 10%,rgba(0,240,255,0.7) 50%,transparent 90%)}
+.scard-f{border-color:rgba(0,240,255,0.1)}
+.scard-f:hover{
+  border-color:rgba(0,240,255,0.35);
+  box-shadow:0 0 0 1px rgba(0,240,255,0.1),0 8px 48px rgba(0,240,255,0.12),inset 0 0 60px rgba(0,240,255,0.02);
+  transform:translateY(-2px);
+}
+.scard-f:hover::after{border-color:rgba(0,240,255,0.3)}
 
-.scard-s{border-color:rgba(251,191,36,0.12)}
-.scard-s::after{background:linear-gradient(90deg,transparent,rgba(251,191,36,0.6),transparent)}
-.scard-s:hover{border-color:rgba(251,191,36,0.3);box-shadow:0 4px 32px rgba(251,191,36,0.07),0 0 0 1px rgba(251,191,36,0.06)}
+/* Mecánica – purple */
+.scard-m::before{background:linear-gradient(90deg,transparent 10%,rgba(180,127,255,0.7) 50%,transparent 90%)}
+.scard-m{border-color:rgba(180,127,255,0.1)}
+.scard-m:hover{
+  border-color:rgba(180,127,255,0.35);
+  box-shadow:0 0 0 1px rgba(180,127,255,0.1),0 8px 48px rgba(180,127,255,0.12),inset 0 0 60px rgba(180,127,255,0.02);
+  transform:translateY(-2px);
+}
+.scard-m:hover::after{border-color:rgba(180,127,255,0.3)}
 
-.scard-body{padding:20px 20px 0}
+/* Sistemas – amber */
+.scard-s::before{background:linear-gradient(90deg,transparent 10%,rgba(245,185,66,0.7) 50%,transparent 90%)}
+.scard-s{border-color:rgba(245,185,66,0.1)}
+.scard-s:hover{
+  border-color:rgba(245,185,66,0.35);
+  box-shadow:0 0 0 1px rgba(245,185,66,0.1),0 8px 48px rgba(245,185,66,0.12),inset 0 0 60px rgba(245,185,66,0.02);
+  transform:translateY(-2px);
+}
+.scard-s:hover::after{border-color:rgba(245,185,66,0.3)}
 
-.scard-eyebrow{font-size:.56em;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px;font-weight:700}
-.col-f{color:rgba(0,240,255,0.75)}
-.col-m{color:rgba(192,132,252,0.75)}
-.col-s{color:rgba(251,191,36,0.75)}
+/* Card body */
+.scard-inner{padding:20px 20px 14px}
+.scard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}
+.scard-info{flex:1}
+.scard-eyebrow{font-size:.52em;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+.scard-title{font-family:var(--font-ui);font-size:.88em;font-weight:700;color:var(--txt);line-height:1.35}
 
-.scard-title{font-family:'Space Grotesk',sans-serif;font-size:.95em;font-weight:700;line-height:1.3;color:var(--text)}
+/* ── RING ── */
+.ring-wrap{flex-shrink:0;position:relative}
+.ring-svg{overflow:visible}
+.ring-track{fill:none;stroke-width:5}
+.ring-bar{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.ring-pct{font-family:var(--font-mono);font-weight:700}
+/* Glow filter per subject */
+.ring-glow-f{filter:drop-shadow(0 0 4px rgba(0,240,255,0.8))}
+.ring-glow-m{filter:drop-shadow(0 0 4px rgba(180,127,255,0.8))}
+.ring-glow-s{filter:drop-shadow(0 0 4px rgba(245,185,66,0.8))}
 
-/* Ring */
-.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;padding-top:2px}
+/* Divider */
+.scard-div{height:1px;background:var(--line);margin:0 20px 12px}
 
-/* HR */
-.scard-hr{height:1px;background:var(--border);margin:14px 0}
-
-/* Topics */
-.topic-list{padding:0 20px}
-.topic-row{display:flex;align-items:center;gap:7px;padding:3px 0;font-size:.7em;color:var(--text2)}
-.td{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.td-active{background:#fbbf24}
-.td-queue{background:#1e293b;border:1px solid #334155}
-.td-done{background:var(--green)}
-.tbadge{margin-left:auto;font-size:.65em;padding:1px 6px;border-radius:3px}
-.tb-active{color:#fbbf24;background:rgba(251,191,36,0.1)}
-.tb-queue{color:var(--text3)}
+/* Topic list */
+.topic-list{padding:0 20px 10px;display:flex;flex-direction:column;gap:4px}
+.topic-row{display:flex;align-items:center;gap:8px;font-size:.66em;color:var(--txt2);padding:3px 0}
+.t-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.t-done{background:var(--green);box-shadow:0 0 5px rgba(0,255,157,0.7)}
+.t-active{background:var(--amber);box-shadow:0 0 5px rgba(245,185,66,0.6);animation:dot-pulse 2s ease-in-out infinite}
+.t-queue{background:transparent;border:1px solid var(--txt3)}
+@keyframes dot-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.t-badge{margin-left:auto;font-size:.85em;padding:1px 7px;border-radius:3px;flex-shrink:0}
+.tb-active{color:var(--amber);background:rgba(245,185,66,0.1);border:1px solid rgba(245,185,66,0.2)}
+.tb-queue{color:var(--txt3);background:rgba(255,255,255,0.03);border:1px solid var(--line)}
 
 /* Countdown strip */
 .cd-strip{
   display:flex;align-items:center;justify-content:space-between;
-  margin:14px 20px 0;padding:8px 12px;
-  background:rgba(0,0,0,.35);border-radius:6px;
-  font-size:.62em;
+  margin:0 20px 0;padding:9px 14px;
+  background:rgba(0,0,0,0.4);
+  border-radius:7px;
+  border:1px solid var(--line);
+  border-top:none;border-radius:0 0 7px 7px;
+  position:relative;
 }
-.cd-strip-label{color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
-.cd-strip-vals{display:flex;align-items:center;gap:2px}
-.cdv{font-weight:700;font-size:1.1em}
-.cds{color:var(--text3);font-size:.75em;margin-right:2px}
+.cd-strip::before{
+  content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
+}
+.cd-label{font-size:.56em;letter-spacing:.08em;color:var(--txt3);text-transform:uppercase}
+.cd-nums{display:flex;align-items:baseline;gap:1px}
+.cd-n{font-size:.85em;font-weight:700;line-height:1}
+.cd-u{font-size:.5em;color:var(--txt3);margin:0 3px 0 0}
+.cd-sep{color:var(--txt3);font-size:.6em;margin:0 1px}
 
 /* Actions */
-.scard-actions{display:flex;gap:8px;padding:14px 20px 18px;margin-top:auto}
-.cbtn{
-  flex:1;text-align:center;padding:8px 6px;
-  border-radius:7px;font-size:.68em;font-weight:700;
-  text-decoration:none;letter-spacing:.04em;
-  transition:.12s;cursor:pointer;display:block;
-  text-transform:uppercase;
+.scard-actions{display:flex;gap:8px;padding:12px 20px 18px;margin-top:auto}
+.abtn{
+  flex:1;text-align:center;padding:9px 6px;
+  border-radius:8px;font-size:.64em;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  transition:all .18s;cursor:pointer;display:block;
+  font-family:var(--font-mono);
 }
-.cbtn-f{background:rgba(0,240,255,0.1);color:#00f0ff;border:1px solid rgba(0,240,255,0.2)}
-.cbtn-f:hover{background:rgba(0,240,255,0.2)}
-.cbtn-m{background:rgba(192,132,252,0.1);color:#c084fc;border:1px solid rgba(192,132,252,0.2)}
-.cbtn-m:hover{background:rgba(192,132,252,0.2)}
-.cbtn-s{background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)}
-.cbtn-s:hover{background:rgba(251,191,36,0.2)}
-.cbtn-ghost{background:rgba(255,255,255,0.04);color:var(--text2);border:1px solid var(--border)}
-.cbtn-ghost:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+.abtn-f{background:rgba(0,240,255,0.07);color:var(--cyan);border:1px solid rgba(0,240,255,0.2)}
+.abtn-f:hover{background:rgba(0,240,255,0.15);box-shadow:0 0 16px rgba(0,240,255,0.2);border-color:rgba(0,240,255,0.4)}
+.abtn-m{background:rgba(180,127,255,0.07);color:var(--purple);border:1px solid rgba(180,127,255,0.2)}
+.abtn-m:hover{background:rgba(180,127,255,0.15);box-shadow:0 0 16px rgba(180,127,255,0.2);border-color:rgba(180,127,255,0.4)}
+.abtn-s{background:rgba(245,185,66,0.07);color:var(--amber);border:1px solid rgba(245,185,66,0.2)}
+.abtn-s:hover{background:rgba(245,185,66,0.15);box-shadow:0 0 16px rgba(245,185,66,0.2);border-color:rgba(245,185,66,0.4)}
+.abtn-ghost{background:rgba(255,255,255,0.035);color:var(--txt2);border:1px solid var(--line)}
+.abtn-ghost:hover{background:rgba(255,255,255,0.07);color:var(--txt);border-color:rgba(255,255,255,0.1)}
 
-/* ── STATS ── */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+/* ════════════════════════════════════════════════════
+   STATS ROW
+   ════════════════════════════════════════════════════ */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .stat-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:8px;
-  padding:14px 16px;text-align:center;
+  background:var(--bg1);border:1px solid var(--line);border-radius:10px;
+  padding:16px 18px;text-align:center;position:relative;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
 }
-.stat-num{font-family:'Space Grotesk',sans-serif;font-size:1.65em;font-weight:700;line-height:1;margin-bottom:5px}
-.stat-lbl{font-size:.56em;letter-spacing:.1em;color:var(--text3);text-transform:uppercase}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
+  transition:opacity .2s;
+}
+.stat-card:hover{border-color:rgba(255,255,255,0.1)}
+.sc-green::before{background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.5}
+.sc-cyan::before{background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.5}
+.sc-purple::before{background:linear-gradient(90deg,transparent,var(--purple),transparent);opacity:.5}
+.sc-amber::before{background:linear-gradient(90deg,transparent,var(--amber),transparent);opacity:.5}
+.stat-num{
+  font-family:var(--font-ui);font-size:2em;font-weight:700;line-height:1;
+  margin-bottom:6px;
+}
+.sc-green .stat-num{color:var(--green);text-shadow:0 0 16px rgba(0,255,157,0.5)}
+.sc-cyan .stat-num{color:var(--cyan);text-shadow:0 0 16px rgba(0,240,255,0.5)}
+.sc-purple .stat-num{color:var(--purple);text-shadow:0 0 16px rgba(180,127,255,0.5)}
+.sc-amber .stat-num{color:var(--amber);text-shadow:0 0 16px rgba(245,185,66,0.5)}
+.stat-lbl{font-size:.54em;letter-spacing:.12em;color:var(--txt3);text-transform:uppercase}
 
-/* ── PLAN PREVIEW ── */
-.plan-preview{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:18px 20px;margin-bottom:28px;
+/* ════════════════════════════════════════════════════
+   PLAN PREVIEW
+   ════════════════════════════════════════════════════ */
+.plan-box{
+  background:var(--bg1);border:1px solid var(--line);border-radius:12px;
+  overflow:hidden;
 }
-.plan-week-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:.6em;letter-spacing:.1em;color:var(--green);text-transform:uppercase;
-  margin-bottom:12px;
+.plan-box-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-bottom:1px solid var(--line);
+  background:rgba(0,0,0,0.25);
 }
-.plan-week-badge::before{content:'▶';font-size:.7em}
-.plan-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.plan-col{padding:10px 12px;border-radius:7px}
-.pc-f{background:rgba(0,240,255,0.04);border:1px solid rgba(0,240,255,0.1)}
-.pc-m{background:rgba(192,132,252,0.04);border:1px solid rgba(192,132,252,0.1)}
-.pc-s{background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.1)}
-.pc-label{font-size:.58em;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;font-weight:700}
-.pc-text{font-size:.7em;color:var(--text2);line-height:1.45}
+.plan-week-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.62em;letter-spacing:.1em;color:var(--green);text-transform:uppercase;
+  text-shadow:0 0 8px rgba(0,255,157,0.4);
+}
+.plan-week-tag::before{
+  content:'';width:8px;height:8px;border-radius:50%;background:var(--green);
+  box-shadow:var(--green-glow);animation:blink 2s ease-in-out infinite;
+}
+.plan-dates{font-size:.58em;color:var(--txt3);letter-spacing:.06em}
+.plan-cols{display:grid;grid-template-columns:repeat(3,1fr)}
+.plan-col{padding:14px 18px;position:relative}
+.plan-col+.plan-col{border-left:1px solid var(--line)}
+.plan-col-label{font-size:.54em;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.plan-col-text{font-size:.68em;color:var(--txt2);line-height:1.55}
+.plan-col-tag{
+  display:inline-block;font-size:.5em;letter-spacing:.1em;padding:1px 6px;
+  border-radius:3px;margin-top:6px;text-transform:uppercase;
+}
+.ptag-active{background:rgba(0,255,157,0.1);color:var(--green);border:1px solid rgba(0,255,157,0.2)}
+.ptag-standby{background:rgba(255,255,255,0.03);color:var(--txt3);border:1px solid var(--line)}
 
-/* ── TOOLS ROW ── */
-.tools-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+/* ════════════════════════════════════════════════════
+   TOOLS ROW
+   ════════════════════════════════════════════════════ */
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .tool-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:8px;padding:14px 16px;cursor:pointer;transition:.15s;
-  display:flex;align-items:center;gap:12px;
+  background:var(--bg1);border:1px solid var(--line);border-radius:10px;
+  padding:15px 18px;cursor:pointer;transition:all .18s;
+  display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;
 }
-.tool-card:hover{background:var(--surface2);border-color:rgba(0,255,157,0.15)}
-.tool-icon{font-size:1.2em;flex-shrink:0}
-.tool-name{font-size:.72em;font-weight:700;color:var(--text);margin-bottom:2px}
-.tool-desc{font-size:.62em;color:var(--text3)}
+.tool-card::before{
+  content:'';position:absolute;inset:0;border-radius:10px;
+  background:linear-gradient(135deg,rgba(0,255,157,0.03) 0%,transparent 60%);
+  opacity:0;transition:.2s;
+}
+.tool-card:hover{background:var(--bg2);border-color:rgba(0,255,157,0.18)}
+.tool-card:hover::before{opacity:1}
+.tool-icon-wrap{
+  width:38px;height:38px;border-radius:8px;
+  background:var(--green-d);border:1px solid rgba(0,255,157,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.05em;flex-shrink:0;
+  transition:.18s;
+}
+.tool-card:hover .tool-icon-wrap{background:rgba(0,255,157,0.12);box-shadow:0 0 16px rgba(0,255,157,0.15)}
+.tool-name{font-size:.72em;font-weight:700;color:var(--txt);margin-bottom:2px}
+.tool-desc{font-size:.6em;color:var(--txt3)}
 
-/* ── PROTO BADGE ── */
-.proto-badge{
-  position:fixed;bottom:14px;right:16px;
-  background:rgba(0,255,157,0.08);
-  border:1px solid rgba(0,255,157,0.25);
-  color:var(--green);font-size:.6em;letter-spacing:.1em;
-  padding:5px 12px;border-radius:4px;z-index:999;
-  text-transform:uppercase;
-  box-shadow:0 0 12px rgba(0,255,157,0.1);
+/* ════════════════════════════════════════════════════
+   ALERT / WARNING BANNER
+   ════════════════════════════════════════════════════ */
+.alert-banner{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 18px;border-radius:8px;
+  background:rgba(255,69,96,0.06);
+  border:1px solid rgba(255,69,96,0.18);
+  font-size:.68em;color:var(--txt2);
+  position:relative;overflow:hidden;
 }
+.alert-banner::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--red);box-shadow:0 0 8px var(--red);
+}
+.alert-icon{color:var(--red);font-size:1.1em;text-shadow:0 0 8px rgba(255,69,96,0.6);animation:blink 2s ease-in-out infinite;flex-shrink:0}
+.alert-text strong{color:var(--txt);margin-right:4px}
+.alert-sub{font-size:.88em;color:var(--txt3);margin-top:2px}
+
+/* ════════════════════════════════════════════════════
+   PROTO BADGE
+   ════════════════════════════════════════════════════ */
+.proto-badge{
+  position:fixed;bottom:16px;right:18px;z-index:999;
+  background:rgba(0,255,157,0.05);
+  border:1px solid rgba(0,255,157,0.3);
+  color:var(--green);font-size:.56em;letter-spacing:.12em;
+  padding:5px 14px;border-radius:4px;
+  text-transform:uppercase;
+  box-shadow:0 0 20px rgba(0,255,157,0.08);
+  text-shadow:0 0 8px rgba(0,255,157,0.5);
+  animation:badge-pulse 4s ease-in-out infinite;
+}
+@keyframes badge-pulse{0%,100%{box-shadow:0 0 20px rgba(0,255,157,0.08)}50%{box-shadow:0 0 30px rgba(0,255,157,0.18)}}
+
+/* ════════════════════════════════════════════════════
+   FLEX WRAP
+   ════════════════════════════════════════════════════ */
+body{display:flex;flex-direction:column}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<header class="topbar z1">
-  <div style="display:flex;align-items:center">
-    <div class="topbar-logo">EHU<em>·</em>LAB</div>
-    <span class="topbar-tag">// Command Center</span>
+<!-- AMBIENT GLOWS -->
+<div class="ambient">
+  <div class="amb-a"></div>
+  <div class="amb-b"></div>
+  <div class="amb-c"></div>
+</div>
+
+<!-- ════════════ TOPBAR ════════════ -->
+<header class="topbar">
+  <div class="tb-left">
+    <div class="tb-logo">EHU<em>·</em>LAB</div>
+    <span class="tb-ver">v2.0</span>
+    <div class="tb-sep"></div>
+    <span style="font-size:.56em;letter-spacing:.1em;color:var(--txt3)">// COMMAND CENTER</span>
   </div>
-  <div class="topbar-right">
-    <div class="global-cd">
-      <span class="gc-label">Próximo examen</span>
-      <span class="gc-val">49</span><span class="gc-sep">D</span>
-      <span class="gc-val">09</span><span class="gc-sep">H</span>
-      <span class="gc-val">47</span><span class="gc-sep">M</span>
-      <span class="gc-sub">· Fluidos · 28 May</span>
+
+  <div class="tb-hud">
+    <!-- Countdown -->
+    <div class="hud-block">
+      <span class="hud-label">Próximo examen</span>
+      <span class="hud-val">49</span><span class="hud-unit">D</span>
+      <span class="hud-val">09</span><span class="hud-unit">H</span>
+      <span class="hud-val">47</span><span class="hud-unit">M</span>
+      <span class="hud-sub">Fluidos · 28 May</span>
     </div>
+    <!-- Status -->
     <div class="sys-status">
-      <div class="sys-dot"></div>Sistema activo
+      <div class="sys-dot"></div>Sistema online
     </div>
   </div>
 </header>
 
-<!-- LAYOUT -->
-<div class="layout">
+<!-- ════════════ LAYOUT ════════════ -->
+<div class="shell">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar z1">
-    <div class="sb-brand">
-      <div class="sb-brand-eye">UPV/EHU · Gipuzkoa · Ingeniería</div>
-      <div class="sb-brand-course">Curso 2025–26</div>
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-course">UPV / EHU · Ingeniería</div>
+      <div class="sb-meta">Curso 2025–26 · Gipuzkoa</div>
     </div>
 
-    <div class="sb-section-label">Sistema</div>
-    <div class="nav-item active"><span class="nav-icon">▣</span>Dashboard</div>
-    <div class="nav-item"><span class="nav-icon">◈</span>Plan de Estudio</div>
-    <div class="nav-item"><span class="nav-icon">◈</span>Progreso</div>
+    <!-- Exam warning -->
+    <div class="sb-exam-block">
+      <div class="sb-exam-next">Próximo examen</div>
+      <div class="sb-exam-name">Mecánica de Fluidos</div>
+      <div class="sb-exam-date">28 Mayo 2026 · 9:00h · 49 días</div>
+    </div>
 
-    <div class="sb-section-label">Asignaturas</div>
-    <div class="nav-item" style="color:rgba(0,240,255,0.65)"><span class="nav-icon">◦</span>Mecánica de Fluidos</div>
+    <div class="sb-cat">Sistema</div>
+    <div class="nav active"><span class="nav-icon">▣</span>Dashboard</div>
+    <div class="nav"><span class="nav-icon">◈</span>Plan de Estudio</div>
+    <div class="nav"><span class="nav-icon">◉</span>Progreso Global</div>
+    <div class="nav"><span class="nav-icon">◎</span>Búsqueda</div>
+
+    <div class="sb-cat">Asignaturas</div>
+
+    <div class="nav nav-cyan"><span class="nav-icon">◆</span>Mecánica de Fluidos</div>
     <div class="nav-sub">Teoría</div>
     <div class="nav-sub">Exámenes resueltos</div>
-    <div class="nav-sub">Estrategia</div>
-    <div class="nav-sub">Formulario</div>
+    <div class="nav-sub">Formulario rápido</div>
+    <div class="nav-sub">Herramientas</div>
 
-    <div class="nav-item" style="color:rgba(192,132,252,0.65);margin-top:4px"><span class="nav-icon">◦</span>Mecánica Aplicada</div>
-    <div class="nav-sub">Teoría</div>
-    <div class="nav-sub">Ejercicios T1–T8</div>
+    <div class="nav nav-purple" style="margin-top:4px"><span class="nav-icon">◆</span>Mecánica Aplicada</div>
+    <div class="nav-sub">Teoría T1–T12</div>
+    <div class="nav-sub">Ejercicios resueltos</div>
     <div class="nav-sub">Exámenes resueltos</div>
 
-    <div class="nav-item" style="color:rgba(251,191,36,0.65);margin-top:4px"><span class="nav-icon">◦</span>Sistemas de Producción</div>
+    <div class="nav nav-amber" style="margin-top:4px"><span class="nav-icon">◆</span>Sistemas de Producción</div>
     <div class="nav-sub">Teoría</div>
     <div class="nav-sub">Ejercicios</div>
 
-    <div class="sb-section-label">Herramientas</div>
-    <div class="nav-item"><span class="nav-icon">⊕</span>Calc. Colebrook</div>
-    <div class="nav-item"><span class="nav-icon">⊕</span>Calc. Bombas</div>
-    <div class="nav-item"><span class="nav-icon">⊕</span>Propiedades fluidos</div>
-    <div class="nav-item"><span class="nav-icon">⊕</span>Búsqueda global</div>
+    <div class="sb-cat">Herramientas</div>
+    <div class="nav"><span class="nav-icon">⊕</span>Calc. Colebrook–White</div>
+    <div class="nav"><span class="nav-icon">⊕</span>Calc. Bombas</div>
+    <div class="nav"><span class="nav-icon">⊕</span>Propiedades Fluidos</div>
 
-    <div class="sb-bottom">
-      <div class="sb-bottom-label">Sesión activa</div>
-      <div class="sb-bottom-val">09 Apr 2026 · 02:14</div>
-      <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+    <div class="sb-foot">
+      <div class="sb-foot-time">09 Abr 2026 · 14:32 UTC+2</div>
+      <div class="sb-foot-row">
         <div class="sys-dot" style="width:5px;height:5px"></div>
-        <span style="font-size:.58em;color:var(--green);letter-spacing:.08em;text-transform:uppercase">Online · GitHub Pages</span>
+        <span class="sb-foot-label">GitHub Pages · Online</span>
       </div>
     </div>
   </aside>
 
-  <!-- MAIN -->
-  <main class="main z1">
+  <!-- ══ MAIN ══ -->
+  <main class="main">
 
-    <!-- Page header -->
-    <div style="margin-bottom:24px">
-      <div class="section-label">Dashboard · Vista general</div>
-      <h1 style="font-family:'Space Grotesk',sans-serif;font-size:1.5em;font-weight:700;color:var(--text);line-height:1.2">
-        Command Center
-      </h1>
-      <p style="color:var(--text3);font-size:.72em;margin-top:5px;letter-spacing:.04em">
-        3 asignaturas activas &nbsp;·&nbsp; Examen más próximo en 49 días
-      </p>
-    </div>
-
-    <!-- SUBJECT CARDS -->
-    <div class="cards-grid">
-
-      <!-- FLUIDOS -->
-      <div class="scard scard-f">
-        <div class="scard-body">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
-            <div>
-              <div class="scard-eyebrow col-f">Mec. de Fluidos</div>
-              <div class="scard-title">Hidrostática, Bernoulli,<br>Tuberías y Bombas</div>
-            </div>
-            <div class="ring-wrap">
-              <svg viewBox="0 0 68 68" width="62" height="62">
-                <circle cx="34" cy="34" r="27" fill="none" stroke="rgba(0,240,255,0.08)" stroke-width="5"/>
-                <circle cx="34" cy="34" r="27" fill="none" stroke="#00f0ff" stroke-width="5"
-                  stroke-dasharray="169.6" stroke-dashoffset="169.6"
-                  stroke-linecap="round" transform="rotate(-90 34 34)"/>
-                <text x="34" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#00f0ff" font-family="JetBrains Mono,monospace">0%</text>
-              </svg>
-            </div>
-          </div>
-          <div class="scard-hr"></div>
-        </div>
-        <div class="topic-list">
-          <div class="topic-row"><div class="td td-active"></div>T1 · Hidrostática<span class="tbadge tb-active">En curso</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T2 · Bernoulli & Energía<span class="tbadge tb-queue">Pendiente</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T3 · Tuberías y pérdidas<span class="tbadge tb-queue">Pendiente</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T4 · Bombas hidráulicas<span class="tbadge tb-queue">Pendiente</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>Exámenes resueltos<span class="tbadge tb-queue">Pendiente</span></div>
-        </div>
-        <div class="cd-strip">
-          <span class="cd-strip-label">Examen · 28 May 9:00</span>
-          <div class="cd-strip-vals">
-            <span class="cdv" style="color:#00f0ff">49</span><span class="cds">D</span>
-            <span class="cdv" style="color:#00f0ff">09</span><span class="cds">H</span>
-            <span class="cdv" style="color:#00f0ff">47</span><span class="cds">M</span>
-          </div>
-        </div>
-        <div class="scard-actions">
-          <a class="cbtn cbtn-f">📖 Teoría</a>
-          <a class="cbtn cbtn-ghost">📝 Exámenes</a>
-        </div>
-      </div>
-
-      <!-- MECÁNICA -->
-      <div class="scard scard-m">
-        <div class="scard-body">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
-            <div>
-              <div class="scard-eyebrow col-m">Mec. Aplicada</div>
-              <div class="scard-title">Vectorial, Estática,<br>Cables y Resistencia Mat.</div>
-            </div>
-            <div class="ring-wrap">
-              <svg viewBox="0 0 68 68" width="62" height="62">
-                <circle cx="34" cy="34" r="27" fill="none" stroke="rgba(192,132,252,0.08)" stroke-width="5"/>
-                <circle cx="34" cy="34" r="27" fill="none" stroke="#c084fc" stroke-width="5"
-                  stroke-dasharray="169.6" stroke-dashoffset="169.6"
-                  stroke-linecap="round" transform="rotate(-90 34 34)"/>
-                <text x="34" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#c084fc" font-family="JetBrains Mono,monospace">0%</text>
-              </svg>
-            </div>
-          </div>
-          <div class="scard-hr"></div>
-        </div>
-        <div class="topic-list">
-          <div class="topic-row"><div class="td td-active"></div>T1-T2 · Vectorial & Masas<span class="tbadge tb-active">En curso</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T3-T5 · Estática, Roz., Cables<span class="tbadge tb-queue">Pendiente</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T6 · Resistencia Materiales<span class="tbadge tb-queue">Pendiente</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T7-T12 · Cinemática & Dinámica<span class="tbadge tb-queue">Pendiente</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>Exámenes resueltos<span class="tbadge tb-queue">Pendiente</span></div>
-        </div>
-        <div class="cd-strip">
-          <span class="cd-strip-label">Examen · 5 Jun 9:00</span>
-          <div class="cd-strip-vals">
-            <span class="cdv" style="color:#c084fc">57</span><span class="cds">D</span>
-            <span class="cdv" style="color:#c084fc">09</span><span class="cds">H</span>
-            <span class="cdv" style="color:#c084fc">47</span><span class="cds">M</span>
-          </div>
-        </div>
-        <div class="scard-actions">
-          <a class="cbtn cbtn-m">📖 Teoría</a>
-          <a class="cbtn cbtn-ghost">📝 Exámenes</a>
-        </div>
-      </div>
-
-      <!-- SISTEMAS -->
-      <div class="scard scard-s">
-        <div class="scard-body">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
-            <div>
-              <div class="scard-eyebrow col-s">Sistemas de Producción</div>
-              <div class="scard-title">Torneado, Fresado,<br>CNC y Metrología</div>
-            </div>
-            <div class="ring-wrap">
-              <svg viewBox="0 0 68 68" width="62" height="62">
-                <circle cx="34" cy="34" r="27" fill="none" stroke="rgba(251,191,36,0.08)" stroke-width="5"/>
-                <circle cx="34" cy="34" r="27" fill="none" stroke="#fbbf24" stroke-width="5"
-                  stroke-dasharray="169.6" stroke-dashoffset="169.6"
-                  stroke-linecap="round" transform="rotate(-90 34 34)"/>
-                <text x="34" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#fbbf24" font-family="JetBrains Mono,monospace">0%</text>
-              </svg>
-            </div>
-          </div>
-          <div class="scard-hr"></div>
-        </div>
-        <div class="topic-list">
-          <div class="topic-row"><div class="td td-active"></div>T1 · Torneado<span class="tbadge tb-active">En curso</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T2-T4 · Fresado, Taladrado, CNC<span class="tbadge tb-queue">Pendiente</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T5-T6 · Rectificado & Fundición<span class="tbadge tb-queue">Pendiente</span></div>
-          <div class="topic-row"><div class="td td-queue"></div>T7-T8 · Metrología & Def. plástica<span class="tbadge tb-queue">Pendiente</span></div>
-        </div>
-        <div class="cd-strip">
-          <span class="cd-strip-label">Examen · 10 Jun 9:00</span>
-          <div class="cd-strip-vals">
-            <span class="cdv" style="color:#fbbf24">62</span><span class="cds">D</span>
-            <span class="cdv" style="color:#fbbf24">09</span><span class="cds">H</span>
-            <span class="cdv" style="color:#fbbf24">47</span><span class="cds">M</span>
-          </div>
-        </div>
-        <div class="scard-actions">
-          <a class="cbtn cbtn-s">📖 Teoría</a>
-          <a class="cbtn cbtn-ghost">📝 Ejercicios</a>
-        </div>
-      </div>
-
-    </div><!-- /cards-grid -->
-
-    <!-- STATS -->
-    <div class="section-label">Estadísticas globales</div>
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--green)">3</div>
-        <div class="stat-lbl">Asignaturas</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--cyan)">29</div>
-        <div class="stat-lbl">Temas teoría</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--purple)">161+</div>
-        <div class="stat-lbl">Ejercicios</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" style="color:var(--amber)">15</div>
-        <div class="stat-lbl">Exámenes reales</div>
+    <!-- ── WARNING BANNER ── -->
+    <div class="alert-banner">
+      <div class="alert-icon">⚠</div>
+      <div>
+        <div><strong>49 días para el primer examen.</strong> Prioridad máxima: Mecánica de Fluidos hasta el 28 de mayo.</div>
+        <div class="alert-sub">Mecánica Aplicada: 57D · Sistemas de Producción: no prioritaria hasta mayo 2026</div>
       </div>
     </div>
 
-    <!-- PLAN PREVIEW -->
-    <div class="section-label">Plan de estudio — semana activa</div>
-    <div class="plan-preview">
-      <div class="plan-week-badge">S1 · 8–13 Abril · Semana en curso</div>
-      <div class="plan-cols">
-        <div class="plan-col pc-f">
-          <div class="pc-label col-f">Fluidos</div>
-          <div class="pc-text">Hidrostática — presión y fuerzas sobre superficies planas y curvas</div>
+    <!-- ── SUBJECT CARDS ── -->
+    <div>
+      <div class="sec-hdr">
+        <span class="sec-hdr-label">Asignaturas activas</span>
+        <div class="sec-hdr-line"></div>
+        <span class="sec-hdr-code">03 / 03</span>
+      </div>
+      <div class="cards-grid" style="margin-top:14px">
+
+        <!-- FLUIDOS -->
+        <div class="scard scard-f">
+          <div class="scard-inner">
+            <div class="scard-top">
+              <div class="scard-info">
+                <div class="scard-eyebrow" style="color:rgba(0,240,255,0.8)">Mec. de Fluidos</div>
+                <div class="scard-title">Hidrostática, Bernoulli,<br>Tuberías y Bombas</div>
+              </div>
+              <!-- SVG Ring -->
+              <div class="ring-wrap">
+                <svg class="ring-svg ring-glow-f" viewBox="0 0 80 80" width="78" height="78">
+                  <defs>
+                    <radialGradient id="rg-f" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="rgba(0,240,255,0.15)"/>
+                      <stop offset="100%" stop-color="transparent"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="40" cy="40" r="34" fill="url(#rg-f)"/>
+                  <circle class="ring-track" cx="40" cy="40" r="30" stroke="rgba(0,240,255,0.08)"/>
+                  <circle class="ring-bar" cx="40" cy="40" r="30"
+                    stroke="#00f0ff" stroke-dasharray="188.5" stroke-dashoffset="188.5"
+                    transform="rotate(-90 40 40)"/>
+                  <text class="ring-pct" x="40" y="44" text-anchor="middle"
+                    font-size="13" fill="#00f0ff" font-family="JetBrains Mono,monospace">0%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="scard-div"></div>
+          <div class="topic-list">
+            <div class="topic-row"><div class="t-dot t-active"></div>T1 · Hidrostática<span class="t-badge tb-active">En curso</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T2 · Bernoulli & Energía<span class="t-badge tb-queue">—</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T3 · Tuberías y pérdidas<span class="t-badge tb-queue">—</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T4 · Bombas hidráulicas<span class="t-badge tb-queue">—</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>15 exámenes resueltos<span class="t-badge tb-queue">—</span></div>
+          </div>
+          <div class="cd-strip" style="margin:12px 20px 0;border-radius:7px;border:1px solid rgba(0,240,255,0.1)">
+            <span class="cd-label">Examen · 28 May 9:00</span>
+            <div class="cd-nums">
+              <span class="cd-n" style="color:var(--cyan)">49</span><span class="cd-u">D</span>
+              <span class="cd-n" style="color:var(--cyan)">09</span><span class="cd-u">H</span>
+              <span class="cd-n" style="color:var(--cyan)">47</span><span class="cd-u">M</span>
+            </div>
+          </div>
+          <div class="scard-actions">
+            <a class="abtn abtn-f">▶ Teoría</a>
+            <a class="abtn abtn-ghost">≡ Exámenes</a>
+          </div>
         </div>
-        <div class="plan-col pc-m">
-          <div class="pc-label col-m">Mecánica</div>
-          <div class="pc-text">T1 Cálculo Vectorial + T2 Geometría de masas — base de todo</div>
+
+        <!-- MECÁNICA -->
+        <div class="scard scard-m">
+          <div class="scard-inner">
+            <div class="scard-top">
+              <div class="scard-info">
+                <div class="scard-eyebrow" style="color:rgba(180,127,255,0.85)">Mec. Aplicada</div>
+                <div class="scard-title">Estática, Rozamiento,<br>Cables y Resistencia Mat.</div>
+              </div>
+              <div class="ring-wrap">
+                <svg class="ring-svg ring-glow-m" viewBox="0 0 80 80" width="78" height="78">
+                  <defs>
+                    <radialGradient id="rg-m" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="rgba(180,127,255,0.15)"/>
+                      <stop offset="100%" stop-color="transparent"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="40" cy="40" r="34" fill="url(#rg-m)"/>
+                  <circle class="ring-track" cx="40" cy="40" r="30" stroke="rgba(180,127,255,0.08)"/>
+                  <circle class="ring-bar" cx="40" cy="40" r="30"
+                    stroke="#b47fff" stroke-dasharray="188.5" stroke-dashoffset="188.5"
+                    transform="rotate(-90 40 40)"/>
+                  <text class="ring-pct" x="40" y="44" text-anchor="middle"
+                    font-size="13" fill="#b47fff" font-family="JetBrains Mono,monospace">0%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="scard-div"></div>
+          <div class="topic-list">
+            <div class="topic-row"><div class="t-dot t-active"></div>T1–T2 · Vectorial & Masas<span class="t-badge tb-active">En curso</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T3–T5 · Estática, Roz., Cables<span class="t-badge tb-queue">—</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T6 · Resistencia Materiales<span class="t-badge tb-queue">—</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T7–T12 · Cinemática & Dinámica<span class="t-badge tb-queue">—</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>3 convocatorias resueltas<span class="t-badge tb-queue">—</span></div>
+          </div>
+          <div class="cd-strip" style="margin:12px 20px 0;border-radius:7px;border:1px solid rgba(180,127,255,0.1)">
+            <span class="cd-label">Examen · 5 Jun 9:00</span>
+            <div class="cd-nums">
+              <span class="cd-n" style="color:var(--purple)">57</span><span class="cd-u">D</span>
+              <span class="cd-n" style="color:var(--purple)">09</span><span class="cd-u">H</span>
+              <span class="cd-n" style="color:var(--purple)">47</span><span class="cd-u">M</span>
+            </div>
+          </div>
+          <div class="scard-actions">
+            <a class="abtn abtn-m">▶ Teoría</a>
+            <a class="abtn abtn-ghost">≡ Exámenes</a>
+          </div>
         </div>
-        <div class="plan-col pc-s">
-          <div class="pc-label col-s">Sistemas</div>
-          <div class="pc-text">Aparcado — foco total en Fluidos hasta el 28 de mayo</div>
+
+        <!-- SISTEMAS -->
+        <div class="scard scard-s">
+          <div class="scard-inner">
+            <div class="scard-top">
+              <div class="scard-info">
+                <div class="scard-eyebrow" style="color:rgba(245,185,66,0.8)">Sistemas de Producción</div>
+                <div class="scard-title">Torneado, Fresado,<br>CNC y Metrología</div>
+              </div>
+              <div class="ring-wrap">
+                <svg class="ring-svg ring-glow-s" viewBox="0 0 80 80" width="78" height="78">
+                  <defs>
+                    <radialGradient id="rg-s" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="rgba(245,185,66,0.15)"/>
+                      <stop offset="100%" stop-color="transparent"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="40" cy="40" r="34" fill="url(#rg-s)"/>
+                  <circle class="ring-track" cx="40" cy="40" r="30" stroke="rgba(245,185,66,0.08)"/>
+                  <circle class="ring-bar" cx="40" cy="40" r="30"
+                    stroke="#f5b942" stroke-dasharray="188.5" stroke-dashoffset="188.5"
+                    transform="rotate(-90 40 40)"/>
+                  <text class="ring-pct" x="40" y="44" text-anchor="middle"
+                    font-size="13" fill="#f5b942" font-family="JetBrains Mono,monospace">0%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="scard-div"></div>
+          <div class="topic-list">
+            <div class="topic-row"><div class="t-dot t-queue"></div>T1–T2 · Torneado & Fresado<span class="t-badge tb-queue">Paused</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T3–T4 · Taladrado & CNC<span class="t-badge tb-queue">—</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T5–T6 · Rectificado & Fund.<span class="t-badge tb-queue">—</span></div>
+            <div class="topic-row"><div class="t-dot t-queue"></div>T7–T8 · Metrología<span class="t-badge tb-queue">—</span></div>
+          </div>
+          <div class="cd-strip" style="margin:12px 20px 0;border-radius:7px;border:1px solid rgba(245,185,66,0.1)">
+            <span class="cd-label">Examen · 10 Jun 9:00</span>
+            <div class="cd-nums">
+              <span class="cd-n" style="color:var(--amber)">62</span><span class="cd-u">D</span>
+              <span class="cd-n" style="color:var(--amber)">09</span><span class="cd-u">H</span>
+              <span class="cd-n" style="color:var(--amber)">47</span><span class="cd-u">M</span>
+            </div>
+          </div>
+          <div class="scard-actions">
+            <a class="abtn abtn-s">▶ Teoría</a>
+            <a class="abtn abtn-ghost">≡ Ejercicios</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── STATS ── -->
+    <div>
+      <div class="sec-hdr">
+        <span class="sec-hdr-label">Estadísticas globales</span>
+        <div class="sec-hdr-line"></div>
+      </div>
+      <div class="stats-grid" style="margin-top:14px">
+        <div class="stat-card sc-green">
+          <div class="stat-num">3</div>
+          <div class="stat-lbl">Asignaturas activas</div>
+        </div>
+        <div class="stat-card sc-cyan">
+          <div class="stat-num">161+</div>
+          <div class="stat-lbl">Ejercicios resueltos</div>
+        </div>
+        <div class="stat-card sc-purple">
+          <div class="stat-num">18</div>
+          <div class="stat-lbl">Exámenes reales</div>
+        </div>
+        <div class="stat-card sc-amber">
+          <div class="stat-num">49</div>
+          <div class="stat-lbl">Días para examen 1</div>
         </div>
       </div>
     </div>
 
-    <!-- TOOLS -->
-    <div class="section-label">Herramientas rápidas</div>
-    <div class="tools-row">
-      <div class="tool-card">
-        <div class="tool-icon">⚙</div>
-        <div>
-          <div class="tool-name">Calculadora Colebrook</div>
-          <div class="tool-desc">Iteración automática · factor de fricción f</div>
+    <!-- ── PLAN PREVIEW ── -->
+    <div>
+      <div class="sec-hdr">
+        <span class="sec-hdr-label">Plan de estudio — semana activa</span>
+        <div class="sec-hdr-line"></div>
+      </div>
+      <div class="plan-box" style="margin-top:14px">
+        <div class="plan-box-head">
+          <div class="plan-week-tag">S1 · Semana en curso</div>
+          <div class="plan-dates">8 – 13 Abril 2026</div>
+        </div>
+        <div class="plan-cols">
+          <div class="plan-col">
+            <div class="plan-col-label" style="color:var(--cyan)">Fluidos</div>
+            <div class="plan-col-text">Hidrostática — presión, fuerzas sobre superficies planas y curvas. Ejercicios T1 completo.</div>
+            <div class="plan-col-tag ptag-active">● En curso</div>
+          </div>
+          <div class="plan-col">
+            <div class="plan-col-label" style="color:var(--purple)">Mecánica</div>
+            <div class="plan-col-text">T1 Cálculo Vectorial + T2 Geometría de masas — base del curso. Repasar centros de gravedad.</div>
+            <div class="plan-col-tag ptag-active">● En curso</div>
+          </div>
+          <div class="plan-col">
+            <div class="plan-col-label" style="color:var(--amber)">Sistemas</div>
+            <div class="plan-col-text">Aparcado hasta junio. Foco total en Fluidos y Mecánica hasta el 28 de mayo.</div>
+            <div class="plan-col-tag ptag-standby">Standby</div>
+          </div>
         </div>
       </div>
-      <div class="tool-card">
-        <div class="tool-icon">💧</div>
-        <div>
-          <div class="tool-name">Calculadora Bombas</div>
-          <div class="tool-desc">Punto de funcionamiento · NPSH · curvas</div>
-        </div>
+    </div>
+
+    <!-- ── TOOLS ── -->
+    <div>
+      <div class="sec-hdr">
+        <span class="sec-hdr-label">Herramientas rápidas</span>
+        <div class="sec-hdr-line"></div>
       </div>
-      <div class="tool-card">
-        <div class="tool-icon">📋</div>
-        <div>
-          <div class="tool-name">Formulario Fluidos</div>
-          <div class="tool-desc">Todas las fórmulas · acceso rápido en examen</div>
+      <div class="tools-grid" style="margin-top:14px">
+        <div class="tool-card">
+          <div class="tool-icon-wrap">⚙</div>
+          <div>
+            <div class="tool-name">Calculadora Colebrook</div>
+            <div class="tool-desc">Iteración automática · factor de fricción f · Moody</div>
+          </div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon-wrap">◈</div>
+          <div>
+            <div class="tool-name">Calculadora Bombas</div>
+            <div class="tool-desc">Punto de funcionamiento · NPSH · curvas características</div>
+          </div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-icon-wrap">≡</div>
+          <div>
+            <div class="tool-name">Formulario Fluidos</div>
+            <div class="tool-desc">Todas las fórmulas clave · acceso rápido en examen</div>
+          </div>
         </div>
       </div>
     </div>
@@ -558,7 +842,7 @@ body::after{
 </div>
 
 <!-- PROTO BADGE -->
-<div class="proto-badge">⚡ Prototipo visual · no funcional</div>
+<div class="proto-badge">⚡ PROTOTIPO v2 · no funcional</div>
 
 </body>
 </html>
