@@ -944,7 +944,10 @@ function switchPlan(id, btn){
 function scrollToSection(id){
   var el = document.getElementById(id);
   var main = document.getElementById('main-scroll');
-  if(el && main) main.scrollTo({top: el.offsetTop - 16, behavior:'smooth'});
+  if(!el || !main) return;
+  var elTop = el.getBoundingClientRect().top;
+  var mainTop = main.getBoundingClientRect().top;
+  main.scrollTo({top: main.scrollTop + elTop - mainTop - 16, behavior:'smooth'});
 }
 
 /* ══════════════════════════════
