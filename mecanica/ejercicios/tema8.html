@@ -1007,7 +1007,11 @@ function showEx(id){
 }
 
 function toggleSec(btn){
-  btn.closest('.section-wrap').classList.toggle('sec-open');
+  var wrap = btn.closest('.section-wrap');
+  wrap.classList.toggle('sec-open');
+  if(wrap.classList.contains('sec-open') && typeof renderMathInElement !== 'undefined'){
+    renderMathInElement(wrap,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});
+  }
 }
 
 function updateProgress(){

@@ -123,7 +123,11 @@ b,strong{color:#f1f5f9;font-weight:600}
 .sb-star{color:var(--gold);font-size:.8em}
 
 /* CONTENT */
-.content{flex:1;margin-left:var(--sidebar-w);padding:32px 40px 60px;min-width:0}
+.content{flex:1;margin-left:var(--sidebar-w);padding:32px 40px 80px;min-width:0}
+.topic-nav{position:fixed;bottom:0;left:var(--sidebar-w);right:0;display:flex;justify-content:space-between;align-items:center;padding:10px 40px;background:rgba(10,14,26,.92);backdrop-filter:blur(12px);border-top:1px solid var(--border);z-index:100}
+.tnav-btn{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:6px 16px;color:var(--text2);cursor:pointer;font-size:.8em;font-weight:600;font-family:var(--ff);transition:all var(--transition)}
+.tnav-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.tnav-center{font-size:.72em;color:var(--text3);font-family:var(--ff-mono)}
 
 /* TOPIC PANEL */
 .topic-panel{max-width:860px}
@@ -248,6 +252,16 @@ code{font-family:var(--ff-mono);font-size:.85em;background:var(--surface2);paddi
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   min-height:1.1em;
 }
+
+/* ─── SIDEBAR FOOTER ─── */
+.sb-footer{padding:8px 12px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:6px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.78em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-cyan{background:rgba(126,207,255,.08);border:1px solid rgba(126,207,255,.2);color:var(--accent)}
+.sb-link-cyan:hover{background:rgba(126,207,255,.18)}
+.sb-link-gold{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
+.sb-link-gold:hover{background:rgba(245,158,11,.15)}
+.sb-link-gray{background:rgba(255,255,255,.04);border:1px solid var(--border2);color:var(--text2)}
+.sb-link-gray:hover{background:rgba(255,255,255,.08);color:var(--text)}
 
 /* ─── KEYBOARD SHORTCUT HINT ─── */
 .sb-kbd-hint{
@@ -379,6 +393,11 @@ kbd{
     <span class="sb-name">Bombeo</span>
   </button>
     </div>
+  <div class="sb-footer">
+    <a class="sb-link sb-link-cyan" href="banco.html">&#9654; Ejercicios</a>
+    <a class="sb-link sb-link-gold" href="examenes.html">&#9733; Ex&#225;menes</a>
+    <a class="sb-link sb-link-gray" href="formulario.html">&#128203; Formulario</a>
+  </div>
   <div class="sb-kbd-hint"><kbd>&uarr;</kbd><kbd>&darr;</kbd> navegar temas</div>
   </aside>
 
@@ -1801,9 +1820,12 @@ function showTopic(id, save) {
   // show target with animation
   var el = document.getElementById(id);
   if (el){ el.style.display='block'; requestAnimationFrame(function(){ el.classList.add('visible'); }); }
-  // update sidebar active
+  // update sidebar active + dots
   document.querySelectorAll('.sb-item').forEach(function(btn){
-    btn.classList.toggle('active', btn.dataset.id === id);
+    var isActive = btn.dataset.id === id;
+    btn.classList.toggle('active', isActive);
+    var dot = btn.querySelector('.sb-dot');
+    if (dot) dot.className = 'sb-dot ' + (isActive ? 'sb-dot-en-curso' : 'sb-dot-pendiente');
   });
   // update header label
   var lbl = document.getElementById('sbCurrent');
@@ -1814,13 +1836,29 @@ function showTopic(id, save) {
   if (save !== false) { try { localStorage.setItem('fluidos-teoria-topic', id); } catch(e){} }
   // reset progress bar
   updateProgress();
+  // update prev/next nav
+  updateTopicNav(id);
+}
+
+function updateTopicNav(id) {
+  var order = Array.from(document.querySelectorAll('.sb-item')).map(function(b){ return b.dataset.id; }).filter(Boolean);
+  var idx = order.indexOf(id);
+  var nav = document.getElementById('topicNav');
+  if (!nav) { nav = document.createElement('div'); nav.id = 'topicNav'; nav.className = 'topic-nav'; document.body.appendChild(nav); }
+  var prev = idx > 0 ? order[idx-1] : null;
+  var next = idx < order.length-1 ? order[idx+1] : null;
+  nav.innerHTML =
+    (prev ? '<button class="tnav-btn" onclick="showTopic(\''+prev+'\')">← Anterior</button>' : '<span></span>') +
+    '<span class="tnav-center">'+(idx+1)+' / '+order.length+'</span>' +
+    (next ? '<button class="tnav-btn" onclick="showTopic(\''+next+'\')">Siguiente →</button>' : '<span></span>');
 }
 
 function filterSidebar(q) {
-  q = q.toLowerCase().trim();
+  var norm = function(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); };
+  var nq = norm(q.trim());
   document.querySelectorAll('.sb-item').forEach(function(btn){
-    if (!q){ btn.style.display=''; return; }
-    btn.style.display = btn.textContent.toLowerCase().includes(q) ? '' : 'none';
+    if (!nq){ btn.style.display=''; return; }
+    btn.style.display = norm(btn.textContent).includes(nq) ? '' : 'none';
   });
 }
 

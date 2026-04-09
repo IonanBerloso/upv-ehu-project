@@ -178,6 +178,9 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
 }
 .sb-item:hover{background:var(--surface);color:var(--text)}
 .sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-item.exam.active{background:var(--gold-dim);color:var(--gold);border-color:var(--gold-border)}
+.sb-item.exam:not(.active):hover{color:#fcd34d}
+.sb-star{color:var(--gold);font-size:.8em}
 .sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;display:inline-block;margin-right:2px}
 .sb-dot-en-curso{background:#10b981;box-shadow:0 0 6px rgba(16,185,129,.6)}
 .sb-dot-pendiente{background:#374151}
@@ -194,7 +197,11 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
 .sb-link-purple:hover{background:rgba(192,132,252,.2)}
 
 /* ── CONTENT ── */
-.content{flex:1;margin-left:var(--sidebar-w);padding:32px 44px 60px;min-width:0}
+.content{flex:1;margin-left:var(--sidebar-w);padding:32px 44px 80px;min-width:0}
+.topic-nav{position:fixed;bottom:0;left:var(--sidebar-w);right:0;display:flex;justify-content:space-between;align-items:center;padding:10px 44px;background:rgba(13,13,13,.92);backdrop-filter:blur(12px);border-top:1px solid var(--border);z-index:100}
+.tnav-btn{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:6px 16px;color:var(--text2);cursor:pointer;font-size:.8em;font-weight:600;font-family:var(--ff);transition:all var(--transition)}
+.tnav-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.tnav-center{font-size:.72em;color:var(--text3);font-family:var(--ff-mono)}
 
 /* ── TOPIC PANEL ── */
 .topic-panel{display:none;max-width:860px}
@@ -282,35 +289,35 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
       </div>
     </div>
     <div class="sb-list">
-      <button class="sb-item" onclick="showTopic('t1')" data-id="t1">
+      <button class="sb-item exam" onclick="showTopic('t1')" data-id="t1">
         <span class="sb-dot sb-dot-en-curso"></span>
         <span class="sb-tag">T1</span>
-        <span class="sb-name">Fundamentos de Cálculo Vectorial</span>
+        <span class="sb-name">Fundamentos de Cálculo Vectorial <span class="sb-star">&#9733;</span></span>
       </button>
-      <button class="sb-item" onclick="showTopic('t2')" data-id="t2">
+      <button class="sb-item exam" onclick="showTopic('t2')" data-id="t2">
         <span class="sb-dot sb-dot-pendiente"></span>
         <span class="sb-tag">T2</span>
-        <span class="sb-name">Geometría de Masas y Superficies Planas</span>
+        <span class="sb-name">Geometría de Masas y Superficies Planas <span class="sb-star">&#9733;</span></span>
       </button>
-      <button class="sb-item" onclick="showTopic('t3')" data-id="t3">
+      <button class="sb-item exam" onclick="showTopic('t3')" data-id="t3">
         <span class="sb-dot sb-dot-pendiente"></span>
         <span class="sb-tag">T3</span>
-        <span class="sb-name">Estática del Sólido Rígido</span>
+        <span class="sb-name">Estática del Sólido Rígido <span class="sb-star">&#9733;</span></span>
       </button>
-      <button class="sb-item" onclick="showTopic('t4')" data-id="t4">
+      <button class="sb-item exam" onclick="showTopic('t4')" data-id="t4">
         <span class="sb-dot sb-dot-pendiente"></span>
         <span class="sb-tag">T4</span>
-        <span class="sb-name">Rozamiento</span>
+        <span class="sb-name">Rozamiento <span class="sb-star">&#9733;</span></span>
       </button>
-      <button class="sb-item" onclick="showTopic('t5')" data-id="t5">
+      <button class="sb-item exam" onclick="showTopic('t5')" data-id="t5">
         <span class="sb-dot sb-dot-pendiente"></span>
         <span class="sb-tag">T5</span>
-        <span class="sb-name">Cables</span>
+        <span class="sb-name">Cables <span class="sb-star">&#9733;</span></span>
       </button>
-      <button class="sb-item" onclick="showTopic('t6')" data-id="t6">
+      <button class="sb-item exam" onclick="showTopic('t6')" data-id="t6">
         <span class="sb-dot sb-dot-pendiente"></span>
         <span class="sb-tag">T6</span>
-        <span class="sb-name">Principios de Resistencia de Materiales</span>
+        <span class="sb-name">Principios de Resistencia de Materiales <span class="sb-star">&#9733;</span></span>
       </button>
       <button class="sb-item" onclick="showTopic('t7')" data-id="t7">
         <span class="sb-dot sb-dot-pendiente"></span>
@@ -1105,18 +1112,38 @@ document.addEventListener('DOMContentLoaded', function(){
 // ── Topic panel switcher ──
 function showTopic(id){
   document.querySelectorAll('.topic-panel').forEach(function(p){p.classList.remove('active')});
-  document.querySelectorAll('.sb-item').forEach(function(b){b.classList.remove('active')});
+  document.querySelectorAll('.sb-item').forEach(function(b){
+    b.classList.remove('active');
+    var dot = b.querySelector('.sb-dot');
+    if(dot) dot.className = 'sb-dot sb-dot-pendiente';
+  });
   var panel = document.getElementById(id);
   if(panel){ panel.classList.add('active'); }
   var btn = document.querySelector('[data-id="'+id+'"]');
   if(btn){
     btn.classList.add('active');
+    var dot = btn.querySelector('.sb-dot');
+    if(dot) dot.className = 'sb-dot sb-dot-en-curso';
     var name = btn.querySelector('.sb-name');
     var curr = document.getElementById('sbCurrent');
     if(curr && name){ curr.textContent = name.textContent; }
   }
   window.scrollTo({top:0,behavior:'instant'});
   updateProgress();
+  updateTopicNav(id);
+}
+
+function updateTopicNav(id) {
+  var order = Array.from(document.querySelectorAll('.sb-item')).map(function(b){ return b.dataset.id; }).filter(Boolean);
+  var idx = order.indexOf(id);
+  var nav = document.getElementById('topicNav');
+  if (!nav) { nav = document.createElement('div'); nav.id = 'topicNav'; nav.className = 'topic-nav'; document.body.appendChild(nav); }
+  var prev = idx > 0 ? order[idx-1] : null;
+  var next = idx < order.length-1 ? order[idx+1] : null;
+  nav.innerHTML =
+    (prev ? '<button class="tnav-btn" onclick="showTopic(\''+prev+'\')">← Anterior</button>' : '<span></span>') +
+    '<span class="tnav-center">'+(idx+1)+' / '+order.length+'</span>' +
+    (next ? '<button class="tnav-btn" onclick="showTopic(\''+next+'\')">Siguiente →</button>' : '<span></span>');
 }
 
 // ── Reading progress ──
@@ -1139,10 +1166,11 @@ document.addEventListener('click', function(e){
 });
 
 function filterSidebar(q) {
-  q = q.toLowerCase().trim();
+  var norm = function(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); };
+  var nq = norm(q.trim());
   document.querySelectorAll('.sb-item').forEach(function(btn){
-    if (!q){ btn.style.display=''; return; }
-    btn.style.display = btn.textContent.toLowerCase().includes(q) ? '' : 'none';
+    if (!nq){ btn.style.display=''; return; }
+    btn.style.display = norm(btn.textContent).includes(nq) ? '' : 'none';
   });
 }
 
