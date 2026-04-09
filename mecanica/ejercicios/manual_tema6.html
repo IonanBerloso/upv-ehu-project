@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual T6 - Resistencia de Materiales | Mecanica Aplicada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.12);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--blue:#38bdf8;--orange:#fb923c;--red:#ef4444;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;--radius-sm:6px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+
+.container{max-width:860px;margin:0 auto;padding:20px 24px 80px}
+
+/* Header */
+.manual-header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border2);margin-bottom:32px}
+.manual-header h1{font-size:1.8em;font-weight:700;color:var(--gold);margin-bottom:6px}
+.manual-header .subtitle{color:var(--text2);font-size:.95em}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--text3);font-size:.85em}
+.back-link:hover{color:var(--accent)}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}
+.toc h2{font-size:1.05em;color:var(--gold);margin-bottom:10px;font-weight:600}
+.toc ol{padding-left:20px}
+.toc li{margin:4px 0;color:var(--text2);font-size:.9em}
+.toc a{color:var(--text)}
+
+/* Sections */
+.section{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section h2{font-size:1.35em;font-weight:700;color:var(--accent);margin-bottom:14px;padding-top:8px}
+.section h3{font-size:1.1em;font-weight:600;color:var(--gold);margin:20px 0 10px}
+.section h4{font-size:1em;font-weight:600;color:var(--blue);margin:16px 0 8px}
+
+/* Formula boxes */
+.formula-box{background:rgba(192,132,252,.06);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:14px 18px;margin:12px 0}
+.formula-box.gold{background:var(--gold-dim);border-color:var(--gold-border)}
+.formula-box.blue{background:rgba(56,189,248,.06);border-color:rgba(56,189,248,.28)}
+.formula-box.green{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.28)}
+.formula-box .label{font-size:.8em;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.formula-box .label.purple{color:var(--accent)}
+.formula-box .label.gold{color:var(--gold)}
+.formula-box .label.blue{color:var(--blue)}
+.formula-box .label.green{color:var(--green)}
+
+/* Warning/tip boxes */
+.tip{background:rgba(16,185,129,.06);border-left:3px solid var(--green);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.warning{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.danger{background:rgba(239,68,68,.06);border-left:3px solid var(--red);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.step-num{display:inline-block;background:var(--accent);color:#000;font-weight:700;font-size:.75em;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+.step-num.gold{background:var(--gold)}
+
+/* Decision tree */
+.decision{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.decision .q{font-weight:600;color:var(--orange);margin-bottom:8px}
+.decision .branch{padding-left:16px;border-left:2px solid var(--border2);margin:6px 0}
+.decision .branch .label{font-weight:600;font-size:.85em}
+.decision .branch .yes{color:var(--green)}
+.decision .branch .no{color:var(--red)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}
+th,td{padding:8px 12px;border:1px solid var(--border2);text-align:left}
+th{background:var(--surface2);color:var(--gold);font-weight:600;font-size:.85em}
+td{color:var(--text)}
+
+/* Exercise type cards */
+.ex-type{background:var(--surface);border:1px solid var(--gold-border);border-radius:var(--radius);padding:16px 20px;margin:12px 0}
+.ex-type .tag{display:inline-block;background:var(--gold-dim);color:var(--gold);font-weight:600;font-size:.75em;padding:2px 10px;border-radius:10px;margin-bottom:8px}
+
+p{margin:6px 0}
+ul,ol{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+strong{color:var(--text)}
+code{font-family:var(--ff-mono);background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:.88em}
+
+.footer{text-align:center;padding:24px;color:var(--text3);font-size:.8em;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="tema6.html" class="back-link">&larr; Volver a ejercicios Tema 6</a>
+
+<div class="manual-header">
+  <h1>Manual de Ejercicios de Examen</h1>
+  <div class="subtitle">Tema 6 &mdash; Principios de Resistencia de Materiales &middot; Mecanica Aplicada UPV/EHU</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#herramientas">Las 7 herramientas que necesitas</a></li>
+    <li><a href="#tipos">Los 4 tipos de ejercicio de examen</a></li>
+    <li><a href="#tipo-a">Tipo A: Diagramas Q y M con dimensionado de seccion (6.17, 6.18)</a></li>
+    <li><a href="#tipo-b">Tipo B: Estructura articulada + viga (6.19, 6.21)</a></li>
+    <li><a href="#tipo-c">Tipo C: Viga con articulacion interna (6.20)</a></li>
+    <li><a href="#tipo-d">Tipo D: Portico columna + viga con cables (6.22)</a></li>
+    <li><a href="#secciones">Calculo de propiedades de secciones (T, L, rectangular)</a></li>
+    <li><a href="#resumen">Checklist final antes del examen</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: HERRAMIENTAS -->
+<!-- ============================================ -->
+<div class="section" id="herramientas">
+<h2>1. Las 7 herramientas que necesitas</h2>
+<p>Todo ejercicio de examen del Tema 6 se resuelve combinando estas herramientas. Son tu kit de supervivencia &mdash; aprende a usarlas de forma automatica y podras con cualquier problema.</p>
+
+<h3>H1. Ecuaciones de equilibrio estatico</h3>
+<p>Es siempre el primer paso. Sin reacciones no puedes hacer nada mas. Se aplican al solido libre completo (o a cada parte, si hay articulaciones internas).</p>
+
+<div class="formula-box gold">
+<div class="label gold">Las 3 ecuaciones de equilibrio (2D)</div>
+$$\sum F_x = 0, \qquad \sum F_y = 0, \qquad \sum M_P = 0$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px"><strong>Truco:</strong> Toma momentos respecto a un apoyo para eliminar dos incognitas de golpe. Si hay <strong>articulacion interna</strong> en un punto $C$, tienes la condicion extra $M_C = 0$ (el momento flector es nulo ahi).</p>
+</div>
+
+<div class="warning"><strong>Error clasico:</strong> Olvidar que un empotramiento genera 3 reacciones ($R_x$, $R_y$ y $M$), una articulacion genera 2 ($R_x$, $R_y$) y un apoyo movil genera 1 ($R_\perp$).</div>
+
+<h3>H2. Diagramas de esfuerzos internos (N, Q, M)</h3>
+<p>Cortas la viga en cada tramo y aplicas equilibrio a la parte izquierda (o derecha). Los esfuerzos internos son:</p>
+
+<div class="formula-box">
+<div class="label purple">Esfuerzos internos en una seccion</div>
+<ul>
+<li>$N(x)$ = esfuerzo axial (sum de fuerzas paralelas al eje)</li>
+<li>$Q(x)$ = esfuerzo cortante (sum de fuerzas perpendiculares al eje)</li>
+<li>$M(x)$ = momento flector (sum de momentos respecto al corte)</li>
+</ul>
+</div>
+
+<div class="tip"><strong>Relaciones utiles:</strong> $\dfrac{dQ}{dx} = -q(x)$ y $\dfrac{dM}{dx} = Q(x)$. Esto significa que:
+<ul>
+<li>Donde no hay carga distribuida: $Q$ = constante, $M$ = lineal</li>
+<li>Donde hay carga distribuida uniforme: $Q$ = lineal, $M$ = parabolico</li>
+<li>Donde hay carga triangular: $Q$ = parabolico, $M$ = cubico</li>
+<li>$M$ es maximo donde $Q = 0$ (derivada nula)</li>
+</ul></div>
+
+<h3>H3. Formula de Navier (tension normal por flexion)</h3>
+<p>Es LA formula mas importante del tema. Relaciona el momento flector con la tension en cada fibra de la seccion:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Formula de Navier &mdash; la que mas vas a usar</div>
+$$\sigma(y) = \frac{M \cdot y}{I}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Donde $M$ = momento flector, $y$ = distancia a la fibra neutra, $I$ = momento de inercia de la seccion. La tension <strong>maxima</strong> ocurre en la fibra mas alejada:</p>
+$$\sigma_{\max} = \frac{M_{\max} \cdot y_{\max}}{I} = \frac{M_{\max}}{W}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:4px">Donde $W = I / y_{\max}$ es el <strong>modulo resistente</strong> de la seccion.</p>
+</div>
+
+<div class="danger"><strong>Cuidado con secciones asimetricas:</strong> Si la seccion NO es simetrica (como la T o la L), la fibra neutra no esta en el centro. Hay dos distancias diferentes: $y_{sup}$ e $y_{inf}$. Tienes que comprobar la tension en <strong>ambas fibras extremas</strong> y quedarte con la mayor.</div>
+
+<h3>H4. Modulo resistente para secciones tipicas</h3>
+<p>Atajos para no tener que calcular $I$ y $y_{\max}$ por separado cada vez:</p>
+
+<div class="formula-box blue">
+<div class="label blue">Modulos resistentes que caen en examen</div>
+<table>
+<tr><th>Seccion</th><th>$I$</th><th>$W = I/y_{\max}$</th></tr>
+<tr><td>Rectangular $b \times h$</td><td>$\dfrac{bh^3}{12}$</td><td>$\dfrac{bh^2}{6}$</td></tr>
+<tr><td>Circular diametro $D$</td><td>$\dfrac{\pi D^4}{64}$</td><td>$\dfrac{\pi D^3}{32}$</td></tr>
+<tr><td>Circular hueca $D_{ext}$, $D_{int}$</td><td>$\dfrac{\pi(D_e^4 - D_i^4)}{64}$</td><td>$\dfrac{\pi(D_e^4 - D_i^4)}{32\,D_e}$</td></tr>
+</table>
+</div>
+
+<h3>H5. Centroide y Steiner (secciones compuestas)</h3>
+<p>Para secciones en T, L o compuestas, primero hay que encontrar donde esta la fibra neutra y luego calcular $I$ con Steiner:</p>
+
+<div class="formula-box">
+<div class="label purple">Centroide y Steiner</div>
+$$\bar{y} = \frac{\sum A_i \cdot y_i}{\sum A_i}$$
+$$I = \sum\left(\frac{b_i h_i^3}{12} + A_i \cdot d_i^2\right)$$
+<p style="font-size:.85em;color:var(--text2);margin-top:4px">Donde $d_i$ = distancia del centroide del sub-rectangulo $i$ al centroide global.</p>
+</div>
+
+<div class="warning"><strong>Error frecuente:</strong> Confundir $y_i$ (posicion del centroide de cada rectangulo respecto a la referencia) con $d_i$ (distancia del centroide de cada rectangulo al centroide global). Son cosas distintas: primero calculas $\bar{y}$, y <strong>despues</strong> calculas $d_i = y_i - \bar{y}$.</div>
+
+<h3>H6. Condicion de resistencia y dimensionamiento</h3>
+<p>Para dimensionar una seccion o encontrar la carga maxima admisible:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Condicion de resistencia</div>
+$$\sigma_{\max} = \frac{M_{\max}}{W} \leq \sigma_{adm}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:4px">Si hay <strong>coeficiente de seguridad</strong> $\gamma$: &nbsp; $\sigma_{adm} = \dfrac{\sigma_y}{\gamma}$</p>
+</div>
+
+<p>Dos variantes tipicas:</p>
+<ul>
+<li><strong>Dimensionar seccion:</strong> Conoces $M_{\max}$ y $\sigma_{adm}$ &rarr; despejas las dimensiones de $W \geq M_{\max}/\sigma_{adm}$</li>
+<li><strong>Encontrar carga maxima:</strong> Conoces la seccion ($W$) y $\sigma_{adm}$ &rarr; despejas $q_0$ o $P$ de $M_{\max}(q_0) \leq \sigma_{adm} \cdot W$</li>
+</ul>
+
+<h3>H7. Superposicion de tensiones (flexion + axial)</h3>
+<p>Cuando hay simultaneamente esfuerzo axial $N$ y momento flector $M$, las tensiones se suman:</p>
+
+<div class="formula-box">
+<div class="label purple">Flexo-compresion / Flexo-traccion</div>
+$$\sigma = \frac{N}{A} \pm \frac{M \cdot y}{I}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:4px">La fibra mas solicitada es la que tiene ambas contribuciones del mismo signo (compresion + compresion, o traccion + traccion).</p>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: TIPOS -->
+<!-- ============================================ -->
+<div class="section" id="tipos">
+<h2>2. Los 4 tipos de ejercicio de examen</h2>
+<p>Los ejercicios 6.17&ndash;6.22 (nivel examen) encajan en uno de estos 4 patrones:</p>
+
+<div class="ex-type">
+<span class="tag">TIPO A &mdash; El mas frecuente</span>
+<h4>Viga con cargas + dimensionado de seccion</h4>
+<p><strong>Ejercicios:</strong> 6.17, 6.18</p>
+<p><strong>Te dan:</strong> Viga con cargas (distribuidas, puntuales, momentos) + seccion transversal + tension admisible</p>
+<p><strong>Piden:</strong> Diagramas Q, M &rarr; dimensionar seccion o encontrar carga maxima</p>
+<p><strong>Herramientas:</strong> H1 + H2 + H3 + H4/H5 + H6</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO B</span>
+<h4>Estructura articulada (celosi&#769;a) conectada a viga</h4>
+<p><strong>Ejercicios:</strong> 6.19, 6.21</p>
+<p><strong>Te dan:</strong> Sistema mixto con celosia + viga, cargas distribuidas/puntuales</p>
+<p><strong>Piden:</strong> Fuerzas en barras + reacciones + diagramas N, Q, M en la viga + tension maxima</p>
+<p><strong>Herramientas:</strong> Metodo de nudos/Ritter + H1 + H2 + H3 + H7</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO C</span>
+<h4>Viga con articulacion interna</h4>
+<p><strong>Ejercicios:</strong> 6.20</p>
+<p><strong>Te dan:</strong> Viga continua con articulacion interior + cargas (triangulares, puntuales, axiales) + seccion no simetrica (L)</p>
+<p><strong>Piden:</strong> Reacciones + diagramas + propiedades seccion + tension maxima</p>
+<p><strong>Herramientas:</strong> $M_C = 0$ (articulacion) + H1 + H2 + H5 + H3 + H7</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO D</span>
+<h4>Portico columna + viga con cables</h4>
+<p><strong>Ejercicios:</strong> 6.22</p>
+<p><strong>Te dan:</strong> Columna y viga como sistema rigido + cables + seccion rectangular con relacion h/b</p>
+<p><strong>Piden:</strong> Diagramas en funcion de parametros + dimensionar seccion + dimensionar cables</p>
+<p><strong>Herramientas:</strong> H1 + H2 + H6 + $\sigma = N/A$ para cables</p>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: TIPO A -->
+<!-- ============================================ -->
+<div class="section" id="tipo-a">
+<h2>3. Tipo A: Diagramas y dimensionado</h2>
+<p><strong>Patron:</strong> Te dan una viga con cargas combinadas (distribuida + puntual + momento) y una seccion transversal. Piden construir los diagramas Q y M, y luego dimensionar la seccion o encontrar la carga maxima admisible.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Esquema del solido libre</span>
+<p>Dibuja la viga con TODAS las cargas y reacciones. Identifica:</p>
+<ul>
+<li>Tipo de apoyos: articulacion (2 reacciones), movil (1 reaccion), empotramiento (3 reacciones)</li>
+<li>Cargas: distribuidas ($q$), puntuales ($P$), momentos concentrados ($M_0$)</li>
+<li>Numero de incognitas = numero de ecuaciones de equilibrio disponibles? Si no, necesitas condiciones extra (articulacion interna)</li>
+</ul>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Reacciones por equilibrio</span>
+<ol>
+<li>$\sum M_A = 0$ (momentos respecto a un apoyo) &rarr; despeja la reaccion del otro apoyo</li>
+<li>$\sum F_y = 0$ &rarr; despeja la reaccion vertical restante</li>
+<li>$\sum F_x = 0$ &rarr; despeja reacciones horizontales (si hay)</li>
+</ol>
+<p><strong>Comprobacion:</strong> $\sum M_B = 0$ con los valores obtenidos. Si no cuadra, hay error.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Diagrama de cortante Q(x)</span>
+<p>Recorre la viga de izquierda a derecha:</p>
+<ul>
+<li>En el apoyo izquierdo: $Q$ salta en $+R_A$</li>
+<li>Tramos sin carga: $Q$ = constante</li>
+<li>Tramos con carga distribuida $q$: $Q$ varia linealmente (pendiente $-q$)</li>
+<li>En cada carga puntual $P$ (hacia abajo): $Q$ salta en $-P$</li>
+</ul>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Diagrama de momento flector M(x)</span>
+<p>El momento es la integral del cortante:</p>
+<ul>
+<li>$Q$ constante &rarr; $M$ lineal (recta)</li>
+<li>$Q$ lineal &rarr; $M$ parabolico</li>
+<li>$M_{\max}$ donde $Q = 0$</li>
+<li>Un momento concentrado $M_0$ produce un <strong>salto vertical</strong> en el diagrama de $M$ (no afecta a $Q$)</li>
+</ul>
+<p><strong>Comprobacion:</strong> En apoyos simples $M = 0$; en empotramientos $M \neq 0$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 5 &mdash; Propiedades de la seccion</span>
+<p>Si la seccion es <strong>rectangular simple</strong> ($b \times h$): usa directamente $W = bh^2/6$.</p>
+<p>Si la seccion es <strong>compuesta</strong> (T, L, etc.): calcula centroide &rarr; Steiner &rarr; $y_{\max}$ &rarr; $W = I/y_{\max}$. Ver seccion 7.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 6 &mdash; Dimensionado o carga maxima</span>
+<p><strong>Si te piden dimensionar</strong> (como en 6.18):</p>
+$$W \geq \frac{M_{\max}}{\sigma_{adm}} \implies \text{despejar } b \text{ (o } h \text{)}$$
+<p><strong>Si te piden la carga maxima</strong> (como en 6.17):</p>
+$$M_{\max}(q_0) \leq \sigma_{adm} \cdot W \implies \text{despejar } q_0$$
+</div>
+
+<h3>Ejemplo concreto: Ejercicio 6.18</h3>
+<p>Viga articulada en $A$, apoyo movil en $B$. Cargas: $q = 2$ kN/m (en 0,4 m) y $P = 5$ kN. Acero A-42 ($\sigma_y = 250$ MPa), $\gamma = 1{,}5$, seccion rectangular con $h = 3b$.</p>
+
+<div class="formula-box">
+<div class="label purple">Paso rapido: tension admisible</div>
+$$\sigma_{adm} = \frac{\sigma_y}{\gamma} = \frac{250}{1{,}5} = 166{,}67\ \text{MPa}$$
+</div>
+
+<div class="formula-box">
+<div class="label purple">Modulo resistente con h = 3b</div>
+$$W = \frac{bh^2}{6} = \frac{b(3b)^2}{6} = \frac{3b^3}{2}$$
+</div>
+
+<div class="formula-box green">
+<div class="label green">Condicion de resistencia &rarr; despejar b</div>
+$$\frac{M_{\max}}{3b^3/2} \leq 166{,}67\ \text{MPa} \implies b \geq \sqrt[3]{\frac{2\,M_{\max}}{3 \times 166{,}67 \times 10^6}}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:4px">Resultado: $b > 26{,}47$ mm, $h = 3b > 79{,}43$ mm.</p>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: TIPO B -->
+<!-- ============================================ -->
+<div class="section" id="tipo-b">
+<h2>4. Tipo B: Estructura articulada + viga</h2>
+<p><strong>Patron:</strong> Un sistema mixto con celosia (barras biarticuladas que solo trabajan a axial) conectada a una viga. La celosia transmite fuerzas a la viga a traves de los nodos de conexion.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Separar el sistema</span>
+<p>Aisla la celosia y la viga como solidos libres separados. Las fuerzas en las articulaciones de conexion son <strong>accion-reaccion</strong> entre ambas partes.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Resolver la celosia</span>
+<ul>
+<li>Equilibrio global del sistema completo &rarr; reacciones externas</li>
+<li><strong>Metodo de los nudos:</strong> Equilibra cada nudo ($\sum F_x = 0$, $\sum F_y = 0$) para obtener las fuerzas en las barras</li>
+<li><strong>Metodo de Ritter (secciones):</strong> Si solo necesitas barras especificas, corta la celosia por una seccion que atraviese maximo 3 barras y aplica equilibrio</li>
+</ul>
+<p>Las barras biarticuladas solo trabajan a <strong>axial</strong> (traccion o compresion).</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Fuerzas transmitidas a la viga</span>
+<p>Las fuerzas que la celosia ejerce sobre la viga en los nodos de conexion son las <strong>cargas externas</strong> de la viga. Anade las cargas distribuidas que la viga soporte directamente.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Diagramas N, Q, M en la viga</span>
+<p>Construye los diagramas como en cualquier viga, pero ahora tendras cargas puntuales en los nodos de conexion (fuerzas de la celosia) ademas de las cargas distribuidas.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 5 &mdash; Tension maxima</span>
+<p>Si hay axial y flector simultaneamente:</p>
+$$\sigma = \frac{N}{A} + \frac{M \cdot y_{\max}}{I}$$
+<p>La seccion mas solicitada es donde $|M|$ es maximo. Comprueba ambas fibras extremas.</p>
+</div>
+
+<h3>Ejemplo: Ejercicio 6.19</h3>
+<p>Viga de $2L$ articulada en $O$, carga distribuida $Mg/L$, conectada a estructura con 4 cargas $Mg$. Resultados de reacciones: $O_x = 8Mg/3$, $C_y = 6Mg$. La viga tiene axial + cortante + flector simultaneamente por las fuerzas inclinadas de los nodos.</p>
+
+<div class="tip"><strong>Clave del Tipo B:</strong> Lo dificil NO es la viga en si, sino obtener correctamente las fuerzas que la celosia le transmite. Si te equivocas en la celosia, todo lo que sigue sale mal. Dedica tiempo a comprobar el equilibrio de los nudos.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: TIPO C -->
+<!-- ============================================ -->
+<div class="section" id="tipo-c">
+<h2>5. Tipo C: Viga con articulacion interna</h2>
+<p><strong>Patron:</strong> Viga continua con un punto de articulacion interior. Puede tener cargas triangulares, puntuales y axiales. La seccion no es simetrica.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Condicion clave: M = 0 en la articulacion</span>
+<p>Una articulacion interna en el punto $C$ significa que $M_C = 0$. Esto te da una <strong>ecuacion extra</strong> que necesitas para resolver la estructura (que de otro modo seria hiperestatica).</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Aislar los dos tramos</span>
+<p>Corta la viga en la articulacion. Cada tramo tiene sus cargas + las fuerzas internas en $C$ ($N_C$, $Q_C$, con $M_C = 0$). Resuelve cada tramo por separado:</p>
+<ul>
+<li>Tramo derecho (mas sencillo): suele tener menos incognitas &rarr; resolver primero</li>
+<li>Tramo izquierdo: usar las fuerzas internas en $C$ del tramo derecho (accion-reaccion)</li>
+</ul>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Carga triangular</span>
+<p>Si hay carga triangular $q(x) = q_{\max} \cdot x / L$:</p>
+<ul>
+<li>Resultante: $R = q_{\max} \cdot L / 2$</li>
+<li>Punto de aplicacion: a $2L/3$ del extremo donde $q = 0$ (desplazado hacia el lado de mayor carga)</li>
+<li>En el diagrama: $Q$ varia cuadraticamente, $M$ varia cubicamente</li>
+</ul>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Seccion no simetrica (L, T)</span>
+<p>Calcular centroide &rarr; Steiner &rarr; comprobar AMBAS fibras extremas. Ver seccion 7.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 5 &mdash; Superposicion axial + flexion</span>
+<p>Si hay esfuerzo axial $N$ ademas de flexion:</p>
+$$\sigma_{\max} = \frac{N}{A} + \frac{M_{\max} \cdot y_{\max}}{I}$$
+<p>Comprueba que la fibra mas comprimida (axial compresion + flexion compresion) no supera $\sigma_{adm}$.</p>
+</div>
+
+<h3>Ejemplo: Ejercicio 6.20</h3>
+<p>Viga $AF$ de 8 m, empotrada en $A$, articulada en $C$, apoyo movil en $F$. Carga triangular $q_{\max} = 2$ kN/m + puntual $P = 4$ kN + axial $Q = 3$ kN. Seccion en L.</p>
+<p>La articulacion en $C$ da $M_C = 0$. Aislando el tramo $CF$ primero (mas sencillo), se obtienen las reacciones en $F$ y las fuerzas internas en $C$. Luego se resuelve el tramo $AC$.</p>
+
+<div class="warning"><strong>Recuerda:</strong> La carga triangular tiene su resultante a $2/3$ de la base (lado de maxima carga), NO en el centro. Este es uno de los errores mas frecuentes en examen.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: TIPO D -->
+<!-- ============================================ -->
+<div class="section" id="tipo-d">
+<h2>6. Tipo D: Portico columna + viga con cables</h2>
+<p><strong>Patron:</strong> Columna vertical conectada a viga horizontal formando un portico en L. Pueden haber cables adicionales. Piden diagramas en funcion de parametros ($q_0$, $a$) y luego dimensionar con valores numericos.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Aislar cada elemento</span>
+<p>Separa columna y viga en el nudo de union. Las fuerzas en el nudo son accion-reaccion. Los cables transmiten solo traccion.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Diagramas en funcion de parametros</span>
+<p>Construye $N(x)$, $Q(x)$, $M(x)$ dejando $q_0$ y $a$ como simbolos. Identifica $M_{\max}$ y $N_{\max}$ en funcion de $q_0$ y $a$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Dimensionar la seccion</span>
+<p>Sustituye valores numericos. Con seccion rectangular $h = kb$:</p>
+$$W = \frac{b(kb)^2}{6} = \frac{k^2 b^3}{6} \qquad \implies \qquad b \geq \sqrt[3]{\frac{6\,M_{\max}}{k^2\,\sigma_{adm}}}$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Dimensionar cables</span>
+<p>Los cables trabajan a traccion pura. Con el esfuerzo axial $F_{cable}$ conocido:</p>
+$$\sigma = \frac{F_{cable}}{A} = \frac{F_{cable}}{\pi R^2} \leq \sigma_{adm} \implies R \geq \sqrt{\frac{F_{cable}}{\pi\,\sigma_{adm}}}$$
+</div>
+
+<h3>Ejemplo: Ejercicio 6.22</h3>
+<p>Columna $ABC$ + viga $BDF$, seccion rectangular $h = 2b$, $\sigma_{adm} = 50$ MPa. Cables con $\sigma_{adm} = 200$ MPa.</p>
+
+<div class="formula-box">
+<div class="label purple">Modulo resistente con h = 2b</div>
+$$W = \frac{b(2b)^2}{6} = \frac{2b^3}{3}$$
+</div>
+
+<div class="formula-box green">
+<div class="label green">Resultados</div>
+<ul>
+<li>$M_{\max} = 48\,q_0\,a^2$, &nbsp; $N_{\max} = \frac{208}{9}\,q_0\,a$</li>
+<li>Con $a = 500$ mm, $q_0 = 10$ N/mm: &nbsp; $b = 156$ mm</li>
+<li>Radio cables: $R = 14{,}6$ mm</li>
+</ul>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: SECCIONES -->
+<!-- ============================================ -->
+<div class="section" id="secciones">
+<h2>7. Calculo de propiedades de secciones compuestas</h2>
+<p>Esto cae SI O SI en examen. El procedimiento es siempre el mismo, independientemente de la forma (T, L, U, etc.).</p>
+
+<h3>Receta universal para secciones compuestas</h3>
+
+<div class="step">
+<span class="step-num gold">1</span>
+<p><strong>Divide en rectangulos.</strong> Descompone la seccion en $n$ rectangulos simples. Para cada uno calcula area $A_i = b_i \cdot h_i$ y posicion de su centroide $y_i$ respecto a una referencia (normalmente la base inferior).</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">2</span>
+<p><strong>Centroide global:</strong></p>
+$$\bar{y} = \frac{A_1 y_1 + A_2 y_2 + \ldots}{A_1 + A_2 + \ldots}$$
+<p>Este es el eje neutro &mdash; donde la tension normal vale cero.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">3</span>
+<p><strong>Momento de inercia (Steiner):</strong></p>
+$$I = \sum_{i=1}^{n}\left(\frac{b_i h_i^3}{12} + A_i\,d_i^2\right)$$
+<p>Donde $d_i = y_i - \bar{y}$ es la distancia del centroide del rectangulo $i$ al centroide global.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">4</span>
+<p><strong>Distancias a fibras extremas:</strong></p>
+<ul>
+<li>$y_{inf} = \bar{y}$ (distancia del centroide a la fibra inferior)</li>
+<li>$y_{sup} = h_{total} - \bar{y}$ (distancia del centroide a la fibra superior)</li>
+<li>$y_{\max} = \max(y_{inf},\ y_{sup})$ &rarr; esta es la fibra critica</li>
+</ul>
+</div>
+
+<h3>Ejemplo: Seccion en T (Ejercicio 6.17)</h3>
+<p>Seccion en T de 80 cm de alto x 70 cm de ancho, alas de 20 cm. Se divide en:</p>
+<ul>
+<li><strong>Ala superior:</strong> rectangulo horizontal (ancho x espesor del ala)</li>
+<li><strong>Alma:</strong> rectangulo vertical (espesor x altura libre)</li>
+</ul>
+<p>Se calcula $\bar{y}$, luego $I$ por Steiner, y finalmente $\sigma_{\max} = M_{\max}\cdot y_{\max}/I \leq 1200$ kg/cm$^2$ para despejar $q_0$.</p>
+
+<div class="danger"><strong>En secciones asimetricas (T, L):</strong> $y_{sup} \neq y_{inf}$. Tienes que calcular AMBAS tensiones:
+$$\sigma_{sup} = \frac{M \cdot y_{sup}}{I}, \qquad \sigma_{inf} = \frac{M \cdot y_{inf}}{I}$$
+Y la que sea mayor debe cumplir $\leq \sigma_{adm}$. En una seccion en T, normalmente la fibra mas alejada de la fibra neutra es la inferior (si el ala esta arriba).</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 8: CHECKLIST -->
+<!-- ============================================ -->
+<div class="section" id="resumen">
+<h2>8. Checklist antes del examen</h2>
+
+<h3>Domina estas operaciones (sin pensar)</h3>
+<table>
+<tr><th>Operacion</th><th>Cuando se usa</th><th>Practica hasta que...</th></tr>
+<tr><td>Ecuaciones de equilibrio</td><td>SIEMPRE, primer paso</td><td>Las plantees en 2 minutos</td></tr>
+<tr><td>Diagramas Q y M por tramos</td><td>SIEMPRE</td><td>No dudes en el signo del cortante</td></tr>
+<tr><td>Formula de Navier $\sigma = My/I$</td><td>Dimension/verificacion</td><td>La escribas sin mirar el formulario</td></tr>
+<tr><td>Centroide + Steiner</td><td>Secciones compuestas (T, L)</td><td>No confundas $y_i$ con $d_i$</td></tr>
+<tr><td>Modulo resistente $W = bh^2/6$</td><td>Seccion rectangular</td><td>Lo sustituyas directamente</td></tr>
+</table>
+
+<h3>Ante un ejercicio de examen, preguntate:</h3>
+<div class="decision">
+<div class="q">1. Que tipo de estructura tengo?</div>
+<div class="branch"><span class="label">Viga simple con cargas</span> &rarr; <strong>Tipo A</strong> (6.17, 6.18)</div>
+<div class="branch"><span class="label">Celosia conectada a viga</span> &rarr; <strong>Tipo B</strong> (6.19, 6.21)</div>
+<div class="branch"><span class="label">Viga con articulacion interior</span> &rarr; <strong>Tipo C</strong> (6.20)</div>
+<div class="branch"><span class="label">Portico columna + viga + cables</span> &rarr; <strong>Tipo D</strong> (6.22)</div>
+</div>
+
+<div class="decision">
+<div class="q">2. La seccion es simetrica?</div>
+<div class="branch"><span class="label yes">SI</span> (rectangular, circular) &rarr; Usa $W$ directamente de la tabla</div>
+<div class="branch"><span class="label no">NO</span> (T, L, U) &rarr; Calcula centroide + Steiner + comprueba AMBAS fibras</div>
+</div>
+
+<div class="decision">
+<div class="q">3. Hay esfuerzo axial N ademas de M?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Superposicion: $\sigma = N/A + M\cdot y/I$</div>
+<div class="branch"><span class="label no">NO</span> &rarr; Solo Navier: $\sigma = M\cdot y/I$</div>
+</div>
+
+<div class="decision">
+<div class="q">4. Me dan coeficiente de seguridad?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; $\sigma_{adm} = \sigma_y / \gamma$ (dividir limite elastico entre el coeficiente)</div>
+<div class="branch"><span class="label no">NO</span> &rarr; Usan $\sigma_{adm}$ directamente como dato</div>
+</div>
+
+<h3>Errores que cuestan puntos</h3>
+<table>
+<tr><th>Error</th><th>Consecuencia</th><th>Como evitarlo</th></tr>
+<tr><td>Olvidar $M = 0$ en articulacion interna</td><td>Reacciones mal &rarr; todo mal</td><td>Identifica articulaciones al inicio</td></tr>
+<tr><td>Usar $y_{\max}$ equivocado en seccion asimetrica</td><td>Tension subestimada (peligroso)</td><td>Calcula $y_{sup}$ e $y_{inf}$ por separado</td></tr>
+<tr><td>Confundir $d_i$ con $y_i$ en Steiner</td><td>$I$ mal &rarr; dimension/carga mal</td><td>$d_i = y_i - \bar{y}$ (siempre respecto al centroide global)</td></tr>
+<tr><td>Olvidar dividir $\sigma_y$ entre $\gamma$</td><td>Seccion subdimensionada</td><td>Primer calculo siempre: $\sigma_{adm} = \sigma_y/\gamma$</td></tr>
+<tr><td>No comprobar unidades (MPa vs kN/m)</td><td>Resultado absurdo</td><td>Convierte todo a N y mm, o a kN y m</td></tr>
+<tr><td>Diagrama M sin comprobar valores en apoyos</td><td>Diagrama incorrecto</td><td>$M = 0$ en apoyos simples/articulados</td></tr>
+<tr><td>Carga triangular: resultante a $L/2$</td><td>Reacciones mal</td><td>Resultante a $2L/3$ del extremo nulo</td></tr>
+<tr><td>Olvidar $N/A$ en flexo-compresion</td><td>Tension real mayor que la calculada</td><td>Si hay $N \neq 0$, SIEMPRE sumarlo</td></tr>
+</table>
+
+<h3>Verificaciones rapidas</h3>
+<div class="formula-box green">
+<div class="label green">Comprobaciones para no entregar errores</div>
+<ul>
+<li><strong>Equilibrio:</strong> Comprueba momentos respecto a otro punto. $\sum M_B$ con tus reacciones calculadas debe dar 0.</li>
+<li><strong>Diagrama Q:</strong> El cortante empieza y termina en los valores de las reacciones. Debe cerrar a 0 en el ultimo apoyo.</li>
+<li><strong>Diagrama M:</strong> En apoyos simples $M = 0$. El area bajo $Q$ entre dos puntos = cambio en $M$.</li>
+<li><strong>Coherencia:</strong> $M_{\max}$ ocurre donde $Q = 0$. Si $Q$ no pasa por cero en tu diagrama, revisa.</li>
+<li><strong>Unidades:</strong> Si $M$ esta en kN$\cdot$m y $\sigma_{adm}$ en MPa, convierte: $1\ \text{kN}\cdot\text{m} = 10^6\ \text{N}\cdot\text{mm}$.</li>
+<li><strong>Steiner:</strong> $\sum A_i d_i^2$ SIEMPRE es positivo (es distancia al cuadrado por area). Si te sale negativo, hay error.</li>
+</ul>
+</div>
+
+<h3>Tabla rapida de conversiones</h3>
+<table>
+<tr><th>De</th><th>A</th><th>Multiplicar por</th></tr>
+<tr><td>kN</td><td>N</td><td>$10^3$</td></tr>
+<tr><td>kN/m</td><td>N/mm</td><td>$1$</td></tr>
+<tr><td>kN$\cdot$m</td><td>N$\cdot$mm</td><td>$10^6$</td></tr>
+<tr><td>MPa</td><td>N/mm$^2$</td><td>$1$</td></tr>
+<tr><td>cm$^4$</td><td>mm$^4$</td><td>$10^4$</td></tr>
+<tr><td>kg/cm$^2$</td><td>MPa</td><td>$\approx 0{,}098$</td></tr>
+</table>
+
+</div>
+
+</div>
+
+<div class="footer">Manual Tema 6 &middot; Mecanica Aplicada &middot; UPV/EHU &middot; 2025&ndash;26</div>
+
+</body>
+</html>

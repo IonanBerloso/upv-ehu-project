@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual T5 - Cables | Mecánica Aplicada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.12);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--blue:#38bdf8;--orange:#fb923c;--red:#ef4444;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;--radius-sm:6px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+
+.container{max-width:860px;margin:0 auto;padding:20px 24px 80px}
+
+/* Header */
+.manual-header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border2);margin-bottom:32px}
+.manual-header h1{font-size:1.8em;font-weight:700;color:var(--gold);margin-bottom:6px}
+.manual-header .subtitle{color:var(--text2);font-size:.95em}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--text3);font-size:.85em}
+.back-link:hover{color:var(--accent)}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}
+.toc h2{font-size:1.05em;color:var(--gold);margin-bottom:10px;font-weight:600}
+.toc ol{padding-left:20px}
+.toc li{margin:4px 0;color:var(--text2);font-size:.9em}
+.toc a{color:var(--text)}
+
+/* Sections */
+.section{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section h2{font-size:1.35em;font-weight:700;color:var(--accent);margin-bottom:14px;padding-top:8px}
+.section h3{font-size:1.1em;font-weight:600;color:var(--gold);margin:20px 0 10px}
+.section h4{font-size:1em;font-weight:600;color:var(--blue);margin:16px 0 8px}
+
+/* Formula boxes */
+.formula-box{background:rgba(192,132,252,.06);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:14px 18px;margin:12px 0}
+.formula-box.gold{background:var(--gold-dim);border-color:var(--gold-border)}
+.formula-box.blue{background:rgba(56,189,248,.06);border-color:rgba(56,189,248,.28)}
+.formula-box.green{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.28)}
+.formula-box .label{font-size:.8em;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.formula-box .label.purple{color:var(--accent)}
+.formula-box .label.gold{color:var(--gold)}
+.formula-box .label.blue{color:var(--blue)}
+.formula-box .label.green{color:var(--green)}
+
+/* Warning/tip boxes */
+.tip{background:rgba(16,185,129,.06);border-left:3px solid var(--green);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.warning{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.danger{background:rgba(239,68,68,.06);border-left:3px solid var(--red);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.step-num{display:inline-block;background:var(--accent);color:#000;font-weight:700;font-size:.75em;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+.step-num.gold{background:var(--gold)}
+
+/* Decision tree */
+.decision{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.decision .q{font-weight:600;color:var(--orange);margin-bottom:8px}
+.decision .branch{padding-left:16px;border-left:2px solid var(--border2);margin:6px 0}
+.decision .branch .label{font-weight:600;font-size:.85em}
+.decision .branch .yes{color:var(--green)}
+.decision .branch .no{color:var(--red)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}
+th,td{padding:8px 12px;border:1px solid var(--border2);text-align:left}
+th{background:var(--surface2);color:var(--gold);font-weight:600;font-size:.85em}
+td{color:var(--text)}
+
+/* Exercise type cards */
+.ex-type{background:var(--surface);border:1px solid var(--gold-border);border-radius:var(--radius);padding:16px 20px;margin:12px 0}
+.ex-type .tag{display:inline-block;background:var(--gold-dim);color:var(--gold);font-weight:600;font-size:.75em;padding:2px 10px;border-radius:10px;margin-bottom:8px}
+
+p{margin:6px 0}
+ul,ol{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+strong{color:var(--text)}
+code{font-family:var(--ff-mono);background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:.88em}
+
+.footer{text-align:center;padding:24px;color:var(--text3);font-size:.8em;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="tema5.html" class="back-link">&larr; Volver a ejercicios Tema 5</a>
+
+<div class="manual-header">
+  <h1>Manual de Ejercicios de Examen</h1>
+  <div class="subtitle">Tema 5 &mdash; Cables &middot; Mecanica Aplicada UPV/EHU</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#fundamentos">Los 3 modelos de cable que debes dominar</a></li>
+    <li><a href="#formulas">Formulas clave de la catenaria (las que mas caen)</a></li>
+    <li><a href="#tipos">Los 4 tipos de ejercicio de examen</a></li>
+    <li><a href="#tipo-a">Tipo A: Catenaria pura (5.7, 5.8, 5.13, 5.16)</a></li>
+    <li><a href="#tipo-b">Tipo B: Catenaria + polea (5.10, 5.11, 5.12, 5.14, 5.15)</a></li>
+    <li><a href="#tipo-c">Tipo C: Cable parabolico (ligero) combinado (5.9, 5.10, 5.11)</a></li>
+    <li><a href="#tipo-d">Tipo D: Cable con cargas concentradas (5.1, 5.2)</a></li>
+    <li><a href="#errores">Errores frecuentes y verificaciones</a></li>
+    <li><a href="#checklist">Checklist final antes del examen</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: FUNDAMENTOS -->
+<!-- ============================================ -->
+<div class="section" id="fundamentos">
+<h2>1. Los 3 modelos de cable que debes dominar</h2>
+<p>Cada ejercicio del Tema 5 usa uno (o varios) de estos tres modelos. Lo primero que tienes que hacer al leer un enunciado es <strong>identificar que tipo de cable tienes</strong>:</p>
+
+<h3>Modelo 1: Cable con cargas concentradas</h3>
+<p>El cable pesa poco (se desprecia su peso propio) y tiene fuerzas puntuales en nudos. Entre nudos el cable es <strong>recto</strong>.</p>
+
+<div class="formula-box">
+<div class="label purple">Propiedad clave</div>
+<p>La componente horizontal de la tension $H$ es <strong>constante en todos los tramos</strong> si las cargas son verticales. Cambia solo en nudos con fuerza horizontal.</p>
+$$T_i = \sqrt{H^2 + V_i^2}\,,\quad V_i = H\cdot m_i = H\cdot\frac{\Delta y_i}{\Delta x_i}$$
+</div>
+
+<div class="tip"><strong>Ejercicios:</strong> 5.1, 5.2. <strong>Cuando aparece:</strong> el enunciado dice "cargas puntuales" o especifica fuerzas en puntos concretos del cable.</div>
+
+<h3>Modelo 2: Cable parabolico (sin peso, carga distribuida por unidad de abscisa)</h3>
+<p>El cable no pesa, pero soporta una carga vertical $p(x)$ distribuida por unidad de longitud <strong>horizontal</strong>. Produce una <strong>parabola</strong> (o curva de grado mayor si la carga no es uniforme).</p>
+
+<div class="formula-box">
+<div class="label purple">Ecuacion diferencial</div>
+$$H\,\frac{d^2y}{dx^2} = p(x)$$
+<p style="margin-top:6px">Para carga uniforme $p(x) = p_0$: &nbsp; $y(x) = \dfrac{p_0}{2H}x^2 + C_1 x + C_2$</p>
+<p>Para carga triangular $p(x) = \dfrac{p_B}{L}x$: &nbsp; $y(x) = \dfrac{p_B}{6HL}x^3 + C_1 x + C_2$</p>
+</div>
+
+<div class="tip"><strong>Ejercicios:</strong> 5.3, 5.4, 5.5, 5.6, y partes de 5.10 y 5.11. <strong>Cuando aparece:</strong> el enunciado dice "cable sin peso", "cable ligero", o "carga distribuida por unidad de abscisa".</div>
+
+<h3>Modelo 3: Catenaria (cable pesado)</h3>
+<p>El cable tiene peso propio $q$ (N/m de cable, no de abscisa). Esta es LA estrella del examen &mdash; la mayoria de ejercicios de examen usan catenaria.</p>
+
+<div class="formula-box gold">
+<div class="label gold">Las 4 relaciones de la catenaria &mdash; MEMORIZA ESTO</div>
+$$T = q\,y \qquad H = q\,c \qquad V = q\,s \qquad y^2 = c^2 + s^2$$
+<p style="margin-top:6px;font-size:.9em;color:var(--text2)">Donde: $T$ = tension, $H$ = componente horizontal (constante), $V$ = componente vertical, $q$ = peso/metro, $c$ = parametro, $s$ = arco desde el vertice, $y$ = altura sobre la <strong>directriz</strong> (no sobre el suelo).</p>
+</div>
+
+<div class="warning"><strong>Cuidado:</strong> $y$ se mide desde la <strong>directriz</strong>, no desde el suelo ni desde el vertice. La directriz esta a una distancia $c$ por debajo del vertice.</div>
+
+<div class="tip"><strong>Ejercicios:</strong> 5.7&ndash;5.16 (todos los de examen). <strong>Cuando aparece:</strong> el enunciado dice "cable de peso $q$ N/m" o "peso por unidad de longitud del cable".</div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: FORMULAS CATENARIA -->
+<!-- ============================================ -->
+<div class="section" id="formulas">
+<h2>2. Formulas clave de la catenaria</h2>
+<p>Estas son las herramientas que vas a usar una y otra vez en el examen:</p>
+
+<h3>F1. Relaciones fundamentales</h3>
+<div class="formula-box gold">
+<div class="label gold">Tension en cualquier punto</div>
+$$T = q\cdot y = \sqrt{H^2 + V^2}$$
+<p style="font-size:.88em;color:var(--text2)">La tension es directamente proporcional a la altura $y$ sobre la directriz. En el vertice: $T_{\min} = H = q\cdot c$.</p>
+</div>
+
+<div class="formula-box">
+<div class="label purple">Componentes</div>
+$$H = q\cdot c = \text{constante en todo el cable}$$
+$$V = q\cdot s \quad \text{(arco medido desde el vertice)}$$
+</div>
+
+<div class="formula-box blue">
+<div class="label blue">Relacion pitagorica</div>
+$$y^2 = c^2 + s^2 \quad \Leftrightarrow \quad T^2 = H^2 + V^2$$
+<p style="font-size:.88em;color:var(--text2)">Es la misma ecuacion, multiplicada por $q^2$. Usala para pasar de arco a altura o viceversa.</p>
+</div>
+
+<h3>F2. El vertice (punto mas bajo)</h3>
+<p>El vertice es donde la tangente es <strong>horizontal</strong>. Ahi:</p>
+<ul>
+<li>$s = 0$ (arco nulo desde el propio vertice)</li>
+<li>$V = 0$ (no hay componente vertical)</li>
+<li>$T = H = q\cdot c$ (tension minima)</li>
+<li>$y_{\text{vertice}} = c$ (altura sobre la directriz = parametro)</li>
+</ul>
+
+<div class="danger"><strong>Regla de oro:</strong> Si el enunciado dice "la tangente en $X$ es horizontal", inmediatamente sabes que $X$ es el vertice del cable (o del tramo). Desde ahi se miden los arcos.</div>
+
+<h3>F3. Tramo vertical colgante</h3>
+<p>Cuando un cable pesado cuelga verticalmente (por ejemplo, de una polea), no hay geometria de catenaria: simplemente la tension cambia linealmente con la longitud:</p>
+<div class="formula-box">
+<div class="label purple">Tramo vertical</div>
+$$T_{\text{arriba}} = T_{\text{abajo}} + q \cdot l_{\text{tramo}}$$
+<p style="font-size:.88em;color:var(--text2)">Si hay una masa $m$ colgada en el extremo inferior: $T_{\text{abajo}} = mg$.</p>
+</div>
+
+<h3>F4. Cable sobre suelo (equilibrio limite)</h3>
+<p>Cuando un tramo del cable descansa sobre un suelo rugoso:</p>
+<div class="formula-box">
+<div class="label purple">Rozamiento del cable sobre suelo</div>
+$$f \cdot q \cdot s_{\text{suelo}} = H$$
+<p style="font-size:.88em;color:var(--text2)">La friccion total ($f$ por normal = $f \cdot q \cdot s_{\text{suelo}}$) equilibra la traccion horizontal $H$ del cable que se levanta.</p>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: TIPOS DE EJERCICIO -->
+<!-- ============================================ -->
+<div class="section" id="tipos">
+<h2>3. Los 4 tipos de ejercicio de examen</h2>
+<p>Los ejercicios 5.7&ndash;5.16 se agrupan en estos patrones. Identificar el tipo te dice exactamente que hacer:</p>
+
+<div class="ex-type">
+<span class="tag">TIPO A &mdash; Catenaria pura con estructura</span>
+<h4>Cable catenaria + celosia/barra/disco</h4>
+<p><strong>Ejercicios:</strong> 5.7, 5.8, 5.9, 5.13, 5.16</p>
+<p><strong>Patron:</strong> El cable catenaria se conecta a una estructura (celosia, barra, disco). Te piden tensiones del cable, parametro $c$, longitud, y fuerzas sobre la estructura.</p>
+<p><strong>Herramientas:</strong> F1 + F2 + DCL de la estructura + equilibrio</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO B &mdash; Catenaria + polea</span>
+<h4>Cable que pasa por una polea sin rozamiento</h4>
+<p><strong>Ejercicios:</strong> 5.10, 5.11, 5.12, 5.14, 5.15</p>
+<p><strong>Patron:</strong> Un cable pesado pasa por una polea. Al cambiar de tramo, $H$ puede cambiar pero $|T|$ no cambia en la polea (si es sin rozamiento). A menudo hay un tramo vertical colgante.</p>
+<p><strong>Herramientas:</strong> F1 + F3 + igualdad de tensiones en polea + DCL</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO C &mdash; Cable parabolico combinado</span>
+<h4>Cable ligero con carga distribuida + catenaria</h4>
+<p><strong>Ejercicios:</strong> 5.10, 5.11 (parte ligera), 5.9 (combinado)</p>
+<p><strong>Patron:</strong> Un cable sin peso con carga distribuida se conecta a otro cable pesado (catenaria). La conexion transmite $H$ (si no hay rozamiento en la anilla).</p>
+<p><strong>Herramientas:</strong> Ecuacion diferencial $Hy'' = p(x)$ + condiciones de contorno + continuidad en el punto de union</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO D &mdash; Cargas concentradas</span>
+<h4>Cable recto entre nudos</h4>
+<p><strong>Ejercicios:</strong> 5.1, 5.2</p>
+<p><strong>Patron:</strong> Fuerzas puntuales en los nudos. Cable recto entre ellos. Se pide $H$, posiciones de nudos, tension maxima.</p>
+<p><strong>Herramientas:</strong> Equilibrio de nudos (2 ecuaciones por nudo) + $H$ constante si todas las cargas son verticales</p>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: TIPO A -->
+<!-- ============================================ -->
+<div class="section" id="tipo-a">
+<h2>4. Tipo A: Catenaria pura con estructura</h2>
+<p><strong>Patron general:</strong> Tienes un cable pesado conectado a una estructura rigida (celosia, barra, disco). La clave es que la catenaria te da las tensiones del cable, y esas tensiones son cargas externas sobre la estructura.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Identifica el vertice</span>
+<p>Busca donde la tangente al cable es <strong>horizontal</strong>. Ahi esta el vertice. Si el enunciado dice "la tangente en $A$ es horizontal" &rarr; $A$ es vertice, $s_A = 0$, $V_A = 0$, $T_A = H$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Calcula $H$ desde la estructura</span>
+<p>Haz el DCL de la estructura (disco, barra, celosia...). Normalmente <strong>momentos respecto al punto de apoyo</strong> te dan $H$ directamente. Ejemplo tipico con disco:</p>
+$$\sum M_{\text{contacto}} = 0 \quad\Rightarrow\quad H = \frac{F \cdot R_1}{R_2}$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Calcula el parametro $c$</span>
+$$c = \frac{H}{q}$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Calcula tensiones en los extremos</span>
+<p>Si conoces el angulo $\theta$ en un punto: $T = H/\cos\theta$.</p>
+<p>Si conoces la altura $y$ sobre la directriz: $T = q \cdot y$.</p>
+<p>Si conoces el arco $s$ desde el vertice: $V = q\cdot s$, luego $T = \sqrt{H^2 + V^2}$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 5 &mdash; Longitud del cable</span>
+$$s = \frac{V}{q} \quad \text{o} \quad s = \sqrt{y^2 - c^2}$$
+</div>
+
+<h3>Ejemplo concreto: Ejercicio 5.8</h3>
+<p>Cable catenaria entre disco y bloque. Tangente horizontal en $A$ (bloque) &rarr; vertice en $A$.</p>
+<ol>
+<li><strong>DCL del disco:</strong> $\sum M_D = 0$ &rarr; $H = F/2 = 3Mg$.</li>
+<li><strong>Equilibrio vertical del disco:</strong> $V = 4Mg$.</li>
+<li><strong>Tension en $B$:</strong> $T_B = \sqrt{(3Mg)^2 + (4Mg)^2} = 5Mg$.</li>
+<li><strong>Geometria:</strong> $y_B - y_A = 2R$ &rarr; $q = Mg/R$.</li>
+<li><strong>Parametro:</strong> $c = H/q = 3R$.</li>
+<li><strong>Longitud:</strong> $s = V/q = 4R$.</li>
+<li><strong>Verificacion:</strong> $y_B^2 = (5R)^2 = (3R)^2 + (4R)^2$ &check;</li>
+</ol>
+
+<h3>Ejemplo concreto: Ejercicio 5.7</h3>
+<p>Cable catenaria entre celosia y punto fijo $G$, con tramo colgante $GH$.</p>
+<ol>
+<li><strong>Tramo colgante $GH$:</strong> $T_G = q \cdot l_{GH} = 20 \times 10 = 200$ N.</li>
+<li><strong>$H$ desde el angulo en $G$:</strong> $H = T_G \cos 30^\circ = 100\sqrt{3}$ N.</li>
+<li><strong>Vertice en $D$</strong> (tangente horizontal): $T_D = H = 100\sqrt{3}$ N.</li>
+<li><strong>Celosia:</strong> $\sum M_A = 0$ para encontrar $P = 75$ N.</li>
+<li><strong>Barras:</strong> metodo de nudos en $D$ con la fuerza $T_D$ como carga exterior.</li>
+</ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: TIPO B -->
+<!-- ============================================ -->
+<div class="section" id="tipo-b">
+<h2>5. Tipo B: Catenaria + polea</h2>
+<p><strong>Patron general:</strong> Un cable pesado pasa por una polea. La polea cambia la <strong>direccion</strong> de la tension pero no su <strong>modulo</strong> (si no hay rozamiento). Esto genera un cambio de $H$ y $V$ entre tramos, creando dos catenarias con parametros distintos.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Identifica los tramos</span>
+<p>Separa el cable en tramos: catenaria curva, tramo vertical, tramo sobre suelo. Cada tramo tiene sus propias ecuaciones.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Tramo vertical primero</span>
+<p>Si hay un tramo vertical colgante (con o sin masa), calculalo primero:</p>
+$$T_{\text{polea}} = m\cdot g + q \cdot l_{\text{vertical}}$$
+<p>Esto te da la tension en la polea, que es el dato de partida para la catenaria.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Igualdad de tensiones en la polea</span>
+<p>En polea sin rozamiento: $|T_1| = |T_2|$. Pero las componentes $(H, V)$ cambian:</p>
+$$T_C^2 = H_1^2 + V_1^2 = H_2^2 + V_2^2$$
+<p>Con el angulo de giro en la polea puedes relacionar las componentes de ambos lados.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Parametros de cada tramo</span>
+$$c_1 = \frac{H_1}{q}, \qquad c_2 = \frac{H_2}{q}$$
+<p>Cada tramo tiene su propio parametro porque $H$ cambia en la polea.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 5 &mdash; Fuerza de enlace de la polea</span>
+$$\vec{R}_{\text{polea}} = \vec{T}_{\text{lado 1}} + \vec{T}_{\text{lado 2}}$$
+<p>Si las dos tensiones son iguales y perpendiculares (giro 90 grados): $R = T\sqrt{2}$.</p>
+</div>
+
+<h3>Ejemplo concreto: Ejercicio 5.10</h3>
+<p>Cable ligero $AB$ + cable pesado $BCD$ con polea en $C$ y tramo vertical $CD = 13$ m.</p>
+<ol>
+<li><strong>Tramo vertical $CD$:</strong> $T_{CD} = q \cdot 13 = 130$ N.</li>
+<li><strong>Catenaria $BC$ simetrica:</strong> arco mitad = 12 m, $V_C = q \cdot 12 = 120$ N.</li>
+<li><strong>Igualdad en polea:</strong> $T_C = 130$ N &rarr; $H = \sqrt{130^2 - 120^2} = 50$ N.</li>
+<li><strong>Anilla en $B$:</strong> sin rozamiento &rarr; $H_{AB} = H_{BCD} = 50$ N.</li>
+<li><strong>Cable ligero:</strong> carga triangular, $Hy'' = p(x)$, integramos con condiciones de contorno.</li>
+</ol>
+
+<h3>Ejemplo concreto: Ejercicio 5.15</h3>
+<p>Cable $ABCD$ con tramo $AB$ sobre suelo, catenaria $BC$, tramo vertical $CD$ con masa $2M$.</p>
+<ol>
+<li><strong>$T_C$:</strong> $T_D = 2Mg$, tramo $CD$ de longitud $L$ &rarr; $T_C = 2Mg + Mg = 3Mg$.</li>
+<li><strong>Ecuaciones:</strong> $s_{AB} + s_{BC} = 6L$; rozamiento: $s_{AB} = 2H/q$; catenaria: $T_C^2 = H^2 + (qs_{BC})^2$.</li>
+<li><strong>Resolver:</strong> ecuacion cuadratica en $x = H/(Mg)$ &rarr; $x = 9/5$.</li>
+<li><strong>Resultados:</strong> $c = 9L/5$, $s_{BC} = 12L/5$.</li>
+</ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: TIPO C -->
+<!-- ============================================ -->
+<div class="section" id="tipo-c">
+<h2>6. Tipo C: Cable parabolico combinado</h2>
+<p>A veces el examen mezcla un cable ligero (parabolico) con una catenaria. La clave es tratar cada uno por separado y unirlos en el punto de conexion.</p>
+
+<h3>Receta para el cable parabolico</h3>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Identifica la ley de carga $p(x)$:</strong> uniforme ($p_0$), triangular ($p_B x / L$), cuadratica ($a + bx^2$)...</li>
+<li><strong>Integra la ecuacion diferencial</strong> $Hy'' = p(x)$ dos veces. Esto te da $y(x)$ con 2 constantes.</li>
+<li><strong>Aplica condiciones de contorno:</strong>
+  <ul>
+    <li>Posicion de los apoyos: $y(0) = 0$, $y(L) = \Delta h$</li>
+    <li>Pendiente en un punto: $y'(x_0) = \tan\theta_0$</li>
+    <li>Punto mas bajo: $y'(x_{\min}) = 0$</li>
+  </ul>
+</li>
+<li><strong>Resuelve las constantes.</strong></li>
+</ol>
+</div>
+
+<div class="warning"><strong>No confundas:</strong> En el cable parabolico, $H$ no se calcula con $H = qc$ (eso es catenaria). Se calcula desde el equilibrio global: momentos respecto a un apoyo, o desde el angulo de la tangente en un extremo ($V = H\tan\theta$).</div>
+
+<h3>Ejemplo: Ejercicio 5.10, cable $AB$</h3>
+<p>Carga triangular: $p(x) = \frac{2}{3}x$, $H = 50$ N (del cable pesado adyacente).</p>
+$$y'' = \frac{x}{75}\quad\Rightarrow\quad y' = \frac{x^2}{150} + C_1 \quad\Rightarrow\quad y = \frac{x^3}{450} + C_1 x$$
+<p>Con $y(0) = 0$, $y(15) = 0$: &rarr; $C_1 = -1/2$. Resultado: $y = \dfrac{x^3}{450} - \dfrac{x}{2}$.</p>
+<p>Verificacion: $y'(15) = 225/150 - 1/2 = 1 = \tan 45^\circ$ &check;</p>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: TIPO D -->
+<!-- ============================================ -->
+<div class="section" id="tipo-d">
+<h2>7. Tipo D: Cable con cargas concentradas</h2>
+<p>El mas sencillo de los cuatro tipos, pero requiere cuidado con los signos de las pendientes.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Fija coordenadas</strong> de todos los nudos (incluyendo apoyos).</li>
+<li><strong>Calcula las pendientes</strong> de cada tramo: $m_i = \Delta y_i / \Delta x_i$.</li>
+<li><strong>Escribe el equilibrio</strong> ($\sum F_x = 0$, $\sum F_y = 0$) en cada nudo. Cada nudo da 2 ecuaciones.</li>
+<li><strong>Si todas las cargas son verticales:</strong> $H = $ constante en todo el cable. Empieza por el nudo donde puedas despejar $H$ directamente.</li>
+<li><strong>Tension maxima:</strong> $T_{\max} = \sqrt{H^2 + V_{\max}^2}$, en el tramo de mayor pendiente.</li>
+</ol>
+</div>
+
+<h3>Ejemplo: Ejercicio 5.2</h3>
+<p>5 nudos ($A$, $B$, $C$, $D$, $E$), cargas verticales &rarr; $H$ constante. 3 ecuaciones de equilibrio vertical (en $B$, $C$, $D$) con 3 incognitas ($H$, $y_B$, $y_D$). Sustituir y resolver sistema lineal.</p>
+
+<div class="tip"><strong>Truco:</strong> Empieza siempre por el nudo donde conozcas mas datos geometricos (posicion conocida). En el 5.2, $C$ tiene $y_C = -5$ m (dato) &rarr; resuelve $H$ primero desde el equilibrio en $C$ combinado con $B$ y $D$.</div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 8: ERRORES -->
+<!-- ============================================ -->
+<div class="section" id="errores">
+<h2>8. Errores frecuentes y verificaciones</h2>
+
+<h3>Errores que cuestan puntos</h3>
+<table>
+<tr><th>Error</th><th>Consecuencia</th><th>Como evitarlo</th></tr>
+<tr><td>Confundir $y$ (directriz) con la altura real</td><td>Todos los calculos de $T = qy$ salen mal</td><td>Dibuja siempre la directriz. $y_{\text{vertice}} = c$, no cero.</td></tr>
+<tr><td>Medir el arco $s$ desde un punto que no es el vertice</td><td>$V = qs$ sale mal</td><td>$s$ siempre se mide <strong>desde el vertice</strong> (tangente horizontal).</td></tr>
+<tr><td>Asumir que $H$ no cambia en una polea</td><td>$H$ SI cambia (solo $|T|$ se conserva)</td><td>En la polea: $|T_1| = |T_2|$, pero $H_1 \neq H_2$ en general.</td></tr>
+<tr><td>Olvidar el peso del tramo vertical</td><td>$T$ en la polea sale menor de lo que es</td><td>$T_{\text{polea}} = mg + q \cdot l_{\text{tramo}}$ (incluye peso del cable).</td></tr>
+<tr><td>En cable sobre suelo: usar $f \cdot N = f \cdot mg$</td><td>Resultado incorrecto</td><td>La normal es el peso del cable: $N = q \cdot s_{\text{suelo}}$, no $mg$ del bloque.</td></tr>
+<tr><td>Signo de la pendiente en cargas concentradas</td><td>Ecuaciones con signos invertidos</td><td>Fija un criterio: $+y$ hacia arriba, pendiente $= \Delta y / \Delta x$.</td></tr>
+<tr><td>Usar $g = 9{,}81$ en vez de $9{,}8$ m/s$^2$</td><td>Resultado numerico distinto al oficial</td><td>En la UPV/EHU usamos siempre $g = 9{,}8$ m/s$^2$.</td></tr>
+</table>
+
+<h3>Verificaciones rapidas</h3>
+<div class="formula-box green">
+<div class="label green">Comprobaciones para no entregar errores</div>
+<ul>
+<li><strong>Pitagorica:</strong> $y^2 = c^2 + s^2$. Si no cuadra, tienes un error.</li>
+<li><strong>Tension:</strong> $T^2 = H^2 + V^2$. Compruebalo siempre.</li>
+<li><strong>Vertice:</strong> en el vertice $T = H = qc$ y $V = 0$. Si no se cumple, has confundido el vertice.</li>
+<li><strong>Equilibrio global:</strong> $\sum F_x = 0$ y $\sum F_y = 0$ para todo el sistema. Compruebalo al final.</li>
+<li><strong>Dimensiones:</strong> si $q$ tiene unidades de N/m y $c$ tiene unidades de m, entonces $H = qc$ tiene unidades de N. Compruebalo.</li>
+<li><strong>Cable parabolico:</strong> $y(0) = 0$, $y(L) = \Delta h$, $y'(x_{\min}) = 0$. Sustituye y verifica.</li>
+</ul>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 9: CHECKLIST -->
+<!-- ============================================ -->
+<div class="section" id="checklist">
+<h2>9. Checklist antes del examen</h2>
+
+<h3>Domina estas operaciones (sin pensar)</h3>
+<table>
+<tr><th>Operacion</th><th>Cuando se usa</th><th>Practica hasta que...</th></tr>
+<tr><td>$T = qy$, $H = qc$, $V = qs$</td><td>Todas las catenarias</td><td>Lo escribas automaticamente</td></tr>
+<tr><td>$y^2 = c^2 + s^2$</td><td>Pasar de arco a altura o viceversa</td><td>No necesites pensarlo</td></tr>
+<tr><td>DCL de un disco</td><td>Ejercicios con disco</td><td>Lo hagas en 30 segundos</td></tr>
+<tr><td>Momentos respecto al contacto con suelo</td><td>Discos con rozamiento</td><td>Elijas el punto correcto instintivamente</td></tr>
+<tr><td>Integrar $Hy'' = p(x)$</td><td>Cable parabolico</td><td>Lo hagas sin mirar apuntes</td></tr>
+</table>
+
+<h3>Ante un ejercicio de examen, preguntate:</h3>
+<div class="decision">
+<div class="q">1. El cable tiene peso propio?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; <strong>Catenaria</strong> (Modelo 3). Usa $T=qy$, $H=qc$, $V=qs$.</div>
+<div class="branch"><span class="label no">NO</span> &rarr; Cable ligero. Pregunta 2.</div>
+</div>
+
+<div class="decision">
+<div class="q">2. Tiene carga distribuida o cargas puntuales?</div>
+<div class="branch"><span class="label">Distribuida</span> &rarr; <strong>Parabolico</strong> (Modelo 2). Integra $Hy'' = p(x)$.</div>
+<div class="branch"><span class="label">Puntuales</span> &rarr; <strong>Cargas concentradas</strong> (Modelo 1). Equilibrio por nudos.</div>
+</div>
+
+<div class="decision">
+<div class="q">3. Hay polea?</div>
+<div class="branch"><span class="label yes">SI (sin rozamiento)</span> &rarr; $|T_1| = |T_2|$ en la polea, pero $H$ cambia. Dos parametros $c_1$, $c_2$.</div>
+<div class="branch"><span class="label no">NO</span> &rarr; $H$ constante en todo el cable (si cargas verticales).</div>
+</div>
+
+<div class="decision">
+<div class="q">4. Donde esta el vertice?</div>
+<div class="branch"><span class="label">"Tangente horizontal en $X$"</span> &rarr; vertice en $X$. Empieza a medir $s$ desde ahi.</div>
+<div class="branch"><span class="label">No lo dice explicitamente</span> &rarr; Buscalo: el punto mas bajo, o el punto de union con una anilla sin rozamiento.</div>
+</div>
+
+<div class="decision">
+<div class="q">5. Hay tramo sobre suelo?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; $f \cdot q \cdot s_{\text{suelo}} = H$. Expresa $s_{\text{suelo}}$ en funcion de $H$ y resuelve.</div>
+</div>
+
+<h3>Estrategia general para el examen</h3>
+<div class="step">
+<span class="step-num gold">ORDEN RECOMENDADO</span>
+<ol>
+<li>Lee el enunciado y <strong>dibuja el DCL</strong> de cada cuerpo (cable, disco, barra, celosia).</li>
+<li><strong>Identifica el tipo de cable</strong> (catenaria, parabolico, cargas concentradas).</li>
+<li><strong>Encuentra $H$</strong> &mdash; casi todo depende de la tension horizontal. Normalmente sale del DCL de la estructura.</li>
+<li><strong>Calcula $c$, $s$, $T$</strong> desde $H$ con las formulas de catenaria.</li>
+<li><strong>Vuelve a la estructura</strong> para las preguntas de fuerzas, rozamiento, etc.</li>
+<li><strong>Verifica</strong>: $T^2 = H^2 + V^2$, $y^2 = c^2 + s^2$, equilibrio global.</li>
+</ol>
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">Manual Tema 5 &middot; Mecanica Aplicada &middot; UPV/EHU &middot; 2025&ndash;26</div>
+
+</body>
+</html>

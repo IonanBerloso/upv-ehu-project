@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual T4 - Rozamiento | Mecánica Aplicada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.12);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--blue:#38bdf8;--orange:#fb923c;--red:#ef4444;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;--radius-sm:6px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+
+.container{max-width:860px;margin:0 auto;padding:20px 24px 80px}
+
+/* Header */
+.manual-header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border2);margin-bottom:32px}
+.manual-header h1{font-size:1.8em;font-weight:700;color:var(--gold);margin-bottom:6px}
+.manual-header .subtitle{color:var(--text2);font-size:.95em}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--text3);font-size:.85em}
+.back-link:hover{color:var(--accent)}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}
+.toc h2{font-size:1.05em;color:var(--gold);margin-bottom:10px;font-weight:600}
+.toc ol{padding-left:20px}
+.toc li{margin:4px 0;color:var(--text2);font-size:.9em}
+.toc a{color:var(--text)}
+
+/* Sections */
+.section{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section h2{font-size:1.35em;font-weight:700;color:var(--accent);margin-bottom:14px;padding-top:8px}
+.section h3{font-size:1.1em;font-weight:600;color:var(--gold);margin:20px 0 10px}
+.section h4{font-size:1em;font-weight:600;color:var(--blue);margin:16px 0 8px}
+
+/* Formula boxes */
+.formula-box{background:rgba(192,132,252,.06);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:14px 18px;margin:12px 0}
+.formula-box.gold{background:var(--gold-dim);border-color:var(--gold-border)}
+.formula-box.blue{background:rgba(56,189,248,.06);border-color:rgba(56,189,248,.28)}
+.formula-box.green{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.28)}
+.formula-box .label{font-size:.8em;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.formula-box .label.purple{color:var(--accent)}
+.formula-box .label.gold{color:var(--gold)}
+.formula-box .label.blue{color:var(--blue)}
+.formula-box .label.green{color:var(--green)}
+
+/* Warning/tip boxes */
+.tip{background:rgba(16,185,129,.06);border-left:3px solid var(--green);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.warning{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.danger{background:rgba(239,68,68,.06);border-left:3px solid var(--red);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.step-num{display:inline-block;background:var(--accent);color:#000;font-weight:700;font-size:.75em;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+.step-num.gold{background:var(--gold)}
+
+/* Decision tree */
+.decision{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.decision .q{font-weight:600;color:var(--orange);margin-bottom:8px}
+.decision .branch{padding-left:16px;border-left:2px solid var(--border2);margin:6px 0}
+.decision .branch .label{font-weight:600;font-size:.85em}
+.decision .branch .yes{color:var(--green)}
+.decision .branch .no{color:var(--red)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}
+th,td{padding:8px 12px;border:1px solid var(--border2);text-align:left}
+th{background:var(--surface2);color:var(--gold);font-weight:600;font-size:.85em}
+td{color:var(--text)}
+
+/* Exercise type cards */
+.ex-type{background:var(--surface);border:1px solid var(--gold-border);border-radius:var(--radius);padding:16px 20px;margin:12px 0}
+.ex-type .tag{display:inline-block;background:var(--gold-dim);color:var(--gold);font-weight:600;font-size:.75em;padding:2px 10px;border-radius:10px;margin-bottom:8px}
+
+p{margin:6px 0}
+ul,ol{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+strong{color:var(--text)}
+code{font-family:var(--ff-mono);background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:.88em}
+
+.footer{text-align:center;padding:24px;color:var(--text3);font-size:.8em;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="tema4.html" class="back-link">&larr; Volver a ejercicios Tema 4</a>
+
+<div class="manual-header">
+  <h1>Manual de Ejercicios de Examen</h1>
+  <div class="subtitle">Tema 4 &mdash; Rozamiento &middot; Mecanica Aplicada UPV/EHU</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#herramientas">Las 7 herramientas que necesitas</a></li>
+    <li><a href="#tipos">Los 4 tipos de ejercicio de examen</a></li>
+    <li><a href="#tipo-a">Tipo A: Rango de equilibrio &mdash; doble condicion de rozamiento (4.11, 4.12, 4.13, 4.17)</a></li>
+    <li><a href="#tipo-b">Tipo B: Deslizamiento vs. vuelco (4.1, 4.16)</a></li>
+    <li><a href="#tipo-c">Tipo C: Discos con multiples contactos &mdash; rodadura y deslizamiento (4.14, 4.15, 4.18, 4.20, 4.21, 4.22)</a></li>
+    <li><a href="#tipo-d">Tipo D: Sistemas multicomponente con muelle y deslizadera (4.19)</a></li>
+    <li><a href="#resumen">Checklist final antes del examen</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: HERRAMIENTAS -->
+<!-- ============================================ -->
+<div class="section" id="herramientas">
+<h2>1. Las 7 herramientas que necesitas</h2>
+<p>Todo ejercicio de examen del Tema 4 se resuelve combinando estas herramientas. Si las dominas, puedes con cualquier problema de rozamiento.</p>
+
+<h3>H1. Ley de Coulomb (rozamiento seco)</h3>
+<p>Es la base de todo. Relaciona la fuerza de rozamiento con la normal y el coeficiente de friccion:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Ley de Coulomb &mdash; la formula fundamental del tema</div>
+$$F_r \leq \mu \cdot N$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px"><strong>En el limite de equilibrio</strong> (deslizamiento inminente): $F_r = \mu \cdot N$. Mientras haya equilibrio estricto: $F_r < \mu \cdot N$.</p>
+</div>
+
+<div class="warning"><strong>Atencion al sentido:</strong> La fuerza de rozamiento <strong>siempre se opone</strong> al movimiento inminente. Antes de escribir ecuaciones, decide <strong>hacia donde tiende a moverse</strong> el solido y pon $F_r$ en sentido contrario.</div>
+
+<h3>H2. Diagrama de solido libre (DSL)</h3>
+<p>En cada contacto aparecen <strong>dos fuerzas</strong>: la normal $N$ (perpendicular a la superficie) y el rozamiento $F_r$ (tangente a la superficie). Aisla cada solido por separado y dibuja TODAS las fuerzas antes de escribir nada.</p>
+
+<div class="tip"><strong>Regla de oro:</strong> Cada superficie de contacto genera un par $(N, F_r)$. Si un disco toca dos superficies, tienes 4 incognitas de contacto (dos normales y dos fricciones). El DSL es obligatorio para no perderte.</div>
+
+<h3>H3. Ecuaciones de equilibrio (2D)</h3>
+<p>Para cada solido aislado:</p>
+
+<div class="formula-box">
+<div class="label purple">Equilibrio en 2D</div>
+$$\sum F_x = 0, \qquad \sum F_y = 0, \qquad \sum M_P = 0$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Elige bien el punto $P$ para momentos: si tomas momentos respecto a un punto donde hay fuerzas desconocidas que no te interesan, esas fuerzas desaparecen de la ecuacion.</p>
+</div>
+
+<h3>H4. Doble condicion de rozamiento (rango de equilibrio)</h3>
+<p>En muchos ejercicios de examen, la perdida del equilibrio puede ocurrir en <strong>dos sentidos opuestos</strong>. Esto genera un <strong>rango</strong> de valores admisibles:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Doble sentido &mdash; patron clave de examen</div>
+<p><strong>Caso 1:</strong> Deslizamiento inminente hacia la derecha &rarr; $F_r = +\mu N$ (hacia la izquierda)</p>
+<p><strong>Caso 2:</strong> Deslizamiento inminente hacia la izquierda &rarr; $F_r = -\mu N$ (hacia la derecha)</p>
+<p style="margin-top:8px">Cada caso da un limite (minimo o maximo) de la fuerza o par incognita. La respuesta es un <strong>intervalo</strong>: $P_{\min} \leq P \leq P_{\max}$.</p>
+</div>
+
+<div class="danger"><strong>Error clasico:</strong> Resolver solo un sentido y dar un unico valor. En examen, si el enunciado dice "rango" o "entre que valores", HAY que resolver dos veces.</div>
+
+<h3>H5. Condicion de vuelco</h3>
+<p>Cuando el solido tiene dimensiones no despreciables (bloque, prismático), ademas del deslizamiento puede <strong>volcar</strong> alrededor de una arista:</p>
+
+<div class="formula-box blue">
+<div class="label blue">Condicion de vuelco</div>
+$$\sum M_{\text{borde}} = 0$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">El borde de vuelco es la arista alrededor de la cual pivota el solido al despegar. En el instante del vuelco, la reaccion normal se concentra en ese punto (el resto de la base pierde contacto).</p>
+</div>
+
+<p>Tras calcular $Q_{\text{desliz}}$ y $Q_{\text{vuelco}}$, la condicion critica es la que necesita <strong>menor fuerza</strong>.</p>
+
+<h3>H6. Equilibrio de discos: momentos respecto al centro</h3>
+<p>Para un disco con contactos en su periferia:</p>
+
+<div class="formula-box">
+<div class="label purple">Momento en el centro del disco</div>
+$$\sum M_C = 0: \quad \text{solo las fuerzas tangentes (fricciones) generan momento}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Las normales pasan por el centro $\Rightarrow$ brazo nulo $\Rightarrow$ no contribuyen al momento. Esto simplifica enormemente las ecuaciones.</p>
+</div>
+
+<div class="tip"><strong>Consecuencia practica:</strong> En un disco con dos contactos, $\sum M_C = 0$ te da directamente que las dos fricciones son iguales (mismo brazo $R$, sentidos opuestos): $F_{r,1} = F_{r,2}$. Esto aparece en los ejercicios 4.17, 4.20, 4.21.</div>
+
+<h3>H7. Resistencia a la rodadura</h3>
+<p>Cuando un disco rueda sin deslizar, la condicion NO es $F_r = \mu N$. En su lugar:</p>
+
+<div class="formula-box">
+<div class="label purple">Resistencia a la rodadura</div>
+$$\mu_r \cdot N \geq |M_{\text{neto}}|$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">donde $\mu_r$ es el coeficiente de resistencia a la rodadura (tiene unidades de longitud, a diferencia de $\mu$). Si te dan $\mu_r/R$, ese cociente es adimensional.</p>
+</div>
+
+<p>Para verificar si primero hay rodadura o deslizamiento: calcula el $\mu$ necesario para que no deslice ($\mu_{\text{nec}} = F_r/N$) y comparalo con el $\mu$ real.</p>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: TIPOS -->
+<!-- ============================================ -->
+<div class="section" id="tipos">
+<h2>2. Los 4 tipos de ejercicio de examen</h2>
+<p>Los ejercicios de examen (4.11&ndash;4.22) encajan en estos patrones:</p>
+
+<div class="ex-type">
+<span class="tag">TIPO A &mdash; El mas frecuente en examen</span>
+<h4>Rango de equilibrio: doble condicion de rozamiento</h4>
+<p><strong>Ejercicios:</strong> 4.11, 4.12, 4.13, 4.17</p>
+<p><strong>Patron:</strong> Te dan un sistema articulado con rozamiento en un contacto. Piden entre que valores de una fuerza/par hay equilibrio.</p>
+<p><strong>Clave:</strong> Resolver DOS veces (sentido + y sentido &minus;). El resultado es un intervalo $[P_{\min},\, P_{\max}]$.</p>
+<p><strong>Herramientas:</strong> H1 (Coulomb) + H3 (equilibrio) + H4 (doble condicion)</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO B</span>
+<h4>Deslizamiento vs. vuelco de un bloque</h4>
+<p><strong>Ejercicios:</strong> 4.1, 4.2, 4.16</p>
+<p><strong>Patron:</strong> Bloque de dimensiones no despreciables. Se calculan las fuerzas de deslizamiento y de vuelco por separado.</p>
+<p><strong>Clave:</strong> Calcular ambas fuerzas criticas; la menor gobierna.</p>
+<p><strong>Herramientas:</strong> H1 (Coulomb) + H3 (equilibrio) + H5 (vuelco)</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO C &mdash; Los mas complejos</span>
+<h4>Discos con multiples contactos + barras + muelles</h4>
+<p><strong>Ejercicios:</strong> 4.14, 4.15, 4.18, 4.20, 4.21, 4.22</p>
+<p><strong>Patron:</strong> Disco(s) con 2+ puntos de contacto, barras articuladas, muelles. Se pide $\mu_{\min}$, constante $k$, fuerzas de contacto.</p>
+<p><strong>Clave:</strong> $\sum M_{\text{centro disco}} = 0$ iguala las fricciones. Despues, identificar que contacto "rompe" primero.</p>
+<p><strong>Herramientas:</strong> H1 + H2 + H3 + H6 (momento en centro del disco)</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO D</span>
+<h4>Sistemas multicomponente (celosia + solido + deslizadera + muelle)</h4>
+<p><strong>Ejercicios:</strong> 4.19</p>
+<p><strong>Patron:</strong> Combinacion de Tema 3 (equilibrio y celosias) con rozamiento. La deslizadera tiene $\mu$; el muelle tiene $k$ desconocida.</p>
+<p><strong>Clave:</strong> Es basicamente un ejercicio de Tema 3 con rozamiento anadido en un apoyo.</p>
+<p><strong>Herramientas:</strong> H1 + H3 + H4 + metodo de nudos (Tema 3)</p>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: TIPO A -->
+<!-- ============================================ -->
+<div class="section" id="tipo-a">
+<h2>3. Tipo A: Rango de equilibrio (doble condicion)</h2>
+<p><strong>Patron:</strong> Sistema de barras/discos articulados con rozamiento en un punto de contacto. Te piden $P_{\min}$ y $P_{\max}$.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Geometria</span>
+<p>Calcula las coordenadas de todos los puntos (articulaciones, centros de gravedad, puntos de contacto). Usa trigonometria basica. Los angulos tipicos son 30&deg;, 45&deg;, 60&deg;.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; DSL de cada solido</span>
+<p>Para cada solido aislado dibuja: peso en el CG, reacciones en articulaciones (dos componentes), normal + rozamiento en cada contacto rugoso. En el limite de equilibrio: $F_r = \pm f \cdot N$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Ecuacion global ($\sum M$ respecto al pivot fijo)</span>
+<p>Sumando momentos del <strong>sistema completo</strong> respecto al apoyo fijo, eliminas las reacciones internas y la reaccion en el pivot. Obtienes $N_{\text{contacto}}$ en funcion de $P$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Ecuacion del solido con rozamiento</span>
+<p>Aisla el solido que tiene el contacto rugoso. Usa $\sum M_A = 0$ respecto a una articulacion para eliminar la reaccion ahi. Sustituye $F_r = +fN$ (caso 1) o $F_r = -fN$ (caso 2).</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 5 &mdash; Resolver el sistema dos veces</span>
+<p>Combina las ecuaciones de los pasos 3 y 4. Resuelve para $P$ en cada caso. Obtienes el intervalo $[P_{\min}, P_{\max}]$.</p>
+</div>
+
+<h3>Ejemplo concreto: Ejercicio 4.11</h3>
+<p>Dos barras $OA$-$AB$ en V invertida, angulo 45&deg;, rozamiento $f$ en $B$. Par $P$ en el centro de $AB$.</p>
+
+<p><strong>Paso 3 (global):</strong> $\sum M_O = 0$ para el sistema completo:</p>
+$$N_B = mg \mp \frac{P}{2L\sqrt{2}}$$
+
+<p><strong>Paso 4 (barra AB):</strong> $\sum M_A = 0$ con $F_B = \pm f N_B$:</p>
+$$N_B(1 \pm f) = \frac{mg}{2} \mp \frac{P}{L\sqrt{2}}$$
+
+<p><strong>Paso 5:</strong> Combinando ambas ecuaciones:</p>
+$$P_{\min} = mgL\sqrt{2}\,\frac{1-2f}{1+f}, \qquad P_{\max} = mgL\sqrt{2}\,\frac{1+2f}{1-f}$$
+
+<div class="tip"><strong>Patron a reconocer:</strong> Los ejercicios 4.12, 4.13 y 4.17 siguen exactamente el mismo esquema. Solo cambia la geometria y que solido es el que tiene rozamiento.</div>
+
+<h3>Diagrama de decision &mdash; Tipo A</h3>
+<div class="decision">
+<div class="q">El enunciado dice "entre que valores" o "rango"?</div>
+<div class="branch">
+  <span class="label yes">SI &rarr;</span> Hay que resolver <strong>DOS veces</strong> (sentidos opuestos del rozamiento)
+  <div class="branch" style="margin-top:8px">
+    <span class="label">Paso 1 &rarr;</span> $\sum M$ global respecto al pivot fijo &rarr; $N$ en funcion de $P$
+    <div class="branch" style="margin-top:8px">
+      <span class="label">Paso 2 &rarr;</span> $\sum M$ del solido con friccion respecto a articulacion &rarr; imponer $F_r = \pm fN$
+      <div class="branch" style="margin-top:8px">
+        <span class="label">Resultado &rarr;</span> Intervalo $[P_{\min},\, P_{\max}]$
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: TIPO B -->
+<!-- ============================================ -->
+<div class="section" id="tipo-b">
+<h2>4. Tipo B: Deslizamiento vs. vuelco</h2>
+<p><strong>Patron:</strong> Bloque prismático de dimensiones conocidas (base $b$, altura $h$). Fuerza aplicada a cierta altura. Piden la fuerza critica.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Condicion de deslizamiento</span>
+<ol>
+<li>$\sum F_y = 0$: calcula la normal $N$ (normalmente $N = P + \text{componentes verticales}$)</li>
+<li>Impone $F_r = \mu N$</li>
+<li>$\sum F_x = 0$: despeja la fuerza aplicada $Q_{\text{desliz}}$</li>
+</ol>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Condicion de vuelco</span>
+<ol>
+<li>Identifica el borde de vuelco: la arista en la direccion del empuje</li>
+<li>$\sum M_{\text{borde}} = 0$: solo actuan fuerzas externas (peso, fuerza aplicada). La normal se concentra en el borde; el rozamiento no importa aqui.</li>
+<li>Despeja $Q_{\text{vuelco}}$</li>
+</ol>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Comparar</span>
+<p>Si $Q_{\text{vuelco}} < Q_{\text{desliz}}$: el bloque <strong>vuelca antes de deslizar</strong>.</p>
+<p>Si $Q_{\text{desliz}} < Q_{\text{vuelco}}$: el bloque <strong>desliza antes de volcar</strong>.</p>
+<p>La condicion critica es la de menor fuerza.</p>
+</div>
+
+<h3>Ejemplo concreto: Ejercicio 4.1</h3>
+<p>Bloque $1\,\text{m} \times 2\,\text{m}$, peso $P = 1000\,\text{kg}^*$, $\mu = 0{,}4$, fuerza $Q$ horizontal a $1{,}5\,\text{m}$.</p>
+
+<p><strong>Deslizamiento:</strong> $Q_{\text{desliz}} = \mu P = 0{,}4 \times 1000 = 400\,\text{kg}^*$</p>
+<p><strong>Vuelco:</strong> $Q_{\text{vuelco}} \cdot 1{,}5 = P \cdot 0{,}5 \Rightarrow Q_{\text{vuelco}} = 333\,\text{kg}^*$</p>
+<p><strong>Conclusion:</strong> $333 < 400$ &rarr; vuelca antes de deslizar.</p>
+
+<h3>Ejemplo avanzado: Ejercicio 4.16</h3>
+<p>La barra $ABC$ empuja un bloque de dimensiones $6a \times 8a$. Hay que calcular primero las fuerzas que la barra ejerce sobre el bloque (paso previo usando $\sum M_A = 0$ de la barra). Despues se aplican las condiciones de deslizamiento y vuelco <strong>al bloque</strong>:</p>
+$$P_{D,\text{desliz}} = \frac{297}{250}\,P, \qquad P_{D,\text{vuelco}} = \frac{441}{250}\,P$$
+<p>Aqui el peso minimo real es el <strong>mayor</strong> de los dos (porque el bloque necesita suficiente peso para no fallar por ninguno de los dos modos).</p>
+
+<div class="warning"><strong>Cuidado con la interpretacion:</strong> En el 4.1 la fuerza critica es el <strong>minimo</strong> (lo primero que ocurre). En el 4.16, como piden el peso minimo que <strong>sostenga</strong>, la respuesta es el <strong>maximo</strong> de las dos condiciones.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: TIPO C -->
+<!-- ============================================ -->
+<div class="section" id="tipo-c">
+<h2>5. Tipo C: Discos con multiples contactos</h2>
+<p><strong>Patron:</strong> Disco con 2+ puntos de contacto (plano inclinado + barra, pista circular, otro disco...). Barras articuladas y/o muelles. Piden $\mu_{\min}$, $k$ del muelle, fuerzas de contacto.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Barra: normal en el contacto con el disco</span>
+<p>Aisla la barra. Usa $\sum M_{\text{articulacion}} = 0$ para hallar la normal que el disco ejerce sobre la barra ($N_C$). Esta fuerza se transmite al disco por accion-reaccion.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Disco: $\sum M_{\text{centro}} = 0$</span>
+<p>Las normales pasan por el centro &rarr; brazo = 0. Solo las fricciones generan momento. Como ambas actuan a distancia $R$:</p>
+$$F_{r,1} \cdot R = F_{r,2} \cdot R \quad \Rightarrow \quad F_{r,1} = F_{r,2}$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Disco: equilibrio de fuerzas</span>
+<p>$\sum F_x = 0$ y $\sum F_y = 0$ del disco te dan las normales y las fricciones en funcion de los datos conocidos ($Mg$, $k$, etc.).</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Identificar el contacto critico</span>
+<p>Para cada contacto, calcula el rozamiento limite: $F_{r,\max} = \mu \cdot N$. El contacto que "rompe" primero es el que tiene menor margen:</p>
+$$\text{Contacto critico: el que tiene menor } \frac{F_{r,\max}}{F_{r,\text{real}}}$$
+<p>Impone $F_r = \mu N$ en ese contacto para obtener la condicion limite ($k_{\max}$, $\mu_{\min}$, etc.).</p>
+</div>
+
+<h3>Ejemplo concreto: Ejercicio 4.21</h3>
+<p>Barra + dos discos apilados + resorte. $f = 1/4$ en todos los contactos.</p>
+
+<p><strong>Paso 1 (barra):</strong> $\sum M_A = 0$ &rarr; $N_C = 4Mg/3$</p>
+<p><strong>Paso 2 (disco D):</strong> $\sum M_D = 0$ &rarr; $F_{r,C} = F_{r,E}$</p>
+<p><strong>Paso 3 (disco D):</strong> $\sum F_x = 0$ &rarr; $F_k = 2\,F_{r,C}$</p>
+<p><strong>Paso 4:</strong></p>
+<ul>
+<li>Contacto $C$: $F_{r,C} \leq (1/4)(4Mg/3) = Mg/3$</li>
+<li>Contacto $E$: $F_{r,E} \leq (1/4)(7Mg/3) = 7Mg/12$</li>
+</ul>
+<p>$Mg/3 < 7Mg/12$ &rarr; el contacto $C$ rompe primero. $F_k = 2 \cdot Mg/3$ &rarr; $k \leq 2Mg/(9R)$.</p>
+
+<h3>Rodadura vs. deslizamiento</h3>
+<p>Si el enunciado pregunta "primero rodadura o deslizamiento?", calcula:</p>
+
+<div class="formula-box blue">
+<div class="label blue">Criterio rodadura/deslizamiento</div>
+$$\mu_{\text{necesario}} = \frac{F_r}{N}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Si $\mu_{\text{necesario}} \leq \mu_{\text{real}}$: hay suficiente agarre &rarr; <strong>rueda</strong>. Si $\mu_{\text{necesario}} > \mu_{\text{real}}$: no hay agarre &rarr; <strong>desliza</strong>.</p>
+</div>
+
+<p>Ejemplo (ejercicio 4.22): $F_r/N = C_x/C_y = (3Mg/2)/(5Mg/2) = 3/5 = 0{,}6 > f = 1/2$ &rarr; <strong>desliza antes de rodar</strong>.</p>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: TIPO D -->
+<!-- ============================================ -->
+<div class="section" id="tipo-d">
+<h2>6. Tipo D: Sistemas multicomponente</h2>
+<p><strong>Patron:</strong> Ejercicio 4.19 es el ejemplo puro. Combina sólido rígido (cuadrado), bloque en guia con rozamiento, muelle y celosia.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Aislar el solido con deslizadera</span>
+<p>El triangulo/bloque en la guia tiene rozamiento. Su equilibrio da la reaccion que transmite al resto del sistema. Dos sentidos de deslizamiento &rarr; dos valores de $F_r$ &rarr; dos valores de $N_A$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Aislar el solido articulado (cuadrado)</span>
+<p>$\sum M_O = 0$ respecto al pivot fijo. Relaciona la fuerza del muelle ($k \cdot \delta$) con la reaccion $N_A$ del paso 1 y el peso propio.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Rango de $k$</span>
+<p>Cada sentido da un valor de $k$. El rango es $[k_{\min}, k_{\max}]$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Celosia (si la piden)</span>
+<p>Con las fuerzas externas ya determinadas, aplica el metodo de nudos del Tema 3 para encontrar las fuerzas en las barras internas.</p>
+</div>
+
+<div class="tip"><strong>Clave:</strong> Este tipo es un ejercicio de Tema 3 disfrazado. Lo unico nuevo es que la deslizadera tiene $\mu$, lo cual genera un rango en vez de un valor unico. Si dominas el Tema 3, aqui solo tienes que hacer todo dos veces.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: CHECKLIST -->
+<!-- ============================================ -->
+<div class="section" id="resumen">
+<h2>7. Checklist antes del examen</h2>
+
+<h3>Domina estas operaciones (sin pensar)</h3>
+<table>
+<tr><th>Operacion</th><th>Cuando se usa</th><th>Practica hasta que...</th></tr>
+<tr><td>DSL completo de un solido</td><td>SIEMPRE, es el primer paso</td><td>Dibujes todas las fuerzas sin olvidar ninguna</td></tr>
+<tr><td>$\sum M_P = 0$ eligiendo $P$ estrategico</td><td>Eliminar incognitas que no interesan</td><td>Elijas instintivamente el mejor punto</td></tr>
+<tr><td>$F_r = \pm \mu N$ en dos sentidos</td><td>Ejercicios de rango (Tipo A)</td><td>No te confundas de signo</td></tr>
+<tr><td>Accion-reaccion entre solidos</td><td>Transmitir fuerzas de un DSL a otro</td><td>Nunca inviertas el sentido</td></tr>
+<tr><td>$\sum M_{\text{centro disco}} = 0$</td><td>Discos con contactos (Tipo C)</td><td>Lo hagas automaticamente</td></tr>
+</table>
+
+<h3>Ante un ejercicio de examen, preguntate:</h3>
+<div class="decision">
+<div class="q">1. Hay un bloque de dimensiones no despreciables?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Evalua <strong>deslizamiento Y vuelco</strong> (Tipo B)</div>
+<div class="branch"><span class="label no">NO</span> &rarr; Sigue al punto 2</div>
+</div>
+
+<div class="decision">
+<div class="q">2. Me piden un RANGO de valores (intervalo)?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; <strong>Resuelve DOS veces</strong>, cambiando el sentido de $F_r$ (Tipo A o D)</div>
+<div class="branch"><span class="label no">NO</span> &rarr; Sigue al punto 3</div>
+</div>
+
+<div class="decision">
+<div class="q">3. Hay discos con 2+ puntos de contacto?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Usa $\sum M_{\text{centro}} = 0$ para igualar fricciones, identifica contacto critico (Tipo C)</div>
+<div class="branch"><span class="label no">NO</span> &rarr; Ejercicio basico: DSL + equilibrio + Coulomb</div>
+</div>
+
+<div class="decision">
+<div class="q">4. Hay muelle, celosia o deslizadera?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Recuerda que $F_{\text{muelle}} = k \cdot \delta$ y aplica el Tema 3 con rozamiento (Tipo D)</div>
+</div>
+
+<h3>Errores que cuestan puntos</h3>
+<table>
+<tr><th>Error</th><th>Consecuencia</th><th>Como evitarlo</th></tr>
+<tr><td>Olvidar un sentido del rozamiento</td><td>Te falta la mitad de la respuesta</td><td>Si piden "rango", resuelve siempre 2 veces</td></tr>
+<tr><td>Sentido incorrecto de $F_r$</td><td>Signo equivocado en todas las ecuaciones</td><td>Decide PRIMERO hacia donde tiende a moverse</td></tr>
+<tr><td>No hacer accion-reaccion</td><td>Fuerzas duplicadas o perdidas</td><td>Lo que A ejerce sobre B = &minus;lo que B sobre A</td></tr>
+<tr><td>Olvidar fuerzas en el DSL</td><td>Ecuaciones incompletas</td><td>Cuenta: cada contacto = 2 fuerzas (N + Fr)</td></tr>
+<tr><td>Confundir vuelco con deslizamiento</td><td>Formula equivocada</td><td>Vuelco = momentos respecto al borde. Desliz = fuerzas.</td></tr>
+<tr><td>Usar $g = 9{,}81$ en vez de $9{,}8$</td><td>Resultado numerico ligeramente distinto</td><td>En la UPV/EHU usamos $g = 9{,}8\,\text{m/s}^2$</td></tr>
+<tr><td>No identificar contacto critico en discos</td><td>Calculas $k$ o $\mu$ con el contacto equivocado</td><td>Calcula $F_{r,\max}/F_r$ en CADA contacto</td></tr>
+</table>
+
+<h3>Verificaciones rapidas</h3>
+<div class="formula-box green">
+<div class="label green">Comprobaciones para no entregar errores</div>
+<ul>
+<li><strong>Signo de $N$:</strong> La normal siempre debe salir <strong>positiva</strong> (apunta alejandose de la superficie). Si te sale negativa, el solido se ha despegado &rarr; hay un error.</li>
+<li><strong>Rango logico:</strong> $P_{\min} < P_{\max}$. Si $P_{\min} > P_{\max}$ no existe equilibrio (o hay un error de calculo).</li>
+<li><strong>$F_r \leq \mu N$:</strong> Despues de resolver, comprueba que el rozamiento calculado no supere el limite en ningun contacto donde NO impusiste la condicion limite.</li>
+<li><strong>Dimensiones:</strong> Si el resultado es un par, debe tener unidades de fuerza $\times$ longitud. Si es un coeficiente, debe ser adimensional.</li>
+<li><strong>Accion-reaccion:</strong> Verifica que las fuerzas entre dos solidos tienen la misma magnitud y sentidos opuestos.</li>
+</ul>
+</div>
+
+<h3>Mapa de ejercicios por tipo</h3>
+<table>
+<tr><th>Tipo</th><th>Ejercicios</th><th>Patron clave</th></tr>
+<tr><td>A (Rango)</td><td>4.11, 4.12, 4.13, 4.17</td><td>Doble condicion &rarr; intervalo</td></tr>
+<tr><td>B (Desliz/Vuelco)</td><td>4.1, 4.2, 4.16</td><td>Calcular ambos, comparar</td></tr>
+<tr><td>C (Discos)</td><td>4.14, 4.15, 4.18, 4.20, 4.21, 4.22</td><td>$\sum M_C = 0$ &rarr; fricciones iguales &rarr; contacto critico</td></tr>
+<tr><td>D (Multicomponente)</td><td>4.19</td><td>Tema 3 + rozamiento en deslizadera</td></tr>
+</table>
+
+</div>
+
+</div>
+
+<div class="footer">Manual Tema 4 &middot; Mecanica Aplicada &middot; UPV/EHU &middot; 2025&ndash;26</div>
+
+</body>
+</html>

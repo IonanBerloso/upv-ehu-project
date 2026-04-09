@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual T8 - Mov. Plano del S.R. | Mecanica Aplicada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.12);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--blue:#38bdf8;--orange:#fb923c;--red:#ef4444;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;--radius-sm:6px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+
+.container{max-width:860px;margin:0 auto;padding:20px 24px 80px}
+
+/* Header */
+.manual-header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border2);margin-bottom:32px}
+.manual-header h1{font-size:1.8em;font-weight:700;color:var(--gold);margin-bottom:6px}
+.manual-header .subtitle{color:var(--text2);font-size:.95em}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--text3);font-size:.85em}
+.back-link:hover{color:var(--accent)}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}
+.toc h2{font-size:1.05em;color:var(--gold);margin-bottom:10px;font-weight:600}
+.toc ol{padding-left:20px}
+.toc li{margin:4px 0;color:var(--text2);font-size:.9em}
+.toc a{color:var(--text)}
+
+/* Sections */
+.section{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section h2{font-size:1.35em;font-weight:700;color:var(--accent);margin-bottom:14px;padding-top:8px}
+.section h3{font-size:1.1em;font-weight:600;color:var(--gold);margin:20px 0 10px}
+.section h4{font-size:1em;font-weight:600;color:var(--blue);margin:16px 0 8px}
+
+/* Formula boxes */
+.formula-box{background:rgba(192,132,252,.06);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:14px 18px;margin:12px 0}
+.formula-box.gold{background:var(--gold-dim);border-color:var(--gold-border)}
+.formula-box.blue{background:rgba(56,189,248,.06);border-color:rgba(56,189,248,.28)}
+.formula-box.green{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.28)}
+.formula-box .label{font-size:.8em;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.formula-box .label.purple{color:var(--accent)}
+.formula-box .label.gold{color:var(--gold)}
+.formula-box .label.blue{color:var(--blue)}
+.formula-box .label.green{color:var(--green)}
+
+/* Warning/tip boxes */
+.tip{background:rgba(16,185,129,.06);border-left:3px solid var(--green);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.warning{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.danger{background:rgba(239,68,68,.06);border-left:3px solid var(--red);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.step-num{display:inline-block;background:var(--accent);color:#000;font-weight:700;font-size:.75em;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+.step-num.gold{background:var(--gold)}
+
+/* Decision tree */
+.decision{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.decision .q{font-weight:600;color:var(--orange);margin-bottom:8px}
+.decision .branch{padding-left:16px;border-left:2px solid var(--border2);margin:6px 0}
+.decision .branch .label{font-weight:600;font-size:.85em}
+.decision .branch .yes{color:var(--green)}
+.decision .branch .no{color:var(--red)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}
+th,td{padding:8px 12px;border:1px solid var(--border2);text-align:left}
+th{background:var(--surface2);color:var(--gold);font-weight:600;font-size:.85em}
+td{color:var(--text)}
+
+/* Exercise type cards */
+.ex-type{background:var(--surface);border:1px solid var(--gold-border);border-radius:var(--radius);padding:16px 20px;margin:12px 0}
+.ex-type .tag{display:inline-block;background:var(--gold-dim);color:var(--gold);font-weight:600;font-size:.75em;padding:2px 10px;border-radius:10px;margin-bottom:8px}
+
+p{margin:6px 0}
+ul,ol{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+strong{color:var(--text)}
+code{font-family:var(--ff-mono);background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:.88em}
+
+.footer{text-align:center;padding:24px;color:var(--text3);font-size:.8em;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="tema8.html" class="back-link">&larr; Volver a ejercicios Tema 8</a>
+
+<div class="manual-header">
+  <h1>Manual de Ejercicios de Examen</h1>
+  <div class="subtitle">Tema 8 &mdash; Movimiento Plano del Solido Rigido &middot; Mecanica Aplicada UPV/EHU</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#herramientas">Las 7 herramientas que necesitas</a></li>
+    <li><a href="#tipos">Los 4 tipos de ejercicio de examen</a></li>
+    <li><a href="#tipo-a">Tipo A: Mecanismos de barras articuladas (el clasico)</a></li>
+    <li><a href="#tipo-b">Tipo B: Rodadura sin deslizamiento</a></li>
+    <li><a href="#tipo-c">Tipo C: Deslizaderas y Coriolis</a></li>
+    <li><a href="#tipo-d">Tipo D: Biela-manivela y optimizacion</a></li>
+    <li><a href="#resumen">Checklist final antes del examen</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: HERRAMIENTAS -->
+<!-- ============================================ -->
+<div class="section" id="herramientas">
+<h2>1. Las 7 herramientas que necesitas</h2>
+<p>Todo ejercicio de examen del Tema 8 se resuelve combinando estas herramientas. Si las dominas, puedes con cualquier mecanismo plano.</p>
+
+<h3>H1. Ecuacion de velocidad del solido rigido</h3>
+<p>Es la ecuacion fundamental. Relaciona la velocidad de dos puntos del mismo solido rigido:</p>
+
+<div class="formula-box gold">
+<div class="label gold">La ecuacion mas usada del tema</div>
+$$\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Donde $A$ y $B$ son dos puntos del <strong>mismo solido rigido</strong>, $\vec{\omega}=\omega\,\vec{k}$ (en movimiento plano) y $\vec{r}_{AB}=\vec{r}_B - \vec{r}_A$.</p>
+</div>
+
+<div class="tip"><strong>Clave:</strong> En movimiento plano, $\vec{\omega}=\omega\,\vec{k}$ siempre apunta en $\vec{k}$ (perpendicular al plano). El producto vectorial $\vec{k}\times(a\,\vec{i}+b\,\vec{j}) = -b\,\vec{i}+a\,\vec{j}$ simplemente rota 90 grados el vector $\vec{r}$.</div>
+
+<div class="warning"><strong>Error tipico:</strong> Aplicar esta formula entre puntos de <strong>distintos</strong> solidos. Solo vale si A y B pertenecen al <strong>mismo</strong> cuerpo rigido.</div>
+
+<h3>H2. Ecuacion de aceleracion del solido rigido</h3>
+<p>La version para aceleraciones tiene un termino extra (la aceleracion centripeta):</p>
+
+<div class="formula-box">
+<div class="label purple">Aceleracion relativa en solido rigido</div>
+$$\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\,\vec{r}_{AB}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">$\vec{\alpha}=\alpha\,\vec{k}$ es la aceleracion angular. El termino $-\omega^2\,\vec{r}_{AB}$ es la <strong>aceleracion centripeta</strong>: siempre apunta de B hacia A.</p>
+</div>
+
+<div class="tip"><strong>Truco mental:</strong> El termino $\vec{\alpha}\times\vec{r}_{AB}$ es tangencial (perpendicular a $\vec{r}_{AB}$) y el termino $-\omega^2\,\vec{r}_{AB}$ es centripeto (paralelo a $\vec{r}_{AB}$, hacia A). Asi puedes dibujarlos mentalmente.</div>
+
+<h3>H3. Centro Instantaneo de Rotacion (EIR/CIR)</h3>
+<p>Es el punto del solido (o su extension) con velocidad nula en el instante considerado. Muy util para calcular $\omega$ de forma rapida:</p>
+
+<div class="formula-box blue">
+<div class="label blue">EIR &mdash; atajo para velocidades angulares</div>
+$$v_P = \omega \cdot d(P, \text{EIR})$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">$d(P, \text{EIR})$ es la distancia del punto $P$ al EIR. La velocidad de $P$ es <strong>perpendicular</strong> a la linea $P$-EIR.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">COMO ENCONTRAR EL EIR</span>
+<ol>
+<li>Toma dos puntos del solido cuyas velocidades conozcas (o al menos su <strong>direccion</strong>).</li>
+<li>Traza la perpendicular a cada velocidad por su punto de aplicacion.</li>
+<li>El cruce de ambas perpendiculares es el EIR.</li>
+</ol>
+</div>
+
+<p><strong>Caso especial:</strong> Si un punto del solido es fijo (apoyo fijo), ese punto <strong>es</strong> el EIR (porque su velocidad es cero). Ejemplo: la barra AB con A fijo &rarr; el EIR esta en A.</p>
+
+<div class="warning"><strong>Atencion:</strong> El EIR sirve <strong>solo para velocidades</strong>, no para aceleraciones. Para aceleraciones hay que usar H2.</div>
+
+<h3>H4. Condicion de rodadura sin deslizamiento</h3>
+<p>Cuando un cuerpo rueda sin deslizar sobre una superficie, la velocidad del punto de contacto es la misma vista desde ambos cuerpos:</p>
+
+<div class="formula-box">
+<div class="label purple">Rodadura pura</div>
+$$\vec{v}_{\text{contacto}}^{\text{cuerpo}} = \vec{v}_{\text{contacto}}^{\text{superficie}}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Si la superficie es fija: $\vec{v}_{\text{contacto}}=\vec{0}$, y el punto de contacto es el EIR del cuerpo que rueda.</p>
+</div>
+
+<p>Para el centro del disco/rueda de radio $R$:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Rodadura sobre superficie fija</div>
+$$v_{\text{centro}} = \omega \cdot R, \qquad a_{\text{centro,tangencial}} = \alpha \cdot R$$
+</div>
+
+<h3>H5. Aceleracion de Coriolis</h3>
+<p>Aparece cuando un punto <strong>desliza</strong> sobre un solido que <strong>gira</strong>. Es el termino que todo el mundo olvida:</p>
+
+<div class="formula-box">
+<div class="label purple">Coriolis &mdash; movimiento relativo</div>
+$$\vec{a}_{\text{Coriolis}} = 2\,\vec{\omega}\times\dot{\vec{r}}_{\text{rel}}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">$\dot{\vec{r}}_{\text{rel}}$ es la velocidad relativa del punto que desliza respecto al solido giratorio.</p>
+</div>
+
+<div class="danger"><strong>Error frecuente:</strong> Olvidar Coriolis cuando hay una deslizadera sobre una barra giratoria. Si un punto se mueve <strong>a lo largo de</strong> una barra que <strong>a la vez gira</strong>, la aceleracion de Coriolis NO es cero. Ejercicio 8.5 es un ejemplo clasico.</div>
+
+<h3>H6. Mecanismo de paralelogramo</h3>
+<p>Si dos barras iguales y paralelas sostienen un cuerpo, este tiene <strong>traslacion pura</strong>:</p>
+
+<div class="formula-box green">
+<div class="label green">Paralelogramo articulado</div>
+$$\omega_{\text{placa}} = 0, \qquad \alpha_{\text{placa}} = 0$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Todos los puntos de la placa tienen la misma velocidad y la misma aceleracion. No hay rotacion.</p>
+</div>
+
+<p><strong>Como reconocerlo:</strong> Barras AB y CD de la misma longitud, con A y C fijos, y $AC = BD$ (o $AC \parallel BD$ con $|AC|=|BD|$). Ejercicio 8.10.</p>
+
+<h3>H7. Igualacion de velocidades/aceleraciones en puntos compartidos</h3>
+<p>Cuando dos barras comparten un punto (pasador, articulacion), ese punto tiene la <strong>misma velocidad y aceleracion</strong> visto desde ambas barras:</p>
+
+<div class="formula-box">
+<div class="label purple">Punto compartido (pasador)</div>
+$$\vec{v}_P\big|_{\text{barra 1}} = \vec{v}_P\big|_{\text{barra 2}}$$
+$$\vec{a}_P\big|_{\text{barra 1}} = \vec{a}_P\big|_{\text{barra 2}}$$
+</div>
+
+<p>Esto genera un <strong>sistema de ecuaciones</strong>: escribes $\vec{v}_P$ de dos maneras distintas (una por cada barra) e igualas componente a componente. Suele dar 2 ecuaciones escalares con 2 incognitas ($\omega$ y alguna componente de velocidad).</p>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: TIPOS -->
+<!-- ============================================ -->
+<div class="section" id="tipos">
+<h2>2. Los 4 tipos de ejercicio de examen</h2>
+<p>Todos los ejercicios del Tema 8 encajan en uno de estos patrones:</p>
+
+<div class="ex-type">
+<span class="tag">TIPO A &mdash; El mas frecuente</span>
+<h4>Mecanismos de barras articuladas: hallar $\omega$ y $\alpha$ de cada barra</h4>
+<p><strong>Ejercicios:</strong> 8.1, 8.2, 8.3, 8.4, 8.6</p>
+<p><strong>Piden:</strong> velocidades angulares $\omega$ &rarr; aceleraciones angulares $\alpha$ &rarr; velocidades/aceleraciones de puntos</p>
+<p><strong>Herramientas:</strong> H1 (vel. solido rigido) + H3 (EIR) + H2 (acel. solido rigido) + H7 (puntos compartidos)</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO B</span>
+<h4>Mecanismos con rodadura sin deslizamiento</h4>
+<p><strong>Ejercicios:</strong> 8.7, 8.9</p>
+<p><strong>Piden:</strong> velocidades angulares de discos/ruedas y barras conectadas</p>
+<p><strong>Herramientas:</strong> H4 (rodadura) + H1 (vel. solido rigido) + H3 (EIR)</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO C</span>
+<h4>Deslizaderas con Coriolis</h4>
+<p><strong>Ejercicios:</strong> 8.5</p>
+<p><strong>Piden:</strong> velocidad y aceleracion de un punto que desliza sobre una barra giratoria</p>
+<p><strong>Herramientas:</strong> H5 (Coriolis) + H1 + H2</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO D</span>
+<h4>Biela-manivela y optimizacion (maximizar velocidad)</h4>
+<p><strong>Ejercicios:</strong> 8.8</p>
+<p><strong>Piden:</strong> expresion de posicion/velocidad del embolo, instante de velocidad maxima</p>
+<p><strong>Herramientas:</strong> Geometria + derivada + condicion $dv/d\theta = 0$</p>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: TIPO A -->
+<!-- ============================================ -->
+<div class="section" id="tipo-a">
+<h2>3. Tipo A: Mecanismos de barras articuladas</h2>
+<p><strong>Patron:</strong> Te dan un mecanismo con varias barras conectadas por pasadores. Una barra tiene $\omega$ conocido. Te piden $\omega$ y $\alpha$ de las demas barras y velocidades/aceleraciones de ciertos puntos.</p>
+
+<h3>Paso 1 &mdash; Identificar las barras y sus restricciones</h3>
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Numera las barras</strong> y marca los apoyos fijos (puntos con $\vec{v}=\vec{0}$).</li>
+<li><strong>Identifica los pasadores</strong>: puntos que comparten dos barras.</li>
+<li><strong>Anota las restricciones</strong>: guias horizontales/verticales, deslizaderas, rodaduras.</li>
+<li><strong>Identifica la cadena cinematica</strong>: empieza por la barra cuyo $\omega$ te dan y sigue por los pasadores.</li>
+</ol>
+</div>
+
+<h3>Paso 2 &mdash; Calcular velocidades (de barra en barra)</h3>
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Barra motora</strong> (la que conoces $\omega$): calcula la velocidad del pasador que conecta con la siguiente barra.
+$$\vec{v}_{\text{pasador}} = \vec{v}_{\text{apoyo fijo}} + \omega\,\vec{k}\times\vec{r}_{\text{apoyo}\to\text{pasador}}$$
+Si el apoyo es fijo: $\vec{v}_{\text{apoyo}}=\vec{0}$, asi que $\vec{v}_{\text{pasador}}=\omega\,\vec{k}\times\vec{r}$.</li>
+<li><strong>Siguiente barra:</strong> escribe la velocidad del otro extremo (o del siguiente pasador) usando H1 con $\omega$ desconocido de esta barra.</li>
+<li><strong>Aplica la restriccion</strong> del extremo: si esta en un apoyo fijo, $\vec{v}=\vec{0}$. Si esta en una guia, una componente es cero. Esto da $\omega$ de la barra.</li>
+<li><strong>Repite</strong> para cada barra de la cadena.</li>
+</ol>
+</div>
+
+<div class="tip"><strong>Atajo con el EIR (H3):</strong> Si puedes localizar graficamente el EIR de una barra, la velocidad angular es $\omega = v_P / d(P, \text{EIR})$. Es mas rapido que resolver un sistema vectorial. Los ejercicios 8.3 y 8.4 usan este metodo.</div>
+
+<p><strong>Ejemplo concreto (ejercicio 8.1):</strong></p>
+<p>Disco gira con $\omega_0$ (O fijo), barra AB vertical ($AB=R$), barra BC horizontal ($BC=2R$, C fijo).</p>
+<ul>
+<li>$\vec{v}_A = \omega_0\,\vec{k}\times R\,\vec{i} = \omega_0 R\,\vec{j}$ (hacia arriba)</li>
+<li>$\vec{v}_B = \vec{v}_A + \omega_1\,\vec{k}\times(-R\,\vec{j}) = \omega_0 R\,\vec{j} + \omega_1 R\,\vec{i}$</li>
+<li>Restriccion: B gira alrededor de C (fijo), luego $\vec{v}_B$ es perpendicular a BC (vertical). Componente horizontal = 0 &rarr; $\omega_1 R = 0$ &rarr; $\omega_1 = 0$.</li>
+<li>$\vec{v}_B = \omega_0 R\,\vec{j}$ &rarr; $\omega_2 = v_B / BC = \omega_0 R / 2R = \omega_0/2$.</li>
+</ul>
+
+<h3>Paso 3 &mdash; Calcular aceleraciones (de barra en barra)</h3>
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Barra motora:</strong> calcula la aceleracion del pasador.
+$$\vec{a}_{\text{pasador}} = -\omega^2\,\vec{r}_{\text{apoyo}\to\text{pasador}} + \alpha\,\vec{k}\times\vec{r}_{\text{apoyo}\to\text{pasador}}$$
+Si $\omega$ es constante ($\alpha=0$), solo queda la centripeta: $\vec{a}=-\omega^2\,\vec{r}$.</li>
+<li><strong>Siguiente barra:</strong> escribe $\vec{a}_B$ de dos maneras (a traves de cada barra a la que B pertenece).</li>
+<li><strong>Iguala</strong> componente a componente: obtienes 2 ecuaciones con 2 incognitas ($\alpha$ de cada barra).</li>
+</ol>
+</div>
+
+<p><strong>Ejemplo (ejercicio 8.1, continuacion):</strong></p>
+<ul>
+<li>$\vec{a}_A = -\omega_0^2 R\,\vec{i}$ (centripeta hacia O, pues $\alpha_0=0$)</li>
+<li>$\vec{a}_B$ via AB: $(\alpha_1 - \omega_0^2)R\,\vec{i}$ (con $\omega_1=0$)</li>
+<li>$\vec{a}_B$ via BC: $\frac{\omega_0^2 R}{2}\,\vec{i} - 2\alpha_2 R\,\vec{j}$ (con $\omega_2=\omega_0/2$)</li>
+<li>Igualando $\vec{i}$: $\alpha_1 - \omega_0^2 = \omega_0^2/2$ &rarr; $\alpha_1 = 3\omega_0^2/2$</li>
+<li>Igualando $\vec{j}$: $0 = -2\alpha_2 R$ &rarr; $\alpha_2 = 0$</li>
+</ul>
+
+<h3>Diagrama de decision &mdash; Tipo A</h3>
+<div class="decision">
+<div class="q">Mecanismo de barras articuladas con $\omega$ dato?</div>
+<div class="branch">
+  <span class="label yes">SI &rarr;</span> Calcula $\vec{v}$ del primer pasador desde la barra motora
+  <div class="branch" style="margin-top:8px">
+    <span class="label">Despues &rarr;</span> Escribe $\vec{v}$ del siguiente pasador con $\omega$ incognita + restriccion del extremo &rarr; <strong>despeja $\omega$</strong>
+    <div class="branch" style="margin-top:8px">
+      <span class="label">Despues &rarr;</span> Repite para aceleraciones: escribe $\vec{a}$ de dos maneras &rarr; <strong>despeja $\alpha$</strong>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: TIPO B -->
+<!-- ============================================ -->
+<div class="section" id="tipo-b">
+<h2>4. Tipo B: Rodadura sin deslizamiento</h2>
+<p>Aparecen discos o ruedas que ruedan sobre superficies fijas o sobre otras barras.</p>
+
+<h3>Caso B1: Rodadura sobre superficie fija (ej. 8.7)</h3>
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li>El punto de contacto tiene velocidad cero (es el EIR del disco).</li>
+<li>$v_{\text{centro}} = \omega \cdot R$ y $a_{\text{centro,tangencial}} = \alpha \cdot R$.</li>
+<li>La aceleracion del centro tiene componente centripeta $\omega^2 R$ (hacia el punto de contacto) + tangencial $\alpha R$ (a lo largo del movimiento).</li>
+</ol>
+</div>
+
+<p><strong>Ejemplo (ejercicio 8.7):</strong> El disco rueda sobre plano inclinado 30 grados. Con $v_C = 1{,}093$ m/s y $R_1 = 0{,}3$ m:</p>
+$$\omega_1 = \frac{v_C}{R_1} = \frac{1{,}093}{0{,}3} = 3{,}64 \text{ rad/s}$$
+
+<h3>Caso B2: Rodadura sobre otra barra (ej. 8.9)</h3>
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li>El punto de contacto E tiene la <strong>misma velocidad</strong> visto desde el disco y desde la barra.</li>
+<li>Escribe $\vec{v}_E$ a traves del disco: $\vec{v}_E = \vec{v}_{\text{centro}} + \omega_{\text{disco}}\,\vec{k}\times\vec{r}_{\text{centro}\to E}$</li>
+<li>Escribe $\vec{v}_E$ a traves de la barra: $\vec{v}_E = \vec{v}_B + \omega_{\text{barra}}\,\vec{k}\times\vec{r}_{B\to E}$</li>
+<li>Iguala ambas expresiones &rarr; sistema para $\omega_{\text{disco}}$ y $\omega_{\text{barra}}$.</li>
+</ol>
+</div>
+
+<div class="warning"><strong>Diferencia clave:</strong> En rodadura sobre superficie fija, $\vec{v}_{\text{contacto}}=\vec{0}$. En rodadura sobre barra movil, $\vec{v}_{\text{contacto}} \ne \vec{0}$ (la barra tambien se mueve). Hay que igualar, no poner a cero.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: TIPO C -->
+<!-- ============================================ -->
+<div class="section" id="tipo-c">
+<h2>5. Tipo C: Deslizaderas con Coriolis</h2>
+<p>Estos ejercicios tienen un punto que desliza a lo largo de una barra que a su vez gira. Es el caso del ejercicio 8.5.</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Identifica</strong> el punto que desliza (D en el 8.5) y la barra sobre la que desliza (AD).</li>
+<li><strong>Velocidad:</strong> La velocidad de D tiene dos componentes:
+  <ul>
+    <li>Componente perpendicular a AD: debida a la rotacion de AD &rarr; $\omega_{AD}\cdot r_{AD}$</li>
+    <li>Componente a lo largo de AD: debida al deslizamiento &rarr; $\dot{r}_{rel}$</li>
+  </ul>
+</li>
+<li><strong>Aceleracion completa</strong> (con Coriolis):
+$$\vec{a}_D = \underbrace{-\omega^2\,\vec{r}_{AD}}_{\text{centripeta}} + \underbrace{\alpha\,\vec{k}\times\vec{r}_{AD}}_{\text{tangencial}} + \underbrace{\ddot{r}_{rel}\,\hat{e}_{AD}}_{\text{relativa}} + \underbrace{2\,\vec{\omega}\times\dot{\vec{r}}_{rel}}_{\text{Coriolis}}$$
+</li>
+<li><strong>Iguala</strong> con la aceleracion de D vista desde la otra barra a la que pertenece &rarr; despeja $\alpha$ y las demas incognitas.</li>
+</ol>
+</div>
+
+<div class="danger"><strong>El error que mas puntos cuesta:</strong> Olvidar el termino de Coriolis $2\,\vec{\omega}\times\dot{\vec{r}}_{rel}$. Es perpendicular a $\dot{\vec{r}}_{rel}$ y tiene sentido fisico: una particula que se aleja del centro de rotacion experimenta una fuerza lateral.</div>
+
+<div class="tip"><strong>Truco para la direccion de Coriolis:</strong> $2\,\omega\,\vec{k}\times\dot{r}\,\hat{e}_{AD}$ rota el vector $\dot{\vec{r}}_{rel}$ en 90 grados en el sentido de $\omega$. Si $\omega>0$ (antihorario) y el punto se aleja, Coriolis va a la izquierda de la direccion de alejamiento.</div>
+
+<p><strong>Ejemplo (ejercicio 8.5):</strong> D desliza sobre la barra AD que gira alrededor de A. La velocidad de deslizamiento es $\dot{r}_{rel}$ a lo largo de AD, y la aceleracion de Coriolis es $2\omega_{AD}\dot{r}_{rel}$ perpendicular a AD. El resultado da $a_D = 16{,}16$ m/s$^2$.</p>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: TIPO D -->
+<!-- ============================================ -->
+<div class="section" id="tipo-d">
+<h2>6. Tipo D: Biela-manivela y optimizacion</h2>
+<p>El mecanismo biela-manivela convierte rotacion en traslacion (pistones, compresores). El ejercicio 8.8 pide el instante de velocidad maxima del embolo.</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Posicion del embolo</strong> en funcion del angulo $\theta = \omega t$:
+$$x(\theta) = r\cos\theta + \sqrt{L^2 - r^2\sin^2\theta}$$
+donde $r$ = radio de la manivela, $L$ = longitud de la biela.</li>
+<li><strong>Aproximacion</strong> cuando $L \gg r$:
+$$x \approx r\cos\theta + L\left(1 - \frac{r^2}{2L^2}\sin^2\theta\right)$$</li>
+<li><strong>Velocidad</strong> (derivar respecto al tiempo):
+$$v_{emb} = -r\omega\left(\sin\theta + \frac{r}{2L}\sin 2\theta\right)$$</li>
+<li><strong>Maximo:</strong> igualar $dv/d\theta = 0$:
+$$\cos\theta + \frac{r}{L}\cos 2\theta = 0$$
+La solucion tipica es $\theta \approx \pi/2$ (manivela perpendicular al cilindro).</li>
+<li><strong>Velocidad maxima:</strong> sustituir $\theta = \pi/2$:
+$$v_{max} \approx r\omega$$</li>
+</ol>
+</div>
+
+<div class="tip"><strong>En el examen:</strong> Si te dan $\omega$ en rpm, convierte primero a rad/s: $\omega = n \times 2\pi/60$. Si te dicen "15 rpm": $\omega = 15 \times 2\pi/60 = \pi/2$ rad/s.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: CHECKLIST -->
+<!-- ============================================ -->
+<div class="section" id="resumen">
+<h2>7. Checklist antes del examen</h2>
+
+<h3>Domina estas operaciones (sin pensar)</h3>
+<table>
+<tr><th>Operacion</th><th>Cuando se usa</th><th>Practica hasta que...</th></tr>
+<tr><td>$\vec{k}\times(a\,\vec{i}+b\,\vec{j})$</td><td>Toda ecuacion de velocidad/aceleracion</td><td>Lo hagas en 3 segundos: $=-b\,\vec{i}+a\,\vec{j}$</td></tr>
+<tr><td>Localizar el EIR graficamente</td><td>Calcular $\omega$ rapido</td><td>Dibujes perpendiculares a las velocidades sin dudar</td></tr>
+<tr><td>Descomponer $\vec{r}$ en componentes</td><td>Definir vectores de posicion entre puntos</td><td>No te equivoques de signo</td></tr>
+<tr><td>Igualar componentes $\vec{i}$, $\vec{j}$</td><td>Resolver sistemas vectoriales</td><td>Sea automatico separar las ecuaciones</td></tr>
+</table>
+
+<h3>Ante un ejercicio de examen, preguntate:</h3>
+<div class="decision">
+<div class="q">1. Que tipo de mecanismo es?</div>
+<div class="branch"><span class="label">Barras articuladas con apoyos fijos</span> &rarr; <strong>Tipo A</strong></div>
+<div class="branch"><span class="label">Disco/rueda que rueda sin deslizar</span> &rarr; <strong>Tipo B</strong></div>
+<div class="branch"><span class="label">Punto que desliza sobre barra giratoria</span> &rarr; <strong>Tipo C</strong> (Coriolis!)</div>
+<div class="branch"><span class="label">Biela-manivela, embolo, compresor</span> &rarr; <strong>Tipo D</strong></div>
+<div class="branch"><span class="label">Barras paralelas de igual longitud</span> &rarr; Traslacion pura ($\omega = 0$)</div>
+</div>
+
+<div class="decision">
+<div class="q">2. Me piden velocidades angulares?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Aplica H1 de barra en barra, o usa el EIR (H3) como atajo</div>
+</div>
+
+<div class="decision">
+<div class="q">3. Me piden aceleraciones angulares?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Aplica H2: escribe $\vec{a}$ del punto compartido de dos maneras, iguala componentes</div>
+</div>
+
+<div class="decision">
+<div class="q">4. Hay rodadura?</div>
+<div class="branch"><span class="label yes">SI, sobre superficie fija</span> &rarr; Contacto = EIR, $v_{centro}=\omega R$</div>
+<div class="branch"><span class="label yes">SI, sobre otra barra</span> &rarr; Igualar velocidades del contacto (NO poner a cero)</div>
+</div>
+
+<div class="decision">
+<div class="q">5. Hay deslizadera sobre barra giratoria?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; No olvides Coriolis: $2\,\vec{\omega}\times\dot{\vec{r}}_{rel}$</div>
+</div>
+
+<h3>Errores que cuestan puntos</h3>
+<table>
+<tr><th>Error</th><th>Consecuencia</th><th>Como evitarlo</th></tr>
+<tr><td>Aplicar vel. de solido rigido entre puntos de distintos solidos</td><td>Ecuacion sin sentido fisico</td><td>Comprueba que A y B pertenecen a la misma barra</td></tr>
+<tr><td>Olvidar la aceleracion centripeta $-\omega^2\vec{r}$</td><td>Falta un termino entero en $\vec{a}$</td><td>Escribe siempre los 3 terminos: $\vec{a}_A + \alpha\times\vec{r} - \omega^2\vec{r}$</td></tr>
+<tr><td>Olvidar Coriolis en deslizaderas</td><td>Resultado incorrecto de aceleracion</td><td>Si hay movimiento relativo + rotacion &rarr; Coriolis</td></tr>
+<tr><td>Signo mal en $\vec{r}_{AB}$</td><td>$\omega$ o $\alpha$ con signo contrario</td><td>Dibuja el vector de A a B y descompon con cuidado</td></tr>
+<tr><td>Usar el EIR para aceleraciones</td><td>La aceleracion del EIR NO es cero</td><td>EIR solo sirve para velocidades</td></tr>
+<tr><td>Confundir rodadura fija con rodadura movil</td><td>Poner $v_{\text{contacto}}=0$ cuando no es cero</td><td>Preguntate: la superficie sobre la que rueda, se mueve?</td></tr>
+<tr><td>Unidades: mezclar mm y m</td><td>Resultado con potencias de 10 erroneas</td><td>Convierte todo a metros al principio</td></tr>
+</table>
+
+<h3>Verificaciones rapidas</h3>
+<div class="formula-box green">
+<div class="label green">Comprobaciones para no entregar errores</div>
+<ul>
+<li><strong>Restricciones geometricas:</strong> Si un punto esta en una guia horizontal, su $v_y$ y $a_y$ deben ser cero. Si esta en un apoyo fijo, $\vec{v}=\vec{0}$.</li>
+<li><strong>Coherencia de signos:</strong> $\omega>0$ = antihorario, $\omega<0$ = horario. Comprueba que el sentido calculado tiene sentido fisico con el dibujo.</li>
+<li><strong>Dimension:</strong> $[\omega] = $ rad/s, $[\alpha] = $ rad/s$^2$, $[v] = $ m/s, $[a] = $ m/s$^2$. Si te salen unidades raras, algo esta mal.</li>
+<li><strong>Orden de magnitud:</strong> En mecanismos tipicos del examen, $\omega$ suele estar entre 0 y 20 rad/s. Si te sale 500, revisa.</li>
+<li><strong>Punto fijo:</strong> Verifica que el punto con apoyo fijo efectivamente tiene $\vec{v}=\vec{0}$ con tus resultados.</li>
+</ul>
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">Manual Tema 8 &middot; Mecanica Aplicada &middot; UPV/EHU &middot; 2025&ndash;26</div>
+
+</body>
+</html>

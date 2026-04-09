@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual T7 - Cinematica del Solido Rigido | Mecanica Aplicada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.12);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--blue:#38bdf8;--orange:#fb923c;--red:#ef4444;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;--radius-sm:6px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+
+.container{max-width:860px;margin:0 auto;padding:20px 24px 80px}
+
+/* Header */
+.manual-header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border2);margin-bottom:32px}
+.manual-header h1{font-size:1.8em;font-weight:700;color:var(--gold);margin-bottom:6px}
+.manual-header .subtitle{color:var(--text2);font-size:.95em}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--text3);font-size:.85em}
+.back-link:hover{color:var(--accent)}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}
+.toc h2{font-size:1.05em;color:var(--gold);margin-bottom:10px;font-weight:600}
+.toc ol{padding-left:20px}
+.toc li{margin:4px 0;color:var(--text2);font-size:.9em}
+.toc a{color:var(--text)}
+
+/* Sections */
+.section{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section h2{font-size:1.35em;font-weight:700;color:var(--accent);margin-bottom:14px;padding-top:8px}
+.section h3{font-size:1.1em;font-weight:600;color:var(--gold);margin:20px 0 10px}
+.section h4{font-size:1em;font-weight:600;color:var(--blue);margin:16px 0 8px}
+
+/* Formula boxes */
+.formula-box{background:rgba(192,132,252,.06);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:14px 18px;margin:12px 0}
+.formula-box.gold{background:var(--gold-dim);border-color:var(--gold-border)}
+.formula-box.blue{background:rgba(56,189,248,.06);border-color:rgba(56,189,248,.28)}
+.formula-box.green{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.28)}
+.formula-box .label{font-size:.8em;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.formula-box .label.purple{color:var(--accent)}
+.formula-box .label.gold{color:var(--gold)}
+.formula-box .label.blue{color:var(--blue)}
+.formula-box .label.green{color:var(--green)}
+
+/* Warning/tip boxes */
+.tip{background:rgba(16,185,129,.06);border-left:3px solid var(--green);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.warning{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.danger{background:rgba(239,68,68,.06);border-left:3px solid var(--red);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.step-num{display:inline-block;background:var(--accent);color:#000;font-weight:700;font-size:.75em;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+.step-num.gold{background:var(--gold)}
+
+/* Decision tree */
+.decision{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.decision .q{font-weight:600;color:var(--orange);margin-bottom:8px}
+.decision .branch{padding-left:16px;border-left:2px solid var(--border2);margin:6px 0}
+.decision .branch .label{font-weight:600;font-size:.85em}
+.decision .branch .yes{color:var(--green)}
+.decision .branch .no{color:var(--red)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}
+th,td{padding:8px 12px;border:1px solid var(--border2);text-align:left}
+th{background:var(--surface2);color:var(--gold);font-weight:600;font-size:.85em}
+td{color:var(--text)}
+
+/* Exercise type cards */
+.ex-type{background:var(--surface);border:1px solid var(--gold-border);border-radius:var(--radius);padding:16px 20px;margin:12px 0}
+.ex-type .tag{display:inline-block;background:var(--gold-dim);color:var(--gold);font-weight:600;font-size:.75em;padding:2px 10px;border-radius:10px;margin-bottom:8px}
+
+p{margin:6px 0}
+ul,ol{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+strong{color:var(--text)}
+code{font-family:var(--ff-mono);background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:.88em}
+
+.footer{text-align:center;padding:24px;color:var(--text3);font-size:.8em;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="tema7.html" class="back-link">&larr; Volver a ejercicios Tema 7</a>
+
+<div class="manual-header">
+  <h1>Manual de Ejercicios de Examen</h1>
+  <div class="subtitle">Tema 7 &mdash; Cinematica del Solido Rigido &middot; Mecanica Aplicada UPV/EHU</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#herramientas">Las 7 herramientas que necesitas</a></li>
+    <li><a href="#tipos">Los 4 tipos de ejercicio de examen</a></li>
+    <li><a href="#tipo-a">Tipo A: Cinematica de punto (trayectoria dada)</a></li>
+    <li><a href="#tipo-b">Tipo B: Coordenadas polares (varilla + deslizadera)</a></li>
+    <li><a href="#tipo-c">Tipo C: Rotacion respecto a eje fijo</a></li>
+    <li><a href="#tipo-d">Tipo D: Doble rotacion (disco/placa en brazo giratorio)</a></li>
+    <li><a href="#resumen">Checklist final antes del examen</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: HERRAMIENTAS -->
+<!-- ============================================ -->
+<div class="section" id="herramientas">
+<h2>1. Las 7 herramientas que necesitas</h2>
+<p>Todo ejercicio de examen del Tema 7 se resuelve combinando estas herramientas. Domina cada una y podras enfrentarte a cualquier problema de cinematica del solido rigido.</p>
+
+<h3>H1. Derivacion vectorial (velocidad y aceleracion)</h3>
+<p>La base de todo. Si te dan la posicion $\vec{r}(t)$, la velocidad y aceleracion son sus derivadas:</p>
+
+<div class="formula-box">
+<div class="label purple">Derivadas del vector posicion</div>
+$$\vec{v} = \dot{\vec{r}} = \frac{d\vec{r}}{dt}, \qquad \vec{a} = \ddot{\vec{r}} = \frac{d^2\vec{r}}{dt^2}$$
+</div>
+
+<div class="tip"><strong>Truco:</strong> Evalua cada componente por separado. Derivar $x(t)\,\vec{i} + y(t)\,\vec{j} + z(t)\,\vec{k}$ es simplemente derivar cada funcion escalar. No hay misterio.</div>
+
+<h3>H2. Componentes intrinsecas de la aceleracion</h3>
+<p>Descomponen $\vec{a}$ segun la trayectoria: tangencial (cambia la rapidez) y normal (cambia la direccion):</p>
+
+<div class="formula-box gold">
+<div class="label gold">Componentes intrinsecas &mdash; las formulas clave</div>
+$$a_t = \frac{\vec{a}\cdot\vec{v}}{|\vec{v}|} \qquad \text{(tangencial: proyeccion de } \vec{a} \text{ sobre } \vec{v}\text{)}$$
+$$a_n = \sqrt{|\vec{a}|^2 - a_t^2} \qquad \text{(normal: lo que "sobra")}$$
+</div>
+
+<div class="warning"><strong>Error tipico:</strong> Calcular $a_n$ directamente como $|\vec{a}| - a_t$. Eso esta <strong>mal</strong>. La norma es la raiz de la diferencia de cuadrados, no la diferencia de normas.</div>
+
+<h3>H3. Radio de curvatura</h3>
+<p>Mide como de "cerrada" es la trayectoria. Es una de las preguntas mas tipicas en examen:</p>
+
+<div class="formula-box">
+<div class="label purple">Radio de curvatura (formula 3D)</div>
+$$\rho = \frac{|\vec{v}|^3}{|\vec{v}\times\vec{a}|}$$
+</div>
+
+<p>Alternativa equivalente usando $a_n$:</p>
+$$\rho = \frac{|\vec{v}|^2}{a_n}$$
+
+<div class="tip"><strong>Cuando usar cual:</strong> La formula con producto vectorial es mas directa cuando tienes $\vec{v}$ y $\vec{a}$ como vectores. La formula con $a_n$ va bien si ya calculaste las componentes intrinsecas.</div>
+
+<h3>H4. Coordenadas polares</h3>
+<p>El sistema natural para describir movimiento sobre varillas giratorias. Dos coordenadas: $r$ (distancia al centro) y $\theta$ (angulo):</p>
+
+<div class="formula-box gold">
+<div class="label gold">Velocidad en coordenadas polares</div>
+$$v_r = \dot{r} \qquad \text{(radial: a lo largo de la varilla)}$$
+$$v_\theta = r\,\dot\theta \qquad \text{(transversal: perpendicular a la varilla)}$$
+</div>
+
+<div class="formula-box">
+<div class="label purple">Aceleracion en coordenadas polares &mdash; 4 terminos</div>
+$$a_r = \ddot{r} - r\,\dot\theta^2 \qquad \text{(radial)}$$
+$$a_\theta = r\,\ddot\theta + 2\,\dot{r}\,\dot\theta \qquad \text{(transversal)}$$
+</div>
+
+<p>Los 4 terminos y su significado fisico:</p>
+<table>
+<tr><th>Termino</th><th>Nombre</th><th>Que significa</th></tr>
+<tr><td>$\ddot{r}$</td><td>Aceleracion radial propia</td><td>Variacion de la velocidad de deslizamiento</td></tr>
+<tr><td>$-r\,\dot\theta^2$</td><td>Centripeta</td><td>El punto "tira" hacia el centro por girar</td></tr>
+<tr><td>$r\,\ddot\theta$</td><td>Tangencial angular</td><td>Variacion de $\omega$ del giro</td></tr>
+<tr><td>$2\,\dot{r}\,\dot\theta$</td><td>Coriolis</td><td>Acoplamiento entre deslizar y girar</td></tr>
+</table>
+
+<div class="danger"><strong>Confusion frecuente:</strong> La aceleracion <strong>relativa</strong> a la varilla es solo $\ddot{r}$. Los terminos centripeto y Coriolis son efectos del sistema de referencia en rotacion, NO de la aceleracion relativa.</div>
+
+<h3>H5. Velocidad de un punto del solido rigido</h3>
+<p>Si el solido gira con $\vec{\omega}$ y conoces la velocidad de un punto $A$, la de cualquier otro punto $B$ es:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Campo de velocidades del S.R.</div>
+$$\vec{v}_B = \vec{v}_A + \vec{\omega}\times\overrightarrow{AB}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Si $A$ es un punto fijo (por ejemplo, un punto del eje de rotacion con $\vec{v}_A = \vec{0}$), se simplifica a: $\vec{v}_B = \vec{\omega}\times\vec{r}_{AB}$</p>
+</div>
+
+<h3>H6. Aceleracion de un punto del solido rigido</h3>
+<p>Con $\vec{\omega}$ (velocidad angular) y $\vec{\alpha}$ (aceleracion angular):</p>
+
+<div class="formula-box">
+<div class="label purple">Aceleracion de un punto del S.R.</div>
+$$\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\overrightarrow{AB} + \vec{\omega}\times(\vec{\omega}\times\overrightarrow{AB})$$
+</div>
+
+<p>Los dos terminos adicionales:</p>
+<ul>
+<li>$\vec{\alpha}\times\overrightarrow{AB}$ = aceleracion <strong>tangencial</strong> (perpendicular al radio, cambia la rapidez)</li>
+<li>$\vec{\omega}\times(\vec{\omega}\times\overrightarrow{AB})$ = aceleracion <strong>centripeta</strong> (apunta hacia el eje, por girar)</li>
+</ul>
+
+<div class="tip"><strong>Caso especial $\omega$ constante:</strong> Si la velocidad angular no cambia, $\vec{\alpha} = \vec{0}$ y solo queda el termino centripeto: $\vec{a}_B = \vec{\omega}\times(\vec{\omega}\times\vec{r}_{AB})$. Esto pasa en los ejs. 7.4 y parcialmente en 7.5&ndash;7.7.</div>
+
+<h3>H7. Aceleracion angular con doble rotacion (Regla de Euler)</h3>
+<p>Cuando un solido tiene <strong>dos rotaciones simultaneas</strong> ($\vec{\omega}_1$ del soporte + $\vec{\omega}_2$ propia), la aceleracion angular NO es simplemente la suma de las derivadas:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Derivada de un vector en sistema giratorio &mdash; la formula mas olvidada</div>
+$$\vec{\alpha} = \frac{d\vec{\omega}}{dt}\bigg|_{fijo} = \dot{\omega}_1\,\hat{u}_1 + \dot{\omega}_2\,\hat{u}_2 + \vec{\omega}_1 \times (\omega_2\,\hat{u}_2)$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">El tercer termino aparece porque <strong>el eje de $\omega_2$ no es fijo</strong>: gira arrastrado por $\omega_1$. Es un producto vectorial extra que mucha gente olvida.</p>
+</div>
+
+<p>Si ambas $\omega$ son constantes ($\dot\omega_1 = \dot\omega_2 = 0$), queda simplemente:</p>
+$$\vec{\alpha} = \vec{\omega}_1 \times \vec{\omega}_2$$
+
+<div class="danger"><strong>EL error mas frecuente del Tema 7:</strong> Olvidar el termino $\vec{\omega}_1 \times \vec{\omega}_2$ en la aceleracion angular. Si las dos velocidades angulares son constantes, <strong>la aceleracion angular NO es cero</strong>. Es $\vec{\omega}_1 \times \vec{\omega}_2 \neq \vec{0}$. Esto aparece en los ejercicios 7.5, 7.6, 7.7, 7.8, 7.9 y 7.10.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: TIPOS -->
+<!-- ============================================ -->
+<div class="section" id="tipos">
+<h2>2. Los 4 tipos de ejercicio de examen</h2>
+<p>Los 10 ejercicios del Tema 7 encajan en 4 patrones claros:</p>
+
+<div class="ex-type">
+<span class="tag">TIPO A &mdash; Cinematica de punto</span>
+<h4>Te dan $\vec{r}(t)$ o $x(t), y(t), z(t)$ y piden $\vec{v}$, $\vec{a}$, componentes intrinsecas, $\rho$</h4>
+<p><strong>Ejercicios:</strong> 7.1, 7.2</p>
+<p><strong>Herramientas:</strong> H1 (derivacion) + H2 (intrinsecas) + H3 (radio de curvatura)</p>
+<p><strong>Dificultad:</strong> Baja. Son los mas directos.</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO B &mdash; Coordenadas polares</span>
+<h4>Varilla giratoria con deslizadera: $r(t)$ y $\theta(t)$ dados</h4>
+<p><strong>Ejercicios:</strong> 7.3</p>
+<p><strong>Herramientas:</strong> H4 (coordenadas polares)</p>
+<p><strong>Dificultad:</strong> Media. Hay que recordar los 4 terminos de la aceleracion.</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO C &mdash; Rotacion simple</span>
+<h4>Solido rigido girando respecto a un eje fijo con $\omega$ constante o variable</h4>
+<p><strong>Ejercicios:</strong> 7.4</p>
+<p><strong>Herramientas:</strong> H5 (velocidad S.R.) + H6 (aceleracion S.R.)</p>
+<p><strong>Dificultad:</strong> Media. El eje puede estar inclinado en 3D.</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO D &mdash; El mas frecuente en examen</span>
+<h4>Doble rotacion: disco/placa/brazo con $\omega_1$ (soporte) y $\omega_2$ (propia)</h4>
+<p><strong>Ejercicios:</strong> 7.5, 7.6, 7.7, 7.8, 7.9, 7.10</p>
+<p><strong>Herramientas:</strong> H7 (Euler) + H5 + H6</p>
+<p><strong>Dificultad:</strong> Alta. Es el tipo de ejercicio que mas cae en examen.</p>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: TIPO A -->
+<!-- ============================================ -->
+<div class="section" id="tipo-a">
+<h2>3. Tipo A: Cinematica de punto (trayectoria dada)</h2>
+<p><strong>Patron:</strong> Te dan $\vec{r}(t)$ o las componentes $x(t), y(t), z(t)$. Te piden velocidad, aceleracion, componentes intrinsecas y/o radio de curvatura en un instante $t_0$.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Derivar</span>
+<p>Calcula $\vec{v} = \dot{\vec{r}}$ y $\vec{a} = \ddot{\vec{r}}$ derivando componente a componente. Sustituye $t = t_0$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Modulos</span>
+<p>$|\vec{v}| = \sqrt{v_x^2 + v_y^2 + v_z^2}$ y $|\vec{a}| = \sqrt{a_x^2 + a_y^2 + a_z^2}$</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Componentes intrinsecas</span>
+$$a_t = \frac{\vec{a}\cdot\vec{v}}{|\vec{v}|}, \qquad a_n = \sqrt{|\vec{a}|^2 - a_t^2}$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Radio de curvatura</span>
+<ol>
+<li>Calcula $\vec{v}\times\vec{a}$ (producto vectorial, determinante $3\times3$)</li>
+<li>$\rho = \dfrac{|\vec{v}|^3}{|\vec{v}\times\vec{a}|}$</li>
+</ol>
+</div>
+
+<h3>Ejemplo concreto (ejercicio 7.1)</h3>
+<p>$\vec{r} = t^2\,\vec{i} + t\,\vec{j} + \vec{k}$, en $t = 2$ s:</p>
+<p>$\vec{v} = 2t\,\vec{i} + \vec{j} \Rightarrow \vec{v}(2) = 4\,\vec{i}+\vec{j}$, $|\vec{v}| = \sqrt{17}$</p>
+<p>$\vec{a} = 2\,\vec{i}$</p>
+<p>$a_t = \dfrac{(2)(4)+(0)(1)}{\sqrt{17}} = \dfrac{8}{\sqrt{17}} \approx 1{,}94$ m/s$^2$</p>
+<p>$\vec{v}\times\vec{a} = (4\,\vec{i}+\vec{j})\times(2\,\vec{i}) = -2\,\vec{k}$ $\Rightarrow$ $\rho = \dfrac{(\sqrt{17})^3}{2} = \dfrac{17\sqrt{17}}{2} \approx 35{,}0$ m</p>
+
+<div class="warning"><strong>Error clasico:</strong> Olvidar evaluar en $t = t_0$ antes de hacer los calculos. Primero sustituye, luego opera.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: TIPO B -->
+<!-- ============================================ -->
+<div class="section" id="tipo-b">
+<h2>4. Tipo B: Coordenadas polares (varilla + deslizadera)</h2>
+<p><strong>Patron:</strong> Varilla que gira con $\theta(t)$, deslizadera que se mueve a lo largo con $r(t)$. Te piden velocidad y aceleracion en polares.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Derivar las leyes de movimiento</span>
+<p>De $\theta(t)$: calcula $\dot\theta$ y $\ddot\theta$. De $r(t)$: calcula $\dot{r}$ y $\ddot{r}$.</p>
+<p>Sustituye todo en $t = t_0$. Apunta los 5 valores: $r$, $\dot{r}$, $\ddot{r}$, $\dot\theta$, $\ddot\theta$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Velocidad</span>
+$$v_r = \dot{r}, \qquad v_\theta = r\,\dot\theta$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Aceleracion</span>
+$$a_r = \ddot{r} - r\,\dot\theta^2, \qquad a_\theta = r\,\ddot\theta + 2\,\dot{r}\,\dot\theta$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Aceleracion relativa (si la piden)</span>
+<p>La aceleracion relativa a la varilla es $a_{rel} = \ddot{r}$ (solo el termino radial propio).</p>
+</div>
+
+<h3>Ejemplo concreto (ejercicio 7.3)</h3>
+<p>$\theta = 2\pi t^2$ rad, $r = 60t^2 - 20t^3$ m, en $t = 1$ s:</p>
+<p>Valores: $r = 40$ m, $\dot{r} = 60$ m/s, $\ddot{r} = 0$, $\dot\theta = 4$ rad/s, $\ddot\theta = 4$ rad/s$^2$</p>
+<p>$v_r = 60$ m/s, $v_\theta = 40 \times 4 = 160$ m/s</p>
+<p>$a_r = 0 - 40 \times 16 = -640$ m/s$^2$ (centripeta)</p>
+<p>$a_\theta = 40 \times 4 + 2 \times 60 \times 4 = 160 + 480 = 640$ m/s$^2$</p>
+<p>$a_{rel} = \ddot{r} = 0$ m/s$^2$</p>
+
+<div class="danger"><strong>No confundir:</strong> $a_r = -640$ m/s$^2$ NO es la aceleracion relativa a la varilla. La relativa es solo $\ddot{r} = 0$. El termino $-r\dot\theta^2$ es la centripeta del sistema giratorio.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: TIPO C -->
+<!-- ============================================ -->
+<div class="section" id="tipo-c">
+<h2>5. Tipo C: Rotacion respecto a eje fijo</h2>
+<p><strong>Patron:</strong> Un solido rigido (sistema de barras, por ejemplo) gira respecto a un eje fijo con $\omega$ constante o variable. Te piden velocidad y aceleracion de un punto del solido.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Vector unitario del eje</span>
+<p>Identifica dos puntos del eje (por ejemplo, $A$ y $D$). Calcula:</p>
+$$\hat{u} = \frac{\overrightarrow{AD}}{|\overrightarrow{AD}|}$$
+<p>El sentido de $\hat{u}$ se elige segun la regla de la mano derecha (dedos en sentido de giro, pulgar = $\hat{u}$).</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Vector velocidad angular</span>
+$$\vec{\omega} = \omega\,\hat{u}$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Vector de posicion $\vec{r}$</span>
+<p>Calcula $\vec{r}_{AB}$ desde un punto del eje ($A$) hasta el punto de interes ($B$). Asegurate de usar las mismas unidades.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Velocidad</span>
+$$\vec{v}_B = \vec{\omega}\times\vec{r}_{AB}$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 5 &mdash; Aceleracion</span>
+$$\vec{a}_B = \vec{\alpha}\times\vec{r}_{AB} + \vec{\omega}\times(\vec{\omega}\times\vec{r}_{AB})$$
+<p>Si $\omega$ es constante: $\vec{\alpha} = \vec{0}$, solo queda el doble producto vectorial (centripeto).</p>
+</div>
+
+<h3>Ejemplo concreto (ejercicio 7.4)</h3>
+<p>Barras $AB$-$BC$-$CD$ girando con $\omega = 75$ rad/s respecto al eje $AD$:</p>
+<p>$\overrightarrow{AD} = (200, -90, -120)$ mm, $|\overrightarrow{AD}| = 250$ mm</p>
+<p>$\hat{u}_{DA} = (-0{,}8;\ 0{,}36;\ 0{,}48)$ $\Rightarrow$ $\vec{\omega} = -60\,\vec{i}+27\,\vec{j}+36\,\vec{k}$ rad/s</p>
+<p>$\vec{r}_{AB} = (0, 0, -0{,}12)$ m $\Rightarrow$ $\vec{v}_B = \vec{\omega}\times\vec{r}_{AB} = 5{,}4\,\vec{i} - 7{,}2\,\vec{k}$ m/s</p>
+<p>$\vec{a}_B = \vec{\omega}\times\vec{v}_B = -405\,\vec{i}-432\,\vec{j}-324\,\vec{k}$ m/s$^2$</p>
+
+<div class="tip"><strong>Truco:</strong> Cuando $\omega$ es constante, la aceleracion es simplemente $\vec{a}_B = \vec{\omega}\times\vec{v}_B$ (porque $\vec{v}_B = \vec{\omega}\times\vec{r}$ ya). Te ahorras escribir el doble producto vectorial.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: TIPO D -->
+<!-- ============================================ -->
+<div class="section" id="tipo-d">
+<h2>6. Tipo D: Doble rotacion (disco/placa en brazo giratorio)</h2>
+<p><strong>Este es EL tipo de ejercicio del Tema 7.</strong> Aparece en 6 de los 10 ejercicios (7.5&ndash;7.10) y es el mas probable en examen. Si dominas este patron, tienes el tema controlado.</p>
+
+<p><strong>Patron:</strong> Un solido (disco, placa, brazo) gira con $\omega_2$ respecto a un eje (su propio eje). Ese eje, a su vez, esta montado en un soporte que gira con $\omega_1$ respecto a otro eje (normalmente vertical $Y$). Te piden $\vec{\alpha}$, $\vec{v}$ y $\vec{a}$ de algun punto.</p>
+
+<h3>Receta paso a paso</h3>
+
+<div class="step">
+<span class="step-num gold">PASO 1 &mdash; Velocidad angular total</span>
+<p>Suma vectorial de las dos rotaciones:</p>
+$$\vec{\omega}_{total} = \vec{\omega}_1 + \vec{\omega}_2 = \omega_1\,\hat{u}_1 + \omega_2\,\hat{u}_2$$
+<p>Donde $\hat{u}_1$ y $\hat{u}_2$ son los vectores unitarios de cada eje de rotacion.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 2 &mdash; Aceleracion angular (LA CLAVE)</span>
+$$\vec{\alpha} = \alpha_1\,\hat{u}_1 + \alpha_2\,\hat{u}_2 + \vec{\omega}_1 \times (\omega_2\,\hat{u}_2)$$
+<p>Si $\omega_1$ y $\omega_2$ son constantes ($\alpha_1 = \alpha_2 = 0$):</p>
+$$\vec{\alpha} = \vec{\omega}_1 \times \vec{\omega}_2$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 3 &mdash; Posicion del punto</span>
+<p>Identifica $\vec{r}$ desde un punto fijo (o desde el centro del disco/placa) hasta el punto de interes. Cuidado con la posicion angular $\theta$: si el punto $P$ esta en el borde del disco a angulo $\theta$, su posicion depende de $\theta$.</p>
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 4 &mdash; Velocidad del punto</span>
+<p>Si calculas desde un punto fijo $O$:</p>
+$$\vec{v}_P = \vec{\omega}_{total}\times\vec{r}_{OP}$$
+<p>Si calculas paso a paso (centro del disco primero):</p>
+$$\vec{v}_P = \vec{v}_C + \vec{\omega}_{total}\times\vec{r}_{CP}$$
+</div>
+
+<div class="step">
+<span class="step-num gold">PASO 5 &mdash; Aceleracion del punto</span>
+$$\vec{a}_P = \vec{a}_C + \vec{\alpha}\times\vec{r}_{CP} + \vec{\omega}\times(\vec{\omega}\times\vec{r}_{CP})$$
+<p>Donde $\vec{a}_C$ es la aceleracion del centro del disco (debida solo a la rotacion $\omega_1$ del soporte).</p>
+</div>
+
+<h3>Diagrama de decision &mdash; Tipo D</h3>
+<div class="decision">
+<div class="q">Te dan un solido con dos rotaciones?</div>
+<div class="branch">
+  <span class="label yes">SI &rarr;</span> Identifica $\vec{\omega}_1$ (soporte) y $\vec{\omega}_2$ (propia)
+  <div class="branch" style="margin-top:8px">
+    <span class="label">Son constantes?</span>
+    <div class="branch"><span class="label yes">SI</span> &rarr; $\vec{\alpha} = \vec{\omega}_1 \times \vec{\omega}_2$ (producto vectorial simple)</div>
+    <div class="branch"><span class="label no">NO</span> &rarr; Suma los 3 terminos: $\alpha_1\hat{u}_1 + \alpha_2\hat{u}_2 + \vec{\omega}_1\times\vec{\omega}_2$</div>
+  </div>
+  <div class="branch" style="margin-top:8px">
+    <span class="label">Despues &rarr;</span> Calcula $\vec{v}_P = \vec{\omega}_{total}\times\vec{r}$ y $\vec{a}_P$ con la formula completa
+  </div>
+</div>
+</div>
+
+<h3>Ejemplo concreto (ejercicio 7.5)</h3>
+<p>Disco en horquilla: $\omega_1$ (horquilla, eje $Y$) + $\omega_2$ (disco, eje $Z$), ambas constantes:</p>
+<p>$\vec{\omega} = \omega_1\,\vec{j} + \omega_2\,\vec{k}$</p>
+<p>$\vec{\alpha} = (\omega_1\,\vec{j})\times(\omega_2\,\vec{k}) = \omega_1\omega_2\,\vec{i}$ (NO es cero aunque ambas $\omega$ sean constantes!)</p>
+<p>Para $P$ con $\theta = 0°$: $\vec{r}_P = r\,\vec{i}$</p>
+<p>$\vec{a}_P = \vec{\alpha}\times\vec{r}_P + \vec{\omega}\times(\vec{\omega}\times\vec{r}_P) = 0 + [-r(\omega_1^2+\omega_2^2)\,\vec{i}] = -r(\omega_1^2+\omega_2^2)\,\vec{i}$</p>
+
+<h3>Ejemplo concreto (ejercicio 7.8 &mdash; con aceleraciones angulares)</h3>
+<p>Robot con $\omega_1 = 0{,}2$ rad/s, $\alpha_1 = 0{,}1$ rad/s$^2$ (eje $Y$), $\omega_2 = 0{,}4$ rad/s, $\alpha_2 = 0{,}3$ rad/s$^2$ (eje $Z$):</p>
+<p>$\vec{\omega} = 0{,}2\,\vec{j} + 0{,}4\,\vec{k}$</p>
+<p>$\vec{\alpha} = 0{,}1\,\vec{j} + 0{,}3\,\vec{k} + (0{,}2\,\vec{j})\times(0{,}4\,\vec{k}) = 0{,}08\,\vec{i} + 0{,}1\,\vec{j} + 0{,}3\,\vec{k}$</p>
+<p>Aqui el termino cruzado $\vec{\omega}_1\times\vec{\omega}_2 = 0{,}08\,\vec{i}$ es pequeno pero <strong>no es cero</strong>.</p>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: CHECKLIST -->
+<!-- ============================================ -->
+<div class="section" id="resumen">
+<h2>7. Checklist antes del examen</h2>
+
+<h3>Domina estas operaciones (sin pensar)</h3>
+<table>
+<tr><th>Operacion</th><th>Cuando se usa</th><th>Practica hasta que...</th></tr>
+<tr><td>Producto vectorial $\vec{a}\times\vec{b}$</td><td>Velocidad ($\vec{\omega}\times\vec{r}$), aceleracion, radio de curvatura</td><td>Lo hagas en 15 segundos</td></tr>
+<tr><td>Doble producto vectorial $\vec{a}\times(\vec{b}\times\vec{c})$</td><td>Aceleracion centripeta $\vec{\omega}\times(\vec{\omega}\times\vec{r})$</td><td>No te lies con los parentesis</td></tr>
+<tr><td>Derivar polinomios en $t$</td><td>$\vec{v} = \dot{\vec{r}}$, $\vec{a} = \ddot{\vec{r}}$</td><td>Sea automatico</td></tr>
+<tr><td>Tabla de $\vec{i}\times\vec{j}$, etc.</td><td>Siempre que haya productos vectoriales</td><td>La sepas de memoria</td></tr>
+</table>
+
+<h3>Ante un ejercicio de examen, preguntate:</h3>
+<div class="decision">
+<div class="q">1. Que me dan?</div>
+<div class="branch"><span class="label">Posicion $\vec{r}(t)$ explicita</span> &rarr; <strong>Tipo A</strong>: derivar y evaluar</div>
+<div class="branch"><span class="label">$r(t)$ y $\theta(t)$ (varilla giratoria)</span> &rarr; <strong>Tipo B</strong>: coordenadas polares</div>
+<div class="branch"><span class="label">Solido con un eje de rotacion fijo</span> &rarr; <strong>Tipo C</strong>: $\vec{v}=\vec{\omega}\times\vec{r}$</div>
+<div class="branch"><span class="label">Solido con dos rotaciones ($\omega_1$ + $\omega_2$)</span> &rarr; <strong>Tipo D</strong>: doble rotacion con Euler</div>
+</div>
+
+<div class="decision">
+<div class="q">2. Me piden aceleracion angular?</div>
+<div class="branch"><span class="label yes">SI, y hay dos rotaciones</span> &rarr; OBLIGATORIO usar $\vec{\alpha} = ... + \vec{\omega}_1\times\vec{\omega}_2$</div>
+<div class="branch"><span class="label no">NO, o hay una sola rotacion</span> &rarr; $\vec{\alpha} = \dot\omega\,\hat{u}$ directamente</div>
+</div>
+
+<div class="decision">
+<div class="q">3. Me piden radio de curvatura?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Calcula $\vec{v}\times\vec{a}$, luego $\rho = |\vec{v}|^3 / |\vec{v}\times\vec{a}|$</div>
+</div>
+
+<h3>Errores que cuestan puntos</h3>
+<table>
+<tr><th>Error</th><th>Consecuencia</th><th>Como evitarlo</th></tr>
+<tr><td>Olvidar $\vec{\omega}_1\times\vec{\omega}_2$ en $\vec{\alpha}$</td><td>$\vec{\alpha}$ sale $\vec{0}$ cuando no deberia</td><td>Siempre preguntate: "el eje de $\omega_2$ gira?"</td></tr>
+<tr><td>Confundir $a_n$ con $|\vec{a}| - a_t$</td><td>Radio de curvatura incorrecto</td><td>Usa $a_n = \sqrt{|\vec{a}|^2 - a_t^2}$ (raiz de cuadrados)</td></tr>
+<tr><td>No evaluar en $t = t_0$ antes de operar</td><td>Formulas con $t$ que complican todo</td><td>Primero sustituye, luego calcula</td></tr>
+<tr><td>Confundir $\vec{r}_{AB}$ con $\vec{r}_{BA}$</td><td>Signo opuesto en $\vec{v}$ y $\vec{a}$</td><td>Siempre escribe "de donde a donde"</td></tr>
+<tr><td>Usar $a_{rel} = a_r$ en polares</td><td>Incluir la centripeta en la aceleracion relativa</td><td>$a_{rel} = \ddot{r}$, SOLO el termino de variacion radial</td></tr>
+<tr><td>Olvidar convertir unidades (mm $\leftrightarrow$ m)</td><td>Resultados desfasados por factores de $10^3$</td><td>Convierte al principio y mantente consistente</td></tr>
+</table>
+
+<h3>Verificaciones rapidas</h3>
+<div class="formula-box green">
+<div class="label green">Comprobaciones para no entregar errores</div>
+<ul>
+<li><strong>Velocidad perpendicular a $\vec{\omega}$ y a $\vec{r}$:</strong> Si $\vec{v} = \vec{\omega}\times\vec{r}$, entonces $\vec{v}\cdot\vec{\omega} = 0$ y $\vec{v}\cdot\vec{r} = 0$. Haz el producto escalar para verificar.</li>
+<li><strong>Modulo de la velocidad:</strong> $|\vec{v}| = \omega \cdot d$, donde $d$ es la distancia al eje. Comprueba que el orden de magnitud cuadra.</li>
+<li><strong>Aceleracion centripeta apunta al eje:</strong> El termino $\vec{\omega}\times(\vec{\omega}\times\vec{r})$ siempre apunta hacia el eje de rotacion. Si apunta "hacia fuera", tienes un error de signo.</li>
+<li><strong>Aceleracion angular con $\omega$ constantes:</strong> Si $\omega_1$ y $\omega_2$ son constantes, $\vec{\alpha} \neq \vec{0}$ (es $\vec{\omega}_1\times\vec{\omega}_2$). Si te sale cero, revisa.</li>
+<li><strong>Dimensiones:</strong> $\vec{v}$ en m/s, $\vec{a}$ en m/s$^2$, $\vec{\alpha}$ en rad/s$^2$, $\rho$ en m. Si las unidades no cuadran, hay un error.</li>
+</ul>
+</div>
+
+<h3>Resumen de formulas por tipo</h3>
+<table>
+<tr><th>Tipo</th><th>Formulas clave</th><th>Lo que mas olvidan</th></tr>
+<tr><td>A (trayectoria)</td><td>$\vec{v}=\dot{\vec{r}}$, $a_t = \vec{a}\cdot\vec{v}/|\vec{v}|$, $\rho = |\vec{v}|^3/|\vec{v}\times\vec{a}|$</td><td>Evaluar en $t_0$ antes de operar</td></tr>
+<tr><td>B (polares)</td><td>$v_r=\dot{r}$, $v_\theta=r\dot\theta$, $a_r=\ddot{r}-r\dot\theta^2$</td><td>Coriolis: $2\dot{r}\dot\theta$ en $a_\theta$</td></tr>
+<tr><td>C (eje fijo)</td><td>$\vec{v}=\vec{\omega}\times\vec{r}$, $\vec{a}=\vec{\alpha}\times\vec{r}+\vec{\omega}\times\vec{v}$</td><td>Vector unitario del eje 3D</td></tr>
+<tr><td>D (doble rot.)</td><td>$\vec{\alpha}=...\,+\,\vec{\omega}_1\times\vec{\omega}_2$</td><td>Termino cruzado de la aceleracion angular</td></tr>
+</table>
+
+</div>
+
+</div>
+
+<div class="footer">Manual Tema 7 &middot; Mecanica Aplicada &middot; UPV/EHU &middot; 2025&ndash;26</div>
+
+</body>
+</html>

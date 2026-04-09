@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual T3 - Estatica del Solido Rigido | Mecanica Aplicada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.12);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--blue:#38bdf8;--orange:#fb923c;--red:#ef4444;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;--radius-sm:6px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+
+.container{max-width:860px;margin:0 auto;padding:20px 24px 80px}
+
+/* Header */
+.manual-header{text-align:center;padding:40px 0 30px;border-bottom:1px solid var(--border2);margin-bottom:32px}
+.manual-header h1{font-size:1.8em;font-weight:700;color:var(--gold);margin-bottom:6px}
+.manual-header .subtitle{color:var(--text2);font-size:.95em}
+.back-link{display:inline-block;margin-bottom:16px;color:var(--text3);font-size:.85em}
+.back-link:hover{color:var(--accent)}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:32px}
+.toc h2{font-size:1.05em;color:var(--gold);margin-bottom:10px;font-weight:600}
+.toc ol{padding-left:20px}
+.toc li{margin:4px 0;color:var(--text2);font-size:.9em}
+.toc a{color:var(--text)}
+
+/* Sections */
+.section{margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+.section h2{font-size:1.35em;font-weight:700;color:var(--accent);margin-bottom:14px;padding-top:8px}
+.section h3{font-size:1.1em;font-weight:600;color:var(--gold);margin:20px 0 10px}
+.section h4{font-size:1em;font-weight:600;color:var(--blue);margin:16px 0 8px}
+
+/* Formula boxes */
+.formula-box{background:rgba(192,132,252,.06);border:1px solid var(--accent-border);border-radius:var(--radius-sm);padding:14px 18px;margin:12px 0}
+.formula-box.gold{background:var(--gold-dim);border-color:var(--gold-border)}
+.formula-box.blue{background:rgba(56,189,248,.06);border-color:rgba(56,189,248,.28)}
+.formula-box.green{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.28)}
+.formula-box .label{font-size:.8em;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.formula-box .label.purple{color:var(--accent)}
+.formula-box .label.gold{color:var(--gold)}
+.formula-box .label.blue{color:var(--blue)}
+.formula-box .label.green{color:var(--green)}
+
+/* Warning/tip boxes */
+.tip{background:rgba(16,185,129,.06);border-left:3px solid var(--green);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.warning{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+.danger{background:rgba(239,68,68,.06);border-left:3px solid var(--red);padding:10px 14px;margin:12px 0;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.9em}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.step-num{display:inline-block;background:var(--accent);color:#000;font-weight:700;font-size:.75em;padding:2px 8px;border-radius:10px;margin-bottom:8px}
+.step-num.gold{background:var(--gold)}
+
+/* Decision tree */
+.decision{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:16px 20px;margin:14px 0}
+.decision .q{font-weight:600;color:var(--orange);margin-bottom:8px}
+.decision .branch{padding-left:16px;border-left:2px solid var(--border2);margin:6px 0}
+.decision .branch .label{font-weight:600;font-size:.85em}
+.decision .branch .yes{color:var(--green)}
+.decision .branch .no{color:var(--red)}
+
+/* Table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}
+th,td{padding:8px 12px;border:1px solid var(--border2);text-align:left}
+th{background:var(--surface2);color:var(--gold);font-weight:600;font-size:.85em}
+td{color:var(--text)}
+
+/* Exercise type cards */
+.ex-type{background:var(--surface);border:1px solid var(--gold-border);border-radius:var(--radius);padding:16px 20px;margin:12px 0}
+.ex-type .tag{display:inline-block;background:var(--gold-dim);color:var(--gold);font-weight:600;font-size:.75em;padding:2px 10px;border-radius:10px;margin-bottom:8px}
+
+p{margin:6px 0}
+ul,ol{padding-left:20px;margin:6px 0}
+li{margin:4px 0}
+strong{color:var(--text)}
+code{font-family:var(--ff-mono);background:var(--surface2);padding:1px 5px;border-radius:3px;font-size:.88em}
+
+.footer{text-align:center;padding:24px;color:var(--text3);font-size:.8em;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="tema3.html" class="back-link">&larr; Volver a ejercicios Tema 3</a>
+
+<div class="manual-header">
+  <h1>Manual de Ejercicios de Examen</h1>
+  <div class="subtitle">Tema 3 &mdash; Estatica del Solido Rigido &middot; Mecanica Aplicada UPV/EHU</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#herramientas">Las 8 herramientas fundamentales</a></li>
+    <li><a href="#tipos">Los 5 tipos de ejercicio de examen</a></li>
+    <li><a href="#tipo-a">Tipo A: Equilibrio con geometria oculta (3.14, 3.15, 3.16, 3.18)</a></li>
+    <li><a href="#tipo-b">Tipo B: Trabajos virtuales / energia potencial (3.17)</a></li>
+    <li><a href="#tipo-c">Tipo C: Celosias &mdash; Nudos y Secciones (3.19&ndash;3.23, 3.25)</a></li>
+    <li><a href="#tipo-d">Tipo D: Entramados de varios solidos (3.24, 3.26)</a></li>
+    <li><a href="#tipo-e">Tipo E: Equilibrio de particula con resorte y geometria circular (3.27)</a></li>
+    <li><a href="#resumen">Checklist final antes del examen</a></li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 1: HERRAMIENTAS -->
+<!-- ============================================ -->
+<div class="section" id="herramientas">
+<h2>1. Las 8 herramientas fundamentales</h2>
+<p>Todo ejercicio de examen del Tema 3 se resuelve combinando estas herramientas. Son la base de todo lo que sigue.</p>
+
+<h3>H1. Ecuaciones de equilibrio del solido rigido (2D)</h3>
+<p>Es el pan de cada dia. Un solido rigido en el plano tiene <strong>3 ecuaciones independientes</strong>:</p>
+
+<div class="formula-box gold">
+<div class="label gold">Equilibrio del solido rigido plano</div>
+$$\sum F_x = 0 \qquad \sum F_y = 0 \qquad \sum M_O = 0$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">El punto $O$ para momentos lo eliges tu. Elige siempre el que <strong>elimine mas incognitas</strong> (donde se cruzan las lineas de accion de fuerzas desconocidas).</p>
+</div>
+
+<div class="tip"><strong>Truco:</strong> Si tienes 3 incognitas y 3 ecuaciones, el sistema esta determinado. Si tienes mas incognitas, necesitas <strong>desmontar el sistema</strong> o usar condiciones adicionales (elemento de dos fuerzas, simetria, etc.).</div>
+
+<h3>H2. Diagrama de cuerpo libre (DCL)</h3>
+<p>Antes de escribir ninguna ecuacion, dibuja el DCL. Sin excepciones.</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li>Aisla el solido (o el sistema completo)</li>
+<li>Dibuja TODAS las fuerzas externas: peso, cargas, resortes</li>
+<li>En cada apoyo, dibuja las reacciones segun su tipo (articulacion: $R_x$ y $R_y$; rodillo: solo la normal; cable: solo traccion en la direccion del cable)</li>
+<li>Verifica: n.&ordm; de incognitas = n.&ordm; de ecuaciones disponibles</li>
+</ol>
+</div>
+
+<h3>H3. Tipos de apoyo y sus reacciones</h3>
+<table>
+<tr><th>Apoyo</th><th>Reacciones</th><th>N.&ordm; incognitas</th></tr>
+<tr><td>Articulacion (pasador)</td><td>$R_x$, $R_y$</td><td>2</td></tr>
+<tr><td>Empotramiento</td><td>$R_x$, $R_y$, $M$</td><td>3</td></tr>
+<tr><td>Rodillo</td><td>$N$ (normal a la superficie)</td><td>1</td></tr>
+<tr><td>Cable</td><td>$T$ (en la direccion del cable)</td><td>1</td></tr>
+<tr><td>Superficie lisa</td><td>$N$ (normal al contacto)</td><td>1</td></tr>
+<tr><td>Resorte</td><td>$F = k \cdot \delta$ (en la direccion del resorte)</td><td>0 (fuerza conocida si se conoce $\delta$)</td></tr>
+</table>
+
+<h3>H4. Elemento de dos fuerzas</h3>
+<p>Un solido articulado en solo 2 puntos y <strong>sin ninguna otra carga</strong> externa es un <em>elemento de dos fuerzas</em>: la fuerza interna actua <strong>unicamente a lo largo de la linea que une los dos puntos</strong>.</p>
+
+<div class="formula-box">
+<div class="label purple">Elemento de dos fuerzas</div>
+$$\text{Direccion de la fuerza} = \overrightarrow{AB} \quad\Rightarrow\quad \frac{F_y}{F_x} = \frac{y_B - y_A}{x_B - x_A}$$
+<p style="font-size:.85em;color:var(--text2);margin-top:6px">Reduce 2 incognitas ($F_x$, $F_y$) a 1 sola ($F$ escalar). Aparece en los ejercicios 3.6, 3.25 y en las barras de celosia.</p>
+</div>
+
+<h3>H5. Carga distribuida equivalente</h3>
+<p>Una carga distribuida uniforme $q$ (N/m) se sustituye por una fuerza concentrada:</p>
+
+<div class="formula-box blue">
+<div class="label blue">Resultante de carga distribuida uniforme</div>
+$$Q = q \cdot L \qquad \text{aplicada en el punto medio del tramo}$$
+</div>
+
+<div class="warning"><strong>Carga triangular:</strong> Si la distribucion es triangular (lineal), $Q = \frac{1}{2}q_{\max}\cdot L$ y se aplica a $L/3$ del extremo mayor. Esto sale en los ejercicios 3.11 y 3.23.</div>
+
+<h3>H6. Polea sin rozamiento</h3>
+<p>La tension del cable es la <strong>misma a ambos lados</strong> de la polea. La polea transmite al eje la <strong>resultante vectorial de las dos tensiones</strong>.</p>
+
+<div class="formula-box">
+<div class="label purple">Polea ideal</div>
+$$T_{\text{entrada}} = T_{\text{salida}} = T$$
+$$\vec{F}_{\text{eje}} = \vec{T}_1 + \vec{T}_2 \quad \text{(suma vectorial de las dos ramas)}$$
+</div>
+
+<h3>H7. Metodo de los nudos (celosias)</h3>
+<p>Cada nudo de una celosia es una particula en equilibrio: $\sum F_x = 0$, $\sum F_y = 0$. Solo tiene 2 ecuaciones, asi que resuelve nudos con <strong>a lo sumo 2 incognitas</strong>.</p>
+
+<div class="tip"><strong>Convencion de signos:</strong> Supone que todas las barras estan en traccion (tiran del nudo). Si el resultado sale negativo, la barra esta en compresion.</div>
+
+<h3>H8. Metodo de las secciones (Ritter)</h3>
+<p>Corta la celosia con un plano que atraviese <strong>a lo sumo 3 barras</strong> (si son 3 incognitas, tienes 3 ecuaciones de equilibrio para la parte cortada). Es la herramienta estrella para barras interiores.</p>
+
+<div class="formula-box gold">
+<div class="label gold">Metodo de las secciones &mdash; la clave de las celosias</div>
+<ol style="margin-top:6px">
+<li>Elige el corte que pase por las barras que te interesan</li>
+<li>Toma una de las dos partes de la celosia (la mas sencilla)</li>
+<li>Plantea $\sum F_x = 0$, $\sum F_y = 0$, $\sum M = 0$ sobre esa parte</li>
+<li>Elige el punto de momentos para que elimine 2 de las 3 incognitas</li>
+</ol>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 2: TIPOS -->
+<!-- ============================================ -->
+<div class="section" id="tipos">
+<h2>2. Los 5 tipos de ejercicio de examen</h2>
+<p>Los ejercicios 3.14 a 3.27 encajan en uno de estos 5 patrones:</p>
+
+<div class="ex-type">
+<span class="tag">TIPO A &mdash; El mas dificil conceptualmente</span>
+<h4>Equilibrio con geometria oculta: despejar angulos, pesos minimos, longitudes</h4>
+<p><strong>Ejercicios:</strong> 3.14 (vuelco de vaso), 3.15 (barra en semicirculo), 3.16 (barra + disco con par), 3.18 (barra en semiesfera)</p>
+<p><strong>Piden:</strong> parametros criticos ($Q_{\min}$, $\theta$, $P$, $L$) en funcion de datos geometricos</p>
+<p><strong>Herramientas:</strong> H1 + H2 + H3 + trigonometria</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO B &mdash; Energia</span>
+<h4>Principio de Trabajos Virtuales / Energia potencial</h4>
+<p><strong>Ejercicios:</strong> 3.17</p>
+<p><strong>Piden:</strong> constante $k$ del resorte o posicion de equilibrio</p>
+<p><strong>Herramientas:</strong> $dV/d\theta = 0$ con $V = V_g + V_k$</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO C &mdash; El mas frecuente en examen</span>
+<h4>Celosias: esfuerzos en barras por nudos y/o secciones</h4>
+<p><strong>Ejercicios:</strong> 3.19, 3.20, 3.21, 3.22, 3.23, 3.25</p>
+<p><strong>Piden:</strong> fuerzas internas en barras especificas (traccion/compresion)</p>
+<p><strong>Herramientas:</strong> H1 + H7 + H8</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO D</span>
+<h4>Entramados: varios solidos con articulaciones internas</h4>
+<p><strong>Ejercicios:</strong> 3.24, 3.26</p>
+<p><strong>Piden:</strong> reacciones en apoyos y fuerzas internas</p>
+<p><strong>Herramientas:</strong> H1 + H2 + H4 + H5 + H6 (desmontar en piezas)</p>
+</div>
+
+<div class="ex-type">
+<span class="tag">TIPO E</span>
+<h4>Equilibrio de particula con resorte y geometria circular</h4>
+<p><strong>Ejercicios:</strong> 3.27</p>
+<p><strong>Piden:</strong> deformacion del resorte, angulos, reacciones</p>
+<p><strong>Herramientas:</strong> $\sum F = 0$ en el nudo + geometria del circulo</p>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 3: TIPO A -->
+<!-- ============================================ -->
+<div class="section" id="tipo-a">
+<h2>3. Tipo A: Equilibrio con geometria oculta</h2>
+<p><strong>Patron:</strong> Te dan un sistema con superficies curvas, contactos lisos, barras y discos. La dificultad no esta en las ecuaciones, sino en <em>descifrar la geometria</em> antes de plantear el equilibrio.</p>
+
+<h3>Paso 0 &mdash; Descifrar la geometria (la clave de todo)</h3>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Identifica todos los contactos</strong> y su tipo (liso &rarr; normal, rugoso &rarr; normal + tangencial)</li>
+<li><strong>Dibuja triangulos auxiliares</strong>: la linea entre centros de esferas, los radios a puntos de contacto, las normales a las superficies</li>
+<li><strong>Busca triangulos notables</strong>: isosceles (radios iguales), rectangulos (normal a tangente), equilateros (angulos de 60&deg;)</li>
+<li><strong>Expresa todo en funcion del parametro</strong>: $\theta$, $R$, $r$, etc.</li>
+</ol>
+</div>
+
+<div class="danger"><strong>Error tipico:</strong> Lanzarse a escribir ecuaciones sin haber dibujado bien la geometria. En estos problemas, el 70% del trabajo es geometrico.</div>
+
+<h3>Ejemplo: Vuelco del vaso cilindrico (3.14)</h3>
+<p>La clave geometrica: dos esferas de radio $r$ en un cilindro de radio $R$. La distancia entre centros es $2r$, la distancia horizontal entre centros es $2(R-r)$, lo que define $\cos\alpha = (R-r)/r$.</p>
+<p><strong>Condicion de vuelco:</strong> el vaso pierde contacto por un lado &rarr; toda la reaccion del suelo va a la esquina critica $O$. Impones $\sum M_O = 0$ y despejas $Q_{\min}$.</p>
+<p>Resultado: $Q = \dfrac{2(R-r)}{R}\,mg$</p>
+
+<h3>Ejemplo: Barra en semicirculo (3.15)</h3>
+<p>La clave geometrica: $OA = OC = R$ (triangulo isosceles). La barra $AC$ es la cuerda y su longitud es $L_{AC} = 2R\cos\theta$. La reaccion en $A$ apunta hacia $O$ (normal a la pista circular). La reaccion en $C$ es perpendicular a la barra.</p>
+<p><strong>Truco del sistema de referencia rotado:</strong> usa ejes alineados con la barra ($x$ longitudinal, $y$ perpendicular). Simplifica mucho las proyecciones.</p>
+<p>El equilibrio lleva a una ecuacion cuadratica en $\cos\theta$: $8\cos^2\theta - 3\cos\theta - 4 = 0$, con solucion $\theta \approx 23{,}22&deg;$.</p>
+
+<h3>Ejemplo: Barra en semiesfera (3.18)</h3>
+<p>La clave: <strong>sin rozamiento en el suelo</strong>, la unica reaccion es vertical. Para que el conjunto no ruede, el CG del sistema (casquete + barra) debe estar sobre la vertical de contacto: $x_{CG} = 0$.</p>
+<p>Como ambas masas son $M$: $x_{\text{bowl}} + x_{\text{bar}} = 0$. Con la inclinacion de 30&deg; se calcula la posicion del CG de cada pieza y se despeja $L$.</p>
+
+<h3>Diagrama de decision &mdash; Tipo A</h3>
+<div class="decision">
+<div class="q">Te dan superficies curvas, esferas, barras con contactos lisos?</div>
+<div class="branch">
+  <span class="label yes">SI &rarr;</span> Dibuja <strong>toda la geometria</strong> primero. Identifica triangulos, normales, angulos.
+  <div class="branch" style="margin-top:8px">
+    <span class="label">Despues &rarr;</span> DCL con <strong>reacciones normales</strong> en cada contacto liso
+    <div class="branch" style="margin-top:8px">
+      <span class="label">Despues &rarr;</span> Plantea $\sum F = 0$ y $\sum M = 0$. Si hay un parametro ($\theta$, $L$, $Q$), despejas.
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 4: TIPO B -->
+<!-- ============================================ -->
+<div class="section" id="tipo-b">
+<h2>4. Tipo B: Trabajos virtuales / Energia potencial</h2>
+<p>Cuando un sistema tiene <strong>un unico grado de libertad</strong> (un solo angulo $\theta$ describe todo), el metodo energetico es mas elegante que plantear fuerzas.</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Identifica la coordenada generalizada</strong> $\theta$ (normalmente un angulo)</li>
+<li><strong>Expresa la altura de cada CG</strong> en funcion de $\theta$: $y_i(\theta)$</li>
+<li><strong>Expresa la elongacion del resorte</strong> en funcion de $\theta$: $x_k(\theta)$</li>
+<li><strong>Escribe la energia potencial total:</strong>
+$$V(\theta) = \sum m_i\,g\,y_i(\theta) + \frac{1}{2}k\,(x_k - L_0)^2$$</li>
+<li><strong>Deriva e iguala a cero:</strong> $\dfrac{dV}{d\theta} = 0$</li>
+<li><strong>Evalua en $\theta$ de equilibrio</strong> y despeja la incognita ($k$, $\theta$, etc.)</li>
+</ol>
+</div>
+
+<h3>Ejemplo: Sistema en V con disco y resorte (3.17)</h3>
+<p>Dos barras de masa $M$ forman una V articulada en $E$. Un disco de masa $M$ y radio $R$ reposa en el valle. Un resorte ideal ($L_0 = 0$) une los anclajes inferiores.</p>
+<p>Grado de libertad: $\theta$ (angulo barra-horizontal).</p>
+<p>Alturas: $y_E = 2R\sqrt{3}\sin\theta$, $y_{\text{disco}} = y_E + R/\cos\theta$</p>
+<p>Resorte: $x_k = 2R\sqrt{3}\cos\theta$</p>
+<p>Derivando $V$ y evaluando en $\theta = 60&deg;$:</p>
+$$5\sqrt{3}\,MgR - 3\sqrt{3}\,kR^2 = 0 \quad\Rightarrow\quad k = \frac{5Mg}{3R}$$
+
+<div class="warning"><strong>Error frecuente:</strong> Olvidar que la altura del disco no es simplemente $y_E$, sino que hay que sumar la distancia del centro del disco a la articulacion $E$, que depende de $\theta$.</div>
+
+<div class="tip"><strong>Cuando usar este metodo:</strong> Cuando el sistema tiene <strong>1 GDL</strong> y hay resortes. Es mas rapido que plantear el equilibrio de cada pieza por separado. Si el problema no tiene resorte y no pide posicion de equilibrio, probablemente no necesitas este metodo.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 5: TIPO C -->
+<!-- ============================================ -->
+<div class="section" id="tipo-c">
+<h2>5. Tipo C: Celosias</h2>
+<p>Las celosias son el <strong>tipo mas probable de examen</strong>. Se repite mucho. Domina esta seccion y llevas medio examen hecho.</p>
+
+<h3>Paso 1 &mdash; Reacciones externas</h3>
+<p>Antes de tocar las barras internas, calcula las reacciones en los apoyos:</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li>Toma el sistema como un bloque rigido</li>
+<li>$\sum F_x = 0$ &rarr; componente horizontal</li>
+<li>$\sum M_A = 0$ (respecto a un apoyo) &rarr; reaccion en el otro apoyo</li>
+<li>$\sum F_y = 0$ &rarr; reaccion vertical en el primer apoyo</li>
+</ol>
+</div>
+
+<h3>Paso 2 &mdash; Barras internas: nudos o secciones?</h3>
+
+<div class="decision">
+<div class="q">Que barras te piden?</div>
+<div class="branch">
+  <span class="label yes">Barras cerca de un apoyo</span> &rarr; <strong>Metodo de los nudos</strong> (empieza por el nudo del apoyo, avanza nudo a nudo)
+</div>
+<div class="branch">
+  <span class="label no">Barras interiores, lejos de los apoyos</span> &rarr; <strong>Metodo de las secciones</strong> (un solo corte te da las 3 barras)
+</div>
+<div class="branch">
+  <span class="label">Todas las barras</span> &rarr; Empieza por nudos, complementa con secciones
+</div>
+</div>
+
+<h3>Metodo de los nudos &mdash; Paso a paso</h3>
+
+<div class="step">
+<span class="step-num">1</span> Empieza por un nudo con <strong>maximo 2 barras desconocidas</strong>
+</div>
+<div class="step">
+<span class="step-num">2</span> Supone <strong>todas las barras en traccion</strong> (tiran del nudo hacia afuera)
+</div>
+<div class="step">
+<span class="step-num">3</span> Plantea $\sum F_x = 0$ y $\sum F_y = 0$ en el nudo
+</div>
+<div class="step">
+<span class="step-num">4</span> Si el resultado es <strong>positivo &rarr; traccion (T)</strong>. Si es <strong>negativo &rarr; compresion (C)</strong>
+</div>
+<div class="step">
+<span class="step-num">5</span> Avanza al siguiente nudo. Repite.
+</div>
+
+<h3>Metodo de las secciones &mdash; Paso a paso</h3>
+
+<div class="step">
+<span class="step-num">1</span> Traza un corte que atraviese las barras que te interesan (<strong>maximo 3</strong>)
+</div>
+<div class="step">
+<span class="step-num">2</span> Toma la parte <strong>mas sencilla</strong> (la que tiene menos fuerzas externas)
+</div>
+<div class="step">
+<span class="step-num">3</span> Suma momentos respecto a un punto donde se corten 2 de las 3 barras cortadas &rarr; despeja la tercera directamente
+</div>
+<div class="step">
+<span class="step-num">4</span> Repite con otro punto para la segunda barra, y $\sum F = 0$ para la tercera
+</div>
+
+<h3>Ejemplo: Celosia tipo Pratt (3.23)</h3>
+<p>Celosia de 6 paneles de lado $a$. Piden barras $CD$, $CF$ y $EF$.</p>
+<p><strong>Seccion:</strong> un corte vertical entre los nudos C-E y D-F. La parte izquierda tiene la reaccion en $A$ y las cargas. Tres barras cortadas: $CD$ (cordon superior), $CF$ (diagonal), $EF$ (cordon inferior).</p>
+<ul>
+<li>$\sum M_E = 0$ (donde se cruzan $CF$ y $EF$) &rarr; despeja $CD$</li>
+<li>$\sum M_D = 0$ (donde se cruzan $CD$ y $CF$) &rarr; despeja $EF$</li>
+<li>$\sum F_y = 0$ &rarr; despeja $CF$</li>
+</ul>
+
+<div class="tip"><strong>Truco para celosias simetricas (3.21):</strong> Si la celosia y las cargas son simetricas, el cortante en el panel central es <strong>cero</strong>. Eso significa que la diagonal del panel central tiene fuerza cero. Ahorra calculos.</div>
+
+<div class="warning"><strong>Carga distribuida en celosia (3.23, 3.25):</strong> Una celosia solo tiene fuerzas en los nudos. Si hay una carga distribuida, primero conviertela en cargas concentradas en los nudos donde actua. Si la carga va entre dos nudos del cordon, reparte a partes iguales.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 6: TIPO D -->
+<!-- ============================================ -->
+<div class="section" id="tipo-d">
+<h2>6. Tipo D: Entramados de varios solidos</h2>
+<p><strong>Patron:</strong> Dos o mas barras/vigas conectadas por articulaciones internas. Las incognitas externas (reacciones) + las internas (fuerzas en la articulacion) superan las 3 ecuaciones de un solo cuerpo. Hay que <strong>desmontar</strong>.</p>
+
+<h3>La estrategia de siempre</h3>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Equilibrio global</strong> (todo el sistema como un bloque): da relaciones entre reacciones externas. Las fuerzas internas se cancelan.</li>
+<li><strong>Despiece en articulaciones internas:</strong> aisla cada pieza. Sobre cada pieza actuan las fuerzas externas + las reacciones internas ($C_x$, $C_y$). Por la 3&ordf; Ley de Newton, si la pieza 1 recibe $(C_x, C_y)$ en la articulacion $C$, la pieza 2 recibe $(-C_x, -C_y)$.</li>
+<li><strong>Resuelve pieza a pieza:</strong> empieza por la pieza mas sencilla (menos incognitas).</li>
+</ol>
+</div>
+
+<h3>Conteo de incognitas</h3>
+<table>
+<tr><th>Situacion</th><th>Incognitas</th><th>Ecuaciones</th></tr>
+<tr><td>1 solido, 1 articulacion + 1 rodillo</td><td>3</td><td>3 (1 solido)</td></tr>
+<tr><td>2 solidos, 2 articulaciones externas + 1 articulacion interna</td><td>4 + 2 = 6</td><td>6 (2 solidos &times; 3)</td></tr>
+<tr><td>2 solidos + elemento de dos fuerzas</td><td>5</td><td>6 (sobra 1 como comprobacion)</td></tr>
+</table>
+
+<h3>Ejemplo: Barras ABC + CDE con polea (3.24)</h3>
+<p>Dos barras unidas por articulacion en $C$. La polea en $D$ (sin rozamiento) redirige una carga $P$. Tambien hay carga distribuida $q_0 = P/L$ y un par $PL$.</p>
+<ol>
+<li><strong>Primero:</strong> identifica que la polea da $T = P$ en ambos lados del cable</li>
+<li><strong>Despues:</strong> calcula las fuerzas del cable sobre cada barra</li>
+<li><strong>Finalmente:</strong> equilibrio de cada barra por separado, empezando por $\sum M_C = 0$ en la barra CDE (elimina $C_x$, $C_y$)</li>
+</ol>
+<p>Resultado: $A_x = A_y = P/2$, $E_x = P/2$, $E_y = 3P/2$</p>
+
+<div class="danger"><strong>Error clasico en entramados:</strong> Olvidar la 3&ordf; Ley de Newton en la articulacion interna. Si sobre la pieza 1 actua $(C_x, C_y)$, sobre la pieza 2 actua $(-C_x, -C_y)$. Si pones el mismo signo en las dos, te salen resultados absurdos.</div>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 7: TIPO E -->
+<!-- ============================================ -->
+<div class="section" id="tipo-e">
+<h2>7. Tipo E: Equilibrio de particula con resorte y geometria circular</h2>
+<p>El ejercicio 3.27 es un caso especial: un anillo que desliza por una guia circular, conectado por un resorte y cables.</p>
+
+<div class="step">
+<span class="step-num gold">RECETA</span>
+<ol>
+<li><strong>Parametriza la posicion</strong> del anillo sobre el circulo: $A = R(\cos\phi, \sin\phi)$</li>
+<li><strong>La reaccion de la guia</strong> es radial (apunta hacia el centro $O$)</li>
+<li><strong>El resorte</strong> ejerce $F = k\,\delta$ en la direccion de la cuerda $AB$</li>
+<li><strong>Plantea $\sum F_x = 0$, $\sum F_y = 0$</strong> en el nudo (es una particula)</li>
+<li><strong>Despeja</strong> la deformacion $\delta$, el angulo, y las reacciones</li>
+</ol>
+</div>
+
+<p><strong>En el ejercicio 3.27:</strong> las tensiones $T_1$ y $T_2$ son datos. Del equilibrio del nudo $B$ sale que $\delta = R$ y $\alpha_{AB} = 60&deg;$.</p>
+
+</div>
+
+<!-- ============================================ -->
+<!-- SECTION 8: CHECKLIST -->
+<!-- ============================================ -->
+<div class="section" id="resumen">
+<h2>8. Checklist antes del examen</h2>
+
+<h3>Domina estas operaciones (sin pensar)</h3>
+<table>
+<tr><th>Operacion</th><th>Cuando se usa</th><th>Practica hasta que...</th></tr>
+<tr><td>DCL completo</td><td>TODOS los ejercicios</td><td>Lo dibujes en 30 segundos</td></tr>
+<tr><td>$\sum M_O = 0$ eligiendo buen punto</td><td>Cada vez que hay 2+ incognitas que quieres eliminar</td><td>Identifiques el punto optimo de momentos a simple vista</td></tr>
+<tr><td>Descomposicion con $\sin$ y $\cos$</td><td>Fuerzas inclinadas, barras con angulos</td><td>No confundas seno con coseno</td></tr>
+<tr><td>Metodo de las secciones</td><td>Celosias (barras interiores)</td><td>Lo hagas en 3 minutos</td></tr>
+<tr><td>Metodo de los nudos</td><td>Celosias (barras cerca de apoyos)</td><td>No necesites reescribir las ecuaciones</td></tr>
+</table>
+
+<h3>Ante un ejercicio de examen, preguntate:</h3>
+<div class="decision">
+<div class="q">1. Que tipo de estructura es?</div>
+<div class="branch"><span class="label">Celosia (barras articuladas, cargas en nudos)</span> &rarr; <strong>Tipo C</strong></div>
+<div class="branch"><span class="label">Entramado (vigas con cargas, articulaciones internas)</span> &rarr; <strong>Tipo D</strong></div>
+<div class="branch"><span class="label">Solido unico con geometria compleja (curvas, esferas)</span> &rarr; <strong>Tipo A</strong></div>
+<div class="branch"><span class="label">Sistema con resorte y 1 GDL</span> &rarr; <strong>Tipo B</strong></div>
+<div class="branch"><span class="label">Particula sobre guia circular con resorte</span> &rarr; <strong>Tipo E</strong></div>
+</div>
+
+<div class="decision">
+<div class="q">2. Cuantas incognitas tengo?</div>
+<div class="branch"><span class="label yes">3 o menos</span> &rarr; Equilibrio directo de un solo cuerpo</div>
+<div class="branch"><span class="label no">Mas de 3</span> &rarr; Desmontar en piezas o buscar elementos de dos fuerzas</div>
+</div>
+
+<div class="decision">
+<div class="q">3. Hay carga distribuida?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Sustituye por resultante antes de plantear ecuaciones</div>
+</div>
+
+<div class="decision">
+<div class="q">4. Hay polea?</div>
+<div class="branch"><span class="label yes">SI</span> &rarr; Tension igual a ambos lados. Calcula la fuerza resultante sobre el eje.</div>
+</div>
+
+<h3>Errores que cuestan puntos</h3>
+<table>
+<tr><th>Error</th><th>Consecuencia</th><th>Como evitarlo</th></tr>
+<tr><td>No dibujar el DCL</td><td>Olvidas una fuerza y todo sale mal</td><td>SIEMPRE dibuja el DCL completo antes de escribir ecuaciones</td></tr>
+<tr><td>Olvidar la 3&ordf; Ley en articulaciones internas</td><td>Signos opuestos en las piezas</td><td>Escribe explicitamente: pieza 1 recibe $(C_x,C_y)$, pieza 2 recibe $(-C_x,-C_y)$</td></tr>
+<tr><td>Confundir traccion con compresion en celosias</td><td>El signo del resultado</td><td>Convencion: supone traccion. Resultado negativo = compresion</td></tr>
+<tr><td>Elegir mal el punto de momentos</td><td>Ecuaciones mas largas de lo necesario</td><td>Elige el punto donde se cruzan las lineas de accion de las fuerzas que NO quieres calcular</td></tr>
+<tr><td>No sustituir la carga distribuida</td><td>Integral mal hecha o resultante mal ubicada</td><td>$Q = q \cdot L$ en el punto medio (uniforme) o $Q = \frac{1}{2}q_{\max}L$ a $L/3$ (triangular)</td></tr>
+<tr><td>Cortar mas de 3 barras en celosia</td><td>Sistema indeterminado</td><td>El corte debe pasar por maximo 3 barras desconocidas</td></tr>
+<tr><td>Usar $g = 9{,}81$ en vez de $g = 9{,}8\ \text{m/s}^2$</td><td>Error numerico</td><td>Convencion UPV/EHU: $g = 9{,}8\ \text{m/s}^2$</td></tr>
+</table>
+
+<h3>Verificaciones rapidas</h3>
+<div class="formula-box green">
+<div class="label green">Comprobaciones para no entregar errores</div>
+<ul>
+<li><strong>Equilibrio global:</strong> Suma todas las fuerzas externas (cargas + reacciones). Si no da cero, hay un error.</li>
+<li><strong>Momentos en otro punto:</strong> Una vez calculadas las reacciones, suma momentos respecto a un punto diferente al que usaste. Debe dar cero.</li>
+<li><strong>Celosias &mdash; ecuaciones sobrantes:</strong> Al terminar todos los nudos, las ecuaciones del ultimo nudo deben verificarse automaticamente. Si no cuadran, hay un error en algun nudo anterior.</li>
+<li><strong>Signos de traccion/compresion:</strong> Los cordones superiores de celosias cargadas arriba suelen estar en compresion, y los inferiores en traccion (y viceversa si la carga va abajo). Comprueba que tiene sentido fisico.</li>
+<li><strong>Dimensiones:</strong> Si trabajas con parametros ($P$, $a$, $R$...), verifica que el resultado tiene las unidades correctas ($[k] = \text{N/m}$, $[F] = \text{N}$, etc.).</li>
+</ul>
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">Manual Tema 3 &middot; Mecanica Aplicada &middot; UPV/EHU &middot; 2025&ndash;26</div>
+
+</body>
+</html>
