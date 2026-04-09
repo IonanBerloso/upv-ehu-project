@@ -164,15 +164,24 @@ body::after{
 /* ══════════════════════════════════════
    ALERT BANNER
 ══════════════════════════════════════ */
-.alert{display:flex;align-items:center;gap:14px;padding:13px 18px;border-radius:8px;
-  background:rgba(255,69,96,.07);border:1px solid rgba(255,69,96,.25);position:relative;overflow:hidden}
-.alert::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:var(--red);box-shadow:0 0 14px rgba(255,69,96,.7)}
-.alert-ic{color:var(--red);flex-shrink:0;font-size:1em;
-  text-shadow:0 0 10px rgba(255,69,96,.7);animation:blink 2s ease-in-out infinite}
-.alert-body{font-size:.75em;color:var(--txt2);line-height:1.6}
-.alert-body strong{color:#ff4560;font-size:1.1em}
-.alert-sub{font-size:.85em;color:var(--txt3);margin-top:3px}
+.alert{display:flex;align-items:center;gap:0;padding:0;border-radius:8px;
+  background:rgba(255,69,96,.06);border:1px solid rgba(255,69,96,.22);overflow:hidden}
+.alert-left{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:12px 18px;background:rgba(255,69,96,.12);border-right:1px solid rgba(255,69,96,.2);
+  flex-shrink:0;min-width:64px}
+.alert-count{font-family:'JetBrains Mono',monospace;font-size:1.6em;font-weight:700;
+  color:#ff4560;line-height:1;text-shadow:0 0 16px rgba(255,69,96,.6)}
+.alert-unit{font-family:'JetBrains Mono',monospace;font-size:.5em;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,69,96,.6);margin-top:2px}
+.alert-divider{width:1px;background:rgba(255,69,96,.15);align-self:stretch}
+.alert-body{padding:10px 16px;flex:1}
+.alert-main{font-size:.74em;color:var(--txt);line-height:1.4}
+.alert-hi{color:#ff4560;font-weight:600}
+.alert-sub{font-size:.65em;color:var(--txt3);margin-top:4px;letter-spacing:.02em}
+.alert-badge{padding:0 14px;align-self:stretch;display:flex;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:.5em;letter-spacing:.15em;
+  text-transform:uppercase;color:rgba(255,69,96,.5);border-left:1px solid rgba(255,69,96,.15);
+  flex-shrink:0;writing-mode:vertical-rl;text-orientation:mixed}
 
 /* ══════════════════════════════════════
    SUBJECT CARDS
@@ -508,11 +517,16 @@ body::after{
 
     <!-- Alert -->
     <div class="alert">
-      <div class="alert-ic">⚠</div>
-      <div class="alert-body">
-        <strong id="alert-days">-- días</strong> para el primer examen. Máxima prioridad: Mecánica de Fluidos hasta el 28 de mayo.
-        <div class="alert-sub">Mecánica Aplicada · 57D &nbsp;|&nbsp; Sistemas de Producción · no prioritaria hasta junio</div>
+      <div class="alert-left">
+        <div class="alert-count" id="alert-days">--</div>
+        <div class="alert-unit">días</div>
       </div>
+      <div class="alert-divider"></div>
+      <div class="alert-body">
+        <div class="alert-main">Próximo examen · <span class="alert-hi">Mecánica de Fluidos</span> — 28 de mayo</div>
+        <div class="alert-sub">Mecánica Aplicada · 5 Jun &nbsp;·&nbsp; Sistemas de Producción · 10 Jun</div>
+      </div>
+      <div class="alert-badge">PRIORITARIO</div>
     </div>
 
     <!-- ── CARDS ── -->
@@ -1060,7 +1074,7 @@ function scrollToSection(id){
       if(i === 0){
         set(e.hd, pad(d)); set(e.hh, pad(h)); set(e.hm, pad(m2));
         set(e.sb_d, pad(d)); set(e.sb_h, pad(h));
-        set(e.alert, d + ' días');
+        set(e.alert, d);
         set(e.stat, d);
       }
     });
