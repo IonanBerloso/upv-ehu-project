@@ -164,6 +164,11 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
 .sb-head{padding:14px 12px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
 .sb-subtitle{font-size:.7em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:4px}
 .sb-current{font-size:.76em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-search{position:relative;margin-top:8px}
+.sb-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+.sb-search-input{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:7px 10px 7px 30px;color:var(--text);font-size:.82em;font-family:var(--ff);outline:none;transition:border-color var(--transition);}
+.sb-search-input::placeholder{color:var(--text3)}
+.sb-search-input:focus{border-color:var(--accent)}
 .sb-list{flex:1;overflow-y:auto;padding:6px 6px 20px}
 .sb-item{
   width:100%;display:flex;align-items:center;gap:9px;
@@ -254,6 +259,10 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
     <div class="sb-head">
       <div class="sb-subtitle">4 temas</div>
       <div class="sb-current" id="sbCurrent">T1 · Torneado</div>
+      <div class="sb-search">
+        <svg class="sb-search-icon" width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z"/></svg>
+        <input class="sb-search-input" type="text" placeholder="Buscar tema&#8230;" oninput="filterSidebar(this.value)">
+      </div>
     </div>
     <div class="sb-list">
       <button class="sb-item" onclick="showTopic('t1')" data-id="t1">
@@ -1292,6 +1301,14 @@ function updateProgress(){
   bar.style.transform = 'scaleX('+pct+')';
 }
 window.addEventListener('scroll', updateProgress, {passive:true});
+
+function filterSidebar(q) {
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('.sb-item').forEach(function(btn){
+    if (!q){ btn.style.display=''; return; }
+    btn.style.display = btn.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
 
 </script>
 </body>
