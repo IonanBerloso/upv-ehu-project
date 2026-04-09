@@ -463,8 +463,8 @@ body::after{
     </div>
 
     <div class="sb-cat">Sistema</div>
-    <div class="nav active"><span class="nav-ic">▣</span>Dashboard</div>
-    <div class="nav" onclick="scrollToSection('plan')"><span class="nav-ic">◈</span>Plan de Estudio</div>
+    <div class="nav active" onclick="scrollToTop()"><span class="nav-ic">▣</span>Dashboard</div>
+    <div class="nav" onclick="openPlan()"><span class="nav-ic">◈</span>Plan de Estudio</div>
     <div class="nav" onclick="scrollToSection('stats')"><span class="nav-ic">◉</span>Progreso</div>
     <div class="nav" onclick="scrollToSection('tools')"><span class="nav-ic">◎</span>Herramientas</div>
 
@@ -941,6 +941,20 @@ function switchPlan(id, btn){
 /* ══════════════════════════════
    SIDEBAR SCROLL LINKS
 ══════════════════════════════ */
+function scrollToTop(){
+  document.getElementById('main-scroll').scrollTo({top:0, behavior:'smooth'});
+}
+
+function openPlan(){
+  var body = document.getElementById('planBody');
+  var chev = document.getElementById('planChev');
+  if(!body.classList.contains('open')){
+    body.classList.add('open');
+    chev.classList.add('open');
+  }
+  setTimeout(function(){ scrollToSection('plan'); }, 50);
+}
+
 function scrollToSection(id){
   var el = document.getElementById(id);
   var main = document.getElementById('main-scroll');
