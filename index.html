@@ -3,762 +3,901 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#131313">
+<meta name="theme-color" content="#080808">
 <meta name="description" content="UPV/EHU — Engineering Command Center — Mecánica de Fluidos, Mecánica Aplicada y Sistemas de Producción">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<title>EHU·LAB — Engineering Command Center</title>
-
-
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>EHU·LAB — Command Center</title>
 <style>
-/* ── DESIGN TOKENS ── */
+/* ══════════════════════════════════════
+   TOKENS
+══════════════════════════════════════ */
 :root{
-  --bg:#131313;
-  --surface:#1c1c1c;
-  --surface-high:#252525;
-  --glass:rgba(22,22,22,0.8);
-  --border:rgba(255,255,255,0.06);
-  --ghost:rgba(137,146,153,0.12);
-
-  --fluidos:#7ECFFF;
-  --mecanica:#C084FC;
-  --sistemas:#FCD34D;
-  --calculo:#4ade80;
-
-  --text:#E2E8F0;
-  --text2:#94A3B8;
-  --text3:#475569;
-
-  --ff-display:'Space Grotesk',sans-serif;
-  --ff-body:'Inter',sans-serif;
-  --ff-mono:'JetBrains Mono',monospace;
+  --green:#00ff9d;  --gr:0,255,157;
+  --cyan:#00f0ff;   --cr:0,240,255;
+  --purple:#b47fff; --pr:180,127,255;
+  --amber:#f5b942;  --ar:245,185,66;
+  --red:#ff4560;
+  --bg:#080808; --s1:#0d0d0d; --s2:#121212; --s3:#181818;
+  --line:rgba(255,255,255,0.055);
+  --line-g:rgba(0,255,157,0.12);
+  --txt:#cdd6e0; --txt2:#617080; --txt3:#303d4a;
+  --mono:'JetBrains Mono',monospace;
+  --ui:'Space Grotesk',sans-serif;
+  --r:276.5; /* 2π×44 */
 }
 
+/* ══════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--ff-body);background:var(--bg);color:var(--text);overflow-x:hidden}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--mono);background:var(--bg);color:var(--txt);display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:rgba(var(--gr),.2);border-radius:2px}
 
-/* ── AMBIENT GLOWS ── */
-.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.07}
-.blob-f{background:#7ECFFF;width:520px;height:520px;top:-160px;left:-160px}
-.blob-m{background:#C084FC;width:420px;height:420px;bottom:-80px;right:-120px}
-.blob-s{background:#FCD34D;width:260px;height:260px;top:45%;left:42%;opacity:.05}
+/* Grid bg */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(var(--gr),.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--gr),.02) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+/* Scanlines */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:3;
+  background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);
+}
+/* Ambient */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0}
+.amb::before{content:'';position:absolute;width:800px;height:600px;top:-250px;left:-200px;
+  background:radial-gradient(ellipse,rgba(var(--cr),.04) 0%,transparent 65%);
+  animation:breathe 9s ease-in-out infinite alternate}
+.amb::after{content:'';position:absolute;width:700px;height:600px;bottom:-200px;right:-150px;
+  background:radial-gradient(ellipse,rgba(var(--pr),.04) 0%,transparent 65%);
+  animation:breathe 12s ease-in-out infinite alternate-reverse}
+@keyframes breathe{0%{opacity:.5;transform:scale(1)}100%{opacity:1;transform:scale(1.15)}}
 
-.page-wrap{position:relative;z-index:1}
-
-/* ── TOPBAR ── */
+/* ══════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════ */
 .topbar{
+  position:relative;z-index:20;height:50px;flex-shrink:0;
+  background:rgba(6,6,6,.98);border-bottom:1px solid var(--line-g);
+  display:flex;align-items:center;justify-content:space-between;padding:0 24px;
+}
+.topbar::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(var(--cr),.6) 25%,rgba(var(--gr),.8) 50%,rgba(var(--cr),.6) 75%,transparent);
+}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-logo{font-family:var(--ui);font-size:1.05em;font-weight:700;letter-spacing:.1em}
+.tb-logo em{color:var(--green);font-style:normal;text-shadow:0 0 12px rgba(var(--gr),.7)}
+.tb-tag{font-size:.5em;letter-spacing:.18em;color:var(--txt3);border:1px solid rgba(var(--gr),.12);padding:2px 8px;border-radius:3px;text-transform:uppercase}
+.tb-right{display:flex;align-items:center;gap:18px}
+.tb-terminal{font-size:.57em;letter-spacing:.1em;color:var(--txt2)}
+.tb-terminal em{color:var(--green);font-style:normal;text-shadow:0 0 8px rgba(var(--gr),.6)}
+.cursor{display:inline-block;width:7px;height:11px;background:var(--green);margin-left:2px;vertical-align:middle;
+  animation:caret 1.1s step-end infinite;box-shadow:0 0 6px rgba(var(--gr),.8)}
+@keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
+.hud{display:flex;align-items:center;gap:4px;font-size:.7em}
+.hud-lbl{font-size:.76em;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-right:4px}
+.hud-n{font-weight:700;color:var(--cyan);text-shadow:0 0 10px rgba(var(--cr),.7)}
+.hud-u{font-size:.6em;color:var(--txt3);margin:0 3px 0 1px}
+.hud-sub{font-size:.75em;color:var(--txt2);border-left:1px solid var(--line);padding-left:8px;margin-left:4px}
+.online{display:flex;align-items:center;gap:6px;font-size:.56em;letter-spacing:.1em;color:var(--green);text-transform:uppercase;
+  text-shadow:0 0 8px rgba(var(--gr),.4)}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px rgba(var(--gr),.8);animation:blink 2.2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 8px rgba(var(--gr),.8)}50%{opacity:.2;box-shadow:none}}
+/* Hamburger */
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;background:none;border:none}
+.burger span{width:20px;height:1.5px;background:var(--green);border-radius:2px;display:block;transition:.2s}
+
+/* ══════════════════════════════════════
+   SHELL
+══════════════════════════════════════ */
+.shell{display:flex;flex:1;overflow:hidden;position:relative;z-index:1}
+
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+.sidebar{
+  width:268px;flex-shrink:0;
+  background:rgba(9,9,9,.99);border-right:1px solid var(--line-g);
+  display:flex;flex-direction:column;overflow-y:auto;position:relative;z-index:10;
+  transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.sidebar::after{content:'';position:absolute;top:0;right:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(var(--gr),.22) 35%,rgba(var(--cr),.18) 65%,transparent);pointer-events:none}
+
+.sb-head{padding:16px 16px 12px;border-bottom:1px solid var(--line)}
+.sb-course{font-family:var(--ui);font-size:.72em;font-weight:700;letter-spacing:.04em;margin-bottom:2px}
+.sb-meta{font-size:.54em;color:var(--txt3);letter-spacing:.08em}
+
+.sb-next{margin:10px 12px;padding:9px 12px;
+  background:rgba(var(--cr),.03);border:1px solid rgba(var(--cr),.1);border-left:2px solid var(--cyan);border-radius:6px}
+.sb-next-lbl{font-size:.47em;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
+.sb-next-name{font-size:.65em;font-weight:700;color:var(--cyan);text-shadow:0 0 8px rgba(var(--cr),.5);margin-bottom:1px}
+.sb-next-cd{font-size:.57em;color:var(--txt2)}
+.sb-next-cd span{color:var(--cyan);font-weight:700}
+
+.sb-cat{font-size:.46em;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);
+  padding:12px 16px 4px;display:flex;align-items:center;gap:7px}
+.sb-cat::after{content:'';flex:1;height:1px;background:var(--line)}
+
+.nav{display:flex;align-items:center;gap:9px;padding:8px 16px;
+  font-size:.65em;letter-spacing:.04em;color:var(--txt3);cursor:pointer;
+  border-left:2px solid transparent;transition:all .14s;text-transform:uppercase}
+.nav:hover{color:var(--txt2);background:rgba(255,255,255,.022);border-left-color:rgba(255,255,255,.12)}
+.nav.active{color:var(--green);border-left-color:var(--green);
+  background:linear-gradient(90deg,rgba(var(--gr),.07),transparent);
+  text-shadow:0 0 10px rgba(var(--gr),.4)}
+.nav-ic{width:14px;text-align:center;flex-shrink:0;font-size:1em}
+.c-c{color:rgba(var(--cr),.7) !important}.c-c:hover{color:var(--cyan) !important}
+.c-p{color:rgba(var(--pr),.7) !important}.c-p:hover{color:var(--purple) !important}
+.c-a{color:rgba(var(--ar),.7) !important}.c-a:hover{color:var(--amber) !important}
+
+.sub{padding:3px 16px 3px 42px;font-size:.56em;color:var(--txt3);cursor:pointer;transition:.12s}
+.sub:hover{color:var(--txt2)}
+.sub::before{content:'└ ';opacity:.25}
+
+.sb-foot{margin-top:auto;padding:12px 16px;border-top:1px solid var(--line)}
+.sb-foot-time{font-size:.56em;color:var(--txt3);margin-bottom:5px;letter-spacing:.05em}
+.sb-foot-row{display:flex;align-items:center;gap:5px}
+.sb-foot-row span{font-size:.5em;letter-spacing:.1em;color:var(--txt3);text-transform:uppercase}
+
+/* ══════════════════════════════════════
+   MAIN
+══════════════════════════════════════ */
+.main{flex:1;overflow-y:auto;padding:22px 26px 52px;display:flex;flex-direction:column;gap:22px}
+
+/* Section header */
+.sh{display:flex;align-items:center;gap:10px}
+.sh-txt{font-size:.49em;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);flex-shrink:0}
+.sh-line{flex:1;height:1px;background:linear-gradient(90deg,var(--line-g),transparent)}
+.sh-n{font-size:.47em;color:var(--txt3);letter-spacing:.08em}
+
+/* ══════════════════════════════════════
+   ALERT BANNER
+══════════════════════════════════════ */
+.alert{display:flex;align-items:flex-start;gap:12px;padding:11px 15px;border-radius:8px;
+  background:rgba(255,69,96,.05);border:1px solid rgba(255,69,96,.18);position:relative;overflow:hidden}
+.alert::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--red);box-shadow:0 0 10px rgba(255,69,96,.6)}
+.alert-ic{color:var(--red);flex-shrink:0;margin-top:1px;font-size:.85em;
+  text-shadow:0 0 8px rgba(255,69,96,.6);animation:blink 2s ease-in-out infinite}
+.alert-body{font-size:.63em;color:var(--txt2);line-height:1.5}
+.alert-body strong{color:var(--txt)}
+.alert-sub{font-size:.88em;color:var(--txt3);margin-top:2px}
+
+/* ══════════════════════════════════════
+   SUBJECT CARDS
+══════════════════════════════════════ */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+
+.scard{
+  background:var(--s1);border-radius:13px;border:1px solid var(--line);
+  display:flex;flex-direction:column;position:relative;overflow:hidden;
+  transition:transform .22s cubic-bezier(.2,.8,.3,1),border-color .22s,box-shadow .22s;
+  cursor:pointer;
+}
+.scard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;z-index:1}
+.scard::after{content:'';position:absolute;bottom:0;right:0;width:16px;height:16px;
+  border-bottom:1px solid var(--line);border-right:1px solid var(--line);border-radius:0 0 13px 0;transition:.22s}
+
+.sf::before{background:linear-gradient(90deg,transparent 5%,var(--cyan) 50%,transparent 95%);opacity:.6}
+.sf{border-color:rgba(var(--cr),.1)}
+.sf:hover{transform:scale(1.016) translateY(-2px);border-color:rgba(var(--cr),.4);
+  box-shadow:0 10px 55px rgba(var(--cr),.13),0 0 0 1px rgba(var(--cr),.1),inset 0 0 60px rgba(var(--cr),.02)}
+.sf:hover::after{border-color:rgba(var(--cr),.3)}
+
+.sm::before{background:linear-gradient(90deg,transparent 5%,var(--purple) 50%,transparent 95%);opacity:.6}
+.sm{border-color:rgba(var(--pr),.1)}
+.sm:hover{transform:scale(1.016) translateY(-2px);border-color:rgba(var(--pr),.4);
+  box-shadow:0 10px 55px rgba(var(--pr),.13),0 0 0 1px rgba(var(--pr),.1),inset 0 0 60px rgba(var(--pr),.02)}
+.sm:hover::after{border-color:rgba(var(--pr),.3)}
+
+.ss::before{background:linear-gradient(90deg,transparent 5%,var(--amber) 50%,transparent 95%);opacity:.6}
+.ss{border-color:rgba(var(--ar),.1)}
+.ss:hover{transform:scale(1.016) translateY(-2px);border-color:rgba(var(--ar),.4);
+  box-shadow:0 10px 55px rgba(var(--ar),.13),0 0 0 1px rgba(var(--ar),.1),inset 0 0 60px rgba(var(--ar),.02)}
+.ss:hover::after{border-color:rgba(var(--ar),.3)}
+
+.sc-inner{padding:17px 17px 11px}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.sc-info{flex:1}
+.sc-eye{font-size:.49em;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.sc-title{font-family:var(--ui);font-size:.83em;font-weight:700;color:var(--txt);line-height:1.35}
+.sc-meta{font-size:.54em;color:var(--txt3);margin-top:4px}
+
+/* ── BIG RING ── */
+.ring-wrap{flex-shrink:0}
+.ring-svg{overflow:visible;display:block}
+.ring-track-pulse{animation:rtp 3s ease-in-out infinite}
+@keyframes rtp{0%,100%{opacity:.08}50%{opacity:.16}}
+
+.sc-div{height:1px;background:var(--line);margin:11px 17px 9px}
+
+/* Topics */
+.topics{padding:0 17px 7px;display:flex;flex-direction:column;gap:2px}
+.tr{display:flex;align-items:center;gap:6px;font-size:.61em;color:var(--txt2);padding:2px 0}
+.dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.d-done{background:var(--green);box-shadow:0 0 5px rgba(var(--gr),.7)}
+.d-active{background:var(--amber);box-shadow:0 0 5px rgba(var(--ar),.6);animation:dt 2s ease-in-out infinite}
+.d-queue{background:transparent;border:1px solid var(--txt3)}
+@keyframes dt{0%,100%{opacity:1}50%{opacity:.3}}
+.tbadge{margin-left:auto;font-size:.82em;padding:1px 6px;border-radius:3px;flex-shrink:0;border:1px solid}
+.tb-a{color:var(--amber);background:rgba(var(--ar),.08);border-color:rgba(var(--ar),.2)}
+.tb-q{color:var(--txt3);background:rgba(255,255,255,.03);border-color:var(--line)}
+
+/* CD strip */
+.cd-strip{display:flex;align-items:center;justify-content:space-between;
+  margin:0 17px;padding:7px 11px;border-radius:6px;
+  background:rgba(0,0,0,.35);border:1px solid var(--line)}
+.cd-lbl{font-size:.52em;letter-spacing:.07em;color:var(--txt3);text-transform:uppercase}
+.cd-nums{display:flex;align-items:baseline}
+.cd-n{font-size:.84em;font-weight:700}
+.cd-u{font-size:.47em;color:var(--txt3);margin:0 3px 0 1px}
+
+/* Actions */
+.sc-actions{display:flex;gap:7px;padding:11px 17px 15px;margin-top:auto}
+.abtn{flex:1;text-align:center;padding:8px 5px;border-radius:7px;font-size:.61em;
+  font-weight:700;letter-spacing:.07em;text-transform:uppercase;transition:all .17s;
+  cursor:pointer;display:block;font-family:var(--mono);border:1px solid}
+.a-c{background:rgba(var(--cr),.07);color:var(--cyan);border-color:rgba(var(--cr),.2)}
+.a-c:hover{background:rgba(var(--cr),.15);box-shadow:0 0 18px rgba(var(--cr),.25);border-color:rgba(var(--cr),.5)}
+.a-p{background:rgba(var(--pr),.07);color:var(--purple);border-color:rgba(var(--pr),.2)}
+.a-p:hover{background:rgba(var(--pr),.15);box-shadow:0 0 18px rgba(var(--pr),.25);border-color:rgba(var(--pr),.5)}
+.a-a{background:rgba(var(--ar),.07);color:var(--amber);border-color:rgba(var(--ar),.2)}
+.a-a:hover{background:rgba(var(--ar),.15);box-shadow:0 0 18px rgba(var(--ar),.25);border-color:rgba(var(--ar),.5)}
+.a-g{background:rgba(255,255,255,.035);color:var(--txt2);border-color:var(--line)}
+.a-g:hover{background:rgba(255,255,255,.07);color:var(--txt);border-color:rgba(255,255,255,.1)}
+
+/* ══════════════════════════════════════
+   PLAN DE ESTUDIO
+══════════════════════════════════════ */
+.plan-box{background:var(--s1);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.plan-head{
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 32px;height:52px;
-  background:rgba(10,10,10,0.92);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:100;
+  padding:12px 17px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.2);
+  cursor:pointer;transition:.15s;
 }
-.topbar-logo{
-  font-family:var(--ff-display);font-weight:700;font-size:1.1em;
-  letter-spacing:.06em;color:var(--text);
-}
-.topbar-logo span{color:var(--fluidos)}
-.topbar-right{display:flex;align-items:center;gap:14px}
-.sys-status{
-  font-family:var(--ff-mono);font-size:.68em;color:#4ade80;
-  letter-spacing:.06em;display:flex;align-items:center;gap:6px;
-}
-.sys-dot{
-  width:6px;height:6px;border-radius:50%;background:#4ade80;
-  animation:blink 2.4s ease-in-out infinite;
-}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.course-tag{
-  font-family:var(--ff-mono);font-size:.65em;color:var(--text3);
-  letter-spacing:.05em;background:var(--surface);
-  padding:3px 10px;border-radius:4px;border:1px solid var(--border);
-}
+.plan-head:hover{background:rgba(0,0,0,.35)}
+.plan-badge{display:flex;align-items:center;gap:8px;font-size:.6em;letter-spacing:.1em;
+  color:var(--green);text-transform:uppercase;text-shadow:0 0 8px rgba(var(--gr),.5)}
+.plan-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px rgba(var(--gr),.8);animation:blink 2s ease-in-out infinite}
+.plan-head-meta{font-size:.56em;color:var(--txt3);letter-spacing:.06em;display:flex;align-items:center;gap:8px}
+.plan-chev{color:var(--txt3);font-size:.7em;transition:transform .25s}
+.plan-chev.open{transform:rotate(180deg)}
 
-/* ── HERO ── */
-.hero{padding:52px 32px 36px;max-width:1200px;margin:0 auto}
-.hero-eyebrow{
-  font-family:var(--ff-mono);font-size:1em;color:var(--text2);
-  letter-spacing:.14em;text-transform:uppercase;
-  margin-bottom:16px;display:flex;align-items:center;gap:10px;
-}
-.hero-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--text2)}
-.hero-sub{font-size:1.25em;color:var(--text);line-height:1.65;max-width:640px;font-weight:500}
-
-/* ── GRID ── */
-.subjects-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  grid-auto-rows:1fr;
-  gap:20px;padding:0 32px 32px;max-width:1300px;margin:0 auto;
-  align-items:stretch;
-}
-
-/* ── CARD ── */
-.subject-card{
-  background:var(--glass);
-  backdrop-filter:blur(16px);
-  border-radius:16px;
-  border:1px solid var(--ghost);
-  display:flex;flex-direction:column;
-  transition:border-color .2s,transform .2s,box-shadow .2s;
-  overflow:hidden;
-}
-/* inner top glow */
-.sc-fluidos{ box-shadow:inset 0 1px 0 rgba(126,207,255,.14); }
-.sc-mecanica{ box-shadow:inset 0 1px 0 rgba(192,132,252,.14); }
-.sc-sistemas{ box-shadow:inset 0 1px 0 rgba(252,211,77,.14); }
-.sc-calculo{ box-shadow:inset 0 1px 0 rgba(74,222,128,.14); }
-
-.sc-fluidos:hover{border-color:rgba(126,207,255,.3);transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(126,207,255,.14),0 10px 40px rgba(126,207,255,.08)}
-.sc-mecanica:hover{border-color:rgba(192,132,252,.3);transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(192,132,252,.14),0 10px 40px rgba(192,132,252,.08)}
-.sc-sistemas:hover{border-color:rgba(252,211,77,.3);transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(252,211,77,.14),0 10px 40px rgba(252,211,77,.08)}
-.sc-calculo:hover{border-color:rgba(74,222,128,.3);transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(74,222,128,.14),0 10px 40px rgba(74,222,128,.08)}
-
-/* card header */
-.card-head{
-  display:flex;justify-content:space-between;align-items:flex-start;
-  padding:28px 28px 20px;gap:16px;
-}
-.card-head-info{flex:1;min-width:0}
-
-.course-code{
-  font-family:var(--ff-mono);font-size:.65em;letter-spacing:.1em;
-  padding:3px 9px;border-radius:4px;display:inline-block;margin-bottom:10px;
-}
-.sc-fluidos  .course-code{color:var(--fluidos);background:rgba(126,207,255,.1);border:1px solid rgba(126,207,255,.2)}
-.sc-mecanica .course-code{color:var(--mecanica);background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.2)}
-.sc-sistemas .course-code{color:var(--sistemas);background:rgba(252,211,77,.1);border:1px solid rgba(252,211,77,.2)}
-.sc-calculo  .course-code{color:var(--calculo);background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2)}
-
-.card-title{
-  font-family:var(--ff-display);font-size:1.35em;font-weight:700;
-  color:var(--text);line-height:1.2;margin-bottom:8px;
-}
-.card-desc{font-size:.82em;color:var(--text2);line-height:1.55}
-
-/* mastery circle */
-.mastery{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:2px}
-.mastery svg{display:block}
-.mastery-pct{font-family:var(--ff-mono);font-size:.88em;font-weight:700;line-height:1}
-.mastery-lbl{font-family:var(--ff-mono);font-size:.52em;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
-.sc-fluidos  .mastery-pct{color:var(--fluidos)}
-.sc-mecanica .mastery-pct{color:var(--mecanica)}
-.sc-sistemas .mastery-pct{color:var(--sistemas)}
-.sc-calculo  .mastery-pct{color:var(--calculo)}
-
-.card-hr{height:1px;background:var(--border);margin:0 28px}
-
-/* topic registry */
-.topic-reg{padding:16px 28px}
-.topic-reg-title{
-  font-family:var(--ff-mono);font-size:.6em;color:var(--text3);
-  letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px;
-}
-.tr-item{
-  display:flex;align-items:center;gap:8px;
-  padding:3px 0;font-size:.79em;color:var(--text2);
-}
-.tr-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.tr-dot.done    {background:#4ade80}
-.tr-dot.active  {background:var(--fluidos)}
-.tr-dot.warn    {background:#f59e0b}
-.tr-dot.queue   {background:#2d3748;border:1px solid #4b5563}
-.tr-badge{
-  margin-left:auto;font-family:var(--ff-mono);font-size:.68em;
-  padding:1px 7px;border-radius:3px;
-}
-.tr-badge.done   {color:#4ade80;background:rgba(74,222,128,.1)}
-.tr-badge.warn   {color:#f59e0b;background:rgba(245,158,11,.1)}
-.tr-badge.active {color:var(--fluidos);background:rgba(126,207,255,.1)}
-.tr-badge.queue  {color:var(--text3)}
-
-/* countdown */
-.countdown-strip{
-  padding:13px 28px;background:rgba(0,0,0,.22);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.cd-lbl{
-  font-family:var(--ff-mono);font-size:.63em;
-  color:var(--text3);letter-spacing:.06em;text-transform:uppercase;
-}
-.cd-time{display:flex;align-items:center;gap:3px}
-.cd-val{
-  font-family:var(--ff-mono);font-size:.92em;font-weight:700;
-  min-width:24px;text-align:center;
-}
-.cd-sep{font-family:var(--ff-mono);font-size:.58em;color:var(--text3);margin-right:3px}
-.sc-fluidos  .cd-val{color:var(--fluidos)}
-.sc-mecanica .cd-val{color:var(--mecanica)}
-.sc-sistemas .cd-val{color:var(--sistemas)}
-.sc-calculo  .cd-val{color:var(--calculo)}
-
-/* actions */
-.card-actions{display:flex;gap:8px;padding:16px 28px 24px;margin-top:auto}
-.card-btn{
-  flex:1;text-align:center;padding:9px 10px;
-  border-radius:8px;font-size:.79em;font-weight:600;
-  text-decoration:none;cursor:pointer;transition:.15s;
-  display:block;letter-spacing:.01em;
-}
-.btn-f {background:rgba(126,207,255,.14);color:var(--fluidos);border:1px solid rgba(126,207,255,.25)}
-.btn-f:hover{background:rgba(126,207,255,.24)}
-.btn-m {background:rgba(192,132,252,.14);color:var(--mecanica);border:1px solid rgba(192,132,252,.25)}
-.btn-m:hover{background:rgba(192,132,252,.24)}
-.btn-s {background:rgba(252,211,77,.14);color:var(--sistemas);border:1px solid rgba(252,211,77,.25)}
-.btn-s:hover{background:rgba(252,211,77,.24)}
-.btn-c {background:rgba(74,222,128,.14);color:var(--calculo);border:1px solid rgba(74,222,128,.25)}
-.btn-c:hover{background:rgba(74,222,128,.24)}
-.btn-neutral{background:var(--surface);color:var(--text2);border:1px solid var(--border)}
-.btn-neutral:hover{background:var(--surface-high);color:var(--text)}
-
-/* math guide link */
-.math-link{
-  display:flex;align-items:center;gap:6px;justify-content:center;
-  padding:6px 10px 18px;
-  font-size:.73em;color:var(--text3);text-decoration:none;
-  transition:color var(--transition);
-}
-.math-link:hover{color:#4ade80}
-.math-link svg{opacity:.5;transition:opacity var(--transition)}
-.math-link:hover svg{opacity:1}
-
-/* ── STATS ── */
-.stats-bar{
-  display:flex;max-width:1200px;margin:0 auto;
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-}
-.stat{flex:1;text-align:center;padding:20px 12px;border-right:1px solid var(--border)}
-.stat:last-child{border-right:none}
-.stat-num{
-  font-family:var(--ff-display);font-size:1.9em;font-weight:700;
-  color:var(--text);line-height:1;margin-bottom:5px;
-}
-.stat-lbl{
-  font-family:var(--ff-mono);font-size:.6em;
-  color:var(--text3);letter-spacing:.1em;text-transform:uppercase;
-}
-
-/* ── FOOTER ── */
-footer{
-  text-align:center;padding:22px;
-  color:var(--text3);font-size:.72em;font-family:var(--ff-mono);
-  letter-spacing:.04em;
-}
-footer a{color:#475569;text-decoration:none}
-footer a:hover{color:var(--text2)}
-
-
-/* ── INSTALL BANNER ── */
-#install-banner{display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid rgba(126,207,255,.3);border-radius:12px;padding:12px 20px;align-items:center;gap:12px;z-index:999;box-shadow:0 4px 24px rgba(0,0,0,.5);white-space:nowrap}
-#install-banner p{font-size:.82em;color:#cce0ff}
-#install-btn{padding:6px 14px;background:var(--fluidos);color:#000;border:none;border-radius:6px;font-size:.78em;font-weight:700;cursor:pointer;font-family:var(--ff-display)}
-#dismiss-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1em;padding:0 4px}
-
-/* ── PLAN DE ESTUDIO ── */
-.plan-section{padding:0 32px 28px;max-width:1200px;margin:0 auto}
-.plan-toggle{
-  width:100%;display:flex;align-items:center;gap:12px;
-  background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:14px 20px;cursor:pointer;color:var(--text);
-  transition:.2s;text-align:left;
-}
-.plan-toggle:hover{background:var(--surface-high);border-color:rgba(255,255,255,.12)}
-.plan-toggle-icon{font-size:1em}
-.plan-toggle-label{font-family:var(--ff-display);font-weight:700;font-size:.92em;flex:1}
-.plan-toggle-meta{font-family:var(--ff-mono);font-size:.62em;color:var(--text3);letter-spacing:.06em;white-space:nowrap}
-.plan-chevron{transition:transform .25s;flex-shrink:0}
-.plan-chevron.open{transform:rotate(180deg)}
-.plan-body{display:none;padding-top:16px}
+.plan-body{display:none}
 .plan-body.open{display:block}
 
-/* tabs */
-.plan-tabs{display:flex;gap:6px;margin-bottom:16px}
-.plan-tab{
-  padding:6px 16px;border-radius:6px;border:1px solid var(--border);
-  background:none;font-family:var(--ff-mono);font-size:.7em;font-weight:700;
-  letter-spacing:.06em;cursor:pointer;color:var(--text3);transition:.15s;
+/* Tabs */
+.plan-tabs{display:flex;gap:6px;padding:12px 17px 0}
+.ptab{
+  padding:5px 14px;border-radius:6px;border:1px solid var(--line);
+  background:none;font-family:var(--mono);font-size:.62em;font-weight:700;
+  letter-spacing:.08em;cursor:pointer;color:var(--txt3);transition:.14s;text-transform:uppercase;
 }
-.plan-tab:hover{color:var(--text);background:var(--surface)}
-.plan-tab.active-f{color:var(--fluidos);background:rgba(126,207,255,.1);border-color:rgba(126,207,255,.28)}
-.plan-tab.active-m{color:var(--mecanica);background:rgba(192,132,252,.1);border-color:rgba(192,132,252,.28)}
-.plan-tab.active-s{color:var(--sistemas);background:rgba(252,211,77,.1);border-color:rgba(252,211,77,.28)}
+.ptab:hover{color:var(--txt);background:rgba(255,255,255,.04)}
+.ptab.pf{color:var(--cyan);background:rgba(var(--cr),.08);border-color:rgba(var(--cr),.25)}
+.ptab.pm{color:var(--purple);background:rgba(var(--pr),.08);border-color:rgba(var(--pr),.25)}
+.ptab.ps{color:var(--amber);background:rgba(var(--ar),.08);border-color:rgba(var(--ar),.25)}
 
-/* panel */
-.plan-panel{display:none}
-.plan-panel.visible{display:block}
-.plan-grid{display:grid;gap:8px}
+/* Plan panel */
+.ppanel{display:none;padding:10px 17px 16px}
+.ppanel.vis{display:block}
+
+/* Plan rows */
+.plan-grid{display:flex;flex-direction:column;gap:7px}
 .plan-row{
-  display:grid;grid-template-columns:96px 1fr 1fr;
-  gap:0;border-radius:8px;overflow:hidden;border:1px solid var(--border);
-  font-size:.8em;
+  display:grid;grid-template-columns:80px 1fr 1fr;
+  border-radius:7px;overflow:hidden;border:1px solid var(--line);
+  font-size:.78em;transition:opacity .2s;
 }
-.plan-row-week{
-  padding:10px 14px;background:rgba(0,0,0,.25);
-  font-family:var(--ff-mono);font-size:.75em;font-weight:700;
+.plan-row.done-row .pr-topic{opacity:.4}
+.plan-row.done-row .pr-action{opacity:.3}
+
+.pr-week{
+  padding:9px 11px;background:rgba(0,0,0,.25);
+  font-family:var(--mono);font-size:.74em;font-weight:700;
   display:flex;flex-direction:column;gap:2px;justify-content:center;
 }
-.plan-wnum{color:var(--text3);font-size:.85em;letter-spacing:.06em;text-transform:uppercase}
-.plan-wdates{color:var(--text3);font-size:.82em;font-weight:400}
-.plan-row-topic{
-  padding:10px 14px;background:var(--surface);
-  border-left:1px solid var(--border);border-right:1px solid var(--border);
-}
-.plan-topic-name{font-weight:600;color:var(--text);line-height:1.35;margin-bottom:3px;font-size:.88em}
-.plan-row-action{
-  padding:10px 14px;background:rgba(0,0,0,.12);
-  color:var(--text2);line-height:1.45;font-size:.82em;
-}
-/* left accent by subject */
-.plan-accent-f .plan-row-week{border-left:3px solid var(--fluidos)}
-.plan-accent-m .plan-row-week{border-left:3px solid var(--mecanica)}
-.plan-accent-s .plan-row-week{border-left:3px solid var(--sistemas)}
-.plan-accent-f .plan-topic-name{color:var(--fluidos)}
-.plan-accent-m .plan-topic-name{color:var(--mecanica)}
-.plan-accent-s .plan-topic-name{color:var(--sistemas)}
+.pr-wnum{color:var(--txt3);font-size:.85em;letter-spacing:.07em;text-transform:uppercase}
+.pr-wdates{color:var(--txt3);font-size:.8em;font-weight:400}
 
-.plan-note{
-  margin-top:12px;padding:10px 14px;border-radius:8px;
-  background:rgba(0,0,0,.2);border:1px solid var(--border);
-  font-size:.77em;color:var(--text3);line-height:1.55;
-  font-family:var(--ff-mono);
-}
-.plan-note strong{color:var(--text2)}
+/* Accent stripe by subject */
+.pa-f .pr-week{border-left:3px solid var(--cyan)}
+.pa-m .pr-week{border-left:3px solid var(--purple)}
+.pa-s .pr-week{border-left:3px solid var(--amber)}
+.pa-f .pr-topic-name{color:var(--cyan)}
+.pa-m .pr-topic-name{color:var(--purple)}
+.pa-s .pr-topic-name{color:var(--amber)}
 
-/* checkboxes dentro del plan */
-.plan-check{display:flex;align-items:center;justify-content:center;margin-top:8px;cursor:pointer;width:100%}
+.pr-topic{
+  padding:9px 12px;background:var(--s2);
+  border-left:1px solid var(--line);border-right:1px solid var(--line)
+}
+.pr-topic-name{font-weight:600;line-height:1.3;margin-bottom:2px;font-size:.86em}
+.pr-topic-sub{color:var(--txt2);font-size:.8em}
+.pr-action{padding:9px 12px;background:rgba(0,0,0,.12);color:var(--txt2);line-height:1.4;font-size:.78em}
+
+/* Checkbox */
+.plan-check{display:flex;align-items:center;justify-content:center;margin-top:7px;cursor:pointer}
 .plan-check input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
 .plan-check-box{
-  width:20px;height:20px;border-radius:5px;flex-shrink:0;
+  width:18px;height:18px;border-radius:4px;
   border:1.5px solid rgba(255,255,255,.15);background:rgba(0,0,0,.35);
-  display:flex;align-items:center;justify-content:center;
-  transition:.15s;font-size:11px;font-weight:700;line-height:1;
+  display:flex;align-items:center;justify-content:center;transition:.14s;font-size:10px;font-weight:700;
 }
 .plan-check:hover .plan-check-box{border-color:rgba(255,255,255,.35)}
-.plan-check input:checked + .plan-check-box{border-color:currentColor;content:''}
-.plan-check input:checked + .plan-check-box::after{content:'✓'}
-.plan-accent-f .plan-check{color:var(--fluidos)}
-.plan-accent-m .plan-check{color:var(--mecanica)}
-.plan-accent-s .plan-check{color:var(--sistemas)}
-.plan-accent-f .plan-check input:checked + .plan-check-box{background:rgba(126,207,255,.18)}
-.plan-accent-m .plan-check input:checked + .plan-check-box{background:rgba(192,132,252,.18)}
-.plan-accent-s .plan-check input:checked + .plan-check-box{background:rgba(252,211,77,.18)}
-/* fila completada: sutil opacidad */
-.plan-row.done-row .plan-row-topic{opacity:.45}
-.plan-row.done-row .plan-row-action{opacity:.35}
+.pa-f .plan-check{color:var(--cyan)}
+.pa-m .plan-check{color:var(--purple)}
+.pa-s .plan-check{color:var(--amber)}
+.pa-f .plan-check input:checked ~ .plan-check-box{border-color:var(--cyan);background:rgba(var(--cr),.15)}
+.pa-m .plan-check input:checked ~ .plan-check-box{border-color:var(--purple);background:rgba(var(--pr),.15)}
+.pa-s .plan-check input:checked ~ .plan-check-box{border-color:var(--amber);background:rgba(var(--ar),.15)}
+.plan-check input:checked ~ .plan-check-box::after{content:'✓'}
 
-@media(max-width:640px){
-  .plan-row{grid-template-columns:1fr}
-  .plan-row-week{border-left:none!important;border-bottom:1px solid var(--border)}
-  .plan-row-topic{border:none;border-bottom:1px solid var(--border)}
-  .plan-section{padding:0 14px 20px}
-  .plan-tabs{flex-wrap:wrap}
+.plan-note{
+  margin-top:10px;padding:9px 12px;border-radius:7px;
+  background:rgba(0,0,0,.2);border:1px solid var(--line);
+  font-size:.61em;color:var(--txt3);line-height:1.55;
 }
+.plan-note strong{color:var(--txt2)}
 
-/* ── RESPONSIVE ── */
-@media(max-width:640px){
-  .subjects-grid{grid-template-columns:1fr}
-}
+/* ══════════════════════════════════════
+   STATS
+══════════════════════════════════════ */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.sstat{background:var(--s1);border:1px solid var(--line);border-radius:9px;
+  padding:14px 15px;text-align:center;position:relative;overflow:hidden;transition:.18s}
+.sstat::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px}
+.sstat:hover{border-color:rgba(255,255,255,.1);transform:translateY(-1px)}
+.sg::before{background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.5}
+.sc::before{background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.5}
+.sp::before{background:linear-gradient(90deg,transparent,var(--purple),transparent);opacity:.5}
+.sa::before{background:linear-gradient(90deg,transparent,var(--amber),transparent);opacity:.5}
+.ss-num{font-family:var(--ui);font-size:2em;font-weight:700;line-height:1;margin-bottom:4px}
+.sg .ss-num{color:var(--green);text-shadow:0 0 18px rgba(var(--gr),.5)}
+.sc .ss-num{color:var(--cyan);text-shadow:0 0 18px rgba(var(--cr),.5)}
+.sp .ss-num{color:var(--purple);text-shadow:0 0 18px rgba(var(--pr),.5)}
+.sa .ss-num{color:var(--amber);text-shadow:0 0 18px rgba(var(--ar),.5)}
+.ss-lbl{font-size:.5em;letter-spacing:.12em;color:var(--txt3);text-transform:uppercase}
+
+/* ══════════════════════════════════════
+   TOOLS
+══════════════════════════════════════ */
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.tool{background:var(--s1);border:1px solid var(--line);border-radius:9px;
+  padding:13px 15px;cursor:pointer;transition:all .17s;display:flex;align-items:center;gap:11px}
+.tool:hover{background:var(--s2);border-color:rgba(var(--gr),.2);box-shadow:0 4px 22px rgba(var(--gr),.05)}
+.tool-ic{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;
+  font-size:.95em;flex-shrink:0;background:rgba(var(--gr),.07);border:1px solid rgba(var(--gr),.14);transition:.17s}
+.tool:hover .tool-ic{background:rgba(var(--gr),.13);box-shadow:0 0 14px rgba(var(--gr),.18)}
+.tool-name{font-size:.68em;font-weight:700;color:var(--txt);margin-bottom:2px}
+.tool-desc{font-size:.57em;color:var(--txt3)}
+
+/* ══════════════════════════════════════
+   INSTALL BANNER
+══════════════════════════════════════ */
+#install-banner{display:none;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:var(--s1);border:1px solid rgba(var(--cr),.3);border-radius:10px;
+  padding:10px 18px;align-items:center;gap:12px;z-index:999;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+#install-banner p{font-size:.78em;color:var(--txt2)}
+#install-btn{padding:5px 12px;background:var(--cyan);color:#000;border:none;border-radius:5px;
+  font-size:.74em;font-weight:700;cursor:pointer;font-family:var(--ui)}
+#dismiss-btn{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:1em;padding:0 3px}
+
+/* ══════════════════════════════════════
+   MOBILE
+══════════════════════════════════════ */
 @media(max-width:768px){
-  .hero{padding:28px 18px 20px}
-  .hero-sub{font-size:1.05em}
-  .subjects-grid{padding:0 14px 28px;gap:12px;grid-template-columns:1fr}
-  .topbar{padding:0 16px}
-  .sys-status{display:none}
-  .card-head{padding:20px 20px 14px}
-  .card-title{font-size:1.18em}
-  .card-hr{margin:0 20px}
-  .topic-reg{padding:12px 20px}
-  .tr-item{font-size:.76em}
-  .tr-badge{font-size:.64em}
-  .countdown-strip{padding:11px 20px}
-  .card-actions{padding:12px 20px 20px}
-  .stats-bar{flex-wrap:wrap}
-  .stat{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}
-  .stat:nth-child(odd){border-right:1px solid var(--border)}
+  .burger{display:flex}
+  .sidebar{position:fixed;top:50px;left:0;bottom:0;z-index:50;transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .cards-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .tools-grid{grid-template-columns:1fr}
+  .plan-row{grid-template-columns:1fr}
+  .pr-week{border-left:none !important;border-bottom:1px solid var(--line)}
+  .pr-topic{border:none;border-bottom:1px solid var(--line)}
+  .tb-terminal{display:none}
+  .hud-sub{display:none}
+  .main{padding:16px 14px 52px}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .hud{display:none}
 }
 </style>
 </head>
 <body>
 
-<div class="ambient">
-  <div class="blob blob-f"></div>
-  <div class="blob blob-m"></div>
-  <div class="blob blob-s"></div>
-</div>
+<div class="amb"></div>
 
-<div class="page-wrap">
-
-<!-- TOP BAR -->
-<nav class="topbar">
-  <div class="topbar-logo">EHU<span>·</span>LAB</div>
-  <div class="topbar-right">
-    <span class="sys-status"><span class="sys-dot"></span>SISTEMA ACTIVO</span>
-    <span class="course-tag">CURSO 2025–26</span>
-  </div>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-eyebrow">UPV/EHU · GIPUZKOA · INGENIERÍA</div>
-  <p class="hero-sub">Teoría, ejercicios resueltos y exámenes reales de ingeniería.</p>
-  <a href="matematicas/guia.html" class="math-link" style="justify-content:flex-start;padding:14px 0 0">
-    <svg width="11" height="11" viewBox="0 0 16 16" fill="#4ade80"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.93 8.588-.002.009a.5.5 0 0 1-.464.403H8a.5.5 0 0 1-.5-.5V7.5a.5.5 0 0 1 1 0v1.646l.43-.431a.5.5 0 1 1 .707.707l-1 1zM8 5.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1z"/></svg>
-    Progreso →
-  </a>
-</div>
-
-<!-- PLAN DE ESTUDIO -->
-<section class="plan-section">
-  <div>
-    <button class="plan-toggle" onclick="togglePlan()" id="planToggle">
-      <span class="plan-toggle-icon">📅</span>
-      <span class="plan-toggle-label">Plan de Estudio</span>
-      <span class="plan-toggle-meta">7 semanas · 8 abr – 10 jun 2026</span>
-      <svg class="plan-chevron" id="planChevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#64748b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<!-- ═══════════════ TOPBAR ═══════════════ -->
+<header class="topbar">
+  <div class="tb-left">
+    <button class="burger" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Menú">
+      <span></span><span></span><span></span>
     </button>
-
-    <div class="plan-body" id="planBody">
-      <div class="plan-tabs">
-        <button class="plan-tab active-f" onclick="switchPlan('f',this)" id="ptab-f">📘 Fluidos</button>
-        <button class="plan-tab" onclick="switchPlan('m',this)" id="ptab-m">📗 Mecánica</button>
-        <button class="plan-tab" onclick="switchPlan('s',this)" id="ptab-s">📙 Sistemas</button>
-      </div>
-
-      <!-- ══ FLUIDOS ══ -->
-      <div class="plan-panel visible" id="pp-f">
-        <div class="plan-grid">
-          <div class="plan-row plan-accent-f" id="pr-f-0">
-            <div class="plan-row-week"><span class="plan-wnum">S1</span><span class="plan-wdates">8–13 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Hidrostática — presión y fuerzas</div>T4 + T7 (superficies planas y curvas)</div>
-            <div class="plan-row-action">teoria.html T4/T7 · estrategia.html cards 1–4 · Leer mayo2025.html para calibrar nivel</div>
-          </div>
-          <div class="plan-row plan-accent-f" id="pr-f-1">
-            <div class="plan-row-week"><span class="plan-wnum">S2</span><span class="plan-wdates">14–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Bernoulli + continuidad</div>T12 ideal y con pérdidas</div>
-            <div class="plan-row-action">teoria.html T12 · estrategia cards 6–7 · exámenes mayo2024 + junio2023 (solo Bernoulli)</div>
-          </div>
-          <div class="plan-row plan-accent-f" id="pr-f-2">
-            <div class="plan-row-week"><span class="plan-wnum">S3</span><span class="plan-wdates">21–27 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">QdM — cantidad de movimiento</div>T14/T15: chorros, codos, álabes</div>
-            <div class="plan-row-action">teoria.html T14/T15 · estrategia cards 8–9 · examen junio2022: problema QdM completo</div>
-          </div>
-          <div class="plan-row plan-accent-f" id="pr-f-3">
-            <div class="plan-row-week"><span class="plan-wnum">S4</span><span class="plan-wdates">28 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Tuberías y pérdidas</div>T18/T19: Darcy-Weisbach, Colebrook, serie/paralelo</div>
-            <div class="plan-row-action">teoria T18/T19 · estrategia cards 10–13 · colebrook.html — practica hasta &lt;3 min/iteración</div>
-          </div>
-          <div class="plan-row plan-accent-f" id="pr-f-4">
-            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Bombas hidráulicas</div>Punto de funcionamiento, NPSH, serie/paralelo</div>
-            <div class="plan-row-action">estrategia cards 15–18 · bombas-calc.html · examen junio2024ef completo cronometrado</div>
-          </div>
-          <div class="plan-row plan-accent-f" id="pr-f-5">
-            <div class="plan-row-week"><span class="plan-wnum">S6</span><span class="plan-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Simulacros completos</div>Exámenes reales 2022, 2023ef, mayo2021</div>
-            <div class="plan-row-action">2 horas cronometradas sin mirar nada · Corregir con las soluciones · Anotar errores</div>
-          </div>
-          <div class="plan-row plan-accent-f" id="pr-f-6">
-            <div class="plan-row-week"><span class="plan-wnum">S7</span><span class="plan-wdates">19–27 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Revisión y consolidación</div>Solo puntos débiles del simulacro</div>
-            <div class="plan-row-action">formulario.html — memorizar fórmulas clave · No estudiar materia nueva · Descanso 26-27</div>
-          </div>
-        </div>
-        <div class="plan-note">
-          <strong>Regla 80/20:</strong> Bernoulli + Hidrostática + Tuberías + QdM + Bombas = 5 tipos = 85% de la nota. Domina esos 5 antes de tocar canal abierto o análisis dimensional. El cuello de botella es Colebrook — practica la iteración hasta hacerlo automático.
-        </div>
-      </div>
-
-      <!-- ══ MECÁNICA ══ -->
-      <div class="plan-panel" id="pp-m">
-        <div class="plan-grid">
-          <div class="plan-row plan-accent-m" id="pr-m-0">
-            <div class="plan-row-week"><span class="plan-wnum">S1</span><span class="plan-wdates">8–13 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T1 Cálculo Vectorial + T2 Geometría de masas</div>Productos escalar/vectorial, momentos de inercia, centroide</div>
-            <div class="plan-row-action">teoria.html T1-T2 · ejercicios tema1.html + tema2.html · base imprescindible para todo lo demás</div>
-          </div>
-          <div class="plan-row plan-accent-m" id="pr-m-1">
-            <div class="plan-row-week"><span class="plan-wnum">S2</span><span class="plan-wdates">14–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T3 Estática del sólido rígido</div>DSL, equilibrio, reacciones en apoyos, sistemas de fuerzas</div>
-            <div class="plan-row-action">teoria.html T3 · ejercicios tema3.html · E1 de todos los exámenes suele ser estática</div>
-          </div>
-          <div class="plan-row plan-accent-m" id="pr-m-2">
-            <div class="plan-row-week"><span class="plan-wnum">S3</span><span class="plan-wdates">21–27 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T4 Rozamiento + T5 Cables</div>Rozamiento estático/dinámico, catenaria, cable pesado</div>
-            <div class="plan-row-action">tema4.html + tema5.html · aparecen frecuentemente en E1 y preguntas cortas T</div>
-          </div>
-          <div class="plan-row plan-accent-m" id="pr-m-3">
-            <div class="plan-row-week"><span class="plan-wnum">S4</span><span class="plan-wdates">28 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T6 Resistencia de Materiales ★</div>Flexión, torsión, diagramas V-M, sección T, tensiones</div>
-            <div class="plan-row-action">teoria.html T6 · resolver E2-2425 y E3-2324 sin mirar resolución · tema más pesado del examen</div>
-          </div>
-          <div class="plan-row plan-accent-m" id="pr-m-4">
-            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T7 Cinemática + T8 Movimiento plano</div>CIR, campo de velocidades, aceleraciones, movimiento plano</div>
-            <div class="plan-row-action">teoria.html T7-T8 · ejercicios de clase en PDF</div>
-          </div>
-          <div class="plan-row plan-accent-m" id="pr-m-5">
-            <div class="plan-row-week"><span class="plan-wnum">S5–S6</span><span class="plan-wdates">5–18 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T9–T12 Dinámica ⚠ pendiente de material</div>Magnitudes, teoremas fundamentales, sólido rígido, eje fijo, movimiento plano</div>
-            <div class="plan-row-action">Estudiar en cuanto llegue el material · Entra en examen · Marcar cuando hayas cubierto los 4 temas</div>
-          </div>
-          <div class="plan-row plan-accent-m" id="pr-m-6">
-            <div class="plan-row-week"><span class="plan-wnum">S6–S7</span><span class="plan-wdates">19 may–4 jun</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Simulacros + repaso final</div>Exámenes 2024-25, 2023-24 y 2018-19 cronometrados</div>
-            <div class="plan-row-action">2h sin mirar nada · corregir con examenes.html · formulario.html para fórmulas clave · No materia nueva</div>
-          </div>
-        </div>
-        <div class="plan-note">
-          <strong>Patrón del examen:</strong> E1 = estática/rozamiento/cables (T3-T5), E2 = viga con sección T (T6, siempre), E3 = cinemática o dinámica (T7-T12). Preguntas cortas T = cualquier tema incluyendo T9-T12. <strong>Prioridad: T6 &gt; T3 &gt; T4/T5 &gt; T7/T8 &gt; T9-T12.</strong>
-        </div>
-      </div>
-
-      <!-- ══ SISTEMAS ══ -->
-      <div class="plan-panel" id="pp-s">
-        <div class="plan-grid">
-          <div class="plan-row plan-accent-s" id="pr-s-0">
-            <div class="plan-row-week"><span class="plan-wnum">S1–S2</span><span class="plan-wdates">8–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Aparcado — foco en Fluidos</div>Examen 28 mayo, prioridad absoluta</div>
-            <div class="plan-row-action">No dedicar tiempo a Sistemas hasta pasar el examen de Fluidos</div>
-          </div>
-          <div class="plan-row plan-accent-s" id="pr-s-1">
-            <div class="plan-row-week"><span class="plan-wnum">S3–S4</span><span class="plan-wdates">21 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T1 Torneado + T2 Fresado</div>Parámetros de corte, velocidades, avances</div>
-            <div class="plan-row-action">teoria.html T1-T2 · fórmulas Vc, n, f, ap · repasar mientras estudias Fluidos en paralelo ligero</div>
-          </div>
-          <div class="plan-row plan-accent-s" id="pr-s-2">
-            <div class="plan-row-week"><span class="plan-wnum">S5</span><span class="plan-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T3 Taladrado + T4 CNC</div>Ciclos de mecanizado, programación básica G-code</div>
-            <div class="plan-row-action">teoria.html T3-T4 · ejercicios numéricos de cálculo de tiempo de mecanizado</div>
-          </div>
-          <div class="plan-row plan-accent-s" id="pr-s-3">
-            <div class="plan-row-week"><span class="plan-wnum">S6</span><span class="plan-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T5 Rectificado + T6 Fundición</div>Rugosidad, tolerancias, procesos de fundición</div>
-            <div class="plan-row-action">teoria.html T5-T6 · relación Ra-parámetros de corte · defectos en fundición</div>
-          </div>
-          <div class="plan-row plan-accent-s" id="pr-s-4">
-            <div class="plan-row-week"><span class="plan-wnum">S7</span><span class="plan-wdates">19–25 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">T7–T8 Metrología + Def. plástica</div>Calibres, tolerancias ISO, forja, estampado</div>
-            <div class="plan-row-action">teoria.html T7-T8 · sistema ISO tolerancias · principales procesos de deformación plástica</div>
-          </div>
-          <div class="plan-row plan-accent-s" id="pr-s-5">
-            <div class="plan-row-week"><span class="plan-wnum">S8</span><span class="plan-wdates">26 may–4 jun</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Simulacro + repaso global</div>Exámenes reales anteriores</div>
-            <div class="plan-row-action">ejercicios.html · exámenes de convocatorias previas · fórmulas de corte de memoria</div>
-          </div>
-          <div class="plan-row plan-accent-s" id="pr-s-6">
-            <div class="plan-row-week"><span class="plan-wnum">S9</span><span class="plan-wdates">5–9 jun</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-            <div class="plan-row-topic"><div class="plan-topic-name">Última semana</div>Solo consolidación</div>
-            <div class="plan-row-action">Repasar errores del simulacro · formulario de corte · descanso 8 jun · examen 10 jun</div>
-          </div>
-        </div>
-        <div class="plan-note">
-          <strong>Ventaja:</strong> El examen de Sistemas es el 10 jun, 13 días después de Fluidos. Tienes tiempo para focalizarte en Fluidos y Mecánica primero y atacar Sistemas en profundidad las últimas 3 semanas. No lo trabajes en paralelo hasta mayo.
-        </div>
-      </div>
-
-    </div><!-- /plan-body -->
+    <div class="tb-logo">EHU<em>·</em>LAB</div>
+    <span class="tb-tag">Command Center</span>
   </div>
-</section>
-
-<!-- CARDS -->
-<div class="subjects-grid">
-
-  <!-- ── FLUIDOS ── -->
-  <div class="subject-card sc-fluidos">
-    <div class="card-head">
-      <div class="card-head-info">
-        <h2 class="card-title">Mecánica de Fluidos</h2>
-        <p class="card-desc">Hidrostática, Bernoulli, tuberías, bombas y análisis dimensional</p>
-      </div>
-      <div class="mastery">
-        <svg viewBox="0 0 80 80" width="74" height="74">
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#1e2e3e" stroke-width="5.5"/>
-          <circle id="ring-f" cx="40" cy="40" r="30" fill="none" stroke="#7ECFFF" stroke-width="5.5"
-            stroke-dasharray="188.5" stroke-dashoffset="188.5"
-            stroke-linecap="round" transform="rotate(-90 40 40)"/>
-        </svg>
-        <span class="mastery-pct" id="pct-f">0%</span>
-        <span class="mastery-lbl">Progreso</span>
-      </div>
+  <div class="tb-right">
+    <div class="tb-terminal">
+      SYS <em>ONLINE</em> · 09 APR 2026<div class="cursor"></div>
     </div>
-
-    <div class="card-hr"></div>
-
-    <div class="topic-reg">
-      <div class="topic-reg-title">Estado del temario</div>
-      <div class="tr-item"><span class="tr-dot warn"></span>T1 · Hidrostática<span class="tr-badge warn">EN CURSO</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T2 · Bernoulli &amp; Energía<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T3 · Tuberías y pérdidas<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T4 · Bombas hidráulicas<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T5 · Canales abiertos<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T6 · Análisis dimensional<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>Exámenes resueltos<span class="tr-badge queue">PENDIENTE</span></div>
+    <div class="hud">
+      <span class="hud-lbl">Examen</span>
+      <span class="hud-n" id="hud-d">--</span><span class="hud-u">D</span>
+      <span class="hud-n" id="hud-h">--</span><span class="hud-u">H</span>
+      <span class="hud-n" id="hud-m">--</span><span class="hud-u">M</span>
+      <span class="hud-sub">Fluidos · 28 May</span>
     </div>
-
-    <div class="card-hr"></div>
-
-    <div class="countdown-strip">
-      <span class="cd-lbl">Examen · 28 May 9:00</span>
-      <div class="cd-time">
-        <span class="cd-val" id="cd-f-d">--</span><span class="cd-sep">D</span>
-        <span class="cd-val" id="cd-f-h">--</span><span class="cd-sep">H</span>
-        <span class="cd-val" id="cd-f-m">--</span><span class="cd-sep">M</span>
-      </div>
-    </div>
-
-    <div class="card-actions">
-      <a href="fluidos/teoria.html" class="card-btn btn-f">📖 Teoría</a>
-      <a href="fluidos/examenes.html" class="card-btn btn-neutral">📝 Exámenes</a>
-    </div>
+    <div class="online"><div class="online-dot"></div>Online</div>
   </div>
+</header>
 
-  <!-- ── MECÁNICA ── -->
-  <div class="subject-card sc-mecanica">
-    <div class="card-head">
-      <div class="card-head-info">
-        <h2 class="card-title">Mecánica Aplicada</h2>
-        <p class="card-desc">Vectorial, geometría de masas, estática, rozamiento y cables</p>
-      </div>
-      <div class="mastery">
-        <svg viewBox="0 0 80 80" width="74" height="74">
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#2a1a3e" stroke-width="5.5"/>
-          <circle id="ring-m" cx="40" cy="40" r="30" fill="none" stroke="#C084FC" stroke-width="5.5"
-            stroke-dasharray="188.5" stroke-dashoffset="188.5"
-            stroke-linecap="round" transform="rotate(-90 40 40)"/>
-        </svg>
-        <span class="mastery-pct" id="pct-m">0%</span>
-        <span class="mastery-lbl">Progreso</span>
-      </div>
+<!-- ═══════════════ SHELL ═══════════════ -->
+<div class="shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-course">UPV / EHU · Ingeniería</div>
+      <div class="sb-meta">Curso 2025–26 · Campus Gipuzkoa</div>
     </div>
 
-    <div class="card-hr"></div>
-
-    <div class="topic-reg">
-      <div class="topic-reg-title">Estado del temario</div>
-      <div class="tr-item"><span class="tr-dot warn"></span>T1 · Cálculo vectorial<span class="tr-badge warn">EN CURSO</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T2 · Geometría de masas<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T3 · Estática del S.R.<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T4 · Rozamiento<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T5 · Cables<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T6–T8 · Dinámica &amp; R. Mat.<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>Exámenes<span class="tr-badge queue">PENDIENTE</span></div>
+    <div class="sb-next">
+      <div class="sb-next-lbl">Próximo examen</div>
+      <div class="sb-next-name">Mecánica de Fluidos</div>
+      <div class="sb-next-cd"><span id="sb-d">--</span>D <span id="sb-h">--</span>H · 28 Mayo 9:00h</div>
     </div>
 
-    <div class="card-hr"></div>
+    <div class="sb-cat">Sistema</div>
+    <div class="nav active"><span class="nav-ic">▣</span>Dashboard</div>
+    <div class="nav" onclick="scrollToSection('plan')"><span class="nav-ic">◈</span>Plan de Estudio</div>
+    <div class="nav" onclick="scrollToSection('stats')"><span class="nav-ic">◉</span>Progreso</div>
+    <div class="nav" onclick="scrollToSection('tools')"><span class="nav-ic">◎</span>Herramientas</div>
 
-    <div class="countdown-strip">
-      <span class="cd-lbl">Examen · 5 Jun 9:00</span>
-      <div class="cd-time">
-        <span class="cd-val" id="cd-m-d">--</span><span class="cd-sep">D</span>
-        <span class="cd-val" id="cd-m-h">--</span><span class="cd-sep">H</span>
-        <span class="cd-val" id="cd-m-m">--</span><span class="cd-sep">M</span>
+    <div class="sb-cat">Asignaturas</div>
+    <div class="nav c-c"><span class="nav-ic">◆</span>Mecánica de Fluidos</div>
+    <a class="sub" href="fluidos/teoria.html">Teoría</a>
+    <a class="sub" href="fluidos/examenes.html">Exámenes resueltos</a>
+    <a class="sub" href="fluidos/estrategia.html">Estrategia</a>
+    <a class="sub" href="fluidos/formulario.html">Formulario</a>
+
+    <div class="nav c-p" style="margin-top:3px"><span class="nav-ic">◆</span>Mecánica Aplicada</div>
+    <a class="sub" href="mecanica/teoria.html">Teoría T1–T12</a>
+    <a class="sub" href="mecanica/ejercicios/">Ejercicios</a>
+    <a class="sub" href="mecanica/examenes.html">Exámenes resueltos</a>
+
+    <div class="nav c-a" style="margin-top:3px"><span class="nav-ic">◆</span>Sistemas de Producción</div>
+    <a class="sub" href="sistemas/teoria.html">Teoría</a>
+    <a class="sub" href="sistemas/ejercicios/">Ejercicios</a>
+
+    <div class="sb-cat">Herramientas</div>
+    <a class="nav" href="fluidos/colebrook.html"><span class="nav-ic">⊕</span>Colebrook–White</a>
+    <a class="nav" href="fluidos/bombas-calc.html"><span class="nav-ic">⊕</span>Calc. Bombas</a>
+    <a class="nav" href="fluidos/banco.html"><span class="nav-ic">⊕</span>Banco de ejercicios</a>
+
+    <div class="sb-foot">
+      <div class="sb-foot-time" id="sb-clock">09 ABR 2026 · --:-- UTC+2</div>
+      <div class="sb-foot-row">
+        <div class="online-dot" style="width:5px;height:5px"></div>
+        <span>GitHub Pages · Online</span>
       </div>
     </div>
+  </aside>
 
-    <div class="card-actions">
-      <a href="mecanica/teoria.html" class="card-btn btn-m">📖 Teoría</a>
-      <a href="mecanica/examenes.html" class="card-btn btn-neutral">📄 Exámenes</a>
-    </div>
-  </div>
+  <!-- ═══ MAIN ═══ -->
+  <main class="main" id="main-scroll">
 
-  <!-- ── SISTEMAS ── -->
-  <div class="subject-card sc-sistemas">
-    <div class="card-head">
-      <div class="card-head-info">
-        <h2 class="card-title">Sistemas de Producción</h2>
-        <p class="card-desc">Torneado, fresado, taladrado, CNC y procesos de fabricación</p>
-      </div>
-      <div class="mastery">
-        <svg viewBox="0 0 80 80" width="74" height="74">
-          <circle cx="40" cy="40" r="30" fill="none" stroke="#2a1f00" stroke-width="5.5"/>
-          <circle id="ring-s" cx="40" cy="40" r="30" fill="none" stroke="#FCD34D" stroke-width="5.5"
-            stroke-dasharray="188.5" stroke-dashoffset="188.5"
-            stroke-linecap="round" transform="rotate(-90 40 40)"/>
-        </svg>
-        <span class="mastery-pct" id="pct-s">0%</span>
-        <span class="mastery-lbl">Progreso</span>
+    <!-- Alert -->
+    <div class="alert">
+      <div class="alert-ic">⚠</div>
+      <div class="alert-body">
+        <strong id="alert-days">-- días</strong> para el primer examen. Máxima prioridad: Mecánica de Fluidos hasta el 28 de mayo.
+        <div class="alert-sub">Mecánica Aplicada · 57D &nbsp;|&nbsp; Sistemas de Producción · no prioritaria hasta junio</div>
       </div>
     </div>
 
-    <div class="card-hr"></div>
+    <!-- ── CARDS ── -->
+    <div>
+      <div class="sh"><span class="sh-txt">Asignaturas activas</span><div class="sh-line"></div><span class="sh-n">03/03</span></div>
+      <div class="cards-grid" style="margin-top:12px">
 
-    <div class="topic-reg">
-      <div class="topic-reg-title">Estado del temario</div>
-      <div class="tr-item"><span class="tr-dot warn"></span>T1 · Torneado<span class="tr-badge warn">EN CURSO</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T2 · Fresado<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T3 · Taladrado<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T4 · CNC<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T5 · Rectificado<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T6 · Fundición<span class="tr-badge queue">PENDIENTE</span></div>
-      <div class="tr-item"><span class="tr-dot queue"></span>T7–T8 · Metrología &amp; Def. plástica<span class="tr-badge queue">PENDIENTE</span></div>
-    </div>
+        <!-- FLUIDOS -->
+        <div class="scard sf">
+          <div class="sc-inner">
+            <div class="sc-top">
+              <div class="sc-info">
+                <div class="sc-eye" style="color:rgba(var(--cr),.85)">Mec. de Fluidos</div>
+                <div class="sc-title">Hidrostática, Bernoulli,<br>Tuberías & Bombas</div>
+                <div class="sc-meta">6 temas · 15 exámenes resueltos</div>
+              </div>
+              <div class="ring-wrap">
+                <svg class="ring-svg" viewBox="0 0 110 110" width="104" height="104">
+                  <defs>
+                    <filter id="gf" x="-40%" y="-40%" width="180%" height="180%">
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+                      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <radialGradient id="rgf" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="rgba(0,240,255,0.16)"/>
+                      <stop offset="100%" stop-color="transparent"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="55" cy="55" r="42" fill="url(#rgf)"/>
+                  <circle cx="55" cy="55" r="52" fill="none" stroke="rgba(var(--cr),0.06)" stroke-width="1" stroke-dasharray="3 5"/>
+                  <circle class="ring-track-pulse" cx="55" cy="55" r="44" fill="none" stroke="rgba(var(--cr),0.09)" stroke-width="7.5"/>
+                  <circle id="ring-f" cx="55" cy="55" r="44" fill="none" stroke="#00f0ff" stroke-width="7.5"
+                    stroke-dasharray="276.5" stroke-dashoffset="276.5"
+                    stroke-linecap="round" transform="rotate(-90 55 55)" filter="url(#gf)"/>
+                  <text x="55" y="52" text-anchor="middle" font-size="16" font-weight="700"
+                    fill="#00f0ff" font-family="JetBrains Mono,monospace" id="pct-f">0%</text>
+                  <text x="55" y="65" text-anchor="middle" font-size="7"
+                    fill="rgba(0,240,255,0.4)" font-family="JetBrains Mono,monospace" letter-spacing="1">PROGRESO</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="sc-div"></div>
+          <div class="topics">
+            <div class="tr"><div class="dot d-active"></div>T1 · Hidrostática<span class="tbadge tb-a">En curso</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T2 · Bernoulli & Energía<span class="tbadge tb-q">—</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T3 · Tuberías y pérdidas<span class="tbadge tb-q">—</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T4 · Bombas hidráulicas<span class="tbadge tb-q">—</span></div>
+            <div class="tr"><div class="dot d-queue"></div>15 exámenes resueltos<span class="tbadge tb-q">—</span></div>
+          </div>
+          <div class="cd-strip" style="margin:9px 17px;border-color:rgba(var(--cr),.12)">
+            <span class="cd-lbl">Examen · 28 May 9:00</span>
+            <div class="cd-nums">
+              <span class="cd-n" style="color:var(--cyan);text-shadow:0 0 8px rgba(var(--cr),.6)" id="cd-f-d">--</span><span class="cd-u">D</span>
+              <span class="cd-n" style="color:var(--cyan);text-shadow:0 0 8px rgba(var(--cr),.6)" id="cd-f-h">--</span><span class="cd-u">H</span>
+              <span class="cd-n" style="color:var(--cyan);text-shadow:0 0 8px rgba(var(--cr),.6)" id="cd-f-m">--</span><span class="cd-u">M</span>
+            </div>
+          </div>
+          <div class="sc-actions">
+            <a class="abtn a-c" href="fluidos/teoria.html">▶ Teoría</a>
+            <a class="abtn a-g" href="fluidos/examenes.html">≡ Exámenes</a>
+          </div>
+        </div>
 
-    <div class="card-hr"></div>
+        <!-- MECÁNICA -->
+        <div class="scard sm">
+          <div class="sc-inner">
+            <div class="sc-top">
+              <div class="sc-info">
+                <div class="sc-eye" style="color:rgba(var(--pr),.9)">Mec. Aplicada</div>
+                <div class="sc-title">Estática, Rozamiento,<br>Cables & Res. Mat.</div>
+                <div class="sc-meta">12 temas · 3 convocatorias resueltas</div>
+              </div>
+              <div class="ring-wrap">
+                <svg class="ring-svg" viewBox="0 0 110 110" width="104" height="104">
+                  <defs>
+                    <filter id="gm" x="-40%" y="-40%" width="180%" height="180%">
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+                      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <radialGradient id="rgm" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="rgba(180,127,255,0.16)"/>
+                      <stop offset="100%" stop-color="transparent"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="55" cy="55" r="42" fill="url(#rgm)"/>
+                  <circle cx="55" cy="55" r="52" fill="none" stroke="rgba(var(--pr),0.06)" stroke-width="1" stroke-dasharray="3 5"/>
+                  <circle class="ring-track-pulse" cx="55" cy="55" r="44" fill="none" stroke="rgba(var(--pr),0.09)" stroke-width="7.5"/>
+                  <circle id="ring-m" cx="55" cy="55" r="44" fill="none" stroke="#b47fff" stroke-width="7.5"
+                    stroke-dasharray="276.5" stroke-dashoffset="276.5"
+                    stroke-linecap="round" transform="rotate(-90 55 55)" filter="url(#gm)"/>
+                  <text x="55" y="52" text-anchor="middle" font-size="16" font-weight="700"
+                    fill="#b47fff" font-family="JetBrains Mono,monospace" id="pct-m">0%</text>
+                  <text x="55" y="65" text-anchor="middle" font-size="7"
+                    fill="rgba(180,127,255,0.4)" font-family="JetBrains Mono,monospace" letter-spacing="1">PROGRESO</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="sc-div"></div>
+          <div class="topics">
+            <div class="tr"><div class="dot d-active"></div>T1–T2 · Vectorial & Masas<span class="tbadge tb-a">En curso</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T3–T5 · Estática, Roz., Cables<span class="tbadge tb-q">—</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T6 · Resistencia Materiales<span class="tbadge tb-q">—</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T7–T12 · Cinemática & Dinámica<span class="tbadge tb-q">—</span></div>
+            <div class="tr"><div class="dot d-queue"></div>3 convocatorias resueltas<span class="tbadge tb-q">—</span></div>
+          </div>
+          <div class="cd-strip" style="margin:9px 17px;border-color:rgba(var(--pr),.12)">
+            <span class="cd-lbl">Examen · 5 Jun 9:00</span>
+            <div class="cd-nums">
+              <span class="cd-n" style="color:var(--purple);text-shadow:0 0 8px rgba(var(--pr),.6)" id="cd-m-d">--</span><span class="cd-u">D</span>
+              <span class="cd-n" style="color:var(--purple);text-shadow:0 0 8px rgba(var(--pr),.6)" id="cd-m-h">--</span><span class="cd-u">H</span>
+              <span class="cd-n" style="color:var(--purple);text-shadow:0 0 8px rgba(var(--pr),.6)" id="cd-m-m">--</span><span class="cd-u">M</span>
+            </div>
+          </div>
+          <div class="sc-actions">
+            <a class="abtn a-p" href="mecanica/teoria.html">▶ Teoría</a>
+            <a class="abtn a-g" href="mecanica/examenes.html">≡ Exámenes</a>
+          </div>
+        </div>
 
-    <div class="countdown-strip">
-      <span class="cd-lbl">Examen · 10 Jun 9:00</span>
-      <div class="cd-time">
-        <span class="cd-val" id="cd-s-d">--</span><span class="cd-sep">D</span>
-        <span class="cd-val" id="cd-s-h">--</span><span class="cd-sep">H</span>
-        <span class="cd-val" id="cd-s-m">--</span><span class="cd-sep">M</span>
+        <!-- SISTEMAS -->
+        <div class="scard ss">
+          <div class="sc-inner">
+            <div class="sc-top">
+              <div class="sc-info">
+                <div class="sc-eye" style="color:rgba(var(--ar),.85)">Sistemas de Producción</div>
+                <div class="sc-title">Torneado, Fresado,<br>CNC & Metrología</div>
+                <div class="sc-meta">8 temas · No prioritaria</div>
+              </div>
+              <div class="ring-wrap">
+                <svg class="ring-svg" viewBox="0 0 110 110" width="104" height="104">
+                  <defs>
+                    <filter id="gs" x="-40%" y="-40%" width="180%" height="180%">
+                      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b"/>
+                      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <radialGradient id="rgs" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="rgba(245,185,66,0.16)"/>
+                      <stop offset="100%" stop-color="transparent"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="55" cy="55" r="42" fill="url(#rgs)"/>
+                  <circle cx="55" cy="55" r="52" fill="none" stroke="rgba(var(--ar),0.06)" stroke-width="1" stroke-dasharray="3 5"/>
+                  <circle class="ring-track-pulse" cx="55" cy="55" r="44" fill="none" stroke="rgba(var(--ar),0.09)" stroke-width="7.5"/>
+                  <circle id="ring-s" cx="55" cy="55" r="44" fill="none" stroke="#f5b942" stroke-width="7.5"
+                    stroke-dasharray="276.5" stroke-dashoffset="276.5"
+                    stroke-linecap="round" transform="rotate(-90 55 55)" filter="url(#gs)"/>
+                  <text x="55" y="52" text-anchor="middle" font-size="16" font-weight="700"
+                    fill="#f5b942" font-family="JetBrains Mono,monospace" id="pct-s">0%</text>
+                  <text x="55" y="65" text-anchor="middle" font-size="7"
+                    fill="rgba(245,185,66,0.4)" font-family="JetBrains Mono,monospace" letter-spacing="1">PROGRESO</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="sc-div"></div>
+          <div class="topics">
+            <div class="tr"><div class="dot d-queue"></div>T1–T2 · Torneado & Fresado<span class="tbadge tb-q">Standby</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T3–T4 · Taladrado & CNC<span class="tbadge tb-q">—</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T5–T6 · Rectificado & Fundición<span class="tbadge tb-q">—</span></div>
+            <div class="tr"><div class="dot d-queue"></div>T7–T8 · Metrología<span class="tbadge tb-q">—</span></div>
+          </div>
+          <div class="cd-strip" style="margin:9px 17px;border-color:rgba(var(--ar),.12)">
+            <span class="cd-lbl">Examen · 10 Jun 9:00</span>
+            <div class="cd-nums">
+              <span class="cd-n" style="color:var(--amber);text-shadow:0 0 8px rgba(var(--ar),.6)" id="cd-s-d">--</span><span class="cd-u">D</span>
+              <span class="cd-n" style="color:var(--amber);text-shadow:0 0 8px rgba(var(--ar),.6)" id="cd-s-h">--</span><span class="cd-u">H</span>
+              <span class="cd-n" style="color:var(--amber);text-shadow:0 0 8px rgba(var(--ar),.6)" id="cd-s-m">--</span><span class="cd-u">M</span>
+            </div>
+          </div>
+          <div class="sc-actions">
+            <a class="abtn a-a" href="sistemas/teoria.html">▶ Teoría</a>
+            <a class="abtn a-g" href="sistemas/ejercicios/">≡ Ejercicios</a>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <div class="card-actions">
-      <a href="sistemas/teoria.html" class="card-btn btn-s">📖 Teoría</a>
-      <a href="sistemas/ejercicios/t1.html" class="card-btn btn-neutral">📝 Ejercicios</a>
+    <!-- ── PLAN DE ESTUDIO ── -->
+    <div id="plan">
+      <div class="sh"><span class="sh-txt">Plan de estudio</span><div class="sh-line"></div><span class="sh-n">7 sem · 8 abr – 10 jun</span></div>
+      <div class="plan-box" style="margin-top:12px">
+        <div class="plan-head" onclick="togglePlan()">
+          <div class="plan-badge">Plan activo · S1 en curso</div>
+          <div class="plan-head-meta">
+            <span>8 Abr – 10 Jun 2026</span>
+            <span class="plan-chev" id="planChev">▼</span>
+          </div>
+        </div>
+        <div class="plan-body" id="planBody">
+          <div class="plan-tabs">
+            <button class="ptab pf" onclick="switchPlan('f',this)" id="ptab-f">Fluidos</button>
+            <button class="ptab" onclick="switchPlan('m',this)" id="ptab-m">Mecánica</button>
+            <button class="ptab" onclick="switchPlan('s',this)" id="ptab-s">Sistemas</button>
+          </div>
+
+          <!-- FLUIDOS -->
+          <div class="ppanel vis" id="pp-f">
+            <div class="plan-grid">
+              <div class="plan-row pa-f" id="pr-f-0">
+                <div class="pr-week"><span class="pr-wnum">S1</span><span class="pr-wdates">8–13 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Hidrostática — presión y fuerzas</div><div class="pr-topic-sub">T4+T7: superficies planas y curvas</div></div>
+                <div class="pr-action">teoria.html T4/T7 · estrategia cards 1–4 · mayo2025.html para calibrar nivel</div>
+              </div>
+              <div class="plan-row pa-f" id="pr-f-1">
+                <div class="pr-week"><span class="pr-wnum">S2</span><span class="pr-wdates">14–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Bernoulli + continuidad</div><div class="pr-topic-sub">T12 ideal y con pérdidas</div></div>
+                <div class="pr-action">teoria.html T12 · estrategia cards 6–7 · exámenes mayo2024+junio2023 Bernoulli</div>
+              </div>
+              <div class="plan-row pa-f" id="pr-f-2">
+                <div class="pr-week"><span class="pr-wnum">S3</span><span class="pr-wdates">21–27 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">QdM — cantidad de movimiento</div><div class="pr-topic-sub">T14/T15: chorros, codos, álabes</div></div>
+                <div class="pr-action">teoria.html T14/T15 · estrategia cards 8–9 · junio2022 problema QdM completo</div>
+              </div>
+              <div class="plan-row pa-f" id="pr-f-3">
+                <div class="pr-week"><span class="pr-wnum">S4</span><span class="pr-wdates">28 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Tuberías y pérdidas</div><div class="pr-topic-sub">T18/T19: Darcy-Weisbach, Colebrook</div></div>
+                <div class="pr-action">teoria T18/T19 · estrategia cards 10–13 · colebrook.html hasta &lt;3 min/iter.</div>
+              </div>
+              <div class="plan-row pa-f" id="pr-f-4">
+                <div class="pr-week"><span class="pr-wnum">S5</span><span class="pr-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Bombas hidráulicas</div><div class="pr-topic-sub">Punto de funcionamiento, NPSH</div></div>
+                <div class="pr-action">estrategia cards 15–18 · bombas-calc.html · junio2024ef completo cronometrado</div>
+              </div>
+              <div class="plan-row pa-f" id="pr-f-5">
+                <div class="pr-week"><span class="pr-wnum">S6</span><span class="pr-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Simulacros completos</div><div class="pr-topic-sub">Exámenes 2022, 2023ef, mayo2021</div></div>
+                <div class="pr-action">2h cronometradas sin mirar · Corregir con soluciones · Anotar errores</div>
+              </div>
+              <div class="plan-row pa-f" id="pr-f-6">
+                <div class="pr-week"><span class="pr-wnum">S7</span><span class="pr-wdates">19–27 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Revisión y consolidación</div><div class="pr-topic-sub">Solo puntos débiles del simulacro</div></div>
+                <div class="pr-action">formulario.html — fórmulas clave · No materia nueva · Descanso 26-27</div>
+              </div>
+            </div>
+            <div class="plan-note"><strong>Regla 80/20:</strong> Bernoulli + Hidrostática + Tuberías + QdM + Bombas = 85% de la nota. El cuello de botella es Colebrook — practica la iteración hasta hacerlo automático.</div>
+          </div>
+
+          <!-- MECÁNICA -->
+          <div class="ppanel" id="pp-m">
+            <div class="plan-grid">
+              <div class="plan-row pa-m" id="pr-m-0">
+                <div class="pr-week"><span class="pr-wnum">S1</span><span class="pr-wdates">8–13 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T1 Vectorial + T2 Geometría de masas</div><div class="pr-topic-sub">Productos, momentos de inercia, centroide</div></div>
+                <div class="pr-action">teoria.html T1-T2 · tema1.html + tema2.html · base imprescindible</div>
+              </div>
+              <div class="plan-row pa-m" id="pr-m-1">
+                <div class="pr-week"><span class="pr-wnum">S2</span><span class="pr-wdates">14–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T3 Estática del sólido rígido</div><div class="pr-topic-sub">DSL, equilibrio, reacciones en apoyos</div></div>
+                <div class="pr-action">teoria.html T3 · tema3.html · E1 de todos los exámenes suele ser estática</div>
+              </div>
+              <div class="plan-row pa-m" id="pr-m-2">
+                <div class="pr-week"><span class="pr-wnum">S3</span><span class="pr-wdates">21–27 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T4 Rozamiento + T5 Cables</div><div class="pr-topic-sub">Rozamiento estático/dinámico, catenaria</div></div>
+                <div class="pr-action">tema4.html + tema5.html · frecuentes en E1 y preguntas T</div>
+              </div>
+              <div class="plan-row pa-m" id="pr-m-3">
+                <div class="pr-week"><span class="pr-wnum">S4</span><span class="pr-wdates">28 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T6 Resistencia de Materiales ★</div><div class="pr-topic-sub">Flexión, torsión, diagramas V-M, sección T</div></div>
+                <div class="pr-action">teoria.html T6 · resolver E2-2425 y E3-2324 sin mirar · tema más pesado</div>
+              </div>
+              <div class="plan-row pa-m" id="pr-m-4">
+                <div class="pr-week"><span class="pr-wnum">S5</span><span class="pr-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T7 Cinemática + T8 Movimiento plano</div><div class="pr-topic-sub">CIR, campo velocidades, aceleraciones</div></div>
+                <div class="pr-action">teoria.html T7-T8 · ejercicios de clase en PDF</div>
+              </div>
+              <div class="plan-row pa-m" id="pr-m-5">
+                <div class="pr-week"><span class="pr-wnum">S5–6</span><span class="pr-wdates">5–18 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T9–T12 Dinámica ⚠ pendiente material</div><div class="pr-topic-sub">Magnitudes, teoremas, sólido rígido, eje fijo</div></div>
+                <div class="pr-action">Estudiar en cuanto llegue material · Entra en examen · Marcar al cubrir los 4 temas</div>
+              </div>
+              <div class="plan-row pa-m" id="pr-m-6">
+                <div class="pr-week"><span class="pr-wnum">S6–7</span><span class="pr-wdates">19 may–4 jun</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Simulacros + repaso final</div><div class="pr-topic-sub">Exámenes 2024-25, 2023-24 y 2018-19</div></div>
+                <div class="pr-action">2h cronometradas sin mirar · examenes.html · No materia nueva</div>
+              </div>
+            </div>
+            <div class="plan-note"><strong>Patrón:</strong> E1=estática/rozamiento (T3-T5), E2=viga sección T (T6, siempre), E3=cinemática/dinámica (T7-T12). <strong>Prioridad: T6 &gt; T3 &gt; T4/T5 &gt; T7/T8 &gt; T9-T12.</strong></div>
+          </div>
+
+          <!-- SISTEMAS -->
+          <div class="ppanel" id="pp-s">
+            <div class="plan-grid">
+              <div class="plan-row pa-s" id="pr-s-0">
+                <div class="pr-week"><span class="pr-wnum">S1–2</span><span class="pr-wdates">8–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Aparcado — foco en Fluidos</div><div class="pr-topic-sub">Examen 28 mayo, prioridad absoluta</div></div>
+                <div class="pr-action">No dedicar tiempo a Sistemas hasta pasar el examen de Fluidos</div>
+              </div>
+              <div class="plan-row pa-s" id="pr-s-1">
+                <div class="pr-week"><span class="pr-wnum">S3–4</span><span class="pr-wdates">21 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T1 Torneado + T2 Fresado</div><div class="pr-topic-sub">Parámetros de corte, velocidades, avances</div></div>
+                <div class="pr-action">teoria.html T1-T2 · fórmulas Vc, n, f, ap · paralelo ligero con Fluidos</div>
+              </div>
+              <div class="plan-row pa-s" id="pr-s-2">
+                <div class="pr-week"><span class="pr-wnum">S5</span><span class="pr-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T3 Taladrado + T4 CNC</div><div class="pr-topic-sub">Ciclos de mecanizado, G-code básico</div></div>
+                <div class="pr-action">teoria.html T3-T4 · ejercicios numéricos tiempo de mecanizado</div>
+              </div>
+              <div class="plan-row pa-s" id="pr-s-3">
+                <div class="pr-week"><span class="pr-wnum">S6</span><span class="pr-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T5 Rectificado + T6 Fundición</div><div class="pr-topic-sub">Rugosidad, tolerancias, defectos</div></div>
+                <div class="pr-action">teoria.html T5-T6 · relación Ra-parámetros · defectos en fundición</div>
+              </div>
+              <div class="plan-row pa-s" id="pr-s-4">
+                <div class="pr-week"><span class="pr-wnum">S7</span><span class="pr-wdates">19–25 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">T7–T8 Metrología + Def. plástica</div><div class="pr-topic-sub">Calibres, ISO, forja, estampado</div></div>
+                <div class="pr-action">teoria.html T7-T8 · sistema ISO tolerancias · procesos deformación plástica</div>
+              </div>
+              <div class="plan-row pa-s" id="pr-s-5">
+                <div class="pr-week"><span class="pr-wnum">S8</span><span class="pr-wdates">26 may–4 jun</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Simulacro + repaso global</div><div class="pr-topic-sub">Exámenes reales convocatorias previas</div></div>
+                <div class="pr-action">ejercicios.html · exámenes previos · fórmulas de corte de memoria</div>
+              </div>
+              <div class="plan-row pa-s" id="pr-s-6">
+                <div class="pr-week"><span class="pr-wnum">S9</span><span class="pr-wdates">5–9 jun</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
+                <div class="pr-topic"><div class="pr-topic-name">Última semana</div><div class="pr-topic-sub">Solo consolidación</div></div>
+                <div class="pr-action">Repasar errores · formulario de corte · descanso 8 jun · examen 10 jun</div>
+              </div>
+            </div>
+            <div class="plan-note"><strong>Ventaja:</strong> Examen de Sistemas el 10 jun, 13 días después de Fluidos. Focaliza en Fluidos+Mecánica primero; ataca Sistemas en las últimas 3 semanas.</div>
+          </div>
+        </div><!-- /plan-body -->
+      </div>
     </div>
-  </div>
 
-</div><!-- /subjects-grid -->
+    <!-- ── STATS ── -->
+    <div id="stats">
+      <div class="sh"><span class="sh-txt">Estadísticas globales</span><div class="sh-line"></div></div>
+      <div class="stats-grid" style="margin-top:12px">
+        <div class="sstat sg"><div class="ss-num">3</div><div class="ss-lbl">Asignaturas</div></div>
+        <div class="sstat sc"><div class="ss-num">161+</div><div class="ss-lbl">Ejercicios resueltos</div></div>
+        <div class="sstat sp"><div class="ss-num">18</div><div class="ss-lbl">Exámenes reales</div></div>
+        <div class="sstat sa"><div class="ss-num" id="stat-days">49</div><div class="ss-lbl">Días al examen 1</div></div>
+      </div>
+    </div>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat"><div class="stat-num">3</div><div class="stat-lbl">Asignaturas</div></div>
-  <div class="stat"><div class="stat-num">29</div><div class="stat-lbl">Temas teoría</div></div>
-  <div class="stat"><div class="stat-num">161+</div><div class="stat-lbl">Ejercicios</div></div>
-  <div class="stat"><div class="stat-num">12</div><div class="stat-lbl">Exámenes reales</div></div>
-</div>
+    <!-- ── TOOLS ── -->
+    <div id="tools">
+      <div class="sh"><span class="sh-txt">Herramientas rápidas</span><div class="sh-line"></div></div>
+      <div class="tools-grid" style="margin-top:12px">
+        <a class="tool" href="fluidos/colebrook.html">
+          <div class="tool-ic">⚙</div>
+          <div><div class="tool-name">Calculadora Colebrook</div><div class="tool-desc">Iteración automática · factor de fricción f · Moody</div></div>
+        </a>
+        <a class="tool" href="fluidos/bombas-calc.html">
+          <div class="tool-ic">◈</div>
+          <div><div class="tool-name">Calculadora Bombas</div><div class="tool-desc">Punto de funcionamiento · NPSH · curvas características</div></div>
+        </a>
+        <a class="tool" href="fluidos/formulario.html">
+          <div class="tool-ic">≡</div>
+          <div><div class="tool-name">Formulario Fluidos</div><div class="tool-desc">Todas las fórmulas clave · acceso rápido en examen</div></div>
+        </a>
+      </div>
+    </div>
 
-<div id="install-banner" style="display:none">
+  </main>
+</div><!-- /shell -->
+
+<!-- Install banner -->
+<div id="install-banner">
   <p>📱 Instalar para acceso offline</p>
   <button id="install-btn">Instalar</button>
   <button id="dismiss-btn">✕</button>
 </div>
 
-<footer>
-  UPV/EHU · Ingeniería · Curso 2025–26 &nbsp;·&nbsp;
-  <a href="https://github.com/IonanBerloso/upv-ehu-project" target="_blank">GitHub ↗</a>
-</footer>
-
-</div><!-- /page-wrap -->
-
 <script>
-// ── PLAN DE ESTUDIO ──
-var PLAN_TOTAL = 7; // tareas por asignatura
+/* ══════════════════════════════
+   PLAN — localStorage + progreso
+══════════════════════════════ */
+var PLAN_TOTAL = 7;
+var RING_C = 276.5; // circunferencia r=44
 
 function updateProgress(sub){
   var checked = 0;
-  for(var i=0;i<PLAN_TOTAL;i++){
-    var key = 'plan-'+sub+'-'+i;
-    if(localStorage.getItem(key)==='1') checked++;
+  for(var i = 0; i < PLAN_TOTAL; i++){
+    if(localStorage.getItem('plan-'+sub+'-'+i) === '1') checked++;
   }
-  var pct = Math.round(checked/PLAN_TOTAL*100);
+  var pct = Math.round(checked / PLAN_TOTAL * 100);
   var ring = document.getElementById('ring-'+sub);
   var pctEl = document.getElementById('pct-'+sub);
-  if(ring) ring.setAttribute('stroke-dashoffset', (188.5*(1-pct/100)).toFixed(1));
-  if(pctEl) pctEl.textContent = pct+'%';
+  if(ring) ring.setAttribute('stroke-dashoffset', (RING_C * (1 - pct/100)).toFixed(2));
+  if(pctEl) pctEl.textContent = pct + '%';
 }
 
 function onPlanCheck(input){
   var sub = input.getAttribute('data-sub');
   var idx = input.getAttribute('data-idx');
-  localStorage.setItem('plan-'+sub+'-'+idx, input.checked?'1':'0');
+  localStorage.setItem('plan-'+sub+'-'+idx, input.checked ? '1' : '0');
   var row = document.getElementById('pr-'+sub+'-'+idx);
   if(row) row.classList.toggle('done-row', input.checked);
   updateProgress(sub);
@@ -766,11 +905,10 @@ function onPlanCheck(input){
 
 function loadPlanState(){
   ['f','m','s'].forEach(function(sub){
-    for(var i=0;i<PLAN_TOTAL;i++){
-      var val = localStorage.getItem('plan-'+sub+'-'+i);
-      if(val==='1'){
+    for(var i = 0; i < PLAN_TOTAL; i++){
+      if(localStorage.getItem('plan-'+sub+'-'+i) === '1'){
         var inp = document.querySelector('input[data-sub="'+sub+'"][data-idx="'+i+'"]');
-        if(inp){ inp.checked=true; }
+        if(inp) inp.checked = true;
         var row = document.getElementById('pr-'+sub+'-'+i);
         if(row) row.classList.add('done-row');
       }
@@ -779,76 +917,102 @@ function loadPlanState(){
   });
 }
 
-// Plan toggle
+/* ══════════════════════════════
+   PLAN UI — toggle + tabs
+══════════════════════════════ */
 function togglePlan(){
   var body = document.getElementById('planBody');
-  var chev = document.getElementById('planChevron');
-  var open = body.classList.toggle('open');
-  chev.classList.toggle('open', open);
+  var chev = document.getElementById('planChev');
+  var isOpen = body.classList.toggle('open');
+  chev.classList.toggle('open', isOpen);
 }
-// Plan tabs
+
 function switchPlan(id, btn){
   ['f','m','s'].forEach(function(k){
-    document.getElementById('pp-'+k).classList.remove('visible');
+    document.getElementById('pp-'+k).classList.remove('vis');
     var t = document.getElementById('ptab-'+k);
-    t.className = 'plan-tab';
+    t.className = 'ptab';
   });
-  document.getElementById('pp-'+id).classList.add('visible');
-  btn.className = 'plan-tab active-'+id;
+  document.getElementById('pp-'+id).classList.add('vis');
+  var cls = {f:'pf',m:'pm',s:'ps'}[id];
+  btn.className = 'ptab ' + cls;
 }
 
-// Init plan on load
-loadPlanState();
-
-// PWA install prompt
-let deferredPrompt;
-const banner = document.getElementById('install-banner');
-const installBtn = document.getElementById('install-btn');
-const dismissBtn = document.getElementById('dismiss-btn');
-
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  banner.style.display = 'flex';
-});
-installBtn.addEventListener('click', async () => {
-  banner.style.display = 'none';
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt = null;
-});
-dismissBtn.addEventListener('click', () => { banner.style.display = 'none'; });
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
+/* ══════════════════════════════
+   SIDEBAR SCROLL LINKS
+══════════════════════════════ */
+function scrollToSection(id){
+  var el = document.getElementById(id);
+  var main = document.getElementById('main-scroll');
+  if(el && main) main.scrollTo({top: el.offsetTop - 16, behavior:'smooth'});
 }
 
-// Countdown timers
+/* ══════════════════════════════
+   COUNTDOWN TIMERS
+══════════════════════════════ */
 (function(){
   var exams = [
-    { target:new Date('2026-05-28T09:00:00'), d:'cd-f-d', h:'cd-f-h', m:'cd-f-m' },
-    { target:new Date('2026-06-05T09:00:00'), d:'cd-m-d', h:'cd-m-h', m:'cd-m-m' },
-    { target:new Date('2026-06-10T09:00:00'), d:'cd-s-d', h:'cd-s-h', m:'cd-s-m' }
+    { target: new Date('2026-05-28T09:00:00'),
+      d:'cd-f-d', h:'cd-f-h', m:'cd-f-m',
+      hd:'hud-d', hh:'hud-h', hm:'hud-m',
+      sb_d:'sb-d', sb_h:'sb-h',
+      alert:'alert-days', stat:'stat-days' },
+    { target: new Date('2026-06-05T09:00:00'), d:'cd-m-d', h:'cd-m-h', m:'cd-m-m' },
+    { target: new Date('2026-06-10T09:00:00'), d:'cd-s-d', h:'cd-s-h', m:'cd-s-m' }
   ];
   function pad(n){ return String(n).padStart(2,'0'); }
+  function set(id, v){ var el=document.getElementById(id); if(el) el.textContent=v; }
+
   function tick(){
     var now = Date.now();
-    exams.forEach(function(e){
+    exams.forEach(function(e, i){
       var diff = e.target - now;
-      if(diff <= 0){
-        document.getElementById(e.d).textContent='00';
-        document.getElementById(e.h).textContent='00';
-        document.getElementById(e.m).textContent='00';
-        return;
+      if(diff < 0) diff = 0;
+      var d = Math.floor(diff/86400000);
+      var h = Math.floor((diff%86400000)/3600000);
+      var m2 = Math.floor((diff%3600000)/60000);
+      set(e.d, pad(d)); set(e.h, pad(h)); set(e.m, pad(m2));
+      if(i === 0){
+        set(e.hd, pad(d)); set(e.hh, pad(h)); set(e.hm, pad(m2));
+        set(e.sb_d, pad(d)); set(e.sb_h, pad(h));
+        set(e.alert, d + ' días');
+        set(e.stat, d);
       }
-      document.getElementById(e.d).textContent = pad(Math.floor(diff/86400000));
-      document.getElementById(e.h).textContent = pad(Math.floor((diff%86400000)/3600000));
-      document.getElementById(e.m).textContent = pad(Math.floor((diff%3600000)/60000));
     });
+    // Clock in sidebar
+    var now2 = new Date();
+    var cl = document.getElementById('sb-clock');
+    if(cl){
+      cl.textContent = now2.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase()
+        + ' · ' + pad(now2.getHours()) + ':' + pad(now2.getMinutes()) + ' UTC+2';
+    }
   }
   tick();
   setInterval(tick, 1000);
 })();
+
+/* ══════════════════════════════
+   INIT
+══════════════════════════════ */
+loadPlanState();
+
+/* ══════════════════════════════
+   PWA
+══════════════════════════════ */
+let deferredPrompt;
+var banner = document.getElementById('install-banner');
+var installBtn = document.getElementById('install-btn');
+var dismissBtn = document.getElementById('dismiss-btn');
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault(); deferredPrompt = e; banner.style.display='flex';
+});
+installBtn.addEventListener('click', function(){
+  banner.style.display='none';
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(function(){ deferredPrompt=null; });
+});
+dismissBtn.addEventListener('click', function(){ banner.style.display='none'; });
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
 </script>
 </body>
 </html>
