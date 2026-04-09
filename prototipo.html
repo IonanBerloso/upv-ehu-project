@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EHU·LAB — Command Center [PROTOTIPO]</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#00ff9d;
+  --cyan:#00f0ff;
+  --purple:#c084fc;
+  --amber:#fbbf24;
+  --bg:#0a0a0a;
+  --surface:#111111;
+  --surface2:#181818;
+  --border:rgba(255,255,255,0.06);
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#475569;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'JetBrains Mono',monospace;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+}
+
+/* Grid texture */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,255,157,0.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,157,0.018) 1px,transparent 1px);
+  background-size:44px 44px;
+}
+
+/* Ambient glows */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 600px 400px at -10% -10%,rgba(0,240,255,0.04) 0%,transparent 70%),
+    radial-gradient(ellipse 500px 400px at 110% 110%,rgba(192,132,252,0.04) 0%,transparent 70%);
+}
+
+.z1{position:relative;z-index:1}
+
+/* ── TOPBAR ── */
+.topbar{
+  height:48px;flex-shrink:0;
+  background:rgba(10,10,10,0.96);
+  border-bottom:1px solid rgba(0,255,157,0.1);
+  backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;
+  position:relative;z-index:10;
+}
+.topbar-logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.05em;font-weight:700;letter-spacing:.08em;
+  color:var(--text);
+}
+.topbar-logo em{color:var(--green);font-style:normal}
+.topbar-tag{font-size:.58em;letter-spacing:.16em;color:var(--text3);margin-left:10px;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:20px}
+
+/* Global countdown */
+.global-cd{display:flex;align-items:center;gap:8px;font-size:.68em}
+.gc-label{color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.gc-val{font-weight:700;color:var(--cyan);font-size:1.1em}
+.gc-sep{color:var(--text3);opacity:.5}
+.gc-sub{font-size:.78em;color:var(--text3)}
+
+/* Status */
+.sys-status{display:flex;align-items:center;gap:7px;font-size:.6em;letter-spacing:.1em;color:var(--green);text-transform:uppercase}
+.sys-dot{width:6px;height:6px;border-radius:50%;background:var(--green);
+  animation:pulse-dot 2.4s ease-in-out infinite;
+  box-shadow:0 0 6px var(--green)}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* ── LAYOUT ── */
+.layout{display:flex;flex:1;overflow:hidden;position:relative;z-index:1}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:256px;flex-shrink:0;
+  background:rgba(12,12,12,0.97);
+  border-right:1px solid rgba(0,255,157,0.08);
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+}
+.sb-brand{
+  padding:18px 20px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.sb-brand-eye{font-size:.56em;letter-spacing:.16em;color:var(--text3);text-transform:uppercase;margin-bottom:3px}
+.sb-brand-course{font-size:.7em;color:var(--text2)}
+
+.sb-section-label{
+  font-size:.54em;letter-spacing:.16em;color:var(--text3);
+  text-transform:uppercase;padding:14px 20px 5px;
+}
+
+.nav-item{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 20px;font-size:.7em;letter-spacing:.06em;
+  color:var(--text3);cursor:pointer;
+  border-left:2px solid transparent;
+  transition:.15s;text-transform:uppercase;
+}
+.nav-item:hover{color:var(--text2);background:rgba(255,255,255,0.025)}
+.nav-item.active{color:var(--green);border-left-color:var(--green);background:rgba(0,255,157,0.05)}
+.nav-icon{font-size:.9em;opacity:.7}
+
+.nav-sub{
+  padding:3px 20px 3px 40px;
+  font-size:.6em;color:var(--text3);cursor:pointer;transition:.12s;
+}
+.nav-sub:hover{color:var(--text2)}
+.nav-sub::before{content:'↳ ';opacity:.4}
+
+.sb-bottom{
+  margin-top:auto;padding:14px 20px;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.sb-bottom-label{font-size:.56em;letter-spacing:.08em;color:var(--text3);text-transform:uppercase}
+.sb-bottom-val{font-size:.62em;color:var(--text2);margin-top:2px}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;padding:28px 32px 40px}
+.main::-webkit-scrollbar{width:3px}
+.main::-webkit-scrollbar-track{background:transparent}
+.main::-webkit-scrollbar-thumb{background:rgba(0,255,157,0.15);border-radius:2px}
+
+/* Section label */
+.section-label{
+  display:flex;align-items:center;gap:10px;
+  font-size:.58em;letter-spacing:.16em;color:var(--text3);text-transform:uppercase;
+  margin-bottom:16px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── SUBJECT CARDS ── */
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+
+.scard{
+  background:var(--surface);
+  border-radius:12px;border:1px solid var(--border);
+  display:flex;flex-direction:column;
+  transition:.2s;overflow:hidden;position:relative;
+}
+.scard::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+}
+.scard-f{border-color:rgba(0,240,255,0.12)}
+.scard-f::after{background:linear-gradient(90deg,transparent,rgba(0,240,255,0.6),transparent)}
+.scard-f:hover{border-color:rgba(0,240,255,0.3);box-shadow:0 4px 32px rgba(0,240,255,0.07),0 0 0 1px rgba(0,240,255,0.06)}
+
+.scard-m{border-color:rgba(192,132,252,0.12)}
+.scard-m::after{background:linear-gradient(90deg,transparent,rgba(192,132,252,0.6),transparent)}
+.scard-m:hover{border-color:rgba(192,132,252,0.3);box-shadow:0 4px 32px rgba(192,132,252,0.07),0 0 0 1px rgba(192,132,252,0.06)}
+
+.scard-s{border-color:rgba(251,191,36,0.12)}
+.scard-s::after{background:linear-gradient(90deg,transparent,rgba(251,191,36,0.6),transparent)}
+.scard-s:hover{border-color:rgba(251,191,36,0.3);box-shadow:0 4px 32px rgba(251,191,36,0.07),0 0 0 1px rgba(251,191,36,0.06)}
+
+.scard-body{padding:20px 20px 0}
+
+.scard-eyebrow{font-size:.56em;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px;font-weight:700}
+.col-f{color:rgba(0,240,255,0.75)}
+.col-m{color:rgba(192,132,252,0.75)}
+.col-s{color:rgba(251,191,36,0.75)}
+
+.scard-title{font-family:'Space Grotesk',sans-serif;font-size:.95em;font-weight:700;line-height:1.3;color:var(--text)}
+
+/* Ring */
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;padding-top:2px}
+
+/* HR */
+.scard-hr{height:1px;background:var(--border);margin:14px 0}
+
+/* Topics */
+.topic-list{padding:0 20px}
+.topic-row{display:flex;align-items:center;gap:7px;padding:3px 0;font-size:.7em;color:var(--text2)}
+.td{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.td-active{background:#fbbf24}
+.td-queue{background:#1e293b;border:1px solid #334155}
+.td-done{background:var(--green)}
+.tbadge{margin-left:auto;font-size:.65em;padding:1px 6px;border-radius:3px}
+.tb-active{color:#fbbf24;background:rgba(251,191,36,0.1)}
+.tb-queue{color:var(--text3)}
+
+/* Countdown strip */
+.cd-strip{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:14px 20px 0;padding:8px 12px;
+  background:rgba(0,0,0,.35);border-radius:6px;
+  font-size:.62em;
+}
+.cd-strip-label{color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.cd-strip-vals{display:flex;align-items:center;gap:2px}
+.cdv{font-weight:700;font-size:1.1em}
+.cds{color:var(--text3);font-size:.75em;margin-right:2px}
+
+/* Actions */
+.scard-actions{display:flex;gap:8px;padding:14px 20px 18px;margin-top:auto}
+.cbtn{
+  flex:1;text-align:center;padding:8px 6px;
+  border-radius:7px;font-size:.68em;font-weight:700;
+  text-decoration:none;letter-spacing:.04em;
+  transition:.12s;cursor:pointer;display:block;
+  text-transform:uppercase;
+}
+.cbtn-f{background:rgba(0,240,255,0.1);color:#00f0ff;border:1px solid rgba(0,240,255,0.2)}
+.cbtn-f:hover{background:rgba(0,240,255,0.2)}
+.cbtn-m{background:rgba(192,132,252,0.1);color:#c084fc;border:1px solid rgba(192,132,252,0.2)}
+.cbtn-m:hover{background:rgba(192,132,252,0.2)}
+.cbtn-s{background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)}
+.cbtn-s:hover{background:rgba(251,191,36,0.2)}
+.cbtn-ghost{background:rgba(255,255,255,0.04);color:var(--text2);border:1px solid var(--border)}
+.cbtn-ghost:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+
+/* ── STATS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:14px 16px;text-align:center;
+}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:1.65em;font-weight:700;line-height:1;margin-bottom:5px}
+.stat-lbl{font-size:.56em;letter-spacing:.1em;color:var(--text3);text-transform:uppercase}
+
+/* ── PLAN PREVIEW ── */
+.plan-preview{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:18px 20px;margin-bottom:28px;
+}
+.plan-week-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.6em;letter-spacing:.1em;color:var(--green);text-transform:uppercase;
+  margin-bottom:12px;
+}
+.plan-week-badge::before{content:'▶';font-size:.7em}
+.plan-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.plan-col{padding:10px 12px;border-radius:7px}
+.pc-f{background:rgba(0,240,255,0.04);border:1px solid rgba(0,240,255,0.1)}
+.pc-m{background:rgba(192,132,252,0.04);border:1px solid rgba(192,132,252,0.1)}
+.pc-s{background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.1)}
+.pc-label{font-size:.58em;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;font-weight:700}
+.pc-text{font-size:.7em;color:var(--text2);line-height:1.45}
+
+/* ── TOOLS ROW ── */
+.tools-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tool-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:14px 16px;cursor:pointer;transition:.15s;
+  display:flex;align-items:center;gap:12px;
+}
+.tool-card:hover{background:var(--surface2);border-color:rgba(0,255,157,0.15)}
+.tool-icon{font-size:1.2em;flex-shrink:0}
+.tool-name{font-size:.72em;font-weight:700;color:var(--text);margin-bottom:2px}
+.tool-desc{font-size:.62em;color:var(--text3)}
+
+/* ── PROTO BADGE ── */
+.proto-badge{
+  position:fixed;bottom:14px;right:16px;
+  background:rgba(0,255,157,0.08);
+  border:1px solid rgba(0,255,157,0.25);
+  color:var(--green);font-size:.6em;letter-spacing:.1em;
+  padding:5px 12px;border-radius:4px;z-index:999;
+  text-transform:uppercase;
+  box-shadow:0 0 12px rgba(0,255,157,0.1);
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar z1">
+  <div style="display:flex;align-items:center">
+    <div class="topbar-logo">EHU<em>·</em>LAB</div>
+    <span class="topbar-tag">// Command Center</span>
+  </div>
+  <div class="topbar-right">
+    <div class="global-cd">
+      <span class="gc-label">Próximo examen</span>
+      <span class="gc-val">49</span><span class="gc-sep">D</span>
+      <span class="gc-val">09</span><span class="gc-sep">H</span>
+      <span class="gc-val">47</span><span class="gc-sep">M</span>
+      <span class="gc-sub">· Fluidos · 28 May</span>
+    </div>
+    <div class="sys-status">
+      <div class="sys-dot"></div>Sistema activo
+    </div>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar z1">
+    <div class="sb-brand">
+      <div class="sb-brand-eye">UPV/EHU · Gipuzkoa · Ingeniería</div>
+      <div class="sb-brand-course">Curso 2025–26</div>
+    </div>
+
+    <div class="sb-section-label">Sistema</div>
+    <div class="nav-item active"><span class="nav-icon">▣</span>Dashboard</div>
+    <div class="nav-item"><span class="nav-icon">◈</span>Plan de Estudio</div>
+    <div class="nav-item"><span class="nav-icon">◈</span>Progreso</div>
+
+    <div class="sb-section-label">Asignaturas</div>
+    <div class="nav-item" style="color:rgba(0,240,255,0.65)"><span class="nav-icon">◦</span>Mecánica de Fluidos</div>
+    <div class="nav-sub">Teoría</div>
+    <div class="nav-sub">Exámenes resueltos</div>
+    <div class="nav-sub">Estrategia</div>
+    <div class="nav-sub">Formulario</div>
+
+    <div class="nav-item" style="color:rgba(192,132,252,0.65);margin-top:4px"><span class="nav-icon">◦</span>Mecánica Aplicada</div>
+    <div class="nav-sub">Teoría</div>
+    <div class="nav-sub">Ejercicios T1–T8</div>
+    <div class="nav-sub">Exámenes resueltos</div>
+
+    <div class="nav-item" style="color:rgba(251,191,36,0.65);margin-top:4px"><span class="nav-icon">◦</span>Sistemas de Producción</div>
+    <div class="nav-sub">Teoría</div>
+    <div class="nav-sub">Ejercicios</div>
+
+    <div class="sb-section-label">Herramientas</div>
+    <div class="nav-item"><span class="nav-icon">⊕</span>Calc. Colebrook</div>
+    <div class="nav-item"><span class="nav-icon">⊕</span>Calc. Bombas</div>
+    <div class="nav-item"><span class="nav-icon">⊕</span>Propiedades fluidos</div>
+    <div class="nav-item"><span class="nav-icon">⊕</span>Búsqueda global</div>
+
+    <div class="sb-bottom">
+      <div class="sb-bottom-label">Sesión activa</div>
+      <div class="sb-bottom-val">09 Apr 2026 · 02:14</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:8px">
+        <div class="sys-dot" style="width:5px;height:5px"></div>
+        <span style="font-size:.58em;color:var(--green);letter-spacing:.08em;text-transform:uppercase">Online · GitHub Pages</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main z1">
+
+    <!-- Page header -->
+    <div style="margin-bottom:24px">
+      <div class="section-label">Dashboard · Vista general</div>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-size:1.5em;font-weight:700;color:var(--text);line-height:1.2">
+        Command Center
+      </h1>
+      <p style="color:var(--text3);font-size:.72em;margin-top:5px;letter-spacing:.04em">
+        3 asignaturas activas &nbsp;·&nbsp; Examen más próximo en 49 días
+      </p>
+    </div>
+
+    <!-- SUBJECT CARDS -->
+    <div class="cards-grid">
+
+      <!-- FLUIDOS -->
+      <div class="scard scard-f">
+        <div class="scard-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div>
+              <div class="scard-eyebrow col-f">Mec. de Fluidos</div>
+              <div class="scard-title">Hidrostática, Bernoulli,<br>Tuberías y Bombas</div>
+            </div>
+            <div class="ring-wrap">
+              <svg viewBox="0 0 68 68" width="62" height="62">
+                <circle cx="34" cy="34" r="27" fill="none" stroke="rgba(0,240,255,0.08)" stroke-width="5"/>
+                <circle cx="34" cy="34" r="27" fill="none" stroke="#00f0ff" stroke-width="5"
+                  stroke-dasharray="169.6" stroke-dashoffset="169.6"
+                  stroke-linecap="round" transform="rotate(-90 34 34)"/>
+                <text x="34" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#00f0ff" font-family="JetBrains Mono,monospace">0%</text>
+              </svg>
+            </div>
+          </div>
+          <div class="scard-hr"></div>
+        </div>
+        <div class="topic-list">
+          <div class="topic-row"><div class="td td-active"></div>T1 · Hidrostática<span class="tbadge tb-active">En curso</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T2 · Bernoulli & Energía<span class="tbadge tb-queue">Pendiente</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T3 · Tuberías y pérdidas<span class="tbadge tb-queue">Pendiente</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T4 · Bombas hidráulicas<span class="tbadge tb-queue">Pendiente</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>Exámenes resueltos<span class="tbadge tb-queue">Pendiente</span></div>
+        </div>
+        <div class="cd-strip">
+          <span class="cd-strip-label">Examen · 28 May 9:00</span>
+          <div class="cd-strip-vals">
+            <span class="cdv" style="color:#00f0ff">49</span><span class="cds">D</span>
+            <span class="cdv" style="color:#00f0ff">09</span><span class="cds">H</span>
+            <span class="cdv" style="color:#00f0ff">47</span><span class="cds">M</span>
+          </div>
+        </div>
+        <div class="scard-actions">
+          <a class="cbtn cbtn-f">📖 Teoría</a>
+          <a class="cbtn cbtn-ghost">📝 Exámenes</a>
+        </div>
+      </div>
+
+      <!-- MECÁNICA -->
+      <div class="scard scard-m">
+        <div class="scard-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div>
+              <div class="scard-eyebrow col-m">Mec. Aplicada</div>
+              <div class="scard-title">Vectorial, Estática,<br>Cables y Resistencia Mat.</div>
+            </div>
+            <div class="ring-wrap">
+              <svg viewBox="0 0 68 68" width="62" height="62">
+                <circle cx="34" cy="34" r="27" fill="none" stroke="rgba(192,132,252,0.08)" stroke-width="5"/>
+                <circle cx="34" cy="34" r="27" fill="none" stroke="#c084fc" stroke-width="5"
+                  stroke-dasharray="169.6" stroke-dashoffset="169.6"
+                  stroke-linecap="round" transform="rotate(-90 34 34)"/>
+                <text x="34" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#c084fc" font-family="JetBrains Mono,monospace">0%</text>
+              </svg>
+            </div>
+          </div>
+          <div class="scard-hr"></div>
+        </div>
+        <div class="topic-list">
+          <div class="topic-row"><div class="td td-active"></div>T1-T2 · Vectorial & Masas<span class="tbadge tb-active">En curso</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T3-T5 · Estática, Roz., Cables<span class="tbadge tb-queue">Pendiente</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T6 · Resistencia Materiales<span class="tbadge tb-queue">Pendiente</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T7-T12 · Cinemática & Dinámica<span class="tbadge tb-queue">Pendiente</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>Exámenes resueltos<span class="tbadge tb-queue">Pendiente</span></div>
+        </div>
+        <div class="cd-strip">
+          <span class="cd-strip-label">Examen · 5 Jun 9:00</span>
+          <div class="cd-strip-vals">
+            <span class="cdv" style="color:#c084fc">57</span><span class="cds">D</span>
+            <span class="cdv" style="color:#c084fc">09</span><span class="cds">H</span>
+            <span class="cdv" style="color:#c084fc">47</span><span class="cds">M</span>
+          </div>
+        </div>
+        <div class="scard-actions">
+          <a class="cbtn cbtn-m">📖 Teoría</a>
+          <a class="cbtn cbtn-ghost">📝 Exámenes</a>
+        </div>
+      </div>
+
+      <!-- SISTEMAS -->
+      <div class="scard scard-s">
+        <div class="scard-body">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div>
+              <div class="scard-eyebrow col-s">Sistemas de Producción</div>
+              <div class="scard-title">Torneado, Fresado,<br>CNC y Metrología</div>
+            </div>
+            <div class="ring-wrap">
+              <svg viewBox="0 0 68 68" width="62" height="62">
+                <circle cx="34" cy="34" r="27" fill="none" stroke="rgba(251,191,36,0.08)" stroke-width="5"/>
+                <circle cx="34" cy="34" r="27" fill="none" stroke="#fbbf24" stroke-width="5"
+                  stroke-dasharray="169.6" stroke-dashoffset="169.6"
+                  stroke-linecap="round" transform="rotate(-90 34 34)"/>
+                <text x="34" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="#fbbf24" font-family="JetBrains Mono,monospace">0%</text>
+              </svg>
+            </div>
+          </div>
+          <div class="scard-hr"></div>
+        </div>
+        <div class="topic-list">
+          <div class="topic-row"><div class="td td-active"></div>T1 · Torneado<span class="tbadge tb-active">En curso</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T2-T4 · Fresado, Taladrado, CNC<span class="tbadge tb-queue">Pendiente</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T5-T6 · Rectificado & Fundición<span class="tbadge tb-queue">Pendiente</span></div>
+          <div class="topic-row"><div class="td td-queue"></div>T7-T8 · Metrología & Def. plástica<span class="tbadge tb-queue">Pendiente</span></div>
+        </div>
+        <div class="cd-strip">
+          <span class="cd-strip-label">Examen · 10 Jun 9:00</span>
+          <div class="cd-strip-vals">
+            <span class="cdv" style="color:#fbbf24">62</span><span class="cds">D</span>
+            <span class="cdv" style="color:#fbbf24">09</span><span class="cds">H</span>
+            <span class="cdv" style="color:#fbbf24">47</span><span class="cds">M</span>
+          </div>
+        </div>
+        <div class="scard-actions">
+          <a class="cbtn cbtn-s">📖 Teoría</a>
+          <a class="cbtn cbtn-ghost">📝 Ejercicios</a>
+        </div>
+      </div>
+
+    </div><!-- /cards-grid -->
+
+    <!-- STATS -->
+    <div class="section-label">Estadísticas globales</div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--green)">3</div>
+        <div class="stat-lbl">Asignaturas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--cyan)">29</div>
+        <div class="stat-lbl">Temas teoría</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--purple)">161+</div>
+        <div class="stat-lbl">Ejercicios</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--amber)">15</div>
+        <div class="stat-lbl">Exámenes reales</div>
+      </div>
+    </div>
+
+    <!-- PLAN PREVIEW -->
+    <div class="section-label">Plan de estudio — semana activa</div>
+    <div class="plan-preview">
+      <div class="plan-week-badge">S1 · 8–13 Abril · Semana en curso</div>
+      <div class="plan-cols">
+        <div class="plan-col pc-f">
+          <div class="pc-label col-f">Fluidos</div>
+          <div class="pc-text">Hidrostática — presión y fuerzas sobre superficies planas y curvas</div>
+        </div>
+        <div class="plan-col pc-m">
+          <div class="pc-label col-m">Mecánica</div>
+          <div class="pc-text">T1 Cálculo Vectorial + T2 Geometría de masas — base de todo</div>
+        </div>
+        <div class="plan-col pc-s">
+          <div class="pc-label col-s">Sistemas</div>
+          <div class="pc-text">Aparcado — foco total en Fluidos hasta el 28 de mayo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="section-label">Herramientas rápidas</div>
+    <div class="tools-row">
+      <div class="tool-card">
+        <div class="tool-icon">⚙</div>
+        <div>
+          <div class="tool-name">Calculadora Colebrook</div>
+          <div class="tool-desc">Iteración automática · factor de fricción f</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">💧</div>
+        <div>
+          <div class="tool-name">Calculadora Bombas</div>
+          <div class="tool-desc">Punto de funcionamiento · NPSH · curvas</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">📋</div>
+        <div>
+          <div class="tool-name">Formulario Fluidos</div>
+          <div class="tool-desc">Todas las fórmulas · acceso rápido en examen</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- PROTO BADGE -->
+<div class="proto-badge">⚡ Prototipo visual · no funcional</div>
+
+</body>
+</html>
