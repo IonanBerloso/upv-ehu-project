@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>Calculadora de Integrales · Matemáticas · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+<script src="https://cdn.jsdelivr.net/npm/nerdamer-prime@1.2.1/all.min.js"></script>
+
+<style>
+:root{
+  --bg:#131313;
+  --surface:#1c1c1c;
+  --surface2:#222;
+  --surface3:#2a2a2a;
+  --border:rgba(255,255,255,.07);
+  --border2:rgba(255,255,255,.14);
+  --accent:#4ade80;
+  --accent-dim:rgba(74,222,128,.08);
+  --accent-border:rgba(74,222,128,.28);
+  --blue:#7ecfff;
+  --blue-dim:rgba(126,207,255,.08);
+  --blue-border:rgba(126,207,255,.28);
+  --gold:#f59e0b;
+  --gold-dim:rgba(245,158,11,.08);
+  --gold-border:rgba(245,158,11,.28);
+  --red:#ef4444;
+  --red-dim:rgba(239,68,68,.08);
+  --red-border:rgba(239,68,68,.28);
+  --purple:#c084fc;
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#475569;
+  --ff:'Space Grotesk',system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;
+  --radius-sm:6px;
+  --transition:.18s ease;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);line-height:1.6;font-size:15px;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:200;
+  height:52px;display:flex;align-items:center;gap:14px;
+  padding:0 24px;
+  background:rgba(13,13,13,.95);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-back{
+  display:flex;align-items:center;gap:6px;
+  font-size:.78em;font-weight:600;color:var(--text2);
+  padding:6px 12px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);
+  transition:color var(--transition),background var(--transition);
+}
+.topbar-back:hover{color:var(--text);background:var(--surface)}
+.topbar-title{font-size:.9em;font-weight:700;color:var(--text)}
+.topbar-badge{
+  margin-left:auto;font-family:var(--ff-mono);font-size:.62em;font-weight:700;
+  padding:4px 11px;border-radius:20px;letter-spacing:.06em;
+  background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border);
+}
+
+/* ── CONTAINER ── */
+.container{max-width:1080px;margin:0 auto;padding:32px 28px 80px}
+
+/* ── HEADER ── */
+.page-header{
+  margin-bottom:28px;padding:22px 26px 24px;
+  background:linear-gradient(135deg,rgba(74,222,128,.06) 0%,rgba(126,207,255,.03) 100%);
+  border:1px solid rgba(74,222,128,.18);
+  border-left:3px solid var(--accent);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.page-header .tag{
+  font-family:var(--ff-mono);font-size:.68em;font-weight:700;
+  color:var(--accent);letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:6px;
+}
+.page-header h1{
+  font-size:1.6em;font-weight:700;color:var(--text);
+  line-height:1.2;letter-spacing:-.02em;margin-bottom:6px;
+}
+.page-header .subtitle{color:var(--text2);font-size:.9em}
+
+/* ── INPUT SECTION ── */
+.input-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:20px;
+}
+.input-label{
+  font-family:var(--ff-mono);font-size:.68em;font-weight:700;
+  color:var(--text3);letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:10px;display:block;
+}
+.input-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.integral-sign{
+  font-size:2.4em;color:var(--accent);font-family:'Cambria Math',serif;
+  line-height:1;user-select:none;
+}
+.input-expr{
+  flex:1;min-width:220px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:12px 14px;
+  color:var(--text);font-family:var(--ff-mono);font-size:.95em;
+  outline:none;transition:border-color var(--transition);
+}
+.input-expr:focus{border-color:var(--accent-border);background:var(--surface3)}
+.input-expr::placeholder{color:var(--text3)}
+.dx-label{
+  font-family:'Cambria Math',serif;font-size:1.3em;color:var(--text2);
+  font-style:italic;user-select:none;
+}
+.var-select{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:10px 12px;
+  color:var(--text);font-family:var(--ff-mono);font-size:.9em;
+  cursor:pointer;outline:none;
+}
+.var-select:focus{border-color:var(--accent-border)}
+
+.limits-row{
+  display:flex;align-items:center;gap:10px;margin-top:14px;
+  padding-top:14px;border-top:1px dashed var(--border);flex-wrap:wrap;
+}
+.limits-row .lbl{
+  font-family:var(--ff-mono);font-size:.68em;font-weight:700;
+  color:var(--text3);letter-spacing:.08em;text-transform:uppercase;
+}
+.limit-input{
+  width:100px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:8px 12px;
+  color:var(--text);font-family:var(--ff-mono);font-size:.88em;
+  outline:none;text-align:center;
+}
+.limit-input:focus{border-color:var(--accent-border)}
+.limits-row .sep{color:var(--text3);font-family:var(--ff-mono);font-size:.85em}
+
+.actions-row{
+  display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 20px;border-radius:var(--radius-sm);
+  font-family:var(--ff);font-size:.85em;font-weight:600;
+  cursor:pointer;border:1px solid var(--border);
+  background:var(--surface2);color:var(--text);
+  transition:all var(--transition);
+}
+.btn:hover{background:var(--surface3);border-color:var(--border2)}
+.btn-primary{
+  background:var(--accent-dim);color:var(--accent);
+  border-color:var(--accent-border);
+}
+.btn-primary:hover{background:rgba(74,222,128,.14);border-color:rgba(74,222,128,.4)}
+.btn-ghost{background:transparent}
+
+/* ── PREVIEW ── */
+.preview-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;
+  text-align:center;min-height:80px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15em;
+}
+.preview-empty{color:var(--text3);font-size:.85em;font-style:italic}
+
+/* ── RESULT ── */
+.result-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px 26px;margin-bottom:20px;
+  display:none;
+}
+.result-card.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.result-card.err{border-color:var(--red-border);background:var(--red-dim)}
+.result-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  padding-bottom:12px;border-bottom:1px solid var(--border);
+}
+.result-header .ic{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--accent-dim);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9em;font-weight:700;
+  border:1px solid var(--accent-border);
+}
+.err .result-header .ic{background:var(--red-dim);color:var(--red);border-color:var(--red-border)}
+.result-header .ttl{font-size:.95em;font-weight:700;color:var(--text)}
+.result-box{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:18px 20px;
+  text-align:center;font-size:1.2em;margin:10px 0;
+}
+
+/* ── STEPS ── */
+.steps-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px 26px;margin-bottom:20px;
+  display:none;
+}
+.steps-card.active{display:block;animation:fadeIn .25s ease}
+.steps-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  padding-bottom:12px;border-bottom:1px solid var(--border);
+}
+.steps-header .ic{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--blue-dim);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9em;font-weight:700;
+  border:1px solid var(--blue-border);
+}
+.steps-header .ttl{font-size:.95em;font-weight:700;color:var(--text)}
+.step{
+  background:var(--surface2);border-left:3px solid var(--blue);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:14px 18px;margin-bottom:12px;
+}
+.step:last-child{margin-bottom:0}
+.step-num{
+  font-family:var(--ff-mono);font-size:.68em;font-weight:700;
+  color:var(--blue);letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:6px;display:block;
+}
+.step-title{
+  font-size:.92em;font-weight:600;color:var(--text);margin-bottom:8px;
+}
+.step-body{font-size:.88em;color:var(--text2);line-height:1.7}
+.step-body .katex-display{margin:10px 0}
+.step-body code{
+  background:var(--surface3);padding:1px 6px;border-radius:4px;
+  font-family:var(--ff-mono);font-size:.85em;color:var(--blue);
+}
+
+/* ── VERIFICATION ── */
+.verify-card{
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  border-left:3px solid var(--gold);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:14px 18px;margin-top:16px;
+}
+.verify-card .lbl{
+  font-family:var(--ff-mono);font-size:.66em;font-weight:700;
+  color:var(--gold);letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:6px;display:block;
+}
+.verify-card .body{font-size:.85em;color:var(--text);line-height:1.7}
+.verify-card.ok{background:var(--accent-dim);border-color:var(--accent-border);border-left-color:var(--accent)}
+.verify-card.ok .lbl{color:var(--accent)}
+
+/* ── EXAMPLES ── */
+.examples-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px 26px;margin-bottom:20px;
+}
+.examples-header{
+  font-family:var(--ff-mono);font-size:.68em;font-weight:700;
+  color:var(--text3);letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.examples-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:10px;
+}
+.example-btn{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:12px 14px;
+  cursor:pointer;text-align:left;
+  transition:all var(--transition);
+}
+.example-btn:hover{background:var(--surface3);border-color:var(--accent-border);transform:translateY(-1px)}
+.example-title{
+  font-family:var(--ff-mono);font-size:.66em;font-weight:700;
+  color:var(--text3);margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;
+}
+.example-expr{font-size:.95em;color:var(--text);font-family:'Cambria Math',serif}
+
+/* ── HELP ── */
+.help-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 22px;margin-bottom:20px;
+  font-size:.82em;color:var(--text2);line-height:1.7;
+}
+.help-card summary{
+  cursor:pointer;font-weight:600;color:var(--text);
+  font-size:.92em;padding:4px 0;list-style:none;
+  display:flex;align-items:center;gap:8px;
+}
+.help-card summary::before{
+  content:"▸";font-size:.8em;transition:transform var(--transition);
+}
+.help-card[open] summary::before{transform:rotate(90deg)}
+.help-card .body{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.help-card code{
+  background:var(--surface2);padding:1px 6px;border-radius:4px;
+  font-family:var(--ff-mono);font-size:.88em;color:var(--accent);
+}
+.help-card ul{margin:8px 0 8px 22px}
+.help-card li{margin-bottom:4px}
+
+/* ── RESPONSIVE ── */
+@media (max-width:720px){
+  .container{padding:20px 16px 60px}
+  .page-header{padding:18px 20px}
+  .page-header h1{font-size:1.3em}
+  .input-row{flex-direction:column;align-items:stretch}
+  .integral-sign{text-align:center}
+  .dx-label{display:none}
+}
+
+/* ── KATEX size ── */
+.katex{font-size:1.05em !important}
+.result-box .katex{font-size:1.35em !important}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="topbar-back" href="guia.html">← Matemáticas</a>
+  <div class="topbar-title">Calculadora de Integrales</div>
+  <div class="topbar-badge">∫ PASO A PASO</div>
+</div>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="tag">Herramienta interactiva</div>
+    <h1>Calculadora de Integrales</h1>
+    <div class="subtitle">Indefinidas y definidas · Preview LaTeX · Explicación del método · Verificación por derivación</div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-card">
+    <label class="input-label">Integrando</label>
+    <div class="input-row">
+      <span class="integral-sign">∫</span>
+      <input id="exprInput" type="text" class="input-expr"
+             placeholder="Ej: x^2 + 3*x - 5,  sin(x)*cos(x),  1/(x^2+1),  e^(2*x),  x*ln(x)"
+             autocomplete="off" spellcheck="false">
+      <span class="dx-label">d</span>
+      <select id="varSelect" class="var-select">
+        <option value="x">x</option>
+        <option value="t">t</option>
+        <option value="y">y</option>
+        <option value="u">u</option>
+      </select>
+    </div>
+
+    <div class="limits-row">
+      <span class="lbl">Integral definida (opcional)</span>
+      <input id="lowerLimit" type="text" class="limit-input" placeholder="a">
+      <span class="sep">→</span>
+      <input id="upperLimit" type="text" class="limit-input" placeholder="b">
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-primary" id="calcBtn">Calcular ∫</button>
+      <button class="btn btn-ghost" id="clearBtn">Limpiar</button>
+    </div>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-card" id="previewBox">
+    <span class="preview-empty">Escribe una expresión para ver el preview LaTeX…</span>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div class="ic">✓</div>
+      <div class="ttl">Resultado</div>
+    </div>
+    <div class="result-box" id="resultBox"></div>
+    <div id="verifyBox"></div>
+  </div>
+
+  <!-- STEPS -->
+  <div class="steps-card" id="stepsCard">
+    <div class="steps-header">
+      <div class="ic">☰</div>
+      <div class="ttl">Método aplicado y desarrollo</div>
+    </div>
+    <div id="stepsBody"></div>
+  </div>
+
+  <!-- EXAMPLES -->
+  <div class="examples-card">
+    <div class="examples-header">Ejemplos rápidos (clic para cargar)</div>
+    <div class="examples-grid" id="examplesGrid"></div>
+  </div>
+
+  <!-- HELP -->
+  <details class="help-card">
+    <summary>Sintaxis y notación aceptada</summary>
+    <div class="body">
+      <p>La calculadora acepta notación matemática estándar con estos símbolos:</p>
+      <ul>
+        <li>Operaciones: <code>+  -  *  /</code></li>
+        <li>Potencia: <code>^</code>  — ejemplo: <code>x^3</code></li>
+        <li>Raíz cuadrada: <code>sqrt(x)</code></li>
+        <li>Trigonometría: <code>sin, cos, tan, sec, csc, cot</code> y sus inversas <code>asin, acos, atan</code></li>
+        <li>Exponencial y logaritmo: <code>e^x</code>, <code>exp(x)</code>, <code>log(x)</code> (natural), <code>log10(x)</code></li>
+        <li>Constantes: <code>pi</code>, <code>e</code></li>
+        <li>Multiplicación explícita: escribe <code>2*x</code> en lugar de <code>2x</code></li>
+      </ul>
+      <p style="margin-top:10px"><strong>Nota:</strong> el cálculo simbólico lo realiza <code>nerdamer-prime</code> en tu navegador, sin servidor. Las explicaciones paso a paso detectan el método más apropiado (potencia, sustitución, partes, fracciones simples, trigonométrica). La verificación se hace derivando el resultado y comparándolo con el integrando.</p>
+    </div>
+  </details>
+
+</div>
+
+<script>
+/* ===================== DATOS: EJEMPLOS PREDEFINIDOS ===================== */
+const EXAMPLES = [
+  { title: "Potencia",        expr: "x^3 + 2*x - 1",    desc: "∫ x³ + 2x − 1 dx" },
+  { title: "Trig básica",     expr: "sin(x) + cos(x)",  desc: "∫ sen(x) + cos(x) dx" },
+  { title: "Exponencial",     expr: "e^(2*x)",          desc: "∫ e^(2x) dx" },
+  { title: "Racional",        expr: "1/(x^2+1)",        desc: "∫ 1/(x²+1) dx" },
+  { title: "Logarítmica",     expr: "1/x",              desc: "∫ 1/x dx" },
+  { title: "Partes",          expr: "x*e^x",            desc: "∫ x·eˣ dx" },
+  { title: "Sustitución",     expr: "2*x*cos(x^2)",     desc: "∫ 2x cos(x²) dx" },
+  { title: "Potencia trig",   expr: "sin(x)^2",         desc: "∫ sen²(x) dx" },
+  { title: "Fracción simple", expr: "1/((x-1)*(x+2))",  desc: "∫ 1/((x−1)(x+2)) dx" },
+  { title: "Raíz",            expr: "sqrt(x)",          desc: "∫ √x dx" },
+  { title: "Definida",        expr: "x^2",              desc: "∫₀¹ x² dx",  a:"0", b:"1" },
+  { title: "Arcoseno",        expr: "1/sqrt(1-x^2)",    desc: "∫ 1/√(1−x²) dx" },
+];
+
+/* ===================== UTILIDADES ===================== */
+function q(id){ return document.getElementById(id); }
+
+function renderKatexInto(el, tex, display=true){
+  if (!window.katex) { el.textContent = tex; return; }
+  try {
+    katex.render(tex, el, { throwOnError:false, displayMode: display });
+  } catch(e) { el.textContent = tex; }
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+/* Normaliza el input humano para Nerdamer */
+function normalizeExpr(raw){
+  if (!raw) return '';
+  let s = raw.trim();
+  // Reemplazos comunes
+  s = s.replace(/∫/g,'').replace(/²/g,'^2').replace(/³/g,'^3');
+  s = s.replace(/·/g,'*').replace(/×/g,'*');
+  s = s.replace(/√\(/g,'sqrt(').replace(/√([a-zA-Z0-9]+)/g,'sqrt($1)');
+  s = s.replace(/π/g,'pi');
+  return s;
+}
+
+/* Convierte la expresión Nerdamer a LaTeX */
+function toLatex(expr){
+  try {
+    return nerdamer(expr).toTeX();
+  } catch(e) {
+    return expr;
+  }
+}
+
+/* ===================== PREVIEW EN VIVO ===================== */
+const exprInput = q('exprInput');
+const previewBox = q('previewBox');
+const varSelect = q('varSelect');
+const lowerLimit = q('lowerLimit');
+const upperLimit = q('upperLimit');
+
+function updatePreview(){
+  const raw = exprInput.value.trim();
+  if (!raw){
+    previewBox.innerHTML = '<span class="preview-empty">Escribe una expresión para ver el preview LaTeX…</span>';
+    return;
+  }
+  const v = varSelect.value;
+  const a = lowerLimit.value.trim();
+  const b = upperLimit.value.trim();
+  let tex;
+  try {
+    const exprTex = toLatex(normalizeExpr(raw));
+    if (a && b) {
+      const aTex = toLatex(normalizeExpr(a));
+      const bTex = toLatex(normalizeExpr(b));
+      tex = `\\int_{${aTex}}^{${bTex}} ${exprTex}\\, d${v}`;
+    } else {
+      tex = `\\int ${exprTex}\\, d${v}`;
+    }
+  } catch(e) {
+    tex = `\\int ${escapeHtml(raw)}\\, d${v}`;
+  }
+  previewBox.innerHTML = '';
+  renderKatexInto(previewBox, tex, true);
+}
+
+['input','change'].forEach(ev => {
+  exprInput.addEventListener(ev, updatePreview);
+  varSelect.addEventListener(ev, updatePreview);
+  lowerLimit.addEventListener(ev, updatePreview);
+  upperLimit.addEventListener(ev, updatePreview);
+});
+
+/* ===================== DETECTOR DE MÉTODO ===================== */
+/* Analiza la expresión y devuelve { method, description, steps } */
+function analyzeMethod(rawExpr, varName){
+  const s = normalizeExpr(rawExpr);
+  const v = varName;
+
+  // Expresión sin espacios para buscar patrones
+  const clean = s.replace(/\s+/g,'');
+
+  // 1. Constante pura (sin variable)
+  if (!clean.includes(v) && !/[a-df-zA-DF-Z]/.test(clean.replace(/e\^|exp|pi/g,''))){
+    return {
+      method: "Integración de constante",
+      rule: `\\int k\\, d${v} = k\\cdot ${v} + C`,
+      explanation: `El integrando no depende de <code>${v}</code>, así que la integral es el propio valor multiplicado por la variable.`
+    };
+  }
+
+  // 2. Potencia simple: v^n o a*v^n
+  const powRe = new RegExp(`^[-+]?\\d*\\*?${v}\\^(-?\\d+(?:\\.\\d+)?)$|^[-+]?\\d*\\*?${v}$|^[-+]?\\d+$`);
+  if (powRe.test(clean)) {
+    return {
+      method: "Regla de la potencia",
+      rule: `\\int ${v}^n\\, d${v} = \\frac{${v}^{n+1}}{n+1} + C, \\quad (n\\neq -1)`,
+      explanation: `El integrando es una potencia de <code>${v}</code>. Se aumenta el exponente en una unidad y se divide por el nuevo exponente.`
+    };
+  }
+
+  // 3. Polinomio (suma/resta de potencias)
+  const isPoly = (() => {
+    // Reemplaza v^n, v, números, operadores básicos
+    const stripped = clean
+      .replace(new RegExp(`${v}\\^\\-?\\d+(?:\\.\\d+)?`,'g'),'')
+      .replace(new RegExp(v,'g'),'')
+      .replace(/[-+*\/\d.()]/g,'');
+    return stripped === '';
+  })();
+  if (isPoly) {
+    return {
+      method: "Integración de polinomio (linealidad)",
+      rule: `\\int \\left[ f(${v}) + g(${v}) \\right] d${v} = \\int f(${v})\\, d${v} + \\int g(${v})\\, d${v}`,
+      explanation: `El integrando es un polinomio. Se aplica la regla de la potencia término a término gracias a la linealidad de la integral.`
+    };
+  }
+
+  // 4. 1/v → ln|v|
+  if (clean === `1/${v}` || clean === `${v}^-1` || clean === `${v}^(-1)`) {
+    return {
+      method: "Integral logarítmica",
+      rule: `\\int \\frac{1}{${v}}\\, d${v} = \\ln|${v}| + C`,
+      explanation: `Es la derivada del logaritmo natural. Fórmula directa de tabla.`
+    };
+  }
+
+  // 5. e^(a*v) o e^v
+  if (/^e\^/.test(clean) && !clean.includes('*') || /^exp\(/.test(clean)) {
+    return {
+      method: "Integral exponencial",
+      rule: `\\int e^{a${v}}\\, d${v} = \\frac{e^{a${v}}}{a} + C`,
+      explanation: `La primitiva de una exponencial <code>e^(av)</code> es ella misma dividida por el coeficiente de <code>${v}</code>.`
+    };
+  }
+
+  // 6. 1/(v^2+a^2) → arctan
+  if (/^1\/\([a-z0-9]*\^2\+/.test(clean) || /^1\/\([a-z0-9]*\^2\+\d+\)$/.test(clean)) {
+    return {
+      method: "Integral arcotangente",
+      rule: `\\int \\frac{d${v}}{${v}^2+a^2} = \\frac{1}{a}\\arctan\\left(\\frac{${v}}{a}\\right) + C`,
+      explanation: `La forma <code>1/(${v}²+a²)</code> es la derivada del arcotangente (escalado por 1/a).`
+    };
+  }
+
+  // 7. 1/sqrt(1-v^2) → arcsin
+  if (/^1\/sqrt\(1-/.test(clean)) {
+    return {
+      method: "Integral arcoseno",
+      rule: `\\int \\frac{d${v}}{\\sqrt{1-${v}^2}} = \\arcsin(${v}) + C`,
+      explanation: `Es la derivada del arcoseno. Fórmula directa de tabla.`
+    };
+  }
+
+  // 8. sin(v) o cos(v) sueltos
+  if (clean === `sin(${v})` || clean === `cos(${v})`) {
+    return {
+      method: "Trigonométrica básica",
+      rule: `\\int \\sin(${v})\\, d${v} = -\\cos(${v}) + C, \\quad \\int \\cos(${v})\\, d${v} = \\sin(${v}) + C`,
+      explanation: `Fórmulas directas de tabla para las funciones trigonométricas fundamentales.`
+    };
+  }
+
+  // 9. sin^n o cos^n con n par → ángulo doble
+  if (/sin\([^)]*\)\^2|cos\([^)]*\)\^2/.test(clean)) {
+    return {
+      method: "Potencia par de seno o coseno (ángulo doble)",
+      rule: `\\sin^2(${v}) = \\frac{1-\\cos(2${v})}{2}, \\quad \\cos^2(${v}) = \\frac{1+\\cos(2${v})}{2}`,
+      explanation: `Se usa la identidad del ángulo doble para linealizar la potencia y luego se integra término a término.`
+    };
+  }
+
+  // 10. Producto con derivada visible (sustitución u = g(v))
+  // Heurística: contiene una función compuesta y su derivada
+  const hasCompositeWithDeriv =
+    /\d+\*?${v}\*(sin|cos|e\^)/.test(`${clean}`.replace(/\$\{v\}/g,v)) ||
+    new RegExp(`${v}\\*(cos|sin|exp|e\\^)\\(${v}\\^2\\)`).test(clean) ||
+    new RegExp(`${v}\\*e\\^\\(${v}\\^2\\)`).test(clean);
+  if (hasCompositeWithDeriv) {
+    return {
+      method: "Cambio de variable (sustitución)",
+      rule: `\\int f(g(${v}))\\cdot g'(${v})\\, d${v} = \\int f(u)\\, du, \\quad u = g(${v})`,
+      explanation: `Se detecta una función compuesta <code>f(g(${v}))</code> multiplicada por la derivada <code>g'(${v})</code>. Sustituimos <code>u = g(${v})</code> y la integral se simplifica.`
+    };
+  }
+
+  // 11. Producto polinomio × exponencial/trigonométrica (partes)
+  const partsPattern =
+    new RegExp(`${v}\\*(e\\^|exp|sin|cos|ln)`).test(clean) ||
+    new RegExp(`(e\\^|exp|sin|cos)\\([^)]*\\)\\*${v}`).test(clean) ||
+    new RegExp(`${v}\\*ln`).test(clean) ||
+    new RegExp(`ln\\(${v}\\)`).test(clean);
+  if (partsPattern) {
+    return {
+      method: "Integración por partes",
+      rule: `\\int u\\, dv = uv - \\int v\\, du`,
+      explanation: `El integrando es un producto del tipo polinomio × (exponencial, trigonométrica o logaritmo). Se elige <code>u</code> según la regla <strong>LIATE</strong> (Logarítmica, Inversa trig, Algebraica, Trigonométrica, Exponencial) y se aplica la fórmula.`
+    };
+  }
+
+  // 12. Cociente de polinomios (fracciones simples)
+  const ratRe = /^\([^()]*\)\/\(([^()]|\([^()]*\))*\)$|^\d+\/\(.+\)$/;
+  if (ratRe.test(clean) && clean.includes('/')) {
+    return {
+      method: "Descomposición en fracciones simples",
+      rule: `\\frac{P(${v})}{(x-a)(x-b)} = \\frac{A}{x-a} + \\frac{B}{x-b}`,
+      explanation: `El integrando es una función racional. Se factoriza el denominador y se descompone en fracciones simples, integrando cada término por separado (logaritmos o arcotangentes según el factor).`
+    };
+  }
+
+  // 13. Raíz cuadrada de polinomio simple
+  if (/sqrt\([^)]*\)/.test(clean)) {
+    return {
+      method: "Integral con radical",
+      rule: `\\int ${v}^{1/2}\\, d${v} = \\frac{2}{3}${v}^{3/2} + C`,
+      explanation: `Los radicales se reescriben como potencias fraccionarias y se aplica la regla de la potencia.`
+    };
+  }
+
+  // Fallback genérico
+  return {
+    method: "Método directo (motor simbólico)",
+    rule: null,
+    explanation: `No se ha detectado un patrón estándar claro. El motor simbólico <code>nerdamer</code> intentará calcular la primitiva combinando las reglas básicas (linealidad, sustitución, partes, fracciones simples) internamente.`
+  };
+}
+
+/* ===================== CÁLCULO ===================== */
+const resultCard = q('resultCard');
+const resultBox = q('resultBox');
+const verifyBox = q('verifyBox');
+const stepsCard = q('stepsCard');
+const stepsBody = q('stepsBody');
+
+function calculate(){
+  const rawExpr = exprInput.value.trim();
+  if (!rawExpr) {
+    showError("Introduce una expresión para integrar.");
+    return;
+  }
+  const v = varSelect.value;
+  const a = lowerLimit.value.trim();
+  const b = upperLimit.value.trim();
+  const isDefinite = Boolean(a && b);
+
+  const expr = normalizeExpr(rawExpr);
+
+  // 1. Analizar método
+  const analysis = analyzeMethod(rawExpr, v);
+
+  // 2. Calcular la integral con nerdamer
+  let primitive, primitiveLatex, integralTex, resultTex, numericValue = null;
+  try {
+    primitive = nerdamer(`integrate(${expr}, ${v})`);
+    primitiveLatex = primitive.toTeX();
+  } catch(e) {
+    showError("No se ha podido calcular la integral. Revisa la sintaxis: usa * para multiplicar, ^ para potencia, y nombres estándar (sin, cos, exp, sqrt, etc.).", e.message);
+    return;
+  }
+
+  // 3. Si es definida, evaluar
+  let definiteLatex = null;
+  if (isDefinite) {
+    try {
+      const aNum = normalizeExpr(a);
+      const bNum = normalizeExpr(b);
+      const def = nerdamer(`defint(${expr}, ${aNum}, ${bNum}, ${v})`);
+      definiteLatex = def.toTeX();
+      try { numericValue = def.evaluate().text('decimals', 8); } catch(e){}
+    } catch(e) {
+      definiteLatex = null;
+    }
+  }
+
+  // 4. Mostrar resultado
+  resultCard.classList.remove('err');
+  resultCard.classList.add('active');
+  resultBox.innerHTML = '';
+
+  if (isDefinite) {
+    const aTex = toLatex(normalizeExpr(a));
+    const bTex = toLatex(normalizeExpr(b));
+    let tex = `\\int_{${aTex}}^{${bTex}} ${toLatex(expr)}\\, d${v} = ${definiteLatex || '\\text{[evaluación]}'}`;
+    if (numericValue !== null) {
+      tex += ` \\approx ${numericValue}`;
+    }
+    renderKatexInto(resultBox, tex, true);
+  } else {
+    const tex = `\\int ${toLatex(expr)}\\, d${v} = ${primitiveLatex} + C`;
+    renderKatexInto(resultBox, tex, true);
+  }
+
+  // 5. Verificación por derivación
+  verifyBox.innerHTML = '';
+  try {
+    const diff = nerdamer(`diff(${primitive.text()}, ${v})`);
+    const diffSimpl = nerdamer(`simplify(${diff.text()} - (${expr}))`);
+    const diffText = diffSimpl.text();
+    const isZero = (diffText === '0' || diffText === '0.0');
+    const card = document.createElement('div');
+    card.className = 'verify-card' + (isZero ? ' ok' : '');
+    card.innerHTML = `
+      <span class="lbl">${isZero ? '✓ Verificación correcta' : '⚠ Verificación numérica'}</span>
+      <div class="body"></div>
+    `;
+    const body = card.querySelector('.body');
+    if (isZero) {
+      const tex = `\\frac{d}{d${v}}\\left[ ${primitiveLatex} \\right] = ${toLatex(expr)} \\quad\\checkmark`;
+      renderKatexInto(body, tex, true);
+    } else {
+      body.innerHTML = `La derivada del resultado es <code>${escapeHtml(diff.text())}</code>. Debería coincidir con el integrando original (puede haber diferencia solo por forma simbólica).`;
+    }
+    verifyBox.appendChild(card);
+  } catch(e) { /* ignore */ }
+
+  // 6. Mostrar pasos
+  stepsCard.classList.add('active');
+  stepsBody.innerHTML = '';
+
+  const step1 = document.createElement('div');
+  step1.className = 'step';
+  step1.innerHTML = `
+    <span class="step-num">Paso 1 — Clasificación</span>
+    <div class="step-title">${analysis.method}</div>
+    <div class="step-body">${analysis.explanation}</div>
+  `;
+  stepsBody.appendChild(step1);
+
+  if (analysis.rule) {
+    const step2 = document.createElement('div');
+    step2.className = 'step';
+    step2.innerHTML = `
+      <span class="step-num">Paso 2 — Fórmula aplicable</span>
+      <div class="step-title">Regla estándar del método</div>
+      <div class="step-body"><div class="rule-tex"></div></div>
+    `;
+    stepsBody.appendChild(step2);
+    renderKatexInto(step2.querySelector('.rule-tex'), analysis.rule, true);
+  }
+
+  const step3 = document.createElement('div');
+  step3.className = 'step';
+  step3.innerHTML = `
+    <span class="step-num">Paso 3 — Resultado simbólico</span>
+    <div class="step-title">Primitiva obtenida</div>
+    <div class="step-body"><div class="res-tex"></div></div>
+  `;
+  stepsBody.appendChild(step3);
+  renderKatexInto(step3.querySelector('.res-tex'), `${toLatex(expr)} \\longrightarrow ${primitiveLatex} + C`, true);
+
+  if (isDefinite && definiteLatex) {
+    const step4 = document.createElement('div');
+    step4.className = 'step';
+    step4.innerHTML = `
+      <span class="step-num">Paso 4 — Evaluación definida</span>
+      <div class="step-title">Regla de Barrow: F(b) − F(a)</div>
+      <div class="step-body"><div class="def-tex"></div></div>
+    `;
+    stepsBody.appendChild(step4);
+    const aTex = toLatex(normalizeExpr(a));
+    const bTex = toLatex(normalizeExpr(b));
+    let tex = `\\left[ ${primitiveLatex} \\right]_{${aTex}}^{${bTex}} = ${definiteLatex}`;
+    if (numericValue !== null) tex += ` \\approx ${numericValue}`;
+    renderKatexInto(step4.querySelector('.def-tex'), tex, true);
+  }
+}
+
+function showError(msg, detail){
+  resultCard.classList.add('active','err');
+  resultBox.innerHTML = `<div style="color:#fecaca;font-size:.9em">${escapeHtml(msg)}</div>` +
+    (detail ? `<div style="color:#94a3b8;font-size:.78em;margin-top:8px;font-family:var(--ff-mono)">${escapeHtml(detail)}</div>` : '');
+  stepsCard.classList.remove('active');
+  verifyBox.innerHTML = '';
+}
+
+/* ===================== BOTONES ===================== */
+q('calcBtn').addEventListener('click', calculate);
+q('clearBtn').addEventListener('click', ()=>{
+  exprInput.value = '';
+  lowerLimit.value = '';
+  upperLimit.value = '';
+  resultCard.classList.remove('active','err');
+  stepsCard.classList.remove('active');
+  updatePreview();
+  exprInput.focus();
+});
+exprInput.addEventListener('keydown', e=>{
+  if (e.key === 'Enter') { e.preventDefault(); calculate(); }
+});
+
+/* ===================== EJEMPLOS ===================== */
+const examplesGrid = q('examplesGrid');
+EXAMPLES.forEach(ex => {
+  const btn = document.createElement('button');
+  btn.className = 'example-btn';
+  btn.innerHTML = `
+    <div class="example-title">${ex.title}</div>
+    <div class="example-expr">${ex.desc}</div>
+  `;
+  btn.addEventListener('click', ()=>{
+    exprInput.value = ex.expr;
+    lowerLimit.value = ex.a || '';
+    upperLimit.value = ex.b || '';
+    updatePreview();
+    calculate();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  examplesGrid.appendChild(btn);
+});
+
+/* Al cargar, espera a nerdamer, pone un ejemplo y lo calcula automáticamente */
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    if (typeof nerdamer !== 'undefined') {
+      exprInput.value = 'x^2 + 3*x - 5';
+      updatePreview();
+      try { calculate(); } catch(e) {}
+    } else {
+      previewBox.innerHTML = '<span class="preview-empty" style="color:#fca5a5">El motor simbólico no se ha cargado. Comprueba tu conexión.</span>';
+    }
+    exprInput.focus();
+  }, 500);
+});
+</script>
+</body>
+</html>
