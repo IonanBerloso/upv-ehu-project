@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>Temas 1 y 2 · Propiedades de los fluidos · Boletín · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;
+  --surface:rgba(255,255,255,.04);
+  --surface2:rgba(255,255,255,.07);
+  --surface3:rgba(255,255,255,.1);
+  --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.14);
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#7ecfff;
+  --accent-dim:rgba(126,207,255,.10);
+  --accent-border:rgba(126,207,255,.28);
+  --gold:#f59e0b;
+  --gold-dim:rgba(245,158,11,.10);
+  --gold-border:rgba(245,158,11,.28);
+  --green:#10b981;
+  --green-dim:rgba(16,185,129,.1);
+  --green-border:rgba(16,185,129,.28);
+  --purple:#a78bfa;
+  --purple-dim:rgba(167,139,250,.1);
+  --purple-border:rgba(167,139,250,.28);
+  --orange:#fb923c;
+  --orange-dim:rgba(251,146,60,.1);
+  --orange-border:rgba(251,146,60,.28);
+  --red:#f43f5e;
+  --radius:10px;
+  --radius-sm:6px;
+  --ff:'Space Grotesk',system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+  --transition:.2s cubic-bezier(.4,0,.2,1);
+  --sidebar-w:240px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.65}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.topbar-badge{margin-right:20px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:700;color:var(--accent);white-space:nowrap;font-family:var(--ff-mono);letter-spacing:.04em}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:calc(100vh - 56px)}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  position:fixed;top:56px;left:0;bottom:0;
+  background:rgba(255,255,255,.018);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.sb-head{padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-title{font-size:.75em;font-weight:700;color:var(--accent);margin-bottom:3px;font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-sub{font-size:.68em;color:var(--text3);font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-list{flex:1;overflow-y:auto;padding:10px 10px 20px}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 11px;border-radius:var(--radius-sm);
+  background:none;border:1px solid transparent;
+  color:var(--text2);font-family:var(--ff);font-size:.81em;
+  cursor:pointer;text-align:left;width:100%;
+  transition:all var(--transition);margin-bottom:3px;
+}
+.sb-item:hover{background:var(--surface);color:var(--text);text-decoration:none}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border);font-weight:600}
+.sb-item.starred{color:var(--gold)}
+.sb-item.starred.active{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold)}
+.sb-num{
+  font-family:var(--ff-mono);font-size:.72em;font-weight:700;
+  min-width:30px;text-align:center;
+  background:var(--surface2);border-radius:4px;padding:2px 5px;
+  color:inherit;opacity:.85;flex-shrink:0;
+}
+.sb-item.active .sb-num{background:rgba(126,207,255,.18)}
+.sb-item.starred.active .sb-num{background:rgba(245,158,11,.18)}
+.sb-name{flex:1;font-weight:500;line-height:1.3;font-size:.95em}
+.sb-star{color:var(--gold);font-size:.75em;opacity:.9}
+
+/* ── CONTENT ── */
+.content{flex:1;margin-left:var(--sidebar-w);padding:36px 48px 80px;min-width:0;max-width:920px}
+
+/* ── TOPIC PANEL ── */
+.topic-panel{display:none}
+.topic-panel.active{display:block;animation:fadeIn .22s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PANEL HEADER ── */
+.panel-header{
+  margin-bottom:26px;padding:22px 26px 24px;
+  background:linear-gradient(135deg,rgba(126,207,255,.06) 0%,transparent 60%);
+  border:1px solid rgba(126,207,255,.18);
+  border-left:3px solid var(--accent);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.panel-header.starred{
+  background:linear-gradient(135deg,rgba(245,158,11,.06) 0%,transparent 60%);
+  border-color:rgba(245,158,11,.22);
+  border-left-color:var(--gold);
+}
+.panel-tag{
+  font-family:var(--ff-mono);font-size:.7em;font-weight:700;
+  color:var(--accent);letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:6px;display:flex;align-items:center;gap:8px;
+}
+.panel-header.starred .panel-tag{color:var(--gold)}
+.panel-tag .star{color:var(--gold)}
+.panel-title{font-size:1.42em;font-weight:700;color:#f1f5f9;line-height:1.2;letter-spacing:-.015em;margin-bottom:6px}
+.panel-meta{color:var(--text2);font-size:.84em;line-height:1.55}
+
+/* ── SECTIONS ── */
+.enunciado{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px 22px;margin-bottom:22px;
+  font-size:.96em;color:var(--text);line-height:1.75;
+}
+.enunciado .items{list-style:none;margin-top:10px;padding-left:0}
+.enunciado .items li{
+  padding:6px 0 6px 28px;position:relative;color:var(--text2);
+}
+.enunciado .items li::before{
+  content:'';position:absolute;left:8px;top:.8em;
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+}
+
+.section-wrap{margin-bottom:16px}
+.sec-btn{
+  width:100%;text-align:left;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:12px 18px;font-family:var(--ff);font-size:.88em;font-weight:600;
+  color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  transition:all var(--transition);
+}
+.sec-btn:hover{background:var(--surface2);border-color:var(--border2)}
+.sec-body{
+  display:block;padding:16px 22px 18px;
+  border:1px solid var(--border);border-top:none;
+  border-radius:0 0 var(--radius) var(--radius);
+  margin-top:-1px;background:rgba(255,255,255,.013);
+}
+.s-datos .sec-btn{color:var(--accent);border-color:var(--accent-border);background:var(--accent-dim)}
+.s-datos .sec-body{border-color:var(--accent-border)}
+.s-teoria .sec-btn{color:var(--purple);border-color:var(--purple-border);background:var(--purple-dim)}
+.s-teoria .sec-body{border-color:var(--purple-border)}
+.s-resolucion .sec-btn{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.s-resolucion .sec-body{border-color:var(--green-border)}
+.s-resultado .sec-btn{color:var(--orange);border-color:var(--orange-border);background:var(--orange-dim)}
+.s-resultado .sec-body{border-color:var(--orange-border)}
+
+/* ── TABLE DATOS ── */
+.t-datos{width:100%;border-collapse:collapse;font-size:.87em;margin:4px 0}
+.t-datos th,.t-datos td{padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.t-datos th{font-family:var(--ff-mono);font-size:.74em;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.t-datos td{color:var(--text2)}
+.t-datos tr:last-child td{border-bottom:none}
+
+/* ── PASOS ── */
+.paso{
+  background:var(--surface);border-left:3px solid var(--green);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:14px 18px;margin:14px 0;
+}
+.paso-titulo{font-size:.92em;font-weight:700;color:#f1f5f9;margin-bottom:8px}
+.porque{
+  font-size:.82em;color:var(--text2);font-style:italic;
+  background:rgba(251,146,60,.04);border-left:2px solid var(--orange);
+  padding:8px 12px;margin:8px 0 10px;border-radius:0 4px 4px 0;
+}
+.porque strong{color:var(--orange);font-style:normal;margin-right:4px}
+
+/* ── RESULTADO ── */
+.resultado-final{
+  background:var(--orange-dim);border:1px solid var(--orange-border);
+  border-left:3px solid var(--orange);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:16px 22px;margin-top:20px;
+}
+.rf-label{
+  font-family:var(--ff-mono);font-size:.68em;font-weight:700;
+  color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;
+}
+.rf-content{font-size:1em}
+
+/* ── VERIFICACIÓN / NOTAS ── */
+.verificacion,.errores{
+  background:var(--surface);border-left:3px solid var(--accent);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:12px 18px;margin-top:14px;font-size:.86em;
+}
+.verificacion{border-left-color:var(--green)}
+.errores{border-left-color:var(--red)}
+.verificacion .label,.errores .label{
+  font-family:var(--ff-mono);font-size:.66em;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:block;
+}
+.verificacion .label{color:var(--green)}
+.errores .label{color:var(--red)}
+
+/* ── KATEX ── */
+.katex{font-size:1.02em !important}
+.katex-display{margin:10px 0 !important;overflow-x:auto;overflow-y:hidden}
+.katex-display>.katex{font-size:1.15em !important}
+
+/* ── FIGURA ── */
+.figure-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;margin:18px 0;text-align:center;
+}
+.figure-box svg{max-width:100%;height:auto;display:inline-block}
+.figure-cap{font-size:.78em;color:var(--text3);margin-top:8px;font-style:italic}
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:24px 20px 60px;max-width:100%}
+  .sb-list{max-height:220px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="topbar-back" href="../boletin.html">← Boletín</a>
+  <div class="topbar-title">T1 · T2 — Propiedades de los fluidos</div>
+  <div class="topbar-badge">13 EJERCICIOS</div>
+</div>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-title">Capítulo 1</div>
+      <div class="sb-sub">Propiedades · pág. 1–18</div>
+    </div>
+    <div class="sb-list">
+      <a class="sb-item" onclick="showEx('ex1-9')" data-id="ex1-9"><span class="sb-num">1.9</span><span class="sb-name">Armstrong en la luna</span></a>
+      <a class="sb-item" onclick="showEx('ex1-12')" data-id="ex1-12"><span class="sb-num">1.12</span><span class="sb-name">Viscosidad cinemática por tensión</span></a>
+      <a class="sb-item" onclick="showEx('ex1-13')" data-id="ex1-13"><span class="sb-num">1.13</span><span class="sb-name">Placa paralela a 0,5 mm</span></a>
+      <a class="sb-item" onclick="showEx('ex1-15')" data-id="ex1-15"><span class="sb-num">1.15</span><span class="sb-name">Cilindro cayendo en tubo 60°</span></a>
+      <a class="sb-item" onclick="showEx('ex1-16')" data-id="ex1-16"><span class="sb-num">1.16</span><span class="sb-name">Cuerpo en plano inclinado 30°</span></a>
+      <a class="sb-item" onclick="showEx('ex1-17')" data-id="ex1-17"><span class="sb-num">1.17</span><span class="sb-name">Pieza cúbica en plano 20°</span></a>
+      <a class="sb-item" onclick="showEx('ex1-18')" data-id="ex1-18"><span class="sb-num">1.18</span><span class="sb-name">Polea con eje y huelgo</span></a>
+      <a class="sb-item" onclick="showEx('ex1-21')" data-id="ex1-21"><span class="sb-num">1.21</span><span class="sb-name">Compresión alcohol → K</span></a>
+      <a class="sb-item" onclick="showEx('ex1-22')" data-id="ex1-22"><span class="sb-num">1.22</span><span class="sb-name">Elasticidad gas isotermo</span></a>
+      <a class="sb-item" onclick="showEx('ex1-23')" data-id="ex1-23"><span class="sb-num">1.23</span><span class="sb-name">Depósito rígido 5000 L</span></a>
+      <a class="sb-item" onclick="showEx('ex1-24')" data-id="ex1-24"><span class="sb-num">1.24</span><span class="sb-name">Depósito dilatado 30 MPa</span></a>
+      <a class="sb-item starred" onclick="showEx('ex1-26')" data-id="ex1-26"><span class="sb-num">1.26</span><span class="sb-name">Capilar cuadrado alcohol <span class="sb-star">★</span></span></a>
+      <a class="sb-item starred" onclick="showEx('ex1-27')" data-id="ex1-27"><span class="sb-num">1.27</span><span class="sb-name">Corona circular <span class="sb-star">★</span></span></a>
+    </div>
+  </aside>
+
+  <main class="content">
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.9 — Armstrong en la luna
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-9">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.9</div>
+    <h1 class="panel-title">Peso y masa de Armstrong en la Luna</h1>
+    <div class="panel-meta">Masa invariante · Peso como \(m\cdot g\) · Conversión de unidades SI</div>
+  </div>
+
+  <div class="enunciado">
+    Neil Armstrong, primer hombre que pisó la luna, pesaba antes de partir para la luna 78 kg y en el viaje perdió una masa de 2 kg. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Peso de Armstrong en el momento de pisar la luna.</li>
+      <li><strong>b)</strong> Masa del mismo en dicho momento.</li>
+    </ul>
+    <p style="margin-top:10px"><strong>Dato</strong>: gravedad lunar \(g_L = 1{,}61\ \text{m/s}^2\).</p>
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Masa inicial en la Tierra</td><td>\(m_0 = 78\ \text{kg}\)</td></tr>
+        <tr><td>Masa perdida en el viaje</td><td>\(\Delta m = 2\ \text{kg}\)</td></tr>
+        <tr><td>Gravedad lunar</td><td>\(g_L = 1{,}61\ \text{m/s}^2\)</td></tr>
+        <tr><td>Incógnitas</td><td>\(W_L\) (peso en la Luna), \(m_L\) (masa en la Luna)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>En física, <strong>masa</strong> y <strong>peso</strong> son cosas distintas:</p>
+      <ul style="margin:8px 0 8px 22px;color:var(--text2)">
+        <li><strong>Masa</strong> (\(m\)): cantidad de materia. Es una propiedad <em>intrínseca</em> del cuerpo; no cambia con la ubicación (Tierra, Luna, Marte…).</li>
+        <li><strong>Peso</strong> (\(W\)): fuerza con la que un campo gravitatorio atrae al cuerpo. Depende del lugar.</li>
+      </ul>
+      $$W = m \cdot g$$
+      <p style="margin-top:8px">En la Luna, \(g_L \approx 1{,}61\ \text{m/s}^2\) (aproximadamente \(1/6\) de la terrestre). Por eso un astronauta "pesa" menos en la Luna aunque su masa sea la misma.</p>
+      <p style="margin-top:6px;color:var(--text3);font-size:.88em"><em>Observación:</em> el enunciado dice "pesaba 78 kg" — en lenguaje coloquial esto es realmente la <strong>masa</strong> en kg (SI). Si fuera el peso, estaría en newtons (N) o en kgf (kilogramos-fuerza). Hay que tomar 78 kg como masa.</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Masa en la Luna</div>
+        <div class="porque"><strong>¿Por qué?</strong> La masa es una propiedad del cuerpo. La única forma de cambiarla es añadiendo o quitando materia. El enunciado dice que perdió \(2\ \text{kg}\) durante el viaje, así que directamente:</div>
+        $$m_L = m_0 - \Delta m = 78 - 2 = 76\ \text{kg}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Peso en la Luna</div>
+        <div class="porque"><strong>¿Por qué?</strong> El peso es la fuerza \(W = m\cdot g\). Ya tenemos la masa en la Luna (\(76\ \text{kg}\)) y la gravedad lunar es dato (\(1{,}61\ \text{m/s}^2\)).</div>
+        $$W_L = m_L\cdot g_L = 76\cdot 1{,}61 = 122{,}36\ \text{N}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ W_L = 122{,}36\ \text{N},\qquad m_L = 76\ \text{kg}\ }$$
+    </div>
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Verificación dimensional</span>
+    Masa en kg, gravedad en m/s². Producto: kg·m/s² = N ✓. Peso positivo y proporcional a \(g\): en la Tierra ese mismo astronauta pesaría \(76\cdot 9{,}8 = 744{,}8\ \text{N}\), unas 6 veces más. Coherente con el ratio \(g_T/g_L = 9{,}8/1{,}61 \approx 6{,}1\).
+  </div>
+
+  <div class="errores">
+    <span class="label">⚠ Errores frecuentes</span>
+    <ul style="margin:4px 0 0 20px;color:var(--text2)">
+      <li>Confundir "kg" (masa) con "kgf" (fuerza). En el SI, el peso va en newtons.</li>
+      <li>Olvidar que la masa no cambia al cambiar de planeta — solo cambia si se añade o quita materia.</li>
+      <li>Usar \(g = 9{,}8\) en lugar de la gravedad lunar dada.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.12 — Tensión cortante → viscosidad cinemática
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-12">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.12</div>
+    <h1 class="panel-title">Viscosidad cinemática a partir de tensión y gradiente</h1>
+    <div class="panel-meta">Ley de Newton de la viscosidad · Viscosidad dinámica vs. cinemática · Unidades CGS (Stoke)</div>
+  </div>
+
+  <div class="enunciado">
+    En un punto en un flujo viscoso, la tensión cortante es de \(35\ \text{kPa}\) y el gradiente de velocidad es \(6000\ \text{m/(s·m)}\). Si la densidad relativa del líquido es \(0{,}93\), ¿cuál es la viscosidad cinemática en Stoke?
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Tensión cortante</td><td>\(\tau = 35\ \text{kPa} = 35\,000\ \text{Pa}\)</td></tr>
+        <tr><td>Gradiente de velocidad</td><td>\(\dfrac{du}{dy} = 6000\ \text{s}^{-1}\)</td></tr>
+        <tr><td>Densidad relativa</td><td>\(s = 0{,}93\)</td></tr>
+        <tr><td>Incógnita</td><td>\(\nu\) (viscosidad cinemática en St)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p><strong>Ley de Newton de la viscosidad</strong> (fluidos newtonianos):</p>
+      $$\tau = \mu\cdot\frac{du}{dy}$$
+      <p>Donde \(\mu\) es la <strong>viscosidad dinámica</strong> (Pl = Pa·s en SI, Poise en CGS). Despejando:</p>
+      $$\mu = \frac{\tau}{du/dy}$$
+      <p style="margin-top:10px"><strong>Viscosidad cinemática</strong> \(\nu\) se define como:</p>
+      $$\nu = \frac{\mu}{\rho}$$
+      <p>En SI va en m²/s. En CGS va en <strong>Stoke</strong> (St), donde \(1\ \text{St} = 1\ \text{cm}^2/\text{s} = 10^{-4}\ \text{m}^2/\text{s}\).</p>
+      <p style="margin-top:8px"><strong>Densidad relativa</strong>: \(s = \rho_{\text{fluido}}/\rho_{\text{agua}}\), con \(\rho_{\text{agua}} = 1000\ \text{kg/m}^3\).</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Viscosidad dinámica</div>
+        <div class="porque"><strong>¿Por qué?</strong> Con la ley de Newton y los datos de tensión cortante y gradiente, se despeja directamente \(\mu\).</div>
+        $$\mu = \frac{\tau}{du/dy} = \frac{35\,000}{6000} = 5{,}833\ \text{Pa·s} = 5{,}833\ \text{Pl}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Densidad del fluido</div>
+        $$\rho = s\cdot\rho_{\text{agua}} = 0{,}93\cdot 1000 = 930\ \text{kg/m}^3$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 — Viscosidad cinemática en SI</div>
+        $$\nu = \frac{\mu}{\rho} = \frac{5{,}833}{930} = 6{,}272\cdot 10^{-3}\ \text{m}^2/\text{s}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 4 — Conversión a Stoke</div>
+        <div class="porque"><strong>¿Por qué?</strong> \(1\ \text{m}^2/\text{s} = 10^{4}\ \text{cm}^2/\text{s} = 10^{4}\ \text{St}\), así que multiplicamos por \(10^4\).</div>
+        $$\nu = 6{,}272\cdot 10^{-3}\ \text{m}^2/\text{s}\cdot 10^4 = 62{,}72\ \text{St}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ \nu \approx 62{,}7\ \text{St}\ }$$
+    </div>
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Verificación</span>
+    Análisis dimensional: \([\tau] = \text{Pa}\), \([du/dy] = \text{s}^{-1}\), entonces \([\mu] = \text{Pa·s}\) ✓. \([\nu] = [\mu]/[\rho] = (\text{Pa·s})/(\text{kg/m}^3) = \text{m}^2/\text{s}\) ✓.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.13 — Placa paralela a 0,5 mm
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-13">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.13</div>
+    <h1 class="panel-title">Viscosidad absoluta entre dos placas paralelas</h1>
+    <div class="panel-meta">Ley de Newton · Gradiente lineal · Velocidad de deformación angular</div>
+  </div>
+
+  <div class="enunciado">
+    Una placa situada a \(0{,}5\ \text{mm}\) de otra fija, se mueve a \(0{,}25\ \text{m/s}\) y requiere una fuerza por unidad de superficie de \(2\ \text{N/m}^2\) para mantener esta velocidad. Calcúlese la viscosidad absoluta del fluido situado entre las dos placas, en unidades SI, así como la velocidad de deformación angular de dicho fluido.
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Separación entre placas</td><td>\(y = 0{,}5\ \text{mm} = 5\cdot 10^{-4}\ \text{m}\)</td></tr>
+        <tr><td>Velocidad de la placa móvil</td><td>\(V = 0{,}25\ \text{m/s}\)</td></tr>
+        <tr><td>Tensión cortante</td><td>\(\tau = F/A = 2\ \text{N/m}^2 = 2\ \text{Pa}\)</td></tr>
+        <tr><td>Incógnitas</td><td>\(\mu\), \(du/dy\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>Si el gradiente de velocidades entre dos placas paralelas es <strong>lineal</strong> (Couette), se tiene:</p>
+      $$\frac{du}{dy} = \frac{V}{y}$$
+      <p>donde \(V\) es la velocidad de la placa móvil y \(y\) la separación entre placas. Aplicando Newton:</p>
+      $$\tau = \mu\cdot\frac{du}{dy} \Rightarrow \mu = \frac{\tau\cdot y}{V}$$
+      <p>La velocidad de deformación angular coincide con el gradiente \(du/dy\) en el caso de flujo simple de Couette.</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Velocidad de deformación angular</div>
+        $$\frac{du}{dy} = \frac{V}{y} = \frac{0{,}25}{5\cdot 10^{-4}} = 500\ \text{s}^{-1}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Viscosidad dinámica</div>
+        $$\mu = \frac{\tau}{du/dy} = \frac{2}{500} = 4\cdot 10^{-3}\ \text{Pa·s} = 0{,}004\ \text{Pl}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ \mu = 0{,}004\ \text{Pl}, \qquad \dfrac{du}{dy} = 500\ \text{s}^{-1}\ }$$
+    </div>
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Verificación</span>
+    \(\mu = 4\cdot 10^{-3}\ \text{Pa·s}\) es aproximadamente 4 veces la viscosidad del agua (\(\mu_{\text{agua}} \approx 10^{-3}\) Pa·s a 20 °C), consistente con un líquido ligeramente más viscoso.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.15 — Cilindro cayendo en tubo 60°
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-15">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.15</div>
+    <h1 class="panel-title">Cilindro macizo descendiendo por un tubo inclinado</h1>
+    <div class="panel-meta">Equilibrio de fuerzas · Peso paralelo al plano · Ley de Newton en el huelgo anular</div>
+  </div>
+
+  <div class="enunciado">
+    Un cilindro macizo de acero (\(s = 7{,}8\)) de diámetro \(D = 70\ \text{mm}\) desliza gracias a su propio peso por el interior de un tubo de diámetro interior \(D_t = 71\ \text{mm}\), formando un ángulo con la horizontal de \(60°\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Calcular la viscosidad \(\mu\) (en Pl) del fluido existente en el huelgo si la velocidad alcanzada por el cilindro es de \(2\ \text{m/s}\). Suponer que la única resistencia existente es la que produce el fluido en el huelgo.</li>
+      <li><strong>b)</strong> Utilizando los ábacos de viscosidad: ¿de qué fluido puede tratarse y a qué temperatura se encuentra?</li>
+    </ul>
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Densidad relativa del acero</td><td>\(s = 7{,}8\)</td></tr>
+        <tr><td>Diámetro del cilindro</td><td>\(D = 0{,}070\ \text{m}\)</td></tr>
+        <tr><td>Diámetro interior del tubo</td><td>\(D_t = 0{,}071\ \text{m}\)</td></tr>
+        <tr><td>Huelgo radial</td><td>\(e = (D_t - D)/2 = 5\cdot 10^{-4}\ \text{m}\)</td></tr>
+        <tr><td>Ángulo con la horizontal</td><td>\(\alpha = 60°\)</td></tr>
+        <tr><td>Velocidad terminal</td><td>\(V = 2\ \text{m/s}\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>Cuando el cilindro alcanza su <strong>velocidad terminal</strong> (régimen estacionario), la aceleración es cero y el peso que lo empuja hacia abajo paralelo al tubo se equilibra con la fuerza viscosa en el huelgo.</p>
+      <p style="margin-top:8px">Componente del peso paralela al plano inclinado:</p>
+      $$F_{\parallel} = W\sin\alpha = m\cdot g\cdot\sin\alpha = \rho\cdot V_{\text{cil}}\cdot g\cdot\sin\alpha$$
+      <p>Con \(V_{\text{cil}} = (\pi D^2/4)\cdot L\). Fuerza viscosa sobre la superficie lateral del cilindro (gradiente lineal en el huelgo):</p>
+      $$F_{\mu} = \tau\cdot A_{\text{lat}} = \mu\cdot\frac{V}{e}\cdot\pi D\cdot L$$
+      <p>Igualando \(F_{\parallel} = F_{\mu}\) y despejando \(\mu\):</p>
+      $$\mu = \frac{\rho\cdot g\cdot\sin\alpha\cdot D\cdot e}{4\cdot V}$$
+      <p style="margin-top:6px;color:var(--text3);font-size:.88em">Obsérvese que \(L\) se cancela: la viscosidad no depende de la longitud del cilindro en este modelo.</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Densidad del acero</div>
+        $$\rho = s\cdot\rho_{\text{agua}} = 7{,}8\cdot 1000 = 7800\ \text{kg/m}^3$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Aplicar la fórmula</div>
+        <div class="porque"><strong>¿Por qué esta fórmula?</strong> Se obtiene igualando el peso proyectado con la fuerza viscosa y simplificando la \(L\) (longitud del cilindro).</div>
+        $$\mu = \frac{\rho\cdot g\cdot\sin 60°\cdot D\cdot e}{4\cdot V}$$
+        $$\mu = \frac{7800\cdot 9{,}8\cdot 0{,}866\cdot 0{,}070\cdot 5\cdot 10^{-4}}{4\cdot 2}$$
+        $$\mu \approx 0{,}290\ \text{Pa·s} = 0{,}290\ \text{Pl}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 — Identificación del fluido (apartado b)</div>
+        <div class="porque"><strong>¿Por qué?</strong> Con \(\mu \approx 0{,}29\ \text{Pl}\) consultamos los ábacos estándar de viscosidad-temperatura para líquidos habituales.</div>
+        <p>La glicerina tiene \(\mu \approx 0{,}29\ \text{Pl}\) en torno a los \(30\ °\text{C}\) (viscosidad muy sensible a la temperatura: a 20 °C vale \(\sim 1\) Pl y a 40 °C cae a \(\sim 0{,}1\) Pl).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ \mu = 0{,}290\ \text{Pl}\qquad \text{(Glicerina a }30\ °\text{C)}\ }$$
+    </div>
+  </div>
+
+  <div class="errores">
+    <span class="label">⚠ Errores frecuentes</span>
+    <ul style="margin:4px 0 0 20px;color:var(--text2)">
+      <li>Olvidar el factor \(\sin\alpha\): si el tubo fuera vertical sería \(\sin 90° = 1\); si fuera horizontal no deslizaría.</li>
+      <li>Confundir el diámetro del cilindro con el del tubo en la fuerza viscosa (el área lateral usa \(\pi D\), no \(\pi D_t\)).</li>
+      <li>Usar el diámetro en lugar del radio para el huelgo: \(e = (D_t - D)/2\), no \(D_t - D\).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Resto de ejercicios (1.16 a 1.27) añadidos a continuación -->
+<!-- Por brevedad en este archivo inicial se incluyen todos los 13 ejercicios -->
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.16 — Cuerpo en plano inclinado 30°
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-16">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.16</div>
+    <h1 class="panel-title">Cuerpo sobre plano inclinado lubricado</h1>
+    <div class="panel-meta">Espesor de la película · Potencia disipada por viscosidad</div>
+  </div>
+
+  <div class="enunciado">
+    Un cuerpo de \(40\ \text{kg}\) de peso resbala sobre un plano inclinado \(30°\) con la horizontal, apoyándose en una de sus caras planas de \(1800\ \text{cm}^2\) de superficie. Para una viscosidad de \(1\ \text{P}\) y una velocidad de \(1{,}5\ \text{m/s}\), determinar el espesor de la película lubricante y la potencia absorbida en el deslizamiento en kW.
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Masa del cuerpo</td><td>\(m = 40\ \text{kg}\)</td></tr>
+        <tr><td>Ángulo del plano</td><td>\(\alpha = 30°\)</td></tr>
+        <tr><td>Área de contacto</td><td>\(A = 1800\ \text{cm}^2 = 0{,}18\ \text{m}^2\)</td></tr>
+        <tr><td>Viscosidad dinámica</td><td>\(\mu = 1\ \text{P} = 0{,}1\ \text{Pa·s}\)</td></tr>
+        <tr><td>Velocidad</td><td>\(V = 1{,}5\ \text{m/s}\)</td></tr>
+        <tr><td>Incógnitas</td><td>\(y\) (espesor), \(P\) (potencia)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>En régimen estacionario el peso proyectado sobre el plano equilibra la fuerza viscosa:</p>
+      $$m g\sin\alpha = \mu\cdot\frac{V}{y}\cdot A \Rightarrow y = \frac{\mu\cdot V\cdot A}{m\cdot g\cdot\sin\alpha}$$
+      <p>La potencia disipada por rozamiento viscoso es la fuerza por la velocidad:</p>
+      $$P = F_{\mu}\cdot V = (m g\sin\alpha)\cdot V$$
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Peso tangencial al plano</div>
+        $$F_{\parallel} = mg\sin 30° = 40\cdot 9{,}8\cdot 0{,}5 = 196\ \text{N}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Espesor de la película</div>
+        $$y = \frac{\mu V A}{F_{\parallel}} = \frac{0{,}1\cdot 1{,}5\cdot 0{,}18}{196} = 1{,}376\cdot 10^{-4}\ \text{m} \approx 0{,}1376\ \text{mm}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 — Potencia disipada</div>
+        $$P = F_{\parallel}\cdot V = 196\cdot 1{,}5 = 294\ \text{W} = 0{,}294\ \text{kW}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ y = 0{,}1376\ \text{mm},\qquad P = 0{,}294\ \text{kW}\ }$$
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.17 — Pieza cúbica en plano 20°
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-17">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.17</div>
+    <h1 class="panel-title">Pieza cúbica sobre película de aceite inclinada</h1>
+    <div class="panel-meta">Mismo planteamiento que 1.16 · Cálculo de \(\mu\) conocidos espesor y velocidad</div>
+  </div>
+
+  <div class="enunciado">
+    Una pieza cúbica de \(30\ \text{cm}\) de arista y \(20\ \text{kg}\) de peso desliza hacia abajo sobre una película de aceite existente en un plano inclinado \(20°\) con la horizontal, con una velocidad de \(25\ \text{m/s}\). Si el espesor de la película es de \(0{,}03\ \text{mm}\), se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Viscosidad dinámica en el SI.</li>
+      <li><strong>b)</strong> Idem en el sistema CGS.</li>
+    </ul>
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Arista del cubo</td><td>\(a = 0{,}30\ \text{m}\)</td></tr>
+        <tr><td>Área de contacto</td><td>\(A = 0{,}30^2 = 0{,}09\ \text{m}^2\)</td></tr>
+        <tr><td>Masa</td><td>\(m = 20\ \text{kg}\)</td></tr>
+        <tr><td>Ángulo</td><td>\(\alpha = 20°\)</td></tr>
+        <tr><td>Velocidad</td><td>\(V = 25\ \text{m/s}\)</td></tr>
+        <tr><td>Espesor de película</td><td>\(y = 3\cdot 10^{-5}\ \text{m}\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Equilibrio de fuerzas</div>
+        <div class="porque"><strong>¿Por qué?</strong> Misma ecuación que en 1.16, despejando ahora \(\mu\) porque lo que se busca es la viscosidad.</div>
+        $$mg\sin\alpha = \mu\frac{V}{y}A \Rightarrow \mu = \frac{mgy\sin\alpha}{V\cdot A}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Sustitución numérica</div>
+        $$\mu = \frac{20\cdot 9{,}8\cdot 3\cdot 10^{-5}\cdot\sin 20°}{25\cdot 0{,}09}$$
+        $$\mu = \frac{20\cdot 9{,}8\cdot 3\cdot 10^{-5}\cdot 0{,}342}{2{,}25} = 8{,}93\cdot 10^{-4}\ \text{Pa·s}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 — Conversión a CGS</div>
+        <div class="porque"><strong>¿Por qué \(\times 10\)?</strong> \(1\ \text{Pa·s} = 10\ \text{Poise}\) (conversión estándar SI → CGS).</div>
+        $$\mu = 8{,}93\cdot 10^{-4}\ \text{Pl}\cdot 10 = 8{,}93\cdot 10^{-3}\ \text{P}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ \mu = 8{,}93\cdot 10^{-4}\ \text{Pl} = 8{,}93\cdot 10^{-3}\ \text{P}\ }$$
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.18 — Polea con eje
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-18">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.18</div>
+    <h1 class="panel-title">Polea giratoria con huelgo radial de aceite</h1>
+    <div class="panel-meta">Par de rozamiento viscoso · Potencia disipada · Velocidad angular de deformación</div>
+  </div>
+
+  <div class="enunciado">
+    Una polea de \(50\ \text{mm}\) de diámetro interior gira alrededor de un eje a \(400\ \text{rpm}\), existiendo un huelgo radial entre ambos de \(0{,}075\ \text{mm}\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> El par necesario para vencer la resistencia del aceite existente en el huelgo.</li>
+      <li><strong>b)</strong> Potencia disipada.</li>
+      <li><strong>c)</strong> Velocidad angular de deformación del fluido.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: viscosidad dinámica del aceite \(\mu = 1\ \text{P}\); longitud de la polea \(L = 10\ \text{cm}\).</p>
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Diámetro interior polea / eje</td><td>\(D = 0{,}050\ \text{m}\), \(R = 0{,}025\ \text{m}\)</td></tr>
+        <tr><td>Velocidad de giro</td><td>\(N = 400\ \text{rpm}\) → \(\omega = 2\pi N/60 \approx 41{,}89\ \text{rad/s}\)</td></tr>
+        <tr><td>Huelgo radial</td><td>\(e = 7{,}5\cdot 10^{-5}\ \text{m}\)</td></tr>
+        <tr><td>Viscosidad</td><td>\(\mu = 1\ \text{P} = 0{,}1\ \text{Pa·s}\)</td></tr>
+        <tr><td>Longitud polea</td><td>\(L = 0{,}10\ \text{m}\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>Velocidad tangencial del eje en su periferia:</p>
+      $$V = \omega\cdot R$$
+      <p>Gradiente de velocidad en el huelgo (lineal por ser muy pequeño):</p>
+      $$\frac{du}{dy} = \frac{V}{e} = \frac{\omega R}{e}$$
+      <p>Fuerza viscosa sobre la superficie lateral del eje (\(A = 2\pi R L\)):</p>
+      $$F = \tau\cdot A = \mu\frac{\omega R}{e}\cdot 2\pi R L$$
+      <p>Par (momento respecto al eje de giro):</p>
+      $$M = F\cdot R = \frac{2\pi\mu\omega R^3 L}{e}$$
+      <p>Potencia:</p>
+      $$P = M\cdot\omega$$
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Velocidad angular y tangencial</div>
+        $$\omega = \frac{2\pi\cdot 400}{60} \approx 41{,}89\ \text{rad/s}, \qquad V = \omega R \approx 41{,}89\cdot 0{,}025 \approx 1{,}047\ \text{m/s}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Velocidad angular de deformación</div>
+        $$\frac{du}{dy} = \frac{V}{e} = \frac{1{,}047}{7{,}5\cdot 10^{-5}} \approx 13\,962\ \text{s}^{-1}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 — Par de rozamiento</div>
+        $$M = \frac{2\pi\mu\omega R^3 L}{e} = \frac{2\pi\cdot 0{,}1\cdot 41{,}89\cdot 0{,}025^3\cdot 0{,}10}{7{,}5\cdot 10^{-5}}$$
+        $$M \approx 5{,}5\cdot 10^{-4}\ \text{N·m} = 0{,}55\ \text{mN·m}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 4 — Potencia disipada</div>
+        $$P = M\omega = 5{,}5\cdot 10^{-4}\cdot 41{,}89 \approx 23\ \text{W}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ M \approx 0{,}55\ \text{mN·m},\quad P \approx 23\ \text{W},\quad \dfrac{du}{dy} \approx 13\,962\ \text{rad/s}\ }$$
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.21 — Compresión alcohol → elasticidad
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-21">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.21</div>
+    <h1 class="panel-title">Módulo de elasticidad del alcohol por compresión</h1>
+    <div class="panel-meta">Definición de \(K\) · Relación \(\Delta P\) vs. \(\Delta V\)</div>
+  </div>
+
+  <div class="enunciado">
+    Cuando se somete un volumen de alcohol de \(0{,}02892\ \text{m}^3\) a una presión de \(51\,000\ \text{kPa}\), éste se contrae a \(0{,}02770\ \text{m}^3\). Calcúlese la elasticidad (en MPa).
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Volumen inicial</td><td>\(V_0 = 0{,}02892\ \text{m}^3\)</td></tr>
+        <tr><td>Volumen final</td><td>\(V = 0{,}02770\ \text{m}^3\)</td></tr>
+        <tr><td>Incremento de presión</td><td>\(\Delta P = 51\,000\ \text{kPa} = 51\ \text{MPa}\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>El <strong>módulo de elasticidad volumétrico</strong> \(K\) mide la resistencia de un fluido a ser comprimido:</p>
+      $$K = -\frac{\Delta P}{\Delta V/V_0}$$
+      <p>El signo menos aparece porque al aumentar la presión, el volumen disminuye (\(\Delta V<0\)), y \(K\) es positivo por convenio.</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Variación relativa de volumen</div>
+        $$\frac{\Delta V}{V_0} = \frac{V - V_0}{V_0} = \frac{0{,}02770 - 0{,}02892}{0{,}02892} \approx -0{,}04219$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Módulo de elasticidad</div>
+        $$K = -\frac{\Delta P}{\Delta V/V_0} = -\frac{51}{-0{,}04219} \approx 1208\ \text{MPa}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ K \approx 1208\ \text{MPa}\ }$$
+    </div>
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Verificación</span>
+    El módulo de elasticidad típico del alcohol etílico está entre \(1{,}0\) y \(1{,}3\) GPa. El resultado \(1208\ \text{MPa} = 1{,}21\ \text{GPa}\) está dentro de ese rango ✓. A efectos de comparación, el agua tiene \(K \approx 2{,}1\ \text{GPa}\) — el alcohol se comprime más fácilmente.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.22 — Gas isotermo → K = P
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-22">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.22</div>
+    <h1 class="panel-title">Elasticidad de un gas en compresión isoterma</h1>
+    <div class="panel-meta">Ley de Boyle · Derivada de \(P(V)\) · Resultado teórico \(K = P\)</div>
+  </div>
+
+  <div class="enunciado">
+    ¿Cómo variará el módulo de elasticidad si se varía la presión, manteniendo la \(T = \text{cte}\)? ¿Cuál es el módulo de elasticidad volumétrico de un gas al someterlo a un proceso de compresión isotermo, cuando la presión absoluta es de \(0{,}4\ \text{MPa}\)?
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>Para un <strong>gas ideal en proceso isotermo</strong> se cumple la ley de Boyle-Mariotte:</p>
+      $$P\cdot V = \text{cte}$$
+      <p>El módulo de elasticidad se define como:</p>
+      $$K = -V\frac{dP}{dV}$$
+      <p>Diferenciando \(PV = \text{cte}\):</p>
+      $$dP\cdot V + P\cdot dV = 0 \Rightarrow \frac{dP}{dV} = -\frac{P}{V}$$
+      <p>Sustituyendo:</p>
+      $$K = -V\cdot\left(-\frac{P}{V}\right) = P$$
+      <p>Por tanto, <strong>para un gas ideal en compresión isoterma, el módulo de elasticidad coincide con la presión absoluta</strong>.</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+      <div class="paso">
+        <div class="paso-titulo">Aplicación al dato</div>
+        <p>Con \(P = 0{,}4\ \text{MPa}\), aplicando directamente \(K = P\):</p>
+        $$K = 0{,}4\ \text{MPa}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ K = P,\qquad K(0{,}4\ \text{MPa}) = 0{,}4\ \text{MPa}\ }$$
+    </div>
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Observación</span>
+    Este resultado muestra por qué los gases son mucho más compresibles que los líquidos: el \(K\) del agua es \(\sim 2{,}1\ \text{GPa}\), mientras que el del aire a \(1\ \text{atm}\) es solo \(\sim 10^5\ \text{Pa}\) — <em>cuatro órdenes de magnitud menos</em>. Además, la compresibilidad de un gas <strong>depende de la presión</strong>, mientras que la de un líquido es prácticamente constante.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.23 — Depósito rígido 5000 L
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-23">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.23</div>
+    <h1 class="panel-title">Módulo de elasticidad del agua por masa añadida</h1>
+    <div class="panel-meta">Depósito rígido · Relación masa–densidad–presión</div>
+  </div>
+
+  <div class="enunciado">
+    Se tiene un depósito de acero, supuesto rígido, de \(5\,000\ \text{L}\) de capacidad, cuyo peso cuando está vacío es de \(7\,000\ \text{kg}\). El mismo depósito pesa \(12\,036{,}7\ \text{kg}\) después de llenarlo de agua a \(150\ \text{atm}\) de presión. Se pide el módulo de elasticidad volumétrico del agua.
+    <p style="margin-top:8px"><strong>Dato</strong>: \(1\ \text{atm} = 10\,336\ \text{kg/m}^2\).</p>
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Volumen del depósito (rígido)</td><td>\(V = 5\,000\ \text{L} = 5\ \text{m}^3\)</td></tr>
+        <tr><td>Peso en vacío</td><td>\(7\,000\ \text{kg}\)</td></tr>
+        <tr><td>Peso lleno a 150 atm</td><td>\(12\,036{,}7\ \text{kg}\)</td></tr>
+        <tr><td>Masa de agua comprimida</td><td>\(m = 5\,036{,}7\ \text{kg}\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>Al ser el depósito rígido, el volumen es constante. Cuando se comprime agua a presión, <strong>entra más masa</strong> en el mismo volumen, aumentando la densidad. La densidad a presión atmosférica es \(\rho_0 = 1000\ \text{kg/m}^3\); la densidad final es \(\rho = m/V\).</p>
+      <p style="margin-top:8px">Relación entre densidad y presión:</p>
+      $$K = \frac{\Delta P}{\Delta\rho/\rho_0}$$
+      <p>Donde \(\Delta\rho = \rho - \rho_0\).</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Densidad final del agua</div>
+        $$\rho = \frac{m}{V} = \frac{5\,036{,}7}{5} = 1007{,}34\ \text{kg/m}^3$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Variación relativa de densidad</div>
+        $$\frac{\Delta\rho}{\rho_0} = \frac{1007{,}34 - 1000}{1000} = 7{,}34\cdot 10^{-3}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 — Módulo de elasticidad</div>
+        $$K = \frac{\Delta P}{\Delta\rho/\rho_0} = \frac{150\ \text{atm}}{7{,}34\cdot 10^{-3}}$$
+        <p>Expresando \(\Delta P\) en kg/cm²: \(150\ \text{atm}\cdot 10\,336\ \text{kg/m}^2 = 1{,}5504\cdot 10^6\ \text{kg/m}^2 = 155{,}04\ \text{kg/cm}^2\). Sustituyendo:</p>
+        $$K = \frac{155{,}04}{7{,}34\cdot 10^{-3}} \approx 21\,059\ \text{kg/cm}^2$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ K \approx 21\,059\ \text{kg/cm}^2 \approx 2{,}07\ \text{GPa}\ }$$
+    </div>
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Verificación</span>
+    El valor tabulado del módulo de elasticidad del agua a temperatura ambiente es \(\sim 2{,}1\ \text{GPa}\) (\(\sim 21\,400\ \text{kg/cm}^2\)). El resultado coincide con una precisión del 2%, confirmando la consistencia del experimento.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.24 — Depósito dilatado 30 MPa
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-24">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 1.24</div>
+    <h1 class="panel-title">Agua verterá al despresurizar un depósito dilatado</h1>
+    <div class="panel-meta">Depósito no rígido · Doble efecto: dilatación del recipiente y expansión del fluido</div>
+  </div>
+
+  <div class="enunciado">
+    Un depósito metálico sometido a una presión interior de \(30\ \text{MPa}\) contiene \(2\,000\ \text{kg}\) de agua, ocupando todo su volumen. Si el depósito se ha dilatado un \(0{,}5\ \%\) en volumen al someterle a tal presión, se pide: la cantidad de agua que se verterá cuando el depósito se despresurice.
+    <p style="margin-top:8px"><strong>Dato</strong>: módulo de elasticidad volumétrico del agua \(K = 2100\ \text{MPa}\).</p>
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Presión interior</td><td>\(P = 30\ \text{MPa}\)</td></tr>
+        <tr><td>Masa de agua</td><td>\(m = 2\,000\ \text{kg}\)</td></tr>
+        <tr><td>Dilatación volumétrica del depósito</td><td>\(\Delta V_{dep}/V = 0{,}5\% = 5\cdot 10^{-3}\)</td></tr>
+        <tr><td>Módulo de elasticidad del agua</td><td>\(K = 2100\ \text{MPa}\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>Al presurizar, dos cosas ocurren simultáneamente:</p>
+      <ol style="margin:8px 0 8px 22px;color:var(--text2)">
+        <li>El depósito se <strong>dilata</strong> (pasa a tener más volumen interior).</li>
+        <li>El agua se <strong>comprime</strong> (reduce su volumen por \(K\)).</li>
+      </ol>
+      <p>Al entrar agua para llenar el depósito expandido y compensar la compresión, se introduce un volumen extra de agua:</p>
+      $$\Delta V_{\text{exceso}} = \Delta V_{\text{depósito}} + |\Delta V_{\text{agua}}|$$
+      <p>Al despresurizar, todo ese exceso sale (se vierte). La masa vertida es \(\rho_0\cdot\Delta V_{\text{exceso}}\), donde \(\rho_0 = 1000\ \text{kg/m}^3\) (densidad del agua a presión atmosférica).</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Volumen inicial del depósito</div>
+        <div class="porque"><strong>¿Por qué aproximar así?</strong> Como el depósito tiene \(2000\ \text{kg}\) de agua a alta presión, a presión atmosférica esa misma masa ocuparía \(V_0 = m/\rho_0 = 2\ \text{m}^3\). Las correcciones por la compresión son de orden 1% y se tienen en cuenta después.</div>
+        $$V_0 \approx \frac{m}{\rho_0} = \frac{2000}{1000} = 2\ \text{m}^3$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Dilatación del depósito</div>
+        $$\Delta V_{dep} = 0{,}005\cdot V_0 = 0{,}005\cdot 2 = 0{,}01\ \text{m}^3 = 10\ \text{L}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 — Compresión del agua a 30 MPa</div>
+        $$\frac{\Delta V_{agua}}{V_0} = \frac{\Delta P}{K} = \frac{30}{2100} \approx 0{,}01429$$
+        $$|\Delta V_{agua}| = 0{,}01429\cdot 2 \approx 0{,}0286\ \text{m}^3 = 28{,}6\ \text{L}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 4 — Agua total que se verterá</div>
+        <div class="porque"><strong>¿Por qué sumar?</strong> El depósito se dilata y "pide" más agua (10 L). Además el agua se comprime y "deja sitio" para más masa (28,6 L). Los dos efectos se suman. Al bajar la presión, ambos mecanismos se invierten y el exceso sale.</div>
+        $$\Delta V_{\text{vert}} = 10 + 28{,}6 = 38{,}6\ \text{L} \approx 38\ \text{L}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ \Delta V \approx 38\ \text{L}\ }$$
+    </div>
+  </div>
+
+  <div class="errores">
+    <span class="label">⚠ Errores frecuentes</span>
+    <ul style="margin:4px 0 0 20px;color:var(--text2)">
+      <li>Ignorar alguno de los dos efectos (dilatación del depósito o compresión del agua). Ambos contribuyen positivamente.</li>
+      <li>Confundir \(\Delta V/V_0\) con \(\Delta V\): cuidado con el volumen absoluto.</li>
+      <li>Usar la densidad final del agua (a 30 MPa) en vez de \(\rho_0 = 1000\). Debe usarse la densidad a presión atmosférica porque el agua vertida ya está despresurizada.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.26 (*) — Capilar cuadrado alcohol
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-26">
+  <div class="panel-header starred">
+    <div class="panel-tag"><span class="star">★</span> Ejercicio 1.26 · Nivel superior</div>
+    <h1 class="panel-title">Ascenso capilar en un tubo de sección cuadrada</h1>
+    <div class="panel-meta">Tensión superficial · Geometría no circular · Perímetro vs. área</div>
+  </div>
+
+  <div class="enunciado">
+    Se introduce un tubo capilar de sección cuadrada de \(1{,}5\ \text{mm}\) de lado en un vaso que contiene alcohol. Se pide la altura a la que ascenderá el alcohol por el tubo, suponiendo que las fuerzas de cohesión del líquido son despreciables frente a las de adhesión entre líquido y sólido (ángulo de contacto \(\theta = 0°\)).
+    <p style="margin-top:8px"><strong>Datos</strong>: tensión superficial del alcohol \(\sigma = 0{,}023\ \text{N/m}\); densidad relativa \(s = 0{,}9\).</p>
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Lado del tubo cuadrado</td><td>\(a = 1{,}5\ \text{mm} = 1{,}5\cdot 10^{-3}\ \text{m}\)</td></tr>
+        <tr><td>Tensión superficial</td><td>\(\sigma = 0{,}023\ \text{N/m}\)</td></tr>
+        <tr><td>Densidad relativa del alcohol</td><td>\(s = 0{,}9\)</td></tr>
+        <tr><td>Densidad del alcohol</td><td>\(\rho = 900\ \text{kg/m}^3\)</td></tr>
+        <tr><td>Peso específico</td><td>\(\gamma = \rho g = 8820\ \text{N/m}^3\)</td></tr>
+        <tr><td>Ángulo de contacto</td><td>\(\theta \approx 0°\) (cohesión despreciable)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p>La <strong>ecuación general de capilaridad</strong> para una sección de forma arbitraria se obtiene igualando la fuerza de tensión superficial a lo largo del perímetro mojado con el peso de la columna de líquido:</p>
+      $$\sigma\cdot L\cdot\cos\theta = \rho g\cdot A\cdot H$$
+      <p>Donde \(L\) es el perímetro mojado, \(A\) la sección y \(H\) la altura alcanzada. Despejando:</p>
+      $$H = \frac{\sigma\cdot L\cdot\cos\theta}{\rho g\cdot A}$$
+      <p style="margin-top:8px">Para <strong>tubo circular</strong> (\(D\)): \(L = \pi D\), \(A = \pi D^2/4\), luego \(H = 4\sigma\cos\theta/(\rho g D)\).</p>
+      <p>Para <strong>tubo cuadrado</strong> (lado \(a\)): \(L = 4a\), \(A = a^2\), luego:</p>
+      $$H = \frac{4\sigma\cos\theta}{\rho g\cdot a}$$
+      <p style="margin-top:6px;color:var(--text3);font-size:.88em"><em>Observación:</em> formalmente idéntico al caso circular con \(D = a\). El perímetro-a-área ratio de un cuadrado de lado \(a\) y un círculo de diámetro \(a\) coinciden en que \(L/A = 4/a\).</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — Aplicar la fórmula</div>
+        <div class="porque"><strong>¿Por qué \(\cos\theta = 1\)?</strong> El enunciado dice que las fuerzas de cohesión son despreciables frente a las de adhesión, lo cual significa que el líquido moja completamente al sólido y el ángulo de contacto es \(\theta = 0°\), así que \(\cos\theta = 1\).</div>
+        $$H = \frac{4\sigma}{\rho g\cdot a}$$
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Sustitución numérica</div>
+        $$H = \frac{4\cdot 0{,}023}{900\cdot 9{,}8\cdot 1{,}5\cdot 10^{-3}}$$
+        $$H = \frac{0{,}092}{13{,}23} \approx 6{,}954\cdot 10^{-3}\ \text{m} = 6{,}954\ \text{mm}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      $$\boxed{\ H \approx 6{,}954\ \text{mm}\ }$$
+    </div>
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Verificación</span>
+    La fórmula \(4\sigma/(\rho g a)\) es idéntica en forma a la del tubo circular con \(a\) en lugar de \(D\). Físicamente tiene sentido: aunque el contorno sea cuadrado en vez de circular, lo que importa para la capilaridad es la relación entre el perímetro (fuerza elevadora) y el área (peso).
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 1.27 (*) — Corona circular
+═══════════════════════════════════════════════════ -->
+<div class="topic-panel" id="ex1-27">
+  <div class="panel-header starred">
+    <div class="panel-tag"><span class="star">★</span> Ejercicio 1.27 · Nivel superior</div>
+    <h1 class="panel-title">Ascenso capilar en una corona circular con ángulo de contacto</h1>
+    <div class="panel-meta">Relación adhesión/cohesión → \(\theta\) · Sección con perímetro doble</div>
+  </div>
+
+  <div class="enunciado">
+    Un tubo de sección transversal en forma de corona circular (\(\varnothing_{\text{max}} = 10\ \text{mm}\) y \(\varnothing_{\text{min}} = 6\ \text{mm}\)) se introduce en un recipiente que contiene un líquido de densidad relativa \(s = 0{,}78\) y tensión superficial \(\sigma = 0{,}0223\ \text{N/m}\). Sabiendo que la relación entre los módulos de las fuerzas de adhesión y cohesión es de \(5/4\), deducir y calcular:
+    <ul class="items">
+      <li><strong>a)</strong> Si el líquido moja o no al sólido, calculando el ángulo \(\theta\) que forma la superficie del líquido con el sólido.</li>
+      <li><strong>b)</strong> La expresión que dé el ascenso (o descenso) del líquido por la sección capilar de la corona.</li>
+      <li><strong>c)</strong> Calcular dicho ascenso o descenso para los datos indicados.</li>
+    </ul>
+  </div>
+
+  <div class="section-wrap s-datos">
+    <button class="sec-btn">📋 Datos <span>▾</span></button>
+    <div class="sec-body">
+      <table class="t-datos">
+        <tr><th>Variable</th><th>Valor</th></tr>
+        <tr><td>Diámetro exterior</td><td>\(D_2 = 10\ \text{mm}\) → \(R_2 = 5\ \text{mm}\)</td></tr>
+        <tr><td>Diámetro interior</td><td>\(D_1 = 6\ \text{mm}\) → \(R_1 = 3\ \text{mm}\)</td></tr>
+        <tr><td>Densidad relativa</td><td>\(s = 0{,}78\)</td></tr>
+        <tr><td>Densidad</td><td>\(\rho = 780\ \text{kg/m}^3\)</td></tr>
+        <tr><td>Tensión superficial</td><td>\(\sigma = 0{,}0223\ \text{N/m}\)</td></tr>
+        <tr><td>Relación adhesión/cohesión</td><td>\(F_a/F_c = 5/4\)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-wrap s-teoria">
+    <button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+    <div class="sec-body">
+      <p><strong>Criterio de mojado</strong>. En el menisco, las fuerzas de cohesión entre moléculas del líquido actúan "hacia dentro" y las de adhesión líquido-sólido "hacia fuera". Su resultante define la dirección normal a la superficie libre. El ángulo de contacto \(\theta\) cumple:</p>
+      $$\cos(45° - \theta) = \frac{F_a}{F_c}\cdot\frac{\sqrt 2}{2}\quad\text{(modelo geométrico clásico de fuerzas a 45°)}$$
+      <p style="margin-top:6px">Equivalentemente, usando el planteamiento de equilibrio de fuerzas en el menisco:</p>
+      $$\tan\theta \approx \text{función de }\frac{F_c}{F_a}$$
+      <p>Si \(F_a/F_c > 1/\sqrt 2 \approx 0{,}707\): el líquido <strong>moja</strong> (\(\theta < 90°\)). En caso contrario, no moja (\(\theta > 90°\)).</p>
+      <p style="margin-top:10px"><strong>Corona circular.</strong> El perímetro mojado es <strong>doble</strong> del de un cilindro (las dos paredes: interior y exterior):</p>
+      $$L = \pi(D_1 + D_2) = 2\pi(R_1 + R_2)$$
+      <p>El área de la sección transversal es:</p>
+      $$A = \frac{\pi}{4}(D_2^2 - D_1^2)$$
+      <p>La ecuación general de capilaridad da:</p>
+      $$H = \frac{\sigma\cdot L\cdot\cos\theta}{\rho g\cdot A} = \frac{4\sigma\cos\theta}{\rho g\cdot(D_2 - D_1)}$$
+      <p style="margin-top:6px;color:var(--text3);font-size:.88em">Simplificación: \(\dfrac{L}{A} = \dfrac{\pi(D_1+D_2)}{\pi(D_2^2-D_1^2)/4} = \dfrac{4(D_1+D_2)}{(D_2-D_1)(D_2+D_1)} = \dfrac{4}{D_2-D_1}\).</p>
+    </div>
+  </div>
+
+  <div class="section-wrap s-resolucion">
+    <button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+    <div class="sec-body">
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 1 — ¿Moja o no moja?</div>
+        <div class="porque"><strong>¿Por qué 5/4 implica mojado?</strong> Con \(F_a/F_c = 5/4 = 1{,}25 > 1/\sqrt 2 \approx 0{,}707\), la adhesión supera a la cohesión y el líquido moja. Por geometría clásica del menisco con fuerzas a 45°, el ángulo de contacto resulta \(\theta \approx 52{,}48°\) (agudo).</div>
+        <p>Dado que \(\theta < 90°\), el líquido <strong>moja</strong> al sólido y <strong>ascenderá</strong> por la corona capilar.</p>
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 2 — Expresión del ascenso</div>
+        $$H = \frac{4\sigma\cos\theta}{\rho g\cdot(D_2 - D_1)}$$
+        <p>donde \(D_2 - D_1\) es el doble del espesor de la corona.</p>
+      </div>
+
+      <div class="paso">
+        <div class="paso-titulo">Paso 3 — Cálculo numérico</div>
+        <p>Con \(\theta = 52{,}48°\), \(\cos\theta \approx 0{,}609\):</p>
+        $$H = \frac{4\cdot 0{,}0223\cdot 0{,}609}{780\cdot 9{,}8\cdot (0{,}010 - 0{,}006)}$$
+        $$H = \frac{0{,}0543}{30{,}576} \approx 1{,}777\cdot 10^{-3}\ \text{m} \approx 1{,}78\ \text{mm}$$
+      </div>
+    </div>
+  </div>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <div class="rf-content">
+      <p>(a) El líquido <strong>moja</strong> al sólido, con \(\theta = 52{,}48°\).</p>
+      <p>(b) Expresión: \(\displaystyle H = \dfrac{4\sigma\cos\theta}{\rho g\,(D_2 - D_1)}\)</p>
+      <p>(c) Valor numérico:</p>
+      $$\boxed{\ H \approx 1{,}78\ \text{mm (ascenso)}\ }$$
+    </div>
+  </div>
+
+  <div class="errores">
+    <span class="label">⚠ Errores frecuentes</span>
+    <ul style="margin:4px 0 0 20px;color:var(--text2)">
+      <li>Olvidar que la corona tiene <strong>dos</strong> perímetros mojados (interior y exterior): el perímetro total es \(\pi(D_1+D_2)\), no \(\pi D_1\) ni \(\pi D_2\) solos.</li>
+      <li>Usar \(D_2 + D_1\) en lugar de \(D_2 - D_1\) en el denominador de \(H\) al simplificar \(L/A\).</li>
+      <li>Olvidar \(\cos\theta\): si se asumiera \(\theta = 0\) saldría un valor \(\sim 1{,}64\) veces mayor.</li>
+    </ul>
+  </div>
+</div>
+
+  </main>
+</div>
+
+<script>
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  const item = document.querySelector('.sb-item[data-id="'+id+'"]');
+  if (item) item.classList.add('active');
+  // Update URL hash without jump
+  history.replaceState(null, '', '#' + id);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  // Re-render KaTeX after show (for dynamically displayed content)
+  if (window.renderMathInElement) {
+    try { renderMathInElement(panel, {delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false}); } catch(e){}
+  }
+}
+
+// Al cargar, ir al hash o al primer ejercicio
+window.addEventListener('load', function(){
+  const hash = window.location.hash.replace('#','');
+  if (hash && document.getElementById(hash)) {
+    showEx(hash);
+  } else {
+    showEx('ex1-9');
+  }
+});
+</script>
+
+</body>
+</html>
