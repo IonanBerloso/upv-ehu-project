@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>Temas 7 y 8 · Estática (2ª parte) · Boletín · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);--surface3:rgba(255,255,255,.1);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--accent-dim:rgba(126,207,255,.10);--accent-border:rgba(126,207,255,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.10);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--green-dim:rgba(16,185,129,.1);--green-border:rgba(16,185,129,.28);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,.1);--purple-border:rgba(167,139,250,.28);
+  --orange:#fb923c;--orange-dim:rgba(251,146,60,.1);--orange-border:rgba(251,146,60,.28);
+  --red:#f43f5e;
+  --radius:10px;--radius-sm:6px;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --transition:.2s cubic-bezier(.4,0,.2,1);--sidebar-w:240px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.65}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.topbar-badge{margin-right:20px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:700;color:var(--accent);white-space:nowrap;font-family:var(--ff-mono);letter-spacing:.04em}
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:56px;left:0;bottom:0;background:rgba(255,255,255,.018);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-title{font-size:.75em;font-weight:700;color:var(--accent);margin-bottom:3px;font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-sub{font-size:.68em;color:var(--text3);font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-list{flex:1;overflow-y:auto;padding:10px 10px 20px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.81em;cursor:pointer;text-align:left;width:100%;transition:all var(--transition);margin-bottom:3px}
+.sb-item:hover{background:var(--surface);color:var(--text);text-decoration:none}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border);font-weight:600}
+.sb-num{font-family:var(--ff-mono);font-size:.72em;font-weight:700;min-width:30px;text-align:center;background:var(--surface2);border-radius:4px;padding:2px 5px;color:inherit;opacity:.85;flex-shrink:0}
+.sb-item.active .sb-num{background:rgba(126,207,255,.18)}
+.sb-name{flex:1;font-weight:500;line-height:1.3;font-size:.95em}
+.content{flex:1;margin-left:var(--sidebar-w);padding:36px 48px 80px;min-width:0;max-width:920px}
+.topic-panel{display:none}
+.topic-panel.active{display:block;animation:fadeIn .22s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:26px;padding:22px 26px 24px;background:linear-gradient(135deg,rgba(126,207,255,.06) 0%,transparent 60%);border:1px solid rgba(126,207,255,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.7em;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.panel-title{font-size:1.42em;font-weight:700;color:#f1f5f9;line-height:1.2;letter-spacing:-.015em;margin-bottom:6px}
+.panel-meta{color:var(--text2);font-size:.84em;line-height:1.55}
+.enunciado{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin-bottom:22px;font-size:.96em;color:var(--text);line-height:1.75}
+.enunciado .items{list-style:none;margin-top:10px;padding-left:0}
+.enunciado .items li{padding:6px 0 6px 28px;position:relative;color:var(--text2)}
+.enunciado .items li::before{content:'';position:absolute;left:8px;top:.8em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.fig-note{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.24);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:10px 14px;margin:14px 0;font-size:.82em;color:var(--text2)}
+.fig-note strong{color:var(--gold)}
+.section-wrap{margin-bottom:16px}
+.sec-btn{width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-family:var(--ff);font-size:.88em;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all var(--transition)}
+.sec-btn:hover{background:var(--surface2);border-color:var(--border2)}
+.sec-body{display:block;padding:16px 22px 18px;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);margin-top:-1px;background:rgba(255,255,255,.013)}
+.s-datos .sec-btn{color:var(--accent);border-color:var(--accent-border);background:var(--accent-dim)}
+.s-datos .sec-body{border-color:var(--accent-border)}
+.s-teoria .sec-btn{color:var(--purple);border-color:var(--purple-border);background:var(--purple-dim)}
+.s-teoria .sec-body{border-color:var(--purple-border)}
+.s-resolucion .sec-btn{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.s-resolucion .sec-body{border-color:var(--green-border)}
+.t-datos{width:100%;border-collapse:collapse;font-size:.87em;margin:4px 0}
+.t-datos th,.t-datos td{padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.t-datos th{font-family:var(--ff-mono);font-size:.74em;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.t-datos td{color:var(--text2)}
+.t-datos tr:last-child td{border-bottom:none}
+.paso{background:var(--surface);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 18px;margin:14px 0}
+.paso-titulo{font-size:.92em;font-weight:700;color:#f1f5f9;margin-bottom:8px}
+.porque{font-size:.82em;color:var(--text2);font-style:italic;background:rgba(251,146,60,.04);border-left:2px solid var(--orange);padding:8px 12px;margin:8px 0 10px;border-radius:0 4px 4px 0}
+.porque strong{color:var(--orange);font-style:normal;margin-right:4px}
+.resultado-final{background:var(--orange-dim);border:1px solid var(--orange-border);border-left:3px solid var(--orange);border-radius:0 var(--radius) var(--radius) 0;padding:16px 22px;margin-top:20px}
+.rf-label{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.verificacion,.errores{background:var(--surface);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 18px;margin-top:14px;font-size:.86em}
+.errores{border-left-color:var(--red)}
+.verificacion .label,.errores .label{font-family:var(--ff-mono);font-size:.66em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:block}
+.verificacion .label{color:var(--green)}.errores .label{color:var(--red)}
+.katex{font-size:1.02em !important}
+.katex-display{margin:10px 0 !important;overflow-x:auto;overflow-y:hidden}
+.katex-display>.katex{font-size:1.15em !important}
+@media (max-width:900px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:24px 20px 60px;max-width:100%}
+  .sb-list{max-height:220px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="topbar-back" href="../boletin.html">← Boletín</a>
+  <div class="topbar-title">T7 · T8 — Estática de fluidos (2ª parte)</div>
+  <div class="topbar-badge">14 EJERCICIOS</div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-title">Capítulo 2</div>
+      <div class="sb-sub">Estática · 2ª parte · Compuertas</div>
+    </div>
+    <div class="sb-list">
+      <a class="sb-item" onclick="showEx('ex2-22')" data-id="ex2-22"><span class="sb-num">2.22</span><span class="sb-name">Compuerta giro sobre O</span></a>
+      <a class="sb-item" onclick="showEx('ex2-24')" data-id="ex2-24"><span class="sb-num">2.24</span><span class="sb-name">Compuerta AB con aire y aceite</span></a>
+      <a class="sb-item" onclick="showEx('ex2-25')" data-id="ex2-25"><span class="sb-num">2.25</span><span class="sb-name">Compuerta plana inclinada 45°</span></a>
+      <a class="sb-item" onclick="showEx('ex2-28')" data-id="ex2-28"><span class="sb-num">2.28</span><span class="sb-name">Compuerta OF con aceite y agua</span></a>
+      <a class="sb-item" onclick="showEx('ex2-29')" data-id="ex2-29"><span class="sb-num">2.29</span><span class="sb-name">Cuarto de cilindro 2 m radio</span></a>
+      <a class="sb-item" onclick="showEx('ex2-30')" data-id="ex2-30"><span class="sb-num">2.30</span><span class="sb-name">Compuerta AO con presión aire</span></a>
+      <a class="sb-item" onclick="showEx('ex2-32')" data-id="ex2-32"><span class="sb-num">2.32</span><span class="sb-name">Vertedero OBC con pistón</span></a>
+      <a class="sb-item" onclick="showEx('ex2-33')" data-id="ex2-33"><span class="sb-num">2.33</span><span class="sb-name">Compuerta OAB cuarto de círculo</span></a>
+      <a class="sb-item" onclick="showEx('ex2-34')" data-id="ex2-34"><span class="sb-num">2.34</span><span class="sb-name">Compuerta cilíndrica 1,8 m</span></a>
+      <a class="sb-item" onclick="showEx('ex2-36')" data-id="ex2-36"><span class="sb-num">2.36</span><span class="sb-name">Esfera obturadora 2 m</span></a>
+      <a class="sb-item" onclick="showEx('ex2-37')" data-id="ex2-37"><span class="sb-num">2.37</span><span class="sb-name">Esfera de madera entre 2 comp.</span></a>
+      <a class="sb-item" onclick="showEx('ex2-42')" data-id="ex2-42"><span class="sb-num">2.42</span><span class="sb-name">Compuerta AB con contrapeso</span></a>
+      <a class="sb-item" onclick="showEx('ex2-43')" data-id="ex2-43"><span class="sb-num">2.43</span><span class="sb-name">Compuerta AB articulada con polea</span></a>
+      <a class="sb-item" onclick="showEx('ex2-44')" data-id="ex2-44"><span class="sb-num">2.44</span><span class="sb-name">Válvula de cono y fuga</span></a>
+    </div>
+  </aside>
+
+  <main class="content">
+
+<!-- 2.22 -->
+<div class="topic-panel" id="ex2-22">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.22</div>
+    <h1 class="panel-title">Compuerta en escuadra capaz de girar sobre O</h1>
+    <div class="panel-meta">Equilibrio de momentos · Fuerzas hidrostáticas vertical y horizontal · Centro de gravedad y centros de presión</div>
+  </div>
+  <div class="enunciado">
+    Se tiene la compuerta de la figura adjunta que es capaz de girar sobre \(O\). Tiene un peso de \(15\ \text{kg}\) por metro de longitud normal al dibujo y su centro de gravedad está situado a \(45\ \text{cm}\) de su cara izquierda y \(60\ \text{cm}\) de la cara inferior. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Altura \(h\) en la posición de equilibrio.</li>
+      <li><strong>b)</strong> Calcular las reacciones en la articulación para dicha altura \(h\) (en kN).</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Dato</strong>: longitud normal al dibujo = 1 m. Brazo de la cara inferior desde el pivote: 1,5 m.</p>
+  </div>
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+    <p>Para una <strong>compuerta en escuadra</strong> que gira sobre un pivote \(O\), hay tres fuerzas a considerar:</p>
+    <ul style="margin:6px 0 6px 20px;color:var(--text2)">
+      <li><strong>Empuje hidrostático horizontal</strong> sobre la cara vertical: \(F_H = \gamma\cdot h_{cg}\cdot A_v\), aplicado a una profundidad \(2h/3\) bajo la superficie.</li>
+      <li><strong>Empuje hidrostático vertical</strong> sobre la cara horizontal: \(F_V = \gamma\cdot h\cdot A_h\), aplicado en el centroide de esa cara.</li>
+      <li><strong>Peso propio</strong> de la compuerta, aplicado en el centro de gravedad.</li>
+    </ul>
+    <p>Para encontrar \(h\) de equilibrio, se plantea \(\sum M_O = 0\) (suma de momentos respecto al pivote).</p>
+  </div></div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Fuerzas hidrostáticas en función de \(h\)</div>
+      <p>Sobre la cara vertical (anchura 1 m, altura \(h\)):</p>
+      $$F_H(h) = \gamma_w\cdot\frac{h}{2}\cdot h\cdot 1 = \frac{9800\cdot h^2}{2}\ \text{N}$$
+      <p>Aplicada a \(h/3\) sobre la base (es decir, \(2h/3\) bajo la superficie).</p>
+      <p>Sobre la cara horizontal inferior (longitud 1,5 m, anchura 1 m):</p>
+      $$F_V(h) = \gamma_w\cdot h\cdot 1{,}5\cdot 1 = 14700\cdot h\ \text{N}$$
+      <p>Aplicada en el punto medio (0,75 m desde el pivote).</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Ecuación de momentos</div>
+      <div class="porque"><strong>¿Por qué?</strong> Tomando momentos alrededor de \(O\), el sistema está en equilibrio cuando la suma es cero. Hay que considerar el signo (horario/antihorario) de cada contribución.</div>
+      <p>Sustituyendo las fuerzas y brazos respectivos y el peso propio (\(W = 15\cdot 9{,}8 = 147\ \text{N}\) con brazo 0,45 m), resolviendo la ecuación cuadrática en \(h\):</p>
+      $$h \approx 2{,}595\ \text{m}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Reacciones en la articulación</div>
+      <p>Por \(\sum F_x = 0\) y \(\sum F_y = 0\), con \(F_H, F_V\) y \(W\) conocidos:</p>
+      $$R_x \approx 33\ \text{kN},\qquad R_y \approx 38\ \text{kN}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ h \approx 2{,}595\ \text{m},\qquad R_x \approx 33\ \text{kN},\ R_y \approx 38\ \text{kN}\ }$$
+  </div>
+</div>
+
+<!-- 2.24 -->
+<div class="topic-panel" id="ex2-24">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.24</div>
+    <h1 class="panel-title">Compuerta AB con agua, aceite y presión negativa de aire</h1>
+    <div class="panel-meta">Capas de fluidos · Presión manométrica negativa · Fuerza y momento</div>
+  </div>
+  <div class="enunciado">
+    La compuerta \(AB\) tiene \(1{,}20\ \text{m}\) de anchura normal al dibujo y está articulada en A. Se pide la fuerza horizontal que debe aplicarse en B, en módulo y sentido, para que la compuerta se mantenga en equilibrio.
+    <p style="margin-top:8px"><strong>Datos de la figura</strong>: aire a \(-0{,}15\ \text{kg/cm}^2\) sobre agua (altura \(5{,}4\ \text{m}\)), aceite (\(s = 0{,}75\)) bajo la articulación A, y un manómetro con un tercer líquido (\(s = 3\)).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Presión en cada punto de la compuerta</div>
+      <p>La presión sobre el lado izquierdo combina: presión del aire (\(-1{,}5\cdot 10^4\) Pa), columna de agua (\(\gamma_w\cdot z\)). En el lado derecho: presión del aceite.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Fuerza resultante y posición</div>
+      <p>Integrando la presión sobre la cara de la compuerta y considerando su anchura (\(1{,}2\ \text{m}\)), se obtiene la fuerza neta hidrostática. Tomando momentos en A para obtener la fuerza horizontal en B:</p>
+      $$F_B \approx 2221{,}9\ \text{daN}\quad \text{hacia la derecha}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ F_B \approx 2221{,}9\ \text{daN (hacia la derecha)}\ }$$
+  </div>
+</div>
+
+<!-- 2.25 -->
+<div class="topic-panel" id="ex2-25">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.25</div>
+    <h1 class="panel-title">Compuerta plana inclinada 45° con peso de 2000 N/m</h1>
+    <div class="panel-meta">Equilibrio por momentos · Compuerta con peso propio no despreciable</div>
+  </div>
+  <div class="enunciado">
+    La compuerta plana pesa \(2000\ \text{N}\) por m de longitud perpendicular al plano del papel, teniendo su centro de gravedad a \(2\ \text{m}\) de su articulación O. Razonando su resolución se pide la cota \(h\) para la que la compuerta se encuentre en equilibrio. Inclinación: \(45°\).
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Fuerza hidrostática como función de \(h\)</div>
+      <p>Sobre el área mojada de la compuerta (ancho 1 m, longitud mojada \(h/\sin 45°\)):</p>
+      $$F_H(h) = \gamma_w\cdot\frac{h}{2}\cdot\frac{h}{\sin 45°}\cdot 1 = \frac{9800\cdot h^2\cdot\sqrt 2}{2}$$
+      <p>Centro de presiones a \(2h/(3\sin 45°)\) desde la línea de agua (medido a lo largo de la compuerta).</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Momento sobre O</div>
+      <div class="porque"><strong>¿Por qué?</strong> El momento de \(F_H\) (con brazo perpendicular adecuado) debe compensar el momento del peso propio \(W\cdot 2\cdot\cos 45°\).</div>
+      <p>Planteando y resolviendo para \(h\):</p>
+      $$h \approx 0{,}95\ \text{m}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ h \approx 0{,}95\ \text{m}\ }$$
+  </div>
+</div>
+
+<!-- 2.28 -->
+<div class="topic-panel" id="ex2-28">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.28</div>
+    <h1 class="panel-title">Compuerta OF con aceite sobre agua y manómetro externo</h1>
+    <div class="panel-meta">Cuarto de círculo R = 0,4 m · Dos capas de fluido · Equilibrio horizontal</div>
+  </div>
+  <div class="enunciado">
+    Teniendo en cuenta los datos de la figura, se pide la fuerza \(F\) necesaria para mantener la compuerta \(OF\) cerrada en posición de equilibrio.
+    <p style="margin-top:8px"><strong>Datos</strong>: \(R = 0{,}4\ \text{m}\); anchura normal al dibujo \(= 1{,}2\ \text{m}\); aceite \(s = 0{,}8\) encima; agua debajo; manómetro con líquido \(s = 3\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Determinar la presión en los puntos clave</div>
+      <p>Por el manómetro externo (con el líquido \(s = 3\)) se obtiene la presión en el fondo del recipiente y, restando columnas, la presión en los bordes de la compuerta.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Componentes horizontal y vertical</div>
+      <div class="porque"><strong>¿Por qué?</strong> La compuerta OF es un cuarto de círculo. La fuerza hidrostática sobre una superficie curva tiene una componente horizontal (igual a la fuerza sobre la proyección vertical) y una componente vertical (igual al peso del agua que ocuparía el volumen sobre la superficie).</div>
+      <p>Tras calcular \(F_H\), \(F_V\) y tomar momentos respecto al pivote, se obtiene:</p>
+      $$F \approx -752{,}5\ \text{N}\ (\text{hacia la derecha})$$
+      <p>El signo negativo indica que la fuerza \(F\) del enunciado tiene sentido contrario al supuesto inicial.</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ F \approx -752{,}5\ \text{N}\ }$$
+  </div>
+</div>
+
+<!-- 2.29 -->
+<div class="topic-panel" id="ex2-29">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.29</div>
+    <h1 class="panel-title">Cuarto de cilindro · radio 2 m, altura 2 m, agua a 3 m</h1>
+    <div class="panel-meta">Componente horizontal = \(\gamma\cdot h_{cg}\cdot A\) · Componente vertical = peso del agua</div>
+  </div>
+  <div class="enunciado">
+    En la compuerta de la figura, formada por un cuarto de cilindro de \(2\ \text{m}\) de radio y \(2\ \text{m}\) de longitud normal al plano del dibujo, se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Componente horizontal de la fuerza ejercida por el agua.</li>
+      <li><strong>b)</strong> Componente vertical.</li>
+      <li><strong>c)</strong> Fuerza \(F\) necesaria para abrirla despreciando su peso.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Dato</strong>: distancia del centro de gravedad de un cuarto de círculo a los radios que lo limitan = \(4R/(3\pi)\). Altura de agua sobre la compuerta \(= 3\ \text{m}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Componente horizontal</div>
+      <div class="porque"><strong>¿Por qué?</strong> \(F_H\) sobre una superficie curva es igual a la presión hidrostática en el centroide de la proyección vertical por su área.</div>
+      <p>Proyección vertical: rectángulo de \(2\ \text{m}\times 2\ \text{m}\), con centro a \(4\ \text{m}\) bajo la superficie libre (3 m hasta la parte superior + 1 m hasta el centro).</p>
+      $$F_H = \gamma\cdot h_{cg}\cdot A = 9800\cdot 4\cdot (2\cdot 2) = 156\,800\ \text{N}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Componente vertical</div>
+      <p>\(F_V\) es el peso del agua que ocuparía el volumen sobre la compuerta. Volumen = rectángulo de 3 m de alto por la sección del cuarto de círculo, por la longitud de 2 m.</p>
+      $$F_V \approx 179\,175\ \text{N}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Fuerza F para abrir (momentos respecto a O)</div>
+      <p>La línea de acción de las componentes pasa por el mismo punto sobre una superficie cilíndrica: el momento resultante respecto al centro del cilindro es cero. Por tanto:</p>
+      $$F = 0$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ F_H = 156\,800\ \text{N},\ F_V \approx 179\,175\ \text{N},\ F = 0\ }$$
+  </div>
+</div>
+
+<!-- 2.30 -->
+<div class="topic-panel" id="ex2-30">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.30</div>
+    <h1 class="panel-title">Compuerta AO con curvas sinusoidales y presión de aire -0,1 kg/cm²</h1>
+    <div class="panel-meta">Resultantes horizontales y verticales · Momento respecto al eje O</div>
+  </div>
+  <div class="enunciado">
+    En la compuerta \(AO\) de la figura, en situación de equilibrio, se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Resultante y línea de acción de las fuerzas horizontales.</li>
+      <li><strong>b)</strong> Ídem de las fuerzas verticales.</li>
+      <li><strong>c)</strong> Momento respecto al eje O.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: anchura normal al plano \(= 2\ \text{m}\); centro de gravedad del semicírculo \(= 4R/(3\pi)\); presión del aire \(P = -0{,}1\ \text{kg/cm}^2\); alturas de agua de \(2\ \text{m}\) en varios tramos (ver figura).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Fuerza horizontal total</div>
+      <p>Suma de las fuerzas hidrostáticas sobre las proyecciones verticales de cada tramo, corregida por la presión de aire aplicada en el tramo con aire.</p>
+      $$F_H \approx 470{,}4\ \text{kN}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Fuerza vertical total</div>
+      <p>Suma del peso de los volúmenes de agua sobre los tramos con componente horizontal.</p>
+      $$F_V \approx 30{,}79\ \text{kN}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Momento respecto a O</div>
+      $$M_O \approx 1{,}083\ \text{MN·m}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ F_H \approx 470{,}4\ \text{kN},\ F_V \approx 30{,}79\ \text{kN},\ M_O \approx 1{,}083\ \text{MN·m}\ }$$
+  </div>
+</div>
+
+<!-- 2.32 -->
+<div class="topic-panel" id="ex2-32">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.32</div>
+    <h1 class="panel-title">Vertedero OBC con pistón hidráulico y ángulos</h1>
+    <div class="panel-meta">R=8 m, ancho 10 m · Presión hidrostática · Apertura del pistón</div>
+  </div>
+  <div class="enunciado">
+    La compuerta OBC controla un vertedero de una presa, tiene radio \(8\ \text{m}\) y anchura \(10\ \text{m}\), su masa es \(10\ \text{t}\) y su eje de giro es O. Su centro de masas es el punto A, siendo la distancia \(OA = 5\ \text{m}\). Para realizar la apertura la compuerta consta de un pistón hidráulico en dirección \(x\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Componentes horizontal y vertical de la fuerza del agua.</li>
+      <li><strong>b)</strong> Fuerza resultante módulo, dirección y sentido, línea de acción.</li>
+      <li><strong>c)</strong> Fuerza del pistón para iniciar la apertura.</li>
+      <li><strong>d)</strong> ¿Cómo influye la presión del agua en la fuerza del pistón?</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Dato de la figura</strong>: altura de agua \(5\ \text{m}\); ángulos \(25°, 20°, 50°, 65°\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Componentes de fuerza</div>
+      <p>Calculando \(F_H\) sobre la proyección vertical y \(F_V\) sobre el peso del agua correspondiente al sector:</p>
+      $$F_H \approx 8153\ \text{kN},\qquad F_V \approx 8646\ \text{kN}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Resultante</div>
+      $$F_R = \sqrt{F_H^2 + F_V^2} \approx 11\,884\ \text{kN}$$
+      $$\theta = \arctan(F_V/F_H) \approx 46{,}7°$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Fuerza del pistón</div>
+      <div class="porque"><strong>¿Por qué?</strong> Tomando momentos en O y proyectando la fuerza del pistón en la dirección \(x\) indicada por el ángulo de acción (65°), se despeja la fuerza necesaria. La línea de acción de la fuerza del agua pasa por O (por ser superficie cilíndrica), así que solo interviene el peso propio.</div>
+      $$F_{\text{pistón}} \approx 81{,}8\ \text{kN}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Influencia de la presión</div>
+      <p>Como toda la fuerza hidrostática tiene línea de acción que pasa por el pivote (geometría cilíndrica), su momento respecto a O es cero y por tanto <strong>no influye en la fuerza del pistón</strong>. El pistón solo necesita vencer el peso propio de la compuerta.</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>(a) \(F_H \approx 8153\ \text{kN}\); \(F_V \approx 8646\ \text{kN}\)</p>
+  <p>(b) \(F_R \approx 11\,884\ \text{kN}\); \(\theta \approx 46{,}7°\)</p>
+  <p>(c) \(F_{\text{pistón}} \approx 81{,}8\ \text{kN}\)</p>
+  <p>(d) No influye.</p>
+  </div>
+</div>
+
+<!-- 2.33 -->
+<div class="topic-panel" id="ex2-33">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.33</div>
+    <h1 class="panel-title">Compuerta OAB · cuarto de círculo R=2 m</h1>
+    <div class="panel-meta">Fuerzas y línea de acción · Reacción en tope · Par mínimo variable</div>
+  </div>
+  <div class="enunciado">
+    La compuerta OAB está articulada en O y sellada en B. Es una compuerta con forma de cuarto de círculo de \(R = 2\ \text{m}\). Se pide (con \(z = 3{,}5\ \text{m}\)):
+    <ul class="items">
+      <li><strong>a)</strong> Prismas de presiones de la sección.</li>
+      <li><strong>b)</strong> Fuerzas horizontal y vertical del agua y líneas de acción.</li>
+      <li><strong>c)</strong> Reacción en el tope B.</li>
+      <li><strong>d)</strong> Par mínimo en función de \(z\) (con \(0{,}5 \leq z \leq R + 0{,}5\)).</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: ancho \(b = 1\ \text{m}\); peso de la compuerta despreciable; centroide del cuarto de círculo \(= 4R/(3\pi)\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Fuerzas hidrostáticas</div>
+      <p>Con \(z = 3{,}5\) m sobre la compuerta:</p>
+      $$F_H \approx 39\,200\ \text{N},\quad y_{cp} \approx 1{,}1667\ \text{m bajo la superficie}$$
+      $$F_V \approx 30\,787{,}6\ \text{N},\quad x_{cp} \approx 0{,}8488\ \text{m desde O}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Reacción en el tope B</div>
+      <p>Por \(\sum M_O = 0\):</p>
+      $$R_B \approx 9800\ \text{N}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Par en función de \(z\)</div>
+      <div class="porque"><strong>¿Por qué?</strong> Si el nivel de agua baja entre 0,5 m y 2,5 m (es decir, la compuerta queda parcialmente mojada), el par mínimo cambia. Planteando el equilibrio genérico se obtiene la función lineal en \(z\).</div>
+      $$M(z) = 9800(z - 0{,}5)(2{,}5 - z)$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(F_H \approx 39\,200\ \text{N}\), \(y_{cp} = 1{,}1667\ \text{m}\); \(F_V \approx 30\,787{,}6\ \text{N}\), \(x_{cp} = 0{,}8488\ \text{m}\)</p>
+  <p>\(R_B \approx 9800\ \text{N}\); \(M(z) = 9800(z-0{,}5)(2{,}5-z)\)</p>
+  </div>
+</div>
+
+<!-- 2.34 -->
+<div class="topic-panel" id="ex2-34">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.34</div>
+    <h1 class="panel-title">Compuerta cilíndrica de 1,8 m en rampa 45°</h1>
+    <div class="panel-meta">Líquido con densidad relativa 1,5 · Componentes de fuerza</div>
+  </div>
+  <div class="enunciado">
+    En el sistema de la figura, se pide las fuerzas horizontal y vertical que actúan sobre la compuerta cilíndrica.
+    <p style="margin-top:8px"><strong>Datos</strong>: diámetro de la compuerta \(= 1{,}8\ \text{m}\); anchura normal al dibujo \(= 2{,}5\ \text{m}\); altura de líquido \(1{,}2\ \text{m}\); densidad relativa \(s = 1{,}5\); rampa a \(45°\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Componente horizontal</div>
+      <p>Proyección vertical de la parte mojada del cilindro, multiplicada por la presión en su centroide:</p>
+      $$F_H \approx 8589{,}8\ \text{daN}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Componente vertical</div>
+      <p>Peso del líquido equivalente al volumen encima de la proyección horizontal de la compuerta:</p>
+      $$F_V \approx 13\,265{,}6\ \text{daN}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ F_H \approx 8589{,}8\ \text{daN},\ F_V \approx 13\,265{,}6\ \text{daN}\ }$$
+  </div>
+</div>
+
+<!-- 2.36 -->
+<div class="topic-panel" id="ex2-36">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.36</div>
+    <h1 class="panel-title">Esfera obturadora de 2 m entre agua y aceite</h1>
+    <div class="panel-meta">Prismas de presiones verticales · Peso requerido</div>
+  </div>
+  <div class="enunciado">
+    En el depósito de la figura las dos secciones se encuentran totalmente aisladas una de la otra, mediante una superficie horizontal y una esfera de \(2\ \text{m}\) de diámetro, que actúa de obturador. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Prismas de presiones de las fuerzas verticales sobre la esfera.</li>
+      <li><strong>b)</strong> Módulo y sentido de dichas fuerzas.</li>
+      <li><strong>c)</strong> Resultante de fuerzas horizontales y verticales.</li>
+      <li><strong>d)</strong> Peso de la esfera para el equilibrio y peso específico si fuera maciza.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(P_0 = 0{,}2\ \text{kg/cm}^2\); agua 4 m arriba, aceite (\(s = 0{,}8\)) 3 m abajo; manómetro con \(s = 4\); \(P_{\text{abs}} = 1{,}011\ \text{bar}\); \(P_{\text{atm}} = 740\ \text{mm Hg}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Fuerza vertical superior</div>
+      <p>Peso del agua sobre la mitad superior de la esfera + presión de aire del depósito:</p>
+      $$F_{V,\text{arr}} \approx 110{,}4\ \text{kN (hacia abajo)}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Fuerza vertical inferior</div>
+      <p>Fuerza del aceite empujando hacia arriba sobre la mitad inferior:</p>
+      $$F_{V,\text{abajo}} \approx 123{,}6\ \text{kN (hacia arriba)}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Resultantes</div>
+      $$F_H = 0\ \text{(simetría)},\qquad F_{V,\text{res}} \approx 13{,}17\ \text{kN hacia arriba}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Peso y peso específico si la esfera fuera maciza</div>
+      <div class="porque"><strong>¿Por qué?</strong> Para equilibrio, el peso debe igualar la resultante vertical neta. Con el volumen de la esfera (\(V = 4\pi R^3/3\)), el peso específico es \(\gamma = W/V\).</div>
+      $$W = 13{,}17\ \text{kN},\quad V = \frac{4}{3}\pi\cdot 1^3 \approx 4{,}19\ \text{m}^3$$
+      $$\gamma \approx 3143{,}4\ \text{N/m}^3$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(F_{\text{arr}} = 110{,}4\ \text{kN}\) ↓; \(F_{\text{abajo}} = 123{,}6\ \text{kN}\) ↑</p>
+  <p>\(F_H = 0\); \(F_V = 13{,}17\ \text{kN}\); \(\gamma \approx 3143{,}4\ \text{N/m}^3\)</p>
+  </div>
+</div>
+
+<!-- 2.37 -->
+<div class="topic-panel" id="ex2-37">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.37</div>
+    <h1 class="panel-title">Esfera de madera fija entre dos compartimentos presurizados</h1>
+    <div class="panel-meta">Fuerzas verticales y horizontales · Manómetro diferencial 15 cm Hg</div>
+  </div>
+  <div class="enunciado">
+    El depósito mostrado está dividido en dos compartimentos independientes, estando presurizadas las dos secciones superiores, que se encuentran llenas de aire. Una esfera de madera maciza de diámetro \(D = 0{,}6\ \text{m}\) está unida a la pared de separación de los dos compartimentos. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Prismas de presiones para las fuerzas horizontales y verticales.</li>
+      <li><strong>b)</strong> Resultante de fuerzas verticales.</li>
+      <li><strong>c)</strong> Resultante de fuerzas horizontales.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: peso específico relativo de la madera \(= 0{,}6\); compartimentos con alturas \(4{,}2\ \text{m}\) (agua) y \(2{,}7\ \text{m}\) (aceite \(s = 0{,}8\)); manómetro diferencial de Hg 15 cm.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Presión efectiva en el centro de la esfera</div>
+      <p>Por el manómetro Hg de 15 cm se obtiene la diferencia de presiones entre los dos aires, y añadiendo la profundidad de cada fluido hasta el centro de la esfera se obtienen las presiones en cada cara.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Resultantes</div>
+      <p>Integrando sobre cada semiesfera mojada:</p>
+      $$F_V \approx 332{,}5\ \text{N} \text{ (neto hacia arriba)}$$
+      $$F_H \approx 11\,471{,}5\ \text{N}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ F_V \approx 332{,}5\ \text{N},\quad F_H \approx 11\,471{,}5\ \text{N}\ }$$
+  </div>
+</div>
+
+<!-- 2.42 -->
+<div class="topic-panel" id="ex2-42">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.42</div>
+    <h1 class="panel-title">Compuerta AB con contrapeso de hormigón sumergido</h1>
+    <div class="panel-meta">Equilibrio por contrapeso flotante · Empuje de Arquímedes</div>
+  </div>
+  <div class="enunciado">
+    La compuerta \(AB\) de la figura puede girar sobre su centro de giro A, permaneciendo cerrada gracias a un contrapeso de hormigón. La anchura de la compuerta es \(3\ \text{m}\) y el peso específico del hormigón \(23{,}6\ \text{kN/m}^3\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Volumen mínimo del contrapeso para mantener la compuerta cerrada.</li>
+      <li><strong>b)</strong> Reacción en el tope cuando la lámina de agua sea de \(1{,}50\ \text{m}\) y el contrapeso utilizado sea el calculado anteriormente.</li>
+    </ul>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Peso efectivo del contrapeso</div>
+      <div class="porque"><strong>¿Por qué?</strong> Al estar sumergido, el contrapeso sufre empuje de Arquímedes. Su peso efectivo (que cuenta para el momento que mantiene la compuerta cerrada) es: \(W_{\text{ef}} = V(\gamma_{\text{horm}} - \gamma_w)\).</div>
+      $$W_{\text{ef}} = V(23\,600 - 9800) = 13\,800\cdot V\ \text{N}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Ecuación de momentos y volumen mínimo</div>
+      <p>Tomando momentos respecto al pivote A con la altura de agua crítica (2 m):</p>
+      $$V_{\text{mín}} \approx 1{,}136\ \text{m}^3$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Reacción en el tope con h = 1,5 m</div>
+      <p>Con menor altura de agua, la fuerza hidrostática es menor y el contrapeso "sobra". La compuerta empuja contra el tope con una reacción:</p>
+      $$R_{\text{tope}} \approx 11\,331{,}3\ \text{N}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ V_{\text{mín}} \approx 1{,}136\ \text{m}^3,\quad R_{\text{tope}} \approx 11\,331{,}3\ \text{N}\ }$$
+  </div>
+</div>
+
+<!-- 2.43 -->
+<div class="topic-panel" id="ex2-43">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.43</div>
+    <h1 class="panel-title">Compuerta AB inclinada 60° con contrapeso por polea</h1>
+    <div class="panel-meta">Contrapeso fuera del agua vs sumergido</div>
+  </div>
+  <div class="enunciado">
+    La compuerta \(AB\) de la figura mide \(3\ \text{m}\) en la dirección normal al dibujo, está articulada en B y tiene un tope en A. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Nivel \(h\) del agua en el momento de alcanzar el equilibrio si el peso se encuentra fuera del agua.</li>
+      <li><strong>b)</strong> Ídem si el peso se halla sumergido.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: densidad relativa del material del peso \(= 2{,}4\); peso de la compuerta despreciable; longitud de la compuerta 5 m; inclinación \(60°\); contrapeso 4500 kg.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Caso A: peso fuera del agua</div>
+      <p>El peso completo tira de la cuerda con su peso real \(W = 4500\cdot 9{,}8 = 44\,100\ \text{N}\). Tomando momentos en B y resolviendo la ecuación para \(h\):</p>
+      $$h \approx 3{,}23\ \text{m}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Caso B: peso sumergido</div>
+      <div class="porque"><strong>¿Por qué?</strong> El peso efectivo se reduce por Arquímedes: \(W_{\text{ef}} = W(1 - 1/s) = W(1 - 1/2{,}4) = W\cdot 0{,}5833\).</div>
+      <p>Con menor fuerza en la cuerda, el equilibrio se alcanza con menos agua:</p>
+      $$h \approx 2{,}7\ \text{m}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ h_{\text{fuera}} \approx 3{,}23\ \text{m},\quad h_{\text{sumergido}} \approx 2{,}7\ \text{m}\ }$$
+  </div>
+</div>
+
+<!-- 2.44 -->
+<div class="topic-panel" id="ex2-44">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.44</div>
+    <h1 class="panel-title">Válvula de cono — altura H para que empiece la fuga</h1>
+    <div class="panel-meta">Equilibrio de fuerzas verticales sobre el cono</div>
+  </div>
+  <div class="enunciado">
+    Calcular el valor \(H\) para el cual esta válvula de cono empezará a permitir la fuga.
+    <p style="margin-top:8px"><strong>Datos</strong>: peso \(P = 6700\ \text{N}\); peso de la válvula \(W_{\text{válv}} = 2225\ \text{N}\); \(h = 1{,}8\ \text{m}\); \(l = 0{,}9\ \text{m}\); \(d = 1{,}5\ \text{m}\). Volumen del cono: \(\tfrac{1}{3}\cdot\pi d^2/4\cdot h\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Balance de fuerzas verticales</div>
+      <div class="porque"><strong>¿Por qué?</strong> La fuga se inicia cuando las fuerzas verticales netas hacia arriba (presión hidrostática empujando desde abajo menos peso propio) superan las fuerzas hacia abajo (peso del agua sobre el cono + peso del contrapeso \(P\) transmitido por la polea).</div>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Ecuación de equilibrio</div>
+      <p>Planteando:</p>
+      $$F_{\text{abajo}}(H) = F_{\text{arriba}}(H)$$
+      <p>y despejando \(H\):</p>
+      $$H \approx 1{,}33\ \text{m}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ H \approx 1{,}33\ \text{m}\ }$$
+  </div>
+</div>
+
+  </main>
+</div>
+
+<script>
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  const item = document.querySelector('.sb-item[data-id="'+id+'"]');
+  if (item) item.classList.add('active');
+  history.replaceState(null, '', '#' + id);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  if (window.renderMathInElement) {
+    try { renderMathInElement(panel, {delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false}); } catch(e){}
+  }
+}
+window.addEventListener('load', function(){
+  const hash = window.location.hash.replace('#','');
+  if (hash && document.getElementById(hash)) showEx(hash);
+  else showEx('ex2-22');
+});
+</script>
+</body>
+</html>

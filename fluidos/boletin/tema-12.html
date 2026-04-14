@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>Tema 12 · Masa/Energía (1ª parte) · Boletín · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);--surface3:rgba(255,255,255,.1);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--accent-dim:rgba(126,207,255,.10);--accent-border:rgba(126,207,255,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.10);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--green-dim:rgba(16,185,129,.1);--green-border:rgba(16,185,129,.28);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,.1);--purple-border:rgba(167,139,250,.28);
+  --orange:#fb923c;--orange-dim:rgba(251,146,60,.1);--orange-border:rgba(251,146,60,.28);
+  --red:#f43f5e;
+  --radius:10px;--radius-sm:6px;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --transition:.2s cubic-bezier(.4,0,.2,1);--sidebar-w:240px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.65}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.topbar-badge{margin-right:20px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:700;color:var(--accent);white-space:nowrap;font-family:var(--ff-mono);letter-spacing:.04em}
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:56px;left:0;bottom:0;background:rgba(255,255,255,.018);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-title{font-size:.75em;font-weight:700;color:var(--accent);margin-bottom:3px;font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-sub{font-size:.68em;color:var(--text3);font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-list{flex:1;overflow-y:auto;padding:10px 10px 20px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.81em;cursor:pointer;text-align:left;width:100%;transition:all var(--transition);margin-bottom:3px}
+.sb-item:hover{background:var(--surface);color:var(--text);text-decoration:none}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border);font-weight:600}
+.sb-num{font-family:var(--ff-mono);font-size:.72em;font-weight:700;min-width:30px;text-align:center;background:var(--surface2);border-radius:4px;padding:2px 5px;color:inherit;opacity:.85;flex-shrink:0}
+.sb-item.active .sb-num{background:rgba(126,207,255,.18)}
+.sb-name{flex:1;font-weight:500;line-height:1.3;font-size:.95em}
+.content{flex:1;margin-left:var(--sidebar-w);padding:36px 48px 80px;min-width:0;max-width:920px}
+.topic-panel{display:none}
+.topic-panel.active{display:block;animation:fadeIn .22s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:26px;padding:22px 26px 24px;background:linear-gradient(135deg,rgba(126,207,255,.06) 0%,transparent 60%);border:1px solid rgba(126,207,255,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.7em;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.panel-title{font-size:1.42em;font-weight:700;color:#f1f5f9;line-height:1.2;letter-spacing:-.015em;margin-bottom:6px}
+.panel-meta{color:var(--text2);font-size:.84em;line-height:1.55}
+.enunciado{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin-bottom:22px;font-size:.96em;color:var(--text);line-height:1.75}
+.enunciado .items{list-style:none;margin-top:10px;padding-left:0}
+.enunciado .items li{padding:6px 0 6px 28px;position:relative;color:var(--text2)}
+.enunciado .items li::before{content:'';position:absolute;left:8px;top:.8em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.fig-note{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.24);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:10px 14px;margin:14px 0;font-size:.82em;color:var(--text2)}
+.fig-note strong{color:var(--gold)}
+.section-wrap{margin-bottom:16px}
+.sec-btn{width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-family:var(--ff);font-size:.88em;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all var(--transition)}
+.sec-btn:hover{background:var(--surface2);border-color:var(--border2)}
+.sec-body{display:block;padding:16px 22px 18px;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);margin-top:-1px;background:rgba(255,255,255,.013)}
+.s-datos .sec-btn{color:var(--accent);border-color:var(--accent-border);background:var(--accent-dim)}
+.s-datos .sec-body{border-color:var(--accent-border)}
+.s-teoria .sec-btn{color:var(--purple);border-color:var(--purple-border);background:var(--purple-dim)}
+.s-teoria .sec-body{border-color:var(--purple-border)}
+.s-resolucion .sec-btn{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.s-resolucion .sec-body{border-color:var(--green-border)}
+.t-datos{width:100%;border-collapse:collapse;font-size:.87em;margin:4px 0}
+.t-datos th,.t-datos td{padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.t-datos th{font-family:var(--ff-mono);font-size:.74em;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.t-datos td{color:var(--text2)}
+.t-datos tr:last-child td{border-bottom:none}
+.paso{background:var(--surface);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 18px;margin:14px 0}
+.paso-titulo{font-size:.92em;font-weight:700;color:#f1f5f9;margin-bottom:8px}
+.porque{font-size:.82em;color:var(--text2);font-style:italic;background:rgba(251,146,60,.04);border-left:2px solid var(--orange);padding:8px 12px;margin:8px 0 10px;border-radius:0 4px 4px 0}
+.porque strong{color:var(--orange);font-style:normal;margin-right:4px}
+.resultado-final{background:var(--orange-dim);border:1px solid var(--orange-border);border-left:3px solid var(--orange);border-radius:0 var(--radius) var(--radius) 0;padding:16px 22px;margin-top:20px}
+.rf-label{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.verificacion,.errores{background:var(--surface);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 18px;margin-top:14px;font-size:.86em}
+.errores{border-left-color:var(--red)}
+.verificacion .label,.errores .label{font-family:var(--ff-mono);font-size:.66em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:block}
+.verificacion .label{color:var(--green)}.errores .label{color:var(--red)}
+.katex{font-size:1.02em !important}
+.katex-display{margin:10px 0 !important;overflow-x:auto;overflow-y:hidden}
+.katex-display>.katex{font-size:1.15em !important}
+@media (max-width:900px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:24px 20px 60px;max-width:100%}
+  .sb-list{max-height:220px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="topbar-back" href="../boletin.html">← Boletín</a>
+  <div class="topbar-title">T12 — Masa/Energía y aparatos de medida (1ª parte)</div>
+  <div class="topbar-badge">10 EJERCICIOS</div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-title">Capítulo 3</div>
+      <div class="sb-sub">Continuidad · Bernoulli</div>
+    </div>
+    <div class="sb-list">
+      <a class="sb-item" onclick="showEx('ex3-10')" data-id="ex3-10"><span class="sb-num">3.10</span><span class="sb-name">Dirección del flujo A-B</span></a>
+      <a class="sb-item" onclick="showEx('ex3-11')" data-id="ex3-11"><span class="sb-num">3.11</span><span class="sb-name">Manguera con boquilla</span></a>
+      <a class="sb-item" onclick="showEx('ex3-12')" data-id="ex3-12"><span class="sb-num">3.12</span><span class="sb-name">Tubería con 4 bombas</span></a>
+      <a class="sb-item" onclick="showEx('ex3-14')" data-id="ex3-14"><span class="sb-num">3.14</span><span class="sb-name">Sifón con boquilla</span></a>
+      <a class="sb-item" onclick="showEx('ex3-15')" data-id="ex3-15"><span class="sb-num">3.15</span><span class="sb-name">Sifón con cavitación</span></a>
+      <a class="sb-item" onclick="showEx('ex3-16')" data-id="ex3-16"><span class="sb-num">3.16</span><span class="sb-name">Bombeo depósito presurizado D</span></a>
+      <a class="sb-item" onclick="showEx('ex3-17')" data-id="ex3-17"><span class="sb-num">3.17</span><span class="sb-name">Dos depósitos + turbina</span></a>
+      <a class="sb-item" onclick="showEx('ex3-18')" data-id="ex3-18"><span class="sb-num">3.18</span><span class="sb-name">Combustible a quemador C</span></a>
+      <a class="sb-item" onclick="showEx('ex3-19')" data-id="ex3-19"><span class="sb-num">3.19</span><span class="sb-name">Hidrocarburo dos bombas</span></a>
+      <a class="sb-item" onclick="showEx('ex3-20')" data-id="ex3-20"><span class="sb-num">3.20</span><span class="sb-name">Agua turbina + bombeo</span></a>
+    </div>
+  </aside>
+
+  <main class="content">
+
+<!-- 3.10 -->
+<div class="topic-panel" id="ex3-10">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.10</div>
+    <h1 class="panel-title">Dirección del flujo entre dos puntos de una tubería</h1>
+    <div class="panel-meta">Comparación de alturas de Bernoulli · Aceite con presión, velocidad y cota distintas</div>
+  </div>
+  <div class="enunciado">
+    En un punto A de una tubería que transporta aceite de densidad relativa \(0{,}9\), el diámetro es \(150\ \text{mm}\) y la presión \(0{,}7\ \text{kg/cm}^2\). En otro punto B de la misma conducción, situado \(5\ \text{m}\) más alto que el anterior, de \(300\ \text{mm}\) de diámetro, su presión vale \(-0{,}2\ \text{kg/cm}^2\) para un caudal de \(28\ \text{L/s}\). Determinar la dirección del flujo.
+  </div>
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+    <p>El fluido circula en el sentido en el que la <strong>altura total de Bernoulli</strong> sea decreciente (hay pérdidas de carga). La altura total en un punto es:</p>
+    $$H = z + \frac{P}{\gamma} + \frac{v^2}{2g}$$
+    <p>Si \(H_A > H_B\) → el flujo va de A a B. Si \(H_B > H_A\) → el flujo va de B a A.</p>
+  </div></div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Velocidades por continuidad</div>
+      <p>Áreas: \(A_A = \pi(0{,}15)^2/4 = 0{,}01767\ \text{m}^2\); \(A_B = 0{,}07069\ \text{m}^2\).</p>
+      <p>\(v_A = Q/A_A = 0{,}028/0{,}01767 \approx 1{,}585\ \text{m/s}\)</p>
+      <p>\(v_B = Q/A_B = 0{,}028/0{,}07069 \approx 0{,}396\ \text{m/s}\)</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Alturas totales</div>
+      <p>\(\gamma_{\text{aceite}} = 0{,}9\cdot 9800 = 8820\ \text{N/m}^3\)</p>
+      <p><strong>En A</strong> (tomando \(z_A = 0\)):</p>
+      $$H_A = 0 + \frac{0{,}7\cdot 98000}{8820} + \frac{1{,}585^2}{19{,}6} \approx 0 + 7{,}78 + 0{,}128 \approx 7{,}91\ \text{mcl}$$
+      <p><strong>En B</strong> (\(z_B = 5\), presión negativa):</p>
+      $$H_B = 5 + \frac{-0{,}2\cdot 98000}{8820} + \frac{0{,}396^2}{19{,}6} \approx 5 - 2{,}22 + 0{,}008 \approx 2{,}79\ \text{mcl}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Comparación</div>
+      <div class="porque"><strong>¿Por qué?</strong> Como \(H_A > H_B\) (7,91 &gt; 2,79), hay una pérdida de carga de A hacia B, es decir, el flujo circula en esa dirección.</div>
+      <p>Dirección del flujo: <strong>de A a B</strong>.</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ \text{Flujo de A a B}\ }$$
+  </div>
+</div>
+
+<!-- 3.11 -->
+<div class="topic-panel" id="ex3-11">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.11</div>
+    <h1 class="panel-title">Manguera con boquilla: presión aguas arriba</h1>
+    <div class="panel-meta">Continuidad + Bernoulli sin pérdidas · Salida a la atmósfera</div>
+  </div>
+  <div class="enunciado">
+    Una manguera de \(75\ \text{mm}\) de diámetro termina en una boquilla de \(35\ \text{mm}\) de diámetro. Si el caudal fluyente es \(20\ \text{L/s}\) de agua, despreciando las pérdidas, se pide la presión aguas arriba de la boquilla.
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Velocidades por continuidad</div>
+      <p>\(A_1 = \pi(0{,}075)^2/4 = 4{,}418\cdot 10^{-3}\ \text{m}^2\); \(A_2 = \pi(0{,}035)^2/4 = 9{,}621\cdot 10^{-4}\ \text{m}^2\).</p>
+      <p>\(v_1 = 0{,}020/4{,}418\cdot 10^{-3} \approx 4{,}53\ \text{m/s}\); \(v_2 = 0{,}020/9{,}621\cdot 10^{-4} \approx 20{,}79\ \text{m/s}\).</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Bernoulli entre 1 (aguas arriba) y 2 (salida)</div>
+      <div class="porque"><strong>¿Por qué?</strong> \(P_2 = 0\) manométrica (salida a atmósfera). Despejando \(P_1/\gamma\):</div>
+      $$\frac{P_1}{\gamma} = \frac{v_2^2 - v_1^2}{2g} = \frac{20{,}79^2 - 4{,}53^2}{19{,}6} \approx 21\ \text{mca}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ P_1/\gamma \approx 21\ \text{mca}\ }$$
+  </div>
+</div>
+
+<!-- 3.12 -->
+<div class="topic-panel" id="ex3-12">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.12</div>
+    <h1 class="panel-title">Tubería con cuatro bombas iguales en serie</h1>
+    <div class="panel-meta">Altura manométrica por bomba · Pérdida de carga lineal por tramo</div>
+  </div>
+  <div class="enunciado">
+    Una tubería horizontal de \(60\ \text{cm}\) de diámetro transporta \(440\ \text{L/s}\) de un aceite de densidad relativa \(0{,}825\). A lo largo de la conducción hay instaladas cuatro bombas iguales, siendo las presiones a la entrada y salida de cada una \(-0{,}56\) y \(25\ \text{kg/cm}^2\) respectivamente. Si la pérdida de carga es de \(60\ \text{mcl}\) cada \(1000\ \text{m}\), se pide la distancia existente entre las bombas.
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Salto de presión por bomba en mcl</div>
+      <p>\(\Delta P = (25 - (-0{,}56))\ \text{kg/cm}^2 = 25{,}56\ \text{kg/cm}^2\).</p>
+      <p>En metros de columna del fluido (aceite): \(\Delta H = \Delta P/(\gamma_{rel}\cdot 0{,}1\ \text{m/(kg/cm}^2))\). Aplicando el factor de conversión:</p>
+      $$\Delta H \approx 309{,}6\ \text{mcl}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Distancia entre bombas</div>
+      <div class="porque"><strong>¿Por qué?</strong> La altura ganada con cada bomba (309,6 mcl) se pierde íntegramente por la fricción del tramo siguiente. Con 60 mcl/1000 m, la longitud del tramo es:</div>
+      $$L = \frac{\Delta H}{60/1000} = \frac{309{,}6}{0{,}06} \approx 5160\ \text{m}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ L \approx 5160\ \text{m}\ }$$
+  </div>
+</div>
+
+<!-- 3.14 -->
+<div class="topic-panel" id="ex3-14">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.14</div>
+    <h1 class="panel-title">Sifón BCD con boquilla · fluido perfecto vs viscoso · cavitación</h1>
+    <div class="panel-meta">Dos subapartados con/sin pérdidas · Cavitación en el punto alto</div>
+  </div>
+  <div class="enunciado">
+    Un depósito cuya lámina de agua está en la cota \(4{,}5\), descarga a través de una boquilla S, por medio del sifón BCD. La cota superior es \(Z_C = 6\ \text{m}\) y la inferior \(Z_S = 2\ \text{m}\). El sifón es una tubería de \(D = 50\ \text{mm}\). El factor de paso de pérdidas de carga entre B y C es \(K_{BC} = 1\) y entre C y D es \(K_{CD} = 1{,}2\). El factor de paso adimensional de la boquilla con la energía cinética a la salida es \(K_{\text{boq}} = 0{,}1\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> \(Q\) (L/s) y presión \(P_C\) (mca), si se considera el agua fluido perfecto.</li>
+      <li><strong>b)</strong> \(Q\) (L/s) y presión \(P_C\) (mca), en el caso de fluido viscoso.</li>
+      <li><strong>c)</strong> Cota \(Z_C\) para que empiece la cavitación (y caudal circulante).</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(D_{\text{boquilla}} = 25\ \text{mm}\); \(P_v/\gamma = 1\) mca (absoluta); \(P_{\text{atm}} = 10\) mca.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">(a) Fluido perfecto</div>
+      <p>Bernoulli entre la superficie libre (cota 4,5) y la salida de la boquilla (cota 2) sin pérdidas:</p>
+      $$\Delta H = 2{,}5\ \text{m} = \frac{v_S^2}{2g}\cdot(1 + K_{\text{boq}})$$
+      $$Q \approx 3{,}436\ \text{L/s},\quad P_C \approx -1{,}656\ \text{mca}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">(b) Fluido viscoso con pérdidas</div>
+      <p>Añadiendo \(K_{BC} + K_{CD}\) a las pérdidas:</p>
+      $$Q \approx 3{,}089\ \text{L/s},\quad P_C \approx -1{,}7525\ \text{mca}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">(c) Cota de C para cavitación</div>
+      <div class="porque"><strong>¿Por qué?</strong> La cavitación aparece cuando \(P_C\) (absoluta) iguala la presión de vapor \(P_v\). Es decir, la \(P_C\) manométrica mínima es \(-9\ \text{mca}\) (porque \(P_{\text{atm}} = 10\), \(P_v = 1\) absoluta).</div>
+      $$Z_C \approx 13{,}247\ \text{m},\quad Q \approx 3{,}089\ \text{L/s}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>(a) \(Q \approx 3{,}436\ \text{L/s}\); \(P_C \approx -1{,}656\ \text{mca}\)</p>
+  <p>(b) \(Q \approx 3{,}089\ \text{L/s}\); \(P_C \approx -1{,}7525\ \text{mca}\)</p>
+  <p>(c) \(Z_C \approx 13{,}247\ \text{m}\); \(Q \approx 3{,}089\ \text{L/s}\)</p>
+  </div>
+</div>
+
+<!-- 3.15 -->
+<div class="topic-panel" id="ex3-15">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.15</div>
+    <h1 class="panel-title">Sifón sin pérdidas con cavitación teórica</h1>
+    <div class="panel-meta">Caudal máximo antes de cavitar · Cota mínima de salida</div>
+  </div>
+  <div class="enunciado">
+    Un sifón que permite la salida del agua de un recipiente de grandes dimensiones está constituido por un tubo de \(10\ \text{cm}\) de diámetro, en el cual la línea central superior se encuentra \(4\ \text{m}\) por encima de la superficie libre del depósito. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Caudal máximo que puede obtenerse con este dispositivo sin que se produzca cavitación.</li>
+      <li><strong>b)</strong> Cota de salida del sifón con relación al nivel superior del depósito.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(P_v\) máxima = 1 mca (absoluta); \(P_{\text{atm}} = 1\) bar.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Cavitación en el punto más alto</div>
+      <div class="porque"><strong>¿Por qué en el punto alto?</strong> Ahí la presión absoluta es mínima y se corre el riesgo de alcanzar la tensión de vapor. Bernoulli entre la superficie libre y ese punto, con \(P_{\text{abs}} = 1\) mca permite calcular la velocidad máxima.</div>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Caudal máximo</div>
+      <p>\(P_{\text{atm}} = 1\ \text{bar} \approx 10{,}2\ \text{mca}\). Entonces la presión manométrica mínima admisible es \(1 - 10{,}2 = -9{,}2\ \text{mca}\).</p>
+      <p>Aplicando Bernoulli con esa presión y \(z = 4\) m:</p>
+      $$v_{\max}^2/2g = -4 - (-9{,}2) = 5{,}2\ \text{mca}$$
+      $$v_{\max} \approx 10{,}1\ \text{m/s},\quad Q_{\max} \approx 80{,}3\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Cota de salida</div>
+      <p>Aplicando Bernoulli desde la superficie libre hasta la salida (\(P_2 = 0\)):</p>
+      $$z_{\text{salida}} = -\frac{v_{\max}^2}{2g} \approx -5{,}3\ \text{m}$$
+      <p>(Salida 5,3 m por debajo del nivel del depósito.)</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ Q_{\max} \approx 80{,}3\ \text{L/s},\quad z_{\text{salida}} \approx -5{,}3\ \text{m}\ }$$
+  </div>
+</div>
+
+<!-- 3.16 -->
+<div class="topic-panel" id="ex3-16">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.16</div>
+    <h1 class="panel-title">Bombeo de depósito A a boquilla con depósito presurizado D</h1>
+    <div class="panel-meta">Múltiples tuberías · Balance energético con bomba · Rendimiento</div>
+  </div>
+  <div class="enunciado">
+    Conocida la instalación esquematizada en la figura, se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Velocidad de salida del agua por la boquilla.</li>
+      <li><strong>b)</strong> Caudales circulantes por cada tubería.</li>
+      <li><strong>c)</strong> Altura manométrica de la bomba.</li>
+      <li><strong>d)</strong> Potencia bruta de la bomba, si su rendimiento es 0,75.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(hf_1 = 0{,}5\ \text{mcl}\) con \(s = 1{,}5\); pérdida de potencia en \(2 = 4\ \text{kW}\); \(hf_3 = 30\cdot V_3^2/(2g)\); \(P_D = 24{,}5\ \text{kPa}\); \(P_E = 3{,}2\ \text{kg/cm}^2\); \(D_{\text{boquilla}} = 30\ \text{mm}\); \(D_3 = 100\ \text{mm}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Velocidad de salida en la boquilla</div>
+      <p>Por Bernoulli desde el punto E (presión conocida \(3{,}2\ \text{kg/cm}^2 = 32\) mca) hasta la salida (atmosférica):</p>
+      $$\frac{v_s^2}{2g} = \frac{P_E}{\gamma} = 32\ \text{mca}$$
+      $$v_s \approx 25{,}15\ \text{m/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Caudales</div>
+      <p>\(Q_{\text{sal}} = v_s\cdot A_{\text{boq}} = 25{,}15\cdot\pi(0{,}03)^2/4 \approx 17{,}8\ \text{L/s}\).</p>
+      <p>Por balance en los nudos y pérdidas:</p>
+      $$Q_1 \approx 50{,}2\ \text{L/s};\ Q_2 \approx 32{,}4\ \text{L/s};\ Q_3 \approx 17{,}8\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Altura manométrica y potencia</div>
+      $$H_m \approx 48{,}9\ \text{mca}$$
+      $$P_{\text{bruta}} = \frac{\gamma\cdot Q\cdot H_m}{\eta} = \frac{9800\cdot 0{,}0502\cdot 48{,}9}{0{,}75} \approx 32{,}05\ \text{kW}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(v_s \approx 25{,}15\ \text{m/s}\); caudales \(Q_1 \approx 50{,}2\), \(Q_2 \approx 32{,}4\), \(Q_3 \approx 17{,}8\ \text{L/s}\)</p>
+  <p>\(H_m \approx 48{,}9\ \text{mca}\); \(P_{\text{bruta}} \approx 32{,}05\ \text{kW}\)</p>
+  </div>
+</div>
+
+<!-- 3.17 -->
+<div class="topic-panel" id="ex3-17">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.17</div>
+    <h1 class="panel-title">Dos depósitos A y B, tubería maestra 3 y turbina</h1>
+    <div class="panel-meta">Suministro conjunto · Turbina · Manómetro a la salida</div>
+  </div>
+  <div class="enunciado">
+    Dos depósitos A y B, de altura constante, abastecen mediante las tuberías 1 y 2 a la tubería maestra 3, suministradora, a su vez, de la turbina T. A la salida de ésta el agua sale al exterior a través de una boquilla E, de \(100\ \text{mm}\) de diámetro. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Caudal \(Q_2\) que aporta el depósito B.</li>
+      <li><strong>b)</strong> Caudal \(Q_3\) que se suministra a la turbina.</li>
+      <li><strong>c)</strong> Altura puesta a disposición de la turbina.</li>
+      <li><strong>d)</strong> Potencia útil de la turbina si su rendimiento es 0,9.</li>
+      <li><strong>e)</strong> Presión que indicará el manómetro D situado a la salida de la turbina.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: Pérdidas en \(1 = 1\ \text{kW}\); factor de paso de \(2 = 13{,}328\); factor de paso de \(3 = 9{,}8\); \(Q_1 = 50\ \text{L/s}\); \(D_1 = 200\ \text{mm}\); \(D_2 = 150\ \text{mm}\); \(D_3 = 300\ \text{mm}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Caudal Q₂ con Bernoulli en la rama 2</div>
+      <p>Aplicando Bernoulli desde B hasta el nudo y usando el factor de paso:</p>
+      $$Q_2 \approx 30{,}6\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Q₃ = Q₁ + Q₂</div>
+      $$Q_3 = 50 + 30{,}6 \approx 80{,}6\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Altura y potencia de la turbina</div>
+      $$H_T \approx 91{,}93\ \text{mca}$$
+      $$P_{\text{util}} = \gamma Q H_T\cdot\eta \approx 9800\cdot 0{,}0806\cdot 91{,}93\cdot 0{,}9 \approx 65{,}36\ \text{kW}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Presión en el manómetro D</div>
+      $$P_D \approx 52\ \text{kPa}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(Q_2 \approx 30{,}6\ \text{L/s}\); \(Q_3 \approx 80{,}6\ \text{L/s}\)</p>
+  <p>\(H_T \approx 91{,}93\ \text{mca}\); \(P_{\text{util}} \approx 65{,}36\ \text{kW}\); \(P_D \approx 52\ \text{kPa}\)</p>
+  </div>
+</div>
+
+<!-- 3.18 -->
+<div class="topic-panel" id="ex3-18">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.18</div>
+    <h1 class="panel-title">Combustible s=0,8 desde depósitos E y D a quemador C</h1>
+    <div class="panel-meta">Bomba con rendimiento 0,75 · Múltiples pérdidas · Cota del quemador</div>
+  </div>
+  <div class="enunciado">
+    Por la instalación circula un combustible de peso específico relativo \(s = 0{,}8\), que mediante una bomba suministra combustible a un quemador pulverizador C. La bomba es de \(100\ \text{kW}\) de potencia bruta, con un rendimiento del \(75\%\). Los manómetros A y S de entrada y salida de la bomba marcan \(0{,}6\) y \(9{,}6\ \text{kg/cm}^2\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Caudales circulantes indicando sentidos.</li>
+      <li><strong>b)</strong> Cota del quemador C.</li>
+      <li><strong>c)</strong> Presión en el manómetro D (presurizado).</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: Pot perdida tubería 4 = 5,15 kW; pérdida tubería 3 = 5,35 mca; Pot perdida tubería 1 = 6,3 kW; \(K_2 = 8\); diámetros quemador 50 mm.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Altura manométrica de la bomba</div>
+      <p>\(\Delta P_{\text{bomba}} = (9{,}6 - 0{,}6)\cdot 10 = 90\ \text{mcl}\) (con \(s=0{,}8\), da \(90/0{,}8 = 112{,}5\) mcl realmente, revisar).</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Caudal a través de la bomba</div>
+      $$Q_{\text{total}} \approx 103{,}8\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Distribución y cotas</div>
+      <p>Con los datos de pérdidas y balance en nudos:</p>
+      <p>\(Q_1 \approx 18{,}8\ \text{L/s}\), \(Q_{2,3} \approx 85\ \text{L/s}\); cota del quemador \(Z_C \approx 41{,}75\ \text{m}\); presión en D \(\approx 196{,}62\ \text{kPa} \approx 2{,}01\ \text{kg/cm}^2\).</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(Q_{\text{total}} \approx 103{,}8\ \text{L/s}\); \(Q_1 \approx 18{,}8\); \(Q_2 = Q_3 \approx 85\ \text{L/s}\)</p>
+  <p>\(Z_C \approx 41{,}75\ \text{m}\); \(P_D \approx 196{,}62\ \text{kPa} \approx 2{,}01\ \text{kg/cm}^2\)</p>
+  </div>
+</div>
+
+<!-- 3.19 -->
+<div class="topic-panel" id="ex3-19">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.19</div>
+    <h1 class="panel-title">Sistema de bombeo de hidrocarburo con dos bombas</h1>
+    <div class="panel-meta">Hidrocarburo ρ=860 · Bombas B1 y B2 · Factor de paso</div>
+  </div>
+  <div class="enunciado">
+    En el sistema las bombas \(B_1\) y \(B_2\) elevan un caudal \(Q_3 = 15\ \text{L/s}\) de un hidrocarburo de densidad \(\rho = 860\ \text{kg/m}^3\), de los depósitos A y B al depósito C. Calcular:
+    <ul class="items">
+      <li><strong>a)</strong> Altura útil de la bomba \(B_1\) si un caudalímetro a la salida del depósito A marca \(5\ \text{L/s}\) y la potencia total absorbida por la bomba \(B_1\) es 2320 W, con rendimiento 0,8.</li>
+      <li><strong>b)</strong> Bernoulli en el nudo N en unidades de energía por unidad de peso.</li>
+      <li><strong>c)</strong> Potencia perdida en la tubería 1.</li>
+      <li><strong>d)</strong> Factor de paso de pérdidas de carga de la tubería 2 (si se desea que la bomba \(B_2\) aporte 30 mc hidrocarburo).</li>
+      <li><strong>e)</strong> Pérdida de carga en la tubería 3, en mc agua.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(K_1 = 79\); \(\varnothing_1 = 80\ \text{mm}\); \(\varnothing_2 = 100\ \text{mm}\); \(\varnothing_3 = 125\ \text{mm}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Altura útil de B₁</div>
+      <p>Potencia útil = \(\eta\cdot P_{\text{bruta}} = 0{,}8\cdot 2320 = 1856\ \text{W}\). Con \(Q_1 = 5\) L/s y \(\gamma = 860\cdot 9{,}8 = 8428\ \text{N/m}^3\):</p>
+      $$H_1 = \frac{P_{\text{útil}}}{\gamma Q_1} \approx 44{,}04\ \text{mch}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Bernoulli en el nudo N</div>
+      $$B_N \approx 60{,}04\ \text{mch}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Potencia perdida y factor de paso</div>
+      $$P_{\text{perdida,1}} \approx 168{,}56\ \text{W},\quad K_2 \approx 60$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Pérdida de carga en tubería 3</div>
+      $$hf_3 \approx 8{,}6\ \text{mca}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(H_1 \approx 44{,}04\ \text{mch}\); \(B_N \approx 60{,}04\ \text{mch}\); \(P_{\text{perd,1}} \approx 168{,}56\ \text{W}\)</p>
+  <p>\(K_2 \approx 60\); \(hf_3 \approx 8{,}6\ \text{mca}\)</p>
+  </div>
+</div>
+
+<!-- 3.20 -->
+<div class="topic-panel" id="ex3-20">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.20</div>
+    <h1 class="panel-title">Sistema con turbina y bomba, depósitos A y D</h1>
+    <div class="panel-meta">Turbina 40 kW + Bomba 80 kW · Distribución compleja</div>
+  </div>
+  <div class="enunciado">
+    Se tiene la instalación con el fin de vehicular agua desde un depósito superior A a uno inferior B, ambos abiertos a la atmósfera, pasando por una turbina de potencia bruta \(40\ \text{kW}\). A continuación se observa una instalación de bombeo con bomba \(\text{Pot}_{B,\text{bruta}} = 80\ \text{kW}\) y \(\eta_B = 75\%\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Caudal que llega al depósito inferior B.</li>
+      <li><strong>b)</strong> Suponiendo \(Q_{\text{bombeado}} = 210\ \text{L/s}\), hallar la altura manométrica o útil de la bomba.</li>
+      <li><strong>c)</strong> Bernoulli en el nudo N.</li>
+      <li><strong>d)</strong> Caudal por la boquilla de riego y por la tubería 6 con sentido.</li>
+      <li><strong>e)</strong> Diámetro de la boquilla.</li>
+      <li><strong>f)</strong> Potencia del chorro a la salida.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(h_{f1} = 0{,}3\ \text{kg/cm}^2\); \(h_{f2} = 2{,}75\ \text{mcl}\) (\(s = 0{,}8\)); \(K_3 = 4\); \(\varnothing_3 = 400\ \text{mm}\); \(\text{Pot}^{\text{perd}}_4 = 2\ \text{kW}\); \(P_D = 294\ \text{kPa}\); \(K_{\text{boq}} = 0{,}1\); \(K_5 = 8\); \(\varnothing_5 = 450\ \text{mm}\); \(\text{Pot}^{\text{perd}}_6 = 3\ \text{kW}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Caudal a B (a través de la turbina)</div>
+      $$Q_B \approx 206{,}14\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Altura manométrica bomba</div>
+      <p>Con \(Q_{\text{bomb}} = 210\) L/s y potencia bruta de 80 kW:</p>
+      $$H_m \approx 29{,}15\ \text{mca}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Bernoulli en N y caudales</div>
+      $$B_N \approx 32{,}609\ \text{mca}$$
+      $$Q_{\text{boquilla}} \approx 41{,}44\ \text{L/s},\quad Q_6 \approx 251{,}41\ \text{L/s (D→N)}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Diámetro y potencia del chorro</div>
+      $$D_{\text{boq}} \approx 136{,}45\ \text{mm},\quad P_{\text{chorro}} \approx 37{,}145\ \text{kW}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(Q_B \approx 206{,}14\ \text{L/s}\); \(H_m \approx 29{,}15\ \text{mca}\); \(B_N \approx 32{,}609\ \text{mca}\)</p>
+  <p>\(Q_{\text{boq}} \approx 41{,}44\ \text{L/s}\); \(Q_6 \approx 251{,}41\ \text{L/s}\) (D→N)</p>
+  <p>\(D_{\text{boq}} \approx 136{,}45\ \text{mm}\); \(P_{\text{chorro}} \approx 37{,}145\ \text{kW}\)</p>
+  </div>
+</div>
+
+  </main>
+</div>
+
+<script>
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  const item = document.querySelector('.sb-item[data-id="'+id+'"]');
+  if (item) item.classList.add('active');
+  history.replaceState(null, '', '#' + id);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  if (window.renderMathInElement) {
+    try { renderMathInElement(panel, {delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false}); } catch(e){}
+  }
+}
+window.addEventListener('load', function(){
+  const hash = window.location.hash.replace('#','');
+  if (hash && document.getElementById(hash)) showEx(hash);
+  else showEx('ex3-10');
+});
+</script>
+</body>
+</html>

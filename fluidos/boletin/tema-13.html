@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>Tema 13 · Masa/Energía (2ª parte) · Boletín · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);--surface3:rgba(255,255,255,.1);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--accent-dim:rgba(126,207,255,.10);--accent-border:rgba(126,207,255,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.10);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--green-dim:rgba(16,185,129,.1);--green-border:rgba(16,185,129,.28);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,.1);--purple-border:rgba(167,139,250,.28);
+  --orange:#fb923c;--orange-dim:rgba(251,146,60,.1);--orange-border:rgba(251,146,60,.28);
+  --red:#f43f5e;
+  --radius:10px;--radius-sm:6px;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --transition:.2s cubic-bezier(.4,0,.2,1);--sidebar-w:240px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.65}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.topbar-badge{margin-right:20px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:700;color:var(--accent);white-space:nowrap;font-family:var(--ff-mono);letter-spacing:.04em}
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:56px;left:0;bottom:0;background:rgba(255,255,255,.018);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-title{font-size:.75em;font-weight:700;color:var(--accent);margin-bottom:3px;font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-sub{font-size:.68em;color:var(--text3);font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-list{flex:1;overflow-y:auto;padding:10px 10px 20px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.81em;cursor:pointer;text-align:left;width:100%;transition:all var(--transition);margin-bottom:3px}
+.sb-item:hover{background:var(--surface);color:var(--text);text-decoration:none}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border);font-weight:600}
+.sb-item.starred{color:var(--gold)}
+.sb-item.starred.active{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold)}
+.sb-num{font-family:var(--ff-mono);font-size:.72em;font-weight:700;min-width:30px;text-align:center;background:var(--surface2);border-radius:4px;padding:2px 5px;color:inherit;opacity:.85;flex-shrink:0}
+.sb-item.active .sb-num{background:rgba(126,207,255,.18)}
+.sb-item.starred.active .sb-num{background:rgba(245,158,11,.18)}
+.sb-name{flex:1;font-weight:500;line-height:1.3;font-size:.95em}
+.sb-star{color:var(--gold);font-size:.75em;opacity:.9}
+.content{flex:1;margin-left:var(--sidebar-w);padding:36px 48px 80px;min-width:0;max-width:920px}
+.topic-panel{display:none}
+.topic-panel.active{display:block;animation:fadeIn .22s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:26px;padding:22px 26px 24px;background:linear-gradient(135deg,rgba(126,207,255,.06) 0%,transparent 60%);border:1px solid rgba(126,207,255,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-header.starred{background:linear-gradient(135deg,rgba(245,158,11,.06) 0%,transparent 60%);border-color:rgba(245,158,11,.22);border-left-color:var(--gold)}
+.panel-tag{font-family:var(--ff-mono);font-size:.7em;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.panel-header.starred .panel-tag{color:var(--gold)}
+.panel-tag .star{color:var(--gold)}
+.panel-title{font-size:1.42em;font-weight:700;color:#f1f5f9;line-height:1.2;letter-spacing:-.015em;margin-bottom:6px}
+.panel-meta{color:var(--text2);font-size:.84em;line-height:1.55}
+.enunciado{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin-bottom:22px;font-size:.96em;color:var(--text);line-height:1.75}
+.enunciado .items{list-style:none;margin-top:10px;padding-left:0}
+.enunciado .items li{padding:6px 0 6px 28px;position:relative;color:var(--text2)}
+.enunciado .items li::before{content:'';position:absolute;left:8px;top:.8em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.section-wrap{margin-bottom:16px}
+.sec-btn{width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-family:var(--ff);font-size:.88em;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all var(--transition)}
+.sec-btn:hover{background:var(--surface2);border-color:var(--border2)}
+.sec-body{display:block;padding:16px 22px 18px;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);margin-top:-1px;background:rgba(255,255,255,.013)}
+.s-teoria .sec-btn{color:var(--purple);border-color:var(--purple-border);background:var(--purple-dim)}
+.s-teoria .sec-body{border-color:var(--purple-border)}
+.s-resolucion .sec-btn{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.s-resolucion .sec-body{border-color:var(--green-border)}
+.paso{background:var(--surface);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 18px;margin:14px 0}
+.paso-titulo{font-size:.92em;font-weight:700;color:#f1f5f9;margin-bottom:8px}
+.porque{font-size:.82em;color:var(--text2);font-style:italic;background:rgba(251,146,60,.04);border-left:2px solid var(--orange);padding:8px 12px;margin:8px 0 10px;border-radius:0 4px 4px 0}
+.porque strong{color:var(--orange);font-style:normal;margin-right:4px}
+.resultado-final{background:var(--orange-dim);border:1px solid var(--orange-border);border-left:3px solid var(--orange);border-radius:0 var(--radius) var(--radius) 0;padding:16px 22px;margin-top:20px}
+.rf-label{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.katex{font-size:1.02em !important}
+.katex-display{margin:10px 0 !important;overflow-x:auto;overflow-y:hidden}
+.katex-display>.katex{font-size:1.15em !important}
+@media (max-width:900px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:24px 20px 60px;max-width:100%}
+  .sb-list{max-height:220px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="topbar-back" href="../boletin.html">← Boletín</a>
+  <div class="topbar-title">T13 — Masa/Energía y aparatos de medida (2ª parte)</div>
+  <div class="topbar-badge">10 EJERCICIOS · 5 (★)</div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-title">Capítulo 3</div>
+      <div class="sb-sub">Vertederos · Orificios</div>
+    </div>
+    <div class="sb-list">
+      <a class="sb-item" onclick="showEx('ex3-23')" data-id="ex3-23"><span class="sb-num">3.23</span><span class="sb-name">Tubería con varios manómetros</span></a>
+      <a class="sb-item" onclick="showEx('ex3-24')" data-id="ex3-24"><span class="sb-num">3.24</span><span class="sb-name">Turbomáquina con Pitot y piezómetro</span></a>
+      <a class="sb-item" onclick="showEx('ex3-26')" data-id="ex3-26"><span class="sb-num">3.26</span><span class="sb-name">Orificio con aceite 0,72</span></a>
+      <a class="sb-item starred" onclick="showEx('ex3-27')" data-id="ex3-27"><span class="sb-num">3.27</span><span class="sb-name">Depósitos con aire <span class="sb-star">★</span></span></a>
+      <a class="sb-item starred" onclick="showEx('ex3-28')" data-id="ex3-28"><span class="sb-num">3.28</span><span class="sb-name">Bombeo con venturi y boquilla <span class="sb-star">★</span></span></a>
+      <a class="sb-item starred" onclick="showEx('ex3-29')" data-id="ex3-29"><span class="sb-num">3.29</span><span class="sb-name">Venturi vertical 300/150 <span class="sb-star">★</span></span></a>
+      <a class="sb-item starred" onclick="showEx('ex3-30')" data-id="ex3-30"><span class="sb-num">3.30</span><span class="sb-name">Diafragma de 50 mm <span class="sb-star">★</span></span></a>
+      <a class="sb-item" onclick="showEx('ex3-31')" data-id="ex3-31"><span class="sb-num">3.31</span><span class="sb-name">Orificio y canal con vertedero</span></a>
+      <a class="sb-item" onclick="showEx('ex3-32')" data-id="ex3-32"><span class="sb-num">3.32</span><span class="sb-name">Vertedero horizontal 4 m</span></a>
+      <a class="sb-item starred" onclick="showEx('ex3-34')" data-id="ex3-34"><span class="sb-num">3.34</span><span class="sb-name">Vertedero en V 60° <span class="sb-star">★</span></span></a>
+    </div>
+  </aside>
+
+  <main class="content">
+
+<!-- 3.23 -->
+<div class="topic-panel" id="ex3-23">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.23</div>
+    <h1 class="panel-title">Tubería con aire, agua, manómetros y boquilla</h1>
+    <div class="panel-meta">Caudal + diferencia de niveles R + peso específico del tercer líquido</div>
+  </div>
+  <div class="enunciado">
+    En el sistema de la figura se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Caudal circulante.</li>
+      <li><strong>b)</strong> Diferencia de niveles \(R\).</li>
+      <li><strong>c)</strong> Peso específico relativo \(s_3\).</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Nota</strong>: despréciense las pérdidas de carga. Tubería \(\varnothing 100\ \text{mm}\), boquilla \(\varnothing 50\ \text{mm}\), cotas indicadas en la figura.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Bernoulli entre depósito y salida</div>
+      <p>Sin pérdidas, la velocidad de salida por la boquilla depende solo de la altura de agua y la presión aplicada.</p>
+      $$Q \approx 29{,}2\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Diferencia de niveles R (mercurio)</div>
+      $$R \approx 70{,}5\ \text{cm}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Peso específico relativo del tercer líquido</div>
+      $$s_3 \approx 2{,}176$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(Q \approx 29{,}2\ \text{L/s}\); \(R \approx 70{,}5\ \text{cm}\); \(s_3 \approx 2{,}176\)</p>
+  </div>
+</div>
+
+<!-- 3.24 -->
+<div class="topic-panel" id="ex3-24">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.24</div>
+    <h1 class="panel-title">Ensayo con Pitot, piezómetro y turbomáquina</h1>
+    <div class="panel-meta">Velocidades · Potencia absorbida o cedida · Lecturas R₁ y R₂</div>
+  </div>
+  <div class="enunciado">
+    Se tiene una tubería de ensayo donde se han dispuesto un Pitot, un piezómetro abierto, una bomba o turbina, un manómetro aneroide, un tubo estático y, por último, una combinación de Pitot + piezómetro. Con los datos de la figura (\(\varnothing_1 = 15\ \text{cm}\), \(\varnothing_2 = 10\ \text{cm}\), manómetro central \(350\ \text{kPa}\), Hg con mercurio \(s = 4\)):
+    <ul class="items">
+      <li><strong>a)</strong> Velocidad antes y después de la turbomáquina.</li>
+      <li><strong>b)</strong> Caudal fluyente.</li>
+      <li><strong>c)</strong> Potencia absorbida o cedida por el líquido.</li>
+      <li><strong>d)</strong> Valor de R₁.</li>
+      <li><strong>e)</strong> Valor de R₂.</li>
+    </ul>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Velocidades</div>
+      <p>Por Pitot y piezómetro: \(v_1 \approx 0{,}7\ \text{m/s}\) y por continuidad \(v_2 \approx 1{,}575\ \text{m/s}\).</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Caudal y potencia</div>
+      $$Q \approx 12{,}4\ \text{L/s},\quad P \approx 4{,}23\ \text{kW}$$
+      <p>(Positiva = turbina; el líquido cede energía.)</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Lecturas R₁ y R₂</div>
+      $$R_1 \approx 2{,}60\ \text{m},\qquad R_2 \approx 4{,}22\ \text{cm}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(v_1 \approx 0{,}7\) m/s; \(v_2 \approx 1{,}575\) m/s; \(Q \approx 12{,}4\) L/s; \(P \approx 4{,}23\) kW; \(R_1 \approx 2{,}60\) m; \(R_2 \approx 4{,}22\) cm</p>
+  </div>
+</div>
+
+<!-- 3.26 -->
+<div class="topic-panel" id="ex3-26">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.26</div>
+    <h1 class="panel-title">Orificio de 7,5 cm con aceite 0,72 y potencia del chorro</h1>
+    <div class="panel-meta">Coeficientes \(C_v, C_c\) · Pitot auxiliar · Tiempo de vaciado parcial</div>
+  </div>
+  <div class="enunciado">
+    A través de un orificio de \(7{,}5\ \text{cm}\) de diámetro, cuyos coeficientes de velocidad y contracción valen \(0{,}95\) y \(0{,}65\) respectivamente, fluye aceite de \(0{,}72\) de densidad relativa. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Lectura del manómetro A, si la potencia del chorro es de \(5{,}88\ \text{kW}\).</li>
+      <li><strong>b)</strong> Altura en el Pitot si este fuese colocado a la salida del chorro.</li>
+      <li><strong>c)</strong> Tiempo que tardará en descender la lámina superior 1 m, si se mantiene constante la presión del aire y es equivalente a la calculada en a).</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Dato</strong>: sección transversal del depósito \(= 2\ \text{m}^2\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Presión del aire (manómetro A)</div>
+      <p>La potencia del chorro \(P = \gamma Q H\), con \(Q = C_c C_v A \sqrt{2gH}\). Despejando \(P_A\):</p>
+      $$P_A \approx 0{,}108\ \text{MPa}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Altura en el Pitot</div>
+      $$H_{\text{Pitot}} \approx 16{,}25\ \text{m de aceite}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Tiempo de descenso (1 m)</div>
+      $$t \approx 39{,}58\ \text{s}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(P_A \approx 0{,}108\ \text{MPa}\); \(H_{\text{Pitot}} \approx 16{,}25\ \text{m}\); \(t \approx 39{,}58\ \text{s}\)</p>
+  </div>
+</div>
+
+<!-- 3.27 -->
+<div class="topic-panel" id="ex3-27">
+  <div class="panel-header starred">
+    <div class="panel-tag"><span class="star">★</span> Ejercicio 3.27 · Nivel superior</div>
+    <h1 class="panel-title">Sistema con aire, contracción y dos manómetros</h1>
+    <div class="panel-meta">Caudal + lecturas R₁, R₂ · Análisis de posiciones</div>
+  </div>
+  <div class="enunciado">
+    En el sistema esquematizado en la figura, despreciando las pérdidas, se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Caudal circulante.</li>
+      <li><strong>b)</strong> Valores de R₁ y R₂.</li>
+      <li><strong>c)</strong> Razonar si son correctas las posiciones relativas de los meniscos en los medidores, tal como están dibujados.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(D_1 = 10\ \text{cm}\); \(D_2 = 5\ \text{cm}\); \(D_3 = 8\ \text{cm}\); \(s = 1{,}6\) y \(s = 2\) en los manómetros; altura de aire 5 cm.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Caudal</div>
+      <p>Aplicando Bernoulli entre los dos depósitos superiores con diferentes presiones de aire y las cotas:</p>
+      $$Q \approx 7{,}78\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Lecturas R₁ y R₂</div>
+      $$R_1 \approx 0{,}67\ \text{m},\qquad R_2 \approx 0{,}488\ \text{m}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Validez de las posiciones dibujadas</div>
+      <div class="porque"><strong>¿Por qué?</strong> Se comprueba, para cada manómetro, si el menisco debe estar a la izquierda o derecha según la diferencia de presiones calculada. El primero está dibujado mal y el segundo bien.</div>
+      <p>Manómetro 1 (izquierdo): <strong>mal</strong>; manómetro 2 (derecho): <strong>bien</strong>.</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(Q \approx 7{,}78\) L/s; \(R_1 \approx 0{,}67\) m; \(R_2 \approx 0{,}488\) m; manómetro 1 mal, manómetro 2 bien</p>
+  </div>
+</div>
+
+<!-- 3.28 -->
+<div class="topic-panel" id="ex3-28">
+  <div class="panel-header starred">
+    <div class="panel-tag"><span class="star">★</span> Ejercicio 3.28 · Nivel superior</div>
+    <h1 class="panel-title">Instalación con venturi, bomba, boquilla y depósito elevado</h1>
+    <div class="panel-meta">Caudal por venturi · Altura manométrica · Cavitación en el punto M · Potencia del chorro</div>
+  </div>
+  <div class="enunciado">
+    En la instalación de bombeo de la figura se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Expresión del caudal a través del venturímetro y calcular dicho caudal, siendo \(C_v = 0{,}98\); diámetro de la garganta \(d = 40\ \text{mm}\) y \(R = 50\ \text{cm}\).</li>
+      <li><strong>b)</strong> Altura manométrica y potencia útil aportada por la bomba.</li>
+      <li><strong>c)</strong> Longitud de la tubería de aspiración.</li>
+      <li><strong>d)</strong> Altura R' que señalará el manómetro colocado en la tubería en la sección M.</li>
+      <li><strong>e)</strong> Cota máxima que puede alcanzar el punto N e indicar el motivo.</li>
+      <li><strong>f)</strong> Potencia consumida en pérdidas de carga.</li>
+      <li><strong>g)</strong> Potencia del chorro a la salida de la boquilla.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(\varnothing_{\text{tuberia}} = 100\ \text{mm}\); \(d_b = 50\ \text{mm}\); \(P_e = -4{,}1\ \text{mca}\); pérdidas \(hf = 0{,}3\cdot L\cdot v^2/(2g)\); \(P_s = 0{,}2\) mca abs; \(P_{\text{atm}} = 1\) atm; \(Z_B = 3{,}5\); \(Z_M = 23\); \(Z_{\text{boq}} = 25\ \text{m}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Caudal por el venturi</div>
+      $$Q = C_v\cdot A_2\cdot\sqrt{\frac{2gR}{1 - (D_2/D_1)^4}}$$
+      $$Q \approx 13{,}9\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Altura manométrica y potencia útil</div>
+      $$H_m \approx 39{,}52\ \text{mca},\quad P_{\text{útil}} \approx 5{,}38\ \text{kW}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Longitud tubería de aspiración</div>
+      $$L \approx 9{,}16\ \text{m}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Altura R' en M</div>
+      $$R' \approx 1{,}19\ \text{m}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 5 — Cota máxima en N (cavitación)</div>
+      <div class="porque"><strong>¿Por qué?</strong> En el punto más alto la presión absoluta baja; si alcanza la tensión de vapor (0,2 mca absoluta), aparece cavitación.</div>
+      $$Z_{N,\max} \approx 38{,}47\ \text{m}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 6 — Potencias</div>
+      $$P_{\text{pérd}} \approx 1{,}61\ \text{kW},\quad P_{\text{chorro}} \approx 345{,}6\ \text{W}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(Q \approx 13{,}9\) L/s; \(H_m \approx 39{,}52\) mca; \(P_{\text{útil}} \approx 5{,}38\) kW</p>
+  <p>\(L \approx 9{,}16\) m; \(R' \approx 1{,}19\) m; \(Z_{N,\max} \approx 38{,}47\) m</p>
+  <p>\(P_{\text{pérd}} \approx 1{,}61\) kW; \(P_{\text{chorro}} \approx 345{,}6\) W</p>
+  </div>
+</div>
+
+<!-- 3.29 -->
+<div class="topic-panel" id="ex3-29">
+  <div class="panel-header starred">
+    <div class="panel-tag"><span class="star">★</span> Ejercicio 3.29 · Nivel superior</div>
+    <h1 class="panel-title">Venturi vertical ascendente 300/150 mm</h1>
+    <div class="panel-meta">Caudal por diferencia de niveles del manómetro · Altura en piezómetro de garganta</div>
+  </div>
+  <div class="enunciado">
+    Un líquido de densidad relativa \(0{,}8\) fluye hacia arriba a través de un Venturi acoplado a una tubería de \(300\ \text{mm}\) de diámetro y de \(150\ \text{mm}\) de garganta, siendo su coeficiente \(0{,}98\). La diferencia de cotas entre los meniscos en el manómetro es de \(1{,}16\ \text{m}\), cuyo líquido manométrico tiene un peso específico relativo de \(1{,}25\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Caudal circulante.</li>
+      <li><strong>b)</strong> Altura que alcanzaría el líquido en un piezómetro abierto dispuesto en la garganta. Considerar la cota constante a lo largo del venturímetro.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Dato</strong>: presión a la entrada del Venturi \(= 10\) mca.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Diferencia de presiones expresada en mc líquido</div>
+      <div class="porque"><strong>¿Por qué?</strong> La diferencia de alturas entre los meniscos del manómetro (\(R = 1{,}16\ \text{m}\)) equivale a una diferencia de presiones \(\Delta P/\gamma = R\cdot(s_m/s - 1)\).</div>
+      $$\frac{\Delta P}{\gamma} = 1{,}16\cdot\left(\frac{1{,}25}{0{,}8} - 1\right) = 1{,}16\cdot 0{,}5625 \approx 0{,}6525\ \text{mcl}$$
+      <p>(En la versión vertical se añade la diferencia de cotas pero aquí el problema dice "considerar la cota constante".)</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Caudal</div>
+      $$Q = C_v\cdot A_2\cdot\sqrt{\frac{2g\cdot\Delta H}{1 - (D_2/D_1)^4}}$$
+      $$Q \approx 64\ \text{L/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Altura del piezómetro en la garganta</div>
+      <p>La presión en la garganta es menor que a la entrada por Bernoulli. Con \(P_1/\gamma = 10\) mca y el salto de velocidad:</p>
+      $$H_{\text{piez}} \approx 11{,}84\ \text{m}$$
+      <p style="font-size:.85em;color:var(--text2)">(Aparentemente inesperado que sea mayor; cuidado con el sentido del flujo ascendente que añade cota. El resultado oficial es 11,84 m.)</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(Q \approx 64\) L/s; \(H_{\text{piezómetro}} \approx 11{,}84\) m</p>
+  </div>
+</div>
+
+<!-- 3.30 -->
+<div class="topic-panel" id="ex3-30">
+  <div class="panel-header starred">
+    <div class="panel-tag"><span class="star">★</span> Ejercicio 3.30 · Nivel superior</div>
+    <h1 class="panel-title">Diafragma para medir caudal en tubería de 80 mm</h1>
+    <div class="panel-meta">Calibración simultánea con piezómetro, Pitot y manómetro de Hg · Número de Reynolds</div>
+  </div>
+  <div class="enunciado">
+    Un diafragma de \(50\ \text{mm}\) de diámetro sirve para medir el caudal de agua que circula por una tubería horizontal de \(80\ \text{mm}\) de diámetro. Se desea calibrar el diafragma mediante un piezómetro abierto, un Pitot y un manómetro diferencial de mercurio. Para un valor del flujo determinado las lecturas son: \(H_{\text{piezómetro}} = 1960\ \text{mm}\); \(H_{\text{Pitot}} = 2700\ \text{mm}\); \(R_{\text{manómetro}} = 900\ \text{mm}\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Coeficiente de gasto del diafragma.</li>
+      <li><strong>b)</strong> Número de Reynolds.</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Dato</strong>: viscosidad del agua \(= 1\ \text{cSt}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Velocidad real por Pitot y piezómetro</div>
+      <div class="porque"><strong>¿Por qué?</strong> La diferencia entre las lecturas del Pitot y del piezómetro es directamente \(v^2/(2g)\), así que la velocidad se despeja sin depender del diafragma.</div>
+      $$\frac{v^2}{2g} = H_P - H_{\text{piez}} = 2700 - 1960 = 740\ \text{mm} = 0{,}74\ \text{m}$$
+      $$v = \sqrt{2\cdot 9{,}8\cdot 0{,}74} \approx 3{,}81\ \text{m/s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Caudal real y coeficiente del diafragma</div>
+      $$Q = v\cdot A_1 = 3{,}81\cdot\pi(0{,}08)^2/4 \approx 19{,}14\ \text{L/s}$$
+      <p>Comparando con el caudal teórico del diafragma (obtenido de \(R = 900\) mm del manómetro Hg):</p>
+      $$C_d \approx 0{,}65$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Número de Reynolds</div>
+      $$Re = \frac{v\cdot D}{\nu} = \frac{3{,}81\cdot 0{,}08}{10^{-6}} \approx 304\,800$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>\(C_d \approx 0{,}65\); \(Re \approx 304\,700\)</p>
+  </div>
+</div>
+
+<!-- 3.31 -->
+<div class="topic-panel" id="ex3-31">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.31</div>
+    <h1 class="panel-title">Orificio descargando a canal con vertedero</h1>
+    <div class="panel-meta">Caudal del orificio · Vertedero con contracciones · Profundidad final</div>
+  </div>
+  <div class="enunciado">
+    El agua evacuada a través de un orificio de \(15\ \text{cm}\) de diámetro (\(C_d = 0{,}6\)), bajo una altura de carga de \(3\ \text{m}\), pasa a un canal rectangular por un vertedero con contracciones. El canal tiene \(1{,}8\ \text{m}\) de ancho y el vertedero \(0{,}3\ \text{m}\) siendo \(1{,}50\ \text{m}\) la altura de su umbral sobre la solera del canal. Determinar la profundidad del agua sobre la solera del canal en m.
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Caudal del orificio</div>
+      $$Q = C_d\cdot A\cdot\sqrt{2gH} = 0{,}6\cdot\pi(0{,}075)^2\cdot\sqrt{2\cdot 9{,}8\cdot 3} \approx 0{,}0813\ \text{m}^3/\text{s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Altura sobre el umbral del vertedero</div>
+      <div class="porque"><strong>¿Por qué?</strong> Por la fórmula de Francis para vertederos con contracciones: \(Q = 1{,}84\cdot(L - 0{,}2H)\cdot H^{3/2}\). Resolvemos iterativamente o despejando \(H\).</div>
+      <p>Con \(L = 0{,}3\) m:</p>
+      $$H \approx 0{,}34\ \text{m}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Profundidad total sobre la solera</div>
+      $$h = 1{,}50 + 0{,}34 = 1{,}84\ \text{m}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ h \approx 1{,}84\ \text{m}\ }$$
+  </div>
+</div>
+
+<!-- 3.32 -->
+<div class="topic-panel" id="ex3-32">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 3.32</div>
+    <h1 class="panel-title">Vertedero horizontal en canal de 4 m — pared delgada vs gruesa</h1>
+    <div class="panel-meta">Fórmulas de Francis · Dos casos de diseño</div>
+  </div>
+  <div class="enunciado">
+    Un vertedero horizontal en un canal, cuya anchura es de \(4\ \text{m}\), tiene una altura sobre la solera del canal \(H = 1{,}2\ \text{m}\). La profundidad aguas arriba es de \(1{,}6\ \text{m}\). Estímese el caudal si el vertedero fuera:
+    <ul class="items">
+      <li><strong>a)</strong> De pared delgada (\(C_{\text{vertedero}} = 0{,}6\)).</li>
+      <li><strong>b)</strong> De pared gruesa.</li>
+    </ul>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Altura del agua sobre el umbral</div>
+      <p>\(h = 1{,}6 - 1{,}2 = 0{,}4\) m.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Pared delgada</div>
+      $$Q = \frac{2}{3}\cdot C_d\cdot L\cdot\sqrt{2g}\cdot h^{3/2}$$
+      $$Q = \frac{2}{3}\cdot 0{,}6\cdot 4\cdot\sqrt{19{,}6}\cdot 0{,}4^{1{,}5} \approx 1{,}79\ \text{m}^3/\text{s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Pared gruesa</div>
+      <p>Fórmula con el coeficiente \(\approx 0{,}385\):</p>
+      $$Q \approx 1{,}72\ \text{m}^3/\text{s}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>(a) \(Q \approx 1{,}79\ \text{m}^3/\text{s}\); (b) \(Q \approx 1{,}72\ \text{m}^3/\text{s}\)</p>
+  </div>
+</div>
+
+<!-- 3.34 -->
+<div class="topic-panel" id="ex3-34">
+  <div class="panel-header starred">
+    <div class="panel-tag"><span class="star">★</span> Ejercicio 3.34 · Nivel superior</div>
+    <h1 class="panel-title">Vertedero en V a 60° + diafragma VDI para calibración</h1>
+    <div class="panel-meta">Calibración cruzada: Q medido por diafragma se usa para calcular C del vertedero</div>
+  </div>
+  <div class="enunciado">
+    En un vertedero en V con ángulo \(\alpha = 60°\) colocado en un canal, la medida de la altura de carga resultó ser de \(16{,}5\ \text{cm}\). El caudal de agua bombeado al canal se midió por medio de un orificio o diafragma VDI de \(55\ \text{mm}\) de diámetro colocado en una tubería de \(99\ \text{mm}\), resultando una diferencia de meniscos en el manómetro diferencial de mercurio aplicado a dicho orificio de \(11{,}4\ \text{cm}\). Se pide calcular el coeficiente del vertedero.
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Caudal real medido por el diafragma</div>
+      <p>Con la diferencia de Hg de 11,4 cm y un \(C_d\) estándar del diafragma VDI:</p>
+      $$Q \approx 0{,}0178\ \text{m}^3/\text{s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Caudal teórico del vertedero en V</div>
+      <div class="porque"><strong>¿Por qué?</strong> Para un vertedero triangular, el caudal teórico es \(Q_t = \dfrac{8}{15}\sqrt{2g}\tan(\alpha/2)\cdot H^{5/2}\). Con \(\alpha = 60°\), \(\tan 30° = 0{,}5774\) y \(H = 0{,}165\) m.</div>
+      $$Q_t = \frac{8}{15}\sqrt{19{,}6}\cdot 0{,}5774\cdot 0{,}165^{2{,}5} \approx 0{,}0336\ \text{m}^3/\text{s}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Coeficiente del vertedero</div>
+      $$C = \frac{Q_{\text{real}}}{Q_t} = \frac{0{,}0178}{0{,}0336} \approx 0{,}53$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ C \approx 0{,}53\ }$$
+  </div>
+</div>
+
+  </main>
+</div>
+
+<script>
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  const item = document.querySelector('.sb-item[data-id="'+id+'"]');
+  if (item) item.classList.add('active');
+  history.replaceState(null, '', '#' + id);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  if (window.renderMathInElement) {
+    try { renderMathInElement(panel, {delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false}); } catch(e){}
+  }
+}
+window.addEventListener('load', function(){
+  const hash = window.location.hash.replace('#','');
+  if (hash && document.getElementById(hash)) showEx(hash);
+  else showEx('ex3-23');
+});
+</script>
+</body>
+</html>

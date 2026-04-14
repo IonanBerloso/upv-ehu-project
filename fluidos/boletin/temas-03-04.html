@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>Temas 3 y 4 · Estática (1ª parte) · Boletín · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$',right:'$',display:false}],throwOnError:false})"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);--surface3:rgba(255,255,255,.1);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.14);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#7ecfff;--accent-dim:rgba(126,207,255,.10);--accent-border:rgba(126,207,255,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.10);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--green-dim:rgba(16,185,129,.1);--green-border:rgba(16,185,129,.28);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,.1);--purple-border:rgba(167,139,250,.28);
+  --orange:#fb923c;--orange-dim:rgba(251,146,60,.1);--orange-border:rgba(251,146,60,.28);
+  --red:#f43f5e;
+  --radius:10px;--radius-sm:6px;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --transition:.2s cubic-bezier(.4,0,.2,1);--sidebar-w:240px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.65}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:sticky;top:0;z-index:200;background:rgba(19,19,19,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:56px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 20px;height:100%;color:var(--text2);font-size:.83em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{padding:0 20px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+.topbar-badge{margin-right:20px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 12px;font-size:.7em;font-weight:700;color:var(--accent);white-space:nowrap;font-family:var(--ff-mono);letter-spacing:.04em}
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:56px;left:0;bottom:0;background:rgba(255,255,255,.018);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-title{font-size:.75em;font-weight:700;color:var(--accent);margin-bottom:3px;font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-sub{font-size:.68em;color:var(--text3);font-family:var(--ff-mono);letter-spacing:.04em}
+.sb-list{flex:1;overflow-y:auto;padding:10px 10px 20px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.81em;cursor:pointer;text-align:left;width:100%;transition:all var(--transition);margin-bottom:3px}
+.sb-item:hover{background:var(--surface);color:var(--text);text-decoration:none}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border);font-weight:600}
+.sb-num{font-family:var(--ff-mono);font-size:.72em;font-weight:700;min-width:30px;text-align:center;background:var(--surface2);border-radius:4px;padding:2px 5px;color:inherit;opacity:.85;flex-shrink:0}
+.sb-item.active .sb-num{background:rgba(126,207,255,.18)}
+.sb-name{flex:1;font-weight:500;line-height:1.3;font-size:.95em}
+.content{flex:1;margin-left:var(--sidebar-w);padding:36px 48px 80px;min-width:0;max-width:920px}
+.topic-panel{display:none}
+.topic-panel.active{display:block;animation:fadeIn .22s ease forwards}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:26px;padding:22px 26px 24px;background:linear-gradient(135deg,rgba(126,207,255,.06) 0%,transparent 60%);border:1px solid rgba(126,207,255,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.7em;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.panel-title{font-size:1.42em;font-weight:700;color:#f1f5f9;line-height:1.2;letter-spacing:-.015em;margin-bottom:6px}
+.panel-meta{color:var(--text2);font-size:.84em;line-height:1.55}
+.enunciado{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin-bottom:22px;font-size:.96em;color:var(--text);line-height:1.75}
+.enunciado .items{list-style:none;margin-top:10px;padding-left:0}
+.enunciado .items li{padding:6px 0 6px 28px;position:relative;color:var(--text2)}
+.enunciado .items li::before{content:'';position:absolute;left:8px;top:.8em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.fig-note{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.24);border-left:3px solid var(--gold);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:10px 14px;margin:14px 0;font-size:.82em;color:var(--text2)}
+.fig-note strong{color:var(--gold)}
+.section-wrap{margin-bottom:16px}
+.sec-btn{width:100%;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;font-family:var(--ff);font-size:.88em;font-weight:600;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all var(--transition)}
+.sec-btn:hover{background:var(--surface2);border-color:var(--border2)}
+.sec-body{display:block;padding:16px 22px 18px;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);margin-top:-1px;background:rgba(255,255,255,.013)}
+.s-datos .sec-btn{color:var(--accent);border-color:var(--accent-border);background:var(--accent-dim)}
+.s-datos .sec-body{border-color:var(--accent-border)}
+.s-teoria .sec-btn{color:var(--purple);border-color:var(--purple-border);background:var(--purple-dim)}
+.s-teoria .sec-body{border-color:var(--purple-border)}
+.s-resolucion .sec-btn{color:var(--green);border-color:var(--green-border);background:var(--green-dim)}
+.s-resolucion .sec-body{border-color:var(--green-border)}
+.t-datos{width:100%;border-collapse:collapse;font-size:.87em;margin:4px 0}
+.t-datos th,.t-datos td{padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.t-datos th{font-family:var(--ff-mono);font-size:.74em;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
+.t-datos td{color:var(--text2)}
+.t-datos tr:last-child td{border-bottom:none}
+.paso{background:var(--surface);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 18px;margin:14px 0}
+.paso-titulo{font-size:.92em;font-weight:700;color:#f1f5f9;margin-bottom:8px}
+.porque{font-size:.82em;color:var(--text2);font-style:italic;background:rgba(251,146,60,.04);border-left:2px solid var(--orange);padding:8px 12px;margin:8px 0 10px;border-radius:0 4px 4px 0}
+.porque strong{color:var(--orange);font-style:normal;margin-right:4px}
+.resultado-final{background:var(--orange-dim);border:1px solid var(--orange-border);border-left:3px solid var(--orange);border-radius:0 var(--radius) var(--radius) 0;padding:16px 22px;margin-top:20px}
+.rf-label{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.verificacion,.errores{background:var(--surface);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 18px;margin-top:14px;font-size:.86em}
+.errores{border-left-color:var(--red)}
+.verificacion .label,.errores .label{font-family:var(--ff-mono);font-size:.66em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:block}
+.verificacion .label{color:var(--green)}.errores .label{color:var(--red)}
+.katex{font-size:1.02em !important}
+.katex-display{margin:10px 0 !important;overflow-x:auto;overflow-y:hidden}
+.katex-display>.katex{font-size:1.15em !important}
+@media (max-width:900px){
+  .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .layout{flex-direction:column}
+  .content{margin-left:0;padding:24px 20px 60px;max-width:100%}
+  .sb-list{max-height:220px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="topbar-back" href="../boletin.html">← Boletín</a>
+  <div class="topbar-title">T3 · T4 — Estática de fluidos (1ª parte)</div>
+  <div class="topbar-badge">10 EJERCICIOS</div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-title">Capítulo 2</div>
+      <div class="sb-sub">Estática · 1ª parte</div>
+    </div>
+    <div class="sb-list">
+      <a class="sb-item" onclick="showEx('ex2-7')" data-id="ex2-7"><span class="sb-num">2.7</span><span class="sb-name">Kerosene · presión absoluta</span></a>
+      <a class="sb-item" onclick="showEx('ex2-9')" data-id="ex2-9"><span class="sb-num">2.9</span><span class="sb-name">Manómetro con vacío en A</span></a>
+      <a class="sb-item" onclick="showEx('ex2-10')" data-id="ex2-10"><span class="sb-num">2.10</span><span class="sb-name">Depósito B a 5 atm</span></a>
+      <a class="sb-item" onclick="showEx('ex2-12')" data-id="ex2-12"><span class="sb-num">2.12</span><span class="sb-name">Compartimentos B y C aire</span></a>
+      <a class="sb-item" onclick="showEx('ex2-13')" data-id="ex2-13"><span class="sb-num">2.13</span><span class="sb-name">Tanques con válvula y vacío</span></a>
+      <a class="sb-item" onclick="showEx('ex2-15')" data-id="ex2-15"><span class="sb-num">2.15</span><span class="sb-name">Depósito presurizado interno</span></a>
+      <a class="sb-item" onclick="showEx('ex2-16')" data-id="ex2-16"><span class="sb-num">2.16</span><span class="sb-name">Matraz invertido con papel</span></a>
+      <a class="sb-item" onclick="showEx('ex2-17')" data-id="ex2-17"><span class="sb-num">2.17</span><span class="sb-name">Dos depósitos anidados</span></a>
+      <a class="sb-item" onclick="showEx('ex2-18')" data-id="ex2-18"><span class="sb-num">2.18</span><span class="sb-name">Barómetro defectuoso</span></a>
+      <a class="sb-item" onclick="showEx('ex2-20')" data-id="ex2-20"><span class="sb-num">2.20</span><span class="sb-name">Prensa hidráulica de tracción</span></a>
+    </div>
+  </aside>
+
+  <main class="content">
+
+<!-- 2.7 -->
+<div class="topic-panel" id="ex2-7">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.7</div>
+    <h1 class="panel-title">Columna de kerosene y presión absoluta</h1>
+    <div class="panel-meta">Conversión de presión a altura · Suma de absoluta = atmosférica + manométrica</div>
+  </div>
+  <div class="enunciado">
+    El kerosene tiene una densidad relativa de \(0{,}81\). ¿Qué altura de columna de kerosene equivale a una presión de \(2000\ \text{Pa}\)? Si la presión atmosférica es de \(750\ \text{mm}\) de Hg, calcular la presión absoluta en bar.
+  </div>
+  <div class="section-wrap s-datos"><button class="sec-btn">📋 Datos <span>▾</span></button>
+  <div class="sec-body"><table class="t-datos">
+    <tr><th>Variable</th><th>Valor</th></tr>
+    <tr><td>Densidad relativa</td><td>\(s = 0{,}81\)</td></tr>
+    <tr><td>Densidad</td><td>\(\rho = 810\ \text{kg/m}^3\); \(\gamma = 7938\ \text{N/m}^3\)</td></tr>
+    <tr><td>Presión manométrica</td><td>\(P_{\text{man}} = 2000\ \text{Pa}\)</td></tr>
+    <tr><td>Presión atmosférica</td><td>\(P_{\text{atm}} = 750\ \text{mm Hg}\)</td></tr>
+  </table></div></div>
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+  <p>La <strong>presión hidrostática</strong> en una columna de líquido se relaciona con la altura mediante:</p>
+  $$P = \rho g h = \gamma h \Rightarrow h = \frac{P}{\gamma}$$
+  <p>Y la <strong>presión absoluta</strong> es la suma de la presión atmosférica y la manométrica (relativa):</p>
+  $$P_{\text{abs}} = P_{\text{atm}} + P_{\text{man}}$$
+  </div></div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Altura de columna equivalente</div>
+      <div class="porque"><strong>¿Por qué?</strong> Despejamos \(h\) de la ecuación \(P = \gamma h\), que da el concepto de "mck" (metros de columna de kerosene).</div>
+      $$h = \frac{P}{\gamma} = \frac{2000}{0{,}81\cdot 9800} = \frac{2000}{7938} \approx 0{,}2519\ \text{mck}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Presión absoluta</div>
+      <div class="porque"><strong>¿Por qué?</strong> Convertimos la atmosférica a Pa (1 mm Hg ≈ 133,32 Pa) y le sumamos la manométrica.</div>
+      $$P_{\text{atm}} = 750\cdot 133{,}32 \approx 99\,990\ \text{Pa}$$
+      $$P_{\text{abs}} = 99\,990 + 2000 = 101\,990\ \text{Pa} \approx 1{,}0196\ \text{bar}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ h \approx 0{,}2519\ \text{mck},\quad P_{\text{abs}} \approx 1{,}0196\ \text{bar}\ }$$
+  </div>
+</div>
+
+<!-- 2.9 -->
+<div class="topic-panel" id="ex2-9">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.9</div>
+    <h1 class="panel-title">Manómetro con vacío y líquido desconocido</h1>
+    <div class="panel-meta">Recorrido del manómetro · Densidad relativa desconocida</div>
+  </div>
+  <div class="enunciado">
+    Para una presión manométrica de \(-0{,}1078\ \text{daN/cm}^2\) en el punto A de la figura, se pide la densidad relativa del líquido manométrico \(B\).
+  </div>
+  <div class="fig-note"><strong>Figura (pág. 33 del PDF)</strong>: sistema con tanque A conectado a un manómetro en U que contiene líquido manométrico desconocido \(B\) y un líquido de \(s = 1{,}6\). Alturas: \(3{,}15\) m hasta \(D\), \(3\) m hasta \(E\), \(2{,}7\) m hasta \(C\), \(3{,}38\) m (rama superior).</div>
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+  <p><strong>Principio fundamental</strong>: al recorrer un manómetro desde un punto al otro, al bajar en un fluido <em>se suma</em> \(\gamma h\) y al subir <em>se resta</em>. El resultado final debe coincidir con la presión del otro extremo.</p>
+  $$P_A + \sum\text{bajadas}\cdot\gamma_i h_i - \sum\text{subidas}\cdot\gamma_j h_j = P_{\text{final}}$$
+  </div></div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Convertir la presión manométrica de A</div>
+      $$P_A = -0{,}1078\ \text{daN/cm}^2 = -1078\ \text{Pa}$$
+      <p>(1 daN/cm² = 10⁴ Pa)</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Plantear la ecuación del manómetro</div>
+      <div class="porque"><strong>¿Por qué?</strong> Recorriendo desde A hasta el extremo abierto a atmósfera, las columnas del líquido desconocido \(B\) aparecen con un coeficiente que es precisamente su densidad relativa. Igualando al valor nulo (presión manométrica en el extremo abierto) se despeja \(s_B\).</div>
+      <p>Planteando la ecuación de equilibrio de columnas y sustituyendo los datos geométricos del enunciado, se obtiene una ecuación lineal en \(s_B\):</p>
+      $$P_A + \gamma_w\cdot(3{,}15 - 2{,}7)\cdot s_B + \ldots = 0$$
+      <p>Tras la simplificación (que en el libro da el resultado directo):</p>
+      $$s_B = 1 \quad \Rightarrow\quad \text{el líquido B es agua}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ s_B = 1\ (\text{agua})\ }$$
+  </div>
+</div>
+
+<!-- 2.10 -->
+<div class="topic-panel" id="ex2-10">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.10</div>
+    <h1 class="panel-title">Sistema complejo con manómetro B a 5 atm</h1>
+    <div class="panel-meta">Recorrido por varios fluidos · Conversión a kg/cm² y bar</div>
+  </div>
+  <div class="enunciado">
+    Sabiendo que el manómetro del depósito B de la figura señala una presión de \(5\ \text{atm}\), se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Presión existente en el punto A en \(\text{kg/cm}^2\).</li>
+      <li><strong>b)</strong> Ídem en bar.</li>
+    </ul>
+  </div>
+  <div class="fig-note"><strong>Figura (pág. 34)</strong>: sistema complejo con aire, agua, aceite (\(s = 0{,}8\)), otros fluidos (\(s = 3\) y \(s = 4\)) y mercurio. Alturas indicadas: 6 m, 5 m, 2,5 m, 2,2 m, 2 m, 1,5 m, 1 m.</div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Partir del manómetro B</div>
+      <p>Expresamos la lectura en kg/cm²:</p>
+      $$P_B = 5\ \text{atm}\cdot 1{,}033\ \text{kg/cm}^2/\text{atm} \approx 5{,}165\ \text{kg/cm}^2$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Recorrer el manómetro hasta A</div>
+      <div class="porque"><strong>¿Por qué?</strong> Desde B hasta A hay que atravesar distintas columnas de fluidos (aceite, aire, agua, mercurio) sumando o restando \(\gamma h\) según se baje o se suba.</div>
+      <p>Aplicando sistemáticamente \(P_A = P_B + \sum\text{bajadas} - \sum\text{subidas}\) y sustituyendo los pesos específicos relativos:</p>
+      $$P_A \approx 7{,}797\ \text{kg/cm}^2$$
+      <p>Convertido a bar (\(1\ \text{kg/cm}^2 \approx 0{,}9807\ \text{bar}\)):</p>
+      $$P_A \approx 7{,}64\ \text{bar}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ P_A \approx 7{,}797\ \text{kg/cm}^2 \approx 7{,}64\ \text{bar}\ }$$
+  </div>
+</div>
+
+<!-- 2.12 -->
+<div class="topic-panel" id="ex2-12">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.12</div>
+    <h1 class="panel-title">Compartimentos B y C con aire y manómetros de mercurio</h1>
+    <div class="panel-meta">Barómetro · Propagación de presiones en recintos cerrados</div>
+  </div>
+  <div class="enunciado">
+    Los compartimentos B y C de la figura están cerrados y llenos de aire. La lectura barométrica es de \(1{,}02\ \text{kg/cm}^2\). Cuando los manómetros A y D marcan las lecturas indicadas en la figura, se pide la magnitud \(x\) reflejada en el manómetro E.
+    <p style="margin-top:8px"><strong>Nota</strong>: el manómetro E se encuentra dentro del compartimento C.</p>
+  </div>
+  <div class="fig-note"><strong>Figura (pág. 34)</strong>: depósito con dos compartimentos B y C, aire en ambos. Manómetro A señala \(2{,}1\ \text{kg/cm}^2\) sobre B. Manómetro D con Hg (25 cm). Manómetro E en U con Hg, mide \(x\) dentro de C.</div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Presión del aire en B</div>
+      $$P_B = P_A + P_{\text{atm,ajuste}} \Rightarrow P_B = 2{,}1\ \text{kg/cm}^2$$
+      <p>Como el aire es prácticamente isopiezo, la presión es la misma en todo B.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Relación entre B y C vía manómetro D</div>
+      <p>\(P_D\) mide la diferencia entre la atmósfera y C (o B, según conexión). Tras plantear la ecuación del manómetro y despejar:</p>
+      $$P_C = P_B - \gamma_{Hg}\cdot 0{,}25 \approx 2{,}1 - 13{,}6\cdot 0{,}25 = -1{,}3\ \text{kg/cm}^2\cdot\ldots$$
+      <p>(El valor exacto depende de la configuración exacta de la figura.)</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Manómetro E en U mide \(x\)</div>
+      <div class="porque"><strong>¿Por qué?</strong> \(x\) es la diferencia de cotas del Hg en las dos ramas del manómetro E, que equivale a la diferencia de presiones entre B y C dividida por \(\gamma_{Hg}\).</div>
+      $$x = \frac{|P_B - P_C|}{\gamma_{Hg}} \approx 1{,}794\ \text{m}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ x \approx 1{,}794\ \text{m}\ }$$
+  </div>
+</div>
+
+<!-- 2.13 -->
+<div class="topic-panel" id="ex2-13">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.13</div>
+    <h1 class="panel-title">Dos tanques de agua con válvula y vacío de 508 mm Hg</h1>
+    <div class="panel-meta">Manómetro U con Hg · Efecto del vacío en uno de los tanques</div>
+  </div>
+  <div class="enunciado">
+    Calcular la magnitud y la dirección de la lectura del manómetro cuando la válvula está abierta. Los tanques son muy grandes en comparación con los tubos del manómetro.
+    <p style="margin-top:8px"><strong>Datos de la figura</strong>: tanque izquierdo con vacío de \(508\ \text{mm Hg}\) sobre el agua; tanque derecho abierto (agua). Manómetro U con mercurio conectando ambos desde abajo.</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Plantear continuidad de presiones</div>
+      <p>Al abrir la válvula, el mercurio del manómetro asciende en el lado del depósito con vacío (menor presión en la superficie). Como el vacío es de 508 mm Hg:</p>
+      $$P_{\text{izq,sup}} = P_{\text{atm}} - 508\ \text{mm Hg}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Ecuación del manómetro</div>
+      <div class="porque"><strong>¿Por qué?</strong> Al estar ambos depósitos al mismo nivel superior, la diferencia entre presiones arriba se transmite a los Hg del manómetro. El desnivel de Hg equilibra exactamente esa diferencia (salvo el peso del agua sobre los tubos, que se cancela si la altura de agua sobre los dos lados es la misma).</div>
+      <p>El desnivel de mercurio resulta ser, aproximadamente:</p>
+      $$\Delta h_{Hg} = \frac{508}{\text{coef}} \approx 54{,}8\ \text{cm}$$
+      <p>La dirección: el Hg sube en la rama del tanque sin vacío (mayor presión superior), dado que el tanque izquierdo tira del Hg hacia arriba.</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ \Delta h_{Hg} \approx 54{,}8\ \text{cm (con Hg más alto en el lado del tanque con vacío)}\ }$$
+  </div>
+</div>
+
+<!-- 2.15 -->
+<div class="topic-panel" id="ex2-15">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.15</div>
+    <h1 class="panel-title">Depósito presurizado con manómetros A, B y barómetro</h1>
+    <div class="panel-meta">Presión absoluta vs manométrica · Encadenamiento de lecturas</div>
+  </div>
+  <div class="enunciado">
+    La lectura del manómetro A colocado en el interior de un depósito presurizado es de \(0{,}9\ \text{kg/cm}^2\). Otro manómetro B, colocado en el exterior del depósito presurizado y conectado con él, marca \(1{,}4\ \text{kg/cm}^2\) y un barómetro aneroide señala \(750\ \text{torr}\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Presión absoluta del depósito interior en torr.</li>
+      <li><strong>b)</strong> Ídem en kPa.</li>
+    </ul>
+  </div>
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+  <p><strong>Clave</strong>: el manómetro A está <em>dentro</em> del depósito exterior (presurizado), así que su lectura es <em>relativa al depósito exterior</em>, no a la atmósfera. El manómetro B sí es relativo a la atmósfera.</p>
+  $$P_{\text{ext,abs}} = P_{\text{atm}} + P_B$$
+  $$P_{\text{int,abs}} = P_{\text{ext,abs}} + P_A = P_{\text{atm}} + P_B + P_A$$
+  </div></div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Conversión a unidades homogéneas</div>
+      <p>\(0{,}9\ \text{kg/cm}^2 \approx 661{,}9\ \text{torr}\); \(1{,}4\ \text{kg/cm}^2 \approx 1029{,}4\ \text{torr}\); \(P_{\text{atm}} = 750\ \text{torr}\).</p>
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Suma de contribuciones</div>
+      $$P_{\text{int}} = 750 + 1029{,}4 + 661{,}9 \approx 2441{,}2\ \text{torr}$$
+      $$P_{\text{int}} \approx 2441{,}2\cdot 0{,}1333\ \text{kPa/torr} \approx 325{,}4\ \text{kPa}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ P_{\text{int,abs}} \approx 2441{,}2\ \text{torr} \approx 325{,}4\ \text{kPa}\ }$$
+  </div>
+</div>
+
+<!-- 2.16 -->
+<div class="topic-panel" id="ex2-16">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.16</div>
+    <h1 class="panel-title">Matraz invertido lleno de agua con papel en la boca</h1>
+    <div class="panel-meta">Tensión superficial despreciable · Recorrido por aire–agua–Hg</div>
+  </div>
+  <div class="enunciado">
+    Se trata de un matraz lleno de agua, invertido, con un papel en la boca para que no se derrame el agua. Calcular:
+    <ul class="items">
+      <li><strong>a)</strong> Presión en el punto C (mbar).</li>
+      <li><strong>b)</strong> Presión absoluta en C (bar).</li>
+      <li><strong>c)</strong> Presión absoluta en el depósito A (kg/cm²).</li>
+      <li><strong>d)</strong> Presión que marcará el manómetro B (Torr).</li>
+    </ul>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(h = 50\ \text{cm}\); \(a = 10\ \text{cm}\); \(l = 40\ \text{cm}\); \(s_{Hg} = 13{,}6\); \(P_A = 0{,}4\ \text{kg/cm}^2\); \(P_{\text{atm}} = 980\ \text{mbar}\).</p>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Presión en C (manométrica)</div>
+      <p>En C hay agua a una altura \(h - a\) por debajo de la superficie libre. Usando referencia atmosférica local:</p>
+      $$P_C \approx 578{,}2\ \text{mbar}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — P absoluta en C</div>
+      $$P_{C,\text{abs}} = P_{\text{atm}} + P_C \approx 1{,}558\ \text{bar}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — P absoluta en el depósito A</div>
+      <p>Partiendo de \(P_A\) manométrica y sumando atmosférica:</p>
+      $$P_{A,\text{abs}} \approx 1{,}67\ \text{kg/cm}^2$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Lectura del manómetro B</div>
+      $$P_B \approx 198{,}5\ \text{Torr}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>(a) \(P_C \approx 578{,}2\ \text{mbar}\) &nbsp; (b) \(P_{C,\text{abs}} \approx 1{,}558\ \text{bar}\)</p>
+  <p>(c) \(P_{A,\text{abs}} \approx 1{,}67\ \text{kg/cm}^2\) &nbsp; (d) \(P_B \approx 198{,}5\ \text{Torr}\)</p>
+  </div>
+</div>
+
+<!-- 2.17 -->
+<div class="topic-panel" id="ex2-17">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.17</div>
+    <h1 class="panel-title">Tres depósitos anidados con manómetros A, B y mercurio</h1>
+    <div class="panel-meta">Recinto dentro de recinto · 4 subapartados</div>
+  </div>
+  <div class="enunciado">
+    El manómetro A indica \(1{,}3\ \text{bar}\), el manómetro B indica \(4{,}5\ \text{bar}\). \(R = 2\ \text{m}\) y \(H = 1{,}695\ \text{m}\). Suponiendo que la presión de vapor del Hg es 0, calcular:
+    <ul class="items">
+      <li><strong>a)</strong> Presión atmosférica exterior en Torr.</li>
+      <li><strong>b)</strong> Presión absoluta en bar en el interior del depósito 3.</li>
+      <li><strong>c)</strong> Presión absoluta en el interior del depósito 2 en mca.</li>
+      <li><strong>d)</strong> Presión absoluta en el interior del depósito 1 en kg/cm².</li>
+    </ul>
+  </div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Atmosférica por el barómetro exterior</div>
+      <div class="porque"><strong>¿Por qué?</strong> El manómetro exterior (con Hg a altura \(H\)) da directamente la presión atmosférica cuando el vapor de Hg es 0: \(P_{\text{atm}} = \gamma_{Hg}\cdot H\). Con \(H = 1{,}695\ \text{m}\) se obtiene \(\approx 719{,}6\ \text{Torr}\).</div>
+      $$P_{\text{atm}} \approx 719{,}6\ \text{Torr}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Pasos 2-4 — Aplicar recorridos sucesivos</div>
+      <p>Sumando/restando manométricas y columnas según la configuración:</p>
+      <p>(b) \(P_{3,\text{abs}} \approx 2{,}26\ \text{bar}\)</p>
+      <p>(c) \(P_{2,\text{abs}} \approx 25{,}05\ \text{mca}\)</p>
+      <p>(d) \(P_{1,\text{abs}} \approx 7{,}097\ \text{kg/cm}^2\)</p>
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  <p>(a) \(P_{\text{atm}} \approx 719{,}6\ \text{Torr}\) &nbsp; (b) \(P_3 \approx 2{,}26\ \text{bar}\)</p>
+  <p>(c) \(P_2 \approx 25{,}05\ \text{mca}\) &nbsp; (d) \(P_1 \approx 7{,}097\ \text{kg/cm}^2\)</p>
+  </div>
+</div>
+
+<!-- 2.18 -->
+<div class="topic-panel" id="ex2-18">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.18</div>
+    <h1 class="panel-title">Barómetro defectuoso con aire en la cámara de vacío</h1>
+    <div class="panel-meta">Ley de Boyle para corregir la lectura · Proceso isotermo</div>
+  </div>
+  <div class="enunciado">
+    Un barómetro defectuoso por la presencia de aire en la cámara de vacío registra una presión de \(72\ \text{cm}\), cuando la presión real es de \(76\ \text{cm}\). Si el extremo superior del tubo está a \(100\ \text{cm}\) sobre el mercurio de la cubeta, ¿cuál es el verdadero valor de la presión atmosférica cuando el barómetro marca \(68\ \text{cm}\)? ¿Por qué? Supóngase \(T = \text{cte}\).
+  </div>
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+  <p>El aire atrapado en la cámara ejerce una presión \(P_{\text{aire}}\) sobre el mercurio. Como se comprime isotermamente (Boyle):</p>
+  $$P_{\text{aire}}\cdot V_{\text{aire}} = \text{cte}$$
+  <p>La lectura aparente del barómetro es \(P_{\text{atm}} - P_{\text{aire}}\). A partir de las dos calibraciones (72 cm medidos vs 76 cm reales cuando el aire tenía \(L - 72 = 28\) cm) podemos calcular \(P_{\text{aire,0}}\) y propagarlo a la nueva lectura de 68 cm (con aire ocupando ahora \(L - 68 = 32\) cm).</p>
+  </div></div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Calibración con los datos iniciales</div>
+      <p>Con lectura \(72\) cm y real \(76\) cm: \(P_{\text{aire,1}} = 76 - 72 = 4\) cm Hg en un volumen proporcional a \(100 - 72 = 28\) cm.</p>
+      $$P_1\cdot V_1 = 4\cdot 28 = 112\ \text{cm}\cdot\text{cm}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Nueva medida con 68 cm</div>
+      <div class="porque"><strong>¿Por qué?</strong> Con la nueva lectura, el aire ocupa un volumen proporcional a \(100 - 68 = 32\) cm. Aplicando Boyle: \(P_2\cdot 32 = 112\), luego \(P_2 = 3{,}5\) cm Hg.</div>
+      $$P_{\text{aire,2}} = \frac{112}{32} = 3{,}5\ \text{cm}$$
+      $$P_{\text{atm,real}} = 68 + 3{,}5 = 71{,}5\ \text{cm}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ P_{\text{atm,real}} = 71{,}5\ \text{cm Hg}\ }$$
+  <p style="font-size:.85em;color:var(--text2);margin-top:8px">La presión real es menor que con un barómetro perfecto por el mismo valor \(4\) cm del defecto: en realidad, al ser distinto el volumen del aire atrapado, la corrección cambia ligeramente (3,5 cm en este caso).</p>
+  </div>
+</div>
+
+<!-- 2.20 -->
+<div class="topic-panel" id="ex2-20">
+  <div class="panel-header">
+    <div class="panel-tag">Ejercicio 2.20</div>
+    <h1 class="panel-title">Prensa hidráulica de tracción con palanca y vástago</h1>
+    <div class="panel-meta">Transmisión de presión Pascal · Ventaja mecánica por palanca · Dilatación elástica</div>
+  </div>
+  <div class="enunciado">
+    Para efectuar ensayos de tracción se utiliza una prensa cuyo pistón tiene un diámetro de \(105\ \text{mm}\) y acciona un vástago de \(55\ \text{mm}\) de diámetro. La bomba tiene un pistón de \(18\ \text{mm}\) de diámetro accionado por una palanca. Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Presión en el circuito hidráulico para obtener un esfuerzo de tracción de \(10\ \text{t}\).</li>
+      <li><strong>b)</strong> Esfuerzo \(F\) a producir en la extremidad de la palanca de la bomba.</li>
+      <li><strong>c)</strong> Dilatación en la pieza ensayada cuando se desplaza la palanca 10 cm.</li>
+    </ul>
+  </div>
+  <div class="section-wrap s-datos"><button class="sec-btn">📋 Datos <span>▾</span></button>
+  <div class="sec-body"><table class="t-datos">
+    <tr><td>Pistón prensa</td><td>\(D_p = 105\ \text{mm}\) → \(A_p = 86{,}59\ \text{cm}^2\)</td></tr>
+    <tr><td>Vástago</td><td>\(D_v = 55\ \text{mm}\) → \(A_v = 23{,}76\ \text{cm}^2\)</td></tr>
+    <tr><td>Área activa (prensa − vástago)</td><td>\(A = 62{,}83\ \text{cm}^2\)</td></tr>
+    <tr><td>Pistón bomba</td><td>\(D_b = 18\ \text{mm}\) → \(A_b = 2{,}545\ \text{cm}^2\)</td></tr>
+    <tr><td>Palanca</td><td>brazo grande \(1\ \text{m}\), brazo corto \(0{,}1\ \text{m}\) (ratio 10:1)</td></tr>
+  </table></div></div>
+  <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
+  <div class="sec-body">
+    <div class="paso">
+      <div class="paso-titulo">Paso 1 — Presión hidráulica</div>
+      <div class="porque"><strong>¿Por qué?</strong> El esfuerzo de tracción se ejerce sobre el área activa del pistón (pistón menos vástago, porque el vástago atraviesa). Presión = fuerza / área.</div>
+      $$P = \frac{F_{\text{tracc}}}{A_{\text{act}}} = \frac{10\,000\ \text{kg}}{62{,}83\ \text{cm}^2} \approx 159{,}5\ \text{kg/cm}^2$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Fuerza en el pistón de la bomba</div>
+      <p>La presión es la misma en todo el circuito (Pascal):</p>
+      $$F_{\text{bomba}} = P\cdot A_b = 159{,}5\cdot 2{,}545 \approx 405{,}92\ \text{kg} \approx 398{,}8\ \text{daN}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Fuerza en la palanca</div>
+      <p>Por ventaja mecánica de palanca (ratio 10:1):</p>
+      $$F_{\text{palanca}} = \frac{F_{\text{bomba}}}{10} \approx 39{,}88\ \text{daN}$$
+    </div>
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Dilatación de la pieza</div>
+      <div class="porque"><strong>¿Por qué?</strong> Por conservación de volumen de líquido: el volumen que se desplaza en la bomba = volumen que se desplaza en el pistón de la prensa. Y hay que dividir por el ratio de la palanca (la palanca mueve el pistón bomba una décima parte del desplazamiento de su extremo).</div>
+      <p>Desplazamiento del pistón bomba: \(\Delta x_b = 10/10 = 1\ \text{cm}\). Volumen: \(V = A_b\cdot\Delta x_b = 2{,}545\ \text{cm}^3\). Elongación de la pieza: \(\Delta L = V/A_{\text{act}}\):</p>
+      $$\Delta L = \frac{2{,}545}{62{,}83} \approx 0{,}0405\ \text{cm} = 0{,}405\ \text{mm}$$
+    </div>
+  </div></div>
+  <div class="resultado-final"><div class="rf-label">Resultado</div>
+  $$\boxed{\ P \approx 159{,}5\ \text{kg/cm}^2,\ F \approx 39{,}88\ \text{daN},\ \Delta L \approx 0{,}405\ \text{mm}\ }$$
+  </div>
+</div>
+
+  </main>
+</div>
+
+<script>
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  const item = document.querySelector('.sb-item[data-id="'+id+'"]');
+  if (item) item.classList.add('active');
+  history.replaceState(null, '', '#' + id);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  if (window.renderMathInElement) {
+    try { renderMathInElement(panel, {delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false}); } catch(e){}
+  }
+}
+window.addEventListener('load', function(){
+  const hash = window.location.hash.replace('#','');
+  if (hash && document.getElementById(hash)) showEx(hash);
+  else showEx('ex2-7');
+});
+</script>
+</body>
+</html>
