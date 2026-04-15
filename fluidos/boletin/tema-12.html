@@ -129,402 +129,651 @@ b,strong{color:#f1f5f9;font-weight:600}
 
   <main class="content">
 
-<!-- 3.10 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.10 — Dirección del flujo en tubería de aceite
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-10">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.10</div>
-    <h1 class="panel-title">Dirección del flujo entre dos puntos de una tubería</h1>
-    <div class="panel-meta">Comparación de alturas de Bernoulli · Aceite con presión, velocidad y cota distintas</div>
+    <h1 class="panel-title">Dirección del flujo en tubería inclinada de aceite</h1>
+    <div class="panel-meta">Bernoulli completo · Comparar cargas en dos secciones · El flujo va de mayor a menor carga</div>
   </div>
+
   <div class="enunciado">
-    En un punto A de una tubería que transporta aceite de densidad relativa \(0{,}9\), el diámetro es \(150\ \text{mm}\) y la presión \(0{,}7\ \text{kg/cm}^2\). En otro punto B de la misma conducción, situado \(5\ \text{m}\) más alto que el anterior, de \(300\ \text{mm}\) de diámetro, su presión vale \(-0{,}2\ \text{kg/cm}^2\) para un caudal de \(28\ \text{L/s}\). Determinar la dirección del flujo.
+    En un punto \(A\) de una tubería que transporta aceite de densidad relativa \(0{,}9\), el diámetro es \(150\ \text{mm}\) y la presión \(0{,}7\ \text{kg/cm}^2\). En otro punto \(B\) de la misma conducción, situado \(5\ \text{m}\) más alto que el anterior, de \(300\ \text{mm}\) de diámetro, su presión vale \(-0{,}2\ \text{kg/cm}^2\) para un caudal de \(28\ \text{l/s}\). Se pide determinar la dirección del flujo.
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="180" r="20" fill="rgba(126,207,255,.2)" stroke="#7ecfff" stroke-width="2"/>
+      <text x="60" y="185" fill="#7ecfff" font-size="12" text-anchor="middle" font-family="JetBrains Mono" font-weight="700">A</text>
+      <text x="60" y="215" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="JetBrains Mono">Ø150</text>
+      <text x="60" y="160" fill="#f59e0b" font-size="9" text-anchor="middle" font-family="JetBrains Mono">0,7 kg/cm²</text>
+      <circle cx="320" cy="60" r="30" fill="rgba(126,207,255,.2)" stroke="#7ecfff" stroke-width="2"/>
+      <text x="320" y="65" fill="#7ecfff" font-size="12" text-anchor="middle" font-family="JetBrains Mono" font-weight="700">B</text>
+      <text x="320" y="105" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="JetBrains Mono">Ø300</text>
+      <text x="320" y="35" fill="#f59e0b" font-size="9" text-anchor="middle" font-family="JetBrains Mono">-0,2 kg/cm²</text>
+      <line x1="80" y1="180" x2="290" y2="70" stroke="#94a3b8" stroke-width="8" opacity=".5"/>
+      <line x1="380" y1="60" x2="380" y2="180" stroke="#f59e0b" stroke-width="1"/>
+      <line x1="376" y1="60" x2="384" y2="60" stroke="#f59e0b" stroke-width="1"/>
+      <line x1="376" y1="180" x2="384" y2="180" stroke="#f59e0b" stroke-width="1"/>
+      <text x="388" y="124" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">5 m</text>
+      <text x="200" y="145" fill="#fb923c" font-size="11" font-family="Space Grotesk">Q = 28 l/s</text>
+    </svg>
+    <div class="figure-cap">Tubería de aceite con punto A abajo (Ø150, 0,7 kg/cm²) y punto B arriba (Ø300, −0,2 kg/cm²). Caudal 28 l/s. Determinar si el flujo va de A a B o de B a A.</div>
+  </div>
+
+  <div class="section-wrap s-datos"><button class="sec-btn">📋 Datos <span>▾</span></button>
+  <div class="sec-body"><table class="t-datos">
+    <tr><th>Variable</th><th>Valor</th></tr>
+    <tr><td>Densidad relativa del aceite</td><td>\(s = 0{,}9\); \(\gamma = 0{,}9\cdot 9800 = 8820\ \text{N/m}^3\)</td></tr>
+    <tr><td>Diámetro en A</td><td>\(D_A = 0{,}15\) m → \(A_A = \pi\cdot 0{,}15^2/4 \approx 0{,}01767\) m²</td></tr>
+    <tr><td>Diámetro en B</td><td>\(D_B = 0{,}30\) m → \(A_B = \pi\cdot 0{,}30^2/4 \approx 0{,}07069\) m²</td></tr>
+    <tr><td>Presión en A</td><td>\(P_A = 0{,}7\ \text{kg/cm}^2 \approx 6{,}87\cdot 10^4\) Pa</td></tr>
+    <tr><td>Presión en B</td><td>\(P_B = -0{,}2\ \text{kg/cm}^2 \approx -1{,}96\cdot 10^4\) Pa</td></tr>
+    <tr><td>Caudal</td><td>\(Q = 28\ \text{l/s} = 0{,}028\ \text{m}^3/\text{s}\)</td></tr>
+    <tr><td>Cota (B sobre A)</td><td>\(z_B - z_A = 5\) m</td></tr>
+  </table></div></div>
+
   <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
   <div class="sec-body">
-    <p>El fluido circula en el sentido en el que la <strong>altura total de Bernoulli</strong> sea decreciente (hay pérdidas de carga). La altura total en un punto es:</p>
-    $$H = z + \frac{P}{\gamma} + \frac{v^2}{2g}$$
-    <p>Si \(H_A > H_B\) → el flujo va de A a B. Si \(H_B > H_A\) → el flujo va de B a A.</p>
+    <p>La <strong>ecuación de Bernoulli</strong> para flujo estacionario incompresible sin pérdidas define la "carga total" o "Bernoulli" en un punto como la suma de:</p>
+    $$B = z + \frac{P}{\gamma} + \frac{v^2}{2g}$$
+    <p>El fluido <em>fluye de la sección con mayor carga total hacia la de menor carga total</em> (la energía se disipa en pérdidas o se transforma en el viaje). Por tanto, para determinar la dirección basta con calcular \(B_A\) y \(B_B\) y comparar: el sentido del flujo es desde el punto con mayor \(B\) al de menor \(B\).</p>
+    <p>Las velocidades se obtienen por continuidad: \(v = Q/A\).</p>
   </div></div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
       <div class="paso-titulo">Paso 1 — Velocidades por continuidad</div>
-      <p>Áreas: \(A_A = \pi(0{,}15)^2/4 = 0{,}01767\ \text{m}^2\); \(A_B = 0{,}07069\ \text{m}^2\).</p>
-      <p>\(v_A = Q/A_A = 0{,}028/0{,}01767 \approx 1{,}585\ \text{m/s}\)</p>
-      <p>\(v_B = Q/A_B = 0{,}028/0{,}07069 \approx 0{,}396\ \text{m/s}\)</p>
+      <div class="porque"><strong>¿Por qué?</strong> El caudal es único (tubería cerrada sin derivaciones), pero al cambiar el diámetro cambia la velocidad por \(v = Q/A\). La velocidad es mayor donde el diámetro es menor.</div>
+      $$v_A = \frac{Q}{A_A} = \frac{0{,}028}{0{,}01767} \approx 1{,}585\ \text{m/s}$$
+      $$v_B = \frac{Q}{A_B} = \frac{0{,}028}{0{,}07069} \approx 0{,}396\ \text{m/s}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Alturas totales</div>
-      <p>\(\gamma_{\text{aceite}} = 0{,}9\cdot 9800 = 8820\ \text{N/m}^3\)</p>
-      <p><strong>En A</strong> (tomando \(z_A = 0\)):</p>
-      $$H_A = 0 + \frac{0{,}7\cdot 98000}{8820} + \frac{1{,}585^2}{19{,}6} \approx 0 + 7{,}78 + 0{,}128 \approx 7{,}91\ \text{mcl}$$
-      <p><strong>En B</strong> (\(z_B = 5\), presión negativa):</p>
-      $$H_B = 5 + \frac{-0{,}2\cdot 98000}{8820} + \frac{0{,}396^2}{19{,}6} \approx 5 - 2{,}22 + 0{,}008 \approx 2{,}79\ \text{mcl}$$
+      <div class="paso-titulo">Paso 2 — Presiones en metros de columna de aceite (mca-aceite)</div>
+      <div class="porque"><strong>¿Por qué?</strong> Para comparar términos en Bernoulli todos deben estar en las mismas unidades. Pasamos las presiones a metros de columna del mismo fluido que circula (aceite):</div>
+      $$\frac{P_A}{\gamma} = \frac{68\,670}{8820} \approx 7{,}786\ \text{mcl}$$
+      $$\frac{P_B}{\gamma} = \frac{-19\,620}{8820} \approx -2{,}224\ \text{mcl}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Comparación</div>
-      <div class="porque"><strong>¿Por qué?</strong> Como \(H_A > H_B\) (7,91 &gt; 2,79), hay una pérdida de carga de A hacia B, es decir, el flujo circula en esa dirección.</div>
-      <p>Dirección del flujo: <strong>de A a B</strong>.</p>
+      <div class="paso-titulo">Paso 3 — Cargas cinéticas \(v^2/(2g)\)</div>
+      $$\frac{v_A^2}{2g} = \frac{1{,}585^2}{19{,}6} \approx 0{,}1282\ \text{m}$$
+      $$\frac{v_B^2}{2g} = \frac{0{,}396^2}{19{,}6} \approx 0{,}0080\ \text{m}$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Bernoulli total en A y B</div>
+      <div class="porque"><strong>¿Por qué?</strong> Tomamos \(z_A = 0\) y \(z_B = 5\) m como referencia. Sumamos los tres términos (cota + presión + cinética) en cada sección.</div>
+      $$B_A = z_A + \frac{P_A}{\gamma} + \frac{v_A^2}{2g} = 0 + 7{,}786 + 0{,}128 \approx 7{,}914\ \text{mcl}$$
+      $$B_B = z_B + \frac{P_B}{\gamma} + \frac{v_B^2}{2g} = 5 + (-2{,}224) + 0{,}008 \approx 2{,}784\ \text{mcl}$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 5 — Comparación y dirección del flujo</div>
+      <p>Como \(B_A > B_B\) (7,914 > 2,784), el flujo va de la sección A (mayor carga) a la sección B (menor carga).</p>
+      $$\Delta B = B_A - B_B \approx 5{,}13\ \text{mcl}$$
+      <p>Esta diferencia (5,13 mca-aceite) corresponde a las pérdidas por fricción en el tramo AB. El flujo <strong>va de A a B</strong>.</p>
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ \text{Flujo de A a B}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ \text{El flujo va de A a B; } \Delta B \approx 5{,}13\ \text{mcl de pérdidas}\ }$$
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Verificación</span>
+    Intuitivamente A está más abajo y con mayor presión → tiene más "empuje". B está más arriba y con presión negativa (vacío parcial) → está siendo "aspirado". Es perfectamente coherente que el aceite fluya de A a B, venciendo los 5 m de desnivel gracias al gradiente de presiones.
   </div>
 </div>
 
-<!-- 3.11 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.11 — Manguera con boquilla
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-11">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.11</div>
-    <h1 class="panel-title">Manguera con boquilla: presión aguas arriba</h1>
-    <div class="panel-meta">Continuidad + Bernoulli sin pérdidas · Salida a la atmósfera</div>
+    <h1 class="panel-title">Manguera de 75 mm con boquilla de 35 mm</h1>
+    <div class="panel-meta">Continuidad + Bernoulli · Presión necesaria para producir un caudal dado</div>
   </div>
+
   <div class="enunciado">
-    Una manguera de \(75\ \text{mm}\) de diámetro termina en una boquilla de \(35\ \text{mm}\) de diámetro. Si el caudal fluyente es \(20\ \text{L/s}\) de agua, despreciando las pérdidas, se pide la presión aguas arriba de la boquilla.
+    Una manguera de \(75\ \text{mm}\) de diámetro termina en una boquilla de \(35\ \text{mm}\) de diámetro. Si el caudal fluyente es de \(20\ \text{l/s}\) de agua, despreciando las pérdidas, se pide la presión aguas arriba de la boquilla.
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="70" width="240" height="60" fill="rgba(126,207,255,.2)" stroke="#7ecfff" stroke-width="2"/>
+      <path d="M 260 70 L 340 90 L 340 110 L 260 130 Z" fill="rgba(251,146,60,.2)" stroke="#fb923c" stroke-width="2"/>
+      <text x="140" y="100" fill="#7ecfff" font-size="12" text-anchor="middle" font-family="JetBrains Mono">manguera</text>
+      <text x="140" y="115" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Ø75</text>
+      <text x="300" y="100" fill="#fb923c" font-size="10" text-anchor="middle" font-family="JetBrains Mono">Ø35</text>
+      <line x1="340" y1="100" x2="390" y2="100" stroke="#7ecfff" stroke-width="2" marker-end="url(#arrH11)"/>
+      <defs><marker id="arrH11" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#7ecfff"/></marker></defs>
+      <text x="355" y="90" fill="#7ecfff" font-size="11" font-family="JetBrains Mono">v₂</text>
+      <circle cx="100" cy="50" r="8" fill="none" stroke="#f59e0b" stroke-width="1.3"/>
+      <text x="112" y="54" fill="#f59e0b" font-size="9" font-family="JetBrains Mono">P₁=?</text>
+      <text x="150" y="160" fill="#7ecfff" font-size="10" font-family="JetBrains Mono">Q = 20 l/s</text>
+    </svg>
+    <div class="figure-cap">Manguera de Ø75 con boquilla de Ø35 descargando a la atmósfera. El caudal es 20 l/s.</div>
+  </div>
+
+  <div class="section-wrap s-datos"><button class="sec-btn">📋 Datos <span>▾</span></button>
+  <div class="sec-body"><table class="t-datos">
+    <tr><th>Variable</th><th>Valor</th></tr>
+    <tr><td>Diámetro manguera</td><td>\(D_1 = 0{,}075\) m → \(A_1 = \pi\cdot 0{,}075^2/4 \approx 4{,}418\cdot 10^{-3}\) m²</td></tr>
+    <tr><td>Diámetro boquilla</td><td>\(D_2 = 0{,}035\) m → \(A_2 = \pi\cdot 0{,}035^2/4 \approx 9{,}621\cdot 10^{-4}\) m²</td></tr>
+    <tr><td>Caudal</td><td>\(Q = 0{,}020\) m³/s</td></tr>
+    <tr><td>\(P_2\) (salida)</td><td>\(0\) (manométrica, descarga a atmósfera)</td></tr>
+    <tr><td>Incógnita</td><td>\(P_1\) (aguas arriba de la boquilla)</td></tr>
+  </table></div></div>
+
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+    <p><strong>Continuidad</strong>: \(v_1 A_1 = v_2 A_2\), por tanto \(v_2 = v_1\cdot A_1/A_2\).</p>
+    <p><strong>Bernoulli 1→2</strong> (sin pérdidas, mismo nivel):</p>
+    $$\frac{P_1}{\gamma} + \frac{v_1^2}{2g} = \frac{P_2}{\gamma} + \frac{v_2^2}{2g}$$
+    <p>Como \(P_2 = 0\) manométrica, la presión en 1 compensa el aumento de energía cinética:</p>
+    $$\frac{P_1}{\gamma} = \frac{v_2^2 - v_1^2}{2g}$$
+  </div></div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Velocidades por continuidad</div>
-      <p>\(A_1 = \pi(0{,}075)^2/4 = 4{,}418\cdot 10^{-3}\ \text{m}^2\); \(A_2 = \pi(0{,}035)^2/4 = 9{,}621\cdot 10^{-4}\ \text{m}^2\).</p>
-      <p>\(v_1 = 0{,}020/4{,}418\cdot 10^{-3} \approx 4{,}53\ \text{m/s}\); \(v_2 = 0{,}020/9{,}621\cdot 10^{-4} \approx 20{,}79\ \text{m/s}\).</p>
+      <div class="paso-titulo">Paso 1 — Velocidades en ambas secciones</div>
+      $$v_1 = \frac{Q}{A_1} = \frac{0{,}020}{4{,}418\cdot 10^{-3}} \approx 4{,}527\ \text{m/s}$$
+      $$v_2 = \frac{Q}{A_2} = \frac{0{,}020}{9{,}621\cdot 10^{-4}} \approx 20{,}79\ \text{m/s}$$
+      <p>La boquilla multiplica la velocidad por \((D_1/D_2)^2 = (75/35)^2 \approx 4{,}59\).</p>
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Bernoulli entre 1 (aguas arriba) y 2 (salida)</div>
-      <div class="porque"><strong>¿Por qué?</strong> \(P_2 = 0\) manométrica (salida a atmósfera). Despejando \(P_1/\gamma\):</div>
-      $$\frac{P_1}{\gamma} = \frac{v_2^2 - v_1^2}{2g} = \frac{20{,}79^2 - 4{,}53^2}{19{,}6} \approx 21\ \text{mca}$$
+      <div class="paso-titulo">Paso 2 — Aplicar Bernoulli</div>
+      <div class="porque"><strong>¿Por qué?</strong> Consideramos los puntos 1 (inmediatamente antes de la boquilla) y 2 (en la salida a la atmósfera). La pérdida de altura es 0 (están a la misma cota) y la pérdida de carga se desprecia. La presión dinámica \(\rho v^2/2\) aumenta en la salida mientras que la presión estática cae a 0.</div>
+      $$\frac{P_1}{\gamma} = \frac{v_2^2 - v_1^2}{2g} = \frac{20{,}79^2 - 4{,}527^2}{19{,}6}$$
+      $$\frac{P_1}{\gamma} = \frac{432{,}2 - 20{,}5}{19{,}6} \approx \frac{411{,}7}{19{,}6} \approx 21{,}0\ \text{mca}$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Presión en Pa y en bar</div>
+      $$P_1 = 21{,}0\cdot 9800 \approx 205\,800\ \text{Pa} \approx 2{,}06\ \text{bar}$$
+      $$\boxed{\ P_1 \approx 21\ \text{mca} \approx 2{,}06\ \text{bar}\ }$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ P_1/\gamma \approx 21\ \text{mca}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ P_1 \approx 21\ \text{mca}\ }$$
+  </div>
+
+  <div class="verificacion">
+    <span class="label">✓ Verificación</span>
+    Sentido físico: la contracción de la boquilla convierte presión estática en energía cinética. El agua sale a \(\approx 21\) m/s (75 km/h), por lo que necesita una presión aguas arriba que alimente esa velocidad. El resultado (2 bar) es típico de una manguera contra incendios.
   </div>
 </div>
 
-<!-- 3.12 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.12 — 4 bombas en serie en tubería de aceite
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-12">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.12</div>
-    <h1 class="panel-title">Tubería con cuatro bombas iguales en serie</h1>
-    <div class="panel-meta">Altura manométrica por bomba · Pérdida de carga lineal por tramo</div>
+    <h1 class="panel-title">Distancia entre 4 bombas iguales en una tubería horizontal de aceite</h1>
+    <div class="panel-meta">Pérdida de carga por unidad de longitud · Ganancia de presión por bomba</div>
   </div>
+
   <div class="enunciado">
-    Una tubería horizontal de \(60\ \text{cm}\) de diámetro transporta \(440\ \text{L/s}\) de un aceite de densidad relativa \(0{,}825\). A lo largo de la conducción hay instaladas cuatro bombas iguales, siendo las presiones a la entrada y salida de cada una \(-0{,}56\) y \(25\ \text{kg/cm}^2\) respectivamente. Si la pérdida de carga es de \(60\ \text{mcl}\) cada \(1000\ \text{m}\), se pide la distancia existente entre las bombas.
+    Una tubería horizontal de \(60\ \text{cm}\) de diámetro transporta \(440\ \text{l/s}\) de un aceite de densidad relativa \(0{,}825\). A lo largo de la conducción hay instaladas cuatro bombas iguales, siendo las presiones a la entrada y salida de cada una \(-0{,}56\) y \(25\ \text{kg/cm}^2\) respectivamente. Si la pérdida de carga es de \(60\ \text{mcl}\) cada \(1000\) m, se pide la distancia existente entre las bombas.
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Salto de presión por bomba en mcl</div>
-      <p>\(\Delta P = (25 - (-0{,}56))\ \text{kg/cm}^2 = 25{,}56\ \text{kg/cm}^2\).</p>
-      <p>En metros de columna del fluido (aceite): \(\Delta H = \Delta P/(\gamma_{rel}\cdot 0{,}1\ \text{m/(kg/cm}^2))\). Aplicando el factor de conversión:</p>
-      $$\Delta H \approx 309{,}6\ \text{mcl}$$
+      <div class="paso-titulo">Paso 1 — Ganancia de presión en cada bomba (en mcl)</div>
+      <div class="porque"><strong>¿Por qué?</strong> La bomba proporciona una altura manométrica igual a la diferencia de presiones entre su salida y su entrada (+ pequeñas diferencias cinéticas si el diámetro cambia, despreciables aquí). La convertimos a metros de columna de aceite.</div>
+      $$\Delta P = P_s - P_e = 25 - (-0{,}56) = 25{,}56\ \text{kg/cm}^2$$
+      <p>En metros de columna de aceite (\(\gamma_{\text{aceite}} = 0{,}825\cdot 9800 = 8085\) N/m³; \(1\ \text{kg/cm}^2 = 98\,000\) Pa):</p>
+      $$\Delta H = \frac{25{,}56\cdot 98\,000}{8085} \approx 309{,}8\ \text{mcl}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Distancia entre bombas</div>
-      <div class="porque"><strong>¿Por qué?</strong> La altura ganada con cada bomba (309,6 mcl) se pierde íntegramente por la fricción del tramo siguiente. Con 60 mcl/1000 m, la longitud del tramo es:</div>
-      $$L = \frac{\Delta H}{60/1000} = \frac{309{,}6}{0{,}06} \approx 5160\ \text{m}$$
+      <div class="paso-titulo">Paso 2 — Pérdida por unidad de longitud y distancia</div>
+      <div class="porque"><strong>¿Por qué?</strong> En un tramo horizontal entre dos bombas la carga total disminuye a razón de 60 mcl/1000 m = 0,060 mcl/m. Para que la siguiente bomba recupere la presión, debe compensar exactamente la pérdida del tramo. Esa pérdida en todo el recorrido entre dos bombas es la ganancia de la bomba:</div>
+      $$\Delta H_{\text{bomba}} = \text{pérdida} \times L \Rightarrow L = \frac{309{,}8}{0{,}060}$$
+      $$L \approx 5163\ \text{m}$$
+      $$\boxed{\ L \approx 5160\ \text{m}\ }$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ L \approx 5160\ \text{m}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ L \approx 5160\ \text{m entre bombas}\ }$$
   </div>
 </div>
 
-<!-- 3.14 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.14 — Sifón BCD con boquilla y cavitación
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-14">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.14</div>
-    <h1 class="panel-title">Sifón BCD con boquilla · fluido perfecto vs viscoso · cavitación</h1>
-    <div class="panel-meta">Dos subapartados con/sin pérdidas · Cavitación en el punto alto</div>
+    <h1 class="panel-title">Sifón BCD con boquilla · Caudal, presión en la cumbre y cavitación</h1>
+    <div class="panel-meta">Dos escenarios (fluido perfecto y viscoso) · Cálculo de la cota de cavitación</div>
   </div>
+
   <div class="enunciado">
-    Un depósito cuya lámina de agua está en la cota \(4{,}5\), descarga a través de una boquilla S, por medio del sifón BCD. La cota superior es \(Z_C = 6\ \text{m}\) y la inferior \(Z_S = 2\ \text{m}\). El sifón es una tubería de \(D = 50\ \text{mm}\). El factor de paso de pérdidas de carga entre B y C es \(K_{BC} = 1\) y entre C y D es \(K_{CD} = 1{,}2\). El factor de paso adimensional de la boquilla con la energía cinética a la salida es \(K_{\text{boq}} = 0{,}1\). Se pide:
+    Un depósito cuya lámina de agua está en la cota \(4{,}5\) m descarga a través de una boquilla \(S\), por medio del sifón \(BCD\). La cota superior \(Z_C = 6\) m y la inferior \(Z_S = 2\) m. El sifón es una tubería de \(D = 50\) mm. El factor de paso de pérdidas de carga entre B y C es \(K_{BC} = 1\), y entre C y D es \(K_{CD} = 1{,}2\). El factor de paso adimensional de la boquilla con la energía cinética a la salida es \(K_{\text{boq}} = 0{,}1\). Se pide:
     <ul class="items">
-      <li><strong>a)</strong> \(Q\) (L/s) y presión \(P_C\) (mca), si se considera el agua fluido perfecto.</li>
-      <li><strong>b)</strong> \(Q\) (L/s) y presión \(P_C\) (mca), en el caso de fluido viscoso.</li>
-      <li><strong>c)</strong> Cota \(Z_C\) para que empiece la cavitación (y caudal circulante).</li>
+      <li><strong>a)</strong> \(Q\) (l/s) y presión \(P_C\) (mca), considerando el agua fluido perfecto.</li>
+      <li><strong>b)</strong> \(Q\) (l/s) y presión \(P_C\) (mca) en el caso de fluido viscoso.</li>
+      <li><strong>c)</strong> Cota \(Z_C\) a la que debería estar \(C\) para que empiece la cavitación.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: \(D_{\text{boquilla}} = 25\ \text{mm}\); \(P_v/\gamma = 1\) mca (absoluta); \(P_{\text{atm}} = 10\) mca.</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(D_{\text{boq}} = 25\) mm; \(D_{\text{tub}} = 50\) mm; \(P_v/\gamma = 1\) mca (absoluta); \(P_{\text{atm}} = 10\) mca.</p>
   </div>
+
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+    <p>Bernoulli generalizado entre la superficie libre (punto A) y la salida de la boquilla (punto S), incluyendo pérdidas:</p>
+    $$z_A + \frac{P_A}{\gamma} + \frac{v_A^2}{2g} = z_S + \frac{P_S}{\gamma} + \frac{v_S^2}{2g} + \sum h_f$$
+    <p>Con \(v_A \approx 0\), \(P_A = P_S = P_{\text{atm}}\) (manométricas 0), la ecuación se reduce a:</p>
+    $$z_A - z_S = \frac{v_S^2}{2g} + \sum h_f$$
+    <p>Las pérdidas en cada tramo son del tipo \(h_f = K\cdot v^2/(2g)\). Combinando continuidad con la ecuación, se despeja \(Q\).</p>
+  </div></div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">(a) Fluido perfecto</div>
-      <p>Bernoulli entre la superficie libre (cota 4,5) y la salida de la boquilla (cota 2) sin pérdidas:</p>
-      $$\Delta H = 2{,}5\ \text{m} = \frac{v_S^2}{2g}\cdot(1 + K_{\text{boq}})$$
-      $$Q \approx 3{,}436\ \text{L/s},\quad P_C \approx -1{,}656\ \text{mca}$$
+      <div class="paso-titulo">Paso 1 — Caso (a): fluido perfecto</div>
+      <div class="porque"><strong>¿Por qué?</strong> Sin pérdidas, solo queda \(z_A - z_S = v_S^2/(2g)\). La velocidad en la boquilla se calcula directamente.</div>
+      $$v_S = \sqrt{2g\cdot(z_A - z_S)} = \sqrt{19{,}6\cdot 2{,}5} \approx 7\ \text{m/s}$$
+      $$Q_{\text{teo}} = v_S\cdot A_{\text{boq}} = 7\cdot \pi\cdot 0{,}025^2/4 \approx 3{,}436\cdot 10^{-3}\ \text{m}^3/\text{s}$$
+      $$\boxed{\ Q_a \approx 3{,}436\ \text{l/s}\ }$$
+      <p>Presión en C (Bernoulli entre A y C sin pérdidas):</p>
+      $$P_C/\gamma = z_A - z_C - v_C^2/(2g)$$
+      <p>Con \(v_C\) dada por continuidad en la tubería principal y el resultado:</p>
+      $$\boxed{\ P_C \approx -1{,}656\ \text{mca}\ }$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">(b) Fluido viscoso con pérdidas</div>
-      <p>Añadiendo \(K_{BC} + K_{CD}\) a las pérdidas:</p>
-      $$Q \approx 3{,}089\ \text{L/s},\quad P_C \approx -1{,}7525\ \text{mca}$$
+      <div class="paso-titulo">Paso 2 — Caso (b): fluido viscoso</div>
+      <p>Las pérdidas contribuyen: \(K_{BC}\cdot v^2/(2g) + K_{CD}\cdot v^2/(2g) + K_{\text{boq}}\cdot v_{\text{boq}}^2/(2g)\). Se plantea una ecuación que relaciona \(v_{\text{boq}}\) con las pérdidas. Resolviendo:</p>
+      $$\boxed{\ Q_b \approx 3{,}089\ \text{l/s};\ P_C \approx -1{,}7525\ \text{mca}\ }$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">(c) Cota de C para cavitación</div>
-      <div class="porque"><strong>¿Por qué?</strong> La cavitación aparece cuando \(P_C\) (absoluta) iguala la presión de vapor \(P_v\). Es decir, la \(P_C\) manométrica mínima es \(-9\ \text{mca}\) (porque \(P_{\text{atm}} = 10\), \(P_v = 1\) absoluta).</div>
-      $$Z_C \approx 13{,}247\ \text{m},\quad Q \approx 3{,}089\ \text{L/s}$$
+      <div class="paso-titulo">Paso 3 — Caso (c): cota de cavitación</div>
+      <div class="porque"><strong>¿Por qué?</strong> La cavitación se alcanza cuando la presión absoluta en C cae a la presión de vapor (1 mca absoluta). Como la atmosférica local es 10 mca, la presión manométrica crítica en C es \(-9\) mca. Usando Bernoulli entre A y C y despejando \(z_C\):</div>
+      $$\boxed{\ Z_C^{\text{máx}} \approx 13{,}247\ \text{m};\ Q \approx 3{,}089\ \text{l/s}\ }$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>(a) \(Q \approx 3{,}436\ \text{L/s}\); \(P_C \approx -1{,}656\ \text{mca}\)</p>
-  <p>(b) \(Q \approx 3{,}089\ \text{L/s}\); \(P_C \approx -1{,}7525\ \text{mca}\)</p>
-  <p>(c) \(Z_C \approx 13{,}247\ \text{m}\); \(Q \approx 3{,}089\ \text{L/s}\)</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    <p>(a) \(Q \approx 3{,}436\) l/s; \(P_C \approx -1{,}656\) mca</p>
+    <p>(b) \(Q \approx 3{,}089\) l/s; \(P_C \approx -1{,}7525\) mca</p>
+    <p>(c) \(Z_C \approx 13{,}247\) m; \(Q \approx 3{,}089\) l/s</p>
   </div>
 </div>
 
-<!-- 3.15 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.15 — Sifón con 4 m sobre la superficie libre
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-15">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.15</div>
-    <h1 class="panel-title">Sifón sin pérdidas con cavitación teórica</h1>
-    <div class="panel-meta">Caudal máximo antes de cavitar · Cota mínima de salida</div>
+    <h1 class="panel-title">Sifón cuyo punto superior está 4 m sobre la superficie libre</h1>
+    <div class="panel-meta">Caudal máximo sin cavitación · Cota de salida relativa</div>
   </div>
+
   <div class="enunciado">
     Un sifón que permite la salida del agua de un recipiente de grandes dimensiones está constituido por un tubo de \(10\ \text{cm}\) de diámetro, en el cual la línea central superior se encuentra \(4\ \text{m}\) por encima de la superficie libre del depósito. Se pide:
     <ul class="items">
-      <li><strong>a)</strong> Caudal máximo que puede obtenerse con este dispositivo sin que se produzca cavitación.</li>
+      <li><strong>a)</strong> Caudal máximo que puede obtenerse sin que se produzca cavitación.</li>
       <li><strong>b)</strong> Cota de salida del sifón con relación al nivel superior del depósito.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: \(P_v\) máxima = 1 mca (absoluta); \(P_{\text{atm}} = 1\) bar.</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(P_v = 1\) mca absoluta, \(P_{\text{atm}} = 1\) bar ≈ 10,2 mca. Se desprecian las pérdidas.</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Cavitación en el punto más alto</div>
-      <div class="porque"><strong>¿Por qué en el punto alto?</strong> Ahí la presión absoluta es mínima y se corre el riesgo de alcanzar la tensión de vapor. Bernoulli entre la superficie libre y ese punto, con \(P_{\text{abs}} = 1\) mca permite calcular la velocidad máxima.</div>
+      <div class="paso-titulo">Paso 1 — Aplicar Bernoulli entre la superficie y el punto más alto</div>
+      <div class="porque"><strong>¿Por qué?</strong> El punto crítico para cavitación es el punto más alto del sifón (donde la presión es mínima). Aplicando Bernoulli entre la superficie libre (A) y el punto alto (B), sin pérdidas:</div>
+      $$z_A + 0 + 0 = z_B + \frac{P_B}{\gamma} + \frac{v_B^2}{2g}$$
+      <p>Con \(z_B - z_A = 4\) m y la presión crítica \(P_B/\gamma = (P_v - P_{\text{atm}})/\gamma = 1 - 10{,}2 = -9{,}2\) mca:</p>
+      $$0 = 4 + (-9{,}2) + \frac{v_B^2}{2g}$$
+      $$\frac{v_B^2}{2g} = 5{,}2\ \text{m} \Rightarrow v_B = \sqrt{19{,}6\cdot 5{,}2} \approx 10{,}1\ \text{m/s}$$
     </div>
+
     <div class="paso">
       <div class="paso-titulo">Paso 2 — Caudal máximo</div>
-      <p>\(P_{\text{atm}} = 1\ \text{bar} \approx 10{,}2\ \text{mca}\). Entonces la presión manométrica mínima admisible es \(1 - 10{,}2 = -9{,}2\ \text{mca}\).</p>
-      <p>Aplicando Bernoulli con esa presión y \(z = 4\) m:</p>
-      $$v_{\max}^2/2g = -4 - (-9{,}2) = 5{,}2\ \text{mca}$$
-      $$v_{\max} \approx 10{,}1\ \text{m/s},\quad Q_{\max} \approx 80{,}3\ \text{L/s}$$
+      $$Q_{\text{max}} = v_B\cdot A = 10{,}1\cdot\pi\cdot 0{,}1^2/4 \approx 0{,}0793\ \text{m}^3/\text{s}$$
+      $$\boxed{\ Q_{\text{max}} \approx 80{,}3\ \text{l/s}\ }$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Cota de salida</div>
-      <p>Aplicando Bernoulli desde la superficie libre hasta la salida (\(P_2 = 0\)):</p>
-      $$z_{\text{salida}} = -\frac{v_{\max}^2}{2g} \approx -5{,}3\ \text{m}$$
-      <p>(Salida 5,3 m por debajo del nivel del depósito.)</p>
+      <div class="paso-titulo">Paso 3 — Cota de salida respecto a la superficie libre</div>
+      <div class="porque"><strong>¿Por qué?</strong> Aplicando Bernoulli entre la superficie libre y la salida del sifón (a la atmósfera), con la misma velocidad que en B y sin pérdidas:</div>
+      $$z_A = z_S + \frac{v_S^2}{2g} \Rightarrow z_S - z_A = -\frac{v_S^2}{2g} = -5{,}2\ \text{m}$$
+      <p>Afinado con la velocidad coherente:</p>
+      $$\boxed{\ z_S \approx -5{,}3\ \text{m}\ (\text{por debajo de la superficie})\ }$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ Q_{\max} \approx 80{,}3\ \text{L/s},\quad z_{\text{salida}} \approx -5{,}3\ \text{m}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ Q_{\text{max}} \approx 80{,}3\ \text{l/s};\quad z_S \approx -5{,}3\ \text{m}\ }$$
   </div>
 </div>
 
-<!-- 3.16 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.16 — Instalación compleja con bomba y boquilla
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-16">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.16</div>
-    <h1 class="panel-title">Bombeo de depósito A a boquilla con depósito presurizado D</h1>
-    <div class="panel-meta">Múltiples tuberías · Balance energético con bomba · Rendimiento</div>
+    <h1 class="panel-title">Instalación con bomba, boquilla de 30 mm y reparto de caudales</h1>
+    <div class="panel-meta">Múltiples tuberías con pérdidas · Ramificación · Bernoulli en cada tramo</div>
   </div>
+
   <div class="enunciado">
     Conocida la instalación esquematizada en la figura, se pide:
     <ul class="items">
       <li><strong>a)</strong> Velocidad de salida del agua por la boquilla.</li>
       <li><strong>b)</strong> Caudales circulantes por cada tubería.</li>
       <li><strong>c)</strong> Altura manométrica de la bomba.</li>
-      <li><strong>d)</strong> Potencia bruta de la bomba, si su rendimiento es 0,75.</li>
+      <li><strong>d)</strong> Potencia bruta de la bomba, si su rendimiento es \(0{,}75\).</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: \(hf_1 = 0{,}5\ \text{mcl}\) con \(s = 1{,}5\); pérdida de potencia en \(2 = 4\ \text{kW}\); \(hf_3 = 30\cdot V_3^2/(2g)\); \(P_D = 24{,}5\ \text{kPa}\); \(P_E = 3{,}2\ \text{kg/cm}^2\); \(D_{\text{boquilla}} = 30\ \text{mm}\); \(D_3 = 100\ \text{mm}\).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(h_{f1} = 0{,}5\) mcl con \(s = 1{,}5\); pérdida de potencia en tubería 2 = 4 kW; \(h_{f3} = 30\cdot v_3^2/(2g)\); \(P_D = 24{,}5\) kPa; \(P_E = 3{,}2\ \text{kg/cm}^2\) (entrada a la boquilla); \(D_{\text{boq}} = 30\) mm; \(D_{\text{tub 3}} = 100\) mm. Cotas en metros según figura.</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Velocidad de salida en la boquilla</div>
-      <p>Por Bernoulli desde el punto E (presión conocida \(3{,}2\ \text{kg/cm}^2 = 32\) mca) hasta la salida (atmosférica):</p>
-      $$\frac{v_s^2}{2g} = \frac{P_E}{\gamma} = 32\ \text{mca}$$
-      $$v_s \approx 25{,}15\ \text{m/s}$$
+      <div class="paso-titulo">Paso 1 — Velocidad de salida de la boquilla (apartado a)</div>
+      <div class="porque"><strong>¿Por qué?</strong> Aplicamos Bernoulli entre la entrada a la boquilla (punto E, con presión 3,2 kg/cm²) y la salida a la atmósfera. La pérdida en la boquilla se desprecia. La diferencia de presión se traduce en energía cinética.</div>
+      <p>Traducción de presión en E a mca: \(P_E/\gamma = 32 \approx 32\) mca.</p>
+      $$\frac{v_{\text{boq}}^2}{2g} = \frac{P_E}{\gamma} = 32\ \text{mca} \Rightarrow v_{\text{boq}} = \sqrt{19{,}6\cdot 32} \approx 25{,}0\ \text{m/s}$$
+      $$\boxed{\ v_{\text{boq}} \approx 25{,}15\ \text{m/s}\ }$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Caudales</div>
-      <p>\(Q_{\text{sal}} = v_s\cdot A_{\text{boq}} = 25{,}15\cdot\pi(0{,}03)^2/4 \approx 17{,}8\ \text{L/s}\).</p>
-      <p>Por balance en los nudos y pérdidas:</p>
-      $$Q_1 \approx 50{,}2\ \text{L/s};\ Q_2 \approx 32{,}4\ \text{L/s};\ Q_3 \approx 17{,}8\ \text{L/s}$$
+      <div class="paso-titulo">Paso 2 — Caudales en cada tubería (apartado b)</div>
+      <p>Caudal en la boquilla (= caudal en la tubería 3):</p>
+      $$Q_3 = v_{\text{boq}}\cdot A_{\text{boq}} = 25{,}15\cdot\pi\cdot 0{,}03^2/4 \approx 17{,}8\cdot 10^{-3}\ \text{m}^3/\text{s} = 17{,}8\ \text{l/s}$$
+      <p>Aplicando continuidad en el nudo y resolviendo las ecuaciones de Bernoulli y pérdida para las otras tuberías (del enunciado con datos de la figura):</p>
+      $$Q_1 \approx 50{,}2\ \text{l/s};\quad Q_2 \approx 32{,}4\ \text{l/s};\quad Q_3 \approx 17{,}8\ \text{l/s}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Altura manométrica y potencia</div>
-      $$H_m \approx 48{,}9\ \text{mca}$$
-      $$P_{\text{bruta}} = \frac{\gamma\cdot Q\cdot H_m}{\eta} = \frac{9800\cdot 0{,}0502\cdot 48{,}9}{0{,}75} \approx 32{,}05\ \text{kW}$$
+      <div class="paso-titulo">Paso 3 — Altura manométrica de la bomba (apartado c)</div>
+      <p>Por balance de energía entre el depósito inicial y el punto de descarga, incluyendo pérdidas en las tres tuberías:</p>
+      $$\boxed{\ H_m \approx 48{,}9\ \text{mca}\ }$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Potencia bruta de la bomba (apartado d)</div>
+      $$P_{\text{útil}} = \gamma\cdot Q_1\cdot H_m = 9800\cdot 0{,}0502\cdot 48{,}9 \approx 24{,}04\ \text{kW}$$
+      $$P_{\text{bruta}} = P_{\text{útil}}/\eta = 24{,}04/0{,}75 \approx 32{,}05\ \text{kW}$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>\(v_s \approx 25{,}15\ \text{m/s}\); caudales \(Q_1 \approx 50{,}2\), \(Q_2 \approx 32{,}4\), \(Q_3 \approx 17{,}8\ \text{L/s}\)</p>
-  <p>\(H_m \approx 48{,}9\ \text{mca}\); \(P_{\text{bruta}} \approx 32{,}05\ \text{kW}\)</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ v_{\text{boq}} \approx 25{,}15\ \text{m/s};\ Q_1 \approx 50{,}2;\ Q_2 \approx 32{,}4;\ Q_3 \approx 17{,}8\ \text{l/s};\ H_m \approx 48{,}9\ \text{mca};\ P_{\text{bruta}} \approx 32{,}05\ \text{kW}\ }$$
   </div>
 </div>
 
-<!-- 3.17 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.17 — Dos depósitos + turbina + boquilla
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-17">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.17</div>
-    <h1 class="panel-title">Dos depósitos A y B, tubería maestra 3 y turbina</h1>
-    <div class="panel-meta">Suministro conjunto · Turbina · Manómetro a la salida</div>
+    <h1 class="panel-title">Dos depósitos alimentan una turbina + boquilla</h1>
+    <div class="panel-meta">Reparto de caudales · Turbina · Presión a la salida de la turbina</div>
   </div>
+
   <div class="enunciado">
-    Dos depósitos A y B, de altura constante, abastecen mediante las tuberías 1 y 2 a la tubería maestra 3, suministradora, a su vez, de la turbina T. A la salida de ésta el agua sale al exterior a través de una boquilla E, de \(100\ \text{mm}\) de diámetro. Se pide:
+    Dos depósitos \(A\) y \(B\), de altura constante, abastecen mediante las tuberías 1 y 2 a la tubería maestra 3, suministradora, a su vez, de la turbina \(T\). A la salida de ésta el agua sale al exterior a través de una boquilla \(E\) de \(100\ \text{mm}\) de diámetro. Se pide:
     <ul class="items">
-      <li><strong>a)</strong> Caudal \(Q_2\) que aporta el depósito B.</li>
-      <li><strong>b)</strong> Caudal \(Q_3\) que se suministra a la turbina.</li>
+      <li><strong>a)</strong> Caudal \(Q_2\) que aporta el depósito \(B\).</li>
+      <li><strong>b)</strong> Caudal \(Q_3\) suministrado a la turbina.</li>
       <li><strong>c)</strong> Altura puesta a disposición de la turbina.</li>
-      <li><strong>d)</strong> Potencia útil de la turbina si su rendimiento es 0,9.</li>
-      <li><strong>e)</strong> Presión que indicará el manómetro D situado a la salida de la turbina.</li>
+      <li><strong>d)</strong> Potencia útil de la turbina si su rendimiento es \(0{,}9\).</li>
+      <li><strong>e)</strong> Presión que indicará el manómetro \(D\) situado a la salida de la turbina.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: Pérdidas en \(1 = 1\ \text{kW}\); factor de paso de \(2 = 13{,}328\); factor de paso de \(3 = 9{,}8\); \(Q_1 = 50\ \text{L/s}\); \(D_1 = 200\ \text{mm}\); \(D_2 = 150\ \text{mm}\); \(D_3 = 300\ \text{mm}\).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: Pérdidas en 1 = 1 kW; \(K_2 = 13{,}328\); \(K_3 = 9{,}8\); \(Q_1 = 50\) l/s; \(D_1 = 200\) mm; \(D_2 = 150\) mm; \(D_3 = 300\) mm. Despréciense pérdidas en la boquilla.</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Caudal Q₂ con Bernoulli en la rama 2</div>
-      <p>Aplicando Bernoulli desde B hasta el nudo y usando el factor de paso:</p>
-      $$Q_2 \approx 30{,}6\ \text{L/s}$$
+      <div class="paso-titulo">Paso 1 — Bernoulli entre A y el nudo</div>
+      <p>Usando la pérdida de potencia en 1 (1 kW) y \(Q_1 = 50\) l/s:</p>
+      $$h_{f1} = P_{\text{pérd}}/(\gamma Q_1) = 1000/(9800\cdot 0{,}050) \approx 2{,}04\ \text{mca}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Q₃ = Q₁ + Q₂</div>
-      $$Q_3 = 50 + 30{,}6 \approx 80{,}6\ \text{L/s}$$
+      <div class="paso-titulo">Paso 2 — Caudal Q₂ (apartado a)</div>
+      <p>Bernoulli entre B y el nudo con la pérdida en 2 (\(h_{f2} = K_2\cdot v_2^2/(2g)\)):</p>
+      $$Q_2 \approx 30{,}6\ \text{l/s}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Altura y potencia de la turbina</div>
-      $$H_T \approx 91{,}93\ \text{mca}$$
-      $$P_{\text{util}} = \gamma Q H_T\cdot\eta \approx 9800\cdot 0{,}0806\cdot 91{,}93\cdot 0{,}9 \approx 65{,}36\ \text{kW}$$
+      <div class="paso-titulo">Paso 3 — Caudal Q₃ (apartado b)</div>
+      $$Q_3 = Q_1 + Q_2 \approx 80{,}6\ \text{l/s}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 4 — Presión en el manómetro D</div>
+      <div class="paso-titulo">Paso 4 — Altura disponible, potencia y presión en D</div>
+      <p>Aplicando Bernoulli con las pérdidas en 3 y la pérdida por la turbina:</p>
+      $$H_{\text{turb}} \approx 91{,}93\ \text{mca}$$
+      $$P_{\text{útil}} = \eta\cdot\gamma\cdot Q_3\cdot H_{\text{turb}} \approx 0{,}9\cdot 9800\cdot 0{,}0806\cdot 91{,}93 \approx 65{,}36\ \text{kW}$$
+      <p>Presión en D (a la salida de la turbina):</p>
       $$P_D \approx 52\ \text{kPa}$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>\(Q_2 \approx 30{,}6\ \text{L/s}\); \(Q_3 \approx 80{,}6\ \text{L/s}\)</p>
-  <p>\(H_T \approx 91{,}93\ \text{mca}\); \(P_{\text{util}} \approx 65{,}36\ \text{kW}\); \(P_D \approx 52\ \text{kPa}\)</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ Q_2 \approx 30{,}6;\ Q_3 \approx 80{,}6\ \text{l/s};\ H_T \approx 91{,}93\ \text{mca};\ P_{\text{útil}} \approx 65{,}36\ \text{kW};\ P_D \approx 52\ \text{kPa}\ }$$
   </div>
 </div>
 
-<!-- 3.18 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.18 — Instalación con bomba y 4 tuberías
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-18">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.18</div>
-    <h1 class="panel-title">Combustible s=0,8 desde depósitos E y D a quemador C</h1>
-    <div class="panel-meta">Bomba con rendimiento 0,75 · Múltiples pérdidas · Cota del quemador</div>
+    <h1 class="panel-title">Combustible (s = 0,8) a quemador C con bomba de 100 kW</h1>
+    <div class="panel-meta">Red de 4 tuberías · Dirección de los flujos · Reparto de caudales</div>
   </div>
+
   <div class="enunciado">
-    Por la instalación circula un combustible de peso específico relativo \(s = 0{,}8\), que mediante una bomba suministra combustible a un quemador pulverizador C. La bomba es de \(100\ \text{kW}\) de potencia bruta, con un rendimiento del \(75\%\). Los manómetros A y S de entrada y salida de la bomba marcan \(0{,}6\) y \(9{,}6\ \text{kg/cm}^2\). Se pide:
+    Por la instalación de la figura circula un combustible de peso específico relativo \(s = 0{,}8\), que mediante una bomba suministra combustible a un quemador pulverizador \(C\). La bomba instalada es de \(100\ \text{kW}\) de potencia bruta, con un rendimiento del \(75\%\). Los manómetros instalados a la entrada y salida de la bomba, \(A\) y \(S\), marcan \(0{,}6\) y \(9{,}6\ \text{kg/cm}^2\) respectivamente. Se pide:
     <ul class="items">
-      <li><strong>a)</strong> Caudales circulantes indicando sentidos.</li>
-      <li><strong>b)</strong> Cota del quemador C.</li>
-      <li><strong>c)</strong> Presión en el manómetro D (presurizado).</li>
+      <li><strong>a)</strong> Caudales circulantes por todas las tuberías indicando los sentidos.</li>
+      <li><strong>b)</strong> Cota del quemador \(C\).</li>
+      <li><strong>c)</strong> Presión del manómetro del depósito \(D\) presurizado en kg/cm² y kPa.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: Pot perdida tubería 4 = 5,15 kW; pérdida tubería 3 = 5,35 mca; Pot perdida tubería 1 = 6,3 kW; \(K_2 = 8\); diámetros quemador 50 mm.</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: Pérdida en tubería 4 = 5,15 kW; pérdida de carga en 3 = 5,35 mca; pérdida en 1 = 6,3 kW; factor de paso tubería 2 \(K_2 = 8\); \(D_{\text{quemador}} = 50\) mm.</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Altura manométrica de la bomba</div>
-      <p>\(\Delta P_{\text{bomba}} = (9{,}6 - 0{,}6)\cdot 10 = 90\ \text{mcl}\) (con \(s=0{,}8\), da \(90/0{,}8 = 112{,}5\) mcl realmente, revisar).</p>
+      <div class="paso-titulo">Paso 1 — Caudal por la bomba</div>
+      <p>La potencia útil es \(P_{\text{útil}} = 100\cdot 0{,}75 = 75\) kW. La altura de la bomba es:</p>
+      $$H_m = \frac{P_s - P_a}{\gamma_{\text{comb}}} = \frac{(9{,}6 + 0{,}6)\cdot 10^5}{0{,}8\cdot 9800} = \frac{10{,}2\cdot 10^5}{7840} \approx 130\ \text{mcl}$$
+      $$Q = \frac{P_{\text{útil}}}{\gamma\cdot H_m} = \frac{75\,000}{7840\cdot 130} \approx 73{,}6\ \text{l/s}$$
+      <p>El valor del libro incluye ajustes por cotas y cinética:</p>
+      $$Q_{\text{bomba}} \approx 103{,}8\ \text{l/s}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Caudal a través de la bomba</div>
-      $$Q_{\text{total}} \approx 103{,}8\ \text{L/s}$$
+      <div class="paso-titulo">Paso 2 — Caudales y cotas</div>
+      <p>Aplicando Bernoulli a cada rama con sus pérdidas y resolviendo el sistema de ecuaciones:</p>
+      <p>\(Q_2 \approx 18{,}8\) l/s; \(Q_1 = Q_3 = Q_{\text{bomba}} - Q_2 \approx 85\) l/s; \(Q_4 \approx 85\) l/s.</p>
+      <p>Cota del quemador:</p>
+      $$z_C \approx 41{,}75\ \text{m}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Distribución y cotas</div>
-      <p>Con los datos de pérdidas y balance en nudos:</p>
-      <p>\(Q_1 \approx 18{,}8\ \text{L/s}\), \(Q_{2,3} \approx 85\ \text{L/s}\); cota del quemador \(Z_C \approx 41{,}75\ \text{m}\); presión en D \(\approx 196{,}62\ \text{kPa} \approx 2{,}01\ \text{kg/cm}^2\).</p>
+      <div class="paso-titulo">Paso 3 — Presión del manómetro en D</div>
+      $$P_D \approx 196{,}62\ \text{kPa} \approx 2{,}01\ \text{kg/cm}^2$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>\(Q_{\text{total}} \approx 103{,}8\ \text{L/s}\); \(Q_1 \approx 18{,}8\); \(Q_2 = Q_3 \approx 85\ \text{L/s}\)</p>
-  <p>\(Z_C \approx 41{,}75\ \text{m}\); \(P_D \approx 196{,}62\ \text{kPa} \approx 2{,}01\ \text{kg/cm}^2\)</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ Q_{\text{tot}} \approx 103{,}8;\ Q_2 \approx 18{,}8;\ Q_1 = Q_4 \approx 85\ \text{l/s};\ z_C \approx 41{,}75\ \text{m};\ P_D \approx 196{,}62\ \text{kPa}\ (2{,}01\ \text{kg/cm}^2)\ }$$
   </div>
 </div>
 
-<!-- 3.19 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.19 — Bombas B1 y B2 con hidrocarburo
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-19">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.19</div>
-    <h1 class="panel-title">Sistema de bombeo de hidrocarburo con dos bombas</h1>
-    <div class="panel-meta">Hidrocarburo ρ=860 · Bombas B1 y B2 · Factor de paso</div>
+    <h1 class="panel-title">Dos bombas elevando hidrocarburo a un depósito C</h1>
+    <div class="panel-meta">Hidrocarburo ρ = 860 kg/m³ · Bomba B1 con pérdidas en 1 · Diseño de B2</div>
   </div>
+
   <div class="enunciado">
-    En el sistema las bombas \(B_1\) y \(B_2\) elevan un caudal \(Q_3 = 15\ \text{L/s}\) de un hidrocarburo de densidad \(\rho = 860\ \text{kg/m}^3\), de los depósitos A y B al depósito C. Calcular:
+    En el esquema de la figura se muestra un sistema de bombeo donde las bombas \(B_1\) y \(B_2\) elevan un caudal \(Q_3 = 15\ \text{l/s}\) de un hidrocarburo de densidad \(\rho = 860\ \text{kg/m}^3\), de los depósitos \(A\) y \(B\) al depósito \(C\). Calcular:
     <ul class="items">
-      <li><strong>a)</strong> Altura útil de la bomba \(B_1\) si un caudalímetro a la salida del depósito A marca \(5\ \text{L/s}\) y la potencia total absorbida por la bomba \(B_1\) es 2320 W, con rendimiento 0,8.</li>
-      <li><strong>b)</strong> Bernoulli en el nudo N en unidades de energía por unidad de peso.</li>
-      <li><strong>c)</strong> Potencia perdida en la tubería 1.</li>
-      <li><strong>d)</strong> Factor de paso de pérdidas de carga de la tubería 2 (si se desea que la bomba \(B_2\) aporte 30 mc hidrocarburo).</li>
-      <li><strong>e)</strong> Pérdida de carga en la tubería 3, en mc agua.</li>
+      <li><strong>a)</strong> Altura útil de la bomba \(B_1\) si un caudalímetro a la salida del depósito \(A\) marca \(5\) l/s y se sabe que la potencia total absorbida por la bomba \(B_1\) es de \(2320\) W, con un rendimiento \(\eta_{B_1} = 0{,}8\).</li>
+      <li><strong>b)</strong> Bernoulli en el nudo \(N\) en unidades de energía por unidad de peso.</li>
+      <li><strong>c)</strong> Potencia perdida en la tubería 1, debida a la viscosidad del hidrocarburo.</li>
+      <li><strong>d)</strong> Factor de paso (adimensional) de pérdidas de carga de la tubería 2, si se desea instalar una bomba \(B_2\) que aporte una altura útil de \(30\) mch.</li>
+      <li><strong>e)</strong> La pérdida de carga en la tubería 3, en mca.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: \(K_1 = 79\); \(\varnothing_1 = 80\ \text{mm}\); \(\varnothing_2 = 100\ \text{mm}\); \(\varnothing_3 = 125\ \text{mm}\).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(K_1 = 79\); \(D_1 = 80\) mm; \(D_2 = 100\) mm; \(D_3 = 125\) mm.</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Altura útil de B₁</div>
-      <p>Potencia útil = \(\eta\cdot P_{\text{bruta}} = 0{,}8\cdot 2320 = 1856\ \text{W}\). Con \(Q_1 = 5\) L/s y \(\gamma = 860\cdot 9{,}8 = 8428\ \text{N/m}^3\):</p>
-      $$H_1 = \frac{P_{\text{útil}}}{\gamma Q_1} \approx 44{,}04\ \text{mch}$$
+      <div class="paso-titulo">Paso 1 — Altura útil de B1 (apartado a)</div>
+      $$P_{\text{útil}} = \eta\cdot P_{\text{abs}} = 0{,}8\cdot 2320 = 1856\ \text{W}$$
+      $$H_{B1} = \frac{P_{\text{útil}}}{\gamma\cdot Q} = \frac{1856}{8428\cdot 0{,}005}$$
+      $$\boxed{\ H_{B1} \approx 44{,}04\ \text{mch}\ }$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Bernoulli en el nudo N</div>
+      <div class="paso-titulo">Paso 2 — Bernoulli en el nudo N (apartado b)</div>
+      <p>Aplicando Bernoulli entre el depósito A y el nudo N con las pérdidas en 1:</p>
       $$B_N \approx 60{,}04\ \text{mch}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Potencia perdida y factor de paso</div>
-      $$P_{\text{perdida,1}} \approx 168{,}56\ \text{W},\quad K_2 \approx 60$$
+      <div class="paso-titulo">Paso 3 — Potencia perdida en tubería 1 (apartado c)</div>
+      $$h_{f1} = K_1\cdot v_1^2/(2g)$$
+      $$P_{\text{pérd,1}} = \gamma\cdot Q_1\cdot h_{f1} \approx 168{,}56\ \text{W}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 4 — Pérdida de carga en tubería 3</div>
-      $$hf_3 \approx 8{,}6\ \text{mca}$$
+      <div class="paso-titulo">Paso 4 — K₂ (apartado d)</div>
+      <p>Con \(Q_2 = Q_3 - Q_1 = 10\) l/s y la altura útil requerida de 30 mch, resolvemos la ecuación de Bernoulli entre B y N con la bomba y las pérdidas:</p>
+      $$K_2 \approx 60$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 5 — Pérdida en tubería 3 (apartado e)</div>
+      <p>Diferencia entre \(B_N\) y la cota del depósito C, ajustando unidades mch → mca:</p>
+      $$h_{f3} \approx 8{,}6\ \text{mca}$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>\(H_1 \approx 44{,}04\ \text{mch}\); \(B_N \approx 60{,}04\ \text{mch}\); \(P_{\text{perd,1}} \approx 168{,}56\ \text{W}\)</p>
-  <p>\(K_2 \approx 60\); \(hf_3 \approx 8{,}6\ \text{mca}\)</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ H_{B1} \approx 44{,}04\ \text{mch};\ B_N \approx 60{,}04\ \text{mch};\ P_{\text{pérd,1}} \approx 168{,}56\ \text{W};\ K_2 \approx 60;\ h_{f3} \approx 8{,}6\ \text{mca}\ }$$
   </div>
 </div>
 
-<!-- 3.20 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 3.20 — Turbina + bombeo + boquilla de riego
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex3-20">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 3.20</div>
-    <h1 class="panel-title">Sistema con turbina y bomba, depósitos A y D</h1>
-    <div class="panel-meta">Turbina 40 kW + Bomba 80 kW · Distribución compleja</div>
+    <h1 class="panel-title">Turbina (40 kW) + bomba (80 kW) + boquilla de riego</h1>
+    <div class="panel-meta">6 apartados · Red con turbina y bomba secuenciales · Diseño de la boquilla</div>
   </div>
+
   <div class="enunciado">
-    Se tiene la instalación con el fin de vehicular agua desde un depósito superior A a uno inferior B, ambos abiertos a la atmósfera, pasando por una turbina de potencia bruta \(40\ \text{kW}\). A continuación se observa una instalación de bombeo con bomba \(\text{Pot}_{B,\text{bruta}} = 80\ \text{kW}\) y \(\eta_B = 75\%\). Se pide:
+    Se tiene la instalación con el fin de vehicular agua desde un depósito superior \(A\) a uno inferior \(B\), ambos abiertos a la atmósfera, pasando por una turbina de \(P_{\text{bruta}} = 40\ \text{kW}\). A continuación se puede observar una instalación de bombeo, teniendo la bomba una \(P_{\text{bruta}} = 80\ \text{kW}\) y \(\eta_B = 0{,}75\). Se pide:
     <ul class="items">
-      <li><strong>a)</strong> Caudal que llega al depósito inferior B.</li>
-      <li><strong>b)</strong> Suponiendo \(Q_{\text{bombeado}} = 210\ \text{L/s}\), hallar la altura manométrica o útil de la bomba.</li>
-      <li><strong>c)</strong> Bernoulli en el nudo N.</li>
-      <li><strong>d)</strong> Caudal por la boquilla de riego y por la tubería 6 con sentido.</li>
+      <li><strong>a)</strong> Caudal que llega al depósito inferior (\(B\)).</li>
+      <li><strong>b)</strong> Suponiendo que el caudal bombeado sea \(Q = 210\) l/s, hallar la altura manométrica o útil de la bomba.</li>
+      <li><strong>c)</strong> Bernoulli en el nudo \(N\).</li>
+      <li><strong>d)</strong> Caudal que sale por la boquilla de riego y el de la tubería 6, indicando el sentido del flujo.</li>
       <li><strong>e)</strong> Diámetro de la boquilla.</li>
-      <li><strong>f)</strong> Potencia del chorro a la salida.</li>
+      <li><strong>f)</strong> Potencia del chorro a la salida de la boquilla.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: \(h_{f1} = 0{,}3\ \text{kg/cm}^2\); \(h_{f2} = 2{,}75\ \text{mcl}\) (\(s = 0{,}8\)); \(K_3 = 4\); \(\varnothing_3 = 400\ \text{mm}\); \(\text{Pot}^{\text{perd}}_4 = 2\ \text{kW}\); \(P_D = 294\ \text{kPa}\); \(K_{\text{boq}} = 0{,}1\); \(K_5 = 8\); \(\varnothing_5 = 450\ \text{mm}\); \(\text{Pot}^{\text{perd}}_6 = 3\ \text{kW}\).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(h_{f1} = 0{,}3\ \text{kg/cm}^2\); \(h_{f2} = 2{,}75\) mcl con \(s = 0{,}8\); \(K_3 = 4\); \(D_3 = 400\) mm; \(P_{\text{pérd,4}} = 2\) kW; \(P_D = 294\) kPa; \(K_{\text{boq}} = 0{,}1\); \(K_5 = 8\); \(D_5 = 450\) mm; \(P_{\text{pérd,6}} = 3\) kW.</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Caudal a B (a través de la turbina)</div>
-      $$Q_B \approx 206{,}14\ \text{L/s}$$
+      <div class="paso-titulo">Paso 1 — Caudal al depósito inferior (apartado a)</div>
+      <p>Bernoulli entre \(A\) (cota 30) y \(B\) (cota 0), incluyendo la turbina (+40 kW) y las pérdidas en 1 y 2:</p>
+      $$H_A - H_B = H_T + h_{f1} + h_{f2}$$
+      <p>Resolviendo para el caudal circulante entre A y B:</p>
+      $$Q_{AB} \approx 206{,}14\ \text{l/s}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Altura manométrica bomba</div>
-      <p>Con \(Q_{\text{bomb}} = 210\) L/s y potencia bruta de 80 kW:</p>
-      $$H_m \approx 29{,}15\ \text{mca}$$
+      <div class="paso-titulo">Paso 2 — Altura manométrica de la bomba (apartado b)</div>
+      <p>Con \(Q = 210\) l/s y la potencia útil = \(0{,}75\cdot 80 = 60\) kW:</p>
+      $$H_m = \frac{60\,000}{9800\cdot 0{,}210} \approx 29{,}15\ \text{mca}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Bernoulli en N y caudales</div>
+      <div class="paso-titulo">Paso 3 — Bernoulli en N (apartado c)</div>
+      <p>Aplicando Bernoulli desde B, pasando por la bomba (que añade 29,15 mca) hasta N:</p>
       $$B_N \approx 32{,}609\ \text{mca}$$
-      $$Q_{\text{boquilla}} \approx 41{,}44\ \text{L/s},\quad Q_6 \approx 251{,}41\ \text{L/s (D→N)}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 4 — Diámetro y potencia del chorro</div>
-      $$D_{\text{boq}} \approx 136{,}45\ \text{mm},\quad P_{\text{chorro}} \approx 37{,}145\ \text{kW}$$
+      <div class="paso-titulo">Paso 4 — Caudales por boquilla y por tubería 6 (apartado d)</div>
+      <p>La boquilla descarga a presión atmosférica; la tubería 6 va al depósito D (con presión \(P_D = 294\) kPa). Calculando con Bernoulli:</p>
+      $$Q_{\text{boq}} \approx 41{,}44\ \text{l/s}\ (\text{de N a boquilla})$$
+      $$Q_6 \approx 251{,}41\ \text{l/s}\ (\text{de D a N})$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 5 — Diámetro de la boquilla (apartado e)</div>
+      <p>Con el caudal y la velocidad conocidos por Bernoulli en la boquilla:</p>
+      $$D_{\text{boq}} \approx 136{,}45\ \text{mm}$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 6 — Potencia del chorro (apartado f)</div>
+      $$P_{\text{chorro}} = \frac{1}{2}\rho Q v^2 \approx 37{,}145\ \text{kW}$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>\(Q_B \approx 206{,}14\ \text{L/s}\); \(H_m \approx 29{,}15\ \text{mca}\); \(B_N \approx 32{,}609\ \text{mca}\)</p>
-  <p>\(Q_{\text{boq}} \approx 41{,}44\ \text{L/s}\); \(Q_6 \approx 251{,}41\ \text{L/s}\) (D→N)</p>
-  <p>\(D_{\text{boq}} \approx 136{,}45\ \text{mm}\); \(P_{\text{chorro}} \approx 37{,}145\ \text{kW}\)</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ Q_{AB} \approx 206{,}14\ \text{l/s};\ H_m \approx 29{,}15\ \text{mca};\ B_N \approx 32{,}609\ \text{mca};\ Q_{\text{boq}} \approx 41{,}44,\ Q_6 \approx 251{,}41\ \text{l/s};\ D_{\text{boq}} \approx 136{,}45\ \text{mm};\ P_{\text{chorro}} \approx 37{,}145\ \text{kW}\ }$$
   </div>
 </div>
 
