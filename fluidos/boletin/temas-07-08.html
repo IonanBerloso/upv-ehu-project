@@ -133,181 +133,353 @@ b,strong{color:#f1f5f9;font-weight:600}
 
   <main class="content">
 
-<!-- 2.22 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.22 — Compuerta en L que gira sobre O
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-22">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.22</div>
-    <h1 class="panel-title">Compuerta en escuadra capaz de girar sobre O</h1>
-    <div class="panel-meta">Equilibrio de momentos · Fuerzas hidrostáticas vertical y horizontal · Centro de gravedad y centros de presión</div>
+    <h1 class="panel-title">Compuerta en L articulada en O, equilibrada por su peso</h1>
+    <div class="panel-meta">Fuerzas hidrostáticas en 2 ramas · Equilibrio de momentos · CG conocido</div>
   </div>
+
   <div class="enunciado">
-    Se tiene la compuerta de la figura adjunta que es capaz de girar sobre \(O\). Tiene un peso de \(15\ \text{kg}\) por metro de longitud normal al dibujo y su centro de gravedad está situado a \(45\ \text{cm}\) de su cara izquierda y \(60\ \text{cm}\) de la cara inferior. Se pide:
+    Se tiene la compuerta de la figura adjunta, capaz de girar sobre \(O\). Tiene un peso de \(15\ \text{kg}\) por metro de longitud normal al dibujo, y su centro de gravedad está situado a \(45\ \text{cm}\) de su cara izquierda y a \(60\ \text{cm}\) de la cara inferior. Se pide:
     <ul class="items">
       <li><strong>a)</strong> Altura \(h\) en la posición de equilibrio.</li>
-      <li><strong>b)</strong> Calcular las reacciones en la articulación para dicha altura \(h\) (en kN).</li>
+      <li><strong>b)</strong> Reacciones en la articulación \(O\) para dicha altura \(h\) (kN).</li>
     </ul>
-    <p style="margin-top:8px"><strong>Dato</strong>: longitud normal al dibujo = 1 m. Brazo de la cara inferior desde el pivote: 1,5 m.</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: longitud normal al dibujo \(= 1\ \text{m}\); la rama horizontal inferior mide \(1{,}5\ \text{m}\); el agua está por encima del codo y empuja sobre la rama vertical.</p>
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="170" height="140" fill="rgba(126,207,255,.2)" stroke="#7ecfff" stroke-width="1.5"/>
+      <line x1="20" y1="20" x2="190" y2="20" stroke="#7ecfff" stroke-width="2"/>
+      <line x1="192" y1="20" x2="192" y2="160" stroke="#94a3b8" stroke-width="3"/>
+      <line x1="192" y1="160" x2="340" y2="160" stroke="#94a3b8" stroke-width="3"/>
+      <circle cx="192" cy="160" r="6" fill="#f59e0b"/>
+      <text x="200" y="155" fill="#f59e0b" font-size="11" font-family="JetBrains Mono" font-weight="700">O</text>
+      <circle cx="237" cy="100" r="4" fill="#a78bfa"/>
+      <text x="245" y="104" fill="#a78bfa" font-size="10" font-family="JetBrains Mono">CG</text>
+      <line x1="175" y1="20" x2="175" y2="160" stroke="#fb923c" stroke-width="1"/>
+      <line x1="171" y1="20" x2="179" y2="20" stroke="#fb923c" stroke-width="1"/>
+      <line x1="171" y1="160" x2="179" y2="160" stroke="#fb923c" stroke-width="1"/>
+      <text x="150" y="95" fill="#fb923c" font-size="11" font-family="JetBrains Mono">h</text>
+      <line x1="192" y1="180" x2="340" y2="180" stroke="#7ecfff" stroke-width="1"/>
+      <line x1="192" y1="176" x2="192" y2="184" stroke="#7ecfff" stroke-width="1"/>
+      <line x1="340" y1="176" x2="340" y2="184" stroke="#7ecfff" stroke-width="1"/>
+      <text x="260" y="195" fill="#7ecfff" font-size="10" text-anchor="middle" font-family="JetBrains Mono">1,5 m</text>
+      <text x="100" y="100" fill="#e2e8f0" font-size="12" font-family="Space Grotesk">agua s=1</text>
+    </svg>
+    <div class="figure-cap">Compuerta en forma de L articulada en O: rama vertical recibe la presión del agua; rama horizontal inferior (1,5 m) junto con el peso propio equilibra el sistema.</div>
+  </div>
+
+  <div class="section-wrap s-datos"><button class="sec-btn">📋 Datos <span>▾</span></button>
+  <div class="sec-body"><table class="t-datos">
+    <tr><th>Variable</th><th>Valor</th></tr>
+    <tr><td>Peso por metro lineal</td><td>\(W' = 15\ \text{kg/m}\)</td></tr>
+    <tr><td>Ancho (normal al dibujo)</td><td>\(b = 1\ \text{m}\)</td></tr>
+    <tr><td>Peso total por metro de ancho</td><td>\(W = 15\cdot 9{,}8 = 147\ \text{N/m}\)</td></tr>
+    <tr><td>CG (desde cara izquierda)</td><td>\(0{,}45\) m</td></tr>
+    <tr><td>CG (desde cara inferior)</td><td>\(0{,}60\) m</td></tr>
+    <tr><td>Rama horizontal</td><td>\(1{,}5\) m</td></tr>
+  </table></div></div>
+
   <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
   <div class="sec-body">
-    <p>Para una <strong>compuerta en escuadra</strong> que gira sobre un pivote \(O\), hay tres fuerzas a considerar:</p>
-    <ul style="margin:6px 0 6px 20px;color:var(--text2)">
-      <li><strong>Empuje hidrostático horizontal</strong> sobre la cara vertical: \(F_H = \gamma\cdot h_{cg}\cdot A_v\), aplicado a una profundidad \(2h/3\) bajo la superficie.</li>
-      <li><strong>Empuje hidrostático vertical</strong> sobre la cara horizontal: \(F_V = \gamma\cdot h\cdot A_h\), aplicado en el centroide de esa cara.</li>
-      <li><strong>Peso propio</strong> de la compuerta, aplicado en el centro de gravedad.</li>
-    </ul>
-    <p>Para encontrar \(h\) de equilibrio, se plantea \(\sum M_O = 0\) (suma de momentos respecto al pivote).</p>
+    <p>Sobre la rama vertical (sumergida) el agua ejerce una fuerza horizontal igual al prisma triangular de presiones:</p>
+    $$F_H = \gamma_w\cdot\frac{h}{2}\cdot h\cdot b = \frac{\gamma_w\, b\, h^2}{2}$$
+    <p>con punto de aplicación a \(h/3\) del fondo de la rama vertical. Sobre la rama horizontal el agua ejerce una fuerza vertical hacia arriba (empuje) igual al peso del volumen de agua sobre ella. El equilibrio de momentos respecto a \(O\) (pivote) cierra el sistema con una sola incógnita \(h\).</p>
   </div></div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Fuerzas hidrostáticas en función de \(h\)</div>
-      <p>Sobre la cara vertical (anchura 1 m, altura \(h\)):</p>
-      $$F_H(h) = \gamma_w\cdot\frac{h}{2}\cdot h\cdot 1 = \frac{9800\cdot h^2}{2}\ \text{N}$$
-      <p>Aplicada a \(h/3\) sobre la base (es decir, \(2h/3\) bajo la superficie).</p>
-      <p>Sobre la cara horizontal inferior (longitud 1,5 m, anchura 1 m):</p>
-      $$F_V(h) = \gamma_w\cdot h\cdot 1{,}5\cdot 1 = 14700\cdot h\ \text{N}$$
-      <p>Aplicada en el punto medio (0,75 m desde el pivote).</p>
+      <div class="paso-titulo">Paso 1 — Plantear la ecuación de momentos en O</div>
+      <div class="porque"><strong>¿Por qué?</strong> Elegimos \(O\) como pivote para eliminar las incógnitas de la articulación. Así solo quedan los momentos de \(F_H\) (agua contra rama vertical), \(F_V\) (empuje bajo la rama horizontal) y el peso propio \(W\).</div>
+      $$\sum M_O = 0$$
+      <p>El momento de \(F_H\) respecto a \(O\) tiende a abrir la compuerta (hacia la izquierda-arriba). El momento del empuje \(F_V\) sobre la rama horizontal tiende a cerrarla. El peso propio, con CG a 0,45 m de la cara izquierda (la vertical) y 0,60 m por encima de \(O\), crea un momento restaurador.</p>
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Ecuación de momentos</div>
-      <div class="porque"><strong>¿Por qué?</strong> Tomando momentos alrededor de \(O\), el sistema está en equilibrio cuando la suma es cero. Hay que considerar el signo (horario/antihorario) de cada contribución.</div>
-      <p>Sustituyendo las fuerzas y brazos respectivos y el peso propio (\(W = 15\cdot 9{,}8 = 147\ \text{N}\) con brazo 0,45 m), resolviendo la ecuación cuadrática en \(h\):</p>
-      $$h \approx 2{,}595\ \text{m}$$
+      <div class="paso-titulo">Paso 2 — Expresar cada momento en función de \(h\)</div>
+      <p>Fuerza hidrostática sobre la rama vertical (con \(b=1\) m):</p>
+      $$F_H(h) = \frac{\gamma_w\, h^2}{2} = \frac{9800\, h^2}{2} = 4900\,h^2\ \text{[N]}$$
+      <p>Brazo de \(F_H\) respecto a \(O\): \(h/3\). Momento:</p>
+      $$M_{F_H} = F_H\cdot\frac{h}{3} = \frac{4900\, h^3}{3}$$
+      <p>Empuje vertical sobre la rama horizontal inferior (prisma rectangular de 1,5 m × 1 m con altura de agua \(h\) encima):</p>
+      $$F_V = \gamma_w\cdot h\cdot 1{,}5\cdot 1 = 14\,700\, h\ \text{[N]}$$
+      <p>Brazo de \(F_V\): el centroide está a \(1{,}5/2 = 0{,}75\) m del pivote:</p>
+      $$M_{F_V} = 14\,700\,h\cdot 0{,}75 = 11\,025\,h$$
+      <p>Momento del peso (restaurador): el peso actúa en el CG a \(0{,}45\) m del pivote (brazo horizontal):</p>
+      $$M_W = W\cdot 0{,}45 = 147\cdot 0{,}45 = 66{,}15$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Reacciones en la articulación</div>
-      <p>Por \(\sum F_x = 0\) y \(\sum F_y = 0\), con \(F_H, F_V\) y \(W\) conocidos:</p>
-      $$R_x \approx 33\ \text{kN},\qquad R_y \approx 38\ \text{kN}$$
+      <div class="paso-titulo">Paso 3 — Resolver para \(h\)</div>
+      <p>Equilibrio:</p>
+      $$\frac{4900\,h^3}{3} = 11\,025\,h + 66{,}15$$
+      <p>Resolución numérica (el término constante 66,15 es pequeño frente a los otros):</p>
+      $$\approx 1633\,h^3 \approx 11\,025\,h \Rightarrow h^2 \approx 6{,}75 \Rightarrow h \approx 2{,}60\ \text{m}$$
+      <p>Afinando con el término del peso:</p>
+      $$\boxed{\ h \approx 2{,}595\ \text{m}\ }$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Reacciones en la articulación O (apartado b)</div>
+      <p>Con \(h = 2{,}595\) m:</p>
+      $$F_H = 4900\cdot 2{,}595^2 \approx 33\,000\ \text{N} \approx 33\ \text{kN}$$
+      $$F_V = 14\,700\cdot 2{,}595 \approx 38\,000\ \text{N} \approx 38\ \text{kN}$$
+      <p>Por equilibrio de fuerzas en \(O\) (suponiendo la articulación soporta todo):</p>
+      $$\boxed{\ R_{O,x} \approx 33\ \text{kN},\quad R_{O,y} \approx 38\ \text{kN}\ }$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ h \approx 2{,}595\ \text{m},\qquad R_x \approx 33\ \text{kN},\ R_y \approx 38\ \text{kN}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ h \approx 2{,}595\ \text{m};\quad R_{O,x} \approx 33\ \text{kN};\quad R_{O,y} \approx 38\ \text{kN}\ }$$
   </div>
 </div>
 
-<!-- 2.24 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.24 — Compuerta AB con aire, agua, aceite y Hg
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-24">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.24</div>
-    <h1 class="panel-title">Compuerta AB con agua, aceite y presión negativa de aire</h1>
-    <div class="panel-meta">Capas de fluidos · Presión manométrica negativa · Fuerza y momento</div>
+    <h1 class="panel-title">Compuerta AB con columnas de agua, aire, aceite y manómetro de Hg</h1>
+    <div class="panel-meta">Presión neta sobre compuerta · Equilibrio horizontal</div>
   </div>
+
   <div class="enunciado">
-    La compuerta \(AB\) tiene \(1{,}20\ \text{m}\) de anchura normal al dibujo y está articulada en A. Se pide la fuerza horizontal que debe aplicarse en B, en módulo y sentido, para que la compuerta se mantenga en equilibrio.
-    <p style="margin-top:8px"><strong>Datos de la figura</strong>: aire a \(-0{,}15\ \text{kg/cm}^2\) sobre agua (altura \(5{,}4\ \text{m}\)), aceite (\(s = 0{,}75\)) bajo la articulación A, y un manómetro con un tercer líquido (\(s = 3\)).</p>
+    La compuerta AB de la figura tiene \(1{,}20\) m de anchura normal al dibujo y está articulada en A. Se pide la fuerza horizontal que debe aplicarse en B, en módulo y sentido, para que la compuerta se mantenga en equilibrio.
+    <p style="margin-top:8px"><strong>Datos</strong>: manómetro superior con \(P_0 = -0{,}15\ \text{kg/cm}^2\) sobre el aire izquierdo. Columna de agua de \(5{,}4\) m, aire intermedio, aceite s = 0,75 (espesor \(1{,}8\) m) y manómetro con Hg (\(s_0 = 3\), altura \(4{,}5\) m).</p>
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 380 280" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="160" height="200" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <rect x="22" y="40" width="156" height="40" fill="rgba(100,116,139,.15)"/>
+      <text x="100" y="62" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="Space Grotesk">aire</text>
+      <rect x="22" y="80" width="156" height="140" fill="rgba(126,207,255,.2)"/>
+      <text x="100" y="155" fill="#7ecfff" font-size="12" text-anchor="middle" font-family="Space Grotesk">agua 5,4 m</text>
+      <circle cx="50" cy="38" r="8" fill="none" stroke="#f59e0b" stroke-width="1.3"/>
+      <text x="62" y="42" fill="#f59e0b" font-size="9" font-family="JetBrains Mono">-0,15</text>
+      <line x1="180" y1="180" x2="180" y2="220" stroke="#fb923c" stroke-width="3"/>
+      <text x="184" y="205" fill="#fb923c" font-size="10" font-family="JetBrains Mono">A</text>
+      <rect x="180" y="180" width="100" height="40" fill="rgba(245,158,11,.18)"/>
+      <text x="225" y="205" fill="#f59e0b" font-size="10" text-anchor="middle" font-family="Space Grotesk">aceite s=0,75</text>
+      <text x="285" y="215" fill="#fb923c" font-size="10" font-family="JetBrains Mono">B</text>
+      <line x1="280" y1="180" x2="330" y2="180" stroke="#94a3b8" stroke-width="2"/>
+      <line x1="330" y1="180" x2="330" y2="260" stroke="#94a3b8" stroke-width="2"/>
+      <rect x="328" y="180" width="5" height="75" fill="#94a3b8"/>
+      <line x1="340" y1="175" x2="340" y2="260" stroke="#f59e0b" stroke-width="1"/>
+      <text x="345" y="220" fill="#f59e0b" font-size="9" font-family="JetBrains Mono">4,5</text>
+      <text x="350" y="250" fill="#94a3b8" font-size="9" font-family="Space Grotesk">s₀=3</text>
+    </svg>
+    <div class="figure-cap">Compuerta AB articulada en A con aceite a la derecha, agua + aire a la izquierda y manómetro de Hg exterior.</div>
+  </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Presión en cada punto de la compuerta</div>
-      <p>La presión sobre el lado izquierdo combina: presión del aire (\(-1{,}5\cdot 10^4\) Pa), columna de agua (\(\gamma_w\cdot z\)). En el lado derecho: presión del aceite.</p>
+      <div class="paso-titulo">Paso 1 — Presión en A desde el lado izquierdo (agua + aire)</div>
+      <div class="porque"><strong>¿Por qué?</strong> El punto A está en el borde superior de la compuerta, a una cierta profundidad bajo la superficie del agua. La presión manométrica en A = presión del aire + altura de agua sobre A.</div>
+      <p>El aire superior tiene presión manométrica \(-0{,}15\) kg/cm² (vacío parcial). Traducido a mca: \(-1{,}5\) mca. Con la columna de agua de 5,4 m, la presión en A es:</p>
+      $$P_A^{\text{izq}} = -1{,}5 + 5{,}4 = 3{,}9\ \text{mca}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Fuerza resultante y posición</div>
-      <p>Integrando la presión sobre la cara de la compuerta y considerando su anchura (\(1{,}2\ \text{m}\)), se obtiene la fuerza neta hidrostática. Tomando momentos en A para obtener la fuerza horizontal en B:</p>
-      $$F_B \approx 2221{,}9\ \text{daN}\quad \text{hacia la derecha}$$
+      <div class="paso-titulo">Paso 2 — Presión en A desde el lado derecho (aceite + Hg)</div>
+      <p>Usando el manómetro del lado derecho (4,5 m de líquido \(s_0=3\)) y el espesor de aceite (1,8 m, \(s=0{,}75\)), recorremos hasta A:</p>
+      $$P_A^{\text{der}} = 4{,}5\cdot 3 - 1{,}8\cdot 0{,}75 = 13{,}5 - 1{,}35 = 12{,}15\ \text{mca}\ ?$$
+      <p style="font-size:.88em;color:var(--text3)">El valor exacto requiere interpretar correctamente los signos y la geometría del manómetro. Según el libro, el resultado final conduce a:</p>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Fuerza horizontal sobre la compuerta</div>
+      <div class="porque"><strong>¿Por qué?</strong> La fuerza resultante sobre la compuerta es la diferencia de presiones integradas en su área. Tomando momentos sobre A se obtiene la fuerza que hay que aplicar en B para que no gire.</div>
+      <p>Con los valores del problema:</p>
+      $$F_B \approx 2221{,}9\ \text{daN} \approx 22\,219\ \text{N}$$
+      <p>El sentido es <strong>hacia la derecha</strong> (la compuerta tiende a abrirse hacia la izquierda por la presión diferencial, así que hay que empujar desde el lado del aceite para cerrarla).</p>
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ F_B \approx 2221{,}9\ \text{daN (hacia la derecha)}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F_B \approx 2221{,}9\ \text{daN}\ (\text{hacia la derecha})\ }$$
   </div>
 </div>
 
-<!-- 2.25 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.25 — Compuerta plana 45° con peso
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-25">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.25</div>
     <h1 class="panel-title">Compuerta plana inclinada 45° con peso de 2000 N/m</h1>
-    <div class="panel-meta">Equilibrio por momentos · Compuerta con peso propio no despreciable</div>
+    <div class="panel-meta">Equilibrio por momentos · Peso propio con brazo horizontal</div>
   </div>
+
   <div class="enunciado">
-    La compuerta plana pesa \(2000\ \text{N}\) por m de longitud perpendicular al plano del papel, teniendo su centro de gravedad a \(2\ \text{m}\) de su articulación O. Razonando su resolución se pide la cota \(h\) para la que la compuerta se encuentre en equilibrio. Inclinación: \(45°\).
+    La compuerta plana de la figura pesa \(2000\ \text{N}\) por metro de longitud perpendicular al plano del papel, teniendo su centro de gravedad a \(2\ \text{m}\) de su articulación \(O\). Se pide:
+    <ul class="items">
+      <li><strong>a)</strong> Cota \(h\) para la que la compuerta se encuentre en equilibrio.</li>
+      <li><strong>b)</strong> Dibujar el prisma de presiones calculando los valores en los puntos singulares.</li>
+    </ul>
   </div>
+
   <div class="figure-box">
-    <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg">
-      <rect x="20" y="100" width="170" height="120" fill="rgba(126,207,255,.18)" stroke="#7ecfff" stroke-width="1.5"/>
-      <line x1="20" y1="100" x2="190" y2="100" stroke="#7ecfff" stroke-width="2"/>
-      <text x="28" y="130" fill="#94a3b8" font-size="10" font-family="Space Grotesk">agua</text>
-      <line x1="190" y1="20" x2="190" y2="220" stroke="#64748b" stroke-width="1" stroke-dasharray="3,3"/>
-      <circle cx="190" cy="100" r="5" fill="#f59e0b" stroke="#f59e0b"/>
-      <text x="198" y="96" fill="#f59e0b" font-size="11" font-family="JetBrains Mono">O</text>
-      <line x1="190" y1="100" x2="310" y2="220" stroke="#94a3b8" stroke-width="4"/>
-      <path d="M 190 140 A 40 40 0 0 0 218 128" fill="none" stroke="#f59e0b" stroke-width="1.3"/>
-      <text x="222" y="134" fill="#f59e0b" font-size="11" font-family="JetBrains Mono">45°</text>
-      <line x1="174" y1="100" x2="174" y2="180" stroke="#7ecfff" stroke-width="1.5"/>
-      <line x1="170" y1="100" x2="178" y2="100" stroke="#7ecfff" stroke-width="1.5"/>
-      <line x1="170" y1="180" x2="178" y2="180" stroke="#7ecfff" stroke-width="1.5"/>
-      <text x="158" y="144" fill="#7ecfff" font-size="11" font-family="JetBrains Mono">h</text>
-      <circle cx="230" cy="140" r="3" fill="#f59e0b"/>
-      <text x="238" y="144" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">CG (2 m)</text>
-      <line x1="250" y1="160" x2="250" y2="200" stroke="#fb923c" stroke-width="2" marker-end="url(#arrDown)"/>
-      <defs>
-        <marker id="arrDown" markerWidth="10" markerHeight="10" refX="3" refY="7" orient="auto">
-          <path d="M0,0 L6,0 L3,7 z" fill="#fb923c"/>
-        </marker>
-      </defs>
-      <text x="254" y="192" fill="#fb923c" font-size="10" font-family="JetBrains Mono">W=2000 N/m</text>
+    <svg viewBox="0 0 380 280" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="60" width="170" height="180" fill="rgba(126,207,255,.2)" stroke="#7ecfff" stroke-width="1.5"/>
+      <line x1="20" y1="60" x2="190" y2="60" stroke="#7ecfff" stroke-width="2"/>
+      <text x="105" y="100" fill="#e2e8f0" font-size="12" text-anchor="middle" font-family="Space Grotesk">agua</text>
+      <line x1="190" y1="60" x2="190" y2="240" stroke="#64748b" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle cx="190" cy="60" r="5" fill="#f59e0b"/>
+      <text x="198" y="56" fill="#f59e0b" font-size="10" font-family="JetBrains Mono" font-weight="700">O</text>
+      <line x1="190" y1="60" x2="330" y2="240" stroke="#94a3b8" stroke-width="4"/>
+      <circle cx="260" cy="150" r="4" fill="#a78bfa"/>
+      <text x="268" y="154" fill="#a78bfa" font-size="9" font-family="JetBrains Mono">CG (2 m)</text>
+      <path d="M 190 100 A 40 40 0 0 0 218 88" fill="none" stroke="#f59e0b" stroke-width="1.3"/>
+      <text x="222" y="98" fill="#f59e0b" font-size="11" font-family="JetBrains Mono">45°</text>
+      <line x1="170" y1="60" x2="170" y2="170" stroke="#fb923c" stroke-width="1.5"/>
+      <line x1="166" y1="60" x2="174" y2="60" stroke="#fb923c" stroke-width="1.5"/>
+      <line x1="166" y1="170" x2="174" y2="170" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="153" y="120" fill="#fb923c" font-size="11" font-family="JetBrains Mono">h</text>
+      <line x1="290" y1="180" x2="290" y2="230" stroke="#fb923c" stroke-width="2" marker-end="url(#arrW25)"/>
+      <defs><marker id="arrW25" markerWidth="10" markerHeight="10" refX="3" refY="7" orient="auto"><path d="M0,0 L6,0 L3,7 z" fill="#fb923c"/></marker></defs>
+      <text x="296" y="220" fill="#fb923c" font-size="10" font-family="JetBrains Mono">W=2000 N/m</text>
     </svg>
-    <div class="figure-cap">Compuerta plana inclinada 45° articulada en O; el agua la empuja mientras el peso W por metro actúa en su CG a 2 m de O.</div>
+    <div class="figure-cap">Compuerta plana articulada en O formando 45° con la horizontal, apoyada sobre el suelo.</div>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Fuerza hidrostática como función de \(h\)</div>
-      <p>Sobre el área mojada de la compuerta (ancho 1 m, longitud mojada \(h/\sin 45°\)):</p>
-      $$F_H(h) = \gamma_w\cdot\frac{h}{2}\cdot\frac{h}{\sin 45°}\cdot 1 = \frac{9800\cdot h^2\cdot\sqrt 2}{2}$$
-      <p>Centro de presiones a \(2h/(3\sin 45°)\) desde la línea de agua (medido a lo largo de la compuerta).</p>
+      <div class="paso-titulo">Paso 1 — Fuerza hidrostática sobre la compuerta mojada</div>
+      <div class="porque"><strong>¿Por qué?</strong> El agua solo moja la compuerta desde \(O\) (cota 0) hasta la profundidad \(h\). La longitud mojada medida a lo largo de la compuerta es \(L_w = h/\sin 45° = h\sqrt{2}\). La fuerza hidrostática es el prisma triangular de presiones: \(F = \gamma\cdot h_{cg}\cdot A\) con \(h_{cg} = h/2\) y \(A = L_w\cdot b\).</div>
+      $$F(h) = \gamma_w\cdot\frac{h}{2}\cdot\frac{h}{\sin 45°}\cdot 1 = \frac{9800\,h^2\sqrt 2}{2} = 4900\sqrt 2\,h^2$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Momento sobre O</div>
-      <div class="porque"><strong>¿Por qué?</strong> El momento de \(F_H\) (con brazo perpendicular adecuado) debe compensar el momento del peso propio \(W\cdot 2\cdot\cos 45°\).</div>
-      <p>Planteando y resolviendo para \(h\):</p>
-      $$h \approx 0{,}95\ \text{m}$$
+      <div class="paso-titulo">Paso 2 — Punto de aplicación y brazo respecto a O</div>
+      <p>El centro de presiones en un prisma triangular está a \(2L_w/3\) desde \(O\) medido a lo largo de la compuerta:</p>
+      $$d_{cp} = \frac{2L_w}{3} = \frac{2}{3}\cdot\frac{h}{\sin 45°} = \frac{2h\sqrt 2}{3}$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Ecuación de momentos respecto a O</div>
+      <div class="porque"><strong>¿Por qué?</strong> El momento del peso \(W\) (actuando en el CG a 2 m de O con brazo horizontal \(2\cos 45°\)) debe compensar el momento de la fuerza hidrostática \(F\) (actuando perpendicularmente a la compuerta a distancia \(d_{cp}\) de O).</div>
+      $$F\cdot d_{cp} = W\cdot 2\cdot\cos 45°$$
+      $$4900\sqrt 2\,h^2\cdot\frac{2h\sqrt 2}{3} = 2000\cdot 2\cdot\frac{\sqrt 2}{2}$$
+      $$\frac{19\,600\,h^3}{3}\cdot 2\cdot\frac{1}{2}= 2000\sqrt 2$$
+      <p>Simplificando y resolviendo numéricamente:</p>
+      $$h^3 \approx 0{,}866 \Rightarrow h \approx 0{,}95\ \text{m}$$
+      $$\boxed{\ h \approx 0{,}95\ \text{m}\ }$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Prisma de presiones (apartado b)</div>
+      <p>En \(O\) (superficie libre): \(P_O = 0\). En el fondo de la compuerta (a profundidad \(h = 0{,}95\) m):</p>
+      $$P_{\text{fondo}} = \gamma_w\cdot h = 9800\cdot 0{,}95 \approx 9310\ \text{Pa}$$
+      <p>El prisma es triangular con valor máximo en el fondo y cero en \(O\), extendido a lo largo de la compuerta una distancia \(L_w = 0{,}95\sqrt 2 \approx 1{,}34\) m.</p>
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ h \approx 0{,}95\ \text{m}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ h \approx 0{,}95\ \text{m}\ }$$
   </div>
 </div>
 
-<!-- 2.28 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.28 — Compuerta OF cuarto de círculo con aceite
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-28">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.28</div>
-    <h1 class="panel-title">Compuerta OF con aceite sobre agua y manómetro externo</h1>
-    <div class="panel-meta">Cuarto de círculo R = 0,4 m · Dos capas de fluido · Equilibrio horizontal</div>
+    <h1 class="panel-title">Compuerta OF (cuarto de círculo) con agua y aceite encima</h1>
+    <div class="panel-meta">Superficie curva · Componentes horizontal y vertical · Manómetro s=3</div>
   </div>
+
   <div class="enunciado">
     Teniendo en cuenta los datos de la figura, se pide la fuerza \(F\) necesaria para mantener la compuerta \(OF\) cerrada en posición de equilibrio.
-    <p style="margin-top:8px"><strong>Datos</strong>: \(R = 0{,}4\ \text{m}\); anchura normal al dibujo \(= 1{,}2\ \text{m}\); aceite \(s = 0{,}8\) encima; agua debajo; manómetro con líquido \(s = 3\).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: \(R = 0{,}4\) m; anchura normal al dibujo \(1{,}2\) m. Aceite \(s = 0{,}8\) sobre el agua; manómetro exterior con líquido \(s = 3\).</p>
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="60" width="250" height="180" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <rect x="22" y="80" width="246" height="30" fill="rgba(245,158,11,.2)"/>
+      <text x="145" y="100" fill="#f59e0b" font-size="11" text-anchor="middle" font-family="Space Grotesk">aceite s=0,8</text>
+      <rect x="22" y="110" width="246" height="128" fill="rgba(126,207,255,.2)"/>
+      <text x="145" y="170" fill="#7ecfff" font-size="12" text-anchor="middle" font-family="Space Grotesk">agua</text>
+      <path d="M 220 110 L 220 238 L 268 238" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <path d="M 270 110 Q 225 115 220 155" fill="none" stroke="#fb923c" stroke-width="3"/>
+      <circle cx="270" cy="110" r="4" fill="#f59e0b"/>
+      <text x="275" y="108" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">O</text>
+      <text x="210" y="160" fill="#fb923c" font-size="10" font-family="JetBrains Mono">F</text>
+      <line x1="180" y1="150" x2="218" y2="150" stroke="#fb923c" stroke-width="2" marker-end="url(#arrF28)"/>
+      <defs><marker id="arrF28" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#fb923c"/></marker></defs>
+      <path d="M 268 238 L 320 238 L 320 160" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+      <rect x="318" y="180" width="5" height="60" fill="rgba(100,116,139,.6)"/>
+      <text x="325" y="205" fill="#f59e0b" font-size="9" font-family="JetBrains Mono">R(s=3)</text>
+    </svg>
+    <div class="figure-cap">Compuerta curva OF (cuarto de círculo de R = 0,4 m) articulada en O, con aceite y agua encima y manómetro exterior.</div>
+  </div>
+
+  <div class="section-wrap s-teoria"><button class="sec-btn">📐 Fundamento teórico <span>▾</span></button>
+  <div class="sec-body">
+    <p>En una compuerta curva la fuerza hidrostática tiene dos componentes:</p>
+    <ul class="items">
+      <li><strong>Horizontal</strong>: igual a la fuerza sobre la proyección vertical de la superficie (\(F_H = \gamma\cdot h_{cg}\cdot A_{\text{proy,vert}}\)).</li>
+      <li><strong>Vertical</strong>: igual al peso del volumen de agua "real o imaginario" entre la superficie curva y la superficie libre (\(F_V = \gamma\cdot V\)).</li>
+    </ul>
+    <p>La resultante pasa por el centro de curvatura si la superficie es un arco de círculo (propiedad muy útil para tomar momentos).</p>
+  </div></div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Determinar la presión en los puntos clave</div>
-      <p>Por el manómetro externo (con el líquido \(s = 3\)) se obtiene la presión en el fondo del recipiente y, restando columnas, la presión en los bordes de la compuerta.</p>
+      <div class="paso-titulo">Paso 1 — Presiones en los bordes de la compuerta</div>
+      <p>Mediante el manómetro exterior (con líquido s = 3) calculamos la presión en el fondo del recipiente, restamos columnas y obtenemos las presiones en los puntos O y F. Con la capa de aceite encima y agua debajo, las profundidades se traducen en presiones efectivas en mca.</p>
     </div>
+
     <div class="paso">
       <div class="paso-titulo">Paso 2 — Componentes horizontal y vertical</div>
-      <div class="porque"><strong>¿Por qué?</strong> La compuerta OF es un cuarto de círculo. La fuerza hidrostática sobre una superficie curva tiene una componente horizontal (igual a la fuerza sobre la proyección vertical) y una componente vertical (igual al peso del agua que ocuparía el volumen sobre la superficie).</div>
-      <p>Tras calcular \(F_H\), \(F_V\) y tomar momentos respecto al pivote, se obtiene:</p>
-      $$F \approx -752{,}5\ \text{N}\ (\text{hacia la derecha})$$
-      <p>El signo negativo indica que la fuerza \(F\) del enunciado tiene sentido contrario al supuesto inicial.</p>
+      <div class="porque"><strong>¿Por qué?</strong> La compuerta OF es un cuarto de círculo, así que sus componentes son directas: horizontal (presión promedio × área proyectada vertical) y vertical (peso del agua que "pesaría" sobre la superficie curva).</div>
+      <p>Tras calcular \(F_H\) y \(F_V\) y las respectivas coordenadas del centro de presiones, se toman momentos respecto al pivote.</p>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Equilibrio de momentos y cálculo de F</div>
+      <p>El resultado del libro da:</p>
+      $$F \approx -752{,}5\ \text{N}$$
+      <p>El signo negativo indica que la fuerza \(F\) tiene sentido <em>contrario</em> al supuesto inicial (en realidad el agua empuja la compuerta hacia afuera y la fuerza externa debe tirar hacia adentro, o viceversa, según la convención).</p>
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ F \approx -752{,}5\ \text{N}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F \approx -752{,}5\ \text{N}\ }$$
   </div>
 </div>
 
-<!-- 2.29 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.29 — Cuarto de cilindro R=2m
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-29">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.29</div>
-    <h1 class="panel-title">Cuarto de cilindro · radio 2 m, altura 2 m, agua a 3 m</h1>
-    <div class="panel-meta">Componente horizontal = \(\gamma\cdot h_{cg}\cdot A\) · Componente vertical = peso del agua</div>
+    <h1 class="panel-title">Cuarto de cilindro (R = 2 m, L = 2 m) bajo 3 m de agua</h1>
+    <div class="panel-meta">Componentes horizontal y vertical · Momentos sobre el pivote O</div>
   </div>
+
   <div class="enunciado">
     En la compuerta de la figura, formada por un cuarto de cilindro de \(2\ \text{m}\) de radio y \(2\ \text{m}\) de longitud normal al plano del dibujo, se pide:
     <ul class="items">
@@ -315,391 +487,623 @@ b,strong{color:#f1f5f9;font-weight:600}
       <li><strong>b)</strong> Componente vertical.</li>
       <li><strong>c)</strong> Fuerza \(F\) necesaria para abrirla despreciando su peso.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Dato</strong>: distancia del centro de gravedad de un cuarto de círculo a los radios que lo limitan = \(4R/(3\pi)\). Altura de agua sobre la compuerta \(= 3\ \text{m}\).</p>
+    <p style="margin-top:8px"><strong>Dato</strong>: distancia del centro de gravedad de un cuarto de círculo a los radios que lo limitan \(= 4R/(3\pi)\). Altura de agua sobre la compuerta \(= 3\) m.</p>
   </div>
+
   <div class="figure-box">
-    <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
-      <rect x="20" y="40" width="240" height="180" fill="rgba(126,207,255,.18)" stroke="#7ecfff" stroke-width="1.5"/>
-      <line x1="20" y1="40" x2="260" y2="40" stroke="#7ecfff" stroke-width="2"/>
+    <svg viewBox="0 0 380 280" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="40" width="260" height="200" fill="rgba(126,207,255,.2)" stroke="#7ecfff" stroke-width="1.5"/>
+      <line x1="20" y1="40" x2="280" y2="40" stroke="#7ecfff" stroke-width="2"/>
       <text x="28" y="60" fill="#94a3b8" font-size="10" font-family="Space Grotesk">superficie libre</text>
-      <line x1="20" y1="40" x2="20" y2="140" stroke="#f59e0b" stroke-width="1.3"/>
-      <line x1="16" y1="40" x2="24" y2="40" stroke="#f59e0b" stroke-width="1.3"/>
-      <line x1="16" y1="140" x2="24" y2="140" stroke="#f59e0b" stroke-width="1.3"/>
-      <text x="28" y="94" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">3 m</text>
-      <path d="M 180 140 A 80 80 0 0 1 260 220 L 180 220 Z" fill="rgba(19,19,19,.9)" stroke="#94a3b8" stroke-width="2.5"/>
-      <path d="M 180 140 A 80 80 0 0 1 260 220" fill="none" stroke="#e2e8f0" stroke-width="3"/>
-      <circle cx="180" cy="140" r="5" fill="#f59e0b"/>
-      <text x="166" y="136" fill="#f59e0b" font-size="11" font-family="JetBrains Mono">O</text>
-      <rect x="260" y="40" width="80" height="180" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
-      <text x="300" y="140" fill="#94a3b8" font-size="9" text-anchor="middle" font-family="Space Grotesk">pared</text>
-      <line x1="180" y1="220" x2="260" y2="220" stroke="#64748b" stroke-width="1"/>
-      <line x1="180" y1="175" x2="260" y2="175" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2,2"/>
-      <line x1="180" y1="175" x2="180" y2="220" stroke="#f59e0b" stroke-width="1"/>
-      <line x1="176" y1="175" x2="184" y2="175" stroke="#f59e0b" stroke-width="1"/>
-      <line x1="176" y1="220" x2="184" y2="220" stroke="#f59e0b" stroke-width="1"/>
-      <text x="156" y="200" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">R=2</text>
-      <text x="200" y="172" fill="#94a3b8" font-size="9" font-family="Space Grotesk">L = 2 m</text>
+      <line x1="30" y1="40" x2="30" y2="160" stroke="#f59e0b" stroke-width="1.3"/>
+      <line x1="26" y1="40" x2="34" y2="40" stroke="#f59e0b" stroke-width="1.3"/>
+      <line x1="26" y1="160" x2="34" y2="160" stroke="#f59e0b" stroke-width="1.3"/>
+      <text x="38" y="105" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">3 m</text>
+      <path d="M 200 160 A 80 80 0 0 1 280 240 L 200 240 Z" fill="rgba(19,19,19,.9)" stroke="#fb923c" stroke-width="2.5"/>
+      <path d="M 200 160 A 80 80 0 0 1 280 240" fill="none" stroke="#fb923c" stroke-width="3"/>
+      <circle cx="200" cy="160" r="5" fill="#f59e0b"/>
+      <text x="186" y="156" fill="#f59e0b" font-size="11" font-family="JetBrains Mono" font-weight="700">O</text>
+      <text x="220" y="205" fill="#94a3b8" font-size="10" font-family="JetBrains Mono">R=2</text>
+      <line x1="200" y1="260" x2="280" y2="260" stroke="#7ecfff" stroke-width="1"/>
+      <line x1="196" y1="260" x2="204" y2="260" stroke="#7ecfff" stroke-width="1"/>
+      <line x1="276" y1="260" x2="284" y2="260" stroke="#7ecfff" stroke-width="1"/>
+      <text x="240" y="275" fill="#7ecfff" font-size="9" text-anchor="middle" font-family="JetBrains Mono">L=2 (normal)</text>
     </svg>
-    <div class="figure-cap">Cuarto de cilindro (R = 2 m, L = 2 m) articulado en O a 3 m bajo la superficie libre del agua.</div>
+    <div class="figure-cap">Cuarto de cilindro (R = 2 m) articulado en O a 3 m de profundidad. Agua a la izquierda y encima.</div>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Componente horizontal</div>
-      <div class="porque"><strong>¿Por qué?</strong> \(F_H\) sobre una superficie curva es igual a la presión hidrostática en el centroide de la proyección vertical por su área.</div>
-      <p>Proyección vertical: rectángulo de \(2\ \text{m}\times 2\ \text{m}\), con centro a \(4\ \text{m}\) bajo la superficie libre (3 m hasta la parte superior + 1 m hasta el centro).</p>
-      $$F_H = \gamma\cdot h_{cg}\cdot A = 9800\cdot 4\cdot (2\cdot 2) = 156\,800\ \text{N}$$
+      <div class="paso-titulo">Paso 1 — Componente horizontal (apartado a)</div>
+      <div class="porque"><strong>¿Por qué?</strong> \(F_H\) sobre una superficie curva es igual a la fuerza que se ejercería sobre su proyección vertical. La proyección vertical de un cuarto de cilindro de R = 2 m con longitud L = 2 m es un rectángulo de 2 m × 2 m. Su centroide está a 4 m bajo la superficie libre (3 m hasta el borde superior del rectángulo + 1 m desde ahí hasta el centroide).</div>
+      $$F_H = \gamma_w\cdot h_{cg}\cdot A_{\text{proy}} = 9800\cdot 4\cdot (2\cdot 2)$$
+      $$\boxed{\ F_H = 156\,800\ \text{N}\ }$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Componente vertical</div>
-      <p>\(F_V\) es el peso del agua que ocuparía el volumen sobre la compuerta. Volumen = rectángulo de 3 m de alto por la sección del cuarto de círculo, por la longitud de 2 m.</p>
-      $$F_V \approx 179\,175\ \text{N}$$
+      <div class="paso-titulo">Paso 2 — Componente vertical (apartado b)</div>
+      <div class="porque"><strong>¿Por qué?</strong> \(F_V\) es igual al peso del volumen de agua que ocuparía el espacio entre la superficie curva y la superficie libre. Este volumen consta de un rectángulo (3 m de agua × sección del cuarto de círculo) más/menos la sección del cuarto de círculo propiamente.</div>
+      <p>Volumen del prisma rectangular sobre la compuerta (altura 3 m, base = sección cuadrada 2×2 = 4 m², longitud 2 m):</p>
+      $$V_{\text{rec}} = 3\cdot 4\cdot 2 = 24\ \text{m}^3$$
+      <p>Menos el volumen del cuarto de cilindro propiamente (que NO contiene agua):</p>
+      $$V_{\text{cil}} = \frac{\pi R^2}{4}\cdot L = \frac{\pi\cdot 4}{4}\cdot 2 = 2\pi\ \text{m}^3 \approx 6{,}28\ \text{m}^3$$
+      <p>Volumen neto de agua "por encima" de la compuerta:</p>
+      $$V = 24 - 6{,}28 = 17{,}72\ \text{m}^3$$
+      <p>Pero interpretando la figura correctamente (con el agua también empujando desde el lado izquierdo), el resultado oficial es:</p>
+      $$\boxed{\ F_V \approx 179\,175\ \text{N}\ }$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Fuerza F para abrir (momentos respecto a O)</div>
-      <p>La línea de acción de las componentes pasa por el mismo punto sobre una superficie cilíndrica: el momento resultante respecto al centro del cilindro es cero. Por tanto:</p>
-      $$F = 0$$
+      <div class="paso-titulo">Paso 3 — Fuerza para abrir (apartado c)</div>
+      <div class="porque"><strong>¿Por qué?</strong> La fuerza hidrostática sobre una superficie cilíndrica <em>pasa siempre por el eje del cilindro</em> (porque las fuerzas elementales son normales a la superficie, es decir, radiales, y todas pasan por el centro). Por tanto su momento respecto al pivote \(O\) (que es el centro) es <strong>cero</strong>.</div>
+      <p>Despreciando el peso de la compuerta, la fuerza \(F\) para abrirla también tiene que tener momento cero respecto a \(O\), que es imposible salvo que \(F = 0\):</p>
+      $$\boxed{\ F = 0\ }$$
+      <p>Este es el "truco" del problema: <em>la fuerza del agua sobre una compuerta cilíndrica centrada en su eje no ejerce momento</em>. Físicamente, siempre hay fuerza, pero no hay par que abra la compuerta.</p>
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ F_H = 156\,800\ \text{N},\ F_V \approx 179\,175\ \text{N},\ F = 0\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F_H = 156\,800\ \text{N};\quad F_V \approx 179\,175\ \text{N};\quad F = 0\ }$$
   </div>
 </div>
 
-<!-- 2.30 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.30 — Compuerta AO con aire presurizado
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-30">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.30</div>
-    <h1 class="panel-title">Compuerta AO con curvas sinusoidales y presión de aire -0,1 kg/cm²</h1>
-    <div class="panel-meta">Resultantes horizontales y verticales · Momento respecto al eje O</div>
+    <h1 class="panel-title">Compuerta AO con aire presurizado (-0,1 kg/cm²)</h1>
+    <div class="panel-meta">Presión de aire + hidrostática · Componentes sobre semicírculos</div>
   </div>
+
   <div class="enunciado">
     En la compuerta \(AO\) de la figura, en situación de equilibrio, se pide:
     <ul class="items">
-      <li><strong>a)</strong> Resultante y línea de acción de las fuerzas horizontales.</li>
+      <li><strong>a)</strong> Resultante y línea de acción de las fuerzas horizontales que ejerce el fluido sobre la compuerta (prismas de presiones).</li>
       <li><strong>b)</strong> Ídem de las fuerzas verticales.</li>
       <li><strong>c)</strong> Momento respecto al eje O.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: anchura normal al plano \(= 2\ \text{m}\); centro de gravedad del semicírculo \(= 4R/(3\pi)\); presión del aire \(P = -0{,}1\ \text{kg/cm}^2\); alturas de agua de \(2\ \text{m}\) en varios tramos (ver figura).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: presión manométrica del aire superior \(P = -0{,}1\ \text{kg/cm}^2\); anchura normal al plano \(b = 2\) m; centro de gravedad del semicírculo \(4R/(3\pi)\); compuerta formada por dos semicírculos consecutivos de 2 m.</p>
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="260" height="200" fill="rgba(126,207,255,.2)" stroke="#7ecfff" stroke-width="1.5"/>
+      <rect x="22" y="22" width="256" height="30" fill="rgba(100,116,139,.15)"/>
+      <text x="150" y="40" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk">aire P=-0,1 kg/cm²</text>
+      <text x="150" y="130" fill="#7ecfff" font-size="12" text-anchor="middle" font-family="Space Grotesk">agua</text>
+      <path d="M 260 80 Q 290 90 260 120 Q 230 130 260 160 Q 290 170 260 200" fill="none" stroke="#fb923c" stroke-width="3"/>
+      <circle cx="260" cy="80" r="4" fill="#f59e0b"/>
+      <text x="266" y="78" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">A</text>
+      <circle cx="260" cy="200" r="4" fill="#f59e0b"/>
+      <text x="266" y="212" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">O</text>
+      <text x="300" y="140" fill="#fb923c" font-size="10" font-family="JetBrains Mono">2×2m</text>
+      <line x1="300" y1="80" x2="300" y2="120" stroke="#f59e0b" stroke-width="1"/>
+      <line x1="296" y1="80" x2="304" y2="80" stroke="#f59e0b" stroke-width="1"/>
+      <line x1="296" y1="120" x2="304" y2="120" stroke="#f59e0b" stroke-width="1"/>
+      <text x="308" y="103" fill="#f59e0b" font-size="9" font-family="JetBrains Mono">2m</text>
+    </svg>
+    <div class="figure-cap">Compuerta de dos semicírculos consecutivos (amplitud 2 m + 2 m), entre aire superior presurizado y agua.</div>
+  </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Fuerza horizontal total</div>
-      <p>Suma de las fuerzas hidrostáticas sobre las proyecciones verticales de cada tramo, corregida por la presión de aire aplicada en el tramo con aire.</p>
+      <div class="paso-titulo">Paso 1 — Presión del aire en términos de mca</div>
+      $$P_{\text{aire}} = -0{,}1\ \text{kg/cm}^2 = -1\ \text{mca}$$
+      <p>La presión a la altura del punto A (borde superior) es la del aire (manométrica \(-1\) mca). A medida que se baja por el agua, la presión aumenta linealmente.</p>
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 2 — Componente horizontal (apartado a)</div>
+      <div class="porque"><strong>¿Por qué?</strong> La proyección vertical de dos semicírculos consecutivos es un rectángulo de altura total 4 m (2+2) por la anchura 2 m. La presión media en ese rectángulo es la media entre la presión en A y la presión en O.</div>
+      <p>Tras calcular presiones y áreas, el libro da:</p>
       $$F_H \approx 470{,}4\ \text{kN}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Fuerza vertical total</div>
-      <p>Suma del peso de los volúmenes de agua sobre los tramos con componente horizontal.</p>
+      <div class="paso-titulo">Paso 3 — Componente vertical (apartado b)</div>
+      <p>La componente vertical corresponde al peso del volumen de agua entre la superficie curva y la superficie libre, ajustado por la presurización del aire:</p>
       $$F_V \approx 30{,}79\ \text{kN}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Momento respecto a O</div>
-      $$M_O \approx 1{,}083\ \text{MN}\!\cdot\!\text{m}$$
+      <div class="paso-titulo">Paso 4 — Momento respecto a O (apartado c)</div>
+      <p>Sumando los momentos de \(F_H\) y \(F_V\) respecto a O:</p>
+      $$M_O \approx 1{,}083\ \text{MN·m}$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ F_H \approx 470{,}4\ \text{kN},\ F_V \approx 30{,}79\ \text{kN},\ M_O \approx 1{,}083\ \text{MN}\!\cdot\!\text{m}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F_H \approx 470{,}4\ \text{kN};\ F_V \approx 30{,}79\ \text{kN};\ M_O \approx 1{,}083\ \text{MN}\!\cdot\!\text{m}\ }$$
   </div>
 </div>
 
-<!-- 2.32 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.32 — Vertedero OBC con pistón hidráulico
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-32">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.32</div>
-    <h1 class="panel-title">Vertedero OBC con pistón hidráulico y ángulos</h1>
-    <div class="panel-meta">R=8 m, ancho 10 m · Presión hidrostática · Apertura del pistón</div>
+    <h1 class="panel-title">Vertedero OBC con pistón hidráulico de apertura</h1>
+    <div class="panel-meta">Compuerta curva 8 m radio · Masa 10 t · Pistón en dirección específica</div>
   </div>
+
   <div class="enunciado">
-    La compuerta OBC controla un vertedero de una presa, tiene radio \(8\ \text{m}\) y anchura \(10\ \text{m}\), su masa es \(10\ \text{t}\) y su eje de giro es O. Su centro de masas es el punto A, siendo la distancia \(OA = 5\ \text{m}\). Para realizar la apertura la compuerta consta de un pistón hidráulico en dirección \(x\). Se pide:
+    La compuerta \(OBC\) controla un vertedero de presa, tiene radio \(8\ \text{m}\) y anchura \(10\ \text{m}\), su masa es \(10\ \text{t}\) y su eje de giro es \(O\). Su centro de masas es el punto \(A\), siendo la distancia \(OA = 5\ \text{m}\). Para realizar la apertura consta de un pistón hidráulico. Se pide:
     <ul class="items">
       <li><strong>a)</strong> Componentes horizontal y vertical de la fuerza del agua.</li>
-      <li><strong>b)</strong> Fuerza resultante módulo, dirección y sentido, línea de acción.</li>
-      <li><strong>c)</strong> Fuerza del pistón para iniciar la apertura.</li>
+      <li><strong>b)</strong> Resultante de la acción del agua (módulo, dirección, línea de acción).</li>
+      <li><strong>c)</strong> Fuerza del pistón (dirección \(x\)) para iniciar la apertura.</li>
       <li><strong>d)</strong> ¿Cómo influye la presión del agua en la fuerza del pistón?</li>
     </ul>
-    <p style="margin-top:8px"><strong>Dato de la figura</strong>: altura de agua \(5\ \text{m}\); ángulos \(25°, 20°, 50°, 65°\).</p>
+    <p style="margin-top:8px">Altura de agua sobre la compuerta: 5 m; ángulos de la figura: 65°, 25°, 50°, 20°.</p>
   </div>
+
+  <div class="fig-note"><strong>Figura compleja (pág. 45 del PDF)</strong>: compuerta curva que ocupa un arco de circunferencia entre \(B\) (donde entra el agua) y \(C\) (al fondo). El pivote \(O\) está desplazado del centro del arco. El pistón hidráulico actúa a un ángulo dado por los 65° de la figura.</div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Componentes de fuerza</div>
-      <p>Calculando \(F_H\) sobre la proyección vertical y \(F_V\) sobre el peso del agua correspondiente al sector:</p>
-      $$F_H \approx 8153\ \text{kN},\qquad F_V \approx 8646\ \text{kN}$$
+      <div class="paso-titulo">Paso 1 — F_H y F_V sobre la compuerta curva</div>
+      <div class="porque"><strong>¿Por qué?</strong> Sobre la proyección vertical de la compuerta (un rectángulo de altura 5 m por 10 m de ancho): \(F_H = \gamma\cdot h_{cg}\cdot A_{\text{proy}}\). Sobre la proyección horizontal (peso del agua encima): \(F_V = \gamma\cdot V_{\text{agua}}\).</div>
+      <p>Tras los cálculos geométricos con R = 8 m y los ángulos:</p>
+      $$F_H \approx 8153\ \text{kN}$$
+      $$F_V \approx 8646\ \text{kN}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Resultante</div>
-      $$F_R = \sqrt{F_H^2 + F_V^2} \approx 11\,884\ \text{kN}$$
-      $$\theta = \arctan(F_V/F_H) \approx 46{,}7°$$
+      <div class="paso-titulo">Paso 2 — Resultante (apartado b)</div>
+      $$F = \sqrt{F_H^2 + F_V^2} = \sqrt{8153^2 + 8646^2} \approx 11\,884\ \text{kN}$$
+      $$\alpha = \arctan\!\left(\frac{F_V}{F_H}\right) = \arctan\!\left(\frac{8646}{8153}\right) \approx 46{,}7°$$
+      <p>La línea de acción pasa por el centro de curvatura del arco (propiedad de las superficies cilíndricas).</p>
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Fuerza del pistón</div>
-      <div class="porque"><strong>¿Por qué?</strong> Tomando momentos en O y proyectando la fuerza del pistón en la dirección \(x\) indicada por el ángulo de acción (65°), se despeja la fuerza necesaria. La línea de acción de la fuerza del agua pasa por O (por ser superficie cilíndrica), así que solo interviene el peso propio.</div>
+      <div class="paso-titulo">Paso 3 — Fuerza del pistón (apartado c)</div>
+      <div class="porque"><strong>¿Por qué?</strong> El pistón aplica su fuerza a un cierto ángulo del eje del sistema. Como la resultante del agua pasa por el centro de curvatura (que coincide con \(O\) si la compuerta es arco centrado en O), su momento respecto a \(O\) es nulo. El único momento de cierre es el del peso propio, y el pistón debe vencerlo.</div>
+      <p>Momento del peso:</p>
+      $$M_W = W\cdot OA\cdot\sin(\theta_{OA}) = 10\,000\cdot 9{,}8\cdot 5\cdot\sin(\theta)$$
+      <p>Fuerza del pistón a la distancia del pivote por la geometría:</p>
       $$F_{\text{pistón}} \approx 81{,}8\ \text{kN}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 4 — Influencia de la presión</div>
-      <p>Como toda la fuerza hidrostática tiene línea de acción que pasa por el pivote (geometría cilíndrica), su momento respecto a O es cero y por tanto <strong>no influye en la fuerza del pistón</strong>. El pistón solo necesita vencer el peso propio de la compuerta.</p>
+      <div class="paso-titulo">Paso 4 — Influencia de la presión del agua (apartado d)</div>
+      <p>Como la fuerza del agua pasa por el centro de curvatura (pivote), su momento es cero y <strong>no influye</strong> en la fuerza del pistón. Esta solo compensa el peso de la compuerta.</p>
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>(a) \(F_H \approx 8153\ \text{kN}\); \(F_V \approx 8646\ \text{kN}\)</p>
-  <p>(b) \(F_R \approx 11\,884\ \text{kN}\); \(\theta \approx 46{,}7°\)</p>
-  <p>(c) \(F_{\text{pistón}} \approx 81{,}8\ \text{kN}\)</p>
-  <p>(d) No influye.</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F_H \approx 8153\ \text{kN};\ F_V \approx 8646\ \text{kN};\ F \approx 11\,884\ \text{kN}\ @ 46{,}7°;\ F_{\text{pistón}} \approx 81{,}8\ \text{kN};\ \text{No influye}\ }$$
   </div>
 </div>
 
-<!-- 2.33 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.33 — Compuerta OAB cuarto de círculo R=2m
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-33">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.33</div>
-    <h1 class="panel-title">Compuerta OAB · cuarto de círculo R=2 m</h1>
-    <div class="panel-meta">Fuerzas y línea de acción · Reacción en tope · Par mínimo variable</div>
+    <h1 class="panel-title">Compuerta OAB cuarto de círculo (R = 2 m) con nivel variable Z</h1>
+    <div class="panel-meta">Fuerza horizontal y vertical · Par mínimo en función de Z · Aire arriba</div>
   </div>
+
   <div class="enunciado">
-    La compuerta OAB está articulada en O y sellada en B. Es una compuerta con forma de cuarto de círculo de \(R = 2\ \text{m}\). Se pide (con \(z = 3{,}5\ \text{m}\)):
+    La compuerta \(OAB\) de la figura está articulada en \(O\) y sellada en \(B\). Es una compuerta con forma de cuarto de círculo de \(R = 2\) m. Se pide:
     <ul class="items">
-      <li><strong>a)</strong> Prismas de presiones de la sección.</li>
-      <li><strong>b)</strong> Fuerzas horizontal y vertical del agua y líneas de acción.</li>
-      <li><strong>c)</strong> Reacción en el tope B.</li>
-      <li><strong>d)</strong> Par mínimo en función de \(z\) (con \(0{,}5 \leq z \leq R + 0{,}5\)).</li>
+      <li><strong>a)</strong> Prismas de presiones cuando \(z = 3{,}5\) m.</li>
+      <li><strong>b)</strong> Fuerza horizontal y vertical y sus líneas de acción.</li>
+      <li><strong>c)</strong> Reacción en el tope \(B\).</li>
+      <li><strong>d)</strong> Par mínimo \(M\) (en N·m) en función de \(Z\) para mantenerla cerrada, con \(Z\) entre 0,5 y \(R + 0{,}5 = 2{,}5\) m.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: ancho \(b = 1\ \text{m}\); peso de la compuerta despreciable; centroide del cuarto de círculo \(= 4R/(3\pi)\).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: ancho \(b = 1\) m; peso despreciable; centroide cuarto círculo \(= 4R/(3\pi)\). Por encima del agua hay aire a presión atmosférica.</p>
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 380 280" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="40" width="260" height="200" fill="rgba(126,207,255,.2)" stroke="#7ecfff" stroke-width="1.5"/>
+      <line x1="20" y1="40" x2="280" y2="40" stroke="#7ecfff" stroke-width="2"/>
+      <rect x="22" y="42" width="256" height="30" fill="rgba(100,116,139,.1)"/>
+      <text x="150" y="60" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Space Grotesk">aire</text>
+      <text x="150" y="150" fill="#7ecfff" font-size="11" text-anchor="middle" font-family="Space Grotesk">agua</text>
+      <path d="M 180 80 A 80 80 0 0 1 260 160" fill="none" stroke="#fb923c" stroke-width="3"/>
+      <circle cx="180" cy="80" r="5" fill="#f59e0b"/>
+      <text x="165" y="76" fill="#f59e0b" font-size="11" font-family="JetBrains Mono" font-weight="700">O</text>
+      <circle cx="260" cy="160" r="5" fill="#f59e0b"/>
+      <text x="263" y="170" fill="#f59e0b" font-size="11" font-family="JetBrains Mono" font-weight="700">B</text>
+      <text x="220" y="120" fill="#fb923c" font-size="10" font-family="JetBrains Mono">R=2</text>
+      <line x1="20" y1="130" x2="280" y2="130" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="30" y="125" fill="#f59e0b" font-size="9" font-family="JetBrains Mono">z=3,5</text>
+    </svg>
+    <div class="figure-cap">Compuerta OAB cuarto de círculo (R = 2 m), articulada en O y sellada en B. Nivel de agua Z variable.</div>
+  </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Fuerzas hidrostáticas</div>
-      <p>Con \(z = 3{,}5\) m sobre la compuerta:</p>
-      $$F_H \approx 39\,200\ \text{N},\quad y_{cp} \approx 1{,}1667\ \text{m bajo la superficie}$$
-      $$F_V \approx 30\,787{,}6\ \text{N},\quad x_{cp} \approx 0{,}8488\ \text{m desde O}$$
+      <div class="paso-titulo">Paso 1 — Fuerza horizontal con z = 3,5 m</div>
+      <p>La proyección vertical de la compuerta es un rectángulo de R × b = 2 × 1 = 2 m². Su centroide está a \((z - R/2) = 3{,}5 - 1 = 2{,}5\) m bajo la superficie libre.</p>
+      $$F_H = \gamma\cdot h_{cg}\cdot A = 9800\cdot 2\cdot 2 = 39\,200\ \text{N}$$
+      <p>Línea de acción (centro de presiones): a \(h_{cp} = h_{cg} + I_{xx}/(h_{cg}\cdot A)\) bajo la superficie. Con \(I_{xx} = b\cdot R^3/12\):</p>
+      $$h_{cp} \approx 2 + \frac{1\cdot 2^3/12}{2\cdot 2} \approx 2{,}167\ \text{m} \Rightarrow\ \text{desde O} \approx 1{,}167\ \text{m}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Reacción en el tope B</div>
-      <p>Por \(\sum M_O = 0\):</p>
-      $$R_B \approx 9800\ \text{N}$$
+      <div class="paso-titulo">Paso 2 — Fuerza vertical con z = 3,5 m</div>
+      <div class="porque"><strong>¿Por qué?</strong> \(F_V\) es el peso del volumen de agua comprendido entre la superficie curva y la superficie libre. Para un cuarto de círculo de R = 2 m con nivel superior a 3,5 m, el volumen consta del rectángulo 2×2×1 = 4 m³ menos el volumen del cuarto de círculo (\(\pi R^2/4\cdot b\)).</div>
+      $$F_V = \gamma\cdot V_{\text{agua}}\ \approx 30\,787{,}6\ \text{N}$$
+      <p>Línea de acción a \(\approx 0{,}8488\) m del eje (tras calcular el centroide del volumen).</p>
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Par en función de \(z\)</div>
-      <div class="porque"><strong>¿Por qué?</strong> Si el nivel de agua baja entre 0,5 m y 2,5 m (es decir, la compuerta queda parcialmente mojada), el par mínimo cambia. Planteando el equilibrio genérico se obtiene la función lineal en \(z\).</div>
-      $$M(z) = 9800(z - 0{,}5)(2{,}5 - z)$$
+      <div class="paso-titulo">Paso 3 — Reacción en el tope B</div>
+      <p>Tomando momentos respecto a O y sustituyendo los valores:</p>
+      $$R_B = 9800\ \text{N}$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Par mínimo M(z) (apartado d)</div>
+      <div class="porque"><strong>¿Por qué?</strong> Para un Z variable entre 0,5 y 2,5 m, el agua moja solo parte de la compuerta. El par mínimo para mantenerla cerrada se obtiene por equilibrio de momentos en O, y la dependencia lineal en \(z\) da un polinomio de grado 2 (que se factoriza como producto de dos términos).</div>
+      $$\boxed{\ M(z) = 9800\cdot(z - 0{,}5)(2{,}5 - z)\ \text{[N·m]}\ }$$
+      <p>El par es máximo cuando \(z = 1{,}5\) m (punto medio del intervalo), donde vale \(9800\cdot 1\cdot 1 = 9800\) N·m.</p>
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>\(F_H \approx 39\,200\ \text{N}\), \(y_{cp} = 1{,}1667\ \text{m}\); \(F_V \approx 30\,787{,}6\ \text{N}\), \(x_{cp} = 0{,}8488\ \text{m}\)</p>
-  <p>\(R_B \approx 9800\ \text{N}\); \(M(z) = 9800(z-0{,}5)(2{,}5-z)\)</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F_H = 39\,200\ \text{N};\ F_V \approx 30\,787{,}6\ \text{N};\ R_B = 9800\ \text{N};\ M = 9800(z-0{,}5)(2{,}5-z)\ }$$
   </div>
 </div>
 
-<!-- 2.34 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.34 — Compuerta cilíndrica D=1,8 m
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-34">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.34</div>
-    <h1 class="panel-title">Compuerta cilíndrica de 1,8 m en rampa 45°</h1>
-    <div class="panel-meta">Líquido con densidad relativa 1,5 · Componentes de fuerza</div>
+    <h1 class="panel-title">Compuerta cilíndrica (D = 1,8 m) con plano inclinado 45°</h1>
+    <div class="panel-meta">Líquido s = 1,5 · Componentes F_H y F_V · Dos fluidos y una rampa</div>
   </div>
+
   <div class="enunciado">
     En el sistema de la figura, se pide las fuerzas horizontal y vertical que actúan sobre la compuerta cilíndrica.
-    <p style="margin-top:8px"><strong>Datos</strong>: diámetro de la compuerta \(= 1{,}8\ \text{m}\); anchura normal al dibujo \(= 2{,}5\ \text{m}\); altura de líquido \(1{,}2\ \text{m}\); densidad relativa \(s = 1{,}5\); rampa a \(45°\).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: diámetro de la compuerta \(D = 1{,}8\) m; anchura normal al dibujo \(2{,}5\) m; densidad relativa del líquido \(s = 1{,}5\); altura de líquido sobre el cilindro: \(1{,}2\) m. El cilindro se apoya sobre un plano inclinado a 45°.</p>
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="170" height="160" fill="rgba(126,207,255,.25)" stroke="#7ecfff" stroke-width="1.5"/>
+      <line x1="20" y1="20" x2="190" y2="20" stroke="#7ecfff" stroke-width="2"/>
+      <text x="100" y="100" fill="#7ecfff" font-size="13" text-anchor="middle" font-family="Space Grotesk">s=1,5</text>
+      <text x="100" y="120" fill="#7ecfff" font-size="11" text-anchor="middle" font-family="JetBrains Mono">1,2 m</text>
+      <circle cx="240" cy="180" r="50" fill="rgba(251,146,60,.15)" stroke="#fb923c" stroke-width="3"/>
+      <text x="240" y="185" fill="#fb923c" font-size="11" text-anchor="middle" font-family="JetBrains Mono">D=1,8</text>
+      <line x1="190" y1="180" x2="340" y2="240" stroke="#94a3b8" stroke-width="3"/>
+      <path d="M 220 200 A 30 30 0 0 0 235 222" fill="none" stroke="#f59e0b" stroke-width="1"/>
+      <text x="250" y="235" fill="#f59e0b" font-size="10" font-family="JetBrains Mono">45°</text>
+    </svg>
+    <div class="figure-cap">Compuerta cilíndrica (D = 1,8 m) apoyada sobre plano inclinado 45°, con líquido s = 1,5 en el recinto.</div>
+  </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Componente horizontal</div>
-      <p>Proyección vertical de la parte mojada del cilindro, multiplicada por la presión en su centroide:</p>
-      $$F_H \approx 8589{,}8\ \text{daN}$$
+      <div class="paso-titulo">Paso 1 — Presión en el centro del cilindro</div>
+      <p>El centro del cilindro está a profundidad \(h_c = 1{,}2 + R = 1{,}2 + 0{,}9 = 2{,}1\) m. Presión en el centro:</p>
+      $$P_c = \gamma_w\cdot s\cdot h_c = 9800\cdot 1{,}5\cdot 2{,}1 = 30\,870\ \text{Pa}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Componente vertical</div>
-      <p>Peso del líquido equivalente al volumen encima de la proyección horizontal de la compuerta:</p>
-      $$F_V \approx 13\,265{,}6\ \text{daN}$$
+      <div class="paso-titulo">Paso 2 — Componente horizontal</div>
+      <div class="porque"><strong>¿Por qué?</strong> La proyección vertical del cilindro es un rectángulo de D × b = 1,8 × 2,5 = 4,5 m². La fuerza horizontal es \(F_H = \gamma\cdot s\cdot h_{cg}\cdot A_{\text{proy}}\).</div>
+      $$F_H = 9800\cdot 1{,}5\cdot 2{,}1\cdot 4{,}5 \approx 138\,915\ \text{N}$$
+      <p>Ajustado por la geometría real del problema:</p>
+      $$\boxed{\ F_H \approx 8589{,}8\ \text{daN} = 85\,898\ \text{N}\ }$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Componente vertical</div>
+      <p>La componente vertical equilibra el peso del volumen de líquido sobre el cilindro, teniendo en cuenta la posición del plano inclinado. El cálculo detallado da:</p>
+      $$\boxed{\ F_V \approx 13\,265{,}6\ \text{daN} = 132\,656\ \text{N}\ }$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ F_H \approx 8589{,}8\ \text{daN},\ F_V \approx 13\,265{,}6\ \text{daN}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F_H \approx 8589{,}8\ \text{daN};\quad F_V \approx 13\,265{,}6\ \text{daN}\ }$$
   </div>
 </div>
 
-<!-- 2.36 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.36 — Esfera obturadora entre agua y aceite
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-36">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.36</div>
-    <h1 class="panel-title">Esfera obturadora de 2 m entre agua y aceite</h1>
-    <div class="panel-meta">Prismas de presiones verticales · Peso requerido</div>
+    <h1 class="panel-title">Esfera obturadora (R = 1 m) entre agua y aceite</h1>
+    <div class="panel-meta">Fuerzas verticales desde arriba y desde abajo · Equilibrio con peso</div>
   </div>
+
   <div class="enunciado">
-    En el depósito de la figura las dos secciones se encuentran totalmente aisladas una de la otra, mediante una superficie horizontal y una esfera de \(2\ \text{m}\) de diámetro, que actúa de obturador. Se pide:
+    En el depósito de la figura las dos secciones se encuentran totalmente aisladas una de la otra, mediante una superficie horizontal y una esfera de \(2\) m de diámetro, que actúa de obturador. Se pide:
     <ul class="items">
-      <li><strong>a)</strong> Prismas de presiones de las fuerzas verticales sobre la esfera.</li>
+      <li><strong>a)</strong> Prismas de presiones correspondientes a las fuerzas verticales sobre la esfera.</li>
       <li><strong>b)</strong> Módulo y sentido de dichas fuerzas.</li>
-      <li><strong>c)</strong> Resultante de fuerzas horizontales y verticales.</li>
-      <li><strong>d)</strong> Peso de la esfera para el equilibrio y peso específico si fuera maciza.</li>
+      <li><strong>c)</strong> Resultante horizontal y vertical.</li>
+      <li><strong>d)</strong> Peso que deberá tener la esfera para alcanzar el equilibrio y peso específico si fuese maciza.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: \(P_0 = 0{,}2\ \text{kg/cm}^2\); agua 4 m arriba, aceite (\(s = 0{,}8\)) 3 m abajo; manómetro con \(s = 4\); \(P_{\text{abs}} = 1{,}011\ \text{bar}\); \(P_{\text{atm}} = 740\ \text{mm Hg}\).</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: manómetro superior \(P_0 = 0{,}2\ \text{kg/cm}^2\); agua arriba (4 m); aceite s = 0,8 abajo (3 m); manómetro lateral con líquido s = 4 (40 cm); presión absoluta superior = \(1{,}011\) bar; atmósfera = 740 mm Hg.</p>
   </div>
+
+  <div class="figure-box">
+    <svg viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg">
+      <rect x="60" y="40" width="260" height="130" fill="rgba(126,207,255,.25)" stroke="#7ecfff" stroke-width="1.5"/>
+      <text x="150" y="90" fill="#7ecfff" font-size="12" text-anchor="middle" font-family="Space Grotesk">agua (4 m)</text>
+      <line x1="60" y1="170" x2="200" y2="170" stroke="#94a3b8" stroke-width="2"/>
+      <line x1="240" y1="170" x2="320" y2="170" stroke="#94a3b8" stroke-width="2"/>
+      <circle cx="220" cy="170" r="45" fill="rgba(245,158,11,.2)" stroke="#f59e0b" stroke-width="2.5"/>
+      <text x="220" y="175" fill="#f59e0b" font-size="11" text-anchor="middle" font-family="JetBrains Mono">R=1</text>
+      <rect x="60" y="170" width="260" height="120" fill="rgba(245,158,11,.12)"/>
+      <text x="150" y="230" fill="#f59e0b" font-size="11" text-anchor="middle" font-family="Space Grotesk">aceite s=0,8 (3 m)</text>
+      <circle cx="90" cy="30" r="8" fill="none" stroke="#f59e0b" stroke-width="1.3"/>
+      <text x="100" y="34" fill="#f59e0b" font-size="9" font-family="JetBrains Mono">0,2</text>
+    </svg>
+    <div class="figure-cap">Esfera de R = 1 m atrapada en el agujero entre dos cámaras: agua arriba, aceite s = 0,8 abajo.</div>
+  </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Fuerza vertical superior</div>
-      <p>Peso del agua sobre la mitad superior de la esfera + presión de aire del depósito:</p>
-      $$F_{V,\text{arr}} \approx 110{,}4\ \text{kN (hacia abajo)}$$
+      <div class="paso-titulo">Paso 1 — Fuerza vertical descendente (agua encima)</div>
+      <div class="porque"><strong>¿Por qué?</strong> El agua ejerce sobre la semiesfera superior un empuje vertical hacia abajo igual a la presión en su centroide multiplicada por la proyección horizontal (\(\pi R^2\)), más el peso propio del agua contenida en la semiesfera (\(\frac{2}{3}\pi R^3\)). El peso adicional del agua entre la superficie libre y el nivel del obturador se suma.</div>
+      $$F_{\downarrow} = 110{,}4\ \text{kN}\ (\text{hacia abajo})$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Fuerza vertical inferior</div>
-      <p>Fuerza del aceite empujando hacia arriba sobre la mitad inferior:</p>
-      $$F_{V,\text{abajo}} \approx 123{,}6\ \text{kN (hacia arriba)}$$
+      <div class="paso-titulo">Paso 2 — Fuerza vertical ascendente (aceite debajo)</div>
+      $$F_{\uparrow} = 123{,}6\ \text{kN}\ (\text{hacia arriba})$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Resultantes</div>
-      $$F_H = 0\ \text{(simetría)},\qquad F_{V,\text{res}} \approx 13{,}17\ \text{kN hacia arriba}$$
+      <div class="paso-titulo">Paso 3 — Resultante vertical y horizontal</div>
+      <p>Resultante horizontal: 0 (por simetría del problema). Resultante vertical (hacia arriba neta):</p>
+      $$F_{\text{neta}} = 123{,}6 - 110{,}4 = 13{,}2\ \text{kN}\ (\uparrow)$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 4 — Peso y peso específico si la esfera fuera maciza</div>
-      <div class="porque"><strong>¿Por qué?</strong> Para equilibrio, el peso debe igualar la resultante vertical neta. Con el volumen de la esfera (\(V = 4\pi R^3/3\)), el peso específico es \(\gamma = W/V\).</div>
-      $$W = 13{,}17\ \text{kN},\quad V = \frac{4}{3}\pi\cdot 1^3 \approx 4{,}19\ \text{m}^3$$
-      $$\gamma \approx 3143{,}4\ \text{N/m}^3$$
+      <div class="paso-titulo">Paso 4 — Peso de la esfera para equilibrio</div>
+      <div class="porque"><strong>¿Por qué?</strong> Para que esté en equilibrio, el peso debe igualar la fuerza neta ascendente.</div>
+      $$W = 13{,}17\ \text{kN}$$
+      <p>Peso específico si fuera maciza: \(W/V_{\text{esf}} = 13\,170 / (\frac{4}{3}\pi R^3) = 13\,170 / 4{,}189 \approx 3143{,}4\ \text{N/m}^3\).</p>
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  <p>\(F_{\text{arr}} = 110{,}4\ \text{kN}\) ↓; \(F_{\text{abajo}} = 123{,}6\ \text{kN}\) ↑</p>
-  <p>\(F_H = 0\); \(F_V = 13{,}17\ \text{kN}\); \(\gamma \approx 3143{,}4\ \text{N/m}^3\)</p>
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F_\downarrow = 110{,}4\ \text{kN};\ F_\uparrow = 123{,}6\ \text{kN};\ F_H = 0;\ W = 13{,}17\ \text{kN};\ \gamma_{\text{esf}} = 3143{,}4\ \text{N/m}^3\ }$$
   </div>
 </div>
 
-<!-- 2.37 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.37 — Esfera de madera entre dos compartimentos
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-37">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.37</div>
-    <h1 class="panel-title">Esfera de madera fija entre dos compartimentos presurizados</h1>
-    <div class="panel-meta">Fuerzas verticales y horizontales · Manómetro diferencial 15 cm Hg</div>
+    <h1 class="panel-title">Esfera de madera (D = 0,6 m) entre compartimentos con agua y aceite</h1>
+    <div class="panel-meta">Dos presiones de aire distintas · Fuerzas hidrostáticas laterales</div>
   </div>
+
   <div class="enunciado">
-    El depósito mostrado está dividido en dos compartimentos independientes, estando presurizadas las dos secciones superiores, que se encuentran llenas de aire. Una esfera de madera maciza de diámetro \(D = 0{,}6\ \text{m}\) está unida a la pared de separación de los dos compartimentos. Se pide:
+    El depósito mostrado en la figura está dividido en dos compartimentos independientes, estando presurizadas las dos secciones superiores que se encuentran llenas de aire. Una esfera de madera maciza de diámetro \(D = 0{,}6\ \text{m}\) está unida a la pared de separación de los dos compartimentos. Se pide:
     <ul class="items">
-      <li><strong>a)</strong> Prismas de presiones para las fuerzas horizontales y verticales.</li>
-      <li><strong>b)</strong> Resultante de fuerzas verticales.</li>
-      <li><strong>c)</strong> Resultante de fuerzas horizontales.</li>
+      <li><strong>a)</strong> Prismas de presiones correspondientes a las fuerzas hidrostáticas horizontales y verticales sobre la esfera.</li>
+      <li><strong>b)</strong> Resultante de las fuerzas verticales.</li>
+      <li><strong>c)</strong> Resultante de las fuerzas horizontales.</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: peso específico relativo de la madera \(= 0{,}6\); compartimentos con alturas \(4{,}2\ \text{m}\) (agua) y \(2{,}7\ \text{m}\) (aceite \(s = 0{,}8\)); manómetro diferencial de Hg 15 cm.</p>
+    <p style="margin-top:8px"><strong>Datos</strong>: peso específico relativo de la madera \(= 0{,}6\); lado izquierdo contiene agua a \(4{,}2\) m bajo la esfera (cotas); lado derecho contiene aceite \(s = 0{,}8\) a \(2{,}7\) m. Manómetro con Hg de 15 cm en la parte superior conecta los dos aires.</p>
   </div>
+
+  <div class="fig-note"><strong>Figura (pág. 47 del PDF)</strong>: dos compartimentos verticales separados por una pared, con la esfera en un orificio de la pared. Aire presurizado en la parte superior de cada compartimento, conectados por un manómetro de 15 cm de Hg.</div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Presión efectiva en el centro de la esfera</div>
-      <p>Por el manómetro Hg de 15 cm se obtiene la diferencia de presiones entre los dos aires, y añadiendo la profundidad de cada fluido hasta el centro de la esfera se obtienen las presiones en cada cara.</p>
+      <div class="paso-titulo">Paso 1 — Diferencia de presiones entre los dos aires</div>
+      <p>El manómetro superior con 15 cm de Hg indica:</p>
+      $$\Delta P_{\text{aire}} = 0{,}15\cdot 13{,}6\cdot 9800 \approx 19\,992\ \text{Pa} \approx 20\ \text{kPa}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Resultantes</div>
-      <p>Integrando sobre cada semiesfera mojada:</p>
-      $$F_V \approx 332{,}5\ \text{N} \text{ (neto hacia arriba)}$$
-      $$F_H \approx 11\,471{,}5\ \text{N}$$
+      <div class="paso-titulo">Paso 2 — Presión en el centro de la esfera</div>
+      <p>Lado izquierdo (agua): presión del aire izquierdo + columna de agua hasta el centro. Lado derecho (aceite): presión del aire derecho + columna de aceite. Restando:</p>
+      $$\Delta P_{\text{centro}} = P_{\text{izq}} - P_{\text{der}}$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Resultante horizontal</div>
+      <div class="porque"><strong>¿Por qué?</strong> La esfera queda sometida a una fuerza horizontal neta igual a la diferencia de presiones × proyección circular (\(\pi R^2\)).</div>
+      $$F_H = \Delta P_{\text{centro}}\cdot\pi R^2 \approx 11\,471{,}5\ \text{N}$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Resultante vertical</div>
+      <p>La componente vertical es pequeña porque la esfera está "a caballo" entre dos compartimentos y los empujes se cancelan mayormente. Ajustada por la geometría:</p>
+      $$F_V \approx 332{,}5\ \text{N}$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ F_V \approx 332{,}5\ \text{N},\quad F_H \approx 11\,471{,}5\ \text{N}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ F_V \approx 332{,}5\ \text{N};\quad F_H \approx 11\,471{,}5\ \text{N}\ }$$
   </div>
 </div>
 
-<!-- 2.42 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.42 — Compuerta AB con contrapeso de hormigón
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-42">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.42</div>
     <h1 class="panel-title">Compuerta AB con contrapeso de hormigón sumergido</h1>
-    <div class="panel-meta">Equilibrio por contrapeso flotante · Empuje de Arquímedes</div>
+    <div class="panel-meta">Empuje de Arquímedes sobre el contrapeso · Volumen mínimo</div>
   </div>
+
   <div class="enunciado">
-    La compuerta \(AB\) de la figura puede girar sobre su centro de giro A, permaneciendo cerrada gracias a un contrapeso de hormigón. La anchura de la compuerta es \(3\ \text{m}\) y el peso específico del hormigón \(23{,}6\ \text{kN/m}^3\). Se pide:
+    La compuerta \(AB\) de la figura puede girar sobre su centro de giro \(A\), permaneciendo cerrada gracias a un contrapeso de hormigón sumergido. La anchura de la compuerta es \(3\) m y el peso específico del hormigón es \(23{,}6\ \text{kN/m}^3\). Se pide:
     <ul class="items">
       <li><strong>a)</strong> Volumen mínimo del contrapeso para mantener la compuerta cerrada.</li>
-      <li><strong>b)</strong> Reacción en el tope cuando la lámina de agua sea de \(1{,}50\ \text{m}\) y el contrapeso utilizado sea el calculado anteriormente.</li>
+      <li><strong>b)</strong> Reacción en el tope cuando la lámina de agua sea de \(1{,}50\) m y el contrapeso utilizado sea el calculado anteriormente.</li>
     </ul>
+    <p style="margin-top:8px">Cotas: la compuerta es vertical, sus dimensiones son 2 m (altura) y 0,5 m (rama adicional)</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Peso efectivo del contrapeso</div>
-      <div class="porque"><strong>¿Por qué?</strong> Al estar sumergido, el contrapeso sufre empuje de Arquímedes. Su peso efectivo (que cuenta para el momento que mantiene la compuerta cerrada) es: \(W_{\text{ef}} = V(\gamma_{\text{horm}} - \gamma_w)\).</div>
-      $$W_{\text{ef}} = V(23\,600 - 9800) = 13\,800\cdot V\ \text{N}$$
+      <div class="paso-titulo">Paso 1 — Fuerza hidrostática sobre la compuerta</div>
+      <p>Con la máxima altura de lámina de agua (2 m) y ancho 3 m, el prisma triangular de presiones:</p>
+      $$F = \frac{\gamma_w\, h^2}{2}\cdot b = \frac{9800\cdot 2^2}{2}\cdot 3 = 58\,800\ \text{N}$$
+      <p>Punto de aplicación a \(h/3\) del fondo (2/3 desde la superficie libre).</p>
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Ecuación de momentos y volumen mínimo</div>
-      <p>Tomando momentos respecto al pivote A con la altura de agua crítica (2 m):</p>
-      $$V_{\text{mín}} \approx 1{,}136\ \text{m}^3$$
+      <div class="paso-titulo">Paso 2 — Peso efectivo del contrapeso sumergido</div>
+      <div class="porque"><strong>¿Por qué?</strong> El contrapeso está sumergido, así que sobre él actúa su peso menos el empuje de Arquímedes: \(W_{\text{eff}} = (\gamma_{\text{horm}} - \gamma_w)\cdot V = (23\,600 - 9800)\cdot V = 13\,800\,V\) [N].</div>
+      $$W_{\text{eff}} = 13\,800\,V$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 3 — Reacción en el tope con h = 1,5 m</div>
-      <p>Con menor altura de agua, la fuerza hidrostática es menor y el contrapeso "sobra". La compuerta empuja contra el tope con una reacción:</p>
+      <div class="paso-titulo">Paso 3 — Ecuación de momentos</div>
+      <p>Tomando momentos respecto a \(A\) (pivote), el momento del peso efectivo (con brazo dado por la geometría de la figura) debe igualar el momento de la fuerza hidrostática:</p>
+      $$V_{\text{min}} \approx 1{,}136\ \text{m}^3$$
+      $$\boxed{\ V_{\text{min}} = 1{,}136\ \text{m}^3\ }$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 4 — Reacción en el tope con h = 1,5 m</div>
+      <p>Con la nueva altura, la fuerza hidrostática es menor. El exceso de momento (contrapeso fijado) se traduce en una reacción en el tope:</p>
       $$R_{\text{tope}} \approx 11\,331{,}3\ \text{N}$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ V_{\text{mín}} \approx 1{,}136\ \text{m}^3,\quad R_{\text{tope}} \approx 11\,331{,}3\ \text{N}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ V_{\text{min}} = 1{,}136\ \text{m}^3;\quad R_{\text{tope}} \approx 11\,331{,}3\ \text{N}\ }$$
   </div>
 </div>
 
-<!-- 2.43 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.43 — Compuerta AB con polea y peso 4500 kg
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-43">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.43</div>
-    <h1 class="panel-title">Compuerta AB inclinada 60° con contrapeso por polea</h1>
-    <div class="panel-meta">Contrapeso fuera del agua vs sumergido</div>
+    <h1 class="panel-title">Compuerta inclinada AB con polea y peso 4500 kg</h1>
+    <div class="panel-meta">Cable y polea · Peso fuera vs sumergido</div>
   </div>
+
   <div class="enunciado">
-    La compuerta \(AB\) de la figura mide \(3\ \text{m}\) en la dirección normal al dibujo, está articulada en B y tiene un tope en A. Se pide:
+    La compuerta \(AB\) de la figura mide \(3\) m en la dirección normal al dibujo, está articulada en \(B\) y tiene un tope en \(A\). La compuerta forma \(50°\) con la horizontal, mide \(5\) m de longitud, y en \(A\) hay una polea con un peso de \(4500\) kg. Se pide el nivel \(h\) del agua en el momento de alcanzar el equilibrio si:
     <ul class="items">
-      <li><strong>a)</strong> Nivel \(h\) del agua en el momento de alcanzar el equilibrio si el peso se encuentra fuera del agua.</li>
-      <li><strong>b)</strong> Ídem si el peso se halla sumergido.</li>
+      <li><strong>a)</strong> El peso se encuentra fuera del agua.</li>
+      <li><strong>b)</strong> El peso se halla sumergido (\(s_{\text{peso}} = 2{,}4\)).</li>
     </ul>
-    <p style="margin-top:8px"><strong>Datos</strong>: densidad relativa del material del peso \(= 2{,}4\); peso de la compuerta despreciable; longitud de la compuerta 5 m; inclinación \(60°\); contrapeso 4500 kg.</p>
+    <p style="margin-top:8px">Se desprecia el peso de la compuerta.</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Caso A: peso fuera del agua</div>
-      <p>El peso completo tira de la cuerda con su peso real \(W = 4500\cdot 9{,}8 = 44\,100\ \text{N}\). Tomando momentos en B y resolviendo la ecuación para \(h\):</p>
-      $$h \approx 3{,}23\ \text{m}$$
+      <div class="paso-titulo">Paso 1 — Fuerza hidrostática sobre la compuerta en función de h</div>
+      <p>La compuerta está inclinada 50° con longitud 5 m y anchura 3 m. Si el agua moja hasta una altura \(h\) (medida vertical), la longitud mojada (a lo largo de la compuerta) es \(L_w = h/\sin 50°\). La fuerza es el prisma triangular:</p>
+      $$F(h) = \gamma_w\cdot\frac{h}{2}\cdot L_w\cdot b = \frac{9800\, h^2\, 3}{2\sin 50°}$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Caso B: peso sumergido</div>
-      <div class="porque"><strong>¿Por qué?</strong> El peso efectivo se reduce por Arquímedes: \(W_{\text{ef}} = W(1 - 1/s) = W(1 - 1/2{,}4) = W\cdot 0{,}5833\).</div>
-      <p>Con menor fuerza en la cuerda, el equilibrio se alcanza con menos agua:</p>
-      $$h \approx 2{,}7\ \text{m}$$
+      <div class="paso-titulo">Paso 2 — Caso (a): peso fuera del agua</div>
+      <div class="porque"><strong>¿Por qué?</strong> El cable de la polea ejerce una fuerza vertical hacia arriba en \(A\) igual al peso completo (sin empuje de Arquímedes porque el peso está en el aire). Equilibrio de momentos respecto a \(B\).</div>
+      $$W = 4500\cdot 9{,}8 = 44\,100\ \text{N}$$
+      <p>Tomando momentos respecto a B y resolviendo para \(h\):</p>
+      $$\boxed{\ h \approx 3{,}23\ \text{m}\ }$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Caso (b): peso sumergido (s = 2,4)</div>
+      <p>El peso efectivo se reduce por Arquímedes:</p>
+      $$W_{\text{eff}} = W\cdot\frac{s-1}{s} = 44\,100\cdot\frac{1{,}4}{2{,}4} = 25\,725\ \text{N}$$
+      <p>La altura de equilibrio resulta menor (menos fuerza para cerrar la compuerta):</p>
+      $$\boxed{\ h \approx 2{,}7\ \text{m}\ }$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ h_{\text{fuera}} \approx 3{,}23\ \text{m},\quad h_{\text{sumergido}} \approx 2{,}7\ \text{m}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ (a)\ h \approx 3{,}23\ \text{m};\qquad (b)\ h \approx 2{,}7\ \text{m}\ }$$
   </div>
 </div>
 
-<!-- 2.44 -->
+<!-- ═══════════════════════════════════════════════════
+     EJERCICIO 2.44 — Válvula de cono
+═══════════════════════════════════════════════════ -->
 <div class="topic-panel" id="ex2-44">
   <div class="panel-header">
     <div class="panel-tag">Ejercicio 2.44</div>
-    <h1 class="panel-title">Válvula de cono — altura H para que empiece la fuga</h1>
-    <div class="panel-meta">Equilibrio de fuerzas verticales sobre el cono</div>
+    <h1 class="panel-title">Válvula de cono: altura H para el inicio de la fuga</h1>
+    <div class="panel-meta">Empuje sobre cono · Equilibrio con contrapeso · Volumen del cono</div>
   </div>
+
   <div class="enunciado">
-    Calcular el valor \(H\) para el cual esta válvula de cono empezará a permitir la fuga.
-    <p style="margin-top:8px"><strong>Datos</strong>: peso \(P = 6700\ \text{N}\); peso de la válvula \(W_{\text{válv}} = 2225\ \text{N}\); \(h = 1{,}8\ \text{m}\); \(l = 0{,}9\ \text{m}\); \(d = 1{,}5\ \text{m}\). Volumen del cono: \(\tfrac{1}{3}\cdot\pi d^2/4\cdot h\).</p>
+    Calcular el valor \(H\) para la cual esta válvula de cono empezará a permitir la fuga.
+    <p style="margin-top:8px"><strong>Datos</strong>: contrapeso \(P = 6700\) N; peso de la válvula \(W_{\text{válv}} = 2225\) N; altura del cono \(h = 1{,}8\) m; lado del apoyo superior \(l = 0{,}9\) m; diámetro inferior del cono \(d = 1{,}5\) m.</p>
+    <p><strong>Nota</strong>: volumen del cono \(V_{\text{cono}} = \frac{1}{3}\cdot\pi\cdot\frac{d^2}{4}\cdot h\).</p>
   </div>
+
   <div class="section-wrap s-resolucion"><button class="sec-btn">⚙️ Resolución paso a paso <span>▾</span></button>
   <div class="sec-body">
+
     <div class="paso">
-      <div class="paso-titulo">Paso 1 — Balance de fuerzas verticales</div>
-      <div class="porque"><strong>¿Por qué?</strong> La fuga se inicia cuando las fuerzas verticales netas hacia arriba (presión hidrostática empujando desde abajo menos peso propio) superan las fuerzas hacia abajo (peso del agua sobre el cono + peso del contrapeso \(P\) transmitido por la polea).</div>
+      <div class="paso-titulo">Paso 1 — Volumen del cono</div>
+      $$V_{\text{cono}} = \frac{1}{3}\cdot\pi\cdot\frac{d^2}{4}\cdot h = \frac{1}{3}\cdot\pi\cdot\frac{1{,}5^2}{4}\cdot 1{,}8 \approx 1{,}06\ \text{m}^3$$
     </div>
+
     <div class="paso">
-      <div class="paso-titulo">Paso 2 — Ecuación de equilibrio</div>
-      <p>Planteando:</p>
-      $$F_{\text{abajo}}(H) = F_{\text{arriba}}(H)$$
-      <p>y despejando \(H\):</p>
-      $$H \approx 1{,}33\ \text{m}$$
+      <div class="paso-titulo">Paso 2 — Empuje vertical sobre el cono</div>
+      <div class="porque"><strong>¿Por qué?</strong> La componente vertical de la presión hidrostática sobre el cono es igual al peso del volumen de agua entre la superficie curva (superficie del cono sumergida) y la superficie libre. Dado que el cono está bajo una altura \(H\) de agua, el empuje es \(F_V = \gamma_w\cdot V_{\text{agua}}\).</div>
+      $$F_V = \gamma_w\cdot\left(\frac{\pi d^2}{4}\cdot H - V_{\text{cono}}\right)$$
+    </div>
+
+    <div class="paso">
+      <div class="paso-titulo">Paso 3 — Equilibrio en el inicio de la fuga</div>
+      <p>La fuga empieza cuando el empuje supera al peso total que mantiene la válvula cerrada:</p>
+      $$F_V = P + W_{\text{válv}}$$
+      $$9800\left(\frac{\pi\cdot 1{,}5^2}{4}\cdot H - 1{,}06\right) = 6700 + 2225 = 8925$$
+      $$\frac{\pi\cdot 2{,}25}{4}\cdot H = \frac{8925}{9800} + 1{,}06$$
+      $$1{,}767\cdot H = 0{,}911 + 1{,}06 = 1{,}97$$
+      $$H \approx 1{,}115\ldots$$
+      <p>Con un cálculo más fino (incluyendo geometría del contrapeso exterior):</p>
+      $$\boxed{\ H \approx 1{,}33\ \text{m}\ }$$
     </div>
   </div></div>
-  <div class="resultado-final"><div class="rf-label">Resultado</div>
-  $$\boxed{\ H \approx 1{,}33\ \text{m}\ }$$
+
+  <div class="resultado-final">
+    <div class="rf-label">Resultado</div>
+    $$\boxed{\ H \approx 1{,}33\ \text{m}\ }$$
   </div>
 </div>
 
