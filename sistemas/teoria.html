@@ -267,7 +267,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
 <div class="layout">
   <aside class="sidebar">
     <div class="sb-head">
-      <div class="sb-subtitle">4 temas</div>
+      <div class="sb-subtitle">5 temas</div>
       <div class="sb-current" id="sbCurrent">T1 · Torneado</div>
       <div class="sb-search">
         <svg class="sb-search-icon" width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z"/></svg>
@@ -294,6 +294,11 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
         <span class="sb-dot sb-dot-pendiente"></span>
         <span class="sb-tag">T4</span>
         <span class="sb-name">Control Numérico — CNC</span>
+      </button>
+      <button class="sb-item" onclick="showTopic('t5')" data-id="t5">
+        <span class="sb-dot sb-dot-pendiente"></span>
+        <span class="sb-tag">T5</span>
+        <span class="sb-name">Rectificado</span>
       </button>
     </div>
   </aside>
@@ -1266,6 +1271,415 @@ code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--sur
       </div>
     </div>
   </div><!-- /t4 -->
+
+<!-- ═══════════════════════════════════════════════════════
+     TEMA 5 — RECTIFICADO (GRINDING)
+═══════════════════════════════════════════════════════ -->
+  <div class="topic-panel" id="t5">
+    <div class="panel-header">
+      <div class="panel-tag">T5</div>
+      <h1 class="panel-title">Rectificado (Grinding)</h1>
+    </div>
+
+    <!-- 1. INTRODUCCIÓN -->
+    <div class="section">
+      <div class="section-label"><span>1 · Introducción</span></div>
+      <div class="prose">
+        <p>El <b>rectificado</b> (<i>grinding</i>) es un proceso de <b>mecanizado por arranque de viruta con herramienta no definida</b>: la herramienta es una muela abrasiva formada por miles de granos aleatoriamente orientados que actúan como mini-cuchillas. Se utiliza tanto en piezas prismáticas como de revolución, y normalmente es la operación final que da el acabado superficial y la precisión dimensional finales.</p>
+        <p>Combina <b>dos movimientos</b>:</p>
+        <ul>
+          <li><b>Movimiento principal de corte</b>: rotación de la HERRAMIENTA (la muela). La pieza puede llevar rotación pero no es el movimiento principal.</li>
+          <li><b>Movimiento de avance</b>: traslación relativa PIEZA–HERRAMIENTA.</li>
+        </ul>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">¿Cuándo se utiliza?</div>
+        <div class="prose">
+          <ul>
+            <li>Cuando se requiere <b>alta precisión dimensional</b> (tolerancias IT5–IT7) y <b>muy buen acabado superficial</b> (Ra &lt; 0,8 µm)</li>
+            <li>Para <b>materiales muy duros</b> difíciles de mecanizar por herramienta definida (aceros templados, cerámicas, carburo, HSS)</li>
+            <li>Aplicaciones típicas: herramientas de corte, elementos de transmisión (engranajes), elementos motor (cigüeñales), guías, rodamientos, moldes</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="box warn" style="margin-top:12px">
+        <div class="box-title">Características del proceso vs torneado/fresado</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Variable</th><th>Rectificado</th><th>Herramienta definida</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="td-accent">Geometría de corte</td><td>No definida (aleatoria, por grano)</td><td>Definida (ángulos conocidos)</td></tr>
+              <tr><td class="td-accent">Velocidad de corte \(v_s\)</td><td><b>20–80 m/s</b> (muy alta)</td><td>2–10 m/s</td></tr>
+              <tr><td class="td-accent">Espesor de viruta \(h\)</td><td>Muy pequeño (µm)</td><td>mm</td></tr>
+              <tr><td class="td-accent">Fuerza específica \(p_s\)</td><td><b>&gt; 15 000 N/mm²</b></td><td>&lt; 10 000 N/mm²</td></tr>
+              <tr><td class="td-accent">Fuerza de corte</td><td>Baja (en valor absoluto, por grano)</td><td>Alta</td></tr>
+              <tr><td class="td-accent">Áng. desprendimiento</td><td>Muy negativo (grano redondeado)</td><td>Positivo o ligeramente negativo</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="fkey" style="margin-top:12px">
+        <div class="flabel">Tres mecanismos durante el arranque de viruta</div>
+        <div class="prose">
+          <ol>
+            <li><b>Fricción</b> grano contra superficie sin arrancar material — deformación elástica</li>
+            <li><b>Deformación plástica</b> (<i>ploughing</i>) — el material se desplaza lateralmente pero sin desprenderse como viruta</li>
+            <li><b>Corte efectivo</b> — el grano arranca viruta (<i>chip formation</i>)</li>
+          </ol>
+          <p style="margin-top:6px;font-size:.85em;color:#94a3b8">Los tres mecanismos coexisten. Sólo una fracción del trabajo de la muela es corte efectivo; el resto se disipa como calor → <b>refrigeración obligatoria</b> en rectificado.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. HERRAMIENTAS (MUELAS) -->
+    <div class="section">
+      <div class="section-label"><span>2 · Herramientas — Muelas (wheels)</span></div>
+      <div class="prose">
+        <p>Las muelas son herramientas de corte <b>singulares</b> (cada muela es un sistema único). Se componen de <b>tres elementos</b>: granos abrasivos, aglutinante y poros.</p>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">Granos abrasivos — Material de corte</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Material</th><th>Dureza</th><th>Aplicación</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="td-accent">Óxido de aluminio (Al₂O₃, alúmina)</td><td>Media-alta</td><td>Aceros al carbono y aleados, hierro fundido. Muy común y barato.</td></tr>
+              <tr><td class="td-accent">Carburo de silicio (SiC)</td><td>Alta</td><td>Fundiciones grises, aluminio, latón, cerámicas. Más duro pero más frágil que alúmina.</td></tr>
+              <tr><td class="td-accent">CBN (nitruro de boro cúbico)</td><td>Muy alta</td><td>Aceros templados, superaleaciones (Inconel), herramientas HSS. Superabrasivo.</td></tr>
+              <tr><td class="td-accent">Diamante</td><td>Máxima</td><td>Carburos (WC), cerámicas, vidrio, grafito. No se usa con ferrosos (afinidad química → desgaste rápido).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:6px;font-size:.85em;color:#94a3b8">Regla mnemotécnica: <b>alúmina</b> = aceros · <b>SiC</b> = no ferrosos y frágiles · <b>CBN</b> = aceros duros · <b>diamante</b> = todo menos acero.</p>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">Aglutinante — Tipos</div>
+        <div class="prose">
+          <ul>
+            <li><b>Vitrificado (V, <i>vitrified</i>)</b> — vidrio cocido. Rígido, poroso, el más común. Denominación "V".</li>
+            <li><b>Resinoide (B, <i>resinoid</i>)</b> — resinas fenólicas. Más flexible; para altas velocidades y muelas de corte/desbaste.</li>
+            <li><b>Caucho (R, <i>rubber</i>)</b> — muy elástico. Acabados finos (rectificado sin centros, muelas regularizadoras).</li>
+            <li><b>Metálico (M)</b> — solo para superabrasivos (CBN, diamante). Bronce, cobre o aleaciones sinterizadas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">Grado de la muela — Denominación (A–Z)</div>
+        <div class="prose" style="font-size:.9em">
+          <p>Indica cómo de <b>fuertemente retiene el aglutinante a los granos</b>. Una muela dura resiste el desgaste; una blanda libera los granos gastados más rápido (se auto-afila):</p>
+          <ul>
+            <li><b>A–E</b>: muelas <b>muy blandas</b> — materiales duros y abrasivos</li>
+            <li><b>F–K</b>: <b>blandas</b> — aceros duros, HSS</li>
+            <li><b>L–Q</b>: <b>medias</b> — uso general</li>
+            <li><b>R–T</b>: <b>duras</b> — materiales blandos (no ferrosos)</li>
+            <li><b>U–Z</b>: <b>muy duras</b> — aplicaciones especiales</li>
+          </ul>
+          <p style="margin-top:6px;color:#94a3b8"><b>Regla clave</b>: material <em>duro</em> de pieza → muela <em>blanda</em> (para que libere granos embotados); material <em>blando</em> de pieza → muela <em>dura</em> (para retener los granos que se desgastan poco).</p>
+        </div>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">Estructura — Porosidad</div>
+        <div class="prose" style="font-size:.9em">
+          <p>La porosidad se codifica del <b>1 al 15</b>: 1 = estructura muy densa (poros pequeños), 15 = muy abierta (poros grandes). Más porosidad = mejor evacuación de viruta y refrigerante, peor acabado.</p>
+        </div>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">Formas de muela según geometría de operación</div>
+        <div class="prose">
+          <ul>
+            <li><b>Muela recta</b> (a1) — rectificado plano horizontal y cilíndrico</li>
+            <li><b>Muela recta vaciada</b> (a2, a3) — misma función, menos peso y menos deflexión</li>
+            <li><b>Muela de disco</b> (b) — cortes finos, ranurado</li>
+            <li><b>Muela cilíndrica</b> (c) — rectificado plano con cabezal vertical</li>
+            <li><b>Muela de vaso recta / cónica</b> (d1, d2) — afilado de herramientas, superficies planas pequeñas</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="fkey" style="margin-top:12px">
+        <div class="flabel">Denominación estándar (UNE 16-300-75 / ANSI B74.13-1977)</div>
+        <div class="prose" style="font-family:monospace;font-size:.9em;color:#14b8a6;padding:8px">
+          30 &nbsp; A &nbsp; 46 &nbsp; H &nbsp; 6 &nbsp; V &nbsp; XX
+        </div>
+        <div class="prose" style="margin-top:6px;font-size:.85em">
+          <ul>
+            <li><b>Prefijo</b> (30) — símbolo del fabricante (opcional)</li>
+            <li><b>Abrasivo</b> (A) — A = alúmina, C = carburo de silicio</li>
+            <li><b>Tamaño grano</b> (46) — 8–24 gruesos, 30–60 medios, 70–180 finos, 220–600 muy finos</li>
+            <li><b>Grado</b> (H) — A = muy blanda, M = media, Z = muy dura</li>
+            <li><b>Estructura</b> (6) — 1 muy densa, 15 muy abierta</li>
+            <li><b>Aglutinante</b> (V) — V = vitrificado, B = resinoide, R = caucho, S = silicato, E = shellac</li>
+            <li><b>Sufijo</b> (XX) — marca privada del fabricante</li>
+          </ul>
+          <p style="margin-top:6px;color:#94a3b8">Ejemplo completo: <b>400 × 60 × 40 &nbsp; 51 A – 36 – L – 5 V 32</b> → 400 mm Ø muela × 60 mm espesor × 40 mm Ø eje. Alúmina, grano 36 (medio), grado L (medio), estructura 5 (semi-densa), vitrificado, sufijo 32.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. DESGASTE -->
+    <div class="section">
+      <div class="section-label"><span>3 · Desgaste</span></div>
+
+      <div class="box info">
+        <div class="box-title">Dos fenómenos de desgaste</div>
+        <div class="prose">
+          <ol>
+            <li><b>Pérdida de geometría del perfil</b> (macro) — la muela deja de tener el perfil deseado, genera "salto radial" y pérdida de precisión dimensional en la pieza.</li>
+            <li><b>Pérdida de capacidad de corte</b> (micro) — los granos se embotan, redondean sus aristas, se llenan los poros de viruta (<i>loading</i>). La muela no corta, solo roza.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="fkey" style="margin-top:12px">
+        <div class="flabel">Razón de rectificado — Grinding Ratio (GR o G)</div>
+        \[G = \frac{V_w}{V_g}\]
+        <div class="prose" style="font-size:.85em;margin-top:6px">
+          Donde \(V_w\) es el volumen de material rectificado de la pieza y \(V_g\) el volumen de muela desgastada. Se mide en la <b>zona 2</b> (régimen estacionario) de la curva de desgaste. Cuanto mayor \(G\), mejor rendimiento de la muela.
+        </div>
+      </div>
+
+      <div class="box warn" style="margin-top:12px">
+        <div class="box-title">Cuatro mecanismos básicos de desgaste</div>
+        <div class="prose">
+          <ol>
+            <li><b>Desgaste por abrasión</b> — fricción grano-pieza redondea las aristas (a)</li>
+            <li><b>Fractura del grano</b> — parte del grano se rompe, exponiendo aristas nuevas y auto-afilándose (b)</li>
+            <li><b>Fractura del aglutinante</b> — el puente de aglutinante que sostiene el grano cede y el grano se suelta completo (c)</li>
+            <li><b>Embotamiento</b> (<i>loading</i>) — viruta se pega al grano o llena los poros, inhibiendo el corte (d)</li>
+          </ol>
+          <p style="margin-top:6px;font-size:.85em;color:#94a3b8">Una muela "sana" debería trabajar en el régimen 2+3: fractura controlada de grano y aglutinante que mantiene siempre aristas nuevas. Si domina el 4 (embotamiento) hay que <b>diamantar</b>.</p>
+        </div>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">Consecuencias del desgaste</div>
+        <div class="prose">
+          <ul>
+            <li>Pérdida de precisión dimensional → piezas fuera de tolerancia</li>
+            <li>Incremento de la fuerza y potencia de corte → mayor generación de calor</li>
+            <li>Empeoramiento del acabado superficial (aumenta Ra)</li>
+            <li>Quemado superficial de la pieza (<i>grinding burn</i>) por exceso de calor</li>
+            <li>Riesgo de rotura de la muela por desequilibrio</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. OPERACIONES Y MÁQUINAS -->
+    <div class="section">
+      <div class="section-label"><span>4 · Operaciones y máquinas</span></div>
+
+      <div class="prose">
+        <p>Tres operaciones fundamentales de rectificado, cada una con variantes según la orientación del cabezal y el tipo de avance:</p>
+      </div>
+
+      <div class="box info" style="margin-top:10px">
+        <div class="box-title">A) Rectificado plano (<i>plane grinding</i>)</div>
+        <div class="prose">
+          <p>Superficies planas. Cuatro variantes según cabezal (horizontal/vertical) × mesa (vaivén/rotativa):</p>
+          <ul>
+            <li><b>A1</b> — Cabezal horizontal + mesa de vaivén (más común; rectificadoras tipo Jung/GER)</li>
+            <li><b>A2</b> — Cabezal horizontal + mesa rotativa (piezas circulares planas)</li>
+            <li><b>A3</b> — Cabezal vertical + mesa de vaivén (arranque más agresivo)</li>
+            <li><b>A4</b> — Cabezal vertical + mesa rotativa (máxima productividad)</li>
+          </ul>
+          <p style="margin-top:6px;font-size:.85em;color:#94a3b8">Parámetros: \(v_s\) (muela), \(v_w\) (pieza, <i>workspeed</i>), \(d\) = profundidad (<i>infeed</i>), \(w\) = avance transversal (<i>crossfeed</i>).</p>
+        </div>
+      </div>
+
+      <div class="box info" style="margin-top:10px">
+        <div class="box-title">B) Rectificado cilíndrico (<i>cylindrical grinding</i>)</div>
+        <div class="prose">
+          <p>Superficies de revolución — ejes, cigüeñales, pistones. Dos tipos de avance:</p>
+          <ul>
+            <li><b>Longitudinal</b> (\(v_f\) axial) — la muela se desplaza a lo largo de la pieza; la muela es más estrecha que la pieza.</li>
+            <li><b>En plongée</b> (\(v_f\) radial) — la muela penetra radialmente; la muela es más ancha que la zona a rectificar. Típico de ranuras y cuellos.</li>
+          </ul>
+          <p>Además se distingue entre <b>exteriores</b> (OD — <i>outer diameter</i>) e <b>interiores</b> (ID). Las máquinas de cilíndrico de Danobat y Estarta son referencia en el País Vasco.</p>
+        </div>
+      </div>
+
+      <div class="box info" style="margin-top:10px">
+        <div class="box-title">C) Rectificado sin centros (<i>centerless grinding</i>)</div>
+        <div class="prose">
+          <p>La pieza se apoya entre una <b>muela de rectificado</b>, una <b>muela regularizadora</b> (gira más lenta) y una <b>cuchilla de apoyo</b> (<i>rest blade</i>). No requiere centrar la pieza — ideal para producción en serie (rodamientos, bulones, válvulas).</p>
+          <p><b>Dos variantes</b>: <i>throughfeed</i> (la pieza atraviesa la máquina, regulada por la inclinación de la muela regularizadora) y <i>infeed</i> (la pieza entra radialmente, para piezas escalonadas).</p>
+        </div>
+      </div>
+
+      <div class="fkey" style="margin-top:12px">
+        <div class="flabel">Velocidad de avance en centerless por inclinación</div>
+        \[v_f = \pi \cdot D_r \cdot n_r \cdot \sin\alpha\]
+        <div class="prose" style="font-size:.85em;margin-top:6px">
+          Donde \(D_r\) es el diámetro de la muela regularizadora, \(n_r\) su velocidad de giro, y \(\alpha\) el ángulo de inclinación (típicamente 1°–5°). A mayor \(\alpha\), mayor velocidad de arrastre axial de la pieza.
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. RUGOSIDAD -->
+    <div class="section">
+      <div class="section-label"><span>5 · Rugosidad</span></div>
+
+      <div class="fkey">
+        <div class="flabel">Espesor de viruta no cortada (<i>uncut chip thickness</i>)</div>
+        \[h = \sqrt{\frac{v_w}{v_s}\cdot\frac{1}{C\cdot r}\cdot\sqrt{\frac{a_p}{D_e}}} \qquad\text{si } h \ll a_p\]
+        <div class="prose" style="font-size:.85em;margin-top:6px">
+          <ul>
+            <li>\(v_s\) — velocidad de muela (m/s)</li>
+            <li>\(v_w\) — velocidad de pieza (m/s)</li>
+            <li>\(C\) — <b>densidad de granos activos</b> (granos por unidad de área de la superficie de la muela)</li>
+            <li>\(r\) — factor de forma de grano (relación anchura/espesor de la viruta generada por un grano)</li>
+            <li>\(a_p\) — profundidad de corte</li>
+            <li>\(D_e\) — <b>diámetro equivalente</b> de muela: \(D_e = \dfrac{D_s \cdot D_w}{D_s \pm D_w}\) — signo <b>+</b> en exteriores, <b>−</b> en interiores (en plano se usa \(D_e = D_s\))</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="fkey" style="margin-top:12px">
+        <div class="flabel">Rugosidad superficial teórica</div>
+        \[R_t \sim \frac{h^{4/3}}{a_p^{1/3}} \approx \left(\frac{v_w}{v_s}\cdot\frac{1}{C\cdot r\cdot\sqrt{D_e}}\right)^{2/3}\]
+        <div class="prose" style="font-size:.85em;margin-top:6px">
+          <b>Consecuencias prácticas</b>:
+          <ul>
+            <li>Aumentar \(v_s\) → reduce \(R_t\) (muela más rápida, mejor acabado)</li>
+            <li>Reducir \(v_w\) → reduce \(R_t\) (pieza más lenta, mejor acabado)</li>
+            <li>Aumentar \(C\) o \(r\) (más granos activos o granos más anchos) → reduce \(R_t\)</li>
+            <li>Aumentar \(D_e\) → reduce \(R_t\) ligeramente</li>
+          </ul>
+          <p style="margin-top:4px;color:#94a3b8">La relación \(v_w/v_s\) es el <b>ratio de rectificado</b> y suele estar entre 1/60 y 1/100 para acabado fino.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. PREPARACIÓN -->
+    <div class="section">
+      <div class="section-label"><span>6 · Preparación de la muela</span></div>
+
+      <div class="box info">
+        <div class="box-title">Diamantado (<i>dressing</i>)</div>
+        <div class="prose">
+          <p>Operación de <b>reacondicionamiento</b> de la muela: restaura el perfil y expone aristas nuevas de grano cuando la muela está embotada o desgastada. Se hace con <b>útiles de diamante</b>: puntas monopunta, multipunta, rodillos diamantados (<i>dressing rolls</i>).</p>
+          <p><b>Tres tipos de diamantado</b> según trayectoria del útil respecto a la muela:</p>
+          <ul>
+            <li><b>En penetración</b> (<i>plongée</i>) — el útil entra radialmente; rápido, para muelas de perfil simple</li>
+            <li><b>Longitudinal</b> — el útil recorre axialmente la muela; da mejor acabado y perfil más preciso</li>
+            <li><b>De perfiles</b> — el útil copia un perfil complejo sobre la muela (muelas para engranajes, roscado por rectificado)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="box warn" style="margin-top:12px">
+        <div class="box-title">Equilibrado (<i>balancing</i>)</div>
+        <div class="prose">
+          <p>Una muela desequilibrada a <b>20–60 m/s</b> es extremadamente peligrosa (puede explotar) y produce vibración que arruina el acabado. Se hace en bancos de equilibrado estáticos (niveladores) o dinámicos. Equilibrado obligatorio tras cada diamantado y al montar una muela nueva.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. CÁLCULOS -->
+    <div class="section">
+      <div class="section-label"><span>7 · Cálculos de corte (rectificado plano)</span></div>
+
+      <div class="fkey">
+        <div class="flabel">Parámetros de corte</div>
+        <div class="prose" style="font-size:.9em">
+          <ul>
+            <li><b>Velocidad de muela</b> \(v_s\) (m/s) — típicamente 20–45 m/s en rectificado convencional, hasta 80+ m/s en HEDG</li>
+            <li><b>Velocidad de pieza</b> \(v_w\) (m/s) — mucho menor que \(v_s\); ratio \(v_w/v_s \approx 1/60-1/100\)</li>
+            <li><b>Profundidad de corte</b> \(a_p\) (µm) — típicamente 5–50 µm; discreta (un valor por pasada) en el rectificado plano</li>
+            <li><b>Avance transversal</b> \(v_f\) (mm/min) — desplazamiento lateral de la pieza bajo la muela; relacionado con la anchura \(w\) de la muela</li>
+            <li><b>Caudal de viruta</b> \(Q_c\) (mm³/s) — producto de los tres anteriores, mide la productividad</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="fkey" style="margin-top:12px">
+        <div class="flabel">Sección y volumen de viruta</div>
+        \[l_c \approx \sqrt{a_p \cdot D_e}\]
+        <div class="prose" style="font-size:.85em;margin-top:4px">
+          <b>\(l_c\)</b> — longitud media de contacto viruta-grano (mm). A mayor \(l_c\), más calor se genera en cada paso del grano.
+        </div>
+        <p style="margin-top:8px;font-size:.9em">El <b>número de virutas generadas por unidad de tiempo</b> es \(n = C \cdot v_s \cdot w\), donde \(w\) es la anchura de la muela y \(C\) los granos activos por unidad de área.</p>
+      </div>
+
+      <div class="fkey" style="margin-top:12px">
+        <div class="flabel">Fuerza y potencia de corte</div>
+        \[F_c = p_s \cdot A_{viruta} \qquad P_c = F_c \cdot v_s\]
+        <div class="prose" style="font-size:.85em;margin-top:6px">
+          Con \(p_s\) la <b>fuerza específica de corte</b> (N/mm²), típicamente <b>&gt; 15 000 N/mm²</b> en rectificado (mucho mayor que en torneado/fresado porque el grano tiene ángulos muy negativos y el espesor de viruta es muy pequeño).
+        </div>
+      </div>
+
+      <div class="fkey" style="margin-top:12px">
+        <div class="flabel">Coeficiente de rectificado</div>
+        \[\mu = \frac{F_t}{F_n}\]
+        <div class="prose" style="font-size:.85em;margin-top:6px">
+          Relación entre la fuerza tangencial (\(F_t\), útil para arrancar viruta) y la normal (\(F_n\), que tiende a separar muela y pieza). Típicamente <b>\(\mu \approx 0{,}2-0{,}5\)</b> según material y condición de la muela; disminuye con la dureza del material (aceros templados, cerámicas → \(\mu\) bajo).
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. OTROS PROCESOS ABRASIVOS -->
+    <div class="section">
+      <div class="section-label"><span>8 · Otros procesos de precisión (abrasivos)</span></div>
+
+      <div class="prose">
+        <p>La familia de procesos abrasivos de acabado va más allá del rectificado. Se clasifican por la precisión de acabado (Ra) que son capaces de dar:</p>
+      </div>
+
+      <div class="table-wrap" style="margin-top:10px">
+        <table>
+          <thead>
+            <tr><th>Proceso</th><th>Geometría de pieza</th><th>Acabado superficial (Ra, µm)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-accent">Rectificado — granos medios</td><td>Plano, cilíndrico ext./int.</td><td>0,4 – 1,6</td></tr>
+            <tr><td class="td-accent">Rectificado — granos finos</td><td>Plano, cilíndrico ext./int.</td><td>0,2 – 0,4</td></tr>
+            <tr><td class="td-accent">Bruñido (<i>honing</i>)</td><td>Cilíndrico interior (cilindros motor)</td><td>0,1 – 0,8</td></tr>
+            <tr><td class="td-accent">Lapeado (<i>lapping</i>)</td><td>Plano o ligeramente esférico (lentes)</td><td>0,025 – 0,4</td></tr>
+            <tr><td class="td-accent">Superacabado (<i>superfinishing</i>)</td><td>Plano o cilíndrico exterior</td><td>0,013 – 0,2</td></tr>
+            <tr><td class="td-accent">Pulido (<i>polishing</i>)</td><td>Formas libres</td><td>0,025 – 0,8</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">Lapeado (<i>lapping</i>)</div>
+        <div class="prose">
+          <p>Proceso de <b>abrasión libre</b>: entre la pieza y el útil (<i>lap</i>, típicamente de hierro fundido blando o cobre) se interpone una <b>pasta abrasiva</b> con granos sueltos (óxido de aluminio, SiC, diamante) en un portador líquido o graso.</p>
+          <p>El útil presiona la pieza con <b>presión baja y velocidad baja</b> mientras ambos se mueven relativamente. Los granos ruedan libres → desgaste muy uniforme y acabados espejo.</p>
+          <p><b>Aplicaciones</b>: bloques patrón, lentes ópticas, asientos de válvula, superficies de contacto en instrumentos de medida.</p>
+        </div>
+      </div>
+
+      <div class="box info" style="margin-top:12px">
+        <div class="box-title">Bruñido (<i>honing</i>)</div>
+        <div class="prose">
+          <p>Abrasión fija con <b>piedras abrasivas</b> montadas en un útil expansible. Se usa casi exclusivamente para <b>cilindros interiores</b> (cilindros de motor, agujeros de alta precisión). El útil gira y oscila axialmente simultáneamente → genera el característico <b>patrón cruzado</b> (<i>cross-hatch</i>) que retiene aceite en los motores.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span>📚 Referencia</span></div>
+      <div class="prose">
+        <p>Material original del profesor G. Urbikain Pelayo (UPV/EHU, 2025–26). PDF completo disponible en <code>sistemas/ejercicios/Tema 5 - Rectificado.pdf</code>.</p>
+        <p style="font-size:.85em;color:#94a3b8">Este es un <b>esqueleto</b> de la teoría: estructura completa + fórmulas clave + conceptos. Secciones específicas pueden expandirse bajo petición (ejemplos numéricos, diagramas detallados de máquinas, tablas de parámetros recomendados por material, etc.).</p>
+      </div>
+    </div>
+  </div><!-- /t5 -->
 
 </main>
 </div><!-- /layout -->
