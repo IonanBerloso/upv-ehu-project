@@ -282,7 +282,7 @@ N650 M05 M09 M30</span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Programa de torneado CNC: revisar que <b>G96/G97 se usan correctamente</b> (G96=CSS velocidad de corte constante, G97=rpm fija); que los <b>diámetros de rosca</b> (X29,05 para M30 de fondo) coinciden con la profundidad de rosca ≈ 0,6·p; y que el <b>ciclo G71 P/Q</b> referencia el bloque correcto del perfil de acabado (N70–N160).</div>
 </div>
 <div class="topic-panel" id="ex2">
 <div class="panel-header">
@@ -313,7 +313,7 @@ G2 X_fin Y_fin I_incX J_incY F_avance</div>
 T01 M06
 G90 G54 G00 X-15. Y-45.
 G43 Z5. H01
-G96 S1592 M03 M08
+G97 S1592 M03 M08               ; rpm fija (G97), NO G96 porque ya tenemos N calculada
 G01 Z0. F955                    ; cara superior
 ; (recorrido planeado - pasadas paralelas cubriendod el ancho 120mm)
 G01 X135. F955
@@ -348,7 +348,7 @@ G00 Z100. M05 M09 M30</span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Programa de fresado con interpolación circular: revisar que <b>G2 (CW)/G3 (CCW)</b> se corresponden con el sentido físico deseado del arco; que las coordenadas <b>X/Y finales</b> del arco caen en el círculo de radio R con centro calculable; y que las <b>transiciones G1→G2/G3</b> son tangentes para evitar marcas en la pieza.</div>
 </div>
 <div class="topic-panel" id="ex3">
 <div class="panel-header">
@@ -378,13 +378,55 @@ G97 S2387 M03 M08
 G01 Z-5. F200                  ; primera pasada planeado
 G01 X60. F2864
 G00 Z5.
-; (mas pasadas paralelas si D<ancho (4="" (broca="" (dentro)="" (fresa="" (i="-0," (mejorar="" (r="30)" (r15)="" -="" 0°="" 1="" 180°="" 270°="" 4="" 40x40="" 90°="" ;="" a="" agujero="" agujeros="" al="" arco="" cajera="" cajera:="" cancelar="" ciclo="" circular="" circulo="" completo="" con="" contorno="" d8)="" d8.5)="" de="" descender="" desde="" en="" entrada="" entrando="" esquinas="" exterior="" f100="" f200="" f2387="" f2864="" f93.6="" fijo="" fuera="" g00="" g01="" g02="" g2="" g3)="" g43="" g80="" g81="" g97="" h02="" h03="" i0.="" inicio="" j="40)" j-15.="" j15.="" j40.="" m03="" m05="" m06="" m09="" m30<="" pcd="" pieza)="" profundidad="" punto="" r2.="" r5="" radios="" rect.="" s7958="" s936="" salida="" span="" taladrado="" tangencial="" tangencialmente="" usando="" x-15.="" x-30.="" x0.="" x15.="" x30.="" y-15.="" y-30.="" y-40.="" y-55.="" y0.="" y15.="" y30.="" z-38.="" z-zcajera="" z-zcontorno="" z100.="" z5.="" ø60)="T03" ø8,5="" ø80="">
+; (mas pasadas paralelas si D_fresa &lt; ancho de la pieza)
+;
+; === T02 - CONTORNO CIRCULAR Ø80 (fresa D20) ===
+T02 M06 (fresa D20)
+G43 Z5. H02
+G97 S2387 M03
+G00 X0. Y-55.                  ; entrada tangencial fuera del Ø80
+G01 Z-Zcontorno F200
+G02 I0. J40. F2864             ; circulo Ø80 completo (centro en 0,0)
+G00 Z5.
+;
+; === T03 - CAJERA CUADRADA 40x40 CON R5 (fresa D8) ===
+T03 M06 (fresa D8)
+G43 Z5. H03
+G97 S7958 M03
+G00 X-15. Y-15.                ; arranque dentro
+G01 Z-Zcajera F100             ; bajada
+G01 X15. Y-15. F2387           ; lado inferior
+G02 X15. Y-15. R5              ; radio R5 esquina (no aplica aqui)
+; Mejorar con G41/G42 + 4 esquinas R5 (simplificacion):
+; G41 D3 G00 ...
+; G01 X15. Y-15.
+; G02 X20. Y-10. R5 (esquina inf-der R5)
+; G01 X20. Y10.
+; G02 X15. Y15. R5
+; G01 X-15. Y15.
+; G02 X-20. Y10. R5
+; G01 X-20. Y-10.
+; G02 X-15. Y-15. R5
+; G01 X15. Y-15.
+; G40
+G00 Z5.
+;
+; === T04 - TALADRADO Ø8.5 EN PCD Ø60 (4 agujeros a 0, 90, 180, 270) ===
+T04 M06 (broca D8.5)
+G43 Z5. H04
+G97 S936 M03
+G81 R2. Z-38. F93.6            ; ciclo fijo de taladrado
+X30.  Y0.                       ; agujero a 0°
+X0.   Y30.                      ; agujero a 90°
+X-30. Y0.                       ; agujero a 180°
+X0.   Y-30.                     ; agujero a 270°
+G80
+G00 Z100. M05 M09 M30</span>
 <p class="res-note">Para el chaflán 1,5×45° en los taladros: usar avellanador (ángulo 90°) en un ciclo G82 o G81 a la profundidad adecuada. Profundidades Z exactas según cota del plano.</p>
-</ancho></span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Programa con taladrado PCD: las <b>coordenadas de los agujeros</b> (X=R·cos θ, Y=R·sin θ con R=30 del PCD Ø60) deben cuadrar con los ángulos 0°/90°/180°/270° de la figura. El <b>ciclo G81 R2 Z-38</b> posiciona primero en Z=R=2 mm sobre la pieza y taladra hasta Z=-38. G80 cancela el ciclo.</div>
 </div>
 <div class="topic-panel" id="ex4">
 <div class="panel-header">
@@ -424,7 +466,7 @@ G40 G01 X0. Y0.</span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Programa con <b>G68 (rotación de coordenadas)</b>: cada ranura radial se programa UNA SOLA VEZ y se rota 60° con G68 para las demás. <b>G69</b> cancela la rotación al final. Alternativa: calcular X/Y de cada ranura con trigonometría y programar cada una sin G68 — menos elegante pero igualmente válido.</div>
 </div>
 <div class="topic-panel" id="ex5">
 <div class="panel-header">
@@ -459,7 +501,7 @@ G80
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Patrón circular de agujeros en PCD: las coordenadas (R·cos θ, R·sin θ) deben cerrar el círculo (suma vectorial ≈ 0 si están equiespaciadas). Para PCD Ø100 con 6 agujeros cada 60°: los valores (50, 25/43,3, -25/43,3, -50, -25/-43,3, 25/-43,3) son correctos. Si en el plano hay PCDs concéntricos, comprobar que no hay solapes de cajeras.</div>
 </div>
 <div class="topic-panel" id="ex6">
 <div class="panel-header">
@@ -494,7 +536,7 @@ G40 G01 ...              ; desactivar compensacion
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Contorno en cruz: verificar que los <b>entalles R8 (cóncavos)</b> se programan con G3 (CCW para interior del material) y los <b>radios R15 (convexos)</b> con G2 (CW). La <b>compensación G41/G42</b> debe activarse ANTES del contorno y desactivarse DESPUÉS con G40, siempre con un tramo recto de aproximación/salida.</div>
 </div>
 <div class="topic-panel" id="ex7">
 <div class="panel-header">
@@ -529,7 +571,7 @@ G00 Z5.
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Cajeras circulares esquinas: para fresar un círculo completo (Ø25 con fresa D25) la herramienta está justo en el radio — <b>NO se necesita G41</b> si la fresa es del mismo diámetro. Para los <b>chaflanes 4,5°</b> con fresa de punta plana D4, el avance axial (Z) y radial (XY) deben combinarse con interpolación G01 simultánea.</div>
 </div>
 <div class="topic-panel" id="ex8">
 <div class="panel-header">
@@ -575,7 +617,7 @@ G80</span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Hexágono y ranura oval: para el hexágono regular, los 6 vértices están a R·cos(n·60°+30°), R·sin(n·60°+30°) con R=distancia al vértice. La <b>ranura oval</b> son dos rectos + dos semicírculos G02: comprobar que los <b>I,J</b> apuntan al centro del arco desde el punto actual (desplazamiento incremental, NO la longitud del oval).</div>
 </div>
 <div class="topic-panel" id="ex9">
 <div class="panel-header">
@@ -609,7 +651,7 @@ G01 X33. Y-10.
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Esquinas R10 exteriores: las 4 esquinas se programan con G2 (CW para convexo exterior). Los <b>4 lados rectos</b> entre esquinas tienen longitud 66-2·10 = 46 mm. La <b>cajera interior con R4</b> requiere fresa de Ø ≤ 2·4 = 8 mm para poder entrar en los radios (la fresa D6 propuesta cumple).</div>
 </div>
 <div class="topic-panel" id="ex10">
 <div class="panel-header">
@@ -691,7 +733,7 @@ M30</span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Cajera anidada: cada nivel de profundidad (R15 superior, R10 intermedio, R12 final) se mecaniza con <b>bajada progresiva en Z</b>. Verificar que la fresa D4 con S=15.000 rpm NO supera el límite físico del cabezal (típico 12.000–20.000 rpm). La secuencia planeado→cajera ext→cajera int→taladrado evita que las herramientas mayores dañen geometrías ya hechas.</div>
 </div>
 <div class="topic-panel" id="ex11">
 <div class="panel-header">
@@ -770,9 +812,11 @@ G43 H4 G00 Z20.
 G00 X0. Y0.
 G01 Z-30. F100            ; bajar por piloto
 G41 D4 G00 X12. Y0.      ; salir a radio intermedio (desbaste)
-G03 I-12. J0. F1273       ; círculo R12
-G00 X22. Y0.              ; avanzar al radio final
-G03 I-22. J0.             ; círculo R22 (aproximación a R25)
+G03 I-12. J0. F1273       ; círculo R12 (desbaste)
+G00 X18. Y0.              ; intermedio
+G03 I-18. J0.             ; círculo R18 (semidesbaste)
+G00 X25. Y0.              ; radio final
+G03 I-25. J0.             ; círculo R25 (acabado — cota del plano)
 G40 G00 Z20.
 G00 Z50. M5 M9
 M30</span>
@@ -780,7 +824,7 @@ M30</span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>PCD Ø50 con 8 agujeros: X/Y = 25·cos θ, 25·sin θ con θ = 0°, 45°, …, 315°. <b>17,68 = 25·cos 45° = 25·(√2/2)</b>. El <b>alveolo final R25</b> se acaba con G41 + G03 al radio exacto del plano (no R22 como desbaste).</div>
 </div>
 <div class="topic-panel" id="ex12">
 <div class="panel-header">
@@ -852,7 +896,7 @@ M30</span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Entrada tangencial a círculo: el <b>punto de tangencia T</b> está en (0, R_pieza) = (0, 35); el <b>centro del arco de entrada</b> C_e está sobre la prolongación del radio a distancia R_pieza + r_entrada = 35+10 = 45. La <b>continuidad C1</b> (tangente común) en T garantiza que no hay marca de entrada en la superficie mecanizada.</div>
 </div>
 <div class="topic-panel" id="ex13">
 <div class="panel-header">
@@ -972,7 +1016,7 @@ M30</span>
 </div></div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Pétalos R10 con entrada tangencial: la regla general es <b>C_entrada = centro_pétalo + (R_pétalo + r_entrada)·dir_radial</b>. Para el pétalo +Y (centro en (0,25), R=10, r_entrada=5): C_e=(0, 40), punto arranque A=(5,40). El arco de entrada G03 va de A a T=(0,35) con I=-5, J=0. Coherencia C1 garantizada.</div>
 </div></main></div>
 
 
