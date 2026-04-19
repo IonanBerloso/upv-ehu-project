@@ -211,14 +211,12 @@ table th[style*="ffd93d"],table th[style*="FFD93D"]{background:var(--accent-dim)
 <div class="fig-plano"><img alt="p01_a" loading="lazy" src="img/t4/p01_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Programa CNC — Torneado eje (Fanuc 0i) <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Programa CNC — Torneado eje (Fanuc 0i)</h3>
-<h4>Parámetros de corte</h4>
-<span class="res-formula">Desbaste/Acabado: G96 S180 (CSS vc=180 m/min); F0,3
+<div class="sec-body"><div class="paso"><div class="paso-titulo">Parámetros de corte</div>
+<div class="formula-box">Desbaste/Acabado: G96 S180 (CSS vc=180 m/min); F0,3
 Ranurado:  G97 S650; F0,15
 Taladrado: G97 S3820 (vc=120→N=120000/(π×10)=3820 rpm); F0,1
 Tronzado:  G97 S300; F0,1
-Roscado M30×1,5: G76 (paso=1,5 mm; fondo rosca ≈ Ø29,05 mm)</span>
+Roscado M30×1,5: G76 (paso=1,5 mm; fondo rosca ≈ Ø29,05 mm)</div>
 <p class="res-note">Coordenadas Z negativas desde la cara frontal. Ajustar longitudes de tramos según el plano de la pieza.</p>
 <span class="res-code">O0001 (EJE D57 M30X1.5 - TORNEADO CNC)
 ;
@@ -281,8 +279,10 @@ N620 G00 X62. Z-99.             ; posicion tronzado (L total-1mm)
 N630 G01 X0. F0.1               ; tronzado hasta eje
 N640 G00 X80. Z100.
 N650 M05 M09 M30</span>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex2">
 <div class="panel-header">
@@ -297,17 +297,16 @@ N650 M05 M09 M30</span>
 <div class="fig-plano"><img alt="p02_a" loading="lazy" src="img/t4/p02_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Programa CNC — Ranuras curvas (Fanuc 0i) <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Programa CNC — Ranuras curvas (Fanuc 0i)</h3>
-<h4>Parámetros de corte</h4>
-<span class="res-formula">Fresa D8  (ranuras): N = 180.000/(π×8)  = 7.162 rpm; vf = 7162×2×0,05 = 716 mm/min
-Fresa D20 (planeado): N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min</span>
-<h4>Técnica clave: interpolación circular G2/G3</h4>
+<div class="sec-body"><div class="paso"><div class="paso-titulo">Parámetros de corte</div>
+<div class="formula-box">Fresa D8  (ranuras): N = 180.000/(π×8)  = 7.162 rpm; vf = 7162×2×0,05 = 716 mm/min
+Fresa D20 (planeado): N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min</div>
+</div>
+<div class="paso"><div class="paso-titulo">Técnica clave: interpolación circular G2/G3</div>
 <p>Para una ranura con arcos de radio R, la sintaxis es:</p>
-<span class="res-formula">G2 X_fin Y_fin R_radio F_avance   ; arco horario  (CW)
+<div class="formula-box">G2 X_fin Y_fin R_radio F_avance   ; arco horario  (CW)
 G3 X_fin Y_fin R_radio F_avance   ; arco antihor. (CCW)
 ; alternativa con I,J (incrementales desde inicio hasta centro):
-G2 X_fin Y_fin I_incX J_incY F_avance</span>
+G2 X_fin Y_fin I_incX J_incY F_avance</div>
 <span class="res-code">O0002 (RANURAS CURVAS 120x70x18)
 ;
 ; === T01 - PLANEADO (fresa D20) ===
@@ -346,8 +345,10 @@ G01 Z-8. F100
 ;
 G00 Z100. M05 M09 M30</span>
 <p class="res-note">Las coordenadas exactas de X/Y requieren calcular los centros de arco desde el plano de la pieza.</p>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex3">
 <div class="panel-header">
@@ -362,12 +363,10 @@ G00 Z100. M05 M09 M30</span>
 <div class="fig-plano"><img alt="p03_a" loading="lazy" src="img/t4/p03_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Programa CNC — Brida cuadrada Ø80 (Fanuc 0i) <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Programa CNC — Brida cuadrada Ø80 (Fanuc 0i)</h3>
-<h4>Parámetros de corte</h4>
-<span class="res-formula">Fresa D20 (planeado/contorno): N = 150.000/(π×20) = 2.387 rpm; vf = 2387×6×0,2 = 2.864 mm/min
+<div class="sec-body"><div class="paso"><div class="paso-titulo">Parámetros de corte</div>
+<div class="formula-box">Fresa D20 (planeado/contorno): N = 150.000/(π×20) = 2.387 rpm; vf = 2387×6×0,2 = 2.864 mm/min
 Fresa D8  (cajera 40×R5):    N = 200.000/(π×8)  = 7.958 rpm; vf = 7958×3×0,1 = 2.387 mm/min
-Broca D8,5 (taladros PCD):   N = 25.000/(π×8,5)  = 936 rpm;  vf = 936×0,1 = 93,6 mm/min</span>
+Broca D8,5 (taladros PCD):   N = 25.000/(π×8,5)  = 936 rpm;  vf = 936×0,1 = 93,6 mm/min</div>
 <span class="res-code">O0003 (BRIDA CUADRADA 100x100x35 - FRESADO)
 ; G54: origen en centro superior de la pieza, Z0 en cara planeada
 ;
@@ -382,8 +381,10 @@ G00 Z5.
 ; (mas pasadas paralelas si D<ancho (4="" (broca="" (dentro)="" (fresa="" (i="-0," (mejorar="" (r="30)" (r15)="" -="" 0°="" 1="" 180°="" 270°="" 4="" 40x40="" 90°="" ;="" a="" agujero="" agujeros="" al="" arco="" cajera="" cajera:="" cancelar="" ciclo="" circular="" circulo="" completo="" con="" contorno="" d8)="" d8.5)="" de="" descender="" desde="" en="" entrada="" entrando="" esquinas="" exterior="" f100="" f200="" f2387="" f2864="" f93.6="" fijo="" fuera="" g00="" g01="" g02="" g2="" g3)="" g43="" g80="" g81="" g97="" h02="" h03="" i0.="" inicio="" j="40)" j-15.="" j15.="" j40.="" m03="" m05="" m06="" m09="" m30<="" pcd="" pieza)="" profundidad="" punto="" r2.="" r5="" radios="" rect.="" s7958="" s936="" salida="" span="" taladrado="" tangencial="" tangencialmente="" usando="" x-15.="" x-30.="" x0.="" x15.="" x30.="" y-15.="" y-30.="" y-40.="" y-55.="" y0.="" y15.="" y30.="" z-38.="" z-zcajera="" z-zcontorno="" z100.="" z5.="" ø60)="T03" ø8,5="" ø80="">
 <p class="res-note">Para el chaflán 1,5×45° en los taladros: usar avellanador (ángulo 90°) en un ciclo G82 o G81 a la profundidad adecuada. Profundidades Z exactas según cota del plano.</p>
 </ancho></span>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex4">
 <div class="panel-header">
@@ -398,11 +399,9 @@ G00 Z5.
 <div class="fig-plano"><img alt="p04_a" loading="lazy" src="img/t4/p04_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">Fresa D30 (planeado/cajera): N = 150.000/(π×30) = 1.592 rpm; vf = 1592×6×0,2 = 1.911 mm/min
-Fresa D8  (ranuras radiales): N = 200.000/(π×8)  = 7.958 rpm; vf = 7958×3×0,1 = 2.387 mm/min</span>
-<h4>Técnica: patrón angular de ranuras radiales</h4>
+<div class="sec-body"><div class="formula-box">Fresa D30 (planeado/cajera): N = 150.000/(π×30) = 1.592 rpm; vf = 1592×6×0,2 = 1.911 mm/min
+Fresa D8  (ranuras radiales): N = 200.000/(π×8)  = 7.958 rpm; vf = 7958×3×0,1 = 2.387 mm/min</div>
+<div class="paso"><div class="paso-titulo">Técnica: patrón angular de ranuras radiales</div>
 <span class="res-code">; Ranuras radiales en patron angular (ej. 6 ranuras c/60°)
 ; Usar G68 (rotacion de sistema de coordenadas) o calcular XY de cada ranura
 ;
@@ -422,8 +421,10 @@ G01 Z-Zcajera F100
 G41 D01 G01 X0. Y-30. F1911  ; compensacion radio herramienta
 G02 I0. J30.              ; circulo
 G40 G01 X0. Y0.</span>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex5">
 <div class="panel-header">
@@ -439,13 +440,11 @@ G40 G01 X0. Y0.</span>
 <div class="fig-plano"><img alt="p05_b" loading="lazy" src="img/t4/p05_b.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">Fresa D20 (planeado):   N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min
+<div class="sec-body"><div class="formula-box">Fresa D20 (planeado):   N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min
 Fresa D14 (cajeras/PCDs): N = 180.000/(π×14) = 4.093 rpm; vf = 4093×4×0,05 = 819 mm/min
 Broca D8  (agujeros): N = 25.000/(π×8)   = 995 rpm;  vf = 995×0,05 = 49,8 mm/min
-Broca D12 (agujeros): N = 22.000/(π×12)  = 584 rpm;  vf = 584×0,05 = 29,2 mm/min</span>
-<h4>Técnica: patrón circular de agujeros (G81 + G68 o coordenadas)</h4>
+Broca D12 (agujeros): N = 22.000/(π×12)  = 584 rpm;  vf = 584×0,05 = 29,2 mm/min</div>
+<div class="paso"><div class="paso-titulo">Técnica: patrón circular de agujeros (G81 + G68 o coordenadas)</div>
 <span class="res-code">; PCD Ø100 (R=50) con N agujeros cada 360/N grados:
 ; Calcular cada posicion: X=R*cos(ang), Y=R*sin(ang)
 G81 R2. Z-Ztaladro F49.8
@@ -457,8 +456,10 @@ X-25. Y-43.3              ; 240°
 X25.  Y-43.3              ; 300°
 G80
 ; PCD Ø60 (R=30) similar con sus angulos propios</span>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex6">
 <div class="panel-header">
@@ -473,12 +474,10 @@ G80
 <div class="fig-plano"><img alt="p06_a" loading="lazy" src="img/t4/p06_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">Fresa D25 (planeado/contorno cruz): N = 200.000/(π×25) = 2.546 rpm; vf = 2546×6×0,2 = 3.056 mm/min
+<div class="sec-body"><div class="formula-box">Fresa D25 (planeado/contorno cruz): N = 200.000/(π×25) = 2.546 rpm; vf = 2546×6×0,2 = 3.056 mm/min
 Fresa D6  (contorno interior/ranura): N = 100.000/(π×6) = 5.305 rpm; vf = 5305×3×0,1 = 1.592 mm/min
-Broca D7  (4 agujeros esquinas): N = 30.000/(π×7) = 1.364 rpm; vf = 1364×0,1 = 136 mm/min</span>
-<h4>Técnica: contorno en forma de cruz (alternar G1 y G2/G3 para radios de entalle)</h4>
+Broca D7  (4 agujeros esquinas): N = 30.000/(π×7) = 1.364 rpm; vf = 1364×0,1 = 136 mm/min</div>
+<div class="paso"><div class="paso-titulo">Técnica: contorno en forma de cruz (alternar G1 y G2/G3 para radios de entalle)</div>
 <span class="res-code">; Cruz con brazos R15 (convexo exterior) y R8 (concavo interior)
 ; Perfil exterior en 4 brazos: cada brazo = G01 recto + G03 arco R8 en esquina
 ; Entrar al contorno tangencialmente
@@ -492,8 +491,10 @@ G01 X... Y...            ; siguiente recto
 G40 G01 ...              ; desactivar compensacion
 ; Agujero central Ø12: G81 X0 Y0 Z-Prof R2 F136 (broca D7 o cambiar a broca D12)
 ; Agujeros Ø7 en esquinas (x=±a, y=±a): G81 en 4 posiciones</span>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex7">
 <div class="panel-header">
@@ -508,13 +509,11 @@ G40 G01 ...              ; desactivar compensacion
 <div class="fig-plano"><img alt="p07_a" loading="lazy" src="img/t4/p07_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">Fresa D25 (cajeras Ø25 esquinas): N = 200.000/(π×25) = 2.546 rpm; vf = 2546×6×0,2 = 3.056 mm/min
+<div class="sec-body"><div class="formula-box">Fresa D25 (cajeras Ø25 esquinas): N = 200.000/(π×25) = 2.546 rpm; vf = 2546×6×0,2 = 3.056 mm/min
 Fresa D10 (cajera central 30mm): N = 100.000/(π×10) = 3.183 rpm; vf = 3183×3×0,1 = 955 mm/min
 Fresa D4  (chaflanes 4,5°):    N = 100.000/(π×4)  = 7.958 rpm; vf = 7958×2×0,1 = 1.592 mm/min
-Broca D10 (agujero central):   N = 30.000/(π×10)  = 955 rpm;  vf = 955×0,1 = 95,5 mm/min</span>
-<h4>Técnica: cajeras circulares en esquinas (G2 full circle)</h4>
+Broca D10 (agujero central):   N = 30.000/(π×10)  = 955 rpm;  vf = 955×0,1 = 95,5 mm/min</div>
+<div class="paso"><div class="paso-titulo">Técnica: cajeras circulares en esquinas (G2 full circle)</div>
 <span class="res-code">; Cajeras Ø25 en esquinas (ej. en X=±37.5, Y=±37.5 de pieza 100x100)
 G81 X37.5 Y37.5 Z-5. R2. F95.5   ; predrill center
 G80
@@ -527,8 +526,10 @@ G00 Z5.
 ;
 ; Cajera rectangular central con G41/G42 + perfil rect.
 ; Chaflanes con fresa D4 segun angulo 4.5°</span>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex8">
 <div class="panel-header">
@@ -544,12 +545,10 @@ G00 Z5.
 <div class="fig-plano"><img alt="p08_b" loading="lazy" src="img/t4/p08_b.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">Fresa D20 (planeado/cajeras): N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min
+<div class="sec-body"><div class="formula-box">Fresa D20 (planeado/cajeras): N = 100.000/(π×20) = 1.592 rpm; vf = 1592×6×0,1 = 955 mm/min
 Fresa D5  (ranura oval / hexagono): N = 180.000/(π×5) = 11.459 rpm; vf = 11459×4×0,05 = 2.292 mm/min
-Broca D6  (4 agujeros): N = 25.000/(π×6) = 1.326 rpm; vf = 1326×0,05 = 66,3 mm/min</span>
-<h4>Técnica: hexágono interior (6 lados rectos con G1) + oval (G1+G2)</h4>
+Broca D6  (4 agujeros): N = 25.000/(π×6) = 1.326 rpm; vf = 1326×0,05 = 66,3 mm/min</div>
+<div class="paso"><div class="paso-titulo">Técnica: hexágono interior (6 lados rectos con G1) + oval (G1+G2)</div>
 <span class="res-code">; Hexagono regular (6 lados, angulo 60°):
 ; Vertices: X=R*cos(n*60+30), Y=R*sin(n*60+30) para n=0..5
 ; Con G41 (compensacion herramienta izquierda para interior)
@@ -573,8 +572,10 @@ G81 X15.8 Y0. Z-Prof R2 F66.3  ; 0°
 X7.9 Y13.7                     ; 60°
 ; etc.
 G80</span>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex9">
 <div class="panel-header">
@@ -589,12 +590,10 @@ G80</span>
 <div class="fig-plano"><img alt="p09_a" loading="lazy" src="img/t4/p09_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">Fresa D25 (planeado/contorno ext): N = 150.000/(π×25) = 1.909 rpm; vf = 1909×6×0,2 = 2.292 mm/min
+<div class="sec-body"><div class="formula-box">Fresa D25 (planeado/contorno ext): N = 150.000/(π×25) = 1.909 rpm; vf = 1909×6×0,2 = 2.292 mm/min
 Fresa D6  (esquinas R10):     N = 180.000/(π×6)  = 9.549 rpm; vf = 9549×4×0,15 = 5.729 mm/min
-Broca D4  (4 agujeros Ø4):   N = 25.000/(π×4)   = 1.989 rpm; vf = 1989×0,1 = 199 mm/min</span>
-<h4>Técnica: contorno cuadrado con esquinas R10 (G2/G3 en cada esquina)</h4>
+Broca D4  (4 agujeros Ø4):   N = 25.000/(π×4)   = 1.989 rpm; vf = 1989×0,1 = 199 mm/min</div>
+<div class="paso"><div class="paso-titulo">Técnica: contorno cuadrado con esquinas R10 (G2/G3 en cada esquina)</div>
 <span class="res-code">; Pieza 66x66 con esquinas redondeadas R10
 ; Contorno exterior (partiendo de punto medio de un lado):
 G41 D_D25 G00 X33. Y0.      ; punto entrada (medio lado inferior)
@@ -607,8 +606,10 @@ G01 X33. Y-10.
 ; Cajera interior R4: rect 40x40 (aprox segun plano) con R4
 ; Agujeros Ø4 a mitad de cada lado (en los semicirculos):
 ; X=33*cos(ang), Y=33*sin(ang) segun plano</span>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex10">
 <div class="panel-header">
@@ -623,13 +624,11 @@ G01 X33. Y-10.
 <div class="fig-plano"><img alt="p10_a" loading="lazy" src="img/t4/p10_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">D40 (planeado):  N = 150.000/(π×40) = 1.194 rpm  →  vf = 1194×6×0,2 = 1.433 mm/min
+<div class="sec-body"><div class="formula-box">D40 (planeado):  N = 150.000/(π×40) = 1.194 rpm  →  vf = 1194×6×0,2 = 1.433 mm/min
 D16 (cajeras):   N = 200.000/(π×16) = 3.979 rpm  →  vf = 3979×3×0,1 = 1.194 mm/min
 D4  (cajera int):N = 200.000/(π×4) ≈ 15.000 rpm (límite máquina)  →  vf = 15000×2×0,1 = 3.000 mm/min
-D5  (taladros):  N = 25.000/(π×5)   = 1.592 rpm  →  vf = 1592×0,1 = 159 mm/min</span>
-<h4>Secuencia: planeado → cajera ext R10 → cajera interior anidada → taladrado Ø5</h4>
+D5  (taladros):  N = 25.000/(π×5)   = 1.592 rpm  →  vf = 1592×0,1 = 159 mm/min</div>
+<div class="paso"><div class="paso-titulo">Secuencia: planeado → cajera ext R10 → cajera interior anidada → taladrado Ø5</div>
 <span class="res-code">O0010
 ; ── T1: PLANEADO 5 mm (D40) ──────────────────────────────
 T1 M6
@@ -689,8 +688,10 @@ G80
 G00 Z50. M5 M9
 M30</span>
 <p class="res-note">Nota: las cotas exactas de la cajera anidada (radios R15/R10/R12 y profundidades) y posiciones de los agujeros Ø5/Ø8 se extraen directamente del plano de la pieza.</p>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex11">
 <div class="panel-header">
@@ -705,15 +706,14 @@ M30</span>
 <div class="fig-plano"><img alt="p11_a" loading="lazy" src="img/t4/p11_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">D25 (planeado/contorno): N = 125.000/(π×25) = 1.592 rpm  →  vf = 1592×6×0,2 = 1.910 mm/min
+<div class="sec-body"><div class="formula-box">D25 (planeado/contorno): N = 125.000/(π×25) = 1.592 rpm  →  vf = 1592×6×0,2 = 1.910 mm/min
 D12 (cajera + alveolo):  N = 160.000/(π×12) = 4.244 rpm  →  vf = 4244×2×0,15 = 1.273 mm/min
-D4  (8 agujeros PCD):    N = 25.000/(π×4)   = 1.989 rpm  →  vf = 1989×0,1 = 199 mm/min</span>
-<h4>PCD Ø50 (R=25): 8 agujeros a 45° → posiciones (R·cosθ, R·sinθ)</h4>
-<span class="res-formula">0°: X25,0 Y0      45°: X17,68 Y17,68   90°: X0 Y25      135°: X-17,68 Y17,68
-180°: X-25 Y0   225°: X-17,68 Y-17,68  270°: X0 Y-25   315°: X17,68 Y-17,68</span>
-<h4>Secuencia: planeado → cajera cuadrada R8 → taladrado PCD → alveolo R25</h4>
+D4  (8 agujeros PCD):    N = 25.000/(π×4)   = 1.989 rpm  →  vf = 1989×0,1 = 199 mm/min</div>
+<div class="paso"><div class="paso-titulo">PCD Ø50 (R=25): 8 agujeros a 45° → posiciones (R·cosθ, R·sinθ)</div>
+<div class="formula-box">0°: X25,0 Y0      45°: X17,68 Y17,68   90°: X0 Y25      135°: X-17,68 Y17,68
+180°: X-25 Y0   225°: X-17,68 Y-17,68  270°: X0 Y-25   315°: X17,68 Y-17,68</div>
+</div>
+<div class="paso"><div class="paso-titulo">Secuencia: planeado → cajera cuadrada R8 → taladrado PCD → alveolo R25</div>
 <span class="res-code">O0011
 ; ── T1: PLANEADO 5 mm (D25) ──────────────────────────────
 T1 M6
@@ -777,8 +777,10 @@ G40 G00 Z20.
 G00 Z50. M5 M9
 M30</span>
 <p class="res-note">Nota: el alveolo final R25 requiere un pase de acabado con G41 al radio exacto según cota del plano. El agujero central D16 se puede terminar con fresa o con broca específica D16.</p>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex12">
 <div class="panel-header">
@@ -794,21 +796,19 @@ M30</span>
 <div class="fig-plano"><img alt="p12_b" loading="lazy" src="img/t4/p12_b.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">D30 (planeado):   N = 200.000/(π×30) = 2.122 rpm  →  vf = 2122×6×0,2 = 2.546 mm/min
+<div class="sec-body"><div class="formula-box">D30 (planeado):   N = 200.000/(π×30) = 2.122 rpm  →  vf = 2122×6×0,2 = 2.546 mm/min
 D16 (contorno D70):N = 200.000/(π×16) = 3.979 rpm →  vf = 3979×4×0,2 = 3.183 mm/min
 D8  (fresado fino): N = 200.000/(π×8)  = 7.958 rpm →  vf = 7958×2×0,1 = 1.592 mm/min
-D8  (taladros):     N = 30.000/(π×8)   = 1.194 rpm →  vf = 1194×0,1 = 119 mm/min</span>
-<h4>★ Técnica clave: entrada tangencial al contorno circular D70</h4>
+D8  (taladros):     N = 30.000/(π×8)   = 1.194 rpm →  vf = 1194×0,1 = 119 mm/min</div>
+<div class="paso"><div class="paso-titulo">★ Técnica clave: entrada tangencial al contorno circular D70</div>
 <p class="res-note">Para contornear un círculo sin marca de entrada: acercarse con arco G03 (radio r_e) cuyo centro esté en la prolongación del radio en el punto de tangencia, a distancia R+r_e del centro de la pieza.</p>
-<span class="res-formula">Contorno D70 → R_pieza = 35 mm (programado con G41, fresa D16, R_fresa = 8 mm)
+<div class="formula-box">Contorno D70 → R_pieza = 35 mm (programado con G41, fresa D16, R_fresa = 8 mm)
 Punto de tangencia T = (0, 35) [vértice superior del círculo]
 Centro arco de entrada C_e = (0, 35 + r_e) = (0, 45)  [con r_e = 10 mm elegido]
 Punto de arranque A = (10, 45)  [a 10 mm de C_e en +X]
 Arco entrada:  G03 de A(10,45) a T(0,35)  →  I = 0-10 = -10;  J = 45-45 = 0
 Arco contorno: G02 I0 J-35  (círculo CW completo desde T)
-Arco salida:   G03 de T(0,35) a (-10,45)  →  I = 0-0 = 0;  J = 45-35 = +10</span>
+Arco salida:   G03 de T(0,35) a (-10,45)  →  I = 0-0 = 0;  J = 45-35 = +10</div>
 <span class="res-code">O0012
 ; ── T1: PLANEADO 5 mm (D30) ──────────────────────────────
 T1 M6
@@ -849,8 +849,10 @@ X0.   Y-25.
 G80 G00 Z50. M5 M9
 M30</span>
 <p class="res-note">El círculo completo G02 I0 J-35 recorre el contorno desde T=(0,35) hasta volver a T. La transición G03→G02 y G02→G03 es C1 continua (tangente compartida): no hay marca de entrada en la pieza.</p>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div>
 <div class="topic-panel" id="ex13">
 <div class="panel-header">
@@ -866,18 +868,16 @@ M30</span>
 <div class="fig-plano"><img alt="p13_b" loading="lazy" src="img/t4/p13_b.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Parámetros de corte <span class="sarr">▼</span></button>
-<div class="sec-body">
-<h3>Parámetros de corte</h3>
-<span class="res-formula">D18 (planeado/contorno):N = 200.000/(π×18) = 3.537 rpm  →  vf = 3537×6×0,2 = 4.244 mm/min
+<div class="sec-body"><div class="formula-box">D18 (planeado/contorno):N = 200.000/(π×18) = 3.537 rpm  →  vf = 3537×6×0,2 = 4.244 mm/min
 D6  (pétalos R10):       N = 200.000/(π×6)  = 10.610 rpm →  vf = 10610×4×0,2 = 8.488 mm/min
 D13 (4 agujeros Ø13):   N = 30.000/(π×13)  =   735 rpm  →  vf = 735×0,1 = 73 mm/min
-D5  (agujero central Ø5):N = 35.000/(π×5)  = 2.228 rpm  →  vf = 2228×0,1 = 223 mm/min</span>
-<h4>★ Técnica clave: entrada tangencial a cada pétalo circular R10</h4>
+D5  (agujero central Ø5):N = 35.000/(π×5)  = 2.228 rpm  →  vf = 2228×0,1 = 223 mm/min</div>
+<div class="paso"><div class="paso-titulo">★ Técnica clave: entrada tangencial a cada pétalo circular R10</div>
 <p class="res-note">Cada pétalo es un círculo de R=10 centrado en uno de los 4 lados del cuadrado. La regla de entrada tangencial es: C_entrada = centro_pétalo + (R_pétalo + r_entrada) × dirección_radial. Con r_entrada = 5 mm:</p>
-<span class="res-formula">Pétalo +Y: centro (0,25)  → C_e=(0,40)  A=(5,40)   G03 a (0,35) con I=-5,J=0   luego G02 I0,J=-10
+<div class="formula-box">Pétalo +Y: centro (0,25)  → C_e=(0,40)  A=(5,40)   G03 a (0,35) con I=-5,J=0   luego G02 I0,J=-10
 Pétalo +X: centro (25,0)  → C_e=(40,0)  A=(40,5)   G03 a (35,0) con I=0,J=-5   luego G02 I=-10,J=0
 Pétalo -Y: centro (0,-25) → C_e=(0,-40) A=(-5,-40) G03 a (0,-35) con I=5,J=0  luego G02 I0,J=10
-Pétalo -X: centro (-25,0) → C_e=(-40,0) A=(-40,-5) G03 a (-35,0) con I=0,J=5  luego G02 I=10,J=0</span>
+Pétalo -X: centro (-25,0) → C_e=(-40,0) A=(-40,-5) G03 a (-35,0) con I=0,J=5  luego G02 I=10,J=0</div>
 <span class="res-code">O0013
 ; ── T1: PLANEADO 7 mm (D18) ──────────────────────────────
 T1 M6
@@ -969,8 +969,10 @@ G80
 G00 Z50. M5 M9
 M30</span>
 <p class="res-note">La entrada tangencial garantiza transición C1 (sin discontinuidad de dirección) al inicio de cada pétalo. El patrón se aplica igual a los 4 pétalos rotando 90° los parámetros de entrada.</p>
+</div></div>
 </div>
-</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Revisar coherencia dimensional de los resultados (fuerzas en N, potencias en kW, tiempos en min/s) y que los valores intermedios no superen las restricciones del enunciado (F<sub>c,max</sub>, P<sub>max</sub>, N<sub>max</sub>).</div>
 </div></main></div>
 
 
