@@ -363,6 +363,83 @@ body::after{
 }
 .plan-note strong{color:var(--txt2)}
 
+/* ── Tema checklist (sin fechas) ── */
+.tema-section{
+  font-size:.55em;letter-spacing:.14em;color:var(--txt3);text-transform:uppercase;
+  margin:14px 0 7px;padding-bottom:5px;border-bottom:1px dashed var(--line);font-weight:700;
+  display:flex;align-items:center;gap:10px;
+}
+.tema-section:first-child{margin-top:4px}
+.tema-section .ts-count{margin-left:auto;color:var(--txt2);font-weight:400;letter-spacing:.06em}
+.tema-section .ts-warn{color:var(--amber);text-transform:none;font-weight:400;font-size:.92em;letter-spacing:.04em}
+
+.tema-grid{display:flex;flex-direction:column;gap:5px}
+.tema{
+  display:flex;align-items:stretch;
+  border-radius:7px;border:1px solid var(--line);background:var(--s2);
+  transition:.14s;font-size:.8em;position:relative;overflow:hidden;
+}
+.tema-cb{
+  display:flex;align-items:center;justify-content:center;
+  padding:0 14px;cursor:pointer;border-right:1px solid var(--line);
+  transition:.14s;flex-shrink:0;
+}
+.tema-cb:hover{background:rgba(255,255,255,.04)}
+.tema-cb input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.tema-box{
+  width:18px;height:18px;border-radius:4px;
+  border:1.5px solid rgba(255,255,255,.18);background:rgba(0,0,0,.35);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+  transition:.14s;
+}
+.tema-cb input:checked ~ .tema-box::after{content:'✓'}
+.tema-link{
+  display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:11px;
+  padding:9px 14px;flex:1;color:inherit;text-decoration:none;cursor:pointer;
+  transition:.14s;
+}
+.tema-link:hover{background:rgba(255,255,255,.04)}
+.tema-tag{font-family:var(--mono);font-weight:700;font-size:.88em;letter-spacing:.04em;color:var(--txt3)}
+.tema-name{color:var(--txt);font-weight:500;line-height:1.3}
+.tema-star{color:var(--amber);margin-left:5px;font-size:.88em;text-shadow:0 0 6px rgba(var(--ar),.55)}
+.tema-arrow{color:var(--txt3);font-size:.95em;opacity:.35;transition:.18s;font-family:var(--mono)}
+.tema:hover .tema-arrow{opacity:1;transform:translateX(3px)}
+.tema.done{opacity:.5}
+.tema.done .tema-name{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.35)}
+.tema.disabled .tema-link{pointer-events:none;cursor:default}
+.tema.disabled .tema-arrow{display:none}
+
+.pa-f .tema-tag{color:var(--cyan)}
+.pa-m .tema-tag{color:var(--purple)}
+.pa-s .tema-tag{color:var(--amber)}
+.pa-f .tema-cb input:checked ~ .tema-box{border-color:var(--cyan);background:rgba(var(--cr),.18);color:var(--cyan);box-shadow:0 0 8px rgba(var(--cr),.28)}
+.pa-m .tema-cb input:checked ~ .tema-box{border-color:var(--purple);background:rgba(var(--pr),.18);color:var(--purple);box-shadow:0 0 8px rgba(var(--pr),.28)}
+.pa-s .tema-cb input:checked ~ .tema-box{border-color:var(--amber);background:rgba(var(--ar),.18);color:var(--amber);box-shadow:0 0 8px rgba(var(--ar),.28)}
+.pa-f .tema:hover{border-color:rgba(var(--cr),.28)}
+.pa-m .tema:hover{border-color:rgba(var(--pr),.28)}
+.pa-s .tema:hover{border-color:rgba(var(--ar),.28)}
+.pa-f .tema-link:hover .tema-arrow{color:var(--cyan)}
+.pa-m .tema-link:hover .tema-arrow{color:var(--purple)}
+.pa-s .tema-link:hover .tema-arrow{color:var(--amber)}
+
+@media(max-width:560px){
+  .tema-link{grid-template-columns:42px 1fr auto;padding:8px 11px;gap:8px;font-size:.95em}
+  .tema-cb{padding:0 11px}
+}
+
+.plan-summary{
+  display:flex;align-items:center;gap:14px;margin-bottom:6px;padding:9px 13px;
+  background:rgba(0,0,0,.22);border:1px solid var(--line);border-radius:7px;
+}
+.plan-summary-lbl{font-size:.58em;letter-spacing:.12em;color:var(--txt3);text-transform:uppercase;font-weight:700}
+.plan-summary-bar{flex:1;height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;position:relative}
+.plan-summary-fill{height:100%;width:0;border-radius:3px;transition:width .35s ease}
+.pa-f .plan-summary-fill{background:linear-gradient(90deg,rgba(var(--cr),.5),var(--cyan));box-shadow:0 0 10px rgba(var(--cr),.5)}
+.pa-m .plan-summary-fill{background:linear-gradient(90deg,rgba(var(--pr),.5),var(--purple));box-shadow:0 0 10px rgba(var(--pr),.5)}
+.pa-s .plan-summary-fill{background:linear-gradient(90deg,rgba(var(--ar),.5),var(--amber));box-shadow:0 0 10px rgba(var(--ar),.5)}
+.plan-summary-num{font-family:var(--mono);font-size:.78em;font-weight:700;color:var(--txt)}
+.plan-summary-num em{font-style:normal;color:var(--txt3);font-weight:400}
+
 /* ══════════════════════════════════════
    STATS
 ══════════════════════════════════════ */
@@ -542,7 +619,7 @@ body::after{
               <div class="sc-info">
                 <div class="sc-eye" style="color:rgba(var(--cr),.85)">Mec. de Fluidos</div>
                 <div class="sc-title">Hidrostática, Bernoulli,<br>Tuberías & Bombas</div>
-                <div class="sc-meta">6 temas · 15 exámenes resueltos</div>
+                <div class="sc-meta">17 temas · 15 exámenes resueltos</div>
               </div>
               <div class="ring-wrap">
                 <svg class="ring-svg" viewBox="0 0 110 110" width="104" height="104">
@@ -572,11 +649,11 @@ body::after{
           </div>
           <div class="sc-div"></div>
           <div class="topics">
-            <div class="tr" data-key="f-0"><div class="dot d-queue"></div>T1 · Hidrostática<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="f-1"><div class="dot d-queue"></div>T2 · Bernoulli & Energía<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="f-3"><div class="dot d-queue"></div>T3 · Tuberías y pérdidas<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="f-4"><div class="dot d-queue"></div>T4 · Bombas hidráulicas<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="f-5"><div class="dot d-queue"></div>15 exámenes resueltos<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="f-3,f-4"><div class="dot d-queue"></div>Hidrostática · T4+T7<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="f-7"><div class="dot d-queue"></div>Bernoulli · T12<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="f-9,f-10"><div class="dot d-queue"></div>Cantidad de movimiento · T14+T15<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="f-13,f-14"><div class="dot d-queue"></div>Tuberías · T18+T19<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="f-16"><div class="dot d-queue"></div>Bombas hidráulicas · T25<span class="tbadge tb-q">—</span></div>
           </div>
           <div class="cd-strip" style="margin:9px 17px;border-color:rgba(var(--cr),.12)">
             <span class="cd-lbl">Examen · 28 May 9:00</span>
@@ -630,11 +707,11 @@ body::after{
           </div>
           <div class="sc-div"></div>
           <div class="topics">
-            <div class="tr" data-key="m-0"><div class="dot d-queue"></div>T1–T2 · Vectorial & Masas<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="m-2"><div class="dot d-queue"></div>T3–T5 · Estática, Roz., Cables<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="m-3"><div class="dot d-queue"></div>T6 · Resistencia Materiales<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="m-5"><div class="dot d-queue"></div>T7–T12 · Cinemática & Dinámica<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="m-6"><div class="dot d-queue"></div>3 convocatorias resueltas<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="m-0,m-1"><div class="dot d-queue"></div>T1–T2 · Vectorial & Masas<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="m-2,m-3,m-4"><div class="dot d-queue"></div>T3–T5 · Estática, Roz., Cables<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="m-5"><div class="dot d-queue"></div>T6 · Resistencia Materiales<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="m-6,m-7"><div class="dot d-queue"></div>T7–T8 · Cinemática del sólido<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="m-8,m-9,m-10,m-11"><div class="dot d-queue"></div>T9–T12 · Dinámica<span class="tbadge tb-q">—</span></div>
           </div>
           <div class="cd-strip" style="margin:9px 17px;border-color:rgba(var(--pr),.12)">
             <span class="cd-lbl">Examen · 5 Jun 9:00</span>
@@ -688,10 +765,10 @@ body::after{
           </div>
           <div class="sc-div"></div>
           <div class="topics">
-            <div class="tr" data-key="s-1"><div class="dot d-queue"></div>T1–T2 · Torneado & Fresado<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="s-2"><div class="dot d-queue"></div>T3–T4 · Taladrado & CNC<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="s-3"><div class="dot d-queue"></div>T5–T6 · Rectificado & Fundición<span class="tbadge tb-q">—</span></div>
-            <div class="tr" data-key="s-4"><div class="dot d-queue"></div>T7–T8 · Metrología<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="s-0,s-1"><div class="dot d-queue"></div>T1–T2 · Torneado & Fresado<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="s-2,s-3"><div class="dot d-queue"></div>T3–T4 · Taladrado & CNC<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="s-4,s-5"><div class="dot d-queue"></div>T5–T6 · Rectificado & Fundición<span class="tbadge tb-q">—</span></div>
+            <div class="tr" data-keys="s-6,s-7"><div class="dot d-queue"></div>T7–T8 · Metrología & Def. Plástica<span class="tbadge tb-q">—</span></div>
           </div>
           <div class="cd-strip" style="margin:9px 17px;border-color:rgba(var(--ar),.12)">
             <span class="cd-lbl">Examen · 10 Jun 9:00</span>
@@ -713,12 +790,12 @@ body::after{
 
     <!-- ── PLAN DE ESTUDIO ── -->
     <div id="plan">
-      <div class="sh"><span class="sh-txt">Plan de estudio</span><div class="sh-line"></div><span class="sh-n">7 sem · 8 abr – 10 jun</span></div>
+      <div class="sh"><span class="sh-txt">Plan de estudio</span><div class="sh-line"></div><span class="sh-n">Marca cada tema al estudiarlo</span></div>
       <div class="plan-box" style="margin-top:12px">
         <div class="plan-head" onclick="togglePlan()">
-          <div class="plan-badge">Plan activo · S1 en curso</div>
+          <div class="plan-badge">Plan activo · Checklist por tema</div>
           <div class="plan-head-meta">
-            <span>8 Abr – 10 Jun 2026</span>
+            <span id="plan-global-count">— / 37 marcados</span>
             <span class="plan-chev" id="planChev">▼</span>
           </div>
         </div>
@@ -729,130 +806,110 @@ body::after{
             <button class="ptab" onclick="switchPlan('s',this)" id="ptab-s">Sistemas</button>
           </div>
 
-          <!-- FLUIDOS -->
-          <div class="ppanel vis" id="pp-f">
-            <div class="plan-grid">
-              <div class="plan-row pa-f" id="pr-f-0">
-                <div class="pr-week"><span class="pr-wnum">S1</span><span class="pr-wdates">8–13 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Hidrostática — presión y fuerzas</div><div class="pr-topic-sub">T4+T7: superficies planas y curvas</div></div>
-                <div class="pr-action">teoria.html T4/T7 · estrategia cards 1–4 · mayo2025.html para calibrar nivel</div>
-              </div>
-              <div class="plan-row pa-f" id="pr-f-1">
-                <div class="pr-week"><span class="pr-wnum">S2</span><span class="pr-wdates">14–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Bernoulli + continuidad</div><div class="pr-topic-sub">T12 ideal y con pérdidas</div></div>
-                <div class="pr-action">teoria.html T12 · estrategia cards 6–7 · exámenes mayo2024+junio2023 Bernoulli</div>
-              </div>
-              <div class="plan-row pa-f" id="pr-f-2">
-                <div class="pr-week"><span class="pr-wnum">S3</span><span class="pr-wdates">21–27 abr</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">QdM — cantidad de movimiento</div><div class="pr-topic-sub">T14/T15: chorros, codos, álabes</div></div>
-                <div class="pr-action">teoria.html T14/T15 · estrategia cards 8–9 · junio2022 problema QdM completo</div>
-              </div>
-              <div class="plan-row pa-f" id="pr-f-3">
-                <div class="pr-week"><span class="pr-wnum">S4</span><span class="pr-wdates">28 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Tuberías y pérdidas</div><div class="pr-topic-sub">T18/T19: Darcy-Weisbach, Colebrook</div></div>
-                <div class="pr-action">teoria T18/T19 · estrategia cards 10–13 · colebrook.html hasta &lt;3 min/iter.</div>
-              </div>
-              <div class="plan-row pa-f" id="pr-f-4">
-                <div class="pr-week"><span class="pr-wnum">S5</span><span class="pr-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Bombas hidráulicas</div><div class="pr-topic-sub">Punto de funcionamiento, NPSH</div></div>
-                <div class="pr-action">estrategia cards 15–18 · bombas-calc.html · junio2024ef completo cronometrado</div>
-              </div>
-              <div class="plan-row pa-f" id="pr-f-5">
-                <div class="pr-week"><span class="pr-wnum">S6</span><span class="pr-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Simulacros completos</div><div class="pr-topic-sub">Exámenes 2022, 2023ef, mayo2021</div></div>
-                <div class="pr-action">2h cronometradas sin mirar · Corregir con soluciones · Anotar errores</div>
-              </div>
-              <div class="plan-row pa-f" id="pr-f-6">
-                <div class="pr-week"><span class="pr-wnum">S7</span><span class="pr-wdates">19–27 may</span><label class="plan-check"><input type="checkbox" data-sub="f" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Revisión y consolidación</div><div class="pr-topic-sub">Solo puntos débiles del simulacro</div></div>
-                <div class="pr-action">formulario.html — fórmulas clave · No materia nueva · Descanso 26-27</div>
-              </div>
+          <!-- ═══ FLUIDOS — 17 temas ═══ -->
+          <div class="ppanel pa-f vis" id="pp-f">
+            <div class="plan-summary">
+              <span class="plan-summary-lbl">Progreso Fluidos</span>
+              <div class="plan-summary-bar"><div class="plan-summary-fill" id="bar-f"></div></div>
+              <span class="plan-summary-num" id="count-f">0<em> / 17</em></span>
             </div>
-            <div class="plan-note"><strong>Regla 80/20:</strong> Bernoulli + Hidrostática + Tuberías + QdM + Bombas = 85% de la nota. El cuello de botella es Colebrook — practica la iteración hasta hacerlo automático.</div>
+
+            <div class="tema-section">Bloque 1 — Propiedades de los fluidos <span class="ts-count">2 temas</span></div>
+            <div class="tema-grid">
+              <div class="tema" id="tm-f-0"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="0" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t1"><span class="tema-tag">T1</span><span class="tema-name">Introducción a la mecánica de fluidos</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-1"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="1" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t2"><span class="tema-tag">T2</span><span class="tema-name">Propiedades de los fluidos</span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="tema-section">Bloque 2 — Estática de fluidos <span class="ts-count">4 temas</span></div>
+            <div class="tema-grid">
+              <div class="tema" id="tm-f-2"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="2" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t3"><span class="tema-tag">T3</span><span class="tema-name">Estática de fluidos</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-3"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="3" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t4"><span class="tema-tag">T4</span><span class="tema-name">Hidrostática <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-4"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="4" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t7"><span class="tema-tag">T7</span><span class="tema-name">Fuerzas sobre superficies sumergidas <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-5"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="5" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t8"><span class="tema-tag">T8</span><span class="tema-name">Fuerzas sobre cuerpos cerrados (flotación)</span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="tema-section">Cinemática <span class="ts-count">1 tema</span></div>
+            <div class="tema-grid">
+              <div class="tema" id="tm-f-6"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="6" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t911"><span class="tema-tag">T9-11</span><span class="tema-name">Cinemática de fluidos</span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="tema-section">Bloque 3 — Dinámica y medidores <span class="ts-count">8 temas</span></div>
+            <div class="tema-grid">
+              <div class="tema" id="tm-f-7"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="7" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t12"><span class="tema-tag">T12</span><span class="tema-name">Bernoulli — flujo ideal y real <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-8"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="8" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t13"><span class="tema-tag">T13</span><span class="tema-name">Medidores de presión y caudal</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-9"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="9" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t14"><span class="tema-tag">T14</span><span class="tema-name">Cantidad de movimiento <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-10"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="10" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t15"><span class="tema-tag">T15</span><span class="tema-name">Aplicaciones de QdM (chorros, codos, álabes) <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-11"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="11" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t16"><span class="tema-tag">T16</span><span class="tema-name">Análisis dimensional</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-12"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="12" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t17"><span class="tema-tag">T17</span><span class="tema-name">Viscosidad y flujo viscoso</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-13"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="13" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t18"><span class="tema-tag">T18</span><span class="tema-name">Pérdidas de carga (Darcy-Weisbach, Colebrook) <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-14"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="14" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t19"><span class="tema-tag">T19</span><span class="tema-name">Conducciones (sistemas de tuberías) <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="tema-section">Otros <span class="ts-count">2 temas</span></div>
+            <div class="tema-grid">
+              <div class="tema" id="tm-f-15"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="15" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t21"><span class="tema-tag">T21</span><span class="tema-name">Canales abiertos</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-f-16"><label class="tema-cb"><input type="checkbox" data-sub="f" data-idx="16" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="fluidos/teoria.html#t25"><span class="tema-tag">T25</span><span class="tema-name">Bombas hidráulicas (NPSH, punto de funcionamiento)</span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="plan-note"><strong>Estrategia 80/20:</strong> los temas marcados con ★ concentran el grueso del examen. Bernoulli + Hidrostática + Tuberías + QdM + Bombas = 85% de la nota.</div>
           </div>
 
-          <!-- MECÁNICA -->
-          <div class="ppanel" id="pp-m">
-            <div class="plan-grid">
-              <div class="plan-row pa-m" id="pr-m-0">
-                <div class="pr-week"><span class="pr-wnum">S1</span><span class="pr-wdates">8–13 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T1 Vectorial + T2 Geometría de masas</div><div class="pr-topic-sub">Productos, momentos de inercia, centroide</div></div>
-                <div class="pr-action">teoria.html T1-T2 · tema1.html + tema2.html · base imprescindible</div>
-              </div>
-              <div class="plan-row pa-m" id="pr-m-1">
-                <div class="pr-week"><span class="pr-wnum">S2</span><span class="pr-wdates">14–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T3 Estática del sólido rígido</div><div class="pr-topic-sub">DSL, equilibrio, reacciones en apoyos</div></div>
-                <div class="pr-action">teoria.html T3 · tema3.html · E1 de todos los exámenes suele ser estática</div>
-              </div>
-              <div class="plan-row pa-m" id="pr-m-2">
-                <div class="pr-week"><span class="pr-wnum">S3</span><span class="pr-wdates">21–27 abr</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T4 Rozamiento + T5 Cables</div><div class="pr-topic-sub">Rozamiento estático/dinámico, catenaria</div></div>
-                <div class="pr-action">tema4.html + tema5.html · frecuentes en E1 y preguntas T</div>
-              </div>
-              <div class="plan-row pa-m" id="pr-m-3">
-                <div class="pr-week"><span class="pr-wnum">S4</span><span class="pr-wdates">28 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T6 Resistencia de Materiales ★</div><div class="pr-topic-sub">Flexión, torsión, diagramas V-M, sección T</div></div>
-                <div class="pr-action">teoria.html T6 · resolver E2-2425 y E3-2324 sin mirar · tema más pesado</div>
-              </div>
-              <div class="plan-row pa-m" id="pr-m-4">
-                <div class="pr-week"><span class="pr-wnum">S5</span><span class="pr-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T7 Cinemática + T8 Movimiento plano</div><div class="pr-topic-sub">CIR, campo velocidades, aceleraciones</div></div>
-                <div class="pr-action">teoria.html T7-T8 · ejercicios de clase en PDF</div>
-              </div>
-              <div class="plan-row pa-m" id="pr-m-5">
-                <div class="pr-week"><span class="pr-wnum">S5–6</span><span class="pr-wdates">5–18 may</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T9–T12 Dinámica ⚠ pendiente material</div><div class="pr-topic-sub">Magnitudes, teoremas, sólido rígido, eje fijo</div></div>
-                <div class="pr-action">Estudiar en cuanto llegue material · Entra en examen · Marcar al cubrir los 4 temas</div>
-              </div>
-              <div class="plan-row pa-m" id="pr-m-6">
-                <div class="pr-week"><span class="pr-wnum">S6–7</span><span class="pr-wdates">19 may–4 jun</span><label class="plan-check"><input type="checkbox" data-sub="m" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Simulacros + repaso final</div><div class="pr-topic-sub">Exámenes 2024-25, 2023-24 y 2018-19</div></div>
-                <div class="pr-action">2h cronometradas sin mirar · examenes.html · No materia nueva</div>
-              </div>
+          <!-- ═══ MECÁNICA APLICADA — 12 temas ═══ -->
+          <div class="ppanel pa-m" id="pp-m">
+            <div class="plan-summary">
+              <span class="plan-summary-lbl">Progreso Mecánica</span>
+              <div class="plan-summary-bar"><div class="plan-summary-fill" id="bar-m"></div></div>
+              <span class="plan-summary-num" id="count-m">0<em> / 12</em></span>
             </div>
-            <div class="plan-note"><strong>Patrón:</strong> E1=estática/rozamiento (T3-T5), E2=viga sección T (T6, siempre), E3=cinemática/dinámica (T7-T12). <strong>Prioridad: T6 &gt; T3 &gt; T4/T5 &gt; T7/T8 &gt; T9-T12.</strong></div>
+
+            <div class="tema-section">Estática — T1 a T8 <span class="ts-count">8 temas</span></div>
+            <div class="tema-grid">
+              <div class="tema" id="tm-m-0"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="0" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="mecanica/teoria.html#t1"><span class="tema-tag">T1</span><span class="tema-name">Fundamentos de Cálculo Vectorial <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-m-1"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="1" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="mecanica/teoria.html#t2"><span class="tema-tag">T2</span><span class="tema-name">Geometría de Masas y Superficies Planas <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-m-2"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="2" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="mecanica/teoria.html#t3"><span class="tema-tag">T3</span><span class="tema-name">Estática del Sólido Rígido <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-m-3"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="3" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="mecanica/teoria.html#t4"><span class="tema-tag">T4</span><span class="tema-name">Rozamiento <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-m-4"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="4" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="mecanica/teoria.html#t5"><span class="tema-tag">T5</span><span class="tema-name">Cables <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-m-5"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="5" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="mecanica/teoria.html#t6"><span class="tema-tag">T6</span><span class="tema-name">Principios de Resistencia de Materiales <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-m-6"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="6" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="mecanica/teoria.html#t7"><span class="tema-tag">T7</span><span class="tema-name">Cinemática del Sólido Rígido</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-m-7"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="7" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="mecanica/teoria.html#t8"><span class="tema-tag">T8</span><span class="tema-name">Movimiento Plano del Sólido Rígido</span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="tema-section">Dinámica — T9 a T12 <span class="ts-warn">⚠ pendiente material del profesor</span></div>
+            <div class="tema-grid">
+              <div class="tema disabled" id="tm-m-8"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="8" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link"><span class="tema-tag">T9</span><span class="tema-name">Magnitudes dinámicas</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema disabled" id="tm-m-9"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="9" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link"><span class="tema-tag">T10</span><span class="tema-name">Teoremas dinámicos (energía y momentos)</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema disabled" id="tm-m-10"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="10" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link"><span class="tema-tag">T11</span><span class="tema-name">Dinámica del sólido rígido</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema disabled" id="tm-m-11"><label class="tema-cb"><input type="checkbox" data-sub="m" data-idx="11" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link"><span class="tema-tag">T12</span><span class="tema-name">Movimiento de rotación con eje fijo</span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="plan-note"><strong>Patrón de examen:</strong> E1 = estática/rozamiento (T3-T5), E2 = viga sección T (T6, siempre cae), E3 = cinemática/dinámica (T7-T12). Los temas marcados con ★ son los de mayor peso.</div>
           </div>
 
-          <!-- SISTEMAS -->
-          <div class="ppanel" id="pp-s">
-            <div class="plan-grid">
-              <div class="plan-row pa-s" id="pr-s-0">
-                <div class="pr-week"><span class="pr-wnum">S1–2</span><span class="pr-wdates">8–20 abr</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="0" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Aparcado — foco en Fluidos</div><div class="pr-topic-sub">Examen 28 mayo, prioridad absoluta</div></div>
-                <div class="pr-action">No dedicar tiempo a Sistemas hasta pasar el examen de Fluidos</div>
-              </div>
-              <div class="plan-row pa-s" id="pr-s-1">
-                <div class="pr-week"><span class="pr-wnum">S3–4</span><span class="pr-wdates">21 abr–4 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="1" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T1 Torneado + T2 Fresado</div><div class="pr-topic-sub">Parámetros de corte, velocidades, avances</div></div>
-                <div class="pr-action">teoria.html T1-T2 · fórmulas Vc, n, f, ap · paralelo ligero con Fluidos</div>
-              </div>
-              <div class="plan-row pa-s" id="pr-s-2">
-                <div class="pr-week"><span class="pr-wnum">S5</span><span class="pr-wdates">5–11 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="2" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T3 Taladrado + T4 CNC</div><div class="pr-topic-sub">Ciclos de mecanizado, G-code básico</div></div>
-                <div class="pr-action">teoria.html T3-T4 · ejercicios numéricos tiempo de mecanizado</div>
-              </div>
-              <div class="plan-row pa-s" id="pr-s-3">
-                <div class="pr-week"><span class="pr-wnum">S6</span><span class="pr-wdates">12–18 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="3" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T5 Rectificado + T6 Fundición</div><div class="pr-topic-sub">Rugosidad, tolerancias, defectos</div></div>
-                <div class="pr-action">teoria.html T5-T6 · relación Ra-parámetros · defectos en fundición</div>
-              </div>
-              <div class="plan-row pa-s" id="pr-s-4">
-                <div class="pr-week"><span class="pr-wnum">S7</span><span class="pr-wdates">19–25 may</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="4" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">T7–T8 Metrología + Def. plástica</div><div class="pr-topic-sub">Calibres, ISO, forja, estampado</div></div>
-                <div class="pr-action">teoria.html T7-T8 · sistema ISO tolerancias · procesos deformación plástica</div>
-              </div>
-              <div class="plan-row pa-s" id="pr-s-5">
-                <div class="pr-week"><span class="pr-wnum">S8</span><span class="pr-wdates">26 may–4 jun</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="5" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Simulacro + repaso global</div><div class="pr-topic-sub">Exámenes reales convocatorias previas</div></div>
-                <div class="pr-action">ejercicios.html · exámenes previos · fórmulas de corte de memoria</div>
-              </div>
-              <div class="plan-row pa-s" id="pr-s-6">
-                <div class="pr-week"><span class="pr-wnum">S9</span><span class="pr-wdates">5–9 jun</span><label class="plan-check"><input type="checkbox" data-sub="s" data-idx="6" onchange="onPlanCheck(this)"><span class="plan-check-box"></span></label></div>
-                <div class="pr-topic"><div class="pr-topic-name">Última semana</div><div class="pr-topic-sub">Solo consolidación</div></div>
-                <div class="pr-action">Repasar errores · formulario de corte · descanso 8 jun · examen 10 jun</div>
-              </div>
+          <!-- ═══ SISTEMAS DE PRODUCCIÓN — 8 temas ═══ -->
+          <div class="ppanel pa-s" id="pp-s">
+            <div class="plan-summary">
+              <span class="plan-summary-lbl">Progreso Sistemas</span>
+              <div class="plan-summary-bar"><div class="plan-summary-fill" id="bar-s"></div></div>
+              <span class="plan-summary-num" id="count-s">0<em> / 8</em></span>
             </div>
-            <div class="plan-note"><strong>Ventaja:</strong> Examen de Sistemas el 10 jun, 13 días después de Fluidos. Focaliza en Fluidos+Mecánica primero; ataca Sistemas en las últimas 3 semanas.</div>
+
+            <div class="tema-section">Mecanizado por arranque de viruta <span class="ts-count">5 temas</span></div>
+            <div class="tema-grid">
+              <div class="tema" id="tm-s-0"><label class="tema-cb"><input type="checkbox" data-sub="s" data-idx="0" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="sistemas/teoria.html#t1"><span class="tema-tag">T1</span><span class="tema-name">Fundamentos de mecanizado — Torneado <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-s-1"><label class="tema-cb"><input type="checkbox" data-sub="s" data-idx="1" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="sistemas/teoria.html#t2"><span class="tema-tag">T2</span><span class="tema-name">Fresado <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-s-2"><label class="tema-cb"><input type="checkbox" data-sub="s" data-idx="2" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="sistemas/teoria.html#t3"><span class="tema-tag">T3</span><span class="tema-name">Taladrado <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-s-3"><label class="tema-cb"><input type="checkbox" data-sub="s" data-idx="3" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="sistemas/teoria.html#t4"><span class="tema-tag">T4</span><span class="tema-name">Control numérico — CNC</span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-s-4"><label class="tema-cb"><input type="checkbox" data-sub="s" data-idx="4" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="sistemas/teoria.html#t5"><span class="tema-tag">T5</span><span class="tema-name">Rectificado</span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="tema-section">Procesos sin viruta y metrología <span class="ts-count">3 temas</span></div>
+            <div class="tema-grid">
+              <div class="tema" id="tm-s-5"><label class="tema-cb"><input type="checkbox" data-sub="s" data-idx="5" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="sistemas/teoria.html#t6"><span class="tema-tag">T6</span><span class="tema-name">Fundición <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-s-6"><label class="tema-cb"><input type="checkbox" data-sub="s" data-idx="6" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="sistemas/teoria.html#t7"><span class="tema-tag">T7</span><span class="tema-name">Metrología <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+              <div class="tema" id="tm-s-7"><label class="tema-cb"><input type="checkbox" data-sub="s" data-idx="7" onchange="onPlanCheck(this)"><span class="tema-box"></span></label><a class="tema-link" href="sistemas/teoria.html#t8"><span class="tema-tag">T8</span><span class="tema-name">Deformación plástica <span class="tema-star">★</span></span><span class="tema-arrow">→</span></a></div>
+            </div>
+
+            <div class="plan-note"><strong>Estado del material:</strong> teoría completa para los 8 temas (HTML + PDFs del profesor). Ejercicios resueltos disponibles para T1-T4 (37 ejercicios); T6-T8 a la espera del boletín.</div>
           </div>
         </div><!-- /plan-body -->
       </div>
@@ -902,55 +959,63 @@ body::after{
 /* ══════════════════════════════
    PLAN — localStorage + progreso
 ══════════════════════════════ */
-var PLAN_TOTAL = 7;
+var PLAN_TOTAL = {f:17, m:12, s:8};
 var RING_C = 276.5;
 
-function updateProgress(sub){
-  var checked = 0;
-  for(var i = 0; i < PLAN_TOTAL; i++){
-    if(localStorage.getItem('plan-'+sub+'-'+i) === '1') checked++;
+function countDone(sub){
+  var n = 0;
+  for(var i = 0; i < PLAN_TOTAL[sub]; i++){
+    if(localStorage.getItem('plan-'+sub+'-'+i) === '1') n++;
   }
-  var pct = Math.round(checked / PLAN_TOTAL * 100);
+  return n;
+}
+
+function updateProgress(sub){
+  var total = PLAN_TOTAL[sub];
+  var checked = countDone(sub);
+  var pct = Math.round(checked / total * 100);
   var ring = document.getElementById('ring-'+sub);
   var pctEl = document.getElementById('pct-'+sub);
   if(ring) ring.setAttribute('stroke-dashoffset', (RING_C * (1 - pct/100)).toFixed(2));
   if(pctEl) pctEl.textContent = pct + '%';
+  var bar = document.getElementById('bar-'+sub);
+  var cnt = document.getElementById('count-'+sub);
+  if(bar) bar.style.width = pct + '%';
+  if(cnt) cnt.innerHTML = checked + '<em> / ' + total + '</em>';
+}
+
+function updateGlobalCount(){
+  var total = PLAN_TOTAL.f + PLAN_TOTAL.m + PLAN_TOTAL.s;
+  var done = countDone('f') + countDone('m') + countDone('s');
+  var el = document.getElementById('plan-global-count');
+  if(el) el.textContent = done + ' / ' + total + ' marcados';
 }
 
 function updateTopicDots(){
-  var rows = document.querySelectorAll('.tr[data-key]');
-  // Reset all
+  var rows = document.querySelectorAll('.tr[data-keys]');
   rows.forEach(function(row){
-    var key = row.getAttribute('data-key');
-    var parts = key.split('-');
-    var sub = parts[0], idx = parts[1];
+    var keys = row.getAttribute('data-keys').split(',');
     var dot = row.querySelector('.dot');
     var badge = row.querySelector('.tbadge');
-    if(localStorage.getItem('plan-'+sub+'-'+idx) === '1'){
+    var doneCount = 0;
+    keys.forEach(function(key){
+      var parts = key.split('-');
+      var sub = parts[0], idx = parts[1];
+      if(localStorage.getItem('plan-'+sub+'-'+idx) === '1') doneCount++;
+    });
+    if(doneCount === keys.length){
       dot.className = 'dot d-done';
       badge.className = 'tbadge tb-done';
       badge.textContent = '✓';
+    } else if(doneCount > 0){
+      dot.className = 'dot d-active';
+      badge.className = 'tbadge tb-a';
+      badge.textContent = doneCount + '/' + keys.length;
     } else {
       dot.className = 'dot d-queue';
       badge.className = 'tbadge tb-q';
       badge.textContent = '—';
     }
-  });
-  // Mark first unchecked per subject as "En curso"
-  ['f','m','s'].forEach(function(sub){
-    var subRows = document.querySelectorAll('.tr[data-key^="'+sub+'-"]');
-    var found = false;
-    subRows.forEach(function(row){
-      if(found) return;
-      var key = row.getAttribute('data-key');
-      var idx = key.split('-')[1];
-      if(localStorage.getItem('plan-'+sub+'-'+idx) !== '1'){
-        row.querySelector('.dot').className = 'dot d-active';
-        row.querySelector('.tbadge').className = 'tbadge tb-a';
-        row.querySelector('.tbadge').textContent = 'En curso';
-        found = true;
-      }
-    });
   });
 }
 
@@ -958,24 +1023,26 @@ function onPlanCheck(input){
   var sub = input.getAttribute('data-sub');
   var idx = input.getAttribute('data-idx');
   localStorage.setItem('plan-'+sub+'-'+idx, input.checked ? '1' : '0');
-  var row = document.getElementById('pr-'+sub+'-'+idx);
-  if(row) row.classList.toggle('done-row', input.checked);
+  var row = document.getElementById('tm-'+sub+'-'+idx);
+  if(row) row.classList.toggle('done', input.checked);
   updateProgress(sub);
+  updateGlobalCount();
   updateTopicDots();
 }
 
 function loadPlanState(){
   ['f','m','s'].forEach(function(sub){
-    for(var i = 0; i < PLAN_TOTAL; i++){
+    for(var i = 0; i < PLAN_TOTAL[sub]; i++){
       if(localStorage.getItem('plan-'+sub+'-'+i) === '1'){
         var inp = document.querySelector('input[data-sub="'+sub+'"][data-idx="'+i+'"]');
         if(inp) inp.checked = true;
-        var row = document.getElementById('pr-'+sub+'-'+i);
-        if(row) row.classList.add('done-row');
+        var row = document.getElementById('tm-'+sub+'-'+i);
+        if(row) row.classList.add('done');
       }
     }
     updateProgress(sub);
   });
+  updateGlobalCount();
   updateTopicDots();
 }
 

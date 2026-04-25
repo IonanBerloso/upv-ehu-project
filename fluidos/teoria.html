@@ -1891,14 +1891,23 @@ function scrollSidebarToActive() {
   if (btn) btn.scrollIntoView({block:'nearest',behavior:'smooth'});
 }
 
-/* ── Restore last topic from localStorage ── */
+/* ── Restore from URL hash, or last topic from localStorage ── */
 (function(){
+  var hashId = (location.hash || '').replace('#','').trim();
+  if (hashId && document.getElementById(hashId)) {
+    showTopic(hashId);
+    return;
+  }
   var saved;
   try { saved = localStorage.getItem('fluidos-teoria-topic'); } catch(e){}
   if (saved && document.getElementById(saved)) {
     showTopic(saved, false);
   }
 })();
+window.addEventListener('hashchange', function(){
+  var id = (location.hash || '').replace('#','').trim();
+  if (id && document.getElementById(id)) showTopic(id);
+});
 </script>
 <!-- ── Botón de recarga móvil ── -->
 <button id="mobile-reload-btn" type="button" aria-label="Recargar página (ignorar caché)" title="Recargar" onclick="(function(){var u=new URL(location.href);u.searchParams.set('_',Date.now());location.replace(u.toString())})()">

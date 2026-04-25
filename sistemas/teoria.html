@@ -2861,7 +2861,13 @@ document.addEventListener('DOMContentLoaded', function(){
       throwOnError: false
     });
   }
-  showTopic('t1');
+  var hashId = (location.hash || '').replace('#','').trim();
+  if (hashId && document.getElementById(hashId)) showTopic(hashId);
+  else showTopic('t1');
+});
+window.addEventListener('hashchange', function(){
+  var id = (location.hash || '').replace('#','').trim();
+  if (id && document.getElementById(id)) showTopic(id);
 });
 
 function showTopic(id){
