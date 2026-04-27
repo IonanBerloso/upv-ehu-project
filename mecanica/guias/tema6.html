@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T6 Resistencia de Materiales · Mecánica Aplicada UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 6 — Principios de Resistencia de Materiales</h1>
+  <div class="cover-sub">Mecánica Aplicada · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>6 de 8 (Estática · el más pesado)</div>
+    <div><b>Ejercicios</b>22 totales · 6 nivel examen</div>
+    <div><b>Patrones</b>7 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>14 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:9%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Diagramas Q-M de viga simple (cargas puntuales)</td><td class="center">6.1, 6.2, 6.4</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Diagramas Q-M con carga distribuida</td><td class="center">6.3, 6.5, 6.6, 6.7, 6.9</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Viga continua / múltiples apoyos / mixta</td><td class="center">6.8, 6.10</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Diagrama de torsión / axial</td><td class="center">6.11, 6.12, 6.16</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P5</b></td><td>Elemento con carga inclinada — N, Q, M en una barra</td><td class="center">6.13</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P6</b></td><td>Dimensionar sección por tensión admisible (Navier)</td><td class="center">6.14, 6.15, 6.16</td><td class="center">Alta</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P7 ★</b></td><td><b>Viga sección T (o I) — Sistema de cargas + diagramas + dimensionado</b></td><td class="center">6.17, 6.18, 6.19, 6.20, 6.21, 6.22</td><td class="center"><b>MUY ALTA</b></td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T6 SIEMPRE es:</b> una viga con sección no estándar (T, I, doble T, L) sometida a un sistema de cargas mixtas. Te piden secuencialmente: <b>(1) reacciones</b>, <b>(2) diagramas Q-M</b>, <b>(3) M<sub>max</sub></b>, <b>(4) momento de inercia de la sección</b> (Tema 2 dentro del 6), <b>(5) tensión normal máxima</b> con $\sigma=My/I$, y <b>(6) verificar/dimensionar</b> con la tensión admisible.</p>
+  <p>Las dos herramientas estrella son las <b>relaciones diferenciales</b> $dM/dx = V$ y la <b>fórmula de Navier</b> $\sigma = My/I$.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Domina los <b>diagramas Q-M</b> hasta que sepas dibujarlos automáticamente para vigas sencillas.</li>
+    <li>Memoriza Navier y Jouravski.</li>
+    <li>Practica el procedimiento de la sección T: CG, $I_{xc}$ centroidal, distancias $c$ a las fibras.</li>
+    <li>Estudia los 7 patrones con sus recetas.</li>
+    <li>Mini-simulacro al final.</li>
+  </ol>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 14 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Tensión y deformación</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F1 · Tensión normal y tangencial</div>
+    <div class="formula-body">$\sigma = F/A$ (axial)</div>
+    <div class="formula-body">$\tau = V/A$ (cortadura media)</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Ley de Hooke</div>
+    <div class="formula-body">$\sigma = E\varepsilon,\quad \tau = G\gamma$</div>
+    <div class="formula-note">$E$ = módulo de Young, $G$ = módulo cortadura.</div>
+  </div>
+</div>
+
+<h3>2 · Alargamiento axial y relaciones elásticas</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Alargamiento de una barra</div>
+    <div class="formula-body">$\delta = \dfrac{FL}{AE}$</div>
+    <div class="formula-note">$L$ = longitud, $A$ = área, $F$ = fuerza axial, $E$ = módulo Young.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Relación E, G, ν (Poisson)</div>
+    <div class="formula-body">$G = \dfrac{E}{2(1+\nu)}$</div>
+    <div class="formula-note">$\nu_{acero}\approx 0{,}3$, $E\approx 210$ GPa, $G\approx 80$ GPa.</div>
+  </div>
+</div>
+
+<h3>3 · Flexión — Navier y Jouravski</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F5 · ★ Tensión normal por flexión (Navier)</div>
+    <div class="formula-body">$\sigma = \dfrac{M\,y}{I}$</div>
+    <div class="formula-note">$M$ flector, $y$ distancia a la fibra neutra, $I$ inercia centroidal de la sección. Máxima en la fibra más alejada $y=c$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Módulo resistente y tensión máxima</div>
+    <div class="formula-body">$\sigma_{max} = \dfrac{M\,c}{I} = \dfrac{M}{W_f}$</div>
+    <div class="formula-note">$W_f = I/c$ es el módulo resistente. Para diseño: $\sigma_{max}\le \sigma_{adm}$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F7 · Tensión cortante (Jouravski)</div>
+    <div class="formula-body">$\tau = \dfrac{V\,Q}{I\,b}$</div>
+    <div class="formula-note">$Q$ = momento estático del área por encima del corte respecto a la fibra neutra. $b$ = anchura en el corte.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Tensión cortante máxima (rectangular)</div>
+    <div class="formula-body">$\tau_{max} = \dfrac{3V}{2A}$ (rectangular)</div>
+    <div class="formula-note">Para sección rectangular, máxima en la fibra neutra. Vale 1,5× la media V/A.</div>
+  </div>
+</div>
+
+<h3>4 · Diagramas de esfuerzos — relaciones diferenciales</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F9 · ★ Relaciones $V \leftrightarrow M \leftrightarrow q$</div>
+    <div class="formula-body">$\dfrac{dV}{dx} = -q(x)$</div>
+    <div class="formula-body">$\dfrac{dM}{dx} = V(x)$</div>
+    <div class="formula-note">Carga distribuida $q$ positiva hacia abajo (signo: $V$ baja).</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Saltos en los diagramas</div>
+    <div class="formula-body" style="font-size:9.5pt;text-align:left">• Carga puntual $P$ ↓: salto en $V$ de $-P$<br>• Par concentrado $M_0$: salto en $M$ de $+M_0$<br>• Reacción $R$ ↑: salto en $V$ de $+R$</div>
+  </div>
+</div>
+
+<h3>5 · Torsión</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F11 · Tensión cortante por torsión</div>
+    <div class="formula-body">$\tau = \dfrac{T\,r}{J}$</div>
+    <div class="formula-note">$T$ = momento torsor, $r$ = distancia al eje, $J$ = momento polar de inercia.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F12 · Para eje circular macizo</div>
+    <div class="formula-body">$J = \dfrac{\pi D^4}{32},\quad \tau_{max}=\dfrac{16T}{\pi D^3}$</div>
+    <div class="formula-note">$\tau$ máxima en la superficie ($r = D/2$).</div>
+  </div>
+</div>
+
+<h3>6 · Estado tensional plano (círculo de Mohr)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F13 · Tensiones principales</div>
+    <div class="formula-body">$\sigma_{1,2} = \dfrac{\sigma_x+\sigma_y}{2} \pm \sqrt{\left(\dfrac{\sigma_x-\sigma_y}{2}\right)^2 + \tau_{xy}^2}$</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F14 · Tensión cortante máxima</div>
+    <div class="formula-body">$\tau_{max} = \sqrt{\left(\dfrac{\sigma_x-\sigma_y}{2}\right)^2 + \tau_{xy}^2}$</div>
+    <div class="formula-note">$\tan(2\theta_p) = 2\tau_{xy}/(\sigma_x - \sigma_y)$</div>
+  </div>
+</div>
+
+<h2>📋 Casos típicos de viga (memorizar para acelerar)</h2>
+
+<table>
+  <thead><tr><th>Carga</th><th>Tipo de viga</th><th class="center">$M_{max}$</th><th class="center">Posición</th><th class="center">Flecha máx. $\delta_{max}$</th></tr></thead>
+  <tbody>
+    <tr><td>Carga puntual $P$ en el centro</td><td>Simple, longitud $L$</td><td class="center">$PL/4$</td><td class="center">Centro</td><td class="center">$\dfrac{PL^3}{48EI}$</td></tr>
+    <tr class="alt"><td>Carga distribuida $q$ uniforme</td><td>Simple, longitud $L$</td><td class="center">$qL^2/8$</td><td class="center">Centro</td><td class="center">$\dfrac{5qL^4}{384EI}$</td></tr>
+    <tr><td>Carga puntual $P$ en el extremo</td><td>Empotrada (voladizo)</td><td class="center">$PL$</td><td class="center">En el empotramiento</td><td class="center">$\dfrac{PL^3}{3EI}$</td></tr>
+    <tr class="alt"><td>Carga distribuida $q$ uniforme</td><td>Empotrada (voladizo)</td><td class="center">$qL^2/2$</td><td class="center">En el empotramiento</td><td class="center">$\dfrac{qL^4}{8EI}$</td></tr>
+    <tr><td>Carga triangular $q_0$ máxima</td><td>Simple, lado pesado en x=0</td><td class="center">$\dfrac{q_0 L^2}{9\sqrt{3}}$</td><td class="center">$x = L/\sqrt{3}$</td><td class="center">$\dfrac{q_0 L^4}{120EI}$ (aprox.)</td></tr>
+    <tr class="alt"><td>Par puro $M_0$ en extremo</td><td>Voladizo</td><td class="center">$M_0$</td><td class="center">Constante</td><td class="center">$\dfrac{M_0L^2}{2EI}$</td></tr>
+  </tbody>
+</table>
+
+<div class="box tip">
+  <div class="box-title">💡 Patrón de los exponentes</div>
+  <p><b>Cargas puntuales:</b> $\delta \propto PL^3/EI$. Cargas distribuidas: $\delta \propto qL^4/EI$. Pares puros: $\delta \propto M_0L^2/EI$.</p>
+  <p>El factor numérico (1/3, 1/8, 5/384, etc.) depende de las condiciones de contorno. Memoriza al menos los 4 casos clásicos.</p>
+</div>
+
+<h2 class="pb">🎯 Los 7 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Diagramas Q-M con cargas puntuales</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> viga simplemente apoyada con cargas $P_1, P_2,...$ en posiciones conocidas.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Reacciones</strong>$\sum F_y = 0$, $\sum M_A = 0$ → reacciones en los apoyos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Divide la viga en tramos</strong>Un tramo entre cada par de cargas/apoyos consecutivos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula $V(x)$ y $M(x)$ en cada tramo</strong>Empezando por la izquierda: $V$ acumula las fuerzas verticales, $M$ acumula los momentos respecto a la sección.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Localiza $V=0$</strong>$M_{max}$ ocurre donde $V$ cambia de signo (cruce por cero).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Dibuja los diagramas</strong>$V$ con saltos en cargas puntuales. $M$ continuo (excepto en pares puros, donde tiene saltos).</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Diagramas Q-M con carga distribuida</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> viga con $q$ uniforme o triangular sobre una parte de su longitud.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Reacciones (sustituye carga distribuida por su resultante para calcularlas)</strong>Uniforme: $R = qL$ en el centro. Triangular: $R = q_0L/2$ a $L/3$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para calcular $V(x)$ y $M(x)$, integra la carga distribuida en cada tramo</strong>$V(x) = R_A - \int_0^x q(\xi)d\xi$ (acumulado).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Carga uniforme: $V$ es lineal</strong>Pendiente $-q$. Cruza $V=0$ en algún $x^*$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Carga triangular: $V$ es parabólico</strong>Pendiente variable. Cruza $V=0$ donde el área acumulada bajo $q$ iguala $R_A$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$M_{max} = \int V\,dx$ desde el extremo hasta $x^*$</strong>$M$ es la integral de $V$ — concava si $V$ baja, convexa si $V$ sube.</div></div>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Viga continua con múltiples apoyos</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> viga sobre 3, 4 o más apoyos. Hiperestática si tiene >2 apoyos sin liberar.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Si es ISOSTÁTICA (con liberaciones internas como articulaciones)</strong>Aplica las ecuaciones de equilibrio normales. Las articulaciones internas dan ecuaciones extra ($M=0$ en la articulación).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Si es HIPERESTÁTICA</strong>En este curso (Mecánica Aplicada UPV/EHU) suele evitarse. Si aparece, revisa si tiene condiciones extra (ej. compatibilidad de deformaciones) que la conviertan en isostática.</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Diagrama de torsión / axial</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> eje sometido a momentos torsores en distintas posiciones; columna con cargas axiales.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Calcula reacciones</strong>El extremo empotrado o apoyado contraequilibra todos los momentos/cargas aplicados.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Diagrama escalonado</strong>Como en cargas puntuales: en cada tramo entre cargas/momentos, la torsión/axial es constante. Salto en cada punto de carga.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tensión máxima</strong>Para torsión: $\tau_{max} = T_{max}\cdot c/J$ donde $T_{max}$ es la torsión máxima del diagrama. Para axial: $\sigma = N/A$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Dimensionar (calcular $D$)</strong>Si $\tau_{max} \le \tau_{adm}$: despeja $D$ a partir de $J = \pi D^4/32$. Para axial: $A \ge N/\sigma_{adm}$.</div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Elemento con carga inclinada — N, Q, M combinados</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> barra diagonal o elemento inclinado, con carga inclinada que tiene componente axial Y transversal.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Descompón la carga</strong>En componentes paralela (axial $N$) y perpendicular (cortante $Q$) al eje del elemento.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Diagrama N(x), Q(x), M(x)</strong>Tres diagramas escalonados/lineales según la geometría.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tensión combinada</strong>$\sigma_{total} = N/A + M\,c/I$ (axial + flexión). Cuidado con los signos: tracción positiva.</div></div>
+  </div>
+</div>
+
+<!-- P6 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P6</span>
+    <span class="pattern-name">Dimensionar sección por tensión admisible</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula el ancho mínimo de la sección rectangular" / "calcula la fuerza máxima P".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Calcula $M_{max}$ con los diagramas</strong>Patrón P1 o P2.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica Navier en la fibra más alejada</strong>$\sigma_{max} = M_{max}\cdot c/I$, donde $c$ es la mitad de la altura para sección simétrica.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para sección rectangular $b\times h$: $I = bh^3/12$, $c = h/2$, $W_f = bh^2/6$</strong>$\sigma_{max} = 6M_{max}/(bh^2) \le \sigma_{adm}$ → $bh^2 \ge 6M_{max}/\sigma_{adm}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Si te dan $h$ (o relación $h/b$), despeja $b$</strong>O viceversa.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verifica también cortante (si te lo piden)</strong>$\tau_{max} = 3V_{max}/(2A) \le \tau_{adm}$ — suele ser menos restrictivo que la flexión.</div></div>
+  </div>
+  <div class="box tip">
+    <div class="box-title">Tensiones admisibles diferentes en tracción y compresión</div>
+    <p>Si te dan $\sigma_{adm,trac}$ y $\sigma_{adm,comp}$ distintas (típico en hierro fundido), tienes que verificar la fibra superior (compresión) y la inferior (tracción) por separado. Si la sección no es simétrica (ej. T), las distancias $c_{sup}$ y $c_{inf}$ son distintas.</p>
+  </div>
+</div>
+
+<!-- P7 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P7 ★</span>
+    <span class="pattern-name" style="color:#b00">Viga sección T (o I, doble T) — sistema completo</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> SIEMPRE en examen. Una viga con sección T (o L, doble T, no simétrica) sometida a un sistema de cargas. Calcular reacciones, diagramas, $M_{max}$, propiedades de la sección, tensión máxima y/o dimensionar.</p>
+
+  <h4>Receta universal (Patrón 7)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Apartado 1 — Reacciones</strong>$\sum F_x, \sum F_y, \sum M$. Patrón P1 o P2 del Tema 3 si la viga está en un sistema más grande (con barras, cables…).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 2 — Diagramas Q-M</strong>Tramo por tramo, calculando $V(x)$ y $M(x)$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 3 — Localiza $M_{max}$</strong>Donde $V=0$ (cruce por cero) o en un apoyo/punto de discontinuidad.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 4 — Centroide y momento de inercia de la sección</strong>(Tema 2 dentro del 6) Sección T: dos rectángulos. Tabla de áreas, centroide global $(\bar{x}_G, \bar{y}_G)$. Steiner para cada parte: $I_{ci} + A_i\,d_i^2$. Suma → $I_x|_G$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 5 — Distancias a las fibras extremas</strong>$c_{sup}$ = distancia del CG a la fibra superior. $c_{inf}$ = distancia a la fibra inferior. $c_{sup} \ne c_{inf}$ en sección T.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 6 — Tensión máxima por flexión</strong>Si el momento es positivo (concavidad hacia arriba): tracción en la fibra inferior, compresión en la superior. Tensión máxima en valor absoluto: $|\sigma|_{max} = M_{max}\cdot \max(c_{sup}, c_{inf})/I$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 7 (si lo piden) — Dimensionar o verificar</strong>$\sigma_{max} \le \sigma_{adm}$ → despeja la incógnita (ancho, fuerza máxima, par admisible…).</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Ejemplo de sección T — los pasos clave</div>
+    <p>Sección T con ala superior $b_1 \times t_1$ centrada en $(0, h-t_1/2)$ y alma $b_2\times h_2$ con $h_2 = h - t_1$ centrada en $(0, h_2/2)$:</p>
+    <ol>
+      <li><b>Centroide:</b> $\bar{y}_G = (A_1\,y_1 + A_2\,y_2)/(A_1+A_2)$. Mide desde la base de la T.</li>
+      <li><b>Inercia centroidal del ala:</b> $I_{c,1} = b_1 t_1^3/12$. Steiner a CG global: $I_1 = I_{c,1} + A_1(y_1-\bar{y}_G)^2$.</li>
+      <li><b>Inercia centroidal del alma:</b> $I_{c,2} = b_2 h_2^3/12$. Steiner: $I_2 = I_{c,2} + A_2(y_2-\bar{y}_G)^2$.</li>
+      <li><b>Inercia total:</b> $I_x = I_1 + I_2$.</li>
+      <li><b>Distancias a fibras:</b> $c_{sup} = h - \bar{y}_G$, $c_{inf} = \bar{y}_G$.</li>
+      <li><b>Tensiones máximas:</b> $\sigma_{sup} = -M\cdot c_{sup}/I$ (compresión si $M>0$), $\sigma_{inf} = +M\cdot c_{inf}/I$ (tracción).</li>
+    </ol>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en T6</div>
+  <ol>
+    <li><b>Convención de signos en V y M.</b> Convención clásica: $V$ positivo si gira la sección en el sentido contrario a las agujas del reloj (parte derecha hacia abajo). $M$ positivo si concavidad hacia arriba.</li>
+    <li><b>Olvidar el momento de inercia centroidal de la sección.</b> Para Navier, $I$ debe ser respecto al CG de la sección, no respecto a un eje arbitrario.</li>
+    <li><b>Confundir $c_{sup}$ con $c_{inf}$ en sección no simétrica.</b> En T, $c_{sup} = h - \bar{y}_G$ y $c_{inf} = \bar{y}_G$ son distintos.</li>
+    <li><b>Aplicar Steiner mal en la sección T.</b> Los Steiners van desde el centroide de cada parte hasta el CG global. Cuidado con los signos de $d$.</li>
+    <li><b>Calcular $M_{max}$ donde $V \ne 0$.</b> $M_{max}$ está en $V=0$ (regla general). Si la viga termina antes de cruce, está en el extremo.</li>
+    <li><b>Olvidar el cortante para verificar la sección.</b> Aunque flexión suele ser más restrictiva, en algunos casos (vigas cortas con mucha carga) el cortante es el crítico.</li>
+    <li><b>Confundir $\tau$ media con $\tau_{max}$.</b> En sección rectangular, $\tau_{max} = 1{,}5\cdot V/A$, no $V/A$.</li>
+    <li><b>En carga distribuida, calcular $M$ con el centroide de la resultante.</b> Para diagramas, hay que integrar la carga: $M(x) = \int V\,dx$, no aplicar la resultante en el centroide.</li>
+    <li><b>Olvidar que en una articulación interna $M=0$.</b> Una articulación libera el momento → es una condición extra que ayuda a resolver vigas isostáticas.</li>
+    <li><b>Para tensiones admisibles distintas trac/comp:</b> verificar las dos fibras (sup e inf) por separado y elegir la condición más restrictiva.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (90 minutos · sin apuntes)</h2>
+
+<div class="box info">
+  <div class="box-title">Instrucciones</div>
+  <p>2 problemas representativos. <b>Tiempo: 90 minutos.</b> Resuelve sin mirar la guía.</p>
+</div>
+
+<h3>Problema 1 (35 min · Patrón P2 + P6)</h3>
+<div class="box">
+  <p>Una viga simplemente apoyada de longitud $L = 6$ m está sometida a una carga uniforme $q = 4$ kN/m en toda su longitud. Su sección es rectangular de ancho $b = 10$ cm y altura $h$ por determinar. Tensión admisible: $\sigma_{adm} = 80$ MPa.</p>
+  <ol>
+    <li>Calcula las reacciones en los apoyos.</li>
+    <li>Dibuja los diagramas $Q$ y $M$ (cualitativamente).</li>
+    <li>Calcula $M_{max}$ y dónde se localiza.</li>
+    <li>Determina la altura mínima $h$ de la sección.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (55 min · Patrón P7 ★ — sección T)</h3>
+<div class="box exam">
+  <p>Una viga simplemente apoyada de longitud $L = 4$ m soporta una carga puntual $P = 20$ kN en el centro. La sección de la viga tiene forma de T:</p>
+  <ul>
+    <li>Ala superior: $b_1 = 12$ cm de ancho × $t_1 = 3$ cm de espesor.</li>
+    <li>Alma vertical: $b_2 = 3$ cm de ancho × $h_2 = 12$ cm de altura.</li>
+  </ul>
+  <p>(El alma cuelga del centro del ala. Altura total $h = t_1 + h_2 = 15$ cm.)</p>
+  <ol>
+    <li>Calcula la posición del centroide $\bar{y}_G$ desde la base del alma.</li>
+    <li>Calcula el momento de inercia $I_x$ centroidal.</li>
+    <li>Calcula $M_{max}$ y dibuja cualitativamente el diagrama.</li>
+    <li>Calcula las tensiones máximas en las fibras superior e inferior.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado 1 — Reacciones</h4>
+<p>Carga total: $W = qL = 4\cdot 6 = 24$ kN. Por simetría, $R_A = R_B = 12$ kN ↑.</p>
+<div class="box key" style="text-align:center">$\boxed{R_A = R_B = 12\ \text{kN}}$</div>
+
+<h4>Apartado 2 — Diagramas (cualitativo)</h4>
+<p>$V(x) = R_A - qx = 12 - 4x$ kN. Cruza cero en $x = 3$ m (centro). $V$ es lineal, $V(0)=12$, $V(L)=-12$.</p>
+<p>$M(x) = R_A x - qx^2/2 = 12x - 2x^2$ kN·m. Es parabólico, máximo en $x=3$, vale 0 en los extremos.</p>
+
+<h4>Apartado 3 — $M_{max}$</h4>
+<div class="box" style="text-align:center">
+  $$M_{max} = M(3) = 12\cdot 3 - 2\cdot 9 = 36 - 18 = 18\ \text{kN·m}$$
+  $$\text{(o equivalentemente: } M_{max} = qL^2/8 = 4\cdot 36/8 = 18\ \text{kN·m)}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{M_{max} = 18\ \text{kN·m en el centro}}$</div>
+
+<h4>Apartado 4 — Altura mínima</h4>
+<p>Sección rectangular: $W_f = bh^2/6$. Condición: $\sigma_{max} = M_{max}/W_f \le \sigma_{adm}$:</p>
+<div class="box" style="text-align:center">
+  $$\frac{M_{max}}{bh^2/6} \le \sigma_{adm} \implies bh^2 \ge \frac{6M_{max}}{\sigma_{adm}}$$
+  $$h^2 \ge \frac{6\cdot 18\,000}{0{,}1\cdot 80\cdot 10^6} = \frac{108\,000}{8\,000\,000} = 0{,}0135\ \text{m}^2$$
+  $$h \ge 0{,}1162\ \text{m} = 11{,}62\ \text{cm}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{h_{min} \approx 11{,}62\ \text{cm}}$</div>
+
+<h3 class="pb">Solución Problema 2 (★ examen)</h3>
+
+<h4>Apartado 1 — Centroide</h4>
+<p>Sistema de referencia: origen en la base del alma. Coordenada $y$ positiva hacia arriba.</p>
+<table>
+  <thead><tr><th>Parte</th><th class="center">$A_i$ (cm²)</th><th class="center">$y_i$ (cm)</th><th class="center">$A_i y_i$</th></tr></thead>
+  <tbody>
+    <tr><td>1 — Ala (12×3)</td><td class="center">36</td><td class="center">$h_2 + t_1/2 = 12 + 1{,}5 = 13{,}5$</td><td class="center">486</td></tr>
+    <tr class="alt"><td>2 — Alma (3×12)</td><td class="center">36</td><td class="center">$h_2/2 = 6$</td><td class="center">216</td></tr>
+    <tr><td><b>Σ</b></td><td class="center"><b>72</b></td><td>—</td><td class="center"><b>702</b></td></tr>
+  </tbody>
+</table>
+<div class="box" style="text-align:center">
+  $$\bar{y}_G = \frac{702}{72} = 9{,}75\ \text{cm}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{\bar{y}_G = 9{,}75\ \text{cm desde la base del alma}}$</div>
+
+<h4>Apartado 2 — Momento de inercia $I_x$ centroidal</h4>
+<p><b>Ala:</b> $I_{c,1} = b_1 t_1^3/12 = 12\cdot 3^3/12 = 27$ cm⁴. Distancia $d_1 = 13{,}5 - 9{,}75 = 3{,}75$ cm.<br>
+$A_1 d_1^2 = 36\cdot 3{,}75^2 = 36\cdot 14{,}0625 = 506{,}25$ cm⁴.<br>
+$I_1 = 27 + 506{,}25 = 533{,}25$ cm⁴.</p>
+<p><b>Alma:</b> $I_{c,2} = b_2 h_2^3/12 = 3\cdot 12^3/12 = 432$ cm⁴. Distancia $d_2 = 9{,}75 - 6 = 3{,}75$ cm.<br>
+$A_2 d_2^2 = 36\cdot 3{,}75^2 = 506{,}25$ cm⁴.<br>
+$I_2 = 432 + 506{,}25 = 938{,}25$ cm⁴.</p>
+<div class="box key" style="text-align:center">$\boxed{I_x = 533{,}25 + 938{,}25 = 1471{,}5\ \text{cm}^4}$</div>
+
+<h4>Apartado 3 — $M_{max}$</h4>
+<p>Viga simple con carga puntual $P=20$ kN en el centro de longitud $L=4$ m.</p>
+<p>Reacciones: $R_A = R_B = P/2 = 10$ kN.</p>
+<p>$M_{max} = PL/4 = 20\cdot 4/4 = 20$ kN·m, en el centro.</p>
+<div class="box key" style="text-align:center">$\boxed{M_{max} = 20\ \text{kN·m}}$</div>
+
+<h4>Apartado 4 — Tensiones máximas</h4>
+<p>$c_{sup} = h_{total} - \bar{y}_G = 15 - 9{,}75 = 5{,}25$ cm.<br>
+$c_{inf} = \bar{y}_G = 9{,}75$ cm.</p>
+<p>Por Navier, con $M_{max} > 0$ (concavidad hacia arriba): tracción en la fibra inferior, compresión en la superior.</p>
+<p>Para usar las unidades correctas: $M = 20$ kN·m $= 20\,000$ N·m $= 2{,}0\cdot 10^6$ N·cm. $I_x = 1471{,}5$ cm⁴.</p>
+<div class="box" style="text-align:center">
+  $$\sigma_{sup} = -\frac{M\cdot c_{sup}}{I} = -\frac{2{,}0\cdot 10^6 \cdot 5{,}25}{1471{,}5} = -\frac{10{,}5\cdot 10^6}{1471{,}5} = -7\,135\ \text{N/cm}^2 = -71{,}35\ \text{MPa}$$
+  $$\sigma_{inf} = +\frac{M\cdot c_{inf}}{I} = +\frac{2{,}0\cdot 10^6 \cdot 9{,}75}{1471{,}5} = +\frac{19{,}5\cdot 10^6}{1471{,}5} = +13\,251\ \text{N/cm}^2 = +132{,}5\ \text{MPa}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{\sigma_{sup} = -71{,}35\ \text{MPa (compresión)},\quad \sigma_{inf} = +132{,}5\ \text{MPa (tracción)}}$</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El procedimiento del Patrón 7 es: <b>(1)</b> reacciones, <b>(2)</b> diagramas Q-M y $M_{max}$, <b>(3)</b> propiedades de la sección (centroide + Steiner), <b>(4)</b> $c_{sup}, c_{inf}$, <b>(5)</b> tensiones por Navier en cada fibra extrema.</p>
+  <p>En sección no simétrica las tensiones $\sigma_{sup}$ y $\sigma_{inf}$ son distintas. Compara ambas con las tensiones admisibles de tracción y compresión para verificar.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza F5 (Navier), F9 (relaciones diferenciales) y los casos típicos de viga</b> (30 min).</li>
+    <li><b>Diagramas Q-M de viga simple</b> (45 min) — Ejercicios 6.3, 6.5.</li>
+    <li><b>Sección T completa</b> (1h 30 min) — Ejercicio 6.17 con la solución delante.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Diagramas básicos — 6.1, 6.2, 6.3, 6.4.</li>
+    <li><b>Día 2:</b> Diagramas con cargas mixtas — 6.5, 6.6, 6.7, 6.9.</li>
+    <li><b>Día 3:</b> Vigas continuas y elementos inclinados — 6.8, 6.10, 6.13.</li>
+    <li><b>Día 4:</b> Torsión y axial — 6.11, 6.12, 6.16.</li>
+    <li><b>Día 5:</b> Dimensionado — 6.14, 6.15, 6.17.</li>
+    <li><b>Día 6:</b> Sistemas combinados — 6.18, 6.19, 6.20, 6.21, 6.22.</li>
+    <li><b>Día 7:</b> Mini-simulacro de esta guía cronometrado.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 4 herramientas que te salvan T6</div>
+  <ol>
+    <li><b>Diagramas Q-M:</b> reacciones primero, después tramo por tramo $V(x)$ y $M(x)$.</li>
+    <li><b>$M_{max}$ donde $V=0$:</b> regla general para localizar el máximo.</li>
+    <li><b>Navier $\sigma = M\,y/I$:</b> tensión en la fibra a distancia $y$ del CG.</li>
+    <li><b>Steiner para sección T:</b> $I_x = \sum (I_{ci} + A_i d_i^2)$ desde el CG global.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 7</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Reacciones →<br>
+    Diagramas Q y M tramo por tramo →<br>
+    $M_{max}$ donde $V=0$ →<br>
+    Centroide y $I_x$ de la sección (Steiner) →<br>
+    $c_{sup}, c_{inf}$ →<br>
+    $\sigma$ en cada fibra extrema →<br>
+    verificar/dimensionar.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Mecánica Aplicada UPV/EHU · Tema 6 — Principios de Resistencia de Materiales<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

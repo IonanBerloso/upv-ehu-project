@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Formulario Mecánica de Fluidos · UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 7mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Helvetica','Arial',sans-serif;font-size:8pt;line-height:1.28}
+
+  /* CADA TEMA es una "card" que NUNCA se parte entre páginas */
+  .tema {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    margin-bottom: 3mm;
+    border: 1.5px solid #111;
+    border-radius: 1.5mm;
+    overflow: hidden;
+  }
+
+  .tema-head {
+    background: #111;
+    color: #fff;
+    padding: 1.2mm 2.5mm;
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+    font-weight: 700;
+    font-size: 10.5pt;
+  }
+  .tema-tag {
+    font-family: 'Courier New',monospace;
+    font-size: 8.5pt;
+    background: rgba(255,255,255,.18);
+    padding: .4mm 2mm;
+    border-radius: 1mm;
+    flex-shrink: 0;
+  }
+  .tema-star {
+    color: #ffd54a;
+    font-size: 9pt;
+    margin-left: auto;
+  }
+
+  .tema-content {
+    padding: 2mm 2.5mm 1mm;
+    column-count: 2;
+    column-gap: 3mm;
+    column-fill: balance;
+  }
+  .tema.full .tema-content { column-count: 1 }
+  .tema.small .tema-content { column-count: 2 }
+
+  .box{border:1px solid #888;border-radius:1mm;padding:1.2mm 2mm;margin-bottom:1.3mm;break-inside:avoid;-webkit-column-break-inside:avoid;background:#fafafa}
+  .box-title{font-weight:700;font-size:7.5pt;color:#444;margin-bottom:.5mm;text-transform:uppercase;letter-spacing:.04em}
+  .box.key{border:1.3px solid #b00;background:#fff5f5}
+  .box.key .box-title{color:#b00}
+
+  table{border-collapse:collapse;width:100%;font-size:7pt;margin-top:.3mm}
+  th,td{border:1px solid #888;padding:.4mm .8mm;vertical-align:top}
+  th{background:#222;color:#fff;font-size:6.5pt}
+  td.center,th.center{text-align:center}
+
+  .formula-line{margin:.2mm 0;text-align:center;font-size:8.5pt}
+  ul,ol{margin:.3mm 0 .3mm 4mm;padding:0}
+  li{margin-bottom:.2mm}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ T1 · INTRODUCCIÓN ═══════════════ -->
+<div class="tema small">
+  <div class="tema-head"><span class="tema-tag">T1</span>Introducción a la mecánica de fluidos</div>
+  <div class="tema-content">
+    <div class="box">
+      <div class="box-title">Definiciones</div>
+      <ul>
+        <li>Fluido: sustancia que cede ante esfuerzo cortante (líquido o gas)</li>
+        <li>Hipótesis del continuo: $\rho, p, T, v$ definidos en cada punto</li>
+        <li>Volumen de control vs sistema cerrado</li>
+      </ul>
+    </div>
+    <div class="box">
+      <div class="box-title">Sistema de unidades (SI)</div>
+      <ul>
+        <li>Presión: Pa = N/m² · 1 bar = 10⁵ Pa · 1 atm = 1,013·10⁵ Pa</li>
+        <li>Energía: J = N·m · Potencia: W = J/s</li>
+        <li>Caudal volumétrico Q [m³/s], másico $\dot m$ [kg/s]</li>
+        <li>g = 9,8 m/s² (convenio UPV/EHU)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T2 · PROPIEDADES ═══════════════ -->
+<div class="tema">
+  <div class="tema-head"><span class="tema-tag">T2</span>Propiedades de los fluidos</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Densidad y peso específico</div>
+      <div class="formula-line">$\rho = m/V$ [kg/m³] · agua $\rho = 1000$</div>
+      <div class="formula-line">$\gamma = \rho g$ [N/m³] · agua $\gamma = 9800$</div>
+      <div class="formula-line">$d_r = \rho/\rho_{agua}$ (densidad relativa)</div>
+    </div>
+    <div class="box key">
+      <div class="box-title">Viscosidad</div>
+      <div class="formula-line">$\tau = \mu\,(dv/dy)$ (Newton)</div>
+      <div class="formula-line">$\mu$ dinámica [Pa·s] · $\nu = \mu/\rho$ cinemática [m²/s]</div>
+      <div class="formula-line">Agua 20°C: $\mu = 10^{-3}$ Pa·s, $\nu = 10^{-6}$ m²/s</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Compresibilidad</div>
+      <div class="formula-line">$K = -V\,(dp/dV) = \rho\,(dp/d\rho)$ [Pa]</div>
+      <div class="formula-line">Agua: $K \approx 2{,}1\cdot 10^9$ Pa (incompresible)</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Tensión superficial y capilaridad</div>
+      <div class="formula-line">$\sigma$ [N/m] · agua-aire 20°C: $\sigma\approx 0{,}073$</div>
+      <div class="formula-line">Capilaridad: $h = 2\sigma\cos\theta/(\rho g r)$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Presión de vapor</div>
+      <div class="formula-line">$p_v$ depende de T° (cavitación si $p<p_v$)</div>
+      <div class="formula-line">Agua 20°C: $p_v\approx 2340$ Pa</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T3 · ESTÁTICA GENERAL ═══════════════ -->
+<div class="tema small">
+  <div class="tema-head"><span class="tema-tag">T3</span>Estática de fluidos</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Ecuación general de la estática</div>
+      <div class="formula-line">$dp/dz = -\rho g$ (eje z hacia arriba)</div>
+      <div class="formula-line">Fluido incompresible: $p = p_0 + \rho g h$</div>
+      <div class="formula-line">$h$ = profundidad bajo la superficie libre</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Presión absoluta vs manométrica</div>
+      <div class="formula-line">$p_{abs} = p_{atm} + p_{man}$</div>
+      <div class="formula-line">$p_{atm} \approx 101{,}3$ kPa = 10,33 m.c.a.</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Atmósfera estándar</div>
+      <div class="formula-line">$p(z) = p_0\,e^{-z/H}$ (isoterma) con $H = RT/g$</div>
+      <div class="formula-line">Lapse rate troposfera: $-6{,}5$ K/km</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T4 · HIDROSTÁTICA ★ ═══════════════ -->
+<div class="tema">
+  <div class="tema-head">
+    <span class="tema-tag">T4</span>Hidrostática
+    <span class="tema-star">★</span>
+  </div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Presión en un punto sumergido</div>
+      <div class="formula-line">$p = p_{atm} + \rho g h = p_{atm} + \gamma h$</div>
+      <div class="formula-line">Manométrica: $p_{man} = \gamma h$</div>
+      <div class="formula-line">m.c.a.: $h = p/\gamma_{agua}$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Manómetros</div>
+      <div class="formula-line">U: $p_A = p_{atm} + \gamma_m h_m - \gamma h_A$</div>
+      <div class="formula-line">Diferencial: $\Delta p = (\gamma_m - \gamma)\,h_m$</div>
+      <div class="formula-line">Subir/bajar siguiendo el fluido: + bajada, − subida</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Vasos comunicantes</div>
+      <div class="formula-line">$\rho_1 h_1 = \rho_2 h_2$ (en la interfaz)</div>
+      <div class="formula-line">Misma altura → misma presión</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Equilibrio relativo (recipiente acelerado)</div>
+      <div class="formula-line">Acel. lineal $a$: superficie inclina $\tan\theta = a/g$</div>
+      <div class="formula-line">Rotación $\omega$: paraboloide $z = \omega^2 r^2/(2g)$</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T7 · FUERZAS SUMERGIDAS ★ ═══════════════ -->
+<div class="tema">
+  <div class="tema-head">
+    <span class="tema-tag">T7</span>Fuerzas sobre superficies sumergidas
+    <span class="tema-star">★</span>
+  </div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Superficie plana</div>
+      <div class="formula-line">$F = p_G\cdot A = \gamma h_G\,A$</div>
+      <div class="formula-line">$h_G$ = prof. del centroide G</div>
+      <div class="formula-line">Aplicada en CP (centro de presiones):</div>
+      <div class="formula-line">$h_{CP} = h_G + I_{x,G}/(h_G\cdot A)$ (vertical)</div>
+      <div class="formula-line">$y_{CP} = y_G + I_{x,G}/(y_G\cdot A)$ (a lo largo de la superficie)</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Inercias típicas $I_{x,G}$</div>
+      <table>
+        <tr><th>Forma</th><th>$I_{x,G}$</th></tr>
+        <tr><td>Rect. $b\times h$</td><td>$bh^3/12$</td></tr>
+        <tr><td>Triáng. $b,h$</td><td>$bh^3/36$</td></tr>
+        <tr><td>Círculo $R$</td><td>$\pi R^4/4$</td></tr>
+        <tr><td>Semicirc. $R$</td><td>$0{,}11R^4$</td></tr>
+      </table>
+    </div>
+    <div class="box key">
+      <div class="box-title">Superficie curva</div>
+      <div class="formula-line">$F_H$ = fuerza sobre la proyección vertical</div>
+      <div class="formula-line">$F_V$ = peso del volumen de líquido sobre/bajo</div>
+      <div class="formula-line">$F = \sqrt{F_H^2 + F_V^2}$, $\tan\alpha = F_V/F_H$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Empuje vertical</div>
+      <div class="formula-line">Si líquido encima: $F_V$ ↓ = peso del fluido</div>
+      <div class="formula-line">Si líquido debajo: $F_V$ ↑ = peso del volumen virtual</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T8 · FLOTACIÓN ═══════════════ -->
+<div class="tema">
+  <div class="tema-head"><span class="tema-tag">T8</span>Cuerpos cerrados — flotación y estabilidad</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Principio de Arquímedes</div>
+      <div class="formula-line">$E = \rho_f\cdot g\cdot V_{sumergido}$</div>
+      <div class="formula-line">Cuerpo flota si $\rho_{cuerpo} < \rho_{fluido}$</div>
+      <div class="formula-line">Equilibrio: $W = E$ → $V_{sum}/V = \rho_c/\rho_f$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Estabilidad de flotación</div>
+      <div class="formula-line">$\overline{GM} = \overline{BM} - \overline{BG}$</div>
+      <div class="formula-line">$\overline{BM} = I_{flot}/V_{sum}$</div>
+      <div class="formula-line">$GM > 0$: estable · $GM < 0$: inestable</div>
+      <div class="formula-line">G = centro gravedad · B = centro empuje · M = metacentro</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Cuerpo totalmente sumergido</div>
+      <div class="formula-line">Estable si G está debajo de B</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T9-11 · CINEMÁTICA ═══════════════ -->
+<div class="tema">
+  <div class="tema-head"><span class="tema-tag">T9-11</span>Cinemática de fluidos</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Conservación de masa (continuidad)</div>
+      <div class="formula-line">$\rho_1 A_1 v_1 = \rho_2 A_2 v_2$ (compresible)</div>
+      <div class="formula-line">Incompresible: $A_1 v_1 = A_2 v_2 = Q$</div>
+      <div class="formula-line">$Q$ = caudal [m³/s], $\dot m = \rho Q$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Tipos de líneas</div>
+      <ul>
+        <li>Línea de corriente: tangente a $\vec v$ en cada instante</li>
+        <li>Trayectoria: camino real de una partícula</li>
+        <li>Traza: lugar geométrico de partículas que pasan por un punto</li>
+        <li>En régimen permanente: las 3 coinciden</li>
+      </ul>
+    </div>
+    <div class="box">
+      <div class="box-title">Aceleración material</div>
+      <div class="formula-line">$\vec a = \dfrac{\partial\vec v}{\partial t} + (\vec v\cdot\nabla)\vec v$</div>
+      <div style="font-size:7pt;text-align:center">local + convectiva</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Régimen del flujo</div>
+      <ul>
+        <li>Permanente: $\partial/\partial t = 0$</li>
+        <li>Uniforme: $v$ no varía a lo largo del flujo</li>
+        <li>Incompresible: $\rho$ = cte</li>
+        <li>Irrotacional: $\nabla\times\vec v = 0$</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T12 · BERNOULLI ★ ═══════════════ -->
+<div class="tema">
+  <div class="tema-head">
+    <span class="tema-tag">T12</span>Bernoulli — flujo ideal y real
+    <span class="tema-star">★</span>
+  </div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Bernoulli ideal (sin pérdidas)</div>
+      <div class="formula-line">$\dfrac{p_1}{\gamma} + \dfrac{v_1^2}{2g} + z_1 = \dfrac{p_2}{\gamma} + \dfrac{v_2^2}{2g} + z_2$</div>
+      <div class="formula-line">Energía/peso = constante en una línea de corriente</div>
+    </div>
+    <div class="box key">
+      <div class="box-title">Bernoulli con pérdidas + máquinas</div>
+      <div class="formula-line">$\dfrac{p_1}{\gamma}+\dfrac{v_1^2}{2g}+z_1 + H_b = \dfrac{p_2}{\gamma}+\dfrac{v_2^2}{2g}+z_2 + H_t + h_f$</div>
+      <div style="font-size:7pt;text-align:center">$H_b$ bomba (suma) · $H_t$ turbina (resta) · $h_f$ pérdidas</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Términos energéticos</div>
+      <ul>
+        <li>$p/\gamma$ = altura de presión (m.c.a.)</li>
+        <li>$v^2/(2g)$ = altura cinética</li>
+        <li>$z$ = altura geodésica</li>
+        <li>Suma = línea de energía (LE)</li>
+        <li>$p/\gamma + z$ = línea piezométrica (LP)</li>
+      </ul>
+    </div>
+    <div class="box">
+      <div class="box-title">Aplicaciones directas</div>
+      <div class="formula-line">Tubo Pitot: $v = \sqrt{2g\,\Delta h}$</div>
+      <div class="formula-line">Salida por orificio (Torricelli): $v = \sqrt{2gh}$</div>
+      <div class="formula-line">Tubería que se ensancha → presión sube</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T13 · MEDIDORES ═══════════════ -->
+<div class="tema">
+  <div class="tema-head"><span class="tema-tag">T13</span>Medidores de presión y caudal</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Venturi</div>
+      <div class="formula-line">$Q = C_d\,A_2\sqrt{\dfrac{2g\,\Delta h}{1-(A_2/A_1)^2}}$</div>
+      <div class="formula-line">$C_d \approx 0{,}97$-$0{,}98$ (alto)</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Diafragma / orificio</div>
+      <div class="formula-line">$Q = C_d\,A_o\sqrt{2g\,\Delta h}$</div>
+      <div class="formula-line">Diafragma: $C_d \approx 0{,}6$ (mayor pérdida que Venturi)</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Otros medidores</div>
+      <ul>
+        <li>Tobera: intermedio entre Venturi y diafragma</li>
+        <li>Rotámetro: lectura directa por flotador</li>
+        <li>Pitot: velocidad puntual</li>
+        <li>Electromagnético: para fluidos conductores</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T14 · CANTIDAD DE MOVIMIENTO ★ ═══════════════ -->
+<div class="tema">
+  <div class="tema-head">
+    <span class="tema-tag">T14</span>Cantidad de movimiento
+    <span class="tema-star">★</span>
+  </div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Ecuación de cantidad de movimiento</div>
+      <div class="formula-line">$\sum\vec F = \rho Q\,(\vec v_{sal} - \vec v_{ent})$</div>
+      <div class="formula-line">VECTORIAL — descomponer en x, y, z</div>
+      <div class="formula-line">$\sum F_x = \rho Q\,(v_{x,sal} - v_{x,ent})$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Fuerzas en $\sum\vec F$</div>
+      <ul>
+        <li>Presión en entrada/salida: $p_i\cdot A_i$</li>
+        <li>Peso del fluido en VC: $\rho g V$</li>
+        <li>Reacción de la pared/superficie ($-R$ → R = fuerza sobre el fluido del codo, etc.)</li>
+        <li>Atmósfera anula presiones absolutas; usar manométricas</li>
+      </ul>
+    </div>
+    <div class="box">
+      <div class="box-title">Volumen de control (VC)</div>
+      <ul>
+        <li>Elegir VC que incluya entradas/salidas claras</li>
+        <li>Cortar perpendicular al flujo en cada entrada/salida</li>
+        <li>Ejes alineados con simetrías del problema</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T15 · APLICACIONES QdM ★ ═══════════════ -->
+<div class="tema">
+  <div class="tema-head">
+    <span class="tema-tag">T15</span>Aplicaciones QdM (chorros, codos, álabes)
+    <span class="tema-star">★</span>
+  </div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Chorro contra placa</div>
+      <div class="formula-line">Placa fija perpendicular: $F = \rho Q v$</div>
+      <div class="formula-line">Placa inclinada $\alpha$: $F_n = \rho Q v\sin\alpha$</div>
+      <div class="formula-line">Bifurcación de caudal: $Q_1/Q_2 = \tan(\alpha/2)\,...$</div>
+    </div>
+    <div class="box key">
+      <div class="box-title">Codo (cambio de dirección)</div>
+      <div class="formula-line">$F_x = \rho Q(v_{2x}-v_{1x}) - p_1 A_1 + p_2 A_2$</div>
+      <div class="formula-line">$F_y = \rho Q(v_{2y}-v_{1y})$</div>
+      <div class="formula-line">90° con $A_1=A_2$: $|F| = \sqrt 2\,(\rho Q v + pA)$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Álabes en movimiento</div>
+      <div class="formula-line">Vel. relativa: $\vec w = \vec v - \vec u$</div>
+      <div class="formula-line">Álabe fijo $\alpha$: $F = \rho Q\,v(1-\cos\alpha)$</div>
+      <div class="formula-line">Álabe móvil $u$: $F = \rho A(v-u)^2(1-\cos\alpha)$</div>
+      <div class="formula-line">Potencia: $P = F\cdot u$, máx en $u = v/2$ (placa recta) o $u = v/3$ (curva)</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Hélice / turbina (disco actuador)</div>
+      <div class="formula-line">$F = \rho A\,v_d\,(v_4 - v_1)$, $v_d = (v_1 + v_4)/2$</div>
+      <div class="formula-line">Rendimiento ideal Betz: $\eta_{max} = 16/27$</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T16 · ANÁLISIS DIMENSIONAL ═══════════════ -->
+<div class="tema">
+  <div class="tema-head"><span class="tema-tag">T16</span>Análisis dimensional</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Π de Buckingham</div>
+      <div class="formula-line">$n$ variables, $m$ dimensiones → $n - m$ grupos $\Pi$</div>
+      <div class="formula-line">Cada $\Pi_i$ es adimensional</div>
+      <div class="formula-line">Reescribir ec. física en función de los $\Pi$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Números adimensionales</div>
+      <table>
+        <tr><th>Número</th><th>Definición</th><th>Significado</th></tr>
+        <tr><td>Reynolds</td><td>$Re = \rho v L/\mu$</td><td>Inerc./visc.</td></tr>
+        <tr><td>Froude</td><td>$Fr = v/\sqrt{gL}$</td><td>Inerc./grav.</td></tr>
+        <tr><td>Weber</td><td>$We = \rho v^2 L/\sigma$</td><td>Inerc./tens. sup.</td></tr>
+        <tr><td>Mach</td><td>$Ma = v/c$</td><td>Compresibilidad</td></tr>
+        <tr><td>Euler</td><td>$Eu = \Delta p/(\rho v^2)$</td><td>Presión/inerc.</td></tr>
+      </table>
+    </div>
+    <div class="box">
+      <div class="box-title">Semejanza modelo-prototipo</div>
+      <ul>
+        <li>Geométrica: misma forma a escala</li>
+        <li>Cinemática: mismas relaciones de velocidad</li>
+        <li>Dinámica: mismos números adimensionales</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T17 · VISCOSIDAD ═══════════════ -->
+<div class="tema">
+  <div class="tema-head"><span class="tema-tag">T17</span>Viscosidad y flujo viscoso</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Ley de Newton</div>
+      <div class="formula-line">$\tau = \mu\,(dv/dy)$</div>
+      <div class="formula-line">Newton.: $\tau$ vs $dv/dy$ lineal pasando por origen</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Tipos de fluidos</div>
+      <ul>
+        <li>Newtoniano (agua, aire, aceites ligeros)</li>
+        <li>Bingham: requiere $\tau$ mín (mayonesa, lodo)</li>
+        <li>Pseudoplástico: $\mu$ baja con velocidad (sangre)</li>
+        <li>Dilatante: $\mu$ sube con velocidad (almidón+agua)</li>
+      </ul>
+    </div>
+    <div class="box key">
+      <div class="box-title">Régimen del flujo en tubería</div>
+      <div class="formula-line">$Re = \rho v D/\mu = vD/\nu$</div>
+      <div class="formula-line">$Re < 2300$: laminar</div>
+      <div class="formula-line">$2300 < Re < 4000$: transición</div>
+      <div class="formula-line">$Re > 4000$: turbulento</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Flujo laminar en tubería (Hagen-Poiseuille)</div>
+      <div class="formula-line">$v(r) = (\Delta p/4\mu L)(R^2 - r^2)$ (parabólico)</div>
+      <div class="formula-line">$v_{max} = 2\,\bar v$, $Q = \pi R^4 \Delta p/(8\mu L)$</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T18 · PÉRDIDAS DE CARGA ★ ═══════════════ -->
+<div class="tema">
+  <div class="tema-head">
+    <span class="tema-tag">T18</span>Pérdidas de carga (Darcy-Weisbach)
+    <span class="tema-star">★</span>
+  </div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Pérdida primaria (rozamiento en tubería)</div>
+      <div class="formula-line">$h_f = f\cdot \dfrac{L}{D}\cdot\dfrac{v^2}{2g}$</div>
+      <div class="formula-line">$f$ = factor de fricción (Moody)</div>
+    </div>
+    <div class="box key">
+      <div class="box-title">Cálculo de $f$</div>
+      <div class="formula-line">Laminar ($Re<2300$): $f = 64/Re$</div>
+      <div class="formula-line">Turbulento (Colebrook):</div>
+      <div class="formula-line">$\dfrac{1}{\sqrt f} = -2\log_{10}\!\left(\dfrac{\varepsilon/D}{3{,}7} + \dfrac{2{,}51}{Re\sqrt f}\right)$</div>
+      <div class="formula-line">Iterar: arrancar con $f_0 = 0{,}02$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Aprox. explícitas</div>
+      <div class="formula-line">Swamee-Jain: $f = \dfrac{0{,}25}{[\log_{10}(\varepsilon/(3{,}7D) + 5{,}74/Re^{0{,}9})]^2}$</div>
+      <div class="formula-line">Tubería lisa ($\varepsilon\to 0$): Blasius $f = 0{,}316\,Re^{-0{,}25}$ ($Re<10^5$)</div>
+    </div>
+    <div class="box key">
+      <div class="box-title">Pérdidas locales (singulares)</div>
+      <div class="formula-line">$h_{local} = K\cdot\dfrac{v^2}{2g}$</div>
+      <div class="formula-line">Codo 90°: $K\approx 0{,}9$ · Válvula abierta: $K\approx 0{,}2$</div>
+      <div class="formula-line">Entrada brusca: $K = 0{,}5$ · Salida: $K = 1$</div>
+      <div class="formula-line">Ensanchamiento brusco: $K = (1-A_1/A_2)^2$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Rugosidad absoluta $\varepsilon$ típica (mm)</div>
+      <table>
+        <tr><th>Material</th><th>$\varepsilon$ [mm]</th></tr>
+        <tr><td>Vidrio, plástico</td><td>0,0015</td></tr>
+        <tr><td>Acero comercial</td><td>0,045</td></tr>
+        <tr><td>Hierro galvanizado</td><td>0,15</td></tr>
+        <tr><td>Hormigón</td><td>0,3-3</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T19 · CONDUCCIONES ★ ═══════════════ -->
+<div class="tema">
+  <div class="tema-head">
+    <span class="tema-tag">T19</span>Conducciones — sistemas de tuberías
+    <span class="tema-star">★</span>
+  </div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Tuberías en serie</div>
+      <div class="formula-line">$Q$ = constante en todas</div>
+      <div class="formula-line">$h_{f,total} = \sum h_{f,i}$</div>
+    </div>
+    <div class="box key">
+      <div class="box-title">Tuberías en paralelo</div>
+      <div class="formula-line">$h_f$ igual entre nudos</div>
+      <div class="formula-line">$Q_{total} = \sum Q_i$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Sistema con depósitos</div>
+      <ul>
+        <li>Bernoulli entre superficies libres ($v\approx 0$)</li>
+        <li>$z_A - z_B = h_{f,total}$</li>
+        <li>Caudal sale del depósito alto, entra al bajo</li>
+      </ul>
+    </div>
+    <div class="box">
+      <div class="box-title">Líneas energéticas</div>
+      <div class="formula-line">LE: $z + p/\gamma + v^2/(2g)$</div>
+      <div class="formula-line">LP: $z + p/\gamma$ (sin término cinético)</div>
+      <div class="formula-line">LE - LP = $v^2/(2g)$</div>
+      <div class="formula-line">LE siempre ↓ por pérdidas (excepto en bombas)</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Problemas de tuberías — 3 tipos</div>
+      <ol>
+        <li>Conocido $Q,L,D,\varepsilon,\nu$ → calcular $h_f$ (directo)</li>
+        <li>Conocido $h_f,L,D,\varepsilon,\nu$ → calcular $Q$ (iterar $f$)</li>
+        <li>Conocido $h_f,Q,L,\varepsilon,\nu$ → calcular $D$ (iterar)</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T21 · CANALES ═══════════════ -->
+<div class="tema">
+  <div class="tema-head"><span class="tema-tag">T21</span>Canales abiertos</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Manning (régimen permanente uniforme)</div>
+      <div class="formula-line">$v = \dfrac{1}{n}\,R^{2/3}\,S^{1/2}$</div>
+      <div class="formula-line">$Q = A\cdot v$</div>
+      <div class="formula-line">$R = A/P$ (radio hidráulico)</div>
+      <div class="formula-line">$P$ = perímetro mojado · $S$ = pendiente</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Coeficiente de Manning $n$</div>
+      <ul>
+        <li>Hormigón liso: $n = 0{,}012$</li>
+        <li>Hormigón rugoso: $n = 0{,}017$</li>
+        <li>Tierra: $n = 0{,}025$</li>
+        <li>Piedras: $n = 0{,}035$</li>
+      </ul>
+    </div>
+    <div class="box">
+      <div class="box-title">Régimen y energía específica</div>
+      <div class="formula-line">$E = h + v^2/(2g)$</div>
+      <div class="formula-line">Subcrítico: $Fr = v/\sqrt{gh} < 1$ (lento, profundo)</div>
+      <div class="formula-line">Crítico: $Fr = 1$ ($h_c = (q^2/g)^{1/3}$, q = Q/b)</div>
+      <div class="formula-line">Supercrítico: $Fr > 1$ (rápido, superficial)</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Resalto hidráulico</div>
+      <div class="formula-line">$h_2/h_1 = \tfrac{1}{2}(\sqrt{1+8Fr_1^2} - 1)$</div>
+      <div class="formula-line">Pérdida: $\Delta E = (h_2-h_1)^3/(4h_1 h_2)$</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ T25 · BOMBEO ═══════════════ -->
+<div class="tema">
+  <div class="tema-head"><span class="tema-tag">T25</span>Bombas hidráulicas</div>
+  <div class="tema-content">
+    <div class="box key">
+      <div class="box-title">Punto de funcionamiento</div>
+      <div class="formula-line">CCB (bomba): $H_b = H_0 - kQ^2$ (parabólica)</div>
+      <div class="formula-line">CCI (instalación): $H_{inst} = \Delta z + KQ^2$</div>
+      <div class="formula-line">Punto P: intersección CCB ∩ CCI</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Potencia y rendimiento</div>
+      <div class="formula-line">$P_{hidr} = \gamma\,Q\,H_b$ (potencia útil)</div>
+      <div class="formula-line">$P_{eje} = P_{hidr}/\eta_b$</div>
+      <div class="formula-line">$P_{eléct} = P_{eje}/\eta_{motor}$</div>
+    </div>
+    <div class="box key">
+      <div class="box-title">NPSH (cavitación)</div>
+      <div class="formula-line">$NPSH_{disp} = \dfrac{p_A - p_v}{\gamma} + (z_A - z_E) - h_{f,asp}$</div>
+      <div class="formula-line">Sin cavitación: $NPSH_{disp} > NPSH_{req}$</div>
+      <div class="formula-line">Diseño: $NPSH_{disp} \ge 1{,}3\,NPSH_{req}$</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Bombas en serie / paralelo</div>
+      <div class="formula-line">Serie (más altura): $H = \sum H_i$, $Q$ = cte</div>
+      <div class="formula-line">Paralelo (más caudal): $Q = \sum Q_i$, $H$ = cte</div>
+    </div>
+    <div class="box">
+      <div class="box-title">Cota máxima del eje (anti-cavit.)</div>
+      <div class="formula-line">$z_E \le z_A + (p_A-p_v)/\gamma - h_{f,asp} - 1{,}3\,NPSH_{req}$</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

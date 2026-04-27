@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T4 Rozamiento · Mecánica Aplicada UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 4 — Rozamiento</h1>
+  <div class="cover-sub">Mecánica Aplicada · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>4 de 8 (Estática)</div>
+    <div><b>Ejercicios</b>22 totales · 12 nivel examen</div>
+    <div><b>Patrones</b>8 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>8 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:9%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Bloque sobre superficie — deslizamiento vs vuelco</td><td class="center">4.1, 4.16</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Cuñas y multiplicadores de fuerza</td><td class="center">4.2, 4.7, 4.9</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Bloques apilados / atados / con cable a la pared</td><td class="center">4.3, 4.4</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Bloque/varilla entre dos planos (autoblocante)</td><td class="center">4.5, 4.6</td><td class="center">Baja-Media</td></tr>
+    <tr><td class="center"><b>P5</b></td><td>Cilindros rotando entre superficies (par M)</td><td class="center">4.8</td><td class="center">Baja</td></tr>
+    <tr class="alt"><td class="center"><b>P6</b></td><td>Rodadura vs deslizamiento (rueda con coef. rod.)</td><td class="center">4.10, 4.15</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P7</b></td><td>Rotura de equilibrio en <b>dos sentidos</b> — rango de la fuerza/par</td><td class="center">4.11, 4.12, 4.13, 4.17</td><td class="center">Alta</td></tr>
+    <tr class="alt" style="background:#b00;color:#fff"><td class="center"><b>P8 ★</b></td><td><b>Sistema combinado disco + barra + muelle/cable</b> — μ_min, par P, constante k</td><td class="center">4.14, 4.18, 4.19, 4.20, 4.21, 4.22</td><td class="center"><b>MUY ALTA</b></td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T4 casi siempre es un sistema combinado</b>: 1 disco + 1 barra (a veces dos barras articuladas) + un muelle o cable. Se pide alguna combinación de: <b>μ mínimo</b> para el equilibrio, <b>par P</b> aplicado, <b>constante k del muelle</b>, <b>rango de fuerzas</b> (problema en dos sentidos).</p>
+  <p>La <b>herramienta clave</b> es identificar correctamente el sentido de cada fuerza de rozamiento (oponiéndose al movimiento inminente), y aplicar $F_r = \mu N$ <b>solo cuando el deslizamiento es inminente</b> en ese contacto.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Memoriza la <b>ley de Coulomb</b> y el concepto de <b>cono de rozamiento</b>.</li>
+    <li>Diferencia bien <b>$F_r \le \mu N$</b> (general) de <b>$F_r = \mu N$</b> (deslizamiento inminente). Solo se aplica la igualdad en los contactos donde el sistema está a punto de deslizar.</li>
+    <li>Estudia los 8 patrones con sus recetas paso a paso.</li>
+    <li>Haz el mini-simulacro cronometrado.</li>
+  </ol>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 8 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Ley de Coulomb</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F1 · ★ Fuerza de rozamiento</div>
+    <div class="formula-body">$F_r \le \mu_s\,N$ (reposo)</div>
+    <div class="formula-body">$F_r = \mu_k\,N$ (deslizamiento)</div>
+    <div class="formula-note">$\mu_k < \mu_s$. La fuerza se opone al movimiento inminente.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Deslizamiento inminente</div>
+    <div class="formula-body">$F_r = \mu_s\,N$ (límite)</div>
+    <div class="formula-note">Solo en los contactos donde el deslizamiento está a punto de empezar.</div>
+  </div>
+</div>
+
+<h3>2 · Cono de rozamiento</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Ángulo de rozamiento</div>
+    <div class="formula-body">$\phi_s = \arctan(\mu_s)$</div>
+    <div class="formula-note">Semiángulo del cono dentro del cual el sistema es autoblocante.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Reacción total</div>
+    <div class="formula-body">$\vec{R} = \vec{N} + \vec{F_r}$, $|\vec{R}| = N/\cos\phi$</div>
+    <div class="formula-note">Forma ángulo $\phi$ con la normal.</div>
+  </div>
+</div>
+
+<h3>3 · Vuelco vs deslizamiento</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F5 · Modo de pérdida de equilibrio</div>
+    <div class="formula-body" style="font-size:9.5pt;text-align:left">• <b>Deslizamiento:</b> $F_r = \mu N$<br>• <b>Vuelco:</b> $\sum M_{arista}=0$ con $N=0$ en el otro lado</div>
+    <div class="formula-note">El modo crítico es el que da el menor valor de fuerza máxima aplicada.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Punto de aplicación de N</div>
+    <div class="formula-body">N actúa en la base, NO en el centro</div>
+    <div class="formula-note">Cuando hay carga horizontal, la normal se desplaza hacia la arista de vuelco. Si N llega a la arista (excentricidad = ancho/2) → vuelco inminente.</div>
+  </div>
+</div>
+
+<h3>4 · Cuñas y tornillos</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F7 · Tornillo de potencia (avance)</div>
+    <div class="formula-body">$M_{avance} = W\,r_m\,\tan(\lambda+\phi_s)$</div>
+    <div class="formula-note">$\lambda = \arctan(l/2\pi r_m)$ ángulo de hélice. $W$ carga axial, $r_m$ radio medio.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Tornillo (retroceso) y autoblocante</div>
+    <div class="formula-body">$M_{ret} = W\,r_m\,\tan(\phi_s-\lambda)$</div>
+    <div class="formula-note">Si $\lambda<\phi_s$ → autoblocante (no se desenrosca solo). $M_{ret}<0$ significa que sí se desenrosca espontáneamente.</div>
+  </div>
+</div>
+
+<h2>📋 Tabla de coeficientes de rozamiento típicos (UPV/EHU)</h2>
+
+<table>
+  <thead><tr><th>Par de materiales</th><th class="center">$\mu_s$</th><th class="center">$\mu_k$</th><th>Notas</th></tr></thead>
+  <tbody>
+    <tr><td>Acero - acero seco</td><td class="center">0,15-0,30</td><td class="center">0,10-0,20</td><td>Acero pulido $\mu_s\approx 0{,}15$</td></tr>
+    <tr class="alt"><td>Madera - madera</td><td class="center">0,35-0,50</td><td class="center">0,30-0,40</td><td>Habitual en pruebas y cuñas</td></tr>
+    <tr><td>Goma - hormigón</td><td class="center">0,60-0,80</td><td class="center">0,50-0,70</td><td>Neumáticos</td></tr>
+    <tr class="alt"><td>Hielo - hielo</td><td class="center">0,05-0,10</td><td class="center">0,03-0,05</td><td>Patinaje</td></tr>
+  </tbody>
+</table>
+
+<div class="box tip">
+  <div class="box-title">💡 Convención UPV/EHU</div>
+  <p>En esta asignatura se usa indistintamente $\mu$ o $f$ (símbolo $f$ es frecuente en los enunciados). $g = 9{,}8\ \text{m/s}^2$ siempre. Los kg* son kilogramos-fuerza: $1\ \text{kg}^* = 9{,}8\ \text{N}$.</p>
+</div>
+
+<h2 class="pb">🎯 Los 8 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Bloque — deslizamiento vs vuelco</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> bloque rectangular en suelo rugoso, fuerza horizontal $Q$ a cierta altura.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Calcula $Q_{deslizamiento}$</strong>$\sum F_x = 0$, $\sum F_y = 0$ con $F_r = \mu N$ → despeja $Q$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula $Q_{vuelco}$</strong>$\sum M_{arista}=0$ con $N=0$ en el otro lado, en el momento del vuelco. Solo el peso (estabilizador) y $Q$ (desestabilizador) actúan.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Compara: el modo crítico es el de menor $Q$</strong>Si $Q_{desl} < Q_{vuelco}$ → desliza primero. Si $Q_{vuelco} < Q_{desl}$ → vuelca primero.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Cuñas — multiplicador de fuerza</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> cuña con ángulo $\alpha$ pequeño, carga $Q$ encima, fuerza aplicada $P$ horizontal.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>DCL de cada bloque por separado</strong>Bloque superior, cuña, base. En cada superficie aparecen $N_i$ y $F_{r,i}=\mu_i N_i$ con $F_r$ <b>en sentido opuesto al movimiento inminente</b> (ojo a la dirección).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Ecuaciones por bloque</strong>2 ecuaciones por bloque ($\sum F_x, \sum F_y$). Suelen ser 4-6 incógnitas, 4-6 ecuaciones.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Resuelve en cascada</strong>Empieza por el bloque con menos incógnitas (típicamente el bloque superior con la carga $Q$).</div></div>
+  </div>
+  <div class="box warn">
+    <div class="box-title">⚠ Sentido del rozamiento</div>
+    <p>Para "elevar la carga" la cuña entra → $F_r$ se opone, sale en sentido que dificulta la entrada.<br>
+    Para "sostener la carga" (sin aplicar P), la cuña tendería a salir → $F_r$ <b>cambia de sentido</b>. <b>Por eso el coeficiente para sostener es típicamente menor que el de elevar.</b></p>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Bloques apilados / atados con cable</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> bloque A sobre bloque B, fuerza F aplicada al bloque B. El bloque A puede estar atado a la pared con un cable.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>DCL de cada bloque</strong>Identifica los pares de superficies en contacto: A-B (rozamiento $\mu_1$) y B-suelo ($\mu_2$).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica $F_r = \mu N$ en cada superficie con deslizamiento inminente</strong>Cuidado: si el bloque A NO se mueve (está atado al cable), entre A y B SÍ hay deslizamiento (la cara superior de B desliza bajo A). Si A va con B, no hay deslizamiento entre ellos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Plantea las ecuaciones por bloque</strong>$\sum F_x$, $\sum F_y$ por bloque. Para A: la tensión del cable, el peso, la normal $N_1$ y la fricción $\mu_1 N_1$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Despeja la fuerza F mínima</strong>El sistema de ecuaciones da $F$ y las normales/tensiones.</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Bloque / varilla entre dos superficies</span>
+    <span class="pattern-freq baja">Frec. baja-media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> varilla apoyada en una columna y atada con cuerda, o bloque entre suelo y pared.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica los puntos de contacto</strong>Cada contacto aporta una normal $N$ y una fricción $F_r = \mu N$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Sentido de cada fricción</strong>En el equilibrio crítico (movimiento inminente), determina hacia dónde tiende a deslizar cada contacto y dibuja $F_r$ en sentido opuesto.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Plantea las 3 ecuaciones (sólido único)</strong>$\sum F_x, \sum F_y, \sum M_O$. Resuelve.</div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Cilindro rotando entre superficies — par M</span>
+    <span class="pattern-freq baja">Frec. baja</span>
+  </div>
+  <p><b>Cuándo aparece:</b> cilindro rotando con velocidad constante entre dos superficies inclinadas con rozamiento.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Equilibrio dinámico (velocidad cte → fuerzas resultantes nulas)</strong>$\sum F_x = 0$, $\sum F_y = 0$ con $F_r = \mu N$ en cada contacto (deslizamiento real).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Sentido de las fricciones</strong>Cada fricción se opone al sentido de la velocidad relativa de la superficie del cilindro respecto al apoyo en ese punto.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$\sum M_{centro} = M_{aplicado}$</strong>El par aplicado iguala el momento de las fricciones respecto al eje del cilindro: $M = R(F_{r1} + F_{r2})$.</div></div>
+  </div>
+</div>
+
+<!-- P6 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P6</span>
+    <span class="pattern-name">Rodadura vs deslizamiento (rueda + viga)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula la fuerza Q mínima para iniciar el desplazamiento. Comprueba 3 modos: deslizamiento rueda-viga, deslizamiento rueda-suelo, rodadura rueda-suelo".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Modo 1: Deslizamiento rueda-viga</strong>$F_{r,1} = \mu_1 N_1$. La rueda no gira, la viga desliza sobre ella.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Modo 2: Deslizamiento rueda-suelo</strong>$F_{r,2} = \mu_2 N_2$. La rueda gira pero patina contra el suelo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Modo 3: Rodadura rueda-suelo (con coef. de resistencia $\mu_r$)</strong>La normal $N_2$ se desplaza hacia delante una distancia $\mu_r$ (cm). El momento de resistencia respecto al eje vale $M_r = \mu_r N_2$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula Q en cada modo y elige el menor</strong>El modo crítico es el que da menor Q (el que ocurre primero al aumentar Q desde cero).</div></div>
+  </div>
+</div>
+
+<!-- P7 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P7</span>
+    <span class="pattern-name">Rotura de equilibrio en dos sentidos — rango de F/P</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula los valores de F entre los que el sistema está en equilibrio". Hay un rango $F_{min} \le F \le F_{max}$.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica los dos sentidos críticos del movimiento inminente</strong>Sentido 1: el sistema está a punto de moverse "hacia adelante". Sentido 2: a punto de moverse "hacia atrás".</div></div>
+    <div class="paso"><div class="paso-body"><strong>Resuelve dos veces el problema con la fricción cambiada de signo</strong>En cada caso $F_r = \mu N$ en sentido opuesto al movimiento inminente.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula $F_{min}$ y $F_{max}$</strong>Cada sentido da un valor extremo de F. Entre $F_{min}$ y $F_{max}$ el sistema está en equilibrio (rozamiento por debajo del límite).</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Ejemplo numérico — bloque en plano inclinado</div>
+    <p>Bloque de masa $M$ en plano inclinado $\alpha=30°$, $\mu=0{,}3$. Se aplica fuerza $F$ paralela al plano. Halla el rango de $F$ para equilibrio.</p>
+    <p><b>Sentido 1 (subir):</b> $F$ tiende a hacer subir → fricción hacia abajo. Equilibrio paralelo: $F = Mg\sin\alpha + \mu Mg\cos\alpha$.<br>
+    $F_{max} = Mg(0{,}5 + 0{,}3\cdot 0{,}866) = Mg(0{,}5 + 0{,}26) = 0{,}76\,Mg$.</p>
+    <p><b>Sentido 2 (bajar):</b> $F$ pequeña → bloque tendería a bajar → fricción hacia arriba. Equilibrio: $F = Mg\sin\alpha - \mu Mg\cos\alpha$.<br>
+    $F_{min} = Mg(0{,}5 - 0{,}26) = 0{,}24\,Mg$.</p>
+    <p><b>Rango:</b> $0{,}24\,Mg \le F \le 0{,}76\,Mg$. Si $F < 0{,}24\,Mg$ el bloque baja; si $F > 0{,}76\,Mg$ el bloque sube.</p>
+  </div>
+</div>
+
+<!-- P8 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P8 ★</span>
+    <span class="pattern-name" style="color:#b00">Sistema combinado disco + barra + muelle/cable (PATRÓN ESTRELLA)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> casi siempre. Disco apoyado entre una barra y otra superficie, con muelle, cable o par P.</p>
+
+  <h4>Receta universal (Patrón 8)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Aísla cada cuerpo por separado (DCL)</strong>Disco: peso, normales en cada contacto, rozamientos, par o fuerza aplicada. Barra: peso, fuerzas internas en la articulación, fuerza del disco, muelle/cable, reacciones del apoyo. Suele haber 2-3 cuerpos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Identifica los contactos con rozamiento</strong>Cada contacto disco-superficie tiene normal $N_i$ y fricción $F_{r,i} = \mu N_i$ (en deslizamiento inminente). Cuidado con el sentido — siempre opuesto al movimiento inminente.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Decide qué contactos son rodadura y cuáles deslizamiento</strong>"Rodadura garantizada" → no se aplica $F_r=\mu N$ en ese contacto, $F_r$ es incógnita. "Deslizamiento inminente en X" → $F_{r,X} = \mu N_X$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Plantea las ecuaciones por cuerpo</strong>3 ecuaciones por sólido en 2D ($\sum F_x, \sum F_y, \sum M_C$). Para el disco, $\sum M$ respecto al centro del disco es muy útil (la normal pasa por el centro, no genera momento).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Resuelve el sistema</strong>Tantas ecuaciones como incógnitas. Si falla por 1 ecuación: probablemente has olvidado aplicar $F_r=\mu N$ en algún contacto, o has supuesto rodadura donde hay deslizamiento.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verifica con la condición $F_r \le \mu N$ en los contactos sin deslizamiento inminente</strong>Si el rozamiento calculado supera $\mu N$, el contacto está deslizando — replantea.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Trucos clave</div>
+    <ul>
+      <li><b>$\sum M$ en un punto inteligente:</b> elige un punto donde se anulen muchas reacciones desconocidas (centro del disco, articulación de la barra).</li>
+      <li><b>Disco con cuerda enrollada:</b> el momento de la tensión respecto al centro del disco es $T \cdot R$ (el brazo es el radio).</li>
+      <li><b>Disco con par M:</b> $M = (F_{r,1} + F_{r,2})\cdot R$ si hay dos contactos en la periferia.</li>
+      <li><b>Muelle con elongación $x$:</b> $F_{muelle} = k\cdot x$. La dirección sigue el eje del muelle.</li>
+      <li><b>Equilibrio en dos sentidos (rango de k o F):</b> resuelve dos veces el problema con $F_r$ cambiando de signo.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en T4</div>
+  <ol>
+    <li><b>Aplicar $F_r = \mu N$ donde no hay deslizamiento inminente.</b> En contactos con rodadura o equilibrio estricto, $F_r$ es <i>incógnita</i> ($F_r \le \mu N$ es la <i>condición</i>, no la igualdad).</li>
+    <li><b>Sentido equivocado de la fricción.</b> Siempre opuesta al movimiento inminente. Si el sistema desliza hacia la derecha, la fricción apunta a la izquierda.</li>
+    <li><b>Olvidar que $F_r$ <i>no genera trabajo</i> en rodadura pura.</b> Si la rueda rueda sin deslizar, no hay disipación por rozamiento de deslizamiento.</li>
+    <li><b>Confundir el contacto crítico.</b> En problemas con varios contactos, el coeficiente $\mu$ mínimo lo impone <i>uno</i> de ellos. Hay que comprobar todos.</li>
+    <li><b>Mal plantear el sentido del rozamiento al "sostener" vs "elevar".</b> En cuñas, los sentidos son opuestos.</li>
+    <li><b>Olvidar la geometría del problema</b> (ángulos del plano inclinado, posición de los contactos respecto al CG…).</li>
+    <li><b>Asumir vuelco cuando hay deslizamiento</b> o viceversa. Calcular ambos modos y comparar.</li>
+    <li><b>Confundir $\mu_s$ con $\mu_k$.</b> En estática, casi siempre $\mu_s$ (estático). $\mu_k$ solo si el problema dice "ya está deslizando".</li>
+    <li><b>Olvidar la fricción en superficies "lisas"</b> (descritas como sin rozamiento) en algún contacto del problema.</li>
+    <li><b>En sistema de muelle: signo del alargamiento.</b> Si el muelle está comprimido, la fuerza apunta hacia afuera (estira la conexión). Si está estirado, hacia adentro.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (90 minutos · sin apuntes)</h2>
+
+<div class="box info">
+  <div class="box-title">Instrucciones</div>
+  <p>2 problemas representativos. <b>Tiempo: 90 minutos.</b> Resuelve sin mirar la guía.</p>
+</div>
+
+<h3>Problema 1 (30 min · Patrón P1+P2)</h3>
+<div class="box">
+  <p>Un bloque rectangular de masa $M$, ancho $a = 0{,}6$ m y altura $h = 1{,}2$ m, está sobre un suelo horizontal con coeficiente $\mu = 0{,}3$. Se aplica una fuerza horizontal $Q$ hacia la derecha a una altura $h_Q = 0{,}9$ m del suelo.</p>
+  <ol>
+    <li>Calcula $Q_{deslizamiento}$ (fuerza para que empiece a deslizar).</li>
+    <li>Calcula $Q_{vuelco}$ (fuerza para que empiece a volcar).</li>
+    <li>¿Qué modo es el crítico?</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (60 min · Patrón P8 ★)</h3>
+<div class="box exam">
+  <p>El disco 1 de masa $M$ y radio $2R$ descansa sobre una superficie horizontal rugosa. Su centro está unido a una cuerda arrollada en la periferia del disco 2 de masa $M$ y radio $R$, apoyado sobre un plano inclinado a $30°$ con la horizontal. Sobre el disco 1 se aplica un par $P$ antihorario. El sistema está en el límite del equilibrio (deslizamiento inminente). El coeficiente de rozamiento es el mismo $\mu$ en ambas superficies.</p>
+  <ol>
+    <li>Calcula el coeficiente $\mu$ mínimo necesario.</li>
+    <li>Calcula el valor del par $P$.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado 1 — Deslizamiento</h4>
+<p>$\sum F_y = 0$: $N = Mg$.</p>
+<p>$\sum F_x = 0$: $Q = F_r = \mu N = \mu Mg = 0{,}3\cdot Mg$.</p>
+<div class="box key" style="text-align:center">$\boxed{Q_{desl} = 0{,}3\,Mg}$</div>
+
+<h4>Apartado 2 — Vuelco</h4>
+<p>En el momento del vuelco, el bloque pivota sobre la arista delantera (en el lado opuesto a $Q$). La normal se concentra en esa arista y la reacción del lado trasero se anula.</p>
+<p>$\sum M_{arista delantera} = 0$ (antihorario positivo):</p>
+<div class="box" style="text-align:center">
+  $$Mg\cdot \frac{a}{2} - Q\cdot h_Q = 0$$
+  $$Q_{vuelco} = \frac{Mg\cdot 0{,}3}{0{,}9} = \frac{Mg}{3} \approx 0{,}333\,Mg$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{Q_{vuelco} = 0{,}333\,Mg}$</div>
+
+<h4>Apartado 3 — Modo crítico</h4>
+<p>$Q_{desl} = 0{,}3\,Mg < Q_{vuelco} = 0{,}333\,Mg$ → <b>el bloque desliza primero</b>. La fuerza $Q$ que rompe el equilibrio es $Q_{crit} = 0{,}3\,Mg$.</p>
+
+<h3 class="pb">Solución Problema 2 (★ examen)</h3>
+
+<h4>Análisis del disco 2 (sobre el plano inclinado a 30°)</h4>
+<p>El disco 2 tendría a deslizar hacia abajo por la rampa (porque está sostenido por la tensión de la cuerda). Por tanto la fricción $F_{r,2}$ apunta hacia arriba por el plano.</p>
+<p>$\sum F_\perp = 0$ (perpendicular al plano):</p>
+<div class="box" style="text-align:center">
+  $$N_2 = Mg\cos 30° = Mg\frac{\sqrt{3}}{2}$$
+</div>
+<p>$\sum M_{centro\ disco\ 2} = 0$. Las fuerzas que generan momento respecto al centro son la tensión $T$ (a distancia $R$, periferia) y la fricción $F_{r,2}$ (también a distancia $R$, en el contacto). En equilibrio:</p>
+<div class="box" style="text-align:center">
+  $$T\cdot R - F_{r,2}\cdot R = 0 \implies T = F_{r,2}$$
+</div>
+<p>$\sum F_\| = 0$ (paralelo al plano, positivo hacia arriba):</p>
+<div class="box" style="text-align:center">
+  $$F_{r,2} + T - Mg\sin 30° = 0 \implies 2F_{r,2} = Mg\cdot \frac{1}{2} \implies F_{r,2} = \frac{Mg}{4}$$
+  $$T = \frac{Mg}{4}$$
+</div>
+
+<h4>Apartado 1 — Coeficiente μ mínimo</h4>
+<p>En el límite, $F_{r,2} = \mu N_2$:</p>
+<div class="box" style="text-align:center">
+  $$\mu = \frac{F_{r,2}}{N_2} = \frac{Mg/4}{Mg\sqrt{3}/2} = \frac{1}{2\sqrt{3}} = \frac{\sqrt{3}}{6} \approx 0{,}289$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{\mu = \dfrac{\sqrt{3}}{6} \approx 0{,}289}$</div>
+
+<h4>Análisis del disco 1 (sobre suelo horizontal)</h4>
+<p>La cuerda tira del centro del disco 1 horizontalmente con $T = Mg/4$. La fricción $F_{r,1}$ entre disco 1 y suelo se opone a la tensión.</p>
+<p>$\sum F_y = 0$: $N_1 = Mg$.</p>
+<p>$\sum F_x = 0$: $F_{r,1} = T = Mg/4$.</p>
+<p><b>Verificación:</b> $\mu N_1 = (\sqrt{3}/6)\cdot Mg \approx 0{,}289\,Mg > Mg/4 = 0{,}25\,Mg$ ✓ (el coeficiente crítico lo impone el disco 2).</p>
+
+<h4>Apartado 2 — Par P</h4>
+<p>El par $P$ aplicado al disco 1 vence el momento de la fricción del suelo respecto al centro del disco 1:</p>
+<div class="box" style="text-align:center">
+  $$\sum M_{centro\ disco\ 1} = 0:\quad P - F_{r,1}\cdot 2R = 0$$
+  $$P = \frac{Mg}{4}\cdot 2R = \frac{MgR}{2}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{P = \dfrac{MgR}{2}}$</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El procedimiento del Patrón 8 es: <b>(1)</b> aislar cada cuerpo, <b>(2)</b> identificar contactos con deslizamiento inminente, <b>(3)</b> $F_r = \mu N$ solo donde hay deslizamiento inminente, <b>(4)</b> $\sum M$ en puntos inteligentes (centros, pivotes), <b>(5)</b> resolver y verificar.</p>
+  <p>El contacto crítico (el que impone $\mu_{min}$) puede ser distinto del que está más cargado. Verifica todos.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza F1 y el cono de rozamiento</b> (15 min).</li>
+    <li><b>Bloque + vuelco</b> (30 min) — Ejercicio 4.1.</li>
+    <li><b>Sistema disco + barra + cuerda</b> (1h 30 min) — Ejercicio 4.14 con la solución delante.</li>
+    <li><b>Sistema con muelle</b> (45 min) — Ejercicio 4.20 a ciegas, después corregir.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Bloques y vuelco — 4.1, 4.16.</li>
+    <li><b>Día 2:</b> Cuñas — 4.2, 4.7, 4.9.</li>
+    <li><b>Día 3:</b> Bloques apilados / barras — 4.3, 4.4, 4.5, 4.6.</li>
+    <li><b>Día 4:</b> Rodadura y rotura en dos sentidos — 4.10, 4.11, 4.12, 4.13.</li>
+    <li><b>Día 5:</b> Sistema disco + barra + muelle — 4.14, 4.15, 4.17, 4.18.</li>
+    <li><b>Día 6:</b> Combinaciones complejas — 4.19, 4.20, 4.21, 4.22.</li>
+    <li><b>Día 7:</b> Mini-simulacro de esta guía cronometrado.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 4 reglas que te salvan T4</div>
+  <ol>
+    <li><b>$F_r = \mu N$ solo donde el deslizamiento es inminente.</b> En contactos sin deslizamiento, $F_r$ es incógnita y $F_r \le \mu N$.</li>
+    <li><b>Sentido de $F_r$ siempre opuesto al movimiento inminente.</b> Comprobar dirección antes de plantear ecuaciones.</li>
+    <li><b>Vuelco vs deslizamiento:</b> calcular ambos y elegir el menor.</li>
+    <li><b>Sistemas con dos sentidos:</b> resolver dos veces, una con $F_r$ en cada sentido, para obtener $F_{min}$ y $F_{max}$.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 8</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    DCL de cada cuerpo →<br>
+    identificar contactos con deslizamiento inminente →<br>
+    $F_r = \mu N$ con sentido correcto en esos contactos →<br>
+    $\sum M$ en pivotes y centros (anular reacciones) →<br>
+    resolver sistema lineal →<br>
+    verificar $F_r \le \mu N$ en contactos sin desliz.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Mecánica Aplicada UPV/EHU · Tema 4 — Rozamiento<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

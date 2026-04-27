@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T1 Cálculo Vectorial · Mecánica Aplicada UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+
+  /* ── Tipografía ── */
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0}
+  ul,ol{margin:1.5mm 0 1.5mm 6mm}
+  li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000}
+  em{font-style:italic}
+
+  /* ── Contenedores ── */
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+
+  /* ── Boxes ── */
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00}
+  .box.exam .box-title{color:#b00}
+  .box.tip .box-title{color:#0a6}
+  .box.info .box-title{color:#06b}
+
+  /* ── Tablas ── */
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center}
+  tr.alt td{background:#f4f4f4}
+
+  /* ── Fórmulas ── */
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+
+  /* ── Pasos ── */
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm}
+  .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+
+  /* ── Mini-section header ── */
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00}
+  .pattern-freq.muy-alta{background:#700}
+  .pattern-freq.media{background:#c80}
+  .pattern-freq.baja{background:#888}
+
+  /* ── Page breaks ── */
+  .pb{page-break-before:always}
+  .nbr{page-break-inside:avoid}
+
+  /* ── Print tweaks ── */
+  @media print {
+    body{font-size:10pt}
+    a{color:#000;text-decoration:none}
+    .no-print{display:none !important}
+  }
+
+  /* ── Quick refs ── */
+  .qref{display:flex;gap:3mm;flex-wrap:wrap;margin:2mm 0;font-size:9pt}
+  .qref-item{border:1px solid #ccc;border-radius:1mm;padding:1mm 2.5mm;background:#fff}
+  .qref-item b{font-family:'Helvetica';color:#333;margin-right:1.5mm}
+
+  /* ── Print banner control ── */
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+
+  /* ── Sim space ── */
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+  .sim-mini{border:1px dashed #aaa;height:25mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 6mm,#eee 6mm 6.2mm)}
+
+  .answer-key{background:#0a0a0a;color:#f0f0f0;padding:5mm;border-radius:2mm;margin:2mm 0}
+  .answer-key h4{color:#fff}
+  .answer-key .formula{background:#1a1a1a;border-color:#444;color:#fff}
+  .answer-key .formula-name{color:#aaa}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PORTADA · AUDITORÍA
+══════════════════════════════════════════════════════════════════ -->
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 1 — Fundamentos de Cálculo Vectorial</h1>
+  <div class="cover-sub">Mecánica Aplicada · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>1 de 8 (Estática)</div>
+    <div><b>Ejercicios</b>18 totales · 6 nivel examen</div>
+    <div><b>Patrones</b>8 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>12 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:12%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Vectores 3D, módulo, unitario, cosenos directores</td><td class="center">1.1</td><td class="center">Baja</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Momento de una fuerza respecto a un punto (2D y 3D)</td><td class="center">1.2, 1.3</td><td class="center">Media-Alta</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Momento respecto a un eje (proyección)</td><td class="center">1.4</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Pares de fuerzas (momento como vector libre)</td><td class="center">1.6</td><td class="center">Baja-Media</td></tr>
+    <tr><td class="center"><b>P5</b></td><td>Reducción a sistema equivalente (R, M<sub>O</sub>, distancia al eje central)</td><td class="center">1.7, 1.9, 1.10</td><td class="center">Alta</td></tr>
+    <tr class="alt"><td class="center"><b>P6</b></td><td>Invariantes (vectorial, escalar τ) y momento mínimo M<sub>min</sub></td><td class="center">1.5, 1.12</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P7</b></td><td>Eje central — ecuaciones de la recta y distancia mínima</td><td class="center">1.10, 1.11</td><td class="center">Alta</td></tr>
+    <tr class="alt"><td class="center" style="background:#b00;color:#fff"><b>P8 ★</b></td><td><b>Reconstruir un sistema con incógnitas</b> — dados momentos en varios puntos / R parcial / invariantes / plano de aplicación, hallar componentes y posiciones</td><td class="center">1.8, 1.13, 1.14, 1.15, 1.16, 1.17, 1.18</td><td class="center" style="background:#700;color:#fff"><b>MUY ALTA</b></td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p>El <b>70% de los ejercicios examen son del Patrón 8</b>: dan información parcial (momentos en 2-3 puntos, invariante escalar, eje central pasa por X, módulo de la resultante, plano de aplicación) y piden encontrar las componentes desconocidas o los puntos de aplicación.</p>
+  <p>La <b>herramienta clave</b> es la fórmula de cambio de momento: $\vec{M}_B = \vec{M}_A + \vec{r}_{AB}\times \vec{R}$. Casi todo lo demás es álgebra y resolución de sistemas lineales 3×3 o 4×4.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Lee primero las <b>12 fórmulas core</b> hasta tenerlas memorizadas (1 hora).</li>
+    <li>Estudia los <b>8 patrones</b> de problema con su receta paso a paso (2-3 horas).</li>
+    <li>Haz el <b>mini-simulacro</b> sin mirar nada, con el cronómetro a 60 minutos.</li>
+    <li>Corrige con la hoja de respuestas y anota tus errores.</li>
+    <li>Repasa solo aquello en lo que has fallado y vuelve a intentar problemas similares.</li>
+  </ol>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PÁGINA 2-3 · LAS 12 FÓRMULAS CORE
+══════════════════════════════════════════════════════════════════ -->
+<div class="pb"></div>
+
+<h2>🔑 Las 12 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Vectores y operaciones básicas</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F1 · Componentes y módulo</div>
+    <div class="formula-body">$\vec{A} = A_x\vec{i}+A_y\vec{j}+A_z\vec{k}$</div>
+    <div class="formula-body">$|\vec{A}| = \sqrt{A_x^2+A_y^2+A_z^2}$</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Vector unitario y cosenos directores</div>
+    <div class="formula-body">$\hat{u}_A = \dfrac{\vec{A}}{|\vec{A}|},\quad \cos\alpha=\dfrac{A_x}{|\vec{A}|}$</div>
+    <div class="formula-note">$\cos^2\alpha+\cos^2\beta+\cos^2\gamma=1$ (siempre)</div>
+  </div>
+</div>
+
+<h3>2 · Producto escalar (componente sobre dirección)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Producto escalar</div>
+    <div class="formula-body">$\vec{A}\cdot\vec{B}=A_xB_x+A_yB_y+A_zB_z$</div>
+    <div class="formula-body">$\vec{A}\cdot\vec{B}=|\vec{A}||\vec{B}|\cos\theta$</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Proyección de $\vec{A}$ sobre dirección $\hat{u}$</div>
+    <div class="formula-body">$A_u = \vec{A}\cdot\hat{u}$</div>
+    <div class="formula-note">Si $\vec{A}\cdot\vec{B}=0$ → $\vec{A}\perp\vec{B}$</div>
+  </div>
+</div>
+
+<h3>3 · Producto vectorial (perpendicular al plano)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F5 · Determinante 3×3</div>
+    <div class="formula-body">$\vec{A}\times\vec{B}=\begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\A_x&A_y&A_z\\B_x&B_y&B_z\end{vmatrix}$</div>
+    <div class="formula-note">$|\vec{A}\times\vec{B}|=|\vec{A}||\vec{B}|\sin\theta$</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Base canónica</div>
+    <div class="formula-body">$\vec{i}\times\vec{j}=\vec{k},\ \vec{j}\times\vec{k}=\vec{i},\ \vec{k}\times\vec{i}=\vec{j}$</div>
+    <div class="formula-note">⚠ NO conmutativo: $\vec{A}\times\vec{B}=-\vec{B}\times\vec{A}$</div>
+  </div>
+</div>
+
+<h3>4 · Momento de una fuerza</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F7 · Momento respecto al punto P</div>
+    <div class="formula-body">$\vec{M}_P = \vec{r}_{PQ}\times\vec{F}$</div>
+    <div class="formula-note">$\vec{r}_{PQ}$ va de P al punto de aplicación Q de la fuerza. Brazo: $|M_P|=|F|\cdot d_\perp$</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Momento respecto al eje $\hat{u}$ (escalar)</div>
+    <div class="formula-body">$M_u = \hat{u}\cdot(\vec{r}\times\vec{F}) = \begin{vmatrix}u_x&u_y&u_z\\r_x&r_y&r_z\\F_x&F_y&F_z\end{vmatrix}$</div>
+  </div>
+</div>
+
+<h3>5 · Reducción de sistemas y cambio de momento</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F9 · Reducción al punto O</div>
+    <div class="formula-body">$\vec{R}=\sum\vec{F}_i,\quad \vec{M}_O=\sum\vec{r}_{OQ_i}\times\vec{F}_i$</div>
+    <div class="formula-note">Los pares puros suman a $\vec{M}_O$ pero no a $\vec{R}$</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F10 · ★ Cambio de momento entre dos puntos</div>
+    <div class="formula-body">$\boxed{\vec{M}_B = \vec{M}_A + \vec{r}_{BA}\times\vec{R}}$</div>
+    <div class="formula-note">Equivalentemente $\vec{M}_B = \vec{M}_A + \vec{R}\times\vec{r}_{AB}$. Es la herramienta más útil del tema.</div>
+  </div>
+</div>
+
+<h3>6 · Invariantes y momento mínimo</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F11 · Invariantes del sistema</div>
+    <div class="formula-body">$I_v = \vec{R}$ (invariante vectorial)</div>
+    <div class="formula-body">$\tau = \vec{R}\cdot\vec{M}_P$ (invariante escalar)</div>
+    <div class="formula-note">$\tau$ es el mismo en cualquier punto P del espacio. Por eso "invariante".</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F12 · ★ Momento mínimo y eje central</div>
+    <div class="formula-body">$\vec{M}_{\min} = \dfrac{\tau}{|\vec{R}|^2}\,\vec{R}$</div>
+    <div class="formula-note">Sobre el <b>eje central</b> el momento es paralelo a $\vec{R}$ y vale $\vec{M}_{\min}$. Distancia al eje central desde un punto P: $d=|\vec{M}_P-\vec{M}_{\min}|/|\vec{R}|$.</div>
+  </div>
+</div>
+
+<div class="box tip">
+  <div class="box-title">💡 Truco mental</div>
+  <p>Si en un punto el momento es <b>paralelo</b> a la resultante → ese punto está en el <b>eje central</b> y su momento ES el momento mínimo.<br>
+  Si en un punto el momento es <b>perpendicular</b> a la resultante → $\tau = 0$ y el momento mínimo es nulo (sistema reducible a una sola fuerza, como un par o como una sola fuerza).</p>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PÁGINA 3 · EXTRA — ECUACIONES DEL EJE CENTRAL
+══════════════════════════════════════════════════════════════════ -->
+
+<h2>🎯 Eje central — ecuación de la recta</h2>
+
+<p>El eje central es la recta del espacio en la que el momento es paralelo a la resultante (y por tanto, mínimo en módulo). La condición para que un punto $E(x,y,z)$ esté en el eje central es:</p>
+
+<div class="box key" style="text-align:center;font-size:11.5pt">
+  $$\vec{M}_E \parallel \vec{R} \iff \vec{M}_E\times\vec{R} = \vec{0}$$
+</div>
+
+<p>Conociendo el momento en un punto cualquiera P (típicamente el origen O), se aplica F10 al punto E:</p>
+
+<div class="box" style="text-align:center;font-size:11pt">
+  $$\vec{M}_E = \vec{M}_P + \vec{r}_{EP}\times\vec{R} = \vec{M}_P - \vec{r}_{PE}\times\vec{R}$$
+</div>
+
+<p>Imponiendo $\vec{M}_E\times\vec{R}=\vec{0}$ se obtiene un sistema de 3 ecuaciones (con una redundante) que define la recta. <b>Truco rápido:</b> el punto del eje central <b>más cercano al origen</b>:</p>
+
+<div class="box key" style="text-align:center;font-size:11.5pt">
+  $$\vec{r}_{O\to\text{eje}} = \dfrac{\vec{R}\times\vec{M}_O}{|\vec{R}|^2}$$
+</div>
+
+<p>Y la recta del eje central queda:</p>
+<div class="box" style="text-align:center;font-size:11pt">
+  $$\vec{r}(\lambda) = \dfrac{\vec{R}\times\vec{M}_O}{|\vec{R}|^2} + \lambda\,\vec{R},\quad \lambda\in\mathbb{R}$$
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PÁGINA 4-6 · LOS 8 PATRONES DE PROBLEMA
+══════════════════════════════════════════════════════════════════ -->
+<div class="pb"></div>
+
+<h2>🎯 Los 8 patrones de problema (recetas paso a paso)</h2>
+
+<!-- PATRÓN 1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Cosenos directores y ángulos entre vectores</span>
+    <span class="pattern-freq baja">Frec. baja</span>
+  </div>
+  <p><b>Cuándo aparece:</b> tres cables en 3D, hallar ángulos con un eje. Tipo "cuelga del techo con tres tirantes".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Coordenadas y vectores</strong>Lee del enunciado los puntos A, B, C, D… Construye el vector cable: $\overrightarrow{AB}=B-A$ (componentes).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Módulo del vector</strong>$|\overrightarrow{AB}|=\sqrt{x^2+y^2+z^2}$. Es la longitud física del cable.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Coseno director respecto al eje pedido</strong>Si te piden el ángulo con el eje y: $\cos\alpha = (AB)_y/|\overrightarrow{AB}|$. Si te piden con el eje x: $\cos\alpha=(AB)_x/|\overrightarrow{AB}|$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Despeja el ángulo</strong>$\alpha=\arccos(\cdot)$. Comprueba que el ángulo tiene sentido geométrico (entre 0° y 180°).</div></div>
+  </div>
+</div>
+
+<!-- PATRÓN 2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Momento de una fuerza respecto a un punto</span>
+    <span class="pattern-freq media">Frec. media-alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "momento de la fuerza T en A". Caso 2D (resultado solo $\vec{k}$) o 3D (las tres componentes).</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Vector fuerza</strong>Si te dan módulo y dirección por dos puntos C-D: $\vec{F}=F\cdot\dfrac{\overrightarrow{CD}}{|\overrightarrow{CD}|}$. Si te dan componentes, úsalas tal cual.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Vector de posición $\vec{r}_{PQ}$</strong>Va <b>desde el punto P</b> (donde calculas el momento) <b>hasta el punto Q de aplicación</b> de la fuerza. Error típico: invertir el sentido. <b>Da igual qué punto de la línea de acción uses</b> mientras sea uno de ellos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Producto vectorial</strong>Determinante 3×3 (F5). En 2D, atajo: $M_z = r_xF_y - r_yF_x$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Interpreta el signo</strong>En 2D, $+\vec{k}$ = antihorario; $-\vec{k}$ = horario. En 3D, da el vector con sus tres componentes.</div></div>
+  </div>
+</div>
+
+<!-- PATRÓN 3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Momento respecto a un eje</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "momento respecto al eje x" (o respecto a una línea inclinada $\hat{u}$). Resultado: <b>escalar</b>, no vector.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Vector director del eje $\hat{u}$</strong>Para los ejes cartesianos: $\hat{u}=\vec{i},\vec{j},\vec{k}$. Para una recta arbitraria: vector director normalizado.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Punto del eje y vector $\vec{r}$</strong>Elige cualquier punto P del eje. $\vec{r}_{PQ}$ va de P al punto de aplicación.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Producto mixto</strong>$M_u = \hat{u}\cdot(\vec{r}\times\vec{F})$ → calcular como determinante 3×3 con las filas $\hat{u}, \vec{r}, \vec{F}$.</div></div>
+  </div>
+  <div class="box tip"><div class="box-title">Atajo</div>El momento respecto al eje x es la <b>componente x</b> del momento respecto a cualquier punto del eje. Es decir: si $\vec{M}_O=(M_x,M_y,M_z)$, entonces $M_{eje\,x}=M_x$.</div>
+</div>
+
+<!-- PATRÓN 4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Pares de fuerzas (momento como vector libre)</span>
+    <span class="pattern-freq baja">Frec. baja-media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> dos fuerzas iguales y opuestas no colineales. Su momento es un <b>vector libre</b> (NO depende del punto de referencia).</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica el par</strong>Dos fuerzas $+\vec{F}$ y $-\vec{F}$ aplicadas en puntos distintos. Su resultante es nula.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Vector $\vec{d}$ entre las fuerzas</strong>Va <b>desde la fuerza negativa hasta la positiva</b>. Sentido importante.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Momento del par</strong>$\vec{M} = \vec{d}\times\vec{F}$ donde $\vec{F}$ es la fuerza positiva.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Si hay varios pares</strong>Suma vectorial: $\vec{M}_{total}=\sum\vec{M}_i$. Como son vectores libres, no necesitas referenciar al punto.</div></div>
+  </div>
+</div>
+
+<!-- PATRÓN 5 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Reducción a sistema equivalente</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "sustituye este sistema por una sola fuerza equivalente" / "encuentra resultante y momento en A" / "calcula la distancia desde A al eje central".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Resultante $\vec{R}$</strong>$\vec{R}=\sum\vec{F}_i$. Los pares puros NO suman a $\vec{R}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Momento en el punto pedido (típicamente A)</strong>$\vec{M}_A = \sum\vec{r}_{AQ_i}\times\vec{F}_i + \sum\vec{M}_{pares}$. Suma TODOS los momentos: los de las fuerzas <i>y</i> los de los pares puros.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Distancia al eje central (sistema 2D plano)</strong>$d = |\vec{M}_A|/|\vec{R}|$. Se mide perpendicular a la dirección de $\vec{R}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Punto de aplicación de la fuerza única equivalente sobre un lado</strong>Si te piden la posición sobre un lado dado (ej. AB del eje x), escribe el punto como $(x,0)$ e impón $\vec{r}\times\vec{R}=\vec{M}_A$. Despeja la coordenada incógnita.</div></div>
+  </div>
+</div>
+
+<!-- PATRÓN 6 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P6</span>
+    <span class="pattern-name">Invariantes y momento mínimo</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula el invariante escalar τ", "halla el vector momento mínimo", "el momento en O' forma 60° con la resultante, calcula su módulo".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Resultante e invariante vectorial</strong>$\vec{R}=\sum\vec{F}_i$. Es el invariante vectorial $I_v=\vec{R}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Momento en algún punto</strong>Calcula $\vec{M}_O$ en el origen (o donde te lo den).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Invariante escalar</strong>$\tau = \vec{R}\cdot\vec{M}_O$. Es el mismo en todo punto.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Momento mínimo (vector)</strong>$\vec{M}_{\min} = \dfrac{\tau}{|\vec{R}|^2}\vec{R}$. Su módulo: $|M_{\min}|=|\tau|/|\vec{R}|$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Si te dan el ángulo α que el momento forma con $\vec{R}$ en otro punto</strong>$\tau = |\vec{R}|\cdot|\vec{M}|\cdot\cos\alpha \Rightarrow |\vec{M}|=\dfrac{\tau}{|\vec{R}|\cos\alpha}$.</div></div>
+  </div>
+</div>
+
+<!-- PATRÓN 7 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P7</span>
+    <span class="pattern-name">Eje central — ecuaciones de la recta</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "encuentra las ecuaciones del eje central", "halla el punto P del eje y donde el momento es nulo".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Calcula $\vec{R}$ y $\vec{M}_O$</strong>Procedimiento estándar de reducción.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Punto del eje central más cercano al origen</strong>$\vec{r}_0 = \dfrac{\vec{R}\times\vec{M}_O}{|\vec{R}|^2}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Ecuación vectorial de la recta</strong>$\vec{r}(\lambda) = \vec{r}_0 + \lambda\vec{R}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Forma cartesiana</strong>De $x=x_0+\lambda R_x$, $y=y_0+\lambda R_y$, $z=z_0+\lambda R_z$ → eliminar $\lambda$ y obtener $(x-x_0)/R_x = (y-y_0)/R_y = (z-z_0)/R_z$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Punto de momento nulo en un eje (caso $\tau=0$)</strong>Si $\tau=0$, el sistema es reducible a una fuerza única. En el eje central el momento ES $\vec{0}$. Plantea $\vec{M}_P=\vec{0}$ y resuelve para las coordenadas del punto P.</div></div>
+  </div>
+</div>
+
+<!-- PATRÓN 8 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P8 ★</span>
+    <span class="pattern-name" style="color:#b00">Reconstruir un sistema con incógnitas (PATRÓN ESTRELLA EXAMEN)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> casi siempre. Te dan condiciones (momentos en 2 o 3 puntos, eje central, módulo de R, plano de aplicación, vectores paralelos…) y piden hallar las componentes desconocidas o los puntos de aplicación.</p>
+
+  <h4>Receta universal (Patrón 8)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Lista las incógnitas</strong>Suelen ser de 3 a 5: componentes de un vector, coordenadas de un punto, una constante λ. Cuéntalas.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Traduce cada condición en una ecuación vectorial</strong>"La resultante es $a\vec{j}$" → 3 ecuaciones (componentes i, j, k).<br>"$\tau=80$" → 1 ecuación.<br>"El eje central pasa por O" → $\vec{M}_O\parallel\vec{R}$ → 2 ecuaciones independientes (3 componentes con 1 redundante).<br>"Momento $\vec{M}_A$ vale tal" → 3 ecuaciones.<br>"Punto $A_1$ está en el plano $2x+z=0$" → 1 ecuación.<br>"Vectores paralelos" → 2 ecuaciones (proporciones de componentes).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula cada momento usando F10</strong>Si te dan momento en A y en B, aplica $\vec{M}_B=\vec{M}_A+\vec{r}_{BA}\times\vec{R}$. Casi siempre simplifica el problema.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica propiedad equiproyectiva (atajo de oro)</strong>$\vec{M}_A\cdot\vec{r}_{AB} = \vec{M}_B\cdot\vec{r}_{AB}$. Esto da una <b>ecuación escalar lineal</b> en las incógnitas, sin pasar por la resultante.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Resuelve el sistema lineal</strong>Tantas ecuaciones como incógnitas. Suele ser 3×3 o 4×4. Si te queda subdeterminado, falta una condición que has pasado por alto. Si está sobredeterminado, hay redundancias (las ecuaciones están relacionadas).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verifica</strong>Calcula el momento en un punto adicional con las soluciones obtenidas y comprueba que cumple la condición original.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Las 4 condiciones que aparecen casi siempre</div>
+    <ol>
+      <li><b>Eje central pasa por X</b> ⇒ $\vec{M}_X\parallel\vec{R}$ ⇒ $\vec{M}_X\times\vec{R}=\vec{0}$</li>
+      <li><b>Momentos conocidos en varios puntos</b> ⇒ aplica F10 entre ellos para reducir a R</li>
+      <li><b>Resultante con módulo o dirección dada</b> ⇒ ecuación de módulo $\sqrt{R_x^2+R_y^2+R_z^2}=K$ o componentes paralelas</li>
+      <li><b>Invariante escalar τ dado</b> ⇒ $\vec{R}\cdot\vec{M}_O = \tau$</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PÁGINA 7-8 · ERRORES TÍPICOS Y MINI-SIMULACRO
+══════════════════════════════════════════════════════════════════ -->
+<div class="pb"></div>
+
+<h2>⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en este tema</div>
+  <ol>
+    <li><b>Vector $\vec{r}$ en sentido equivocado.</b> $\vec{r}_{PQ}$ va <i>de P a Q</i>, no al revés. Genera signo erróneo en todo el momento.</li>
+    <li><b>Olvidar pasar mm a m.</b> Si las distancias están en mm y las fuerzas en N, el momento sale 1000 veces más pequeño.</li>
+    <li><b>Confundir momento respecto a punto con momento respecto a eje.</b> El primero es vector (3 componentes), el segundo es escalar (proyección).</li>
+    <li><b>No descomponer fuerzas con ángulo.</b> Si la fuerza forma α con la horizontal y baja: $F_x=+F\cos\alpha$, $F_y=-F\sin\alpha$. Cuidado con los signos.</li>
+    <li><b>Olvidar los pares puros en $\vec{M}_A$.</b> Los pares NO entran en $\vec{R}$ pero SÍ en $\vec{M}_A$ (como vectores libres).</li>
+    <li><b>Calcular $\vec{r}\times\vec{F}$ con la mano izquierda.</b> $\vec{i}\times\vec{j}=\vec{k}$ con regla de la mano <b>derecha</b>. Si confundes el orden sale signo opuesto.</li>
+    <li><b>Aplicar F10 con $\vec{r}_{AB}$ cuando es $\vec{r}_{BA}$.</b> $\vec{M}_B = \vec{M}_A + \vec{r}_{BA}\times\vec{R}$. Comprueba el sentido.</li>
+    <li><b>No usar la equiproyectiva.</b> $\vec{M}_A\cdot\vec{r}_{AB}=\vec{M}_B\cdot\vec{r}_{AB}$ ahorra ecuaciones cuando hay incógnitas.</li>
+    <li><b>Asumir τ=0 sin comprobar.</b> Si τ≠0 el sistema NO se reduce a una fuerza única (es fuerza + par). Comprobar antes de dar resultado de "fuerza única equivalente".</li>
+    <li><b>Confundir eje central con línea de acción de la resultante.</b> Solo coinciden si τ=0. En general, sobre el eje central queda fuerza $\vec{R}$ + par $\vec{M}_{\min}$ paralelo.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (60 minutos · sin apuntes)</h2>
+
+<div class="box info">
+  <div class="box-title">Instrucciones</div>
+  <p>3 problemas que cubren los patrones más frecuentes. <b>Tiempo: 60 minutos.</b> Resuelve sin mirar la guía. Las soluciones están al final del documento — corrígete con honestidad. Si fallas en P3, vuelve a estudiar el Patrón 8 antes de hacer el examen real.</p>
+</div>
+
+<h3>Problema 1 (15 min · Patrones P2-P3)</h3>
+<div class="box">
+  <p>Una fuerza $\vec{F} = 30\vec{i} - 40\vec{j} + 20\vec{k}$ N se aplica en el punto $Q(2, 1, -1)$ m.</p>
+  <ol>
+    <li>Calcula el momento de $\vec{F}$ respecto al punto $P(1, 0, 2)$.</li>
+    <li>Calcula el momento de $\vec{F}$ respecto al eje que pasa por $P$ con dirección $\hat{u}=\frac{1}{\sqrt{2}}(\vec{i}+\vec{k})$.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3>Problema 2 (20 min · Patrones P5-P6-P7)</h3>
+<div class="box">
+  <p>Sobre un sólido rígido actúan tres fuerzas y un par puro. Origen en O(0,0,0). Datos:</p>
+  <ul>
+    <li>$\vec{F}_1 = 10\vec{i}$ N en $A_1(0,2,0)$</li>
+    <li>$\vec{F}_2 = -10\vec{j}$ N en $A_2(3,0,0)$</li>
+    <li>$\vec{F}_3 = 5\vec{k}$ N en $A_3(0,0,4)$</li>
+    <li>Par puro $\vec{C} = 20\vec{j}$ N·m</li>
+  </ul>
+  <ol>
+    <li>Calcula la resultante $\vec{R}$ y el momento $\vec{M}_O$.</li>
+    <li>Calcula el invariante escalar $\tau$ y el momento mínimo $\vec{M}_{\min}$.</li>
+    <li>Halla las coordenadas del punto del eje central más cercano al origen.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 3 (25 min · Patrón P8 — nivel examen ★)</h3>
+<div class="box exam">
+  <p>De un sistema de vectores deslizantes se conocen:</p>
+  <ul>
+    <li>La resultante tiene módulo $|\vec{R}|=5$ y solo tiene componentes en $\vec{i}$ y $\vec{k}$ (no tiene componente $\vec{j}$).</li>
+    <li>El eje central pasa por el origen $O(0,0,0)$.</li>
+    <li>El momento en el punto $A(0,3,0)$ tiene componentes $M_{A,x}=17$ y $M_{A,z}=6$ (N·m).</li>
+  </ul>
+  <ol>
+    <li>Halla las componentes de $\vec{R}$.</li>
+    <li>Calcula el invariante escalar $\tau$.</li>
+    <li>Halla los vectores $\vec{M}_O$ y $\vec{M}_A$ completos.</li>
+  </ol>
+  <p style="font-size:9pt;color:#666;margin-top:2mm"><i>Pista: como el eje central pasa por O, $\vec{M}_O = \vec{M}_{\min}$, paralelo a $\vec{R}$. Usa F10 para pasar de $\vec{M}_O$ a $\vec{M}_A$.</i></p>
+</div>
+<div class="sim-blank"></div>
+<div class="sim-blank"></div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PÁGINA 9-11 · SOLUCIONES
+══════════════════════════════════════════════════════════════════ -->
+<div class="pb"></div>
+
+<h2>✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado 1 — Momento respecto a P</h4>
+<p>$\vec{r}_{PQ} = Q - P = (2-1)\vec{i} + (1-0)\vec{j} + (-1-2)\vec{k} = \vec{i}+\vec{j}-3\vec{k}$ m</p>
+<p>Aplicamos F7:</p>
+<div class="box" style="text-align:center">
+  $$\vec{M}_P = \vec{r}_{PQ}\times\vec{F} = \begin{vmatrix}\vec{i}&\vec{j}&\vec{k}\\1&1&-3\\30&-40&20\end{vmatrix}$$
+</div>
+<p>Componente $\vec{i}$: $(1)(20) - (-3)(-40) = 20 - 120 = -100$</p>
+<p>Componente $\vec{j}$: $-[(1)(20) - (-3)(30)] = -[20+90] = -110$</p>
+<p>Componente $\vec{k}$: $(1)(-40) - (1)(30) = -40 - 30 = -70$</p>
+<div class="box key" style="text-align:center">
+  $$\boxed{\vec{M}_P = -100\vec{i} - 110\vec{j} - 70\vec{k}\ \text{N·m}}$$
+</div>
+
+<h4>Apartado 2 — Momento respecto al eje $\hat{u}=\frac{1}{\sqrt{2}}(\vec{i}+\vec{k})$ por P</h4>
+<p>Por F8: $M_u = \hat{u}\cdot\vec{M}_P$ (porque P es un punto del eje):</p>
+<div class="box" style="text-align:center">
+  $$M_u = \frac{1}{\sqrt{2}}(1,0,1)\cdot(-100,-110,-70) = \frac{-100 + 0 + (-70)}{\sqrt{2}} = \frac{-170}{\sqrt{2}}$$
+</div>
+<div class="box key" style="text-align:center">
+  $$\boxed{M_u = -120{,}21\ \text{N·m}}$$
+</div>
+
+<h3 class="pb">Solución Problema 2</h3>
+
+<h4>Apartado 1 — Resultante y momento en O</h4>
+<p>$\vec{R} = \vec{F}_1+\vec{F}_2+\vec{F}_3 = 10\vec{i} - 10\vec{j} + 5\vec{k}$ N → $|\vec{R}|=\sqrt{100+100+25}=\sqrt{225}=15$ N</p>
+<p><b>Momentos respecto a O:</b></p>
+<p>$\vec{M}_{F_1} = (0,2,0)\times(10,0,0)$. Calculo: $\vec{j}\times\vec{i}=-\vec{k}$ → $\vec{M}_{F_1} = 2\cdot10\cdot(-\vec{k}) = -20\vec{k}$.</p>
+<p>$\vec{M}_{F_2} = (3,0,0)\times(0,-10,0) = 3\cdot(-10)\cdot(\vec{i}\times\vec{j}) = -30\vec{k}$.</p>
+<p>$\vec{M}_{F_3} = (0,0,4)\times(0,0,5) = 0$ (paralelos).</p>
+<p>Más par puro: $+20\vec{j}$.</p>
+<div class="box key" style="text-align:center">
+  $$\boxed{\vec{R} = 10\vec{i} - 10\vec{j} + 5\vec{k}\ \text{N},\qquad \vec{M}_O = 20\vec{j} - 50\vec{k}\ \text{N·m}}$$
+</div>
+
+<h4>Apartado 2 — Invariantes y momento mínimo</h4>
+<p>$\tau = \vec{R}\cdot\vec{M}_O = (10)(0) + (-10)(20) + (5)(-50) = 0 - 200 - 250 = -450$ N²m.</p>
+<p>$\vec{M}_{\min} = \dfrac{\tau}{|\vec{R}|^2}\vec{R} = \dfrac{-450}{225}(10\vec{i}-10\vec{j}+5\vec{k}) = -2(10\vec{i}-10\vec{j}+5\vec{k})$.</p>
+<div class="box key" style="text-align:center">
+  $$\boxed{\tau = -450\ \text{N}^2\text{m},\qquad \vec{M}_{\min} = -20\vec{i}+20\vec{j}-10\vec{k}\ \text{N·m}}$$
+</div>
+
+<h4>Apartado 3 — Punto del eje central más cercano a O</h4>
+<p>$\vec{r}_0 = \dfrac{\vec{R}\times\vec{M}_O}{|\vec{R}|^2}$</p>
+<p>$\vec{R}\times\vec{M}_O = (10,-10,5)\times(0,20,-50)$:</p>
+<p>Comp. $\vec{i}$: $(-10)(-50) - (5)(20) = 500 - 100 = 400$</p>
+<p>Comp. $\vec{j}$: $-[(10)(-50) - (5)(0)] = -[-500] = 500$</p>
+<p>Comp. $\vec{k}$: $(10)(20) - (-10)(0) = 200$</p>
+<p>$\vec{r}_0 = (400, 500, 200)/225 = (1{,}778; 2{,}222; 0{,}889)$ m</p>
+<div class="box key" style="text-align:center">
+  $$\boxed{\vec{r}_0 = 1{,}778\,\vec{i} + 2{,}222\,\vec{j} + 0{,}889\,\vec{k}\ \text{m}}$$
+</div>
+
+<h3 class="pb">Solución Problema 3 (★ nivel examen)</h3>
+
+<h4>Apartado 1 — Componentes de $\vec{R}$</h4>
+<p>Como el eje central pasa por O: $\vec{M}_O \parallel \vec{R}$, es decir $\vec{M}_O = c\,\vec{R}$ con $c = \tau/|\vec{R}|^2$.</p>
+<p>Llamamos $\vec{R} = R_x\vec{i} + R_z\vec{k}$ (sin componente $\vec{j}$). $|\vec{R}|^2 = 25$. Entonces:</p>
+<div class="box" style="text-align:center">$$\vec{M}_O = \dfrac{\tau}{25}(R_x\vec{i}+R_z\vec{k})$$</div>
+<p>Aplicamos F10 entre O y A con $\vec{r}_{AO} = -3\vec{j}$:</p>
+<p>$\vec{r}_{AO}\times\vec{R} = -3\vec{j}\times(R_x\vec{i}+R_z\vec{k}) = -3R_x(\vec{j}\times\vec{i}) - 3R_z(\vec{j}\times\vec{k})$</p>
+<p>$\vec{j}\times\vec{i}=-\vec{k}$, $\vec{j}\times\vec{k}=\vec{i}$:</p>
+<p>$\vec{r}_{AO}\times\vec{R} = 3R_x\vec{k} - 3R_z\vec{i} = -3R_z\vec{i}+3R_x\vec{k}$</p>
+<p>Por tanto:</p>
+<div class="box" style="text-align:center">
+  $$\vec{M}_A = \left(\dfrac{\tau R_x}{25} - 3R_z\right)\vec{i} + \left(\dfrac{\tau R_z}{25} + 3R_x\right)\vec{k}$$
+</div>
+<p>Imponemos las dos condiciones de $\vec{M}_A$:</p>
+<div class="box" style="text-align:center">
+  $$\dfrac{\tau R_x}{25} - 3R_z = 17 \quad\text{(1)}$$
+  $$\dfrac{\tau R_z}{25} + 3R_x = 6 \quad\text{(2)}$$
+</div>
+<p>Junto con $R_x^2 + R_z^2 = 25$ tenemos 3 ecuaciones para 3 incógnitas ($R_x, R_z, \tau$).</p>
+
+<h4>Resolución del sistema</h4>
+<p>Multiplico (1) por $R_x$ y (2) por $R_z$:</p>
+<p>$\dfrac{\tau R_x^2}{25} - 3R_xR_z = 17R_x$</p>
+<p>$\dfrac{\tau R_z^2}{25} + 3R_xR_z = 6R_z$</p>
+<p>Sumando: $\dfrac{\tau(R_x^2+R_z^2)}{25} = 17R_x + 6R_z$.</p>
+<p>Como $R_x^2+R_z^2=25$: $\tau = 17R_x + 6R_z$. ⓪</p>
+
+<p>Ahora multiplico (1) por $R_z$ y (2) por $-R_x$:</p>
+<p>$\dfrac{\tau R_xR_z}{25} - 3R_z^2 = 17R_z$</p>
+<p>$-\dfrac{\tau R_xR_z}{25} - 3R_x^2 = -6R_x$</p>
+<p>Sumando: $-3(R_x^2+R_z^2) = 17R_z - 6R_x$ → $-75 = 17R_z - 6R_x$ → $6R_x - 17R_z = 75$. ①</p>
+
+<p>Junto con $R_x^2 + R_z^2 = 25$. De ①: $R_x = (75 + 17R_z)/6$.</p>
+<p>Sustituyendo: $((75+17R_z)/6)^2 + R_z^2 = 25$ → $(75+17R_z)^2 + 36R_z^2 = 900$.</p>
+<p>$5625 + 2550R_z + 289R_z^2 + 36R_z^2 = 900$ → $325R_z^2 + 2550R_z + 4725 = 0$.</p>
+<p>Dividiendo por 25: $13R_z^2 + 102R_z + 189 = 0$.</p>
+<p>Discriminante: $102^2 - 4\cdot 13\cdot 189 = 10404 - 9828 = 576 = 24^2$.</p>
+<p>$R_z = (-102 \pm 24)/26$ → $R_z = -3$ o $R_z = -4{,}85$.</p>
+<p>Caso $R_z = -3$: $R_x = (75 + 17(-3))/6 = (75-51)/6 = 4$. Verifico: $4^2+3^2=25$ ✓.</p>
+
+<div class="box key" style="text-align:center">$\boxed{\vec{R} = 4\vec{i} - 3\vec{k}\ \text{(N)},\quad |\vec{R}|=5}$</div>
+
+<h4>Apartado 2 — Invariante escalar</h4>
+<p>De ⓪: $\tau = 17(4) + 6(-3) = 68 - 18 = 50$.</p>
+<div class="box key" style="text-align:center">$\boxed{\tau = 50\ \text{N}^2\text{m}}$</div>
+
+<h4>Apartado 3 — Momentos $\vec{M}_O$ y $\vec{M}_A$</h4>
+<p>$\vec{M}_O = (\tau/25)\vec{R} = 2\vec{R} = 2(4\vec{i}-3\vec{k}) = 8\vec{i} - 6\vec{k}$ N·m.</p>
+<p>$\vec{M}_A = \vec{M}_O + \vec{r}_{AO}\times\vec{R} = (8\vec{i}-6\vec{k}) + (-3(-3)\vec{i} + 3(4)\vec{k}) = (8+9)\vec{i} + (-6+12)\vec{k} = 17\vec{i}+6\vec{k}$ ✓</p>
+<div class="box key" style="text-align:center">$\boxed{\vec{M}_O = 8\vec{i} - 6\vec{k}\ \text{N·m},\qquad \vec{M}_A = 17\vec{i} + 6\vec{k}\ \text{N·m}}$</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte de este problema</div>
+  <p>El procedimiento del Patrón 8 es: <b>(1)</b> contar incógnitas, <b>(2)</b> traducir cada condición en ecuaciones, <b>(3)</b> usar F10 para conectar momentos en distintos puntos, <b>(4)</b> resolver el sistema lineal/cuadrático, <b>(5)</b> verificar.</p>
+  <p>El truco que ahorra cuentas: combinar las ecuaciones para que aparezca $|\vec{R}|^2 = R_x^2+R_z^2$ ya conocido. Aquí, multiplicando (1)·$R_x$ + (2)·$R_z$ se obtiene directamente $\tau$.</p>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     PÁGINA FINAL · PLAN DE ESTUDIO MÍNIMO
+══════════════════════════════════════════════════════════════════ -->
+<div class="pb"></div>
+
+<h2>📚 Plan de estudio mínimo (orden recomendado)</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas de estudio</div>
+  <ol>
+    <li><b>Memoriza F1-F12</b> (1h) — sobre todo F7 (momento), F10 (cambio de momento) y F12 (momento mínimo).</li>
+    <li><b>Haz dos ejercicios sencillos</b> (30 min) — Ejercicio 1.2 (momento 2D) y Ejercicio 1.4 (momento respecto a eje).</li>
+    <li><b>Resuelve un ejercicio del Patrón 8</b> (1h) — Ejercicio 1.13 o 1.14, con calma, contrastando con la solución.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Memorización de fórmulas + ejercicios 1.1, 1.2, 1.3, 1.4 (cosenos, momentos en punto y eje).</li>
+    <li><b>Día 2:</b> Ejercicios 1.5, 1.6, 1.10 (invariantes, par, eje central — patrones 5/6/7).</li>
+    <li><b>Día 3:</b> Ejercicios 1.7, 1.8, 1.9, 1.11 (sistemas equivalentes y patrón 8 introductorio).</li>
+    <li><b>Día 4:</b> Ejercicios 1.12, 1.13, 1.14 (patrón 8 avanzado).</li>
+    <li><b>Día 5:</b> Ejercicios 1.15, 1.16, 1.17, 1.18 (patrón 8 nivel examen — los 4 con momentos en varios puntos).</li>
+    <li><b>Día 6:</b> Mini-simulacro de esta guía sin apuntes, cronometrado.</li>
+    <li><b>Día 7:</b> Repaso solo de los puntos en los que hayas fallado.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">Si tienes solo 1 día (modo emergencia)</div>
+  <ol>
+    <li><b>Mañana (3h):</b> F7, F10, F11, F12 + Ejercicios 1.13 y 1.14 con la solución delante (estudias el método, no resuelves a ciegas).</li>
+    <li><b>Tarde (3h):</b> Ejercicio 1.15 a ciegas (45 min) + corregir + Ejercicio 1.5 a ciegas (45 min) + corregir + repaso de errores.</li>
+    <li><b>Noche:</b> Mini-simulacro de esta guía. Si lo apruebas, te presentas. Si no, anota qué patrón has fallado y duerme.</li>
+  </ol>
+</div>
+
+<h2>🎯 Lista priorizada de ejercicios</h2>
+
+<table>
+  <thead><tr><th>Prioridad</th><th>Ejercicio</th><th>Patrón</th><th>Por qué</th></tr></thead>
+  <tbody>
+    <tr><td class="center"><b>★★★</b></td><td>1.13</td><td>P8</td><td>Patrón estrella examen — eje central + momento mínimo + sistema 4×4</td></tr>
+    <tr class="alt"><td class="center"><b>★★★</b></td><td>1.14</td><td>P8</td><td>Unión de dos sistemas — uso intensivo de F10</td></tr>
+    <tr><td class="center"><b>★★★</b></td><td>1.15</td><td>P8</td><td>Momentos en 3 puntos + equiproyectiva — clásico examen</td></tr>
+    <tr class="alt"><td class="center"><b>★★★</b></td><td>1.5</td><td>P6</td><td>Resultante + invariantes + momento mínimo en un solo problema</td></tr>
+    <tr><td class="center"><b>★★</b></td><td>1.10</td><td>P5+P7</td><td>Reducción + distancia al eje central (sistema plano)</td></tr>
+    <tr class="alt"><td class="center"><b>★★</b></td><td>1.16, 1.17</td><td>P8</td><td>Variantes del 1.15 con condiciones distintas</td></tr>
+    <tr><td class="center"><b>★★</b></td><td>1.18</td><td>P8</td><td>Vectores paralelos + plano de aplicación — caso especial</td></tr>
+    <tr class="alt"><td class="center"><b>★</b></td><td>1.2, 1.3, 1.4</td><td>P2, P3</td><td>Calentamiento — momentos básicos</td></tr>
+    <tr><td class="center"><b>★</b></td><td>1.7, 1.9, 1.11</td><td>P5, P7</td><td>Sistemas equivalentes y momento nulo</td></tr>
+    <tr class="alt"><td class="center">○</td><td>1.1, 1.6, 1.8, 1.12</td><td>P1, P4, P8</td><td>Si te sobra tiempo — variedad de patrones</td></tr>
+  </tbody>
+</table>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 4 fórmulas que te salvan el 80% del examen</div>
+  <ol>
+    <li><b>F7 · Momento respecto a un punto:</b> $\vec{M}_P = \vec{r}_{PQ}\times\vec{F}$ ($\vec{r}_{PQ}$ va de P al punto de aplicación).</li>
+    <li><b>F10 · Cambio de momento:</b> $\vec{M}_B = \vec{M}_A + \vec{r}_{BA}\times\vec{R}$.</li>
+    <li><b>F11 · Invariante escalar:</b> $\tau = \vec{R}\cdot\vec{M}_P$ (constante en todo el espacio).</li>
+    <li><b>F12 · Momento mínimo y eje central:</b> $\vec{M}_{\min}=\dfrac{\tau}{|\vec{R}|^2}\vec{R}$. Punto más cercano a O del eje central: $\vec{r}_0 = \dfrac{\vec{R}\times\vec{M}_O}{|\vec{R}|^2}$.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 8</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Cuento incógnitas →<br>
+    traduzco condiciones a ecuaciones →<br>
+    uso F10 entre puntos →<br>
+    aplico equiproyectiva si simplifica →<br>
+    resuelvo sistema lineal →<br>
+    verifico con un punto extra.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Guía generada automáticamente · Mecánica Aplicada UPV/EHU · Tema 1 — Fundamentos de Cálculo Vectorial<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

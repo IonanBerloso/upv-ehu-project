@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T2 Geometría de Masas · Mecánica Aplicada UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0}
+  ul,ol{margin:1.5mm 0 1.5mm 6mm}
+  li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000}
+  em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00}
+  .box.exam .box-title{color:#b00}
+  .box.tip .box-title{color:#0a6}
+  .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center}
+  tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm}
+  .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00}
+  .pattern-freq.muy-alta{background:#700}
+  .pattern-freq.media{background:#c80}
+  .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always}
+  .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+  .sim-mini{border:1px dashed #aaa;height:25mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 6mm,#eee 6mm 6.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 2 — Geometría de Masas y Superficies Planas</h1>
+  <div class="cover-sub">Mecánica Aplicada · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>2 de 8 (Estática)</div>
+    <div><b>Ejercicios</b>17 totales · 5 nivel examen</div>
+    <div><b>Patrones</b>7 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>10 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:20%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Centro de gravedad por <b>integración directa</b> (figuras simples, curvas paramétricas)</td><td class="center">2.1, 2.2, 2.3, 2.4, 2.6</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Centro de gravedad por <b>superposición</b> (figuras compuestas con huecos)</td><td class="center">2.5, 2.7, 2.15, 2.17</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Volúmenes de revolución (<b>Pappus-Guldin</b>)</td><td class="center">2.6, 2.8, 2.10, 2.15</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Momento de inercia por <b>integración directa</b> (área o masa)</td><td class="center">2.11, 2.12, 2.13, 2.14</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P5</b></td><td>Momento de inercia por <b>superposición + Steiner</b></td><td class="center">2.15, 2.16, 2.17</td><td class="center">Muy alta</td></tr>
+    <tr class="alt"><td class="center"><b>P6</b></td><td><b>Producto de inercia</b> $C_{xy}$ y Steiner para productos</td><td class="center">2.13, 2.17</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P7</b></td><td>Sistema de barras / cuerpos 3D — CG y momentos respecto a un punto fijo</td><td class="center">2.16</td><td class="center">Media</td></tr>
+    <tr class="alt" style="background:#b00;color:#fff"><td class="center"><b>P8 ★</b></td><td><b>Figura compuesta hueca completa</b> — CG, momentos centroidales, producto de inercia y volumen de revolución</td><td class="center">2.15, 2.17</td><td class="center"><b>MUY ALTA</b></td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p>El examen de T2 casi siempre es una figura plana compuesta con huecos (rectángulo + agujero / marco / placa con muescas). Te piden secuencialmente: <b>(1) CG</b>, <b>(2) Inercias respecto a ejes por O</b>, <b>(3) Inercias centroidales</b>, <b>(4) Producto de inercia</b>, y a veces <b>(5) volumen de revolución</b>.</p>
+  <p>Las dos herramientas estrella son <b>Steiner</b> ($I = I_c + Ad^2$) y la <b>tabla de figuras simples</b> que tienes que llevar memorizada.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Memoriza la <b>tabla de figuras simples</b> (rectángulo, triángulo, círculo, semicírculo, cuarto de círculo) — área, CG e inercias centroidales.</li>
+    <li>Memoriza Steiner y Pappus-Guldin con todas sus variantes.</li>
+    <li>Estudia los <b>8 patrones</b> con su receta paso a paso.</li>
+    <li>Haz el <b>mini-simulacro</b> sin mirar nada, con cronómetro a 60 minutos.</li>
+    <li>Corrige y anota errores en el cuaderno.</li>
+  </ol>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 10 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Centroide</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F1 · Centroide compuesto (área)</div>
+    <div class="formula-body">$\bar{x} = \dfrac{\sum A_i\,\bar{x}_i}{\sum A_i},\quad \bar{y} = \dfrac{\sum A_i\,\bar{y}_i}{\sum A_i}$</div>
+    <div class="formula-note">Para huecos: $A_i < 0$ (área negativa).</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Centroide por integración</div>
+    <div class="formula-body">$\bar{x} = \dfrac{1}{A}\int x\,dA,\quad \bar{y} = \dfrac{1}{A}\int y\,dA$</div>
+    <div class="formula-note">Si la masa no es uniforme, usa $\rho\,dA$ en vez de $dA$.</div>
+  </div>
+</div>
+
+<h3>2 · Momentos de inercia (de área)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Definición</div>
+    <div class="formula-body">$I_x = \int y^2\,dA,\quad I_y = \int x^2\,dA$</div>
+    <div class="formula-note">Unidades: longitud⁴ (cm⁴, m⁴…).</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Momento polar</div>
+    <div class="formula-body">$J_O = I_x + I_y = \int r^2\,dA$</div>
+    <div class="formula-note">Distancia $r^2 = x^2 + y^2$ al origen.</div>
+  </div>
+</div>
+
+<h3>3 · Producto de inercia</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F5 · Definición</div>
+    <div class="formula-body">$C_{xy} = \int xy\,dA$</div>
+    <div class="formula-note">Puede ser negativo. Si la figura es simétrica respecto a un eje, $C_{xy}=0$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Steiner para productos</div>
+    <div class="formula-body">$C_{xy} = C_{x'y'} + A\,\bar{x}\,\bar{y}$</div>
+    <div class="formula-note">$x'y'$ ejes centroidales paralelos. $\bar{x},\bar{y}$ coordenadas del CG.</div>
+  </div>
+</div>
+
+<h3>4 · Steiner (ejes paralelos) y radio de giro</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F7 · ★ Teorema de Steiner</div>
+    <div class="formula-body">$\boxed{I = I_c + A\,d^2}$</div>
+    <div class="formula-note">$I_c$ centroidal, $d$ distancia entre ejes paralelos. <b>Siempre</b> $I \ge I_c$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Radio de giro</div>
+    <div class="formula-body">$k = \sqrt{\dfrac{I}{A}}$</div>
+    <div class="formula-note">Distancia equivalente donde concentras toda el área.</div>
+  </div>
+</div>
+
+<h3>5 · Volúmenes y áreas de revolución (Pappus-Guldin)</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F9 · ★ Pappus-Guldin (volumen)</div>
+    <div class="formula-body">$V = 2\pi\,\bar{y}\,A$</div>
+    <div class="formula-note">$A$ área plana, $\bar{y}$ distancia del CG al eje de giro. La figura no debe cruzar el eje.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Pappus-Guldin (superficie lateral)</div>
+    <div class="formula-body">$S = 2\pi\,\bar{y}\,L$</div>
+    <div class="formula-note">$L$ longitud del perfil curvo, $\bar{y}$ del centroide del perfil al eje.</div>
+  </div>
+</div>
+
+<h2>📋 Tabla maestra de figuras (memorizar)</h2>
+
+<table>
+  <thead><tr><th>Figura</th><th class="center">Área $A$</th><th class="center">CG $(\bar{x},\bar{y})$</th><th class="center">$I_{xc}$ (centroidal)</th><th class="center">$I_{yc}$ (centroidal)</th></tr></thead>
+  <tbody>
+    <tr><td><b>Rectángulo</b> $b\times h$</td><td class="center">$bh$</td><td class="center">$(b/2,\ h/2)$</td><td class="center">$\dfrac{bh^3}{12}$</td><td class="center">$\dfrac{hb^3}{12}$</td></tr>
+    <tr class="alt"><td><b>Triángulo</b> base $b$, altura $h$ (vértice arriba)</td><td class="center">$\dfrac{bh}{2}$</td><td class="center">$(b/3,\ h/3)$ desde vértice<br>o $(0,\ h/3)$ desde base</td><td class="center">$\dfrac{bh^3}{36}$</td><td class="center">$\dfrac{hb^3}{36}$</td></tr>
+    <tr><td><b>Círculo</b> radio $R$</td><td class="center">$\pi R^2$</td><td class="center">$(0,0)$ desde centro</td><td class="center">$\dfrac{\pi R^4}{4}$</td><td class="center">$\dfrac{\pi R^4}{4}$</td></tr>
+    <tr class="alt"><td><b>Semicírculo</b> radio $R$ (eje horizontal)</td><td class="center">$\dfrac{\pi R^2}{2}$</td><td class="center">$(0,\ \dfrac{4R}{3\pi})$</td><td class="center">$\approx 0{,}1098\,R^4$</td><td class="center">$\dfrac{\pi R^4}{8}$</td></tr>
+    <tr><td><b>Cuarto de círculo</b> radio $R$</td><td class="center">$\dfrac{\pi R^2}{4}$</td><td class="center">$(\dfrac{4R}{3\pi},\ \dfrac{4R}{3\pi})$</td><td class="center">$\approx 0{,}055\,R^4$</td><td class="center">$\approx 0{,}055\,R^4$</td></tr>
+    <tr class="alt"><td><b>Arco de circunferencia</b> ángulo $2\alpha$, radio $R$</td><td class="center">— (longitud $L=2\alpha R$)</td><td class="center">$\bar{x}=\dfrac{R\sin\alpha}{\alpha}$ (eje sim.)</td><td class="center">—</td><td class="center">—</td></tr>
+  </tbody>
+</table>
+
+<div class="box tip">
+  <div class="box-title">💡 Inercias respecto al lado (no centroidal)</div>
+  <p>Rectángulo respecto al lado base: $I_x = bh^3/3$ (Steiner: $bh^3/12 + bh\cdot(h/2)^2 = bh^3/12 + bh^3/4 = bh^3/3$).<br>
+  Triángulo respecto al lado base: $I_x = bh^3/12$ (Steiner desde centroide a $h/3$).</p>
+</div>
+
+<h2 class="pb">🎯 Los 8 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">CG por integración directa</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> figura definida por una curva (parábola, exponencial, $y=Kx^n$). "Calcula el centroide del área bajo la curva".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Elige el tipo de tira</strong>Tiras verticales $dA = y\,dx$ si la función es $y(x)$. Tiras horizontales $dA = x\,dy$ si es más cómodo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula el área $A$</strong>$A = \int dA$ con los límites del enunciado.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula los momentos primeros</strong>$Q_y = \int x\,dA$ (para $\bar{x}$) y $Q_x = \int y_{cg}\,dA$ (para $\bar{y}$). En tiras verticales el centroide de cada tira está a $y/2$ → $Q_x = \int (y/2)\cdot y\,dx$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Coordenadas del CG</strong>$\bar{x} = Q_y/A$, $\bar{y} = Q_x/A$.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">CG por superposición (figura compuesta con huecos)</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> placa con muescas, marco, rectángulo con agujero. Construir tabla.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Descompón en figuras simples</strong>Identifica rectángulos, triángulos, círculos. Los huecos van como áreas <b>negativas</b>.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tabla con $A_i, \bar{x}_i, \bar{y}_i$</strong>Una fila por figura. Las coordenadas del centroide se leen en el sistema xy del enunciado.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Suma ponderada</strong>$\bar{x}_G = \sum A_i \bar{x}_i / \sum A_i$, idem para $\bar{y}_G$. Verifica que $\sum A_i = A_{total}$.</div></div>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Volumen / superficie de revolución (Pappus-Guldin)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula el volumen al girar la figura alrededor del eje x". Suele ser un apartado final.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica eje de giro y figura</strong>El eje no debe cortar la figura (si lo hace, divide y aplica por separado).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula área $A$ y CG $\bar{y}$ (perpendicular al eje)</strong>Si el eje es x, te interesa $\bar{y}$ (distancia del CG al eje). Si el eje es y, $\bar{x}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica $V = 2\pi\bar{y} A$</strong>Si te piden superficie lateral, $S = 2\pi\bar{y}\,L$ con $L$ longitud del perfil.</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Momento de inercia por integración directa</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> calcular $I_x$, $I_y$ de una región limitada por una curva.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Para $I_y$: tiras verticales</strong>$dI_y = x^2\,dA$. Si la tira tiene altura $h(x)$ y anchura $dx$: $dA = h(x)\,dx$ → $I_y = \int x^2 h(x)\,dx$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para $I_x$: tiras horizontales (más cómodo)</strong>$dI_x = y^2\,dA$. Si la tira tiene anchura $w(y)$ y altura $dy$: $I_x = \int y^2 w(y)\,dy$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Atajo si solo conoces $y(x)$</strong>$I_x = \int_0^a \dfrac{[y(x)]^3}{3}\,dx$ (integrando $\int_0^{y} y^2\,dy = y^3/3$ a lo largo de la tira vertical).</div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Inercia por superposición + Steiner</span>
+    <span class="pattern-freq alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> figura compuesta. Calcular $I_x, I_y$ respecto a un eje no centroidal o respecto al centroide global.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Calcula CG global $(\bar{x}_G, \bar{y}_G)$</strong>Patrón P2.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para cada figura, escribe $I_{ci}$ centroidal de tabla</strong>Rectángulo: $bh^3/12$. Círculo: $\pi R^4/4$. Etc.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Steiner para cada figura</strong>Distancia $d_i$ desde el centroide local hasta el eje global elegido (puede ser un eje por O o por G).<br>$I_i = I_{ci} + A_i\,d_i^2$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Suma todo</strong>$I_{total} = \sum I_i$. Para huecos: el término entero del hueco se resta (tanto $I_c$ como $A\,d^2$).</div></div>
+  </div>
+  <div class="box warn">
+    <div class="box-title">⚠ Error muy común</div>
+    <p>NO se puede usar Steiner desde un eje no-centroidal a otro eje no-centroidal directamente. Siempre tienes que pasar por el centroide. Si te dan $I_O$ y quieres $I_A$: primero $I_G = I_O - A\,d_{OG}^2$, después $I_A = I_G + A\,d_{GA}^2$.</p>
+  </div>
+</div>
+
+<!-- P6 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P6</span>
+    <span class="pattern-name">Producto de inercia $C_{xy}$</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula el producto de inercia respecto a los ejes centroidales".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Si la figura es simétrica respecto a un eje, $C_{xy} = 0$</strong>Atajo: si hay simetría axial respecto a un eje cartesiano, el producto se anula.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para rectángulo con esquina en O</strong>$C_{xy}|_O = b^2 h^2 / 4$. Centroidal $C_{x'y'}|_G = 0$ (por simetría).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Steiner para productos: $C_{xy} = C_{x'y'} + A\,\bar{x}\,\bar{y}$</strong>$\bar{x},\bar{y}$ son las coordenadas del CG en el sistema $xy$. Aquí los signos importan.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para figura compuesta con huecos</strong>$C_{xy,total} = \sum (C_{x'y',i} + A_i\,\bar{x}_i\,\bar{y}_i)$ con áreas con signo (huecos negativos).</div></div>
+  </div>
+</div>
+
+<!-- P7 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P7</span>
+    <span class="pattern-name">Sistema de barras / cuerpos 3D</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> conjunto de barras soldadas. Calcular CG del sistema, $I_O$, $I_G$.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Cada barra: masa $m_i$ y centroide $(x_i, y_i)$</strong>Una barra homogénea de longitud $L$ tiene su CG en su punto medio.</div></div>
+    <div class="paso"><div class="paso-body"><strong>CG del sistema</strong>$x_G = \sum m_i x_i / M$, $y_G = \sum m_i y_i / M$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$I_O$ de cada barra (eje fijo)</strong>Barra de longitud $L$ con un extremo en O: $I_O = \frac{1}{3}m L^2$. Si O no está en el extremo: usar Steiner desde el centroide de la barra ($I_c = \frac{1}{12}mL^2$) hasta O.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$I_O$ del sistema</strong>Suma: $I_O = \sum I_{O,i}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Steiner inverso: $I_G = I_O - M\,d_{OG}^2$</strong>Para hallar $I_G$ a partir de $I_O$ del sistema completo.</div></div>
+  </div>
+</div>
+
+<!-- P8 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P8 ★</span>
+    <span class="pattern-name" style="color:#b00">Figura compuesta hueca completa (PATRÓN ESTRELLA EXAMEN)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> casi siempre. Una figura compuesta (rectángulo + agujero / marco / placa con muesca) con todos los apartados de geometría de masas.</p>
+
+  <h4>Receta universal (Patrón 8)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Tabla maestra de la figura</strong>Una fila por sub-figura. Columnas: $A_i$ (con signo), $\bar{x}_i$, $\bar{y}_i$, $I_{xc,i}$, $I_{yc,i}$, $C_{xy,i}|_{centroidal}$ (suele ser 0 si hay simetría). Esta tabla es <b>el 80% del problema</b>.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 1 — CG global</strong>$\bar{x}_G = \sum A_i \bar{x}_i / \sum A_i$, igual para $\bar{y}_G$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 2 — Inercias respecto a ejes en O</strong>Para cada sub-figura: $I_{x,i}|_O = I_{xc,i} + A_i\,\bar{y}_i^2$. Suma con signos.<br>$I_{x}|_O = \sum I_{x,i}|_O$, igual para $I_y|_O$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 3 — Inercias centroidales</strong>Steiner inverso desde O: $I_{xc}|_G = I_x|_O - A_{tot}\,\bar{y}_G^2$.<br>$I_{yc}|_G = I_y|_O - A_{tot}\,\bar{x}_G^2$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 4 — Producto de inercia centroidal</strong>$C_{xy}|_O = \sum (C_{x'y',i}|_{cent} + A_i\,\bar{x}_i\,\bar{y}_i)$. Después: $C_{xy}|_G = C_{xy}|_O - A_{tot}\,\bar{x}_G\,\bar{y}_G$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Apartado 5 (si lo piden) — Volumen de revolución</strong>Pappus-Guldin: $V = 2\pi\,\bar{y}_G\,A_{tot}$ si el eje de giro es x. Cuidado: solo si el eje no corta la figura.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Tabla maestra — el formato que te ahorra errores</div>
+    <table style="font-size:8.5pt">
+      <thead><tr><th>Fig.</th><th>$A_i$</th><th>$\bar{x}_i$</th><th>$\bar{y}_i$</th><th>$I_{xc,i}$</th><th>$I_{yc,i}$</th><th>$A_i\bar{y}_i^2$</th><th>$A_i\bar{x}_i^2$</th><th>$A_i\bar{x}_i\bar{y}_i$</th></tr></thead>
+      <tbody>
+        <tr><td>1 (Rect)</td><td>+</td><td>...</td><td>...</td><td>$bh^3/12$</td><td>$hb^3/12$</td><td>...</td><td>...</td><td>...</td></tr>
+        <tr class="alt"><td>2 (Hueco)</td><td>−</td><td>...</td><td>...</td><td>$-\pi R^4/4$</td><td>$-\pi R^4/4$</td><td>...</td><td>...</td><td>...</td></tr>
+        <tr><td><b>Σ</b></td><td>$A_{tot}$</td><td>—</td><td>—</td><td>—</td><td>—</td><td>$I_x|_O$ — col 5+7</td><td>$I_y|_O$ — col 6+8</td><td>$C_{xy}|_O$ — col 9 + sim</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:9pt;color:#444;margin-top:1.5mm"><i>El truco es completar columnas y luego sumar. Las inercias en O se obtienen sumando columna_centroidal + columna_Steiner.</i></p>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en este tema</div>
+  <ol>
+    <li><b>Olvidar el signo del hueco.</b> Las áreas de huecos van con signo negativo en TODA la suma, incluyendo $I_c$, Steiner y producto de inercia.</li>
+    <li><b>Aplicar Steiner desde un eje no centroidal.</b> Steiner solo va desde el eje centroidal. Para pasar de un eje no-centroidal A a otro B: pasa por C primero.</li>
+    <li><b>Confundir $bh^3/12$ con $bh^3/3$.</b> El primero es el centroidal, el segundo es respecto al lado.</li>
+    <li><b>Olvidar el cuadrado en Steiner.</b> $A\,d^2$, no $A\,d$.</li>
+    <li><b>Producto de inercia con signo equivocado.</b> $C_{xy} = C_{x'y'} + A\,\bar{x}\,\bar{y}$ — los signos de $\bar{x}$ y $\bar{y}$ importan.</li>
+    <li><b>Aplicar Pappus-Guldin con la figura que cruza el eje.</b> Si la figura cruza el eje de giro, el cálculo es erróneo. Hay que dividir.</li>
+    <li><b>$\bar{y}$ del CG vs $\bar{y}$ del eje de giro.</b> En Pappus-Guldin, $\bar{y}$ es la distancia del CG al eje de giro, no su coordenada absoluta.</li>
+    <li><b>Olvidar $4R/(3\pi)$ del semicírculo.</b> Es el dato clásico que se pregunta. Memorizar.</li>
+    <li><b>Confundir momento de inercia de área ($cm^4$) con momento de inercia de masa ($kg\cdot m^2$).</b> El primero es geométrico, el segundo necesita densidad.</li>
+    <li><b>No verificar simetría.</b> Si la figura tiene simetría axial, el producto de inercia centroidal es 0 — automáticamente. No hace falta integrar.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (60 minutos · sin apuntes)</h2>
+
+<div class="box info">
+  <div class="box-title">Instrucciones</div>
+  <p>2 problemas representativos. <b>Tiempo: 60 minutos.</b> Resuelve sin mirar la guía. Las soluciones están al final.</p>
+</div>
+
+<h3>Problema 1 (20 min · Patrones P4)</h3>
+<div class="box">
+  <p>Calcula los momentos de inercia $I_x$ e $I_y$ respecto a los ejes coordenados de la región del primer cuadrante limitada por la curva $y = 4 - x^2$ y los ejes $x$ e $y$ (es decir, $0 \le x \le 2$, $0 \le y \le 4-x^2$).</p>
+</div>
+<div class="sim-blank"></div>
+
+<h3>Problema 2 (40 min · Patrón P8 — nivel examen ★)</h3>
+<div class="box exam">
+  <p>Una placa plana tiene forma de rectángulo de $40\ \text{cm} \times 60\ \text{cm}$ con un agujero circular de radio $R = 10\ \text{cm}$ centrado en el punto $(25, 15)$ cm desde la esquina inferior izquierda $O$.</p>
+  <ol>
+    <li>Halla la posición del centro de gravedad $G$ respecto a los ejes en $O$.</li>
+    <li>Calcula los momentos de inercia $I_x$ e $I_y$ respecto a los ejes en $O$.</li>
+    <li>Calcula los momentos de inercia centroidales $I_{x'}$ e $I_{y'}$ (paralelos por $G$).</li>
+    <li>Calcula el producto de inercia centroidal $C_{x'y'}$.</li>
+    <li>Halla el volumen generado al girar la placa alrededor del eje $x$ (lado inferior).</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado: $I_y$ — tiras verticales</h4>
+<p>$dA = (4-x^2)\,dx$. Atajo $dI_y = x^2\,dA$:</p>
+<div class="box" style="text-align:center">
+  $$I_y = \int_0^2 x^2(4-x^2)\,dx = \int_0^2 (4x^2 - x^4)\,dx = \left[\frac{4x^3}{3}-\frac{x^5}{5}\right]_0^2$$
+  $$I_y = \frac{32}{3} - \frac{32}{5} = \frac{160-96}{15} = \frac{64}{15}\ \text{(unidades}^4\text{)} \approx 4{,}27$$
+</div>
+
+<h4>Apartado: $I_x$ — tiras verticales con atajo $\int_0^y y^2\,dy = y^3/3$</h4>
+<p>Para cada x, integro $y^2\,dy$ desde 0 hasta $y(x) = 4-x^2$:</p>
+<div class="box" style="text-align:center">
+  $$I_x = \int_0^2 \frac{(4-x^2)^3}{3}\,dx$$
+</div>
+<p>Expando $(4-x^2)^3 = 64 - 48x^2 + 12x^4 - x^6$:</p>
+<div class="box" style="text-align:center">
+  $$I_x = \frac{1}{3}\int_0^2 (64 - 48x^2 + 12x^4 - x^6)\,dx = \frac{1}{3}\left[64x - 16x^3 + \frac{12x^5}{5} - \frac{x^7}{7}\right]_0^2$$
+  $$= \frac{1}{3}\left(128 - 128 + \frac{384}{5} - \frac{128}{7}\right) = \frac{1}{3}\left(\frac{384\cdot 7 - 128\cdot 5}{35}\right) = \frac{1}{3}\cdot\frac{2688-640}{35} = \frac{2048}{105}$$
+  $$I_x \approx 19{,}50\ \text{(unidades}^4\text{)}$$
+</div>
+
+<div class="box key" style="text-align:center">
+  $$\boxed{I_x = \frac{2048}{105} \approx 19{,}50,\qquad I_y = \frac{64}{15} \approx 4{,}27}$$
+</div>
+
+<h3 class="pb">Solución Problema 2 (★ examen)</h3>
+
+<h4>Apartado 1 — CG</h4>
+<p>Tabla:</p>
+<table>
+  <thead><tr><th>Fig.</th><th class="center">$A_i$ (cm²)</th><th class="center">$\bar{x}_i$ (cm)</th><th class="center">$\bar{y}_i$ (cm)</th></tr></thead>
+  <tbody>
+    <tr><td>1 — Rectángulo</td><td class="center">$40\cdot 60 = 2400$</td><td class="center">20</td><td class="center">30</td></tr>
+    <tr class="alt"><td>2 — Hueco circular</td><td class="center">$-\pi\cdot 10^2 = -314{,}16$</td><td class="center">25</td><td class="center">15</td></tr>
+    <tr><td><b>Σ</b></td><td class="center"><b>$A_{tot} = 2085{,}84$</b></td><td class="center">—</td><td class="center">—</td></tr>
+  </tbody>
+</table>
+
+<div class="box" style="text-align:center">
+  $$\bar{x}_G = \frac{2400\cdot 20 + (-314{,}16)\cdot 25}{2085{,}84} = \frac{48000 - 7854}{2085{,}84} = \frac{40146}{2085{,}84} = 19{,}25\ \text{cm}$$
+  $$\bar{y}_G = \frac{2400\cdot 30 + (-314{,}16)\cdot 15}{2085{,}84} = \frac{72000 - 4712}{2085{,}84} = \frac{67288}{2085{,}84} = 32{,}26\ \text{cm}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{G(19{,}25;\ 32{,}26)\ \text{cm}}$</div>
+
+<h4>Apartado 2 — Inercias en O</h4>
+<p>Para cada figura uso Steiner desde su centroide local:</p>
+<p><b>Rectángulo (1):</b> $I_{xc,1} = bh^3/12 = 40\cdot 60^3/12 = 720000$. Con Steiner a O: $I_{x,1}|_O = 720000 + 2400\cdot 30^2 = 720000 + 2160000 = 2880000$ cm⁴. <i>(O es la base del rectángulo, así que también podía haberse usado directamente $bh^3/3 = 40\cdot 60^3/3 = 2880000$.)</i></p>
+<p>$I_{yc,1} = hb^3/12 = 60\cdot 40^3/12 = 320000$. $I_{y,1}|_O = 320000 + 2400\cdot 20^2 = 320000 + 960000 = 1280000$ cm⁴.</p>
+<p><b>Hueco circular (2):</b> $I_{xc,2} = I_{yc,2} = \pi R^4/4 = \pi\cdot 10000/4 = 7854$. Con signo negativo y Steiner: <br>
+$I_{x,2}|_O = -[7854 + 314{,}16\cdot 15^2] = -[7854 + 70686] = -78540$ cm⁴.<br>
+$I_{y,2}|_O = -[7854 + 314{,}16\cdot 25^2] = -[7854 + 196350] = -204204$ cm⁴.</p>
+
+<div class="box key" style="text-align:center">
+  $$\boxed{I_x|_O = 2880000 - 78540 = 2{,}801{,}460\ \text{cm}^4}$$
+  $$\boxed{I_y|_O = 1280000 - 204204 = 1{,}075{,}796\ \text{cm}^4}$$
+</div>
+
+<h4>Apartado 3 — Inercias centroidales (Steiner inverso)</h4>
+<div class="box" style="text-align:center">
+  $$I_{x'} = I_x|_O - A_{tot}\,\bar{y}_G^2 = 2801460 - 2085{,}84\cdot 32{,}26^2$$
+  $$= 2801460 - 2085{,}84\cdot 1040{,}71 = 2801460 - 2170875 = 630{,}585\ \text{cm}^4$$
+  $$I_{y'} = I_y|_O - A_{tot}\,\bar{x}_G^2 = 1075796 - 2085{,}84\cdot 19{,}25^2$$
+  $$= 1075796 - 2085{,}84\cdot 370{,}56 = 1075796 - 773033 = 302{,}763\ \text{cm}^4$$
+</div>
+
+<div class="box key" style="text-align:center">$\boxed{I_{x'} \approx 630\,585\ \text{cm}^4,\quad I_{y'} \approx 302\,763\ \text{cm}^4}$</div>
+
+<h4>Apartado 4 — Producto de inercia $C_{x'y'}$</h4>
+<p>Como cada figura tiene simetría: $C_{x'y',i}|_{centroidal} = 0$ para ambas. Por tanto:</p>
+<div class="box" style="text-align:center">
+  $$C_{xy}|_O = \sum A_i\,\bar{x}_i\,\bar{y}_i = 2400\cdot 20\cdot 30 + (-314{,}16)\cdot 25\cdot 15$$
+  $$= 1\,440\,000 - 117\,810 = 1\,322\,190\ \text{cm}^4$$
+  $$C_{x'y'}|_G = C_{xy}|_O - A_{tot}\,\bar{x}_G\,\bar{y}_G = 1\,322\,190 - 2085{,}84\cdot 19{,}25\cdot 32{,}26$$
+  $$= 1\,322\,190 - 1\,295\,290 = 26\,900\ \text{cm}^4$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{C_{x'y'}|_G \approx 26\,900\ \text{cm}^4}$</div>
+
+<h4>Apartado 5 — Volumen de revolución alrededor del eje x</h4>
+<p>Pappus-Guldin: $V = 2\pi\,\bar{y}_G\,A_{tot}$:</p>
+<div class="box" style="text-align:center">
+  $$V = 2\pi\cdot 32{,}26\cdot 2085{,}84 = 422\,894\ \text{cm}^3 \approx 0{,}423\ \text{m}^3$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{V \approx 422\,894\ \text{cm}^3}$</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>Una vez tienes la <b>tabla maestra</b> con $A_i, \bar{x}_i, \bar{y}_i, I_{ci}$, todo lo demás es álgebra. El examen es un proceso mecánico si tienes la metodología. Practica el formato tabular hasta que sea automático.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza la tabla maestra de figuras simples</b> (30 min) — Rectángulo, triángulo, círculo, semicírculo. Áreas, CG, inercias centroidales.</li>
+    <li><b>Steiner + Pappus-Guldin</b> (15 min) — F7 y F9 con todas sus variantes.</li>
+    <li><b>Resuelve 2.17</b> (1h 15 min) — el patrón estrella, con la solución delante para entender el método.</li>
+    <li><b>Resuelve 2.15</b> a ciegas (1h) — comprueba si has internalizado el procedimiento.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Memorización de tabla + ejercicios 2.5, 2.7 (CG por superposición).</li>
+    <li><b>Día 2:</b> Ejercicios 2.11, 2.12, 2.13 (inercias por integración + Steiner).</li>
+    <li><b>Día 3:</b> Ejercicios 2.14, 2.15 (figura compuesta hueca).</li>
+    <li><b>Día 4:</b> Ejercicios 2.6, 2.8, 2.10 (Pappus-Guldin).</li>
+    <li><b>Día 5:</b> Ejercicios 2.16, 2.17 (sistema barras + figura compuesta completa).</li>
+    <li><b>Día 6:</b> Mini-simulacro de esta guía cronometrado.</li>
+    <li><b>Día 7:</b> Repaso de errores.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 4 herramientas que te salvan el 80% del examen</div>
+  <ol>
+    <li><b>Tabla maestra de figuras:</b> Rectángulo $bh^3/12$, círculo $\pi R^4/4$, semicírculo $4R/(3\pi)$, triángulo $bh^3/36$.</li>
+    <li><b>Superposición con huecos:</b> los huecos van con $A < 0$ en TODAS las sumas.</li>
+    <li><b>Steiner:</b> $I = I_c + Ad^2$. Para pasar de un eje no-centroidal a otro: pasa por el centroide.</li>
+    <li><b>Pappus-Guldin:</b> $V = 2\pi\bar{y}A$ (volumen) y $S = 2\pi\bar{y}L$ (superficie lateral).</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 8</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Tabla maestra (figuras, $A_i$, $\bar{x}_i$, $\bar{y}_i$, $I_{ci}$) →<br>
+    CG global (suma ponderada) →<br>
+    Inercias en O (Steiner figura por figura, suma con signos) →<br>
+    Inercias en G (Steiner inverso desde O) →<br>
+    Producto de inercia (Steiner para productos) →<br>
+    Volumen de revolución (Pappus-Guldin con $\bar{y}_G$).
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Mecánica Aplicada UPV/EHU · Tema 2 — Geometría de Masas y Superficies Planas<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

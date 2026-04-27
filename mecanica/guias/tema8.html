@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T8 Movimiento Plano del Sólido Rígido · Mecánica Aplicada UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 8 — Movimiento Plano del Sólido Rígido</h1>
+  <div class="cover-sub">Mecánica Aplicada · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>8 de 8 (Cinemática · cierre)</div>
+    <div><b>Ejercicios</b>10 totales</div>
+    <div><b>Patrones</b>6 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>10 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:9%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P1 ★</b></td><td><b>Mecanismo de 4 barras articuladas — velocidades y aceleraciones angulares</b></td><td class="center">8.1, 8.2, 8.3, 8.4</td><td class="center"><b>MUY ALTA</b></td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Barra giratoria con deslizadera (Coriolis)</td><td class="center">8.5, 8.6</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Disco rodando + barra articulada (rodadura sin deslizamiento)</td><td class="center">8.7, 8.9</td><td class="center">Alta</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Biela-manivela / pistón (compresor, motor)</td><td class="center">8.8</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P5</b></td><td>Placa o sólido bidimensional rígido en mecanismo</td><td class="center">8.10</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P6</b></td><td>Trabajo-Energía y Impulso-Momento (dinámica)</td><td class="center">—</td><td class="center">Si entra dinámica</td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T8 SIEMPRE es:</b> un mecanismo de 4 barras articuladas (con o sin disco, con o sin deslizadera). Conoces $\omega_1$ de la barra motora y te piden $\omega_2, \omega_3$ de las otras barras y/o velocidad y aceleración de un punto. Después: aceleraciones angulares y aceleración de un punto.</p>
+  <p>La <b>técnica clave</b> es: aplicar $\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$ a cada barra del mecanismo, conectando los puntos compartidos (articulaciones), y resolver el sistema lineal resultante.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Domina <b>F3 y F7</b> (campo de velocidades y aceleraciones del Tema 7).</li>
+    <li>Memoriza los <b>I_G</b> de los sólidos comunes (barra, disco, aro).</li>
+    <li>Practica el <b>análisis de mecanismos</b> con la receta del Patrón 1.</li>
+    <li>Mini-simulacro al final.</li>
+  </ol>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 10 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Cinemática del movimiento plano (recordatorio T7)</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F1 · ★ Velocidad de B desde A</div>
+    <div class="formula-body">$\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$</div>
+    <div class="formula-note">$\vec{\omega} = \omega\,\vec{k}$ (perpendicular al plano).</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F2 · ★ Aceleración de B desde A</div>
+    <div class="formula-body">$\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\vec{r}_{AB}$</div>
+    <div class="formula-note">$-\omega^2\vec{r}_{AB}$ centrípeta de B hacia A; $\vec{\alpha}\times\vec{r}_{AB}$ tangencial.</div>
+  </div>
+</div>
+
+<h3>2 · Centro Instantáneo de Rotación</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · CIR de un sólido</div>
+    <div class="formula-body">Intersección de las perpendiculares a las velocidades de dos puntos del sólido</div>
+    <div class="formula-note">$v_A = \omega \cdot r_{IA}$, dirección perpendicular a $\vec{r}_{IA}$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Rodadura sin deslizamiento</div>
+    <div class="formula-body">CIR = punto de contacto</div>
+    <div class="formula-body">$v_G = R\omega$, $a_G = R\alpha$ (en x, paralela a la trayectoria)</div>
+  </div>
+</div>
+
+<h3>3 · Composición — barra giratoria con deslizadera (Coriolis)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F5 · Velocidad de un punto sobre la varilla</div>
+    <div class="formula-body">$\vec{v}_{abs} = \vec{v}_{arr} + \vec{v}_{rel}$</div>
+    <div class="formula-note">$\vec{v}_{arr} = \vec{\omega}\times\vec{r}$ (rotación); $\vec{v}_{rel}$ = velocidad de la deslizadera respecto a la varilla.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Aceleración con Coriolis</div>
+    <div class="formula-body">$\vec{a}_{abs} = \vec{a}_{arr} + \vec{a}_{rel} + \vec{a}_{Cor}$</div>
+    <div class="formula-body">$\vec{a}_{Cor} = 2\vec{\omega}\times\vec{v}_{rel}$</div>
+    <div class="formula-note">$\vec{a}_{arr} = \vec{\alpha}\times\vec{r} - \omega^2\vec{r}$.</div>
+  </div>
+</div>
+
+<h3>4 · Dinámica del sólido (Newton-Euler)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F7 · Ecuaciones de Newton-Euler</div>
+    <div class="formula-body">$\sum\vec{F} = m\,\vec{a}_G$</div>
+    <div class="formula-body">$\sum M_G = I_G\,\alpha$</div>
+    <div class="formula-note">$\vec{a}_G$ aceleración del CG; $I_G$ inercia centroidal.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Momentos en un punto Q ≠ G</div>
+    <div class="formula-body">$\sum M_Q = I_G\,\alpha + m\,\vec{a}_G \cdot \vec{r}_{QG}^\perp$</div>
+    <div class="formula-note">Si Q es un punto fijo: $\sum M_Q = I_Q\,\alpha$ con $I_Q = I_G + md^2$.</div>
+  </div>
+</div>
+
+<h3>5 · Energía y trabajo</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F9 · Energía cinética</div>
+    <div class="formula-body">$T = \dfrac{1}{2}m v_G^2 + \dfrac{1}{2}I_G\omega^2$</div>
+    <div class="formula-note">Para rodadura sin deslizamiento: $T = \dfrac{1}{2}I_P\omega^2$ con $I_P = I_G + mR^2$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Trabajo-Energía</div>
+    <div class="formula-body">$T_1 + \sum U_{1\to 2} = T_2$</div>
+    <div class="formula-note">$U_{peso} = -mg\Delta y$, $U_{muelle} = -\frac{1}{2}k(x_2^2 - x_1^2)$.</div>
+  </div>
+</div>
+
+<h2>📋 Tabla de momentos de inercia (memorizar)</h2>
+
+<table>
+  <thead><tr><th>Sólido</th><th class="center">$I_G$ (eje centroidal)</th><th>Notas</th></tr></thead>
+  <tbody>
+    <tr><td>Barra delgada longitud $L$</td><td class="center">$\dfrac{1}{12}mL^2$</td><td>Eje perpendicular a la barra por el centro</td></tr>
+    <tr class="alt"><td>Disco / cilindro sólido radio $R$</td><td class="center">$\dfrac{1}{2}mR^2$</td><td>Eje del cilindro</td></tr>
+    <tr><td>Aro / cilindro hueco radio $R$</td><td class="center">$mR^2$</td><td>Toda la masa a distancia $R$</td></tr>
+    <tr class="alt"><td>Esfera sólida radio $R$</td><td class="center">$\dfrac{2}{5}mR^2$</td><td>Cualquier eje por el centro</td></tr>
+    <tr><td>Placa rectangular $b\times h$</td><td class="center">$\dfrac{1}{12}m(b^2+h^2)$</td><td>Eje perpendicular al plano por el centro</td></tr>
+  </tbody>
+</table>
+
+<h2 class="pb">🎯 Los 6 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 ★ -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P1 ★</span>
+    <span class="pattern-name" style="color:#b00">Mecanismo de 4 barras articuladas (PATRÓN ESTRELLA)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> casi siempre. Mecanismo $A$-$B$-$C$-$D$ con $A$ y $D$ apoyos fijos. Conoces $\omega_{AB}$ y la geometría → halla $\omega_{BC}$, $\omega_{CD}$, $\vec{v}_C$.</p>
+
+  <h4>Receta para velocidades</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Velocidad de B (extremo de la manivela)</strong>$\vec{v}_B = \vec{\omega}_{AB}\times\vec{r}_{AB}$. Como $A$ es fijo, esto es directo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidad de C desde B (a través de la biela BC)</strong>$\vec{v}_C = \vec{v}_B + \vec{\omega}_{BC}\times\vec{r}_{BC}$. La incógnita es $\omega_{BC}$ (con su sentido).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidad de C desde D (a través del balancín CD)</strong>$\vec{v}_C = \vec{\omega}_{CD}\times\vec{r}_{DC}$. La incógnita es $\omega_{CD}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Igualar las dos expresiones de $\vec{v}_C$</strong>2 ecuaciones (componentes x e y), 2 incógnitas ($\omega_{BC}, \omega_{CD}$). Resolver sistema lineal.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verificación con CIR</strong>Ubica el CIR de la biela BC: intersección de la perpendicular a $\vec{v}_B$ (que pasa por B) con la perpendicular a $\vec{v}_C$ (que pasa por C). Calcula $\omega_{BC}$ desde el CIR para verificar.</div></div>
+  </div>
+
+  <h4>Receta para aceleraciones</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Aceleración de B</strong>Si $\omega_{AB}$ es constante: $\vec{a}_B = -\omega_{AB}^2\,\vec{r}_{AB}$ (centrípeta hacia A). Si no, añade $\vec{\alpha}_{AB}\times\vec{r}_{AB}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleración de C desde B</strong>$\vec{a}_C = \vec{a}_B + \vec{\alpha}_{BC}\times\vec{r}_{BC} - \omega_{BC}^2\,\vec{r}_{BC}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleración de C desde D</strong>$\vec{a}_C = \vec{\alpha}_{CD}\times\vec{r}_{DC} - \omega_{CD}^2\,\vec{r}_{DC}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Igualar y resolver</strong>2 ecuaciones, 2 incógnitas: $\alpha_{BC}, \alpha_{CD}$.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Barra giratoria con deslizadera (Coriolis)</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> dos barras articuladas en un punto donde una desliza dentro de la otra. Una de las barras gira con $\omega$ conocida, la otra rota y se alarga.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Define los sistemas</strong>0: laboratorio. 1: barra base que gira. La deslizadera se mueve dentro de la barra 1.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidad por composición</strong>$\vec{v}_{punto} = \vec{v}_{arr} + \vec{v}_{rel}$. $\vec{v}_{arr} = \vec{\omega}_1\times\vec{r}$ (rotación de la barra 1). $\vec{v}_{rel}$ es la velocidad de deslizamiento, paralela a la barra 1.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Igualar con la otra expresión (la barra 2)</strong>Si la deslizadera está en el extremo de otra barra que gira con $\omega_2$: $\vec{v}_{punto} = \vec{\omega}_2\times\vec{r}_{eje\to punto}$. Iguala las dos expresiones.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleración con Coriolis</strong>$\vec{a}_{abs} = \vec{a}_{arr} + \vec{a}_{rel} + 2\vec{\omega}_1\times\vec{v}_{rel}$. Iguala con la aceleración desde la otra barra.</div></div>
+  </div>
+  <div class="box warn">
+    <div class="box-title">⚠ Coriolis</div>
+    <p>Olvidar el término de Coriolis es el error #1 en este patrón. Aparece SIEMPRE que hay una velocidad relativa dentro de un sistema en rotación.</p>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Disco rodando + barra articulada</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> disco que rueda sin deslizar sobre el suelo (o engrana con cremallera) y está conectado por una barra a otro elemento.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Aplica rodadura sin deslizamiento</strong>El punto de contacto del disco tiene velocidad nula → es el CIR. $\vec{v}_C = R\omega$ con dirección horizontal (paralela al suelo).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Conecta con la barra que sale del centro del disco</strong>$\vec{v}_C$ = velocidad del extremo de la barra en su unión con el disco. Aplica F1 a la barra.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Resuelve $\omega$ del disco y de la barra</strong>Sistema lineal con 2-3 ecuaciones según la geometría.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleración del disco rodando</strong>$\vec{a}_C = R\alpha$ horizontal. <b>Atención:</b> en el punto de contacto $\vec{a} \ne 0$ — solo $\vec{v}=0$. La aceleración del punto de contacto vale $R\omega^2$ (centrípeta hacia el centro del disco).</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Biela-manivela (compresor / motor)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> manivela $OA$ que gira con $\omega$ constante, biela $AB$ que conecta a un pistón $B$ que se mueve en línea recta.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Posición del pistón en función de $\theta$</strong>$x_B(\theta) = r\cos\theta + \sqrt{L^2 - r^2\sin^2\theta}$ (con $r$ manivela, $L$ biela, $\theta$ ángulo manivela).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidad del pistón</strong>$v_B = dx_B/dt = \dot{\theta}\cdot dx_B/d\theta$. Sale negativa cuando $\theta$ está entre 0 y 180°.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidad máxima del pistón</strong>Donde $dv_B/d\theta = 0$. Para biela larga ($L \gg r$): aproximadamente $\theta \approx 75°$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleración del pistón</strong>$a_B = dv_B/dt$. Útil para calcular fuerzas de inercia en el pistón.</div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Placa o sólido bidimensional articulado</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> placa rígida (triangular, rectangular) articulada en dos puntos a barras separadas.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica los puntos compartidos con las barras</strong>Cada punto de unión tiene una velocidad (y aceleración) común con la barra correspondiente.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica F1 dentro de la placa</strong>$\vec{v}_C = \vec{v}_B + \vec{\omega}_{placa}\times\vec{r}_{BC}$, con $B, C$ puntos de la placa.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Conecta con las barras y resuelve</strong>Igualando velocidades en los puntos compartidos.</div></div>
+  </div>
+</div>
+
+<!-- P6 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P6</span>
+    <span class="pattern-name">Trabajo-Energía e Impulso-Momento (dinámica)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula la velocidad final / el ángulo final cuando hay desplazamientos" o "calcula el impulso necesario para frenar".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>¿Trabajo-Energía o Impulso-Momento?</strong>T-E: cuando los datos son desplazamientos y velocidades. I-M: cuando los datos son tiempos y fuerzas impulsivas.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Trabajo-Energía: $T_1 + U_{1\to 2} = T_2$</strong>$T = \frac{1}{2}mv_G^2 + \frac{1}{2}I_G\omega^2$. Para rodadura: $T = \frac{1}{2}I_P\omega^2$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Trabajo de las fuerzas</strong>$U_{peso} = -mg\Delta y$ (si baja, $\Delta y < 0$ → $U > 0$). $U_{muelle} = -\frac{1}{2}k(x_f^2 - x_i^2)$. Reacciones normales y rozamiento en rodadura: NO trabajan.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Despeja $v_G^2$ o $\omega$</strong>Una sola ecuación escalar, fácil de resolver.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Ejemplo: disco rodando por plano inclinado</div>
+    <p>Un disco macizo de masa $m$ y radio $R$ rueda <b>sin deslizar</b> por un plano inclinado de ángulo $\alpha$. Parte del reposo y desciende una altura $h$. Calcula la velocidad de su centro al final.</p>
+    <p><b>Trabajo-Energía:</b> $T_1 = 0$ (reposo). $T_2 = \frac{1}{2}mv_G^2 + \frac{1}{2}I_G\omega^2$. Con $I_G = \frac{1}{2}mR^2$ y rodadura $v_G = R\omega$:</p>
+    <p>$T_2 = \frac{1}{2}mv_G^2 + \frac{1}{2}\cdot\frac{1}{2}mR^2\cdot(v_G/R)^2 = \frac{1}{2}mv_G^2 + \frac{1}{4}mv_G^2 = \frac{3}{4}mv_G^2$.</p>
+    <p><b>Trabajo del peso:</b> $U_{peso} = mgh$ (cae altura $h$). El rozamiento en rodadura NO trabaja (punto de contacto con $v=0$).</p>
+    <p>Aplicando T-E: $0 + mgh = \frac{3}{4}mv_G^2 \Rightarrow \boxed{v_G = \sqrt{\dfrac{4gh}{3}}}$.</p>
+    <p>Comparación: en caída libre sin rotación, $v = \sqrt{2gh}$. Aquí $v_G = \sqrt{4gh/3} \approx 0{,}82\sqrt{2gh}$ — el disco baja más despacio porque parte de la energía se invierte en rotación.</p>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en T8</div>
+  <ol>
+    <li><b>Olvidar el término de Coriolis $2\vec{\omega}\times\vec{v}_{rel}$ en deslizadera dentro de barra giratoria.</b> Es el error más típico.</li>
+    <li><b>Confundir el sentido de $\omega$ entre barras.</b> Los $\omega$ son escalares (con signo) en 2D; el sentido se obtiene del sistema de ecuaciones, no se asume.</li>
+    <li><b>Aplicar $a_C = R\alpha$ al punto de contacto del disco rodando.</b> Solo es válido para el centro $G$. El punto de contacto tiene $a = R\omega^2$ centrípeta hacia G.</li>
+    <li><b>Olvidar el término centrípeto $-\omega^2\vec{r}_{AB}$ en aceleraciones.</b> Aunque $\omega$ sea constante, la aceleración tiene componente centrípeta no nula.</li>
+    <li><b>En rodadura sin deslizamiento: el rozamiento NO trabaja.</b> Por tanto en T-E el rozamiento de rodadura no aporta. ¡Pero sí aporta si hay deslizamiento!</li>
+    <li><b>Confundir $I_G$ con $I_P$.</b> Para rodadura, $T = \frac{1}{2}I_P\omega^2$ con $I_P = I_G + mR^2$.</li>
+    <li><b>Aplicar mal Steiner.</b> $I_A = I_G + md^2$ donde $d$ es la distancia de A a G.</li>
+    <li><b>En sumar momentos respecto a punto Q ≠ G:</b> $\sum M_Q = I_G\alpha + m\,a_G\,d$. Olvidar el término $m a_G d$ es un error frecuente.</li>
+    <li><b>En sistemas con dos sólidos:</b> hay que aplicar Newton-Euler a cada cuerpo por separado, conectándolos por las fuerzas de la articulación.</li>
+    <li><b>Olvidar que $\vec{a}_G$ del CG en rodadura tiene solo componente horizontal.</b> El CG se mueve en línea recta paralela al suelo.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (75 minutos · sin apuntes)</h2>
+
+<h3>Problema 1 (45 min · Patrón P1 ★)</h3>
+<div class="box exam">
+  <p>Mecanismo de 4 barras articuladas: $A$ y $D$ son apoyos fijos.</p>
+  <ul>
+    <li>$A=(0,0)$, $B=(0{,}3, 0{,}4)$ m (manivela $AB$, longitud 0,5 m).</li>
+    <li>$C=(1{,}1, 0{,}4)$ m (acoplador $BC$, longitud 0,8 m horizontal).</li>
+    <li>$D=(1{,}1, 0)$ m (balancín $CD$, longitud 0,4 m vertical).</li>
+  </ul>
+  <p>La manivela $AB$ gira con $\omega_{AB} = 6\,\vec{k}$ rad/s constante (antihorario).</p>
+  <ol>
+    <li>Calcula $\vec{v}_B$.</li>
+    <li>Calcula $\omega_{BC}$ y $\omega_{CD}$.</li>
+    <li>Calcula $\vec{a}_B$.</li>
+    <li>Calcula $\alpha_{BC}$ y $\alpha_{CD}$.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (30 min · Patrón P3)</h3>
+<div class="box">
+  <p>Un disco de radio $R = 0{,}2$ m rueda sin deslizar por el suelo. Su centro $G$ tiene velocidad $v_G = 4$ m/s y aceleración $a_G = 2$ m/s² (ambas hacia la derecha). Una barra $GP$ de longitud $L = 0{,}3$ m está articulada en $G$ y forma un ángulo $\theta = 30°$ con la horizontal en este instante. La barra está girando con $\omega_{barra} = 2$ rad/s (antihorario).</p>
+  <ol>
+    <li>Calcula $\omega$ del disco.</li>
+    <li>Calcula la velocidad del extremo $P$ de la barra.</li>
+    <li>Calcula la aceleración del centro del disco (vector).</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1 (★ examen)</h3>
+
+<h4>Apartado 1 — Velocidad de B</h4>
+<p>$\vec{v}_B = \vec{\omega}_{AB}\times\vec{r}_{AB} = 6\vec{k}\times(0{,}3\vec{i} + 0{,}4\vec{j}) = 6\cdot 0{,}3\,(\vec{k}\times\vec{i}) + 6\cdot 0{,}4\,(\vec{k}\times\vec{j})$.</p>
+<p>$\vec{k}\times\vec{i} = \vec{j}$, $\vec{k}\times\vec{j} = -\vec{i}$:</p>
+<div class="box" style="text-align:center">
+  $$\vec{v}_B = 1{,}8\vec{j} - 2{,}4\vec{i} = -2{,}4\vec{i} + 1{,}8\vec{j}\ \text{m/s}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{\vec{v}_B = -2{,}4\vec{i} + 1{,}8\vec{j}\ \text{m/s}}$ ($|\vec{v}_B| = 3$ m/s)</div>
+
+<h4>Apartado 2 — Velocidades angulares de BC y CD</h4>
+<p>Vector BC: $\vec{r}_{BC} = (1{,}1-0{,}3, 0{,}4-0{,}4) = (0{,}8, 0)$ m → horizontal.</p>
+<p>Vector DC: $\vec{r}_{DC} = (1{,}1-1{,}1, 0{,}4-0) = (0, 0{,}4)$ m → vertical.</p>
+<p><b>$\vec{v}_C$ desde B:</b> $\vec{v}_C = \vec{v}_B + \omega_{BC}\vec{k}\times\vec{r}_{BC} = -2{,}4\vec{i} + 1{,}8\vec{j} + \omega_{BC}\vec{k}\times 0{,}8\vec{i} = -2{,}4\vec{i} + 1{,}8\vec{j} + 0{,}8\omega_{BC}\vec{j}$.</p>
+<p>$\vec{v}_C = -2{,}4\vec{i} + (1{,}8 + 0{,}8\omega_{BC})\vec{j}$.</p>
+<p><b>$\vec{v}_C$ desde D:</b> $\vec{v}_C = \omega_{CD}\vec{k}\times\vec{r}_{DC} = \omega_{CD}\vec{k}\times 0{,}4\vec{j} = -0{,}4\omega_{CD}\vec{i}$.</p>
+<p>$\vec{v}_C = -0{,}4\omega_{CD}\vec{i}$.</p>
+<p><b>Igualando componentes:</b></p>
+<p>$\vec{i}$: $-2{,}4 = -0{,}4\omega_{CD}$ → $\omega_{CD} = 6$ rad/s (antihorario).</p>
+<p>$\vec{j}$: $1{,}8 + 0{,}8\omega_{BC} = 0$ → $\omega_{BC} = -2{,}25$ rad/s (horario).</p>
+<div class="box key" style="text-align:center">$\boxed{\omega_{BC} = -2{,}25\ \text{rad/s (horario)},\quad \omega_{CD} = 6\ \text{rad/s (antihorario)}}$</div>
+
+<h4>Apartado 3 — Aceleración de B</h4>
+<p>$\omega_{AB}$ constante → $\vec{\alpha}_{AB} = 0$.</p>
+<p>$\vec{a}_B = -\omega_{AB}^2\,\vec{r}_{AB} = -36\,(0{,}3\vec{i} + 0{,}4\vec{j}) = -10{,}8\vec{i} - 14{,}4\vec{j}$ m/s².</p>
+<div class="box key" style="text-align:center">$\boxed{\vec{a}_B = -10{,}8\vec{i} - 14{,}4\vec{j}\ \text{m/s}^2}$</div>
+
+<h4>Apartado 4 — Aceleraciones angulares</h4>
+<p><b>$\vec{a}_C$ desde B:</b> $\vec{a}_C = \vec{a}_B + \alpha_{BC}\vec{k}\times\vec{r}_{BC} - \omega_{BC}^2\vec{r}_{BC}$.</p>
+<p>$\alpha_{BC}\vec{k}\times 0{,}8\vec{i} = 0{,}8\alpha_{BC}\vec{j}$.</p>
+<p>$\omega_{BC}^2 = 5{,}0625$. $-5{,}0625\cdot 0{,}8\vec{i} = -4{,}05\vec{i}$.</p>
+<p>$\vec{a}_C = (-10{,}8 - 4{,}05)\vec{i} + (-14{,}4 + 0{,}8\alpha_{BC})\vec{j} = -14{,}85\vec{i} + (-14{,}4 + 0{,}8\alpha_{BC})\vec{j}$.</p>
+
+<p><b>$\vec{a}_C$ desde D:</b> $\vec{a}_C = \alpha_{CD}\vec{k}\times\vec{r}_{DC} - \omega_{CD}^2\vec{r}_{DC}$.</p>
+<p>$\alpha_{CD}\vec{k}\times 0{,}4\vec{j} = -0{,}4\alpha_{CD}\vec{i}$. $-36\cdot 0{,}4\vec{j} = -14{,}4\vec{j}$.</p>
+<p>$\vec{a}_C = -0{,}4\alpha_{CD}\vec{i} - 14{,}4\vec{j}$.</p>
+
+<p><b>Igualando componentes:</b></p>
+<p>$\vec{i}$: $-14{,}85 = -0{,}4\alpha_{CD}$ → $\alpha_{CD} = 37{,}125$ rad/s².</p>
+<p>$\vec{j}$: $-14{,}4 + 0{,}8\alpha_{BC} = -14{,}4$ → $\alpha_{BC} = 0$.</p>
+<div class="box key" style="text-align:center">$\boxed{\alpha_{BC} = 0,\quad \alpha_{CD} = 37{,}125\ \text{rad/s}^2}$</div>
+
+<h3 class="pb">Solución Problema 2</h3>
+
+<h4>Apartado 1 — $\omega$ del disco</h4>
+<p>Rodadura sin deslizamiento: $v_G = R\omega$ → $\omega = 4/0{,}2 = 20$ rad/s. Sentido horario (porque rueda hacia la derecha): $\vec{\omega}_{disco} = -20\vec{k}$ rad/s.</p>
+<div class="box key" style="text-align:center">$\boxed{\omega_{disco} = 20\ \text{rad/s horario}}$</div>
+
+<h4>Apartado 2 — Velocidad del extremo P</h4>
+<p>$\vec{r}_{GP} = L(\cos\theta\vec{i} + \sin\theta\vec{j}) = 0{,}3(\cos 30°\vec{i} + \sin 30°\vec{j}) = 0{,}3(0{,}866\vec{i} + 0{,}5\vec{j}) = 0{,}26\vec{i} + 0{,}15\vec{j}$ m.</p>
+<p>$\vec{v}_P = \vec{v}_G + \vec{\omega}_{barra}\times\vec{r}_{GP} = 4\vec{i} + 2\vec{k}\times(0{,}26\vec{i} + 0{,}15\vec{j})$.</p>
+<p>$2\vec{k}\times 0{,}26\vec{i} = 0{,}52\vec{j}$. $2\vec{k}\times 0{,}15\vec{j} = -0{,}3\vec{i}$.</p>
+<div class="box" style="text-align:center">
+  $$\vec{v}_P = (4 - 0{,}3)\vec{i} + 0{,}52\vec{j} = 3{,}7\vec{i} + 0{,}52\vec{j}\ \text{m/s}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{\vec{v}_P = 3{,}7\vec{i} + 0{,}52\vec{j}\ \text{m/s}}$</div>
+
+<h4>Apartado 3 — Aceleración del centro del disco</h4>
+<p>Rodadura sin deslizamiento: $a_G = R\alpha$ → $\alpha = 2/0{,}2 = 10$ rad/s² (horario, igual que $\omega$). $\vec{a}_G = 2\vec{i}$ m/s² (en línea recta).</p>
+<div class="box key" style="text-align:center">$\boxed{\vec{a}_G = 2\vec{i}\ \text{m/s}^2}$</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El procedimiento del Patrón 1 es <b>siempre</b> igual: <b>(1)</b> calcula $\vec{v}$ y $\vec{a}$ del extremo de la manivela (sólido con un punto fijo), <b>(2)</b> propaga a través de la biela hasta el otro extremo, <b>(3)</b> propaga desde el otro pivote para igualar, <b>(4)</b> resuelve sistema lineal. La parte de aceleración es idéntica pero con un término más ($-\omega^2\vec{r}$).</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza F1, F2 y la tabla de $I_G$</b> (30 min).</li>
+    <li><b>Mecanismo de 4 barras</b> (1h 30 min) — Ejercicio 8.3 con la solución delante.</li>
+    <li><b>Disco rodando con barra</b> (45 min) — Ejercicio 8.7.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Mecanismo disco+barra básico — 8.1, 8.2.</li>
+    <li><b>Día 2:</b> Mecanismo de 4 barras — 8.3, 8.4.</li>
+    <li><b>Día 3:</b> Barra giratoria con deslizadera (Coriolis) — 8.5, 8.6.</li>
+    <li><b>Día 4:</b> Disco rodando + barras — 8.7, 8.9.</li>
+    <li><b>Día 5:</b> Biela-manivela y placa articulada — 8.8, 8.10.</li>
+    <li><b>Día 6:</b> Mini-simulacro de esta guía cronometrado.</li>
+    <li><b>Día 7:</b> Repaso de errores.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 3 herramientas que te salvan T8</div>
+  <ol>
+    <li><b>$\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$</b> — propaga velocidades a lo largo de cada sólido.</li>
+    <li><b>$\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\vec{r}_{AB}$</b> — análogo para aceleraciones.</li>
+    <li><b>Coriolis $2\vec{\omega}\times\vec{v}_{rel}$</b> en deslizaderas (no olvidar).</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 1</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    $\vec{v}_B$ desde la manivela →<br>
+    Propago $\vec{v}_C$ a través de la biela (con $\omega_{biela}$ incógnita) →<br>
+    Propago $\vec{v}_C$ desde el otro pivote (con $\omega_{balancín}$ incógnita) →<br>
+    Iguala componentes y resuelvo →<br>
+    Repito para aceleraciones (con un término más).
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Mecánica Aplicada UPV/EHU · Tema 8 — Movimiento Plano del Sólido Rígido<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

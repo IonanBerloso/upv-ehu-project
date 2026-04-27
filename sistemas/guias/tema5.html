@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T5 Rectificado · Sistemas de Producción UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Conceptos clave</div>
+  <h1>Tema 5 — Rectificado (Grinding)</h1>
+  <div class="cover-sub">Sistemas de Producción · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>5 de 8 (Procesos abrasivos)</div>
+    <div><b>Tipo</b>Cualitativo + cálculos</div>
+    <div><b>Patrones</b>4 tipos · 1 estrella</div>
+    <div><b>Fórmulas</b>6 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Selección de muela (granos, aglutinante, grado)</td><td class="center">Alta</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Lectura de denominación de muela (UNE 16-300-75)</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Operaciones (plano, cilíndrico, sin centros) y máquinas</td><td class="center">Media</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P4 ★</b></td><td><b>Cálculo de parámetros: vs, vw, ap, Q, h, Pc</b></td><td class="center"><b>MUY ALTA</b></td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T5 combina parte teórica y numérica:</b> entender la denominación de la muela (granos, aglutinante, grado, estructura), seleccionar la muela apropiada según el material a rectificar, y calcular parámetros básicos (caudal de viruta, espesor h, fuerza, potencia).</p>
+  <p>La <b>regla mnemotécnica clave</b>: material <b>duro</b> de pieza → muela <b>blanda</b> (auto-afilado por liberación de granos embotados). Material <b>blando</b> de pieza → muela <b>dura</b> (retiene los granos que se desgastan poco).</p>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 6 fórmulas imprescindibles</h2>
+
+<h3>1 · Parámetros del rectificado plano</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F1 · ★ Velocidad de la muela y de la pieza</div>
+    <div class="formula-body">$v_s = \dfrac{\pi D_s n_s}{60}$ m/s</div>
+    <div class="formula-body">$v_w$ — velocidad de la pieza (m/s)</div>
+    <div class="formula-note">$v_s$ típico 20-45 m/s. $v_w/v_s \approx 1/60$ a $1/100$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Caudal de viruta (productividad)</div>
+    <div class="formula-body">$Q_w = a_p\cdot v_w\cdot w$ mm³/s</div>
+    <div class="formula-note">$a_p$ profundidad, $w$ anchura de la muela.</div>
+  </div>
+</div>
+
+<h3>2 · Geometría del corte por grano</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Longitud de contacto viruta-grano</div>
+    <div class="formula-body">$l_c \approx \sqrt{a_p\cdot D_e}$ mm</div>
+    <div class="formula-note">$D_e$ = diámetro equivalente. En plano: $D_e = D_s$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Diámetro equivalente (cilíndrico)</div>
+    <div class="formula-body">$D_e = \dfrac{D_s\cdot D_w}{D_s \pm D_w}$</div>
+    <div class="formula-note">Signo + para exterior, − para interior. En plano: $D_e = D_s$.</div>
+  </div>
+</div>
+
+<h3>3 · Razón de rectificado y potencia</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F5 · ★ Grinding ratio (G)</div>
+    <div class="formula-body">$G = \dfrac{V_w}{V_g}$</div>
+    <div class="formula-note">$V_w$ vol. material rectificado, $V_g$ vol. muela desgastada. G alta → buena muela.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Fuerza y potencia</div>
+    <div class="formula-body">$F_c = p_s\cdot A_{viruta}$, $P_c = F_c\cdot v_s$</div>
+    <div class="formula-note">$p_s > 15\,000$ N/mm² (mucho mayor que torneado).</div>
+  </div>
+</div>
+
+<h2>📋 Denominación de muelas (UNE 16-300-75)</h2>
+
+<div class="box info">
+  <div class="box-title">Estructura de la denominación</div>
+  <p style="font-family:Courier,monospace;font-size:11pt;text-align:center;font-weight:700">
+    [Prefijo] · A · 46 · H · 6 · V · [Sufijo]
+  </p>
+  <p>Ejemplo completo: <b>400 × 60 × 40 — 51A-36-L-5-V32</b><br>
+  → 400 mm Ø muela × 60 mm espesor × 40 mm Ø eje. Alúmina (51A), grano 36 (medio), grado L (medio), estructura 5 (semi-densa), vitrificado, sufijo 32.</p>
+</div>
+
+<table>
+  <thead><tr><th>Posición</th><th>Significado</th><th>Valores típicos</th></tr></thead>
+  <tbody>
+    <tr><td><b>Abrasivo</b></td><td>Material del grano</td><td><b>A</b> = alúmina (Al₂O₃) · <b>C</b> = SiC · CBN · diamante</td></tr>
+    <tr class="alt"><td><b>Tamaño grano</b></td><td>Nº de mesh</td><td>8-24 grueso · 30-60 medio · 70-180 fino · 220-600 muy fino</td></tr>
+    <tr><td><b>Grado</b></td><td>Dureza muela (retención del grano)</td><td>A-E muy blanda · F-K blanda · L-Q media · R-T dura · U-Z muy dura</td></tr>
+    <tr class="alt"><td><b>Estructura</b></td><td>Porosidad (1-15)</td><td>1 muy densa · 5-10 medio · 15 muy abierta</td></tr>
+    <tr><td><b>Aglutinante</b></td><td>Letra del tipo</td><td><b>V</b> = vitrificado (más común) · B = resinoide · R = caucho · M = metálico</td></tr>
+  </tbody>
+</table>
+
+<h2>📋 Selección de muela por material de pieza</h2>
+
+<table>
+  <thead><tr><th>Material pieza</th><th class="center">Abrasivo</th><th class="center">Grado muela</th><th>Notas</th></tr></thead>
+  <tbody>
+    <tr><td>Aceros al carbono y aleados</td><td class="center">A (alúmina)</td><td class="center">L-N (media)</td><td>El caso más común</td></tr>
+    <tr class="alt"><td>Aceros templados (HRC > 45)</td><td class="center">CBN</td><td class="center">F-K (blanda)</td><td>Material duro → muela blanda (auto-afilado)</td></tr>
+    <tr><td>Fundición gris</td><td class="center">C (SiC)</td><td class="center">M-O (media)</td><td>SiC para fundición y no férreos</td></tr>
+    <tr class="alt"><td>Aluminio, latón, no férreos</td><td class="center">C (SiC)</td><td class="center">P-S (dura)</td><td>Material blando → muela dura</td></tr>
+    <tr><td>Carburos (WC), cerámica</td><td class="center">Diamante</td><td class="center">según aplicación</td><td>Diamante NO se usa con ferrosos (afinidad química)</td></tr>
+    <tr class="alt"><td>HSS, superaleaciones (Inconel)</td><td class="center">CBN</td><td class="center">F-K (blanda)</td><td>Superabrasivos</td></tr>
+  </tbody>
+</table>
+
+<div class="box tip">
+  <div class="box-title">💡 Regla mnemotécnica</div>
+  <p><b>Alúmina = Aceros</b> · <b>SiC = Sin férreos / Frágiles</b> (Sí Carbida = sí no-férreos) · <b>CBN = Cementados Bonitos Negros</b> (aceros duros) · <b>Diamante = Duro pero NO acero</b>.</p>
+</div>
+
+<h2 class="pb">🎯 Los 4 patrones de problema (recetas)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Selección de muela según material y operación</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica el material de la pieza</strong>Acero / Inox / Fundición / Aluminio / Acero templado / Carburo. → Determina abrasivo: A para acero, C para no-férreos, CBN para aceros duros, diamante para carburos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Decide el grado por la dureza relativa</strong>Pieza dura (HRC>45) → muela <b>blanda</b> (F-K). Pieza blanda → muela <b>dura</b> (P-S).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tamaño de grano según acabado</strong>Acabado fino (Ra<0,4 µm) → grano fino (70-180). Desbaste → grano grueso (24-46).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aglutinante</strong>Vitrificado (V) por defecto. Resinoide (B) para muelas de corte/desbaste a alta velocidad. Metálico (M) si es CBN o diamante.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Lectura de denominación de muela</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "interpreta la denominación 200×40×32 51A-60-K-7-V25".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Dimensiones</strong>200 mm Ø externo · 40 mm espesor · 32 mm Ø eje del agujero.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Abrasivo</strong>51A → alúmina con grado especial 51 (más resistente).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tamaño grano</strong>60 → medio (apropiado para acabado fino, grano más fino que 36).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Grado</strong>K → blanda (apropiado para piezas duras, ej. aceros templados).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Estructura y aglutinante</strong>7 → semi-abierta (buena evacuación). V → vitrificado (rígido, común).</div></div>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Operaciones y máquinas (clasificar)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "describe el rectificado sin centros / qué tipo usarías para X pieza".</p>
+  <ul style="margin-left:6mm">
+    <li><b>Plano (A1-A4):</b> superficies planas. Cabezal H/V × mesa vaivén/rotativa.</li>
+    <li><b>Cilíndrico (B):</b> ejes y revoluciones. Longitudinal o en plongée. Exterior (OD) o interior (ID).</li>
+    <li><b>Sin centros (C):</b> producción en serie de piezas pequeñas (rodamientos, bulones). Pieza apoyada entre muela rectificadora + muela regularizadora + cuchilla. Throughfeed o infeed.</li>
+  </ul>
+</div>
+
+<!-- P4 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P4 ★</span>
+    <span class="pattern-name" style="color:#b00">Cálculo de parámetros (PATRÓN ESTRELLA)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula vs, vw, Q, lc, h, Pc para un rectificado plano de un acero".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>$v_s$ y $v_w$</strong>$v_s = \pi D_s n_s/60$ (m/s, $D_s$ en m, $n_s$ en rpm). $v_w$ se da o se calcula desde la velocidad de la mesa.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Caudal de viruta $Q_w$</strong>$Q_w = a_p\cdot v_w\cdot w$. Productividad de la muela.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Longitud de contacto $l_c$</strong>$l_c = \sqrt{a_p\cdot D_e}$. En plano $D_e = D_s$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Espesor de viruta $h$</strong>$h \approx \sqrt{(v_w/v_s)\cdot (1/(C\cdot r))\cdot \sqrt{a_p/D_e}}$. Si te dan $C$ y $r$, sustituye directamente.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Fuerza y potencia</strong>$F_c = p_s\cdot a_{viruta}$, $P_c = F_c\cdot v_s$. Verifica $P_c \le P_{max}\eta$.</div></div>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 8 errores en T5</div>
+  <ol>
+    <li><b>Confundir grado de muela con dureza del grano.</b> El grado (A-Z) indica retención del aglutinante, NO la dureza del grano. La dureza del grano la marca el material abrasivo (A, C, CBN, diamante).</li>
+    <li><b>Aplicar diamante a aceros.</b> Diamante NO es compatible con ferrosos por afinidad química. Para aceros duros usa CBN.</li>
+    <li><b>Olvidar la regla "duro→blanda, blando→dura".</b> Material duro de pieza necesita muela blanda (auto-afilado por liberación de granos embotados).</li>
+    <li><b>Confundir $v_s$ (m/s) con $v_c$ (m/min) de torneado/fresado.</b> En rectificado SIEMPRE m/s. Mucho más alta.</li>
+    <li><b>Olvidar el equilibrado tras diamantar.</b> Una muela desequilibrada a 30 m/s puede explotar y arruinar el acabado.</li>
+    <li><b>Diamantado vs equilibrado:</b> son cosas distintas. Diamantar = restaurar el perfil (con útil de diamante). Equilibrar = corregir el desequilibrio de la muela montada en su eje.</li>
+    <li><b>Confundir longitudinal vs en plongée.</b> Longitudinal: muela más estrecha que la pieza, se desplaza axialmente. En plongée: muela más ancha, penetra radialmente sin desplazamiento axial.</li>
+    <li><b>Aplicar fórmulas de torneado a rectificado.</b> $p_s$ es 5-10× mayor en rectificado, las velocidades son distintas, el cálculo de $h$ es propio.</li>
+  </ol>
+</div>
+
+<h2>🧪 Mini-simulacro tipo examen (45 minutos)</h2>
+
+<h3>Pregunta 1 (15 min · Patrón P1+P2)</h3>
+<div class="box">
+  <p>Para rectificar un eje de acero F-114 templado a HRC 55, diámetro 60 mm:</p>
+  <ol>
+    <li>¿Qué tipo de operación de rectificado utilizarías? Justifica.</li>
+    <li>¿Qué muela seleccionarías? Da la denominación completa (abrasivo, grano, grado, estructura, aglutinante).</li>
+    <li>Justifica la elección del grado de muela (blanda vs dura).</li>
+  </ol>
+</div>
+
+<h3>Pregunta 2 (30 min · Patrón P4 ★)</h3>
+<div class="box exam">
+  <p>Rectificado plano horizontal de un bloque de acero F-114. Datos:</p>
+  <ul>
+    <li>Muela: $D_s = 300$ mm, anchura $w = 30$ mm, $n_s = 1900$ rpm.</li>
+    <li>Pieza: $v_w = 0{,}25$ m/s, profundidad $a_p = 20\,\mu$m por pasada.</li>
+    <li>Densidad granos activos $C = 4$ granos/mm². Factor forma $r = 12$.</li>
+    <li>$p_s = 20\,000$ N/mm². $\eta = 0{,}75$, $P_{max} = 7{,}5$ kW.</li>
+  </ul>
+  <ol>
+    <li>Calcula $v_s$.</li>
+    <li>Calcula caudal de viruta $Q_w$.</li>
+    <li>Calcula longitud de contacto $l_c$.</li>
+    <li>Calcula espesor de viruta $h$.</li>
+    <li>Estima la potencia consumida y verifica si es admisible.</li>
+  </ol>
+</div>
+
+<h2 class="pb">✅ Soluciones del simulacro</h2>
+
+<h3>Solución Pregunta 1</h3>
+
+<h4>Operación</h4>
+<p>Rectificado <b>cilíndrico exterior</b> (OD), <b>longitudinal</b>: la muela rectifica la superficie cilíndrica del eje desplazándose axialmente. Si fuese una operación de acabado en un cuello de cigüeñal, sería en plongée.</p>
+
+<h4>Selección de muela</h4>
+<p>Material: acero templado HRC 55 → <b>CBN</b> (superabrasivo). Si no se dispone de CBN: alúmina blanco/rosa (alta pureza).</p>
+<p>Grado: <b>blanda</b> (F-K) porque la pieza es muy dura.</p>
+<p>Tamaño grano: 80-120 (medio-fino) si Ra≤0,4 µm requerido. 60 si es desbaste.</p>
+<p>Aglutinante: <b>V</b> (vitrificado) o <b>M</b> (metálico para CBN).</p>
+<p>Denominación tipo: <b>200 × 25 × 32 — B-100-J-7-V</b> (con CBN).</p>
+
+<h4>Justificación grado blanda</h4>
+<p>El acero templado embotará rápidamente las aristas de los granos. Una muela <b>blanda</b> libera los granos embotados con facilidad, exponiendo aristas frescas (auto-afilado). Si fuese una muela dura, el grano embotado se quedaría adherido y la muela "rozaría" en lugar de cortar → quemado de la pieza.</p>
+
+<h3>Solución Pregunta 2 (★)</h3>
+
+<h4>Apartado 1 — $v_s$</h4>
+<p>$v_s = \pi\cdot D_s\cdot n_s/60 = \pi\cdot 0{,}300\cdot 1900/60 = \pi\cdot 9{,}5 = 29{,}85$ m/s.</p>
+<div class="box key" style="text-align:center">$\boxed{v_s \approx 29{,}85\ \text{m/s}}$</div>
+
+<h4>Apartado 2 — Caudal de viruta</h4>
+<p>Convirtiendo: $a_p = 20$ µm = 0,020 mm; $v_w = 0{,}25$ m/s = 250 mm/s.</p>
+<p>$Q_w = a_p\cdot v_w\cdot w = 0{,}020\cdot 250\cdot 30 = 150$ mm³/s.</p>
+<div class="box key" style="text-align:center">$\boxed{Q_w = 150\ \text{mm}^3/\text{s}}$</div>
+
+<h4>Apartado 3 — Longitud de contacto</h4>
+<p>En rectificado plano $D_e = D_s = 300$ mm.</p>
+<p>$l_c = \sqrt{a_p\cdot D_e} = \sqrt{0{,}020\cdot 300} = \sqrt{6} = 2{,}45$ mm.</p>
+<div class="box key" style="text-align:center">$\boxed{l_c \approx 2{,}45\ \text{mm}}$</div>
+
+<h4>Apartado 4 — Espesor de viruta</h4>
+<p>$h \approx \sqrt{(v_w/v_s)\cdot(1/(Cr))\cdot\sqrt{a_p/D_e}}$.</p>
+<p>$v_w/v_s = 0{,}25/29{,}85 = 0{,}00837$.<br>
+$1/(Cr) = 1/(4\cdot 12) = 0{,}0208$.<br>
+$\sqrt{a_p/D_e} = \sqrt{0{,}020/300} = \sqrt{6{,}67\cdot 10^{-5}} = 0{,}00816$.<br>
+Producto: $0{,}00837\cdot 0{,}0208\cdot 0{,}00816 = 1{,}42\cdot 10^{-6}$.<br>
+$h \approx \sqrt{1{,}42\cdot 10^{-6}} = 1{,}19\cdot 10^{-3}$ mm $\approx 1{,}2$ µm.</p>
+<div class="box key" style="text-align:center">$\boxed{h \approx 1{,}2\ \mu\text{m}}$</div>
+<p><b>Comentario:</b> espesor del orden de micras, característico del rectificado.</p>
+
+<h4>Apartado 5 — Potencia consumida</h4>
+<p>Estimación: la potencia específica $u = p_s\cdot h_{eff}$. Más simple: $P_c = p_s\cdot Q_w/(v_s\cdot 1000)$ (mm³/s vs m/s) — convirtiendo unidades:</p>
+<p>$P_c \approx p_s\cdot Q_w\cdot 10^{-3}\,\text{(W)} = 20000\cdot 150\cdot 10^{-3} = 3000$ W = 3 kW.</p>
+<p>(Esta aproximación es estándar: la energía específica para rectificar un volumen $Q_w$ es $p_s\cdot Q_w$, y el factor de conversión depende de las unidades — verifica con tu fórmula del curso.)</p>
+<p>Potencia admisible: $P_{max}\eta = 7{,}5\cdot 0{,}75 = 5{,}625$ kW.</p>
+<p>$P_c = 3$ kW $< 5{,}625$ kW ✓ <b>ADMISIBLE</b>.</p>
+<div class="box key" style="text-align:center">$\boxed{P_c \approx 3\ \text{kW (admisible, margen del 47%)}}$</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 1-2 horas</div>
+  <ol>
+    <li><b>Memoriza la denominación de muela y la regla "duro→blanda"</b> (30 min).</li>
+    <li><b>Lee la teoría de operaciones</b> (plano, cilíndrico, sin centros) y diamantado/equilibrado (30 min).</li>
+    <li><b>Practica un cálculo de $v_s, Q_w, l_c$ y $h$</b> (45 min).</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo</h2>
+
+<div class="box key">
+  <div class="box-title">Las 4 reglas que te salvan T5</div>
+  <ol>
+    <li><b>Selección abrasivo:</b> A=acero · C=fundición/no-férreo · CBN=acero duro · Diamante=carburo (NO acero).</li>
+    <li><b>Grado:</b> pieza dura→muela blanda (F-K). Pieza blanda→muela dura (P-S).</li>
+    <li><b>$v_s$ en m/s:</b> 20-45 m/s típico, mucho mayor que $v_c$ de mecanizado.</li>
+    <li><b>Diamantar SIEMPRE</b> que la muela esté embotada. Equilibrar tras diamantar.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 4</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Identifica la operación (plano/cilíndrico/sin centros) →<br>
+    Calcula $v_s = \pi D_s n_s/60$ →<br>
+    $Q_w = a_p\cdot v_w\cdot w$ (productividad) →<br>
+    $l_c = \sqrt{a_p D_e}$, $h \approx 1$-$10\,\mu$m →<br>
+    Verifica potencia con $p_s > 15000$ N/mm².
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Sistemas de Producción UPV/EHU · Tema 5 — Rectificado<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

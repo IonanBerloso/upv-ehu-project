@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T2 Fresado · Sistemas de Producción UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 2 — Fresado</h1>
+  <div class="cover-sub">Sistemas de Producción · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>2 de 8 (Mecanizado)</div>
+    <div><b>Ejercicios</b>9 totales · 3 nivel examen</div>
+    <div><b>Patrones</b>5 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>10 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Cálculo básico (vc, N, vf, fz, h, Sc, Fc, Pc) — escuadrado/planeado</td><td class="center">2.1, 2.2</td><td class="center">Base</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Volumen a mecanizar — selección herramienta + tc</td><td class="center">2.3</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Velocidad de avance máxima con restricción de potencia</td><td class="center">2.4</td><td class="center">Alta</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Planeado + escuadrado combinados (bloque)</td><td class="center">2.5</td><td class="center">Media</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P5 ★</b></td><td><b>Organigrama completo</b> (cilindro + chavetero, fresado integrado)</td><td class="center">2.6, 2.7, 2.8, 2.9</td><td class="center"><b>MUY ALTA</b></td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T2 sigue el mismo patrón que T1 pero con fresado:</b> partir de una pieza ya cilindrada (pasada de torno), añadir una operación de fresado (chavetero, planeado, escuadrado, ranurado…) y calcular parámetros completos. El examen suele combinar T1 (torneado) + T2 (fresado) en una misma pieza.</p>
+  <p>La <b>diferencia clave</b> con torneado es la geometría: aquí hay <b>dos profundidades</b> ($a_p$ axial, $a_e$ radial), <b>número de dientes</b> $Z$, <b>avance por diente</b> $f_z$ (no $f$), y la sección de viruta es <b>variable</b> con el ángulo de giro $\theta$.</p>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 10 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Parámetros cinemáticos</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F1 · ★ Velocidad de corte y rpm</div>
+    <div class="formula-body">$v_c = \dfrac{\pi D N}{1000}\ \text{[m/min]}$</div>
+    <div class="formula-body">$N = \dfrac{1000\,v_c}{\pi D}$ [rpm]</div>
+    <div class="formula-note">$D$ = diámetro de la fresa, NO de la pieza.</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F2 · ★ Velocidad de avance (4 parámetros!)</div>
+    <div class="formula-body">$v_f = f_z\cdot Z\cdot N$ [mm/min]</div>
+    <div class="formula-note">$f_z$ avance por diente, $Z$ nº dientes. <b>NO confundir con torneado</b> donde $v_f = f\cdot N$.</div>
+  </div>
+</div>
+
+<h3>2 · Geometría del corte intermitente</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Espesor instantáneo</div>
+    <div class="formula-body">$h(\theta) = f_z\cdot \sin\theta$ [mm]</div>
+    <div class="formula-note">$\theta$ = ángulo del filo respecto a la posición vertical. Es VARIABLE durante el corte.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Sección de viruta instantánea</div>
+    <div class="formula-body">$S_c(\theta) = a_p\cdot h(\theta) = a_p\cdot f_z\cdot \sin\theta$</div>
+    <div class="formula-note">Máxima cuando $\sin\theta = 1$: $S_{c,max} = a_p\cdot f_z$.</div>
+  </div>
+</div>
+
+<h3>3 · Dientes en contacto y fuerza</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F5 · Dientes efectivos en contacto</div>
+    <div class="formula-body">$Z_{ef} = \dfrac{\theta_s - \theta_e}{360°/Z}$</div>
+    <div class="formula-note">Para ranurado ($a_e = D$): $\theta_s - \theta_e = 180°$ → $Z_{ef} = Z/2$.</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F6 · ★ Fuerza media por diente</div>
+    <div class="formula-body">$F_{c,medio} = p_s\cdot S_{c,medio}\cdot Z_{ef}$</div>
+    <div class="formula-note">$S_{c,medio} = a_p\cdot f_z\cdot \sin\bar\theta$ con $\bar\theta$ ángulo medio del arco de contacto.</div>
+  </div>
+</div>
+
+<h3>4 · Potencia y tiempo</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F7 · ★ Potencia de corte</div>
+    <div class="formula-body">$P_c = \dfrac{F_{c,medio}\cdot v_c}{60\,000}$ [kW]</div>
+    <div class="formula-note">Verifica $P_c \le P_{max}\eta$. Hay versión con caudal: $P_c = a_p\cdot a_e\cdot v_f\cdot p_s/60000000$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Tiempo de mecanizado</div>
+    <div class="formula-body">$t_c = \dfrac{L_w}{v_f}$ [min]</div>
+    <div class="formula-note">$L_w = L_{pieza} + L_{entrada} + L_{salida}$. Entrada y salida ≈ $D/2$ cada una en planeado.</div>
+  </div>
+</div>
+
+<h3>5 · Rugosidad y geometría de fresa</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F9 · ★ Rugosidad teórica fresado</div>
+    <div class="formula-body">$R_{max} \approx \dfrac{f_z^2}{4\,D}$ [mm]</div>
+    <div class="formula-body">$R_a \approx R_{max}/4$</div>
+    <div class="formula-note">Para mejorar: bajar $f_z$ (efecto cuadrático) o subir $D$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Caudal de viruta (Q)</div>
+    <div class="formula-body">$Q = a_p\cdot a_e\cdot v_f$ [mm³/min]</div>
+    <div class="formula-note">Mide la productividad. Maximizar $Q$ es el objetivo en desbaste.</div>
+  </div>
+</div>
+
+<h2>📋 Tabla — Operaciones de fresado</h2>
+
+<table>
+  <thead><tr><th>Operación</th><th>$a_e$ vs $D$</th><th class="center">Notas</th></tr></thead>
+  <tbody>
+    <tr><td><b>Planeado (face)</b></td><td>$a_e < D$ típico 70-80% D</td><td class="center">Fresa frontal grande, alta productividad</td></tr>
+    <tr class="alt"><td><b>Escuadrado (shoulder)</b></td><td>variable</td><td class="center">Fresa de mango con flancos a 90°</td></tr>
+    <tr><td><b>Ranurado (slot)</b></td><td>$a_e = D$</td><td class="center">Mayor carga térmica; reducir $v_f$</td></tr>
+    <tr class="alt"><td><b>Cajera (pocket)</b></td><td>variable</td><td class="center">Entrada en rampa o helicoidal</td></tr>
+    <tr><td><b>Trocoidal</b></td><td>$a_e \ll D$ (5-10%)</td><td class="center">Para superaleaciones y aceros duros; alta vc</td></tr>
+    <tr class="alt"><td><b>Chavetero</b></td><td>$a_e = D_{fresa}$</td><td class="center">Fresa de chaveta; ranurado lateral</td></tr>
+  </tbody>
+</table>
+
+<div class="box tip">
+  <div class="box-title">💡 Concordancia (down) vs Oposición (up)</div>
+  <p><b>Concordancia (down-milling):</b> herramienta gira en el mismo sentido que avanza la pieza. Viruta empieza gruesa y termina delgada. Empuja la pieza contra la mesa (mejor amarre). <b>Preferido en CNC.</b></p>
+  <p><b>Oposición (up-milling):</b> herramienta gira contra el avance. Viruta empieza delgada y termina gruesa. Tiende a levantar la pieza. Se usa en máquinas con holgura de husillo.</p>
+</div>
+
+<h2 class="pb">🎯 Los 5 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Cálculo básico de parámetros</span>
+    <span class="pattern-freq baja">Base</span>
+  </div>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Datos del catálogo de la fresa</strong>$D, Z, Z_{ef}$ (según operación), $f_z$ recomendado, $a_p$ y $a_e$ máximos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$N, v_f$</strong>$N = 1000\,v_c/(\pi D)$. $v_f = f_z\cdot Z\cdot N$. <b>Ojo:</b> usar $Z$ total, no $Z_{ef}$, en la velocidad de avance.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$h, S_c$ máximo</strong>$h_{max} = f_z\cdot \sin\theta_{max}$ donde $\theta_{max}$ es el ángulo de máxima inmersión (90° si la fresa entra hasta el centro).</div></div>
+    <div class="paso"><div class="paso-body"><strong>$F_c, P_c$</strong>$F_{c,max}$ por diente $= p_s(h_{max})\cdot a_p\cdot h_{max}$. Total: multiplica por $Z_{ef}$ con $\sin$ medio si es un cálculo de potencia media.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Volumen a mecanizar — selección herramienta + tc</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "fresar un volumen de 200×30×9 mm". Elige fresa y calcula tc.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica la operación</strong>Volumen plano de superficie → planeado. Volumen estrecho y profundo → escuadrado. Ranura → ranurado.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Elige fresa de catálogo</strong>$D$ adecuado a la dimensión radial (ej. para planeado, $D \ge 1{,}5\cdot a_e$). $Z$ según preferencia.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Cuenta el número de pasadas</strong><b>Axiales:</b> nº pasadas $= \lceil h_{volumen}/a_{p,max}\rceil$. <b>Radiales:</b> $\lceil w_{volumen}/a_e\rceil$. Total pasadas = axiales × radiales.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$t_c$ por pasada y total</strong>$t_{c,pasada} = L_w/v_f$. $t_{total} = N_{pasadas}\cdot t_{c,pasada}$ + tiempo de retorno entre pasadas.</div></div>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">$v_{f,max}$ con restricción de potencia</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula la velocidad máxima de avance que la máquina puede sostener".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Modelo de potencia con caudal</strong>$P_c = a_p\cdot a_e\cdot v_f\cdot p_s/(60\cdot 10^6)$ [kW]. Útil cuando $f_z$ no aparece explícitamente.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Despeja $v_{f,max}$ saturando la potencia</strong>$v_{f,max} = P_{max}\eta\cdot 60\cdot 10^6 / (a_p\cdot a_e\cdot p_s)$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verifica con $f_z = v_f/(Z\cdot N)$</strong>El $f_z$ resultante debe estar dentro del rango del catálogo (ej. 0,1-0,3 mm/diente).</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Planeado + escuadrado de bloque</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> bloque rectangular sin mecanizar. Hay que planear las 6 caras y escuadrar las paredes.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica las operaciones por cara</strong>Cara 1 (superior): planeado. Caras 2-3 (laterales): escuadrado. Etc. Cada operación tiene parámetros distintos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para cada cara, aplica P1 o P2</strong>Anota $t_c$ por cara.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tiempo total = suma + cambios de orientación</strong>Si la pieza necesita ser amarrada de nuevo entre caras, sumar tiempo de cambio.</div></div>
+  </div>
+</div>
+
+<!-- P5 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P5 ★</span>
+    <span class="pattern-name" style="color:#b00">Organigrama completo (PATRÓN ESTRELLA EXAMEN)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> SIEMPRE. Pieza compuesta torno+fresado: cilindro con chavetero, hueco para tornillo, cara plana, etc. Combina operaciones de T1 (torneado) con T2 (fresado).</p>
+
+  <h4>Receta universal (Patrón 5)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Lee la pieza y planifica todas las operaciones</strong>Típico orden: <b>(1)</b> refrentado, <b>(2)</b> cilindrado desbaste, <b>(3)</b> cilindrado acabado, <b>(4)</b> roscado, <b>(5)</b> tronzado intermedio, <b>(6)</b> CHAVETERO (fresado), <b>(7)</b> tronzado final.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para las operaciones de torneado: usa el procedimiento de T1</strong>Sandvik 3 pasos, calcular parámetros, verificar potencia.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para la operación de fresado (típicamente chavetero):</strong>Fresa de chaveta de $D = $ ancho de la chaveta. Ranurado pleno: $a_e = D$, $Z_{ef} = Z/2$. Profundidad axial $a_p = $ profundidad de la chaveta (típico 4-6 mm). Cálculo: $N, v_f, t_c, F_c, P_c$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tabla resumen del organigrama</strong>Igual que en T1, una fila por operación con todos los parámetros y tiempos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verificaciones globales</strong>Potencia, fuerza, rugosidad. Vida de herramienta para varias piezas si te lo piden.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Tabla resumen organigrama (con fresado)</div>
+    <table style="font-size:8.5pt">
+      <thead><tr><th>Op.</th><th>Tipo</th><th>Herram.</th><th>$D$</th><th>$L_w$</th><th>$a_p$</th><th>$f$/$f_z$</th><th>$Z$</th><th>$v_c$</th><th>$N$</th><th>$v_f$</th><th>$t_c$</th><th>$F_c$</th><th>$P_c$</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Refrentado</td><td>Torno H1</td><td>varía</td><td>radial</td><td>1</td><td>0,2 mm/rev</td><td>1</td><td>320</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+        <tr class="alt"><td>2</td><td>Cilindrado</td><td>Torno H2</td><td>...</td><td>...</td><td>4</td><td>0,3</td><td>1</td><td>250</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+        <tr><td>6</td><td><b>Chavetero</b></td><td>Fresa H5</td><td>10</td><td>40</td><td>5</td><td>0,05/diente</td><td>4</td><td>120</td><td>3820</td><td>764</td><td>0,05</td><td>...</td><td>...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en T2</div>
+  <ol>
+    <li><b>Confundir $f$ (mm/rev) con $f_z$ (mm/diente).</b> En fresado SIEMPRE $f_z$. La conversión: $f = f_z\cdot Z$ por revolución de la herramienta.</li>
+    <li><b>Olvidar el factor $Z$ en $v_f$.</b> $v_f = f_z\cdot Z\cdot N$, NO $f_z\cdot N$.</li>
+    <li><b>Confundir $a_p$ con $a_e$.</b> $a_p$ = profundidad axial (paralela al eje de la fresa). $a_e$ = profundidad radial (perpendicular al eje de la fresa, es decir, el ancho de pasada).</li>
+    <li><b>En ranurado, olvidar $Z_{ef} = Z/2$.</b> Cuando $a_e = D$, solo la mitad de los dientes están cortando simultáneamente (180° de inmersión).</li>
+    <li><b>Aplicar $h$ máximo en lugar de $h$ medio para potencia.</b> La potencia media usa $h_{medio} = f_z\cdot \sin\bar\theta$ donde $\bar\theta$ es el ángulo medio del arco.</li>
+    <li><b>Olvidar la entrada y salida de la fresa en $L_w$.</b> En planeado, $L_w = L_{pieza} + 2\cdot D/2 = L_{pieza} + D$.</li>
+    <li><b>Confundir $D$ de la fresa con $D$ de la pieza.</b> En fresado, $D$ siempre es de la fresa para calcular $v_c$ y $N$.</li>
+    <li><b>En chavetero, olvidar que $a_e = D_{fresa}$ (ranurado pleno).</b> Esto activa $Z_{ef} = Z/2$.</li>
+    <li><b>Aplicar concordancia/oposición a una operación que no la admite.</b> El ranurado es simétrico (mitad up, mitad down). Solo en planeado o escuadrado decides up vs down.</li>
+    <li><b>Olvidar que en CNC se prefiere concordancia.</b> Ventajas: mejor acabado, menor desgaste, fuerzas que empujan la pieza contra la mesa.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (75 minutos · sin apuntes)</h2>
+
+<h3>Problema 1 (30 min · Patrones P1+P3)</h3>
+<div class="box">
+  <p>Planeado de una placa de acero F-114 (200×100×20 mm), eliminando 3 mm de la cara superior. Datos:</p>
+  <ul>
+    <li>Fresa frontal: $D = 80$ mm, $Z = 6$ dientes, $f_z$ recomendado: 0,12 mm/diente.</li>
+    <li>$v_c$ del catálogo para F-114: 250 m/min.</li>
+    <li>Máquina: $P_{max} = 12$ kW, $\eta = 0{,}8$.</li>
+    <li>$a_e = 0{,}75\cdot D = 60$ mm. Una sola pasada en $a_p = 3$ mm.</li>
+    <li>$p_s = 2400\cdot h^{-0{,}24}$ N/mm².</li>
+  </ul>
+  <ol>
+    <li>Calcula $N, v_f$.</li>
+    <li>Calcula $Z_{ef}$ (asumiendo planeado simétrico con $\theta_s - \theta_e \approx 130°$).</li>
+    <li>Calcula $F_{c,medio}$ y $P_c$.</li>
+    <li>¿Es admisible? Si no, ajusta $f_z$.</li>
+    <li>Calcula $t_c$.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (45 min · Patrón P5 ★ — Organigrama)</h3>
+<div class="box exam">
+  <p>Pieza: cilindro de acero F-114 D=50 mm × L=110 mm con un chavetero de 8×4×40 mm en la superficie cilíndrica.</p>
+  <ol>
+    <li>Diseña el organigrama completo (orden de operaciones).</li>
+    <li>Para cada operación, calcula parámetros (usa valores típicos: torneado $v_c = 250$, fresado $v_c = 120$, $\eta = 0{,}8$, $P_{max} = 10$ kW).</li>
+    <li>Tiempo total estimado.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado 1 — $N, v_f$</h4>
+<p>$N = 1000\cdot 250/(\pi\cdot 80) = 995$ rpm.<br>
+$v_f = 0{,}12\cdot 6\cdot 995 = 716$ mm/min.</p>
+<div class="box key" style="text-align:center">$\boxed{N = 995\ \text{rpm},\ v_f = 716\ \text{mm/min}}$</div>
+
+<h4>Apartado 2 — $Z_{ef}$</h4>
+<p>$Z_{ef} = 130°/(360°/6) = 130°/60° = 2{,}17$ dientes.</p>
+<div class="box key" style="text-align:center">$\boxed{Z_{ef} \approx 2{,}17\ \text{dientes}}$</div>
+
+<h4>Apartado 3 — $F_{c,medio}, P_c$</h4>
+<p>$\bar\theta \approx 65°$ (centro del arco), $\sin 65° = 0{,}906$.</p>
+<p>$h_{medio} = 0{,}12\cdot 0{,}906 = 0{,}109$ mm.</p>
+<p>$p_s = 2400\cdot 0{,}109^{-0{,}24} = 2400\cdot 1{,}77 = 4248$ N/mm².</p>
+<p>$S_{c,medio} = 3\cdot 0{,}109 = 0{,}327$ mm². $F_{c,medio,por\,diente} = 4248\cdot 0{,}327 = 1389$ N.</p>
+<p>$F_{total,medio} = 1389\cdot 2{,}17 = 3014$ N.</p>
+<p>$P_c = 3014\cdot 250/60000 = 12{,}6$ kW. ❌ Supera $P_{max}\eta = 9{,}6$ kW.</p>
+
+<h4>Apartado 4 — Ajuste de $f_z$</h4>
+<p>$P_c$ varía aprox. proporcionalmente con $f_z$ (h pequeño): $f_z\cdot 9{,}6/12{,}6 = 0{,}091$ mm/diente.</p>
+<p>Con $f_z = 0{,}09$ mm/diente: $h_{medio} = 0{,}082$, $p_s = 2400\cdot 0{,}082^{-0{,}24} = 4630$, $F = 4630\cdot 3\cdot 0{,}082\cdot 2{,}17 = 2474$ N. $P_c = 10{,}3$ kW. Aún excede ligeramente.</p>
+<p>Probar $f_z = 0{,}08$: $P_c \approx 9{,}5$ kW. ✓.</p>
+<div class="box key" style="text-align:center">$\boxed{f_z = 0{,}08\ \text{mm/diente},\ P_c \approx 9{,}5\ \text{kW}}$</div>
+
+<h4>Apartado 5 — $t_c$</h4>
+<p>Con $f_z = 0{,}08$: $v_f = 0{,}08\cdot 6\cdot 995 = 478$ mm/min.<br>
+$L_w = 200 + 80 = 280$ mm (incluyendo entrada y salida).<br>
+$t_c = 280/478 = 0{,}586$ min = 35 s.</p>
+<div class="box key" style="text-align:center">$\boxed{t_c \approx 35\ \text{s}}$</div>
+
+<h3 class="pb">Solución Problema 2 (★ examen)</h3>
+
+<h4>Organigrama</h4>
+<p><b>(1)</b> Refrentado de las dos caras del cilindro. <b>(2)</b> Cilindrado completo del exterior (50→48 desbaste, 48→48 acabado de 1 mm — quizás solo si se especifica). En este caso simplemente refrentado. <b>(3)</b> Chavetero por fresado.</p>
+
+<h4>Operación: Chavetero (fresado)</h4>
+<p>Fresa de chaveta $D = 8$ mm (ancho del chavetero). $Z = 4$ dientes (típico). Ranurado pleno: $a_e = 8$ mm, $Z_{ef} = Z/2 = 2$ dientes.</p>
+<p>$a_p$ axial total = 4 mm (profundidad chavetero). En 1 pasada o 2 según el material.</p>
+<p>$N = 1000\cdot 120/(\pi\cdot 8) = 4775$ rpm. ⚠ Muchas máquinas no llegan a esta rpm — si el catálogo dice $N_{max} = 3000$, se limita a $N=3000$ y $v_c$ real $= \pi\cdot 8\cdot 3000/1000 = 75{,}4$ m/min.</p>
+<p>Asumimos $f_z = 0{,}05$ mm/diente. $v_f = 0{,}05\cdot 4\cdot 3000 = 600$ mm/min.</p>
+<p>$h_{medio} = 0{,}05\cdot \sin 90° = 0{,}05$ mm (ranurado simétrico, ángulo medio en el centro del arco).</p>
+<p>$p_s = 2400\cdot 0{,}05^{-0{,}24} = 2400\cdot 2{,}13 = 5113$ N/mm².</p>
+<p>$F_{por\,diente} = 5113\cdot 4\cdot 0{,}05 = 1023$ N. $F_{total} = 1023\cdot 2 = 2045$ N. $P_c = 2045\cdot 75{,}4/60000 = 2{,}57$ kW. ✓</p>
+<p>$t_c = 40\,\text{mm}/600\,\text{mm/min} = 0{,}067$ min = 4 s. (más entrada/salida ≈ 5-6 s)</p>
+
+<h4>Tiempo total</h4>
+<p>Refrentados (≈ 30 s cada uno) + chavetero (≈ 6 s) ≈ 70-90 segundos.</p>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El chavetero es la operación de fresado más común en pieza torneada. Fresa de mango $D = $ ancho del chavetero, ranurado pleno con $Z_{ef} = Z/2$. Ojo a que la $N$ requerida puede superar $N_{max}$ de la máquina — entonces se limita y se trabaja a la $v_c$ real menor.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza F1-F8 + tabla operaciones</b> (30 min).</li>
+    <li><b>Cálculo planeado simple</b> (45 min) — Ejercicio 2.4.</li>
+    <li><b>Organigrama con chavetero</b> (1h 30 min) — Ejercicio 2.7 con la solución delante.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Escuadrado y Sc — 2.1, 2.2.</li>
+    <li><b>Día 2:</b> Volumen y planeado — 2.3, 2.4.</li>
+    <li><b>Día 3:</b> Bloque planeado+escuadrado — 2.5.</li>
+    <li><b>Día 4-5:</b> Organigramas — 2.6, 2.7.</li>
+    <li><b>Día 6:</b> Organigramas avanzados — 2.8, 2.9.</li>
+    <li><b>Día 7:</b> Mini-simulacro de esta guía.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 4 herramientas que te salvan T2</div>
+  <ol>
+    <li><b>$v_f = f_z\cdot Z\cdot N$:</b> NO olvidar el $Z$ (factor que distingue de torneado).</li>
+    <li><b>$Z_{ef}$ según operación:</b> ranurado $Z/2$, planeado $\approx 30-40\%\cdot Z$ según $a_e/D$.</li>
+    <li><b>Potencia con $h_{medio}$:</b> $P_c$ se calcula con espesor MEDIO, no máximo.</li>
+    <li><b>Concordancia preferida en CNC:</b> mejor acabado, fuerzas que empujan contra la mesa.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 5 (organigrama T1+T2)</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Operaciones de torno (P5 de T1) →<br>
+    Cambio de máquina/amarre →<br>
+    Operaciones de fresado (chavetero, planeado…) →<br>
+    Cuidado: $f_z$ no $f$, $Z_{ef}$ correcto, entrada/salida en $L_w$ →<br>
+    Verificar potencia y rugosidad → tabla resumen.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Sistemas de Producción UPV/EHU · Tema 2 — Fresado<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T1 Torneado · Sistemas de Producción UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 1 — Fundamentos de Mecanizado: Torneado</h1>
+  <div class="cover-sub">Sistemas de Producción · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>1 de 8 (Mecanizado)</div>
+    <div><b>Ejercicios</b>9 totales · 3 nivel examen</div>
+    <div><b>Patrones</b>5 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>10 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Cálculo básico de parámetros (vc, N, vf, tc, h, Sc, Fc, Pc)</td><td class="center">Todos</td><td class="center">Base imprescindible</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Refrentado (avance radial — vc constante con N variable)</td><td class="center">1.1, 1.4</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Selección herramienta de desbaste (maximizar productividad)</td><td class="center">1.3, 1.5, 1.6</td><td class="center">Alta</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Ley de Taylor (vida T, productividad, vc óptima)</td><td class="center">1.2, 1.5, 1.6, 1.7</td><td class="center">Alta</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P5 ★</b></td><td><b>Organigrama completo</b> (secuencia tronzado + cilindrado + roscado + chavetero)</td><td class="center">1.7, 1.8, 1.9</td><td class="center"><b>MUY ALTA</b></td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T1 SIEMPRE es un organigrama completo:</b> partir de un tocho cilíndrico, mecanizar la pieza final con una secuencia de operaciones (refrentado, cilindrado de desbaste, cilindrado de acabado, roscado, ranurado, tronzado, chavetero…) eligiendo herramienta apropiada para cada paso y calculando: parámetros de corte, fuerzas, potencias, tiempos, y a veces vida de herramienta o rugosidad.</p>
+  <p>Las <b>3 herramientas estrella</b>: <b>(1)</b> el "procedimiento Sandvik" (3 pasos: tipo herramienta → tabla f-ap → tabla material-vc), <b>(2)</b> ley de Taylor $v_c\,T^n = C$, <b>(3)</b> verificación de potencia $P_c \le P_{max}\eta$.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Memoriza las <b>10 fórmulas core</b> (parámetros de corte, viruta, fuerza, potencia, Taylor, rugosidad).</li>
+    <li>Aprende a <b>elegir herramienta</b> de desbaste/acabado siguiendo el procedimiento Sandvik.</li>
+    <li>Estudia los 5 patrones con sus recetas paso a paso.</li>
+    <li>Mini-simulacro al final.</li>
+  </ol>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 10 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Parámetros de corte</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F1 · ★ Velocidad de corte y rpm</div>
+    <div class="formula-body">$v_c = \dfrac{\pi D N}{1000}\ \text{[m/min]}$</div>
+    <div class="formula-body">$N = \dfrac{1000\,v_c}{\pi D}\ \text{[rpm]}$</div>
+    <div class="formula-note">$D$ en mm. En refrentado, $D$ varía → $N$ varía si $v_c$ es cte.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Velocidad de avance y tiempo</div>
+    <div class="formula-body">$v_f = f \cdot N\ \text{[mm/min]}$</div>
+    <div class="formula-body">$t_c = \dfrac{L_w}{v_f}\ \text{[min]}$</div>
+    <div class="formula-note">$f$ en mm/rev, $L_w$ longitud a mecanizar.</div>
+  </div>
+</div>
+
+<h3>2 · Parámetros de viruta</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Espesor y longitud de viruta</div>
+    <div class="formula-body">$h = f\cdot \sin\kappa_r\ \text{[mm]}$</div>
+    <div class="formula-body">$b = \dfrac{a_p}{\sin\kappa_r}\ \text{[mm]}$</div>
+    <div class="formula-note">$\kappa_r$ = ángulo de posición de la placa.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Sección de viruta</div>
+    <div class="formula-body">$S_c = h\cdot b = f\cdot a_p\ \text{[mm}^2\text{]}$</div>
+    <div class="formula-note">Producto independiente de $\kappa_r$ (siempre = $f\cdot a_p$).</div>
+  </div>
+</div>
+
+<h3>3 · Fuerza y potencia de corte</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F5 · ★ Fuerza específica (Kienzle)</div>
+    <div class="formula-body">$p_s = K_{c1} \cdot h^{-m_c}\ \text{[N/mm}^2\text{]}$</div>
+    <div class="formula-note">A más h, menor $p_s$. Típico: $K_{c1} \approx$ 1500-2700, $m_c \approx 0{,}2$-0,3.</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F6 · ★ Fuerza de corte y potencia</div>
+    <div class="formula-body">$F_c = p_s\cdot S_c\ \text{[N]}$</div>
+    <div class="formula-body">$P_c = \dfrac{F_c\cdot v_c}{60\,000}\ \text{[kW]}$</div>
+    <div class="formula-note">Verifica: $P_c \le P_{max}\cdot \eta$ (rendimiento).</div>
+  </div>
+</div>
+
+<h3>4 · Vida de herramienta y rugosidad</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F7 · ★ Ley de Taylor</div>
+    <div class="formula-body">$v_c\cdot T^n = C\ \text{(cte)}$</div>
+    <div class="formula-note">$T$ vida [min], $n$: HSS 0,1-0,2 · MD 0,2-0,5 · Cer 0,5-0,7. Si subes $v_c$, baja $T$.</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F8 · ★ Rugosidad teórica (Ra y Rt)</div>
+    <div class="formula-body">$R_a = \dfrac{f^2}{32\,r_\varepsilon}\cdot 1000\ [\mu\text{m}]$</div>
+    <div class="formula-body">$R_t = \dfrac{f^2}{8\,r_\varepsilon}\cdot 1000\ [\mu\text{m}]$</div>
+    <div class="formula-note">$r_\varepsilon$ = radio de placa [mm]. Limita $f$ en acabado.</div>
+  </div>
+</div>
+
+<h3>5 · Selección de Vc por Taylor (cambio de condiciones)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F9 · Vc nueva con T nueva</div>
+    <div class="formula-body">$v_{c,2} = v_{c,1}\cdot\left(\dfrac{T_1}{T_2}\right)^n$</div>
+    <div class="formula-note">Si $T_2 > T_1$ (querer mayor vida) → $v_{c,2} < v_{c,1}$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Comprobación de potencia</div>
+    <div class="formula-body">$P_c\le P_{max}\cdot\eta$</div>
+    <div class="formula-note">Despeja $f_{max}$ o $v_{c,max}$ saturando la potencia.</div>
+  </div>
+</div>
+
+<h2>📋 Tabla resumen — Operaciones de torneado</h2>
+
+<table>
+  <thead><tr><th>Operación</th><th>Descripción</th><th class="center">Movimiento</th><th>Notas</th></tr></thead>
+  <tbody>
+    <tr><td><b>Cilindrado</b> (exterior/interior)</td><td>Reduce/amplía diámetro</td><td class="center">Avance Z (paralelo al eje)</td><td>La operación más común. $L_w$ en eje Z</td></tr>
+    <tr class="alt"><td><b>Refrentado</b></td><td>Genera superficie plana perpendicular al eje</td><td class="center">Avance X (radial)</td><td>$D$ varía durante el corte → $N$ varía si $v_c$ cte</td></tr>
+    <tr><td><b>Tronzado</b></td><td>Separar la pieza del tocho</td><td class="center">Plunge X hasta el centro</td><td>Herramienta lama, profundidad máx ≈ 8·la</td></tr>
+    <tr class="alt"><td><b>Roscado</b></td><td>Genera rosca por sincronización</td><td class="center">Z sincronizado con $N$</td><td>$v_f = p\cdot N$ donde $p$ = paso de rosca</td></tr>
+    <tr><td><b>Ranurado</b></td><td>Ranura en pieza</td><td class="center">Plunge X</td><td>Herramienta lama estrecha</td></tr>
+    <tr class="alt"><td><b>Cónico</b></td><td>Forma cónica</td><td class="center">Diagonal con chariot</td><td>Solo torno paralelo. En CNC: programa</td></tr>
+    <tr><td><b>Perfilado</b></td><td>Superficies libres en plano XZ</td><td class="center">X+Z combinado</td><td>Placas tipo D, V (rómbicas)</td></tr>
+  </tbody>
+</table>
+
+<div class="box tip">
+  <div class="box-title">💡 Procedimiento Sandvik (ATAJO universal)</div>
+  <ol>
+    <li><b>Elegir tipo de herramienta:</b> según operación (desbaste/acabado), forma (R, S, C, W, T, D, V) y denominación ISO.</li>
+    <li><b>Tabla f-ap:</b> apuntar valores recomendados de $a_p$ y $f$ del catálogo.</li>
+    <li><b>Tabla material vs $v_c$:</b> interpolar $v_c$ según el avance $f$. Verificar potencia.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🎯 Los 5 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Cálculo básico de parámetros</span>
+    <span class="pattern-freq baja">Base — todos los problemas</span>
+  </div>
+  <p><b>Cuándo aparece:</b> en todos. Una vez fijados $v_c, f, a_p$, calcular el resto.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>$N$ a partir de $v_c$</strong>$N = 1000\,v_c/(\pi D)$. Atención: si la máquina tiene $N_{max}$ y la cuenta sale mayor, hay que limitar a $N_{max}$ y recalcular el $v_c$ real.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$v_f$ y $t_c$</strong>$v_f = f\cdot N$, $t_c = L_w/v_f$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Parámetros de viruta y fuerza</strong>$h = f\sin\kappa_r$, $S_c = f\cdot a_p$, $p_s$ por Kienzle, $F_c = p_s\cdot S_c$, $P_c = F_c\cdot v_c/60000$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verificar potencia y fuerza</strong>$P_c \le P_{max}\eta$ y $F_c \le F_{c,max}$.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Refrentado (vc cte con N variable)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula el tiempo de refrentado de un disco D = 100 mm hasta D=20 mm con $v_c$ cte".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Si $v_c$ es constante (CNC): $N$ varía con $D$</strong>$N(D) = 1000\,v_c/(\pi D)$. Cuando $D \to 0$, $N \to \infty$ (limitado por $N_{max}$ máquina).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tiempo: integrar $dt = dr/v_f(r)$</strong>$v_f(r) = f\cdot N(r) = f\cdot 1000\,v_c/(\pi\cdot 2r)$.<br>$t = \int_{r_2}^{r_1}\dfrac{dr}{v_f(r)} = \dfrac{\pi}{f\,v_c}\int_{r_2}^{r_1}r\,dr = \dfrac{\pi(r_1^2 - r_2^2)}{2\,f\,v_c}$ (en min, con $r$ en mm y $v_c$ en mm/min, dividir por 1000).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Si $N$ es constante (torno paralelo): $v_c$ varía</strong>$v_c(D) = \pi D N/1000$. Cuidado: en este caso $v_c$ máxima ocurre en el extremo del disco.</div></div>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Selección herramienta de desbaste</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "elige entre 3-4 herramientas la mejor para minimizar el tiempo de desbaste".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica $a_p$ requerido</strong>$a_p = (D_0 - D_f)/2$ (para cilindrado externo). Si supera el $a_{p,max}$ de una herramienta → ese candidato necesita 2 pasadas.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para cada herramienta candidata:</strong>Calcula $f_{max}$ por dos restricciones simultáneas: <b>(a)</b> de la tabla del catálogo (limita por geometría de la placa), <b>(b)</b> de potencia: $f \le P_{max}\eta\cdot 60000/(p_s\cdot a_p\cdot v_c)$. Elige el menor.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula tiempo de mecanizado</strong>$t_c = L_w/(f\cdot N) = L_w\cdot\pi D/(f\cdot v_c\cdot 1000)$. La herramienta con menor $t_c$ es la elegida (criterio de productividad).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verifica fuerza</strong>$F_c = p_s\cdot a_p\cdot f \le F_{c,max}$ de la máquina.</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Ley de Taylor</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula la nueva $v_c$ si quieres aumentar la productividad / la vida".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica las dos condiciones</strong>Ej. "60 piezas en 8 horas con un cambio de placa cada X piezas" → $T = $ tiempo de corte por placa. Y la condición de potencia: $P_c \le P_{max}\eta$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula $v_c$ que satura cada condición</strong><b>Productividad:</b> de Taylor, $v_{c,1} = v_{c,0}(T_0/T_1)^n$.<br><b>Potencia:</b> $v_{c,P} = P_{max}\eta\cdot 60000/(p_s\cdot S_c)$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Elige la $v_c$ menor (la más restrictiva)</strong>Comprueba con la otra: si está por debajo del límite, ok. Si no, ajusta.</div></div>
+  </div>
+  <div class="box tip">
+    <div class="box-title">Cuidado con T y T_herr</div>
+    <p>$T$ (vida de la herramienta) es el tiempo en CORTE efectivo. Si la pieza requiere $t_c = 5$ min y la placa dura 15 min, da para 3 piezas antes de cambiarla.</p>
+  </div>
+</div>
+
+<!-- P5 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P5 ★</span>
+    <span class="pattern-name" style="color:#b00">Organigrama completo (PATRÓN ESTRELLA EXAMEN)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> SIEMPRE en examen. Tocho cilíndrico → pieza final con varias operaciones. Cada operación: selección de herramienta, parámetros, tiempo, verificaciones.</p>
+
+  <h4>Receta universal (Patrón 5)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Lee la pieza final y planifica las operaciones</strong>Típicas: <b>(a)</b> refrentado de las dos caras (limpiar), <b>(b)</b> cilindrado de desbaste, <b>(c)</b> cilindrado de acabado, <b>(d)</b> tronzado intermedio si hay escalones, <b>(e)</b> roscado, <b>(f)</b> chavetero (a fresa, no en torno), <b>(g)</b> ranurado, <b>(h)</b> tronzado final.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para cada operación, sigue el procedimiento Sandvik</strong>(1) Elegir tipo de herramienta. (2) De la tabla f-ap del enunciado, elegir $f$ y $a_p$ recomendados. (3) De la tabla material-$v_c$, interpolar $v_c$. (4) Verificar potencia.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcular parámetros de cada operación</strong>$N, v_f, t_c, h, S_c, F_c, P_c$. Apuntar todos en una tabla resumen.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tiempo total</strong>$t_{total} = \sum t_c + t_{cambio\,herramienta}\cdot N_{cambios}$. Si te dan tiempo de cambio, súmalo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verificaciones globales</strong>Ningún $P_c > P_{max}\eta$. Ningún $F_c > F_{c,max}$. Rugosidad final $R_a \le R_{a,adm}$. Vida de herramienta suficiente para la cantidad de piezas.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Tabla resumen del organigrama (formato examen)</div>
+    <table style="font-size:8.5pt">
+      <thead><tr><th>Op.</th><th>Tipo</th><th>Herram.</th><th>$D$</th><th>$L_w$</th><th>$a_p$</th><th>$f$</th><th>$v_c$</th><th>$N$</th><th>$t_c$</th><th>$F_c$</th><th>$P_c$</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Refrentado</td><td>H1</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+        <tr class="alt"><td>2</td><td>Cilindrado desbaste</td><td>H2</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+        <tr><td>3</td><td>Cilindrado acabado</td><td>H3</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+        <tr class="alt"><td>4</td><td>Roscado</td><td>H4</td><td>...</td><td>...</td><td>...</td><td>$=p$</td><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:9pt;color:#444;margin-top:1.5mm"><i>Esta tabla es la "página final" del organigrama. Llenarla de forma sistemática evita olvidar nada.</i></p>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en T1</div>
+  <ol>
+    <li><b>Confundir $f$ (avance por revolución, mm/rev) con $v_f$ (velocidad de avance, mm/min).</b> $v_f = f\cdot N$.</li>
+    <li><b>Aplicar $v_c$ en m/min en una fórmula que espera mm/min.</b> Cuidado con las unidades en $P_c = F_c\cdot v_c/60000$ (donde $v_c$ está en m/min y se divide por 60000 para sacar kW).</li>
+    <li><b>Olvidar que $\sin\kappa_r$ no aparece en $S_c$.</b> $S_c = f\cdot a_p$, NO $f\cdot a_p\cdot \sin\kappa_r$. (Sí afecta a $h$ y $b$ por separado.)</li>
+    <li><b>Aplicar $p_s$ con $h$ equivocado.</b> Kienzle usa $h$ del corte real ($f\sin\kappa_r$), no $f$.</li>
+    <li><b>Olvidar el rendimiento $\eta$ en la verificación de potencia.</b> $P_c \le P_{max}\cdot\eta$ con $\eta\sim 0{,}8$ típico.</li>
+    <li><b>Confundir tiempo total con tiempo de corte.</b> $t_{total}$ incluye cambios de herramienta, posicionamientos, etc. $t_c$ es solo el corte efectivo.</li>
+    <li><b>En refrentado, asumir $v_c$ cte sin justificarlo.</b> Solo en CNC. En torno paralelo manual, $N$ es cte y $v_c$ varía.</li>
+    <li><b>Aplicar Taylor con unidades inconsistentes.</b> $T$ y $C$ deben estar en las mismas unidades.</li>
+    <li><b>En acabado, no comprobar la rugosidad.</b> $R_a$ limita $f$, no la potencia.</li>
+    <li><b>Olvidar el ángulo $\kappa_r$ al elegir herramienta para $a_p$ grande.</b> Si $a_p > b_{max}$ de la placa, no entra → necesitas placa más grande o ángulo de posición distinto.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (90 minutos · sin apuntes)</h2>
+
+<h3>Problema 1 (35 min · Patrones P1+P3+P4)</h3>
+<div class="box">
+  <p>Cilindrar una pieza de acero F-114 desde $D_0 = 100$ mm hasta $D = 92$ mm a lo largo de $L = 150$ mm. Datos:</p>
+  <ul>
+    <li>Máquina: $P_{max} = 18$ kW, $\eta = 0{,}8$, $N_{max} = 3000$ rpm, $F_{c,max} = 4000$ N.</li>
+    <li>Herramienta: metal duro, $\kappa_r = 90°$, $r_\varepsilon = 0{,}8$ mm.</li>
+    <li>Catálogo: $f \in [0{,}1,\ 0{,}3]$ mm/rev, $a_{p,max} = 4$ mm.</li>
+    <li>Tabla acero F-114 vs $v_c$: para $f = 0{,}2$, $v_c = 200$ m/min.</li>
+    <li>Kienzle: $p_s = 2400\cdot h^{-0{,}25}$ N/mm².</li>
+    <li>Taylor: $n = 0{,}25$, $T_0 = 15$ min a $v_{c,0} = 200$ m/min.</li>
+  </ul>
+  <ol>
+    <li>Selecciona $a_p$ y $f$. Verifica que $P_c \le P_{max}\eta$ y $F_c \le F_{c,max}$.</li>
+    <li>Calcula $N, v_f, t_c, F_c, P_c$.</li>
+    <li>Si quieres aumentar $v_c$ a 250 m/min, ¿cuál es la nueva vida $T$? ¿Cuántas piezas mecaniza una placa antes de cambiarla?</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (55 min · Patrón P5 ★ — Organigrama)</h3>
+<div class="box exam">
+  <p>Partiendo de un tocho de acero F-114 (Ø60 mm × L=150 mm) se quiere mecanizar una pieza con:</p>
+  <ul>
+    <li>Refrentado de la cara A (1 mm de viruta).</li>
+    <li>Cilindrado externo desde Ø60 → Ø50 mm a lo largo de los 150 mm (desbaste a Ø52, acabado de 1 mm).</li>
+    <li>Roscado M50×1,5 en los 30 mm finales.</li>
+    <li>Tronzado a longitud final L = 145 mm (tronzar 5 mm).</li>
+  </ul>
+  <p>Datos máquina: $P_{max} = 15$ kW, $\eta = 0{,}8$, $F_{c,max} = 4000$ N. Acero F-114: para desbaste $v_c = 250$ m/min, para acabado $v_c = 320$ m/min, para roscado $v_c = 60$ m/min, para tronzado $v_c = 100$ m/min. Kienzle $p_s = 2400\cdot h^{-0{,}24}$. $r_\varepsilon = 0{,}8$ mm, $\kappa_r = 90°$. Rugosidad final pedida $R_a \le 1{,}6\,\mu$m.</p>
+  <ol>
+    <li>Calcula los parámetros de cada operación (organiza la tabla resumen).</li>
+    <li>Calcula los tiempos de cada operación y el tiempo total.</li>
+    <li>Verifica que en ninguna operación se supera $P_{max}\eta$ ni $F_{c,max}$.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado 1 — Selección de $a_p, f$</h4>
+<p>Profundidad necesaria: $a_p = (D_0 - D)/2 = (100-92)/2 = 4$ mm. Cabe en una pasada ($a_{p,max}=4$).</p>
+<p>Tomamos $f = 0{,}2$ mm/rev (valor central del rango del catálogo). Con $\kappa_r = 90°$: $h = f\sin 90° = 0{,}2$ mm.</p>
+<p>$p_s = 2400\cdot 0{,}2^{-0{,}25} = 2400\cdot 1{,}495 = 3588$ N/mm².<br>
+$S_c = a_p\cdot f = 4\cdot 0{,}2 = 0{,}8$ mm².<br>
+$F_c = p_s\cdot S_c = 3588\cdot 0{,}8 = 2870$ N. <b>≤ 4000 N ✓</b><br>
+$P_c = F_c\cdot v_c/60000 = 2870\cdot 200/60000 = 9{,}57$ kW. <b>≤ 18·0,8 = 14,4 kW ✓</b></p>
+
+<div class="box key" style="text-align:center">$\boxed{a_p = 4\ \text{mm (1 pasada)},\ f = 0{,}2\ \text{mm/rev},\ v_c = 200\ \text{m/min}}$</div>
+
+<h4>Apartado 2 — Parámetros completos</h4>
+<p>$N = 1000\cdot v_c/(\pi D_0) = 1000\cdot 200/(\pi\cdot 100) = 636$ rpm. (Usando $D_0=100$ inicial; al final del cilindrado $D=92$, $N=691$ rpm.)</p>
+<p>Como $v_c$ se mantiene constante en CNC con G96, tomamos $N$ medio $\approx 663$ rpm. (Si la máquina trabaja con $N$ fija, $N=636$.)</p>
+<p>$v_f = f\cdot N = 0{,}2\cdot 636 = 127$ mm/min.<br>
+$t_c = L_w/v_f = 150/127 = 1{,}18$ min ≈ <b>71 s</b>.<br>
+$F_c = 2870$ N, $P_c = 9{,}57$ kW (calculados antes).</p>
+<div class="box key" style="text-align:center">$\boxed{N = 636\ \text{rpm},\ v_f = 127\ \text{mm/min},\ t_c \approx 71\ \text{s},\ F_c = 2870\ \text{N},\ P_c = 9{,}57\ \text{kW}}$</div>
+
+<h4>Apartado 3 — Aumentar $v_c$ a 250 m/min</h4>
+<p>Aplicando Taylor (F9): $v_{c,1}\,T_1^n = v_{c,2}\,T_2^n$ con $T_1 = 15$ min, $v_{c,1} = 200$, $v_{c,2} = 250$, $n = 0{,}25$.</p>
+<p>$T_2 = T_1\cdot(v_{c,1}/v_{c,2})^{1/n} = 15\cdot(200/250)^{1/0{,}25} = 15\cdot(0{,}8)^4 = 15\cdot 0{,}4096 = 6{,}14$ min.</p>
+<p>Tiempo de cada pieza con $v_c=250$: $t_c = L\cdot\pi\cdot D/(f\cdot v_c\cdot 1000) = 150\cdot\pi\cdot 100/(0{,}2\cdot 250\cdot 1000) = 47\,124/50\,000 = 0{,}943$ min.</p>
+<p>Piezas por placa: $T_2/t_c = 6{,}14/0{,}943 = 6{,}5$ → <b>6 piezas completas</b> antes del cambio.</p>
+<div class="box key" style="text-align:center">$\boxed{T_2 \approx 6{,}14\ \text{min},\ \text{6 piezas/placa}}$</div>
+
+<h3 class="pb">Solución Problema 2 (★ examen)</h3>
+
+<h4>Tabla resumen del organigrama</h4>
+
+<table>
+  <thead><tr><th>Op.</th><th>Tipo</th><th class="center">$D$ (mm)</th><th class="center">$L_w$ (mm)</th><th class="center">$a_p$</th><th class="center">$f$ (mm/rev)</th><th class="center">$v_c$</th><th class="center">$N$</th><th class="center">$t_c$ (s)</th><th class="center">$F_c$</th><th class="center">$P_c$</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Refrentado A</td><td class="center">60→0</td><td class="center">30 (radial)</td><td class="center">1</td><td class="center">0,2</td><td class="center">320</td><td class="center">var.</td><td class="center">~17</td><td class="center">~600</td><td class="center">~3,2</td></tr>
+    <tr class="alt"><td>2</td><td>Cilindrado desbaste</td><td class="center">60→52</td><td class="center">150</td><td class="center">4</td><td class="center">0,3</td><td class="center">250</td><td class="center">1326</td><td class="center">~22</td><td class="center">~3000</td><td class="center">12,5 ❌</td></tr>
+    <tr><td>2'</td><td>Cilindrado desbaste (ajustado)</td><td class="center">60→52</td><td class="center">150</td><td class="center">4</td><td class="center">0,2</td><td class="center">250</td><td class="center">1326</td><td class="center">~33</td><td class="center">~2200</td><td class="center">9,2 ✓</td></tr>
+    <tr class="alt"><td>3</td><td>Cilindrado acabado</td><td class="center">52→50</td><td class="center">150</td><td class="center">1</td><td class="center">0,16</td><td class="center">320</td><td class="center">2037</td><td class="center">~28</td><td class="center">~430</td><td class="center">2,3 ✓</td></tr>
+    <tr><td>4</td><td>Roscado M50×1,5</td><td class="center">50→47</td><td class="center">30</td><td class="center">~1,5</td><td class="center">1,5</td><td class="center">60</td><td class="center">381</td><td class="center">~5</td><td class="center">~3000</td><td class="center">3,0 ✓</td></tr>
+    <tr class="alt"><td>5</td><td>Tronzado</td><td class="center">50→0</td><td class="center">25 (radial)</td><td class="center">3 (lama)</td><td class="center">0,1</td><td class="center">100</td><td class="center">var.</td><td class="center">~15</td><td class="center">~700</td><td class="center">1,2 ✓</td></tr>
+  </tbody>
+</table>
+
+<h4>Apartados — desarrollo numérico (operación 2', desbaste)</h4>
+<p>$h = 0{,}2$, $p_s = 2400\cdot 0{,}2^{-0{,}24} = 2400\cdot 1{,}477 = 3545$ N/mm². $S_c = 4\cdot 0{,}2 = 0{,}8$. $F_c = 2836$ N. $P_c = 2836\cdot 250/60000 = 11{,}8$ kW. Supera $P_{max}\eta = 12$ kW por poco.</p>
+<p>Refinamos a $f = 0{,}18$: $h = 0{,}18$, $p_s = 2400\cdot 0{,}18^{-0{,}24} = 3617$ N/mm². $F_c = 3617\cdot 0{,}72 = 2604$ N. $P_c = 2604\cdot 250/60000 = 10{,}9$ kW. ✓.</p>
+
+<h4>Tiempos</h4>
+<p>$t_{op,2} = 150\pi\cdot 60/(0{,}18\cdot 250\cdot 1000) = 28260/45000 = 0{,}628$ min = 38 s.</p>
+<p>Total estimado: ~120 s = 2 minutos sin contar refrentado y tronzado de manera detallada.</p>
+
+<h4>Verificaciones</h4>
+<ul>
+  <li>$P_c \le 12$ kW en todas: ✓ (la operación crítica era el desbaste).</li>
+  <li>$F_c \le 4000$ N: ✓ en todas.</li>
+  <li>$R_a$ acabado: $R_a = (0{,}16)^2\cdot 1000/(32\cdot 0{,}8) = 25{,}6/25{,}6 = 1{,}0\,\mu$m ≤ $1{,}6$ ✓.</li>
+</ul>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El organigrama es <b>una tabla mental</b>. Cada operación: pensar herramienta → leer la tabla del enunciado para $f, a_p, v_c$ → verificar potencia (ajustar si excede) → calcular $N, t_c, F_c, P_c$ → siguiente operación. Es el patrón mecánico del examen.</p>
+  <p>El roscado tiene $f = $ paso de la rosca (1,5 mm en M50×1,5). El tronzado se hace con herramienta lama estrecha y bajo $f$.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza F1-F8</b> y la tabla de operaciones (30 min).</li>
+    <li><b>Cilindrado desbaste + acabado</b> (45 min) — Ejercicio 1.6.</li>
+    <li><b>Organigrama completo</b> (1h 30 min) — Ejercicio 1.7 con la solución delante.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Refrentado y Taylor — 1.1, 1.2.</li>
+    <li><b>Día 2:</b> Cilindrado básico — 1.3, 1.5.</li>
+    <li><b>Día 3:</b> Selección herramienta — 1.4, 1.6.</li>
+    <li><b>Día 4:</b> Organigrama 1.7.</li>
+    <li><b>Día 5:</b> Organigrama 1.8.</li>
+    <li><b>Día 6:</b> Organigrama 1.9.</li>
+    <li><b>Día 7:</b> Mini-simulacro de esta guía.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 4 herramientas que te salvan T1</div>
+  <ol>
+    <li><b>Procedimiento Sandvik:</b> tipo herramienta → tabla f-ap → tabla material-vc → verificar P.</li>
+    <li><b>Verificación de potencia:</b> $P_c = p_s\cdot S_c\cdot v_c/60000 \le P_{max}\eta$. Si excede → bajar $f$ o $a_p$.</li>
+    <li><b>Rugosidad limita $f$ en acabado:</b> $f \le \sqrt{R_a\cdot 32\cdot r_\varepsilon/1000}$.</li>
+    <li><b>Taylor para vida-velocidad:</b> $v_c\cdot T^n = $ cte. Si subes $v_c$, baja $T$.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del organigrama</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Para cada operación:<br>
+    Elegir herramienta del catálogo →<br>
+    Leer $f, a_p$ recomendados → interpolar $v_c$ →<br>
+    Calcular $h, p_s, S_c, F_c, P_c$ →<br>
+    Verificar $P_c \le P_{max}\eta$ y $F_c \le F_{c,max}$ →<br>
+    Calcular $N, v_f, t_c$ →<br>
+    Anotar en la tabla resumen → siguiente operación.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Sistemas de Producción UPV/EHU · Tema 1 — Fundamentos de Mecanizado: Torneado<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

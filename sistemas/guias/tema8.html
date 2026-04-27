@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T8 Deformación Plástica · Sistemas de Producción UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 8 — Deformación Plástica</h1>
+  <div class="cover-sub">Sistemas de Producción · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>8 de 8 (Conformado)</div>
+    <div><b>Tipo</b>Cualitativo + chapa</div>
+    <div><b>Patrones</b>5 tipos · 1 estrella</div>
+    <div><b>Fórmulas</b>10 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Procesos volumétricos: forja, laminación, extrusión, estirado</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Curva $\sigma$-$\varepsilon$ y conformado caliente vs frío</td><td class="center">Alta</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P3 ★</b></td><td><b>Doblado de chapa</b> — fuerza máxima, springback, $R_{min}$</td><td class="center"><b>MUY ALTA</b></td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Embutición — límite $\beta$, diámetro inicial</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P5</b></td><td>Corte/punzonado — fuerza, sobremedida, calidad de corte</td><td class="center">Media</td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T8 incluye casi siempre:</b> un cálculo de doblado o embutición de chapa con datos numéricos. Fuerza máxima, recuperación elástica (springback), límite de embutición, dimensionado del disco inicial.</p>
+  <p>Las <b>fórmulas estrella</b>: $F_{max} = k_f\,\sigma_{uts}\,t^2\,b/u$ (doblado en V), $\beta = d_0/d_1$ (relación de embutición, máx 2,0 para acero), $d_0 \approx 1{,}1\sqrt{d_1^2 + 4d_1 h}$ (dimensionado del disco inicial).</p>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 10 fórmulas imprescindibles</h2>
+
+<h3>1 · Curva tensión-deformación</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F1 · Tensiones clave</div>
+    <div class="formula-body" style="font-size:9.5pt;text-align:left">$\sigma_y$ — tensión de fluencia<br>$\sigma_{uts}$ — tensión última<br>$\varepsilon$ — deformación unitaria</div>
+    <div class="formula-note">Conformar siempre por encima de $\sigma_y$ (zona plástica).</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Endurecimiento por deformación (Hollomon)</div>
+    <div class="formula-body">$\sigma = K\,\varepsilon^n$</div>
+    <div class="formula-note">$K$ = coef. resistencia, $n$ = exponente endurecimiento. Más alta $\sigma$ con la deformación.</div>
+  </div>
+</div>
+
+<h3>2 · Conformado caliente vs frío</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Temperatura de recristalización</div>
+    <div class="formula-body">$T_{recris} \approx 0{,}4$-$0{,}6\,T_f$ (en K)</div>
+    <div class="formula-note">Caliente: $T > 0{,}6T_f$. Frío: $T < 0{,}35T_f$. Tibio: intermedio.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Reducción en laminación</div>
+    <div class="formula-body">$r = \dfrac{t_0 - t_f}{t_0}\cdot 100$ %</div>
+    <div class="formula-note">Reducción de espesor por pasada. Por continuidad: $b_0 t_0 v_0 = b_f t_f v_f$.</div>
+  </div>
+</div>
+
+<h3>3 · Doblado (V/U)</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F5 · ★ Fuerza máxima de doblado</div>
+    <div class="formula-body">$F_{max} = k_f\cdot \sigma_{uts}\cdot t^2\cdot \dfrac{b}{u}$</div>
+    <div class="formula-note">$t$ espesor, $b$ ancho, $u$ apertura matriz. $k_f$: V (1,2-1,35), U (0,7-0,8), pasante (0,3-0,33).</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Caso particular V α=90°</div>
+    <div class="formula-body">$F = (1 + 4t/u)\,\sigma_{uts}\,t^2\,b/u$</div>
+    <div class="formula-note">Versión específica con $\alpha = 90°$.</div>
+  </div>
+</div>
+
+<h3>4 · Springback (recuperación elástica)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F7 · Espesor ficticio elástico</div>
+    <div class="formula-body">$t_r = \dfrac{2 R_n Y}{E}$</div>
+    <div class="formula-note">$R_n$ radio neutro, $Y$ límite elástico, $E$ módulo Young. Para acero $E\approx 210$ GPa.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Radio tras springback</div>
+    <div class="formula-body">$R_{r,n} = R_n\left(1 + \dfrac{2t_r^3}{3t(t^2 - t_r^2)}\right)$</div>
+    <div class="formula-note">$R_{r,n} > R_n$ (la chapa se "abre"). Hay que doblar más para compensar.</div>
+  </div>
+</div>
+
+<h3>5 · Embutición</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F9 · ★ Relación de embutición</div>
+    <div class="formula-body">$\beta = \dfrac{d_0}{d_1}$</div>
+    <div class="formula-note">$d_0$ disco inicial, $d_1$ punzón. <b>$\beta_{max}$</b> = 1,8-2,2 para acero (depende del material).</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Diámetro disco inicial</div>
+    <div class="formula-body">$d_0 \approx \sqrt{d_1^2 + 4 d_1 h}$ (mín. 1,1 factor seguridad)</div>
+    <div class="formula-note">$d_1$ ø punzón, $h$ altura del vaso. Considera conservación de área.</div>
+  </div>
+</div>
+
+<h2>📋 Procesos volumétricos (forja, laminación, extrusión, estirado)</h2>
+
+<table>
+  <thead><tr><th>Proceso</th><th>Descripción</th><th>Aplicaciones típicas</th></tr></thead>
+  <tbody>
+    <tr><td><b>Forja libre</b></td><td>Material entre dos estampas planas</td><td>Piezas grandes, series cortas. Cigüeñales, ejes pesados.</td></tr>
+    <tr class="alt"><td><b>Forja con estampas</b> (estampación)</td><td>Cavidades con la forma deseada. Genera rebaba.</td><td>Pinzas, llaves, herramientas. Forja en caliente típica.</td></tr>
+    <tr><td><b>Laminación</b></td><td>Reducción de espesor entre dos cilindros</td><td>Chapas, perfiles, vías. Tren laminación: cajas desbaste R + acabado F.</td></tr>
+    <tr class="alt"><td><b>Extrusión</b></td><td>Material forzado a través de matriz</td><td>Perfiles Al, tubos, alambres. Directa (mismo sentido) o inversa.</td></tr>
+    <tr><td><b>Estirado / trefilado</b></td><td>Tracción a través de matriz cónica</td><td>Cables, alambres. Reduce diámetro y aumenta longitud.</td></tr>
+  </tbody>
+</table>
+
+<div class="box info">
+  <div class="box-title">📋 Ventajas de la forja en caliente</div>
+  <ul>
+    <li><b>Microestructura mejorada:</b> granos pequeños y orientación (fibrado direccional).</li>
+    <li><b>Eliminación de defectos internos:</b> cavidades aplastadas.</li>
+    <li><b>Resistencia mecánica:</b> superior a piezas mecanizadas desde tocho.</li>
+    <li><b>Near Net Shape (NNS):</b> ahorro 20-65% material vs mecanizado puro.</li>
+    <li><b>Ideal para:</b> piezas con cargas cíclicas (cigüeñales, bielas, pernos a fatiga).</li>
+  </ul>
+</div>
+
+<h2 class="pb">🎯 Los 5 patrones de problema (recetas)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Procesos volumétricos — clasificación</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica el proceso por geometría</strong>Pieza compleja con fibrado: forja. Chapa: laminación. Perfil largo (alambre, tubo, ángulo): extrusión o estirado. Reducción de diámetro: estirado/trefilado.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Caliente vs frío</strong>Geometría compleja, gran deformación, $T_f$ alta → caliente. Acabado superficial fino, tolerancias estrechas → frío.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Considera el material</strong>Acero: $T_{recris} \approx 700°C$. Aluminio: $T_{recris} \approx 200°C$. Cobre: $T_{recris} \approx 200°C$.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Curva $\sigma$-$\varepsilon$ y caliente/frío</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "describe la curva tensión-deformación de un acero. ¿Por qué es preferible conformar en caliente?".</p>
+  <ul style="margin-left:6mm">
+    <li><b>Zona elástica</b> (Hooke, recuperable). Hasta $\sigma_y$.</li>
+    <li><b>Zona de fluencia</b>: gran deformación con poco aumento de $\sigma$.</li>
+    <li><b>Endurecimiento por deformación</b>: $\sigma$ aumenta con $\varepsilon^n$.</li>
+    <li><b>Estricción y rotura</b> en $\sigma_{uts}$.</li>
+  </ul>
+  <p><b>Caliente vs frío:</b> caliente baja $\sigma_y$ → menos energía + más deformación posible. Frío endurece la pieza por deformación → mejor acabado y tolerancias.</p>
+</div>
+
+<!-- P3 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P3 ★</span>
+    <span class="pattern-name" style="color:#b00">Doblado de chapa — fuerza, springback</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula la fuerza máxima para doblar una chapa de t=2 mm, b=100 mm en matriz V de apertura u=12 mm. Acero $\sigma_{uts}=400$ MPa".</p>
+
+  <h4>Receta universal</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica el tipo de matriz</strong>V (más común): $k_f \in [1{,}2,\ 1{,}35]$.<br>U: $k_f \in [0{,}7,\ 0{,}8]$.<br>Pasante: $k_f \in [0{,}3,\ 0{,}33]$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica $F_{max} = k_f\cdot \sigma_{uts}\cdot t^2\cdot b/u$</strong>Cuidado con unidades: $\sigma_{uts}$ en MPa = N/mm², $t$ y $b$ y $u$ en mm. $F_{max}$ sale en N.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Springback</strong>Calcula $t_r = 2R_n Y/E$. Si $t_r$ es comparable a $t$, hay springback significativo. Doblar a un radio MENOR para compensar (sobre-doblar).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Radio mínimo de doblado</strong>$R_{min}$ depende del material. Aceros: $R_{min} \approx 1$-$2t$. Aluminio: $R_{min} \approx 0{,}5$-$1t$. Si $R$ < $R_{min}$, la chapa se agrieta.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Caso V con $\alpha = 90°$</div>
+    <p>Fórmula expandida: $F = (1 + 4t/u)\,\sigma_{uts}\,t^2\,b/u$.<br>
+    Ejemplo: $t=2, u=12, b=100, \sigma_{uts}=400$. $F = (1 + 8/12)\cdot 400\cdot 4\cdot 100/12 = 1{,}67\cdot 400\cdot 4\cdot 8{,}33 = 22\,267$ N $\approx 22$ kN.</p>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Embutición — diámetro disco, número de pasadas</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "embutición de un vaso cilíndrico de $d_1$=50 mm, $h$=80 mm. Material: chapa de acero $\beta_{max}=2$. Calcula $d_0$ y nº de pasadas".</p>
+
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Calcula el diámetro inicial $d_0$</strong>Conservación de área: $d_0^2 = d_1^2 + 4 d_1 h$ (si la chapa no se adelgaza).<br>Ej: $d_0 = \sqrt{50^2 + 4\cdot 50\cdot 80} = \sqrt{2500 + 16000} = \sqrt{18500} \approx 136$ mm.<br>Con factor seguridad 1,1: $d_0 \approx 1{,}1\cdot 136 = 150$ mm.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Comprueba relación $\beta = d_0/d_1$</strong>$\beta = 136/50 = 2{,}72$. <b>Excede $\beta_{max} = 2$ → no se puede embutir en una pasada</b>. Hay que hacer reembutidos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Nº de pasadas</strong>Pasada 1: $d_0 \to d_{int,1}$ con $\beta_1 = 2$. $d_{int,1} = d_0/2 = 68$ mm.<br>Pasada 2: $d_{int,1} \to d_{int,2}$ con $\beta_2 \le 1{,}5$ (segundas pasadas más restrictivas). $d_{int,2} = 68/1{,}5 = 45$ mm.<br>Aún no llega a 50, así que en la 2ª pasada llegamos directamente a 50: $\beta_2 = 68/50 = 1{,}36$ ✓.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verifica diseño</strong>Si necesitan 2 pasadas, hay que diseñar herramientas para cada pasada. Si $\beta$ pequeño en cada pasada (1,5-1,7) la operación es segura.</div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Corte / punzonado — fuerza y sobremedidas</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula la fuerza para punzonar un disco de Ø50 en chapa de t=3 mm. $\sigma_{cizalla}$=250 MPa".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Fuerza de punzonado</strong>$F = L_{corte}\cdot t\cdot \sigma_{cizalla}$ donde $L_{corte}$ es el perímetro de corte. Para círculo: $L = \pi D$.<br>$\sigma_{cizalla} \approx 0{,}7\sigma_{uts}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Holgura punzón-matriz</strong>Típicamente $0{,}05\,t$ a $0{,}1\,t$. Mucha holgura → rebaba excesiva. Poca → fuerza alta y desgaste.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calidad del corte</strong>El corte tiene zonas: <b>(1)</b> deformación, <b>(2)</b> corte limpio, <b>(3)</b> rotura. Mejor calidad: corte limpio mayor parte del espesor.</div></div>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 8 errores en T8</div>
+  <ol>
+    <li><b>Confundir $\sigma_y$ con $\sigma_{uts}$.</b> $\sigma_y$ = inicio de la deformación plástica. $\sigma_{uts}$ = máxima tensión. Para conformar se usa $\sigma_{uts}$ en la fórmula de doblado.</li>
+    <li><b>Aplicar fórmulas de frío a un proceso en caliente.</b> En caliente $\sigma_y$ es mucho menor → menos fuerza necesaria.</li>
+    <li><b>Olvidar el springback.</b> La chapa "se abre" tras el doblado. Hay que sobredoblar para compensar.</li>
+    <li><b>Excederse en la relación de embutición $\beta$.</b> $\beta_{max} \approx 2$ para acero. Si $d_0/d_1 > 2$ se necesitan varias pasadas.</li>
+    <li><b>Confundir $k_f$ entre matriz V y U.</b> V $\approx 1{,}2$-$1{,}35$, U $\approx 0{,}7$-$0{,}8$. Diferentes mecánicas.</li>
+    <li><b>Calcular $d_0$ sin factor de seguridad.</b> Tip: usa $d_0 \times 1{,}1$ a $1{,}15$.</li>
+    <li><b>Diseñar paredes muy delgadas en forja.</b> No es posible. Mínimo $t \approx 5$-$10$ mm dependiendo de la geometría.</li>
+    <li><b>Olvidar las aristas vivas en forja.</b> No es posible: todas las esquinas necesitan radio de acuerdo.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (60 minutos)</h2>
+
+<h3>Pregunta 1 (15 min · Patrón P1+P2)</h3>
+<div class="box">
+  <ol>
+    <li>¿Por qué la forja en caliente produce piezas con mejores propiedades mecánicas que el mecanizado desde tocho?</li>
+    <li>¿Qué proceso usarías para fabricar perfiles de aluminio largos para ventanas? Justifica.</li>
+    <li>¿Cuándo se usa estirado/trefilado?</li>
+  </ol>
+</div>
+
+<h3>Pregunta 2 (25 min · Patrón P3 ★)</h3>
+<div class="box exam">
+  <p>Doblado en V de una chapa de acero de alta resistencia (HSLA):</p>
+  <ul>
+    <li>Espesor $t = 2$ mm, ancho $b = 200$ mm</li>
+    <li>Apertura matriz $u = 16$ mm (matriz V con $\alpha=90°$)</li>
+    <li>$\sigma_{uts} = 700$ MPa, $\sigma_y = 600$ MPa, $E = 210$ GPa</li>
+    <li>Radio neutro deseado tras doblado $R_n^{deseado} = 4$ mm</li>
+  </ul>
+  <ol>
+    <li>Calcula la fuerza máxima de doblado (caso V con $\alpha=90°$).</li>
+    <li>Calcula el espesor ficticio elástico $t_r$.</li>
+    <li>Calcula el radio tras springback $R_{r,n}$ si se programa $R_n=4$ mm.</li>
+    <li>¿Qué radio $R_n$ habría que programar para que el resultado final sea $R_{r,n}=4$ mm?</li>
+  </ol>
+</div>
+
+<h3 class="pb">Pregunta 3 (20 min · Patrón P4)</h3>
+<div class="box exam">
+  <p>Embutición de un vaso cilíndrico de $d_1 = 60$ mm y altura $h = 100$ mm. Material: chapa de acero con $\beta_{max,1} = 2{,}1$ (1ª pasada), $\beta_{max,2} = 1{,}6$ (2ª pasada), $\beta_{max,3} = 1{,}3$ (3ª pasada).</p>
+  <ol>
+    <li>Calcula el diámetro $d_0$ del disco inicial (con factor de seguridad 1,1).</li>
+    <li>¿Cuántas pasadas son necesarias?</li>
+    <li>Indica los diámetros intermedios.</li>
+  </ol>
+</div>
+
+<h2 class="pb">✅ Soluciones del simulacro</h2>
+
+<h3>Solución Pregunta 1</h3>
+<ol>
+  <li><b>Forja en caliente vs mecanizado:</b> la forja produce <b>fibrado direccional</b> (las fibras del material siguen la geometría de la pieza, mejorando la resistencia mecánica), <b>granos más finos</b> tras la recristalización, y <b>elimina defectos internos</b> (cavidades aplastadas). El mecanizado desde tocho corta las fibras y no mejora la microestructura.</li>
+  <li><b>Perfiles Al largos:</b> <b>Extrusión</b>. Material forzado a través de matriz con la sección deseada. Aluminio se extruye fácilmente en caliente. Las matrices son baratas comparadas con cantidades enormes de perfil producido continuamente.</li>
+  <li><b>Estirado/trefilado:</b> reducción del diámetro de barras o alambres mediante tracción a través de matriz cónica. Ideal para producción de cables y alambres. En frío para mejorar acabado y endurecer.</li>
+</ol>
+
+<h3>Solución Pregunta 2 (★)</h3>
+
+<h4>Apartado 1 — Fuerza máxima</h4>
+<p>Caso V con $\alpha = 90°$: $F = (1 + 4t/u)\sigma_{uts}\,t^2\,b/u$.</p>
+<p>$1 + 4\cdot 2/16 = 1 + 0{,}5 = 1{,}5$.<br>
+$F = 1{,}5\cdot 700\cdot 4\cdot 200/16 = 1{,}5\cdot 700\cdot 4\cdot 12{,}5 = 52\,500$ N = 52,5 kN.</p>
+<div class="box key" style="text-align:center">$\boxed{F_{max} \approx 52{,}5\ \text{kN}}$</div>
+
+<h4>Apartado 2 — Espesor ficticio elástico $t_r$</h4>
+<p>Con $R_n = 4$ mm, $\sigma_y = 600$ MPa, $E = 210\,000$ MPa:</p>
+<p>$t_r = 2R_n Y/E = 2\cdot 4\cdot 600/210\,000 = 4800/210\,000 = 0{,}0229$ mm = 22,9 µm.</p>
+<p>Aún relativamente pequeño respecto a $t = 2$ mm, pero el cociente $t_r/t = 0{,}0114$ ya no es despreciable cuando $t$ es pequeño.</p>
+<div class="box key" style="text-align:center">$\boxed{t_r = 0{,}0229\ \text{mm}}$</div>
+
+<h4>Apartado 3 — Radio tras springback con $R_n = 4$ mm</h4>
+<p>$R_{r,n} = R_n\left(1 + \dfrac{2t_r^3}{3t(t^2 - t_r^2)}\right)$.</p>
+<p>$t_r^3 = 0{,}0229^3 = 1{,}20\cdot 10^{-5}$ mm³.<br>
+$t^2 - t_r^2 = 4 - 5{,}24\cdot 10^{-4} \approx 4$ mm² (aprox.).<br>
+$\dfrac{2t_r^3}{3t(t^2-t_r^2)} = \dfrac{2\cdot 1{,}20\cdot 10^{-5}}{3\cdot 2\cdot 4} = \dfrac{2{,}4\cdot 10^{-5}}{24} = 10^{-6}$.</p>
+<p>$R_{r,n} = 4\cdot(1 + 10^{-6}) \approx 4{,}000004$ mm.</p>
+<p><b>Conclusión:</b> el modelo $R_{r,n} = R_n(1 + 2t_r^3/(3t(t^2-t_r^2)))$ predice springback prácticamente despreciable porque $t_r \ll t$.</p>
+
+<div class="box info">
+  <div class="box-title">Modelo más realista de springback</div>
+  <p>El springback real es mejor capturado por la <b>relación angular</b>: $K_s = \alpha_r/\alpha_n$ donde $\alpha_n$ es el ángulo doblado y $\alpha_r$ el resultante tras la recuperación.</p>
+  <p>Una aproximación práctica para acero HSLA: $K_s \approx 1 - 3(\sigma_y/E)\cdot R_n/t + \ldots$ Para los datos: $K_s \approx 1 - 3(600/210000)(4/2) = 1 - 0{,}0171 = 0{,}983$.</p>
+  <p>Si se programa $\alpha_n = 90°$, queda $\alpha_r = 0{,}983\cdot 90° = 88{,}5°$ → la chapa se "abre" 1,5°. Para compensar, programar $\alpha_n = 90°/0{,}983 = 91{,}5°$.</p>
+  <p>Análogamente para el radio: $R_{r,n}/R_n \approx 1/K_s \approx 1{,}017$ → $R_{r,n} \approx 4{,}07$ mm.</p>
+</div>
+
+<h4>Apartado 4 — Radio a programar</h4>
+<p>Para obtener $R_{r,n}^{deseado} = 4$ mm tras springback, programar:</p>
+<p>$R_n^{prog} = R_{r,n}^{deseado}\cdot K_s \approx 4\cdot 0{,}983 = 3{,}93$ mm. (Sobre-doblar para compensar la apertura.)</p>
+<div class="box key" style="text-align:center">$\boxed{R_n^{prog} \approx 3{,}93\ \text{mm (sobre-dobaldo)}}$</div>
+
+<h3 class="pb">Solución Pregunta 3</h3>
+
+<h4>Apartado 1 — $d_0$</h4>
+<p>$d_0^2 = d_1^2 + 4 d_1 h = 60^2 + 4\cdot 60\cdot 100 = 3600 + 24000 = 27600$ mm².<br>
+$d_0 = \sqrt{27600} = 166{,}1$ mm.<br>
+Con factor 1,1: $d_0 = 1{,}1\cdot 166{,}1 = 182{,}7$ mm. Redondeo a 185 mm.</p>
+<div class="box key" style="text-align:center">$\boxed{d_0 \approx 185\ \text{mm}}$</div>
+
+<h4>Apartado 2 — Nº de pasadas</h4>
+<p>$\beta_{total} = d_0/d_1 = 185/60 = 3{,}08$.</p>
+<p><b>Pasada 1</b> (max $\beta_1 = 2{,}1$): de $d_0 = 185$ a $d_{int,1} = 185/2{,}1 = 88{,}1$ mm. Aún más que 60 → seguir.</p>
+<p><b>Pasada 2</b> (max $\beta_2 = 1{,}6$): de 88,1 a $88{,}1/1{,}6 = 55{,}1$ mm. Esto es ligeramente menor que el objetivo 60. Mejor: usar $\beta_2 = 88{,}1/60 = 1{,}47 < 1{,}6$ ✓.</p>
+<p>Por tanto: <b>2 pasadas</b>.</p>
+<div class="box key" style="text-align:center">$\boxed{\text{2 pasadas}: 185 \to 88{,}1 \to 60\ \text{mm}}$</div>
+
+<h4>Apartado 3 — Verificación</h4>
+<p>Pasada 1: $\beta_1 = 185/88{,}1 = 2{,}1$ ✓ (exactamente al límite).<br>
+Pasada 2: $\beta_2 = 88{,}1/60 = 1{,}47$ ✓ (por debajo de 1,6).<br>
+La operación es viable en 2 pasadas con embutidoras de la 1ª y 2ª etapa.</p>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El procedimiento de embutición es: <b>(1)</b> calcular $d_0$ por conservación de área con factor de seguridad, <b>(2)</b> dividir $\beta_{total}$ por los $\beta_{max}$ de cada pasada hasta llegar al $d_1$ final, <b>(3)</b> contar pasadas. Cada pasada después de la 1ª tiene $\beta_{max}$ menor (más restrictivo).</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2 horas</div>
+  <ol>
+    <li><b>Memoriza F5 (doblado), F9 y F10 (embutición)</b> y los procesos volumétricos (45 min).</li>
+    <li><b>Practica un cálculo de doblado V</b> (30 min).</li>
+    <li><b>Practica un cálculo de embutición con varias pasadas</b> (45 min).</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo</h2>
+
+<div class="box key">
+  <div class="box-title">Las 4 reglas que te salvan T8</div>
+  <ol>
+    <li><b>Doblado V:</b> $F = k_f\,\sigma_{uts}\,t^2\,b/u$ con $k_f \approx 1{,}3$. Para $\alpha=90°$: $F = (1+4t/u)\sigma_{uts}t^2 b/u$.</li>
+    <li><b>Embutición:</b> $\beta = d_0/d_1 \le 2$ (acero, 1ª pasada). $d_0 \approx 1{,}1\sqrt{d_1^2 + 4 d_1 h}$.</li>
+    <li><b>Springback:</b> $t_r = 2R_n Y/E$. Si despreciable, $R_n^{programado} = R_n^{deseado}$.</li>
+    <li><b>Caliente vs frío:</b> caliente $T > 0{,}6 T_f$ → menos fuerza, más deformación. Frío < 0,35$T_f$ → mejor acabado, más fuerza.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 3 (doblado)</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Identifica matriz (V/U/pasante) → coeficiente $k_f$ →<br>
+    Aplica $F = k_f\,\sigma_{uts}\,t^2\,b/u$ →<br>
+    Calcula springback $t_r$ →<br>
+    Si springback significativo: programa $R_n$ menor →<br>
+    Verifica $R_n > R_{min}$ del material.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Sistemas de Producción UPV/EHU · Tema 8 — Deformación Plástica<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T7 Cinemática del Sólido Rígido · Mecánica Aplicada UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 7 — Cinemática del Sólido Rígido</h1>
+  <div class="cover-sub">Mecánica Aplicada · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>7 de 8 (Cinemática)</div>
+    <div><b>Ejercicios</b>10 totales</div>
+    <div><b>Patrones</b>6 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>10 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:9%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Trayectoria de partícula — velocidad, aceleración, radio de curvatura</td><td class="center">7.1, 7.2</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Varilla giratoria con deslizadera (composición de movimientos)</td><td class="center">7.3</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Sólido en rotación pura (eje fijo) — barras articuladas en 3D</td><td class="center">7.4</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Movimiento plano con CIR (placa, brazo, mecanismo)</td><td class="center">7.8, 7.9</td><td class="center">Alta</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P5 ★</b></td><td><b>Disco en brazo giratorio (composición ω₁ + ω₂)</b></td><td class="center">7.5, 7.7, 7.10</td><td class="center"><b>MUY ALTA</b></td></tr>
+    <tr class="alt"><td class="center"><b>P6</b></td><td>Dos discos en contacto / rodadura — axoides fijo y móvil</td><td class="center">7.6</td><td class="center">Media</td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T7 normalmente es:</b> un sistema con dos rotaciones simultáneas (un disco que gira en su propio eje, montado en un brazo que también gira). Hay que componer las velocidades angulares y las aceleraciones, y calcular velocidad/aceleración de un punto del disco.</p>
+  <p>La <b>fórmula clave</b> es $\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$ y el campo análogo de aceleraciones $\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\vec{r}_{AB}$.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Memoriza las <b>fórmulas del campo de velocidades y aceleraciones</b>.</li>
+    <li>Practica el <b>CIR</b> en problemas planos.</li>
+    <li>Estudia la <b>composición de movimientos</b> (sistema giratorio dentro de otro giratorio).</li>
+    <li>Mini-simulacro al final.</li>
+  </ol>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 10 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Cinemática angular y rotación pura</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F1 · Velocidad y aceleración angular</div>
+    <div class="formula-body">$\omega = d\theta/dt$</div>
+    <div class="formula-body">$\alpha = d\omega/dt = \omega\,d\omega/d\theta$</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Velocidad y aceleración de un punto (rotación pura)</div>
+    <div class="formula-body">$v = r\omega$</div>
+    <div class="formula-body">$a_t = r\alpha,\quad a_n = r\omega^2$ (centrípeta)</div>
+    <div class="formula-note">$a = \sqrt{a_t^2 + a_n^2}$</div>
+  </div>
+</div>
+
+<h3>2 · Campo de velocidades del sólido rígido</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F3 · ★ Velocidad de B desde A</div>
+    <div class="formula-body">$\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$</div>
+    <div class="formula-note">$\vec{r}_{AB}$ va de A a B. La velocidad relativa de B respecto a A es perpendicular a $\vec{r}_{AB}$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Movimiento plano (2D)</div>
+    <div class="formula-body">$v_{Bx} = v_{Ax} - \omega\,r_{ABy}$</div>
+    <div class="formula-body">$v_{By} = v_{Ay} + \omega\,r_{ABx}$</div>
+    <div class="formula-note">$\vec{\omega} = \omega\,\vec{k}$ (perpendicular al plano).</div>
+  </div>
+</div>
+
+<h3>3 · Centro Instantáneo de Rotación (CIR)</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F5 · ★ Posición del CIR</div>
+    <div class="formula-body" style="font-size:9.5pt;text-align:left">Intersección de las rectas perpendiculares a las velocidades de dos puntos conocidos del sólido</div>
+    <div class="formula-note">Si las velocidades son paralelas (no nulas y de magnitudes distintas) el CIR está en el infinito → traslación.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Velocidades desde el CIR</div>
+    <div class="formula-body">$v_A = \omega \cdot r_{IA}$ (perp. a $r_{IA}$)</div>
+    <div class="formula-body">$\omega = v_A/r_{IA}$ (en módulo)</div>
+  </div>
+</div>
+
+<h3>4 · Campo de aceleraciones</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F7 · ★ Aceleración de B desde A</div>
+    <div class="formula-body">$\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\vec{r}_{AB}$</div>
+    <div class="formula-note">El término $-\omega^2\vec{r}_{AB}$ es la <b>aceleración centrípeta</b> (de B hacia A). $\vec{\alpha}\times\vec{r}_{AB}$ es la <b>aceleración tangencial</b>.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Radio de curvatura de la trayectoria</div>
+    <div class="formula-body">$\rho = \dfrac{v^2}{a_n} = \dfrac{|\vec{v}|^3}{|\vec{v}\times\vec{a}|}$</div>
+    <div class="formula-note">Útil para problemas de partícula con trayectoria paramétrica.</div>
+  </div>
+</div>
+
+<h3>5 · Composición de movimientos y transmisiones</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F9 · Composición de velocidades angulares</div>
+    <div class="formula-body">$\vec{\omega}_{2/0} = \vec{\omega}_{2/1} + \vec{\omega}_{1/0}$</div>
+    <div class="formula-note">Velocidad angular del sólido 2 respecto a la base 0 = velocidad de 2 respecto a 1 + velocidad de 1 respecto a 0.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Engranajes / poleas</div>
+    <div class="formula-body">$r_A\omega_A = r_B\omega_B$</div>
+    <div class="formula-note">Contacto exterior: sentidos opuestos. Contacto interior: mismo sentido. Relación de transmisión $i = \omega_A/\omega_B = r_B/r_A$.</div>
+  </div>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Tabla — Cuándo aparece cada término</div>
+  <table style="font-size:9pt">
+    <thead><tr><th>Tipo de movimiento</th><th class="center">$\vec{v}$</th><th class="center">$\vec{a}$</th><th>Notas</th></tr></thead>
+    <tbody>
+      <tr><td>Traslación pura</td><td class="center">$\vec{v}_A$ igual para todos</td><td class="center">$\vec{a}_A$ igual para todos</td><td>$\vec{\omega}=\vec{0}, \vec{\alpha}=\vec{0}$. Sin rotación.</td></tr>
+      <tr class="alt"><td>Rotación pura (eje fijo)</td><td class="center">$\vec{\omega}\times\vec{r}$</td><td class="center">$\vec{\alpha}\times\vec{r} - \omega^2\vec{r}$</td><td>$\vec{r}$ desde el eje. Sin $\vec{v}_A$ (eje fijo).</td></tr>
+      <tr><td>Movimiento plano</td><td class="center">$\vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$</td><td class="center">$\vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\vec{r}_{AB}$</td><td>$\vec{\omega}=\omega\vec{k}$. Existe CIR.</td></tr>
+      <tr class="alt"><td>Espacial 3D (rotaciones componibles)</td><td class="center">$\vec{v}_A + \vec{\omega}_{tot}\times\vec{r}_{AB}$</td><td class="center">$\vec{a}_A + \vec{\alpha}_{tot}\times\vec{r} - \omega_{tot}^2\vec{r}$</td><td>$\vec{\alpha}_{tot} = \vec{\alpha}_{2/1} + \vec{\alpha}_{1/0} + \vec{\omega}_{1/0}\times\vec{\omega}_{2/1}$ (¡el cruzado!).</td></tr>
+      <tr><td>Con deslizadera (Coriolis)</td><td class="center">$\vec{v}_{arr} + \vec{v}_{rel}$</td><td class="center">$\vec{a}_{arr} + \vec{a}_{rel} + 2\vec{\omega}\times\vec{v}_{rel}$</td><td>El término Coriolis $2\vec{\omega}\times\vec{v}_{rel}$ es el más fácil de olvidar.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>📋 Tipos de movimiento del sólido rígido</h2>
+
+<table>
+  <thead><tr><th>Tipo</th><th class="center">Descripción</th><th class="center">$\vec{\omega}$</th><th>Ejemplo</th></tr></thead>
+  <tbody>
+    <tr><td><b>Traslación</b></td><td class="center">Todos los puntos se mueven con la misma velocidad</td><td class="center">$\vec{0}$</td><td>Caja deslizando paralela al suelo</td></tr>
+    <tr class="alt"><td><b>Rotación pura</b></td><td class="center">Hay un eje fijo</td><td class="center">$\omega\hat{u}$ con $\hat{u}$ eje fijo</td><td>Aspas de ventilador</td></tr>
+    <tr><td><b>Movimiento plano</b></td><td class="center">Todos los puntos en planos paralelos. CIR existe</td><td class="center">$\omega\vec{k}$</td><td>Rueda que rueda, biela en mecanismo</td></tr>
+    <tr class="alt"><td><b>Rotación esférica</b></td><td class="center">Hay un punto fijo (eje cambia con el tiempo)</td><td class="center">$\vec{\omega}(t)$ con $|\vec{\omega}|$ y dirección variables</td><td>Trompo, brazo robot</td></tr>
+    <tr><td><b>General</b></td><td class="center">Todo lo anterior combinado</td><td class="center">$\vec{\omega}(t)$ general</td><td>Cuerpo rígido en el espacio</td></tr>
+  </tbody>
+</table>
+
+<h2 class="pb">🎯 Los 6 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Trayectoria de partícula — radio de curvatura</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "una partícula sigue la trayectoria $\vec{r}(t)=...$, calcula la velocidad, aceleración y radio de curvatura en $t = 2$ s".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Velocidad y aceleración por derivación</strong>$\vec{v} = d\vec{r}/dt$, $\vec{a} = d\vec{v}/dt$. Sustituye el valor de t.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Componentes intrínsecas</strong>$|\vec{v}|$, $a_t = (\vec{v}\cdot\vec{a})/|\vec{v}|$ (proyección de $\vec{a}$ sobre $\vec{v}$), $a_n = \sqrt{|\vec{a}|^2 - a_t^2}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Radio de curvatura</strong>$\rho = v^2/a_n$. Cuanto más curvada la trayectoria, menor $\rho$.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Varilla giratoria con deslizadera</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> una varilla gira con $\omega(t)$, una deslizadera se mueve a lo largo de la varilla con velocidad relativa $u(t)$.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica los sistemas de referencia</strong>0: laboratorio (fijo). 1: varilla giratoria. La deslizadera es la partícula a estudiar.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Composición de velocidades</strong>$\vec{v}_{absoluta} = \vec{v}_{arrastre} + \vec{v}_{relativa}$ donde $\vec{v}_{arrastre} = \vec{\omega}\times\vec{r}$ (rotación de la varilla) y $\vec{v}_{relativa}$ es la velocidad de la deslizadera respecto a la varilla.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Composición de aceleraciones</strong>$\vec{a}_{abs} = \vec{a}_{arr} + \vec{a}_{rel} + \vec{a}_{Coriolis}$ con $\vec{a}_{Coriolis} = 2\vec{\omega}\times\vec{v}_{rel}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$\vec{a}_{arrastre}$ tiene 3 términos</strong>$\vec{a}_{arr} = \vec{\alpha}\times\vec{r} - \omega^2\vec{r}$. Suma con $\vec{a}_{rel}$ y $\vec{a}_{Cor}$ → $\vec{a}_{abs}$.</div></div>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Sólido en rotación pura (3D)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> sistema de barras AB-BC-CD girando alrededor de un eje fijo AD.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica el eje fijo y $\vec{\omega}$</strong>$\vec{\omega} = \omega\,\hat{u}_{eje}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidad de cada punto</strong>$\vec{v}_P = \vec{\omega}\times\vec{r}_{eje\to P}$ donde $\vec{r}_{eje\to P}$ es el vector perpendicular desde el eje hasta P.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleración</strong>$\vec{a}_P = \vec{\alpha}\times\vec{r} - \omega^2\vec{r}$ (las dos contribuciones del eje fijo).</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Movimiento plano con CIR</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> brazo robot, biela-manivela, placa articulada en dos puntos. Conoces $\vec{v}$ de un punto y dirección de $\vec{v}$ de otro → halla $\omega$ y velocidades de todos los puntos.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Localiza el CIR</strong>Intersección de las perpendiculares a las velocidades de dos puntos conocidos del sólido.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula $\omega$</strong>$\omega = v_A/r_{IA}$ donde $r_{IA}$ es la distancia desde el CIR hasta A.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidades de cualquier otro punto</strong>$v_B = \omega \cdot r_{IB}$ con dirección perpendicular a $\vec{r}_{IB}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleraciones</strong>El CIR no es invariante (se mueve). Para aceleraciones usa F7 desde un punto conocido.</div></div>
+  </div>
+  <div class="box tip">
+    <div class="box-title">CIR de un mecanismo de 4 barras</div>
+    <p>Para un mecanismo manivela-biela: si conoces $\omega_{manivela}$ → $\vec{v}_A$ del extremo de la manivela. La biela tiene su propio CIR (intersección de perpendiculares a $v_A$ y a la dirección del extremo de la biela).</p>
+  </div>
+</div>
+
+<!-- P5 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P5 ★</span>
+    <span class="pattern-name" style="color:#b00">Disco en brazo giratorio (composición de ω)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> casi siempre. Un disco gira en su propio eje ($\omega_2$) montado en un brazo que también gira ($\omega_1$). Calcular velocidad y aceleración de un punto P del disco.</p>
+
+  <h4>Receta universal (Patrón 5)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica los sistemas de referencia y velocidades angulares</strong>0: laboratorio. 1: brazo. 2: disco. $\vec{\omega}_{1/0}$ del brazo, $\vec{\omega}_{2/1}$ del disco respecto al brazo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Composición de velocidades angulares</strong>$\vec{\omega}_{2/0} = \vec{\omega}_{2/1} + \vec{\omega}_{1/0}$. Como vectores en el espacio (no se suman módulos directamente).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidad del centro del disco</strong>$\vec{v}_{C,disco} = \vec{\omega}_{1/0}\times\vec{r}_{eje brazo\to C}$ (rotación del brazo).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Velocidad de un punto P del disco</strong>$\vec{v}_P = \vec{v}_C + \vec{\omega}_{2/0}\times\vec{r}_{CP}$. La $\vec{\omega}$ a usar es la <b>total</b> 2/0.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleración angular total</strong>$\vec{\alpha}_{2/0} = \dot{\vec{\omega}}_{2/0}$. Si los ejes de $\omega_1$ y $\omega_2$ son perpendiculares, hay un término "cruzado": $\vec{\alpha}_{2/0} = \vec{\alpha}_{2/1} + \vec{\alpha}_{1/0} + \vec{\omega}_{1/0}\times\vec{\omega}_{2/1}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aceleración de P</strong>$\vec{a}_P = \vec{a}_C + \vec{\alpha}_{2/0}\times\vec{r}_{CP} - \omega_{2/0}^2\vec{r}_{CP}$. Ojo: $\omega_{2/0}$ es el módulo del vector total.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ El término cruzado</div>
+    <p>El término $\vec{\omega}_{1/0}\times\vec{\omega}_{2/1}$ en $\vec{\alpha}_{2/0}$ se llama "aceleración angular de Coriolis" o "término cruzado". Aparece porque la dirección de $\vec{\omega}_{2/1}$ <b>rota</b> con el brazo.</p>
+    <p>Si los ejes de las dos rotaciones son <b>paralelos</b>, el término cruzado es cero. Si son <b>perpendiculares</b>, el término es importante.</p>
+  </div>
+</div>
+
+<!-- P6 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P6</span>
+    <span class="pattern-name">Dos discos en contacto / rodadura</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> dos discos en contacto, uno gira y arrastra al otro por rodadura sin deslizamiento.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Condición de rodadura en el contacto</strong>$\vec{v}_{contacto, disco 1} = \vec{v}_{contacto, disco 2}$ (no hay deslizamiento).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica la fórmula de transmisión</strong>$r_1 \omega_1 = r_2 \omega_2$. Contacto exterior: sentidos opuestos. Contacto interior: mismo sentido.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Axoides</strong>El <b>axoide fijo</b> es el lugar geométrico de los CIR en el sistema fijo (típicamente: el suelo en una rueda que rueda). El <b>axoide móvil</b> es el lugar en el sistema móvil (la circunferencia de la rueda). Se ruedan uno sobre el otro sin deslizar.</div></div>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en T7</div>
+  <ol>
+    <li><b>Confundir $\vec{r}_{AB}$ con $\vec{r}_{BA}$.</b> En F3, $\vec{r}_{AB}$ va de A a B. Cambiar el sentido invierte el signo del momento.</li>
+    <li><b>Olvidar que $\vec{\omega}$ es un vector.</b> En 2D es perpendicular al plano ($\vec{k}$), pero en 3D tiene tres componentes.</li>
+    <li><b>Sumar módulos de $\omega_1$ y $\omega_2$.</b> Las velocidades angulares se suman como vectores. Si son paralelas: módulos. Si son perpendiculares: $\omega_{tot} = \sqrt{\omega_1^2 + \omega_2^2}$.</li>
+    <li><b>Olvidar el término cruzado en $\vec{\alpha}_{2/0}$.</b> $\vec{\omega}_{1/0}\times\vec{\omega}_{2/1}$ aparece cuando los ejes son perpendiculares.</li>
+    <li><b>Olvidar la aceleración de Coriolis</b> $2\vec{\omega}\times\vec{v}_{rel}$ en el patrón con deslizadera (P2).</li>
+    <li><b>Confundir aceleración tangencial con normal.</b> $a_t = r\alpha$ (paralela a $\vec{v}$), $a_n = r\omega^2$ (centrípeta, hacia el eje).</li>
+    <li><b>Aplicar mal el CIR.</b> El CIR es un punto del sólido (extendido si es necesario). Su velocidad es 0, no su aceleración. Para aceleraciones usa F7 desde un punto del sólido.</li>
+    <li><b>No identificar correctamente los sistemas de referencia.</b> En problemas con composición, hay que ser explícito: 0 = lab, 1 = brazo, 2 = disco.</li>
+    <li><b>En engranajes con contacto interior pensar que giran en sentido opuesto.</b> Es al revés: contacto exterior → opuesto, contacto interior → mismo sentido.</li>
+    <li><b>Olvidar que el radio de curvatura $\rho$ es siempre positivo.</b> Si te sale negativo, has invertido $\vec{v}$ o $\vec{a}$.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (75 minutos · sin apuntes)</h2>
+
+<h3>Problema 1 (25 min · Patrón P1)</h3>
+<div class="box">
+  <p>Una partícula sigue la trayectoria $\vec{r}(t) = (3t^2 - 1)\vec{i} + (4t - t^2)\vec{j}$ m con $t$ en segundos. En $t = 1$ s, calcula:</p>
+  <ol>
+    <li>Vector velocidad $\vec{v}$.</li>
+    <li>Vector aceleración $\vec{a}$.</li>
+    <li>Aceleración tangencial $a_t$ y normal $a_n$.</li>
+    <li>Radio de curvatura $\rho$.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (50 min · Patrón P5 ★)</h3>
+<div class="box exam">
+  <p>Un disco de radio $r = 0{,}1$ m gira en su propio eje con $\omega_2 = 5\,\vec{k}$ rad/s (constante, perpendicular al disco). Está montado en el extremo de un brazo horizontal de longitud $L = 0{,}5$ m que gira respecto al eje vertical con $\omega_1 = 3\,\vec{j}$ rad/s (en este instante). El centro del disco está en la posición $\vec{r}_C = 0{,}5\,\vec{i}$ m respecto al eje vertical.</p>
+  <p>El punto P está en el borde del disco, en la posición $\vec{r}_{CP} = 0{,}1\,\vec{i}$ m respecto al centro del disco (eje del disco coincide con $\vec{j}$).</p>
+  <ol>
+    <li>Calcula la velocidad angular total $\vec{\omega}_{2/0}$.</li>
+    <li>Calcula la velocidad del centro del disco $\vec{v}_C$.</li>
+    <li>Calcula la velocidad del punto P, $\vec{v}_P$.</li>
+    <li>Calcula la aceleración angular total $\vec{\alpha}_{2/0}$ asumiendo $\omega_1$ y $\omega_2$ constantes.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado 1 — Velocidad</h4>
+<p>$\vec{v}(t) = d\vec{r}/dt = 6t\,\vec{i} + (4-2t)\vec{j}$. En $t=1$: $\vec{v} = 6\vec{i} + 2\vec{j}$ m/s. $|\vec{v}| = \sqrt{36+4} = \sqrt{40} = 2\sqrt{10} \approx 6{,}32$ m/s.</p>
+<div class="box key" style="text-align:center">$\boxed{\vec{v}(1) = 6\vec{i} + 2\vec{j}\ \text{m/s}}$</div>
+
+<h4>Apartado 2 — Aceleración</h4>
+<p>$\vec{a}(t) = d\vec{v}/dt = 6\vec{i} - 2\vec{j}$. Constante.</p>
+<div class="box key" style="text-align:center">$\boxed{\vec{a} = 6\vec{i} - 2\vec{j}\ \text{m/s}^2}$</div>
+
+<h4>Apartado 3 — $a_t$ y $a_n$</h4>
+<p>$a_t = (\vec{v}\cdot\vec{a})/|\vec{v}| = (6\cdot 6 + 2\cdot(-2))/\sqrt{40} = (36-4)/\sqrt{40} = 32/\sqrt{40} \approx 5{,}06$ m/s².</p>
+<p>$|\vec{a}|^2 = 36+4 = 40$. $a_n = \sqrt{40 - a_t^2} = \sqrt{40 - 25{,}6} = \sqrt{14{,}4} \approx 3{,}79$ m/s².</p>
+<div class="box key" style="text-align:center">$\boxed{a_t \approx 5{,}06\ \text{m/s}^2,\quad a_n \approx 3{,}79\ \text{m/s}^2}$</div>
+
+<h4>Apartado 4 — Radio de curvatura</h4>
+<p>$\rho = v^2/a_n = 40/3{,}79 \approx 10{,}55$ m.</p>
+<div class="box key" style="text-align:center">$\boxed{\rho \approx 10{,}55\ \text{m}}$</div>
+
+<h3 class="pb">Solución Problema 2 (★)</h3>
+
+<h4>Apartado 1 — Velocidad angular total</h4>
+<p>$\vec{\omega}_{2/0} = \vec{\omega}_{2/1} + \vec{\omega}_{1/0} = 5\vec{k} + 3\vec{j}$ rad/s.</p>
+<p>Módulo: $|\vec{\omega}_{2/0}| = \sqrt{25+9} = \sqrt{34} \approx 5{,}83$ rad/s.</p>
+<div class="box key" style="text-align:center">$\boxed{\vec{\omega}_{2/0} = 3\vec{j} + 5\vec{k}\ \text{rad/s}}$</div>
+
+<h4>Apartado 2 — Velocidad del centro C</h4>
+<p>El centro está fijo respecto al brazo (que gira). $\vec{v}_C = \vec{\omega}_{1/0}\times\vec{r}_C = 3\vec{j}\times 0{,}5\vec{i} = 1{,}5\,(\vec{j}\times\vec{i}) = -1{,}5\vec{k}$ m/s.</p>
+<div class="box key" style="text-align:center">$\boxed{\vec{v}_C = -1{,}5\vec{k}\ \text{m/s}}$</div>
+
+<h4>Apartado 3 — Velocidad del punto P</h4>
+<p>P pertenece al disco. $\vec{v}_P = \vec{v}_C + \vec{\omega}_{2/0}\times\vec{r}_{CP}$.</p>
+<p>$\vec{\omega}_{2/0}\times\vec{r}_{CP} = (3\vec{j} + 5\vec{k})\times(0{,}1\vec{i}) = 3\cdot 0{,}1\,(\vec{j}\times\vec{i}) + 5\cdot 0{,}1\,(\vec{k}\times\vec{i})$.</p>
+<p>$\vec{j}\times\vec{i} = -\vec{k}$, $\vec{k}\times\vec{i} = \vec{j}$:</p>
+<p>$= 0{,}3(-\vec{k}) + 0{,}5\vec{j} = 0{,}5\vec{j} - 0{,}3\vec{k}$.</p>
+<div class="box" style="text-align:center">
+  $$\vec{v}_P = -1{,}5\vec{k} + 0{,}5\vec{j} - 0{,}3\vec{k} = 0{,}5\vec{j} - 1{,}8\vec{k}\ \text{m/s}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{\vec{v}_P = 0{,}5\vec{j} - 1{,}8\vec{k}\ \text{m/s}}$</div>
+
+<h4>Apartado 4 — Aceleración angular total</h4>
+<p>$\vec{\alpha}_{2/0} = \vec{\alpha}_{2/1} + \vec{\alpha}_{1/0} + \vec{\omega}_{1/0}\times\vec{\omega}_{2/1}$.</p>
+<p>$\omega_1$ y $\omega_2$ son constantes → $\vec{\alpha}_{2/1} = \vec{\alpha}_{1/0} = \vec{0}$.</p>
+<p>Término cruzado: $\vec{\omega}_{1/0}\times\vec{\omega}_{2/1} = 3\vec{j}\times 5\vec{k} = 15(\vec{j}\times\vec{k}) = 15\vec{i}$ rad/s².</p>
+<div class="box key" style="text-align:center">$\boxed{\vec{\alpha}_{2/0} = 15\vec{i}\ \text{rad/s}^2}$</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>Aunque ambas velocidades angulares sean constantes, la aceleración angular total NO es nula porque la dirección de $\vec{\omega}_2$ (eje del disco) <b>rota con el brazo</b>. Este término cruzado es la trampa típica del examen.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza F3, F7 y la composición de $\omega$</b> (30 min).</li>
+    <li><b>Movimiento plano con CIR</b> (45 min) — Ejercicio 7.8 o 7.9.</li>
+    <li><b>Disco en brazo giratorio</b> (1h 30 min) — Ejercicio 7.5 con la solución delante.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Trayectorias y radio de curvatura — 7.1, 7.2.</li>
+    <li><b>Día 2:</b> Varilla con deslizadera y rotación pura — 7.3, 7.4.</li>
+    <li><b>Día 3:</b> Disco en brazo (composición) — 7.5, 7.7.</li>
+    <li><b>Día 4:</b> Movimiento plano con CIR — 7.8, 7.9.</li>
+    <li><b>Día 5:</b> Brazo robot y dos discos — 7.6, 7.10.</li>
+    <li><b>Día 6:</b> Mini-simulacro de esta guía cronometrado.</li>
+    <li><b>Día 7:</b> Repaso de errores.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 3 fórmulas que te salvan T7</div>
+  <ol>
+    <li><b>$\vec{v}_B = \vec{v}_A + \vec{\omega}\times\vec{r}_{AB}$</b> — campo de velocidades.</li>
+    <li><b>$\vec{a}_B = \vec{a}_A + \vec{\alpha}\times\vec{r}_{AB} - \omega^2\vec{r}_{AB}$</b> — campo de aceleraciones.</li>
+    <li><b>$\vec{\omega}_{2/0} = \vec{\omega}_{2/1} + \vec{\omega}_{1/0}$</b>, $\vec{\alpha}_{2/0} = \vec{\alpha}_{2/1} + \vec{\alpha}_{1/0} + \vec{\omega}_{1/0}\times\vec{\omega}_{2/1}$ — composición.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 5</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Identificar sistemas (0, 1, 2) →<br>
+    Componer $\vec{\omega}_{2/0}$ y $\vec{\alpha}_{2/0}$ (¡término cruzado!) →<br>
+    $\vec{v}_C$ por rotación del brazo →<br>
+    $\vec{v}_P = \vec{v}_C + \vec{\omega}_{2/0}\times\vec{r}_{CP}$ →<br>
+    $\vec{a}_P$ análogo con $\vec{\alpha}_{2/0}$ y $-\omega_{2/0}^2\vec{r}_{CP}$.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Mecánica Aplicada UPV/EHU · Tema 7 — Cinemática del Sólido Rígido<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

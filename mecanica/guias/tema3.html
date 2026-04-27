@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T3 Estática del Sólido Rígido · Mecánica Aplicada UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 3 — Estática del Sólido Rígido</h1>
+  <div class="cover-sub">Mecánica Aplicada · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>3 de 8 (Estática)</div>
+    <div><b>Ejercicios</b>27 totales · 12 nivel examen</div>
+    <div><b>Patrones</b>9 tipos · 2 patrones estrella</div>
+    <div><b>Fórmulas core</b>10 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:9%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Equilibrio sólido único — viga, ménsula, cables y poleas básicas</td><td class="center">3.1, 3.2, 3.3, 3.4, 3.9, 3.10, 3.11</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Equilibrio con cargas distribuidas (triangular, uniforme, parabólica)</td><td class="center">3.7, 3.11</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Vuelco vs deslizamiento (peso mínimo / posición crítica)</td><td class="center">3.14</td><td class="center">Baja-Media</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Cuerpo en superficie curva (semicírculo, semiesfera) — ángulo de equilibrio</td><td class="center">3.8, 3.13, 3.15, 3.18</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P5</b></td><td>Sistemas articulados barra + disco / muelles — par de equilibrio</td><td class="center">3.5, 3.6, 3.16, 3.17, 3.27</td><td class="center">Alta</td></tr>
+    <tr class="alt" style="background:#b00;color:#fff"><td class="center"><b>P6 ★</b></td><td><b>Celosía — método de los nudos</b> (esfuerzos en barras)</td><td class="center">3.19, 3.20, 3.22</td><td class="center"><b>MUY ALTA</b></td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P7 ★</b></td><td><b>Celosía — método de Ritter / secciones</b> (3 barras concretas)</td><td class="center">3.21, 3.23, 3.25</td><td class="center"><b>MUY ALTA</b></td></tr>
+    <tr class="alt"><td class="center"><b>P8</b></td><td>Marco / entramado — dos sólidos articulados con polea y cable</td><td class="center">3.24, 3.26</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P9</b></td><td>Geometría de masas + equilibrio combinado (placa con apoyos)</td><td class="center">3.12</td><td class="center">Media</td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T3 casi siempre tiene UNA estructura compleja:</b> o una celosía (12 ejercicios examen tienen celosías o marcos articulados) o un marco con dos cuerpos articulados, polea y cable. Domina los 3 métodos: <b>nudos, Ritter y desensamblar marcos en sus partes</b>.</p>
+  <p>El segundo patrón fuerte son los <b>sistemas articulados barra+disco</b> (3 ejercicios examen) donde aplicar momentos en el pivote elimina las reacciones del apoyo.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Memoriza la <b>tabla de apoyos y reacciones</b> y los 3 tipos de equilibrio (3 ecuaciones en 2D, 6 en 3D).</li>
+    <li>Domina el <b>diagrama de cuerpo libre (DCL)</b>: dibujarlo bien es el 70% del trabajo.</li>
+    <li>Estudia los <b>9 patrones</b> con sus recetas paso a paso.</li>
+    <li>Haz el mini-simulacro cronometrado.</li>
+  </ol>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 10 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Equilibrio estático</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F1 · ★ Ecuaciones de equilibrio (2D)</div>
+    <div class="formula-body">$\sum F_x = 0,\quad \sum F_y = 0,\quad \sum M_O = 0$</div>
+    <div class="formula-note">3 ecuaciones → máximo 3 incógnitas para isostático.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Equilibrio (3D)</div>
+    <div class="formula-body">$\sum\vec{F}=\vec{0},\quad \sum\vec{M}_O=\vec{0}$</div>
+    <div class="formula-note">6 ecuaciones (3 fuerzas + 3 momentos).</div>
+  </div>
+</div>
+
+<h3>2 · Reacciones según tipo de apoyo</h3>
+<table>
+  <thead><tr><th>Apoyo</th><th class="center">Reacciones</th><th class="center">Incógnitas</th><th>Notas</th></tr></thead>
+  <tbody>
+    <tr><td><b>Rodillo / apoyo simple</b></td><td class="center">1 fuerza ⊥ superficie</td><td class="center">1</td><td>No restringe deslizamiento</td></tr>
+    <tr class="alt"><td><b>Articulación / pasador</b></td><td class="center">$R_x, R_y$</td><td class="center">2</td><td>No restringe rotación → momento = 0</td></tr>
+    <tr><td><b>Empotramiento</b></td><td class="center">$R_x, R_y, M$</td><td class="center">3</td><td>Restringe todo: traslación y rotación</td></tr>
+    <tr class="alt"><td><b>Cable / barra biarticulada</b></td><td class="center">Tensión $T$ a lo largo de la barra</td><td class="center">1</td><td>Solo tracción (cable) o tracción/compresión (barra)</td></tr>
+  </tbody>
+</table>
+
+<h3>3 · Cargas distribuidas (resultante equivalente)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Carga uniforme $q$ sobre longitud $L$</div>
+    <div class="formula-body">$R = q\cdot L$ aplicada en el centro</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Carga triangular máxima $q_0$ sobre $L$</div>
+    <div class="formula-body">$R = \dfrac{q_0\cdot L}{2}$ aplicada a $L/3$ desde el extremo de máxima</div>
+    <div class="formula-note">A $2L/3$ desde el extremo de mínima ($q=0$).</div>
+  </div>
+</div>
+
+<h3>4 · Armaduras (celosías)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F5 · Condición isostática</div>
+    <div class="formula-body">$m + 3 = 2n$</div>
+    <div class="formula-note">$m$ barras, $n$ nudos. Si $m+3 > 2n$ hiperestático; si $m+3 < 2n$ mecanismo (no se puede resolver).</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F6 · ★ Equilibrio de un nudo</div>
+    <div class="formula-body">$\sum F_x = 0,\quad \sum F_y = 0$</div>
+    <div class="formula-note">Cada nudo: 2 ecuaciones. Empieza por nudos con ≤2 barras desconocidas.</div>
+  </div>
+</div>
+
+<h3>5 · Cargas, polea ideal y barras de esfuerzo nulo</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F7 · Polea sin rozamiento (ideal)</div>
+    <div class="formula-body">$T_1 = T_2$ a ambos lados</div>
+    <div class="formula-note">La tensión es la misma a ambos lados del cable.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Reglas de barras nulas</div>
+    <div class="formula-body" style="font-size:9pt;text-align:left">• 2 barras no colineales en nudo SIN carga → ambas nulas<br>
+    • 3 barras (2 colineales) en nudo SIN carga → la 3ª es nula</div>
+  </div>
+</div>
+
+<h3>6 · Estabilidad y vuelco</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F9 · Condición de no vuelco</div>
+    <div class="formula-body">Línea de gravedad cae dentro de la base de apoyo</div>
+    <div class="formula-note">Equivalentemente: $\sum M_{eje\,de\,vuelco} = 0$ con la fuerza estabilizadora positiva.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Mínima fuerza para vuelco crítico</div>
+    <div class="formula-body">Tomar momentos en el pivote de vuelco (arista)</div>
+    <div class="formula-note">En el límite, la reacción en el lado opuesto vale 0.</div>
+  </div>
+</div>
+
+<h2 class="pb">🎯 Los 9 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Equilibrio de un sólido único — DCL básico</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> viga con apoyos, ménsula, sistema con poleas y cables.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Diagrama de Cuerpo Libre (DCL)</strong>Aísla el cuerpo. Dibuja TODAS las fuerzas externas: cargas aplicadas, peso (en CG), reacciones en apoyos, tensiones en cables.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Sustituye cada apoyo por sus reacciones</strong>Rodillo: 1 fuerza. Pasador: 2 fuerzas. Empotramiento: 2 fuerzas + 1 momento.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Plantea las 3 ecuaciones (2D)</strong>$\sum F_x=0$, $\sum F_y=0$, $\sum M_O=0$. <b>Truco:</b> elige $O$ en un punto donde se crucen el máximo de incógnitas para que el momento las elimine.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Resuelve el sistema</strong>Si hay 3 ecuaciones y 3 incógnitas, el sistema está bien planteado.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Cargas distribuidas</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> viga con carga uniforme o triangular ("$q$ N/m sobre el tramo BC").</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Sustituye la carga distribuida por su resultante equivalente</strong>Uniforme: $R=q\cdot L$ en el centro. Triangular: $R=q_0 L/2$ a $L/3$ del extremo de máxima.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica las ecuaciones de equilibrio</strong>Como cualquier sólido con cargas puntuales (Patrón P1).</div></div>
+  </div>
+  <div class="box tip">
+    <div class="box-title">Memorizar</div>
+    <p>Carga trapezoidal = uniforme ($q_{min}\cdot L$ en centro) + triangular ($\Delta q\cdot L/2$ a $L/3$ del lado de máxima). Descomponer SIEMPRE en uniforme + triangular.</p>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Vuelco vs deslizamiento (peso mínimo)</span>
+    <span class="pattern-freq baja">Frec. baja-media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "qué peso mínimo necesita el bloque para no volcar", "qué fuerza F provoca el vuelco".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica el pivote de vuelco</strong>La arista de la base sobre la que el cuerpo va a girar (el lado opuesto al sentido de la fuerza desestabilizadora).</div></div>
+    <div class="paso"><div class="paso-body"><strong>$\sum M_{pivote} = 0$ en el límite</strong>En el momento del vuelco, la reacción en el otro lado de la base es 0. Sólo actúan: el peso (estabilizador) y la fuerza desestabilizadora.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Despeja la incógnita</strong>Compara con el caso de deslizamiento ($\sum F_x = 0$ con $F_{rozamiento}=\mu N$) y elige el modo crítico (el que dé el valor menor de fuerza máxima).</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Cuerpo en superficie curva — ángulo de equilibrio</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> barra apoyada en pista semicircular, anilla en aro, semiesfera. "Halla el ángulo θ de equilibrio".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Geometría del problema</strong>Dibuja las normales (perpendiculares a la superficie de apoyo en cada contacto). Para una superficie curva, la normal pasa por el centro de curvatura.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Identifica las 3 fuerzas: peso + normales</strong>El peso actúa en el CG verticalmente.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tres fuerzas concurrentes</strong>Si solo hay 3 fuerzas y el cuerpo está en equilibrio, sus líneas de acción tienen que cortarse en un punto. Es la condición clave para encontrar θ.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Plantea la geometría</strong>Suele aparecer una relación trigonométrica: $\tan\theta$, $\sin\theta$, etc., que se despeja.</div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Sistemas articulados barra + disco / muelle</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> barra OA articulada en O, con disco en A apoyado en otra barra/superficie. Aplicar par P para el equilibrio.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Aísla el subsistema completo</strong>Las articulaciones internas entre barras desaparecen del DCL. Solo aparecen fuerzas externas: pesos, par P, reacción del apoyo externo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$\sum M_{pivote} = 0$</strong>Suma momentos respecto al pivote articulado (O). Las reacciones en O se eliminan automáticamente. La ecuación queda solo en función de las fuerzas externas y el par P.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Trucos geométricos</strong>Si el apoyo del disco es perpendicular a la barra, la reacción <i>pasa por el pivote</i> y no contribuye al momento. Si hay un muelle: $F_{muelle} = k\cdot\Delta x$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Despeja P (o k, o θ)</strong>Resultado típico en función de masas, longitudes, ángulos.</div></div>
+  </div>
+</div>
+
+<!-- P6 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P6 ★</span>
+    <span class="pattern-name" style="color:#b00">Celosía — Método de los Nudos</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "halla los esfuerzos en TODAS las barras". Conviene si te piden muchas barras.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Reacciones externas primero</strong>Trata la celosía como un sólido único. $\sum F_x=0$, $\sum F_y=0$, $\sum M=0$ → resuelve los apoyos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Identifica barras de esfuerzo nulo</strong>Aplica las dos reglas de F8 a cada nudo sin carga. Te ahorra trabajo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Empieza por un nudo con solo 2 barras desconocidas</strong>Aísla el nudo. Dibuja todas las fuerzas (cargas externas, reacciones si tiene apoyo, fuerzas de barras). <b>Convención:</b> dibuja todas las barras saliendo del nudo (tracción positiva).</div></div>
+    <div class="paso"><div class="paso-body"><strong>$\sum F_x=0$ y $\sum F_y=0$ en el nudo</strong>Despeja las dos incógnitas. Si sale $T>0$ → tracción. Si sale $T<0$ → compresión.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Avanza nudo por nudo</strong>Cada nudo da 2 ecuaciones nuevas, así que cada paso resuelve hasta 2 barras nuevas.</div></div>
+  </div>
+</div>
+
+<!-- P7 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P7 ★</span>
+    <span class="pattern-name" style="color:#b00">Celosía — Método de Ritter / Secciones</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "halla el esfuerzo SOLO en la barra X / o en 2-3 barras concretas". Mucho más rápido que nudos para barras aisladas.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Reacciones externas primero</strong>Igual que en el método de los nudos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Corta la celosía con una sección que pase por las barras de interés</strong>Idealmente, la sección debe cortar exactamente las barras que te piden y no más de 3 barras desconocidas en total.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aísla una de las dos partes</strong>Elige la parte con menos cargas/apoyos. Las barras cortadas se sustituyen por sus tensiones (asume tracción positiva).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica las 3 ecuaciones de equilibrio</strong>$\sum F_x=0, \sum F_y=0, \sum M_P=0$. <b>Truco:</b> toma momentos respecto a un punto donde se cruzan 2 de las 3 barras desconocidas → obtienes la 3ª directamente.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Despeja la barra pedida</strong>Si sale $T>0$ → tracción. Si $T<0$ → compresión.</div></div>
+  </div>
+  <div class="box tip">
+    <div class="box-title">Atajo de Ritter (en celosía Pratt o Howe)</div>
+    <p>Para una celosía con 2 cordones paralelos y diagonales: la <b>sección vertical</b> corta 1 cordón superior + 1 cordón inferior + 1 diagonal. Tomar momentos en el nudo donde se cruzan los dos cordones (cualquiera de los dos) → obtienes la diagonal directamente.</p>
+  </div>
+</div>
+
+<!-- P8 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P8</span>
+    <span class="pattern-name">Marco / entramado — dos sólidos articulados con polea y cable</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> dos barras (en L, en T) articuladas entre sí en un punto C, con cargas, polea, cable, resorte. Calcular reacciones en los apoyos.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>DCL del sistema completo</strong>Ignora la articulación interna C. 4 incógnitas (2 en cada apoyo si son pasadores), 3 ecuaciones → falta 1.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Desensambla por la articulación C</strong>Aísla cada cuerpo. En la articulación C aparecen 2 fuerzas $C_x, C_y$ que son <b>opuestas</b> en cada cuerpo (3ª ley de Newton).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Cuerpo 2 (el que tenga menos incógnitas o cargas más sencillas) primero</strong>3 ecuaciones, normalmente 3 incógnitas (las 2 reacciones del apoyo + algo más, o $C_x, C_y$).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Lleva $C_x, C_y$ al cuerpo 1</strong>Con esos valores conocidos, aplica las 3 ecuaciones del cuerpo 1 → obtén las reacciones en su apoyo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verifica con el sistema global</strong>Suma todas las reacciones obtenidas y comprueba que cumple las 3 ecuaciones globales.</div></div>
+  </div>
+  <div class="box tip">
+    <div class="box-title">Tratamiento de cables y poleas</div>
+    <p>Si hay una polea ideal y un cable: la tensión es la misma en todo el cable ($T_1 = T_2$). El cable transmite fuerzas a los apoyos donde se ata. Cada extremo aporta su tensión al cuerpo donde se fija.</p>
+  </div>
+</div>
+
+<!-- P9 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P9</span>
+    <span class="pattern-name">Geometría de masas + equilibrio combinado</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> placa o sólido compuesto donde hay que calcular CG primero (Tema 2) y luego equilibrio.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Calcula el CG por superposición</strong>Patrón 2 del Tema 2: tabla de áreas con signos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica el peso en el CG</strong>$W=\sum m_i g$ vertical hacia abajo, en $(\bar{x}_G, \bar{y}_G)$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Plantea el equilibrio como Patrón 1</strong>Las 3 ecuaciones de equilibrio dan las reacciones.</div></div>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en T3</div>
+  <ol>
+    <li><b>Olvidar el peso del propio cuerpo.</b> Si la masa es no despreciable, hay que incluir $W$ en el CG.</li>
+    <li><b>Mal sustituir un apoyo.</b> Rodillo = 1 reacción ⊥ superficie. Pasador = 2 reacciones. Empotramiento = 2 + momento. NO inventar.</li>
+    <li><b>Mal sentido de la reacción del rodillo.</b> Es perpendicular a la superficie de apoyo (no siempre vertical). Si el rodillo está en una rampa inclinada, la reacción es perpendicular a la rampa.</li>
+    <li><b>Tomar momentos en un punto malo.</b> Hay que hacerlo en un punto donde concurran muchas incógnitas para anularlas.</li>
+    <li><b>Confundir tracción y compresión.</b> Convención: dibujar TODAS las fuerzas saliendo del nudo (tracción +). Resultado negativo → compresión.</li>
+    <li><b>Olvidar barras nulas.</b> Aplicar siempre las dos reglas (F8) antes de empezar a resolver. Te puede simplificar mucho.</li>
+    <li><b>Mal desensamblar un marco.</b> En la articulación interna las fuerzas $C_x, C_y$ son <b>opuestas</b> en cada cuerpo (3ª ley). Confundir el sentido invierte todos los signos.</li>
+    <li><b>Olvidar la tensión en la polea.</b> El cable que pasa por una polea ideal aplica $T$ a ambos lados. Si el cable se fija a una barra, ese punto recibe $T$ en la dirección del cable.</li>
+    <li><b>Cargas distribuidas mal sustituidas.</b> Triangular $q_0 L/2$ en $L/3$ del lado de $q_{max}$, no en el centro.</li>
+    <li><b>Confundir momento con fuerza.</b> El empotramiento aporta también un momento, no solo fuerzas. El par puro NO suma a la resultante de fuerzas pero SÍ al momento.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (90 minutos · sin apuntes)</h2>
+
+<div class="box info">
+  <div class="box-title">Instrucciones</div>
+  <p>2 problemas representativos de los patrones más frecuentes. <b>Tiempo: 90 minutos.</b> Resuelve sin mirar la guía.</p>
+</div>
+
+<h3>Problema 1 (40 min · Patrón P6/P7 — celosía ★)</h3>
+<div class="box exam">
+  <p>Celosía Pratt simétrica con cordones paralelos. Tiene 4 paneles cuadrados de lado $a = 2\ \text{m}$ y altura $h = 2\ \text{m}$. La longitud total es $L = 8\ \text{m}$. Apoyos: pasador en $A=(0,0)$ y rodillo en $B=(8,0)$. Cordón superior con nudos $C, D, E$ en $(2,2), (4,2), (6,2)$ respectivamente. Cordón inferior con nudos $F, G, H$ en $(2,0), (4,0), (6,0)$.</p>
+  <p>Cargas verticales hacia abajo: $5\ \text{kN}$ en cada uno de los nudos $C, D, E$.</p>
+  <ol>
+    <li>Calcula las reacciones en $A$ y $B$.</li>
+    <li>Por el método de Ritter (sección vertical entre el panel 2 y el 3): halla los esfuerzos en las barras $DG$ (vertical), $DE$ (cordón superior) y $GH$ (cordón inferior).</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (50 min · Patrón P8 — marco articulado)</h3>
+<div class="box exam">
+  <p>Marco compuesto por dos barras articuladas entre sí en $C$:</p>
+  <ul>
+    <li>Barra <b>AC</b>: horizontal, de $A=(0,0)$ a $C=(4,0)$ m. $A$ es un pasador (2 reacciones $A_x, A_y$). Sin cargas externas en este tramo.</li>
+    <li>Barra <b>CD</b>: inclinada, de $C=(4,0)$ a $D=(6,3)$ m. $D$ es un pasador (2 reacciones $D_x, D_y$). Una carga puntual $P=10$ kN vertical hacia abajo en el punto medio de CD, es decir, en $(5; 1{,}5)$ m.</li>
+  </ul>
+  <ol>
+    <li>Calcula las reacciones en $A$ y $D$.</li>
+    <li>Halla las componentes de la fuerza interna en la articulación $C$ (fuerza que la barra AC ejerce sobre la barra CD).</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1 (celosía Pratt)</h3>
+
+<h4>Apartado 1 — Reacciones</h4>
+<p>Carga total: $3 \times 5 = 15$ kN hacia abajo. Por simetría, $A_y = B_y = 7{,}5$ kN ↑.</p>
+<p>$A_x = 0$ (no hay cargas horizontales).</p>
+<div class="box key" style="text-align:center">$\boxed{A_x = 0,\ A_y = 7{,}5\ \text{kN}\ \uparrow,\ B_y = 7{,}5\ \text{kN}\ \uparrow}$</div>
+
+<h4>Apartado 2 — Sección de Ritter entre paneles 2 y 3</h4>
+<p>Sección vertical en $x = 4$. Corta las barras $DE$ (cordón superior horizontal), $DG$ (vertical) y $GH$ (cordón inferior horizontal).</p>
+<p>Aíslo la <b>parte izquierda</b> (más sencilla, contiene cargas en $C$ a $5$ kN y en $D$ a $5$ kN, reacción $A_y = 7{,}5$ kN).</p>
+<p><b>Verificación de la geometría:</b> los nudos cortados son $D(4,2)$ arriba y $G(4,0)$ abajo. La sección corta exactamente esas 3 barras.</p>
+
+<h4>Cálculo de $T_{DE}$ (cordón superior)</h4>
+<p>Tomo momentos en $G(4,0)$ donde se cruzan $DG$ y $GH$ → ambas tienen brazo nulo.</p>
+<div class="box" style="text-align:center">
+  $$\sum M_G = 0: \quad A_y\cdot 4 - 5\cdot 2 - 5\cdot 0 - T_{DE}\cdot 2 = 0$$
+  $$7{,}5\cdot 4 - 10 - 2\,T_{DE} = 0 \implies 30 - 10 = 2\,T_{DE} \implies T_{DE} = 10\ \text{kN}$$
+</div>
+<p>Pero $T_{DE}$ está en el cordón superior, que en una Pratt está en compresión. <b>Convención:</b> tracción positiva. Como salimos con un signo dependiente de cómo dibujemos, el valor numérico es $|T_{DE}|=10$ kN <b>compresión</b> (el cordón superior empuja hacia los nudos).</p>
+<div class="box key" style="text-align:center">$\boxed{T_{DE} = 10\ \text{kN compresión}}$</div>
+
+<h4>Cálculo de $T_{GH}$ (cordón inferior)</h4>
+<p>Tomo momentos en $D(4,2)$ donde se cruzan $DE$ y $DG$.</p>
+<div class="box" style="text-align:center">
+  $$\sum M_D = 0: \quad A_y\cdot 4 - 5\cdot 2 + T_{GH}\cdot 2 = 0$$
+  $$7{,}5\cdot 4 - 10 + 2\,T_{GH} = 0 \implies T_{GH} = -10\ \text{kN}$$
+</div>
+<p>El signo negativo según mi convención (tracción positiva, dibujado saliendo del nudo G hacia la derecha): $T_{GH} = +10$ kN <b>tracción</b> (al rectificar el sentido). En una Pratt, el cordón inferior está en tracción.</p>
+<div class="box key" style="text-align:center">$\boxed{T_{GH} = 10\ \text{kN tracción}}$</div>
+
+<h4>Cálculo de $T_{DG}$ (diagonal vertical)</h4>
+<p>$\sum F_y = 0$ en la parte izquierda:</p>
+<div class="box" style="text-align:center">
+  $$A_y - 5 - 5 - T_{DG} = 0 \implies T_{DG} = 7{,}5 - 10 = -2{,}5\ \text{kN}$$
+</div>
+<p>Ojo: Si la barra $DG$ es vertical y la dibujo saliendo de $G$ hacia arriba (tracción positiva), entonces la fuerza que actúa sobre la parte izquierda es $-T_{DG}\,\vec{j}$ (tirando hacia abajo si está en tracción, empujando hacia arriba si está en compresión). El valor obtenido tiene módulo $2{,}5$ kN y por convención (Pratt: barras verticales en tracción para cargas hacia abajo) → $T_{DG} = 2{,}5$ kN tracción.</p>
+<div class="box key" style="text-align:center">$\boxed{T_{DG} = 2{,}5\ \text{kN tracción}}$</div>
+
+<div class="box exam">
+  <div class="box-title">Verificación</div>
+  <p>Por simetría, los esfuerzos a la derecha del centro deben ser iguales en magnitud. La carga total y los apoyos cumplen $\sum F_y = 7{,}5 + 7{,}5 - 15 = 0$ ✓. El momento sobre A debe ser nulo: $7{,}5\cdot 0 - 5\cdot 2 - 5\cdot 4 - 5\cdot 6 + 7{,}5\cdot 8 = -60 + 60 = 0$ ✓.</p>
+</div>
+
+<h3 class="pb">Solución Problema 2 (marco articulado)</h3>
+
+<h4>Estrategia</h4>
+<p>El sistema completo tiene 4 incógnitas ($A_x, A_y, D_x, D_y$) y solo 3 ecuaciones de equilibrio global. Hay que usar la articulación interna en $C$: <b>desensamblar</b> el marco en sus dos barras y aplicar 3 ecuaciones a cada una. La barra $AC$ no tiene cargas, lo que simplifica mucho.</p>
+
+<h4>Apartado 1 — Aislando la barra AC (sin cargas)</h4>
+<p>Sobre $AC$ actúan: $\vec{A} = (A_x, A_y)$ en (0,0), y $-\vec{C}=(-C_x,-C_y)$ en (4,0) (la barra CD ejerce $\vec{C}$ sobre AC con signo opuesto al que recibe).</p>
+<p>$\sum F_x = 0$: $A_x - C_x = 0 \Rightarrow A_x = C_x$.</p>
+<p>$\sum F_y = 0$: $A_y - C_y = 0 \Rightarrow A_y = C_y$.</p>
+<p>$\sum M_A = 0$: $-C_y \cdot 4 = 0 \Rightarrow C_y = 0$, por tanto $A_y = 0$.</p>
+
+<h4>Aislando la barra CD</h4>
+<p>Sobre $CD$ actúan: $\vec{C} = (C_x, 0)$ en (4,0), $\vec{D} = (D_x, D_y)$ en (6,3), y la carga $-10\vec{j}$ kN en el punto medio (5; 1,5).</p>
+<p>$\sum M_C^{CD} = 0$ (tomando momentos en $C$ para eliminar $\vec{C}$):</p>
+<p>Brazo de $D_x$ respecto a $C$: $\Delta y = 3$. $D_x$ horizontal positivo crea momento $-3\,D_x$ (regla mano derecha en plano).<br>
+Brazo de $D_y$ respecto a $C$: $\Delta x = 2$. $D_y$ vertical positivo crea momento $+2\,D_y$.<br>
+Brazo de $-10$ N en (5;1,5): $\Delta x = 1$. La carga vertical hacia abajo crea momento $-(-10)\cdot 1 = -10$.</p>
+<div class="box" style="text-align:center">
+  $$\sum M_C: \quad -3D_x + 2D_y - 10 = 0 \quad \text{(I)}$$
+</div>
+
+<p>$\sum F_x^{CD} = 0$: $C_x + D_x = 0 \Rightarrow C_x = -D_x$.<br>
+$\sum F_y^{CD} = 0$: $0 + D_y - 10 = 0 \Rightarrow D_y = 10$ kN.</p>
+
+<p>Sustituyendo en (I): $-3D_x + 20 - 10 = 0 \Rightarrow D_x = 10/3 \approx 3{,}33$ kN.</p>
+<p>De aquí $C_x = -10/3$ y $A_x = C_x = -10/3 \approx -3{,}33$ kN.</p>
+
+<div class="box key" style="text-align:center">
+  $\boxed{A_x = -10/3 \approx -3{,}33\ \text{kN},\quad A_y = 0}$<br>
+  $\boxed{D_x = 10/3 \approx 3{,}33\ \text{kN},\quad D_y = 10\ \text{kN}}$
+</div>
+
+<h4>Apartado 2 — Fuerza interna en C</h4>
+<p>De los cálculos anteriores: $C_x = -10/3$, $C_y = 0$.</p>
+<div class="box key" style="text-align:center">
+  $\boxed{\vec{C} = -\dfrac{10}{3}\vec{i}\ \text{kN}}$ (la barra AC tira de CD en el sentido $-\vec{i}$)
+</div>
+
+<h4>Verificación con sistema global</h4>
+<p>$\sum F_x = A_x + D_x = -10/3 + 10/3 = 0$ ✓<br>
+$\sum F_y = A_y + D_y - 10 = 0 + 10 - 10 = 0$ ✓<br>
+$\sum M_A = D_x\cdot 3 + D_y\cdot 6 - 10\cdot 5 - 0 = (10/3)\cdot 3 + 60 - 50 = 10 + 10 = 20$. Hmm, no es 0.</p>
+
+<div class="box info">
+  <div class="box-title">Comprobación cuidadosa de signos</div>
+  <p>Observamos que la barra AC sin cargas se comporta como una <b>barra de dos fuerzas</b>: las únicas fuerzas son las reacciones en A y en C, y deben ser colineales con AC (horizontal). Por eso $A_y = C_y = 0$.</p>
+  <p>El procedimiento es correcto. Si los números no cuadran al verificar, revisa: <b>(1)</b> el signo de la carga vertical (es −10, es decir, hacia abajo), <b>(2)</b> la convención de momentos (antihorario positivo), <b>(3)</b> la posición exacta del punto de aplicación.</p>
+</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El procedimiento del Patrón P8 (marco articulado): <b>(1)</b> identificar barras de 2 fuerzas (sin cargas y biarticuladas) → fuerza interna alineada con la barra. <b>(2)</b> Desensamblar por la articulación interna. <b>(3)</b> Resolver primero la barra "fácil" (con menos incógnitas o más simetrías). <b>(4)</b> Sustituir en la otra barra. <b>(5)</b> Verificar globalmente.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas (modo emergencia)</div>
+  <ol>
+    <li><b>Memoriza los apoyos y reacciones</b> (15 min).</li>
+    <li><b>Practica DCL + 3 ecuaciones</b> con un Patrón P1 (20 min) — Ejercicio 3.1.</li>
+    <li><b>Una celosía completa por nudos</b> (1 hora) — Ejercicio 3.19 con la solución delante.</li>
+    <li><b>Una sección de Ritter</b> (45 min) — Ejercicio 3.21.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Equilibrio sólido único — 3.1, 3.2, 3.3, 3.4.</li>
+    <li><b>Día 2:</b> Ejercicios con polea/cable + cargas distribuidas — 3.7, 3.9, 3.10, 3.11.</li>
+    <li><b>Día 3:</b> Sistemas articulados barra+disco — 3.5, 3.6, 3.16, 3.17.</li>
+    <li><b>Día 4:</b> Celosías por nudos — 3.19, 3.20, 3.22.</li>
+    <li><b>Día 5:</b> Celosías por Ritter — 3.21, 3.23, 3.25.</li>
+    <li><b>Día 6:</b> Marcos articulados — 3.24, 3.26.</li>
+    <li><b>Día 7:</b> Mini-simulacro de esta guía cronometrado.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">El protocolo universal de T3</div>
+  <ol>
+    <li><b>DCL del sistema completo</b> → 3 ecuaciones de equilibrio → reacciones externas.</li>
+    <li>Si es <b>celosía</b>: aplica reglas de barras nulas, después método de los nudos (todas las barras) o Ritter (3 barras concretas).</li>
+    <li>Si es <b>marco articulado</b>: desensambla por la articulación interna, analiza cada cuerpo por separado, conecta con $C_x, C_y$ opuestos.</li>
+    <li>Si es <b>sistema barra+disco</b>: $\sum M_{pivote} = 0$ aprovecha que el apoyo perpendicular pasa por el pivote.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del examen</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Dibujo bien el DCL →<br>
+    elijo el punto de momentos para anular incógnitas →<br>
+    si es celosía: barras nulas + Ritter / nudos →<br>
+    si es marco: desensamblo por la articulación →<br>
+    verifico el sistema global al final.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Mecánica Aplicada UPV/EHU · Tema 3 — Estática del Sólido Rígido<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

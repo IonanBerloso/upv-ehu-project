@@ -808,11 +808,74 @@ Determina la presión absoluta $P_A^{\text{abs}}$.</div>
       </div>
     </div>
 
-    <div class="seccion s-teoria">
-      <button class="sec-btn" onclick="toggleSec(this)">📖 Teoría e hipótesis<span class="sarr">▼</span></button>
+    <div class="seccion s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📖 Teoría e hipótesis — derivación detallada<span class="sarr">▼</span></button>
       <div class="sec-body">
-        <p>Para superficies curvas, la fuerza hidrostática se descompone en: (1) $F_h$ = fuerza horizontal = fuerza sobre la proyección plana vertical (altura $R$, profundidad centroidal $H-R/2$); (2) $F_b$ = fuerza vertical = peso del volumen de agua desde la superficie libre hasta la superficie curva = cuarto de círculo + prisma rectangular superior de altura $H-R$. Ambas fuerzas actúan sobre la cara cóncava (lado del agua).</p>
-        <p style="margin-top:8px">La articulación A solo proporciona reacción horizontal ($A_y = 0$). $B_y$ es la reacción vertical en el suelo. La condición $B_y = 0$ determina $H_{\max}$: cuando la componente vertical del agua iguala la componente vertical de $F_1$, la compuerta está a punto de despegarse del suelo.</p>
+
+        <p style="font-weight:700;color:#fb923c;margin-top:4px">🟧 GEOMETRÍA DE LA COMPUERTA</p>
+        <p>La compuerta es un <strong>cuarto de cilindro</strong> de radio $R$. En sección 2D es un cuarto de disco con tres puntos clave:</p>
+        <ul style="margin-left:16px">
+          <li><strong>A</strong> = centro del arco, situado en la <strong>esquina superior derecha</strong> a altura $R$. Es la articulación.</li>
+          <li><strong>O</strong> = extremo izquierdo del arco, a altura $R$ (a distancia $R$ a la izquierda de A). Aquí se aplica $F_1$.</li>
+          <li><strong>B</strong> = extremo inferior del arco, a altura $0$ (directamente debajo de A). Apoya en el suelo.</li>
+        </ul>
+        <p>El arco va de $B=(0,0)$ hasta $O=(-R, R)$, curvando hacia la izquierda. El agua está a la <strong>izquierda</strong> del arco con altura $H > R$ (la cota del agua supera la parte superior de la compuerta).</p>
+
+        <p style="font-weight:700;color:#fb923c;margin-top:14px">🟧 COMPONENTE HORIZONTAL $F_h$ — derivación</p>
+        <p><strong>Principio:</strong> sobre una superficie curva, la fuerza horizontal del fluido equivale a la fuerza hidrostática que actuaría sobre la <strong>proyección plana vertical</strong> de la superficie (la "sombra" del arco proyectada sobre un plano vertical perpendicular a la dirección horizontal).</p>
+        <p><strong>Proyección del arco:</strong> el arco se extiende desde $y=0$ (en B) hasta $y=R$ (en O). Su proyección sobre un plano vertical es un rectángulo de altura $R$ y profundidad $b$. Área = $R\cdot b$.</p>
+        <p><strong>Centroide de la proyección:</strong> a la mitad de la altura del rectángulo, es decir a $y = R/2$. La profundidad del centroide medida desde la superficie libre es:</p>
+        $$h_G = H - R/2$$
+        <p><strong>Fórmula general</strong> de la fuerza hidrostática sobre superficie plana: $F = \gamma\cdot h_G\cdot A_{\text{proy}}$. Sustituyendo:</p>
+        $$\boxed{F_h = \gamma\,(H-R/2)\cdot R\cdot b}$$
+        <p style="font-size:.85em;color:#94a3b8">Dirección: hacia la <strong>derecha</strong> (el agua de la izquierda empuja la compuerta hacia la derecha).</p>
+
+        <p style="font-weight:700;color:#fb923c;margin-top:14px">🟧 COMPONENTE VERTICAL $F_b$ — derivación</p>
+        <p><strong>Principio:</strong> sobre una superficie curva, la fuerza vertical del fluido equivale al <strong>peso del volumen de fluido (real o imaginario) directamente encima de la superficie</strong>, hasta la superficie libre.</p>
+        <p>Este truco (que se demuestra integrando la presión a lo largo del arco) ahorra mucho cálculo. La idea: en cada punto $(x, y_c(x))$ del arco con $x\in[-R, 0]$, se imagina una columna de agua subiendo hasta la superficie libre $y=H$.</p>
+        <p><strong>Geometría del arco:</strong> $y_c(x) = R - \sqrt{R^2 - x^2}$ (altura del arco a la posición $x$, parametrizado desde A=(0,R) como centro).</p>
+        <p>El <strong>volumen de la columna imaginaria</strong> sobre el arco es:</p>
+        $$V = b\int_{-R}^{0}\!\!\bigl(H - y_c(x)\bigr)\,dx = b\int_{-R}^{0}\!\!\Bigl[(H-R) + \sqrt{R^2-x^2}\Bigr]\,dx$$
+        <p>Descomponemos en dos integrales:</p>
+        <ul style="margin-left:16px">
+          <li>$\int_{-R}^{0}(H-R)\,dx = (H-R)\cdot R$ → <strong>rectángulo</strong> de ancho $R$ y altura $(H-R)$ (la zona de agua por encima de O, de $y=R$ a $y=H$).</li>
+          <li>$\int_{-R}^{0}\sqrt{R^2-x^2}\,dx = \pi R^2/4$ → <strong>cuarto de círculo</strong> (área entre el arco y la línea horizontal $y=R$).</li>
+        </ul>
+        <p>Sumando:</p>
+        $$V = b\,\bigl[(H-R)\cdot R + \pi R^2/4\bigr]$$
+        <p>El peso de este volumen es la fuerza vertical:</p>
+        $$\boxed{F_b = \gamma\,V = \gamma\Bigl[\dfrac{\pi R^2}{4} + (H-R)\cdot R\Bigr]\cdot b}$$
+        <p style="font-size:.85em;color:#94a3b8">Dirección: <strong>hacia arriba</strong> (la cara cóncava del arco mira hacia el agua a la izquierda; el agua empuja la compuerta hacia la derecha y hacia arriba, en dirección hacia el centro de curvatura A).</p>
+
+        <p style="font-weight:700;color:#fb923c;margin-top:14px">🟧 EQUILIBRIO ESTÁTICO DE LA COMPUERTA</p>
+        <p>La compuerta es rígida y sin peso. Sobre ella actúan 4 fuerzas externas:</p>
+        <ol style="margin-left:16px">
+          <li><strong>$F_1$</strong> en O, formando ángulo $\alpha$ con la horizontal. Componentes: $F_{1x} = F_1\cos\alpha$ (→), $F_{1y} = F_1\sin\alpha$ (↓ por el sentido del enunciado).</li>
+          <li><strong>$F_h$</strong> = $\gamma(H-R/2)Rb$ horizontal (→), aplicada en el centro de presiones del rectángulo de proyección.</li>
+          <li><strong>$F_b$</strong> = $\gamma[\pi R^2/4 + (H-R)R]\cdot b$ vertical (↑), aplicada en el centro de gravedad del volumen imaginario.</li>
+          <li><strong>Reacciones en A y B</strong>: en A (articulación) hay reacciones $A_x$ y $A_y$; en B (apoyo en el suelo, contacto puntual) hay solo reacción vertical $B_y$.</li>
+        </ol>
+        <p style="margin-top:8px"><strong>Hipótesis $A_y = 0$:</strong> en este problema se asume (por la geometría del problema y por la posición horizontal del segmento AO de la compuerta) que la articulación A reacciona solo horizontalmente. Equivalente: la articulación está sobre un soporte que solo permite reacción horizontal (un rodillo sobre superficie vertical, o por equilibrio de momentos respecto a la línea AO).</p>
+
+        <p><strong>Equilibrio horizontal:</strong></p>
+        $$\sum F_x = 0:\ \ F_h + F_{1x} - A_x = 0 \implies A_x = F_h + F_1\cos\alpha\ (\leftarrow)$$
+        <p style="font-size:.85em;color:#94a3b8">$A_x$ es hacia la izquierda porque tanto $F_h$ como $F_{1x}$ empujan a la derecha; la articulación tira hacia la izquierda para equilibrar.</p>
+
+        <p><strong>Equilibrio vertical:</strong></p>
+        $$\sum F_y = 0:\ \ B_y + F_b - F_1\sin\alpha = 0 \implies B_y = F_1\sin\alpha - F_b$$
+        <p style="font-size:.85em;color:#94a3b8">$B_y$ (reacción del suelo, ↑) más $F_b$ (empuje del agua, ↑) equilibran a $F_{1y} = F_1\sin\alpha$ (↓).</p>
+
+        <p style="font-weight:700;color:#fb923c;margin-top:14px">🟧 CONDICIÓN DE ALTURA MÁXIMA — derivación</p>
+        <p>$H_{\max}$ es la altura del agua para la que la compuerta está <strong>a punto de despegarse del suelo</strong>. En ese instante la reacción $B_y = 0$ (el suelo deja de empujar):</p>
+        $$B_y = 0 \iff F_b(H_{\max}) = F_1\sin\alpha$$
+        <p>Sustituyendo la fórmula de $F_b$:</p>
+        $$\gamma\,b\Bigl[\dfrac{\pi R^2}{4} + (H_{\max}-R)\cdot R\Bigr] = F_1\sin\alpha$$
+        <p>Despejando $H_{\max}$:</p>
+        $$\dfrac{\pi R^2}{4} + (H_{\max} - R)\cdot R = \dfrac{F_1\sin\alpha}{\gamma\,b}$$
+        $$(H_{\max} - R)\cdot R = \dfrac{F_1\sin\alpha}{\gamma\,b} - \dfrac{\pi R^2}{4}$$
+        $$H_{\max} - R = \dfrac{F_1\sin\alpha}{\gamma\,b\,R} - \dfrac{\pi R}{4}$$
+        $$\boxed{H_{\max} = \dfrac{F_1\sin\alpha}{\gamma\,b\,R} - \dfrac{\pi R}{4} + R}$$
+        <p style="font-size:.85em;color:#94a3b8">Si $H > H_{\max}$: $F_b$ supera la componente vertical de $F_1$, $B_y$ resultaría negativo (físicamente imposible, el suelo no tira hacia abajo) → la compuerta se levanta y deja escapar el agua.</p>
       </div>
     </div>
 

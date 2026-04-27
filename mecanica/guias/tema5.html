@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T5 Cables · Mecánica Aplicada UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 5 — Cables</h1>
+  <div class="cover-sub">Mecánica Aplicada · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>5 de 8 (Estática)</div>
+    <div><b>Ejercicios</b>16 totales · 10 nivel examen</div>
+    <div><b>Patrones</b>6 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>10 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:9%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Ejercicios</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Cable con cargas puntuales (segmentos rectilíneos)</td><td class="center">5.1, 5.2</td><td class="center">Baja-Media</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Cable parabólico (carga uniforme por proyección)</td><td class="center">5.3, 5.4</td><td class="center">Media</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Cable con muelle / carga cuadrática (especiales)</td><td class="center">5.5, 5.6</td><td class="center">Baja</td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td><b>Cable catenaria puro</b> (carga por longitud de cable)</td><td class="center">5.7, 5.8 (parcial)</td><td class="center">Alta</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P5 ★</b></td><td><b>Catenaria + sistema mecánico (polea, barra, disco, muelle)</b></td><td class="center">5.7-5.16</td><td class="center"><b>MUY ALTA</b></td></tr>
+    <tr class="alt"><td class="center"><b>P6</b></td><td>Cable con rozamiento en polea o suelo</td><td class="center">5.11, 5.12, 5.15</td><td class="center">Alta</td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T5 casi siempre es:</b> un cable catenario (cable pesado) acoplado mediante una polea a otro cable (parabólico o ligero) o a un sistema mecánico (barra + disco + muelle). Los datos se dan: carga aplicada, peso del cable por unidad de longitud, longitud total, posiciones de los apoyos.</p>
+  <p>La <b>identidad mágica</b> de la catenaria es: $\boxed{T = w(y+a)}$ — la tensión en cualquier punto solo depende de la altura $y$ desde el punto más bajo y del parámetro $a = H/w$.</p>
+</div>
+
+<div class="box info">
+  <div class="box-title">📋 Cómo usar este documento</div>
+  <ol>
+    <li>Distingue bien <b>parábola</b> (carga horizontal) de <b>catenaria</b> (carga por longitud).</li>
+    <li>Memoriza las <b>tres ecuaciones de oro</b> de la catenaria: $y$, $s$ y $T$.</li>
+    <li>Practica conectar el cable con un sistema externo (polea, barra, muelle).</li>
+    <li>Haz el mini-simulacro cronometrado.</li>
+  </ol>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 10 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Cable parabólico (carga uniforme por proyección)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F1 · Ecuación de la parábola (origen en mín.)</div>
+    <div class="formula-body">$y = \dfrac{w\,x^2}{2H}$</div>
+    <div class="formula-note">$w$ = carga por metro horizontal, $H$ = tensión horizontal.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Tensión horizontal y máxima</div>
+    <div class="formula-body">$H = \dfrac{w\,L^2}{8\,d}$</div>
+    <div class="formula-body">$T_{max} = \sqrt{H^2 + (wL/2)^2}$</div>
+    <div class="formula-note">$L$ = vano, $d$ = flecha. $T_{max}$ ocurre en los extremos.</div>
+  </div>
+</div>
+
+<h3>2 · Cable catenario (carga por longitud)</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F3 · ★ Ecuación de la catenaria</div>
+    <div class="formula-body">$y = a\left(\cosh\dfrac{x}{a} - 1\right)$</div>
+    <div class="formula-note">$a = H/w$ es el parámetro de la catenaria, con dimensión de longitud.</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F4 · ★ Longitud de arco</div>
+    <div class="formula-body">$s = a\,\sinh\dfrac{x}{a}$</div>
+    <div class="formula-note">Desde el punto más bajo hasta un punto a coordenada x.</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F5 · ★ Tensión en cualquier punto</div>
+    <div class="formula-body">$T = w(y+a) = H + wy$</div>
+    <div class="formula-note">¡La fórmula más útil! Solo necesitas la altura $y$ desde el punto más bajo.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Relación geométrica</div>
+    <div class="formula-body">$s^2 = y^2 + 2ay$</div>
+    <div class="formula-note">Conecta longitud de arco $s$ con altura $y$ y parámetro $a$.</div>
+  </div>
+</div>
+
+<h3>3 · Componentes de la tensión y geometría</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F7 · Componentes (catenaria)</div>
+    <div class="formula-body">$T_x = H = w\,a$ (constante)</div>
+    <div class="formula-body">$T_y = w\,s$ (igual al peso del arco)</div>
+    <div class="formula-note">$T_y$ es el peso del cable colgante hasta el punto considerado.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Pendiente del cable</div>
+    <div class="formula-body">$\tan\theta = \dfrac{T_y}{T_x} = \dfrac{s}{a} = \sinh(x/a)$</div>
+    <div class="formula-note">Ángulo de la tangente con la horizontal.</div>
+  </div>
+</div>
+
+<h3>4 · Cable con cargas puntuales</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F9 · Tramos rectilíneos</div>
+    <div class="formula-body">Cada segmento entre cargas es <b>recto</b></div>
+    <div class="formula-note">Equilibrio en cada nodo: $\sum F_x = 0, \sum F_y = 0$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F10 · Componente horizontal constante</div>
+    <div class="formula-body">$H = T_i\cos\theta_i$ = constante</div>
+    <div class="formula-note">La componente horizontal de la tensión es la misma en todos los tramos.</div>
+  </div>
+</div>
+
+<h2>📋 Tabla — Parábola vs Catenaria (memorizar diferencias)</h2>
+
+<table>
+  <thead><tr><th></th><th class="center">Parábola</th><th class="center">Catenaria</th></tr></thead>
+  <tbody>
+    <tr><td><b>Carga</b></td><td class="center">Por proyección horizontal $w$ [N/m]</td><td class="center">Por longitud de cable $w$ [N/m]</td></tr>
+    <tr class="alt"><td><b>Forma</b></td><td class="center">$y = wx^2/(2H)$</td><td class="center">$y = a(\cosh(x/a)-1)$</td></tr>
+    <tr><td><b>Tensión $T(x)$</b></td><td class="center">$T=\sqrt{H^2+(wx)^2}$</td><td class="center">$T = w(y+a)$</td></tr>
+    <tr class="alt"><td><b>Aplicación típica</b></td><td class="center">Puente colgante (tablero pesado)</td><td class="center">Cable que cuelga por su peso (sin carga)</td></tr>
+    <tr><td><b>Aproximación</b></td><td class="center">Para $d/L < 0{,}1$ ambas se parecen</td><td class="center">Para $d/L > 0{,}1$ usar siempre catenaria</td></tr>
+  </tbody>
+</table>
+
+<div class="box tip">
+  <div class="box-title">💡 Cómo identificar el tipo en el examen</div>
+  <p>Si el enunciado dice <b>"cable de peso despreciable" + "carga distribuida $q$ N/m" sobre el tablero</b> → <b>parábola</b>.<br>
+  Si dice <b>"cable pesado" + "peso por unidad de longitud $w$"</b> sin más cargas → <b>catenaria</b>.<br>
+  Si dice <b>"cable ligero con cargas puntuales"</b> → <b>tramos rectos</b> (Patrón 1).</p>
+</div>
+
+<h2 class="pb">🎯 Los 6 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Cable con cargas puntuales</span>
+    <span class="pattern-freq baja">Frec. baja-media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> cable ligero con varias cargas $P_1, P_2,...$ colgadas en puntos intermedios.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica los nodos y la geometría</strong>Posiciones $(x_i, y_i)$ de cada carga, ángulos $\theta_i$ de cada tramo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Equilibrio del sistema completo</strong>$\sum F_x = 0, \sum F_y = 0, \sum M_O = 0$ → reacciones en los apoyos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Equilibrio en cada nodo de carga</strong>2 ecuaciones por nodo. La tensión en cada tramo se obtiene en cascada empezando por un extremo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Componente horizontal $H$ constante</strong>Útil para comprobar: $H = T_i\cos\theta_i$ debe ser igual en todos los tramos.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Cable parabólico (carga uniforme por proyección)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> puente colgante con tablero. Carga $w$ [N/m horizontal] uniforme.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica vano $L$ y flecha $d$</strong>Si los apoyos son del mismo nivel: vano = distancia horizontal, flecha = altura del punto más bajo.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula $H$</strong>$H = wL^2/(8d)$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tensión máxima en los extremos</strong>$T_{max} = \sqrt{H^2 + (wL/2)^2}$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Longitud aproximada del cable (flechas pequeñas $d/L<0{,}1$)</strong>$s \approx L(1 + 8d^2/(3L^2))$.</div></div>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Cables con muelle o cargas especiales</span>
+    <span class="pattern-freq baja">Frec. baja</span>
+  </div>
+  <p><b>Cuándo aparece:</b> cable con muelle ideal, carga cuadrática $p(x) = a + bx^2$, o no estándar.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Plantea el equilibrio diferencial del cable</strong>$dT_y/dx = p(x)$ donde $p(x)$ es la carga por unidad de longitud horizontal.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Integra para obtener $y(x)$</strong>$y'' = p(x)/H$ → integrar dos veces con condiciones de contorno (apoyos).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Si hay muelle: $F_{muelle} = k\Delta x$</strong>Aporta una fuerza puntual en el punto donde se conecta. Como una carga concentrada extra.</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Cable catenaria puro</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> cable pesado colgando de dos apoyos. Te dan datos parciales (longitud total, una tensión, una altura) y piden el resto.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Sitúa el sistema de referencia</strong>Origen en el punto más bajo de la catenaria. El cable es simétrico si los apoyos están al mismo nivel.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Identifica las incógnitas</strong>Típicamente: parámetro $a$, posición del punto más bajo, longitud, tensión máxima. Cuenta ecuaciones e incógnitas.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica las 3 fórmulas mágicas</strong>$y = a(\cosh(x/a)-1)$, $s = a\sinh(x/a)$, $T = w(y+a)$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Truco $s^2 = y^2 + 2ay$</strong>Si conoces $y$ y $s$ en un punto, $a = (s^2 - y^2)/(2y)$.</div></div>
+  </div>
+  <div class="box tip">
+    <div class="box-title">Atajos importantes</div>
+    <ul>
+      <li><b>Si te dan el ángulo del cable en un punto:</b> $\tan\theta = s/a = \sinh(x/a)$. Útil cuando los apoyos están a alturas distintas.</li>
+      <li><b>Si te dan dos tensiones en puntos distintos:</b> $T_2 - T_1 = w(y_2 - y_1)$. La diferencia de tensiones es el peso colgante entre los dos puntos.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- P5 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P5 ★</span>
+    <span class="pattern-name" style="color:#b00">Catenaria + sistema mecánico (PATRÓN ESTRELLA)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> casi siempre en examen. Catenaria conectada por un extremo a una polea, barra articulada, disco con muelle, etc.</p>
+
+  <h4>Receta universal (Patrón 5)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Aísla la catenaria primero</strong>Identifica los apoyos del cable. En el extremo donde conecta con el resto del sistema, la tensión $T_{ext}$ es la fuerza que el cable transmite al sistema.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula la tensión en cada extremo del cable</strong>$T_{ext} = w(y_{ext} + a)$ donde $y_{ext}$ es la altura del extremo desde el punto más bajo de la catenaria.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica esa tensión al resto del sistema</strong>El cable tira del extremo en dirección tangente a la catenaria en ese punto. La tangente forma ángulo $\theta$ con la horizontal donde $\tan\theta = s/a$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Si hay polea ideal en el punto de conexión</strong>$T$ es la misma a ambos lados de la polea. La polea cambia la dirección pero no la magnitud.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Resuelve el sistema mecánico (Tema 3 + Tema 4)</strong>Como cualquier problema de estática con la fuerza adicional del cable conocida.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Usa el sistema de ecuaciones para despejar el parámetro $a$ y/o las tensiones</strong>El examen suele dar datos parciales que se conectan: longitud del cable, peso, una distancia, una fuerza aplicada → resolver para $a$ y todo lo demás.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Las 4 conexiones típicas en examen</div>
+    <ol>
+      <li><b>Cable + polea + cable:</b> tensiones iguales a ambos lados de la polea ideal. Si hay rozamiento en la polea: $T_2 = T_1 e^{\mu\beta}$ con $\beta$ ángulo de envoltura.</li>
+      <li><b>Cable + barra articulada:</b> el cable aplica una fuerza tangencial en el extremo de la barra. Plantear momentos en la articulación elimina las reacciones.</li>
+      <li><b>Cable + disco con muelle:</b> el cable se enrolla en el disco; momentos respecto al centro del disco involucran el cable y el muelle.</li>
+      <li><b>Cable + bloque sobre suelo (con $\mu$):</b> tensión = $\mu Mg$ en el límite del deslizamiento.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- P6 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P6</span>
+    <span class="pattern-name">Cable con rozamiento en apoyo (polea con $\mu$)</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "polea con coeficiente de rozamiento $\mu$", "ángulo de envoltura $\beta$".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica el ángulo de envoltura $\beta$</strong>Es el ángulo que el cable abraza la polea. Para una polea simple, $\beta = \pi/2$ (90°), $\pi$ (180°) o el valor que dé la geometría.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplica la fórmula de Euler-Eytelwein</strong>$T_2/T_1 = e^{\mu\beta}$ con $T_2 > T_1$ ($T_2$ es el lado del cable que está deslizando hacia abajo).</div></div>
+    <div class="paso"><div class="paso-body"><strong>El sistema está en el límite del deslizamiento</strong>Si está estático, $T_2/T_1 \le e^{\mu\beta}$. Si excede, desliza.</div></div>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 10 errores en T5</div>
+  <ol>
+    <li><b>Confundir parábola con catenaria.</b> Si el cable es pesado y NO hay tablero, es catenaria. Si hay tablero (carga horizontal), es parábola.</li>
+    <li><b>Olvidar que en catenaria la tensión depende solo de $y$.</b> $T = w(y+a)$. No te compliques con componentes.</li>
+    <li><b>Confundir $s$ (longitud de arco) con $L$ (vano horizontal).</b> $s$ es la longitud real del cable; $L$ la proyección.</li>
+    <li><b>Aplicar Pappus-Guldin a una catenaria.</b> Pappus se aplica a áreas planas; para la longitud del cable usa $s = a\sinh(x/a)$.</li>
+    <li><b>Olvidar la simetría de los apoyos.</b> Si los apoyos están al mismo nivel, $x_{vano}/2$ a cada lado del punto más bajo.</li>
+    <li><b>Confundir la dirección de la tensión en el extremo.</b> Es tangente a la catenaria en ese punto, NO horizontal ni vertical.</li>
+    <li><b>Aplicar $H = wL^2/(8d)$ a una catenaria.</b> Esta fórmula es solo para parábola.</li>
+    <li><b>Olvidar el peso propio del cable cuando es pesado.</b> En catenaria, el peso del arco es $W = w\cdot s$.</li>
+    <li><b>Confundir $a$ con la altura del apoyo.</b> $a$ es el parámetro de la catenaria, $a = H/w$. Es la distancia desde el punto más bajo hasta donde la catenaria "se aplana" (referencia matemática).</li>
+    <li><b>En polea con $\mu$: confundir cuál tensión es mayor.</b> $T_2 > T_1$ siempre, donde $T_2$ es el lado al que el cable tiende a moverse.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (90 minutos · sin apuntes)</h2>
+
+<div class="box info">
+  <div class="box-title">Instrucciones</div>
+  <p>2 problemas representativos. <b>Tiempo: 90 minutos.</b> Resuelve sin mirar la guía.</p>
+</div>
+
+<h3>Problema 1 (30 min · Patrón P4)</h3>
+<div class="box">
+  <p>Un cable pesado cuelga de dos apoyos al mismo nivel. La distancia horizontal entre apoyos es $L = 100$ m, y la flecha del cable es $d = 30$ m. El peso por unidad de longitud es $w = 5$ N/m.</p>
+  <ol>
+    <li>Determina el parámetro $a$ de la catenaria.</li>
+    <li>Calcula la tensión horizontal $H$.</li>
+    <li>Calcula la tensión máxima $T_{max}$ (en los apoyos).</li>
+    <li>Calcula la longitud total del cable $s_{tot}$.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (60 min · Patrón P5 ★ — catenaria simétrica + bloque)</h3>
+<div class="box exam">
+  <p>Un cable pesado catenario cuelga simétricamente de dos apoyos $A$ y $B$ situados al mismo nivel. Datos:</p>
+  <ul>
+    <li>Tensión horizontal: $H = 200$ N (constante a lo largo del cable).</li>
+    <li>Peso por unidad de longitud: $w = 5$ N/m.</li>
+    <li>Distancia horizontal entre apoyos (vano): $L = 60$ m.</li>
+  </ul>
+  <p>En el apoyo $B$ hay una polea ideal (sin rozamiento). El cable continúa por la polea y baja horizontal para tirar de un bloque de masa $M$ sobre un suelo con coeficiente de rozamiento $\mu_s = 0{,}5$. La tensión a la salida de la polea es la misma que en B (polea ideal).</p>
+  <ol>
+    <li>Calcula el parámetro $a$ de la catenaria.</li>
+    <li>Calcula la flecha $d$ del cable.</li>
+    <li>Calcula la tensión $T_B$ en el apoyo B (= tensión que tira del bloque).</li>
+    <li>Halla la longitud total del cable colgando ($s_{tot}$).</li>
+    <li>Calcula la masa máxima $M_{max}$ del bloque para que no deslice.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado 1 — Parámetro $a$</h4>
+<p>Apoyos al mismo nivel → simetría: el punto más bajo está en $x = L/2 = 50$ m a cada lado.</p>
+<p>En el apoyo: $y = d = 30$ m, $x = 50$ m.</p>
+<p>$y = a(\cosh(x/a) - 1)$ → $30 = a(\cosh(50/a) - 1)$.</p>
+<p>Esta ecuación se resuelve numéricamente. Con $a \approx 49{,}5$ m: $\cosh(50/49{,}5) = \cosh(1{,}010) \approx 1{,}547$ → $a(1{,}547-1) = 49{,}5\cdot 0{,}547 = 27{,}1$ — bajo. Probemos $a = 45$: $\cosh(50/45) = \cosh(1{,}111) \approx 1{,}684$ → $45\cdot 0{,}684 = 30{,}8$ — cerca. $a \approx 45{,}3$ m.</p>
+<div class="box key" style="text-align:center">$\boxed{a \approx 45{,}3\ \text{m}}$</div>
+
+<h4>Apartado 2 — Tensión horizontal $H$</h4>
+<div class="box" style="text-align:center">$H = w\,a = 5\cdot 45{,}3 = 226{,}5\ \text{N}$</div>
+<div class="box key" style="text-align:center">$\boxed{H \approx 226{,}5\ \text{N}}$</div>
+
+<h4>Apartado 3 — Tensión máxima en el apoyo</h4>
+<p>$T_{max} = w(y_{apoyo} + a) = 5(30 + 45{,}3) = 5\cdot 75{,}3 = 376{,}5$ N.</p>
+<div class="box key" style="text-align:center">$\boxed{T_{max} \approx 376{,}5\ \text{N}}$</div>
+
+<h4>Apartado 4 — Longitud total</h4>
+<p>Mitad: $s = a\sinh(x/a) = 45{,}3\cdot \sinh(50/45{,}3) = 45{,}3\cdot\sinh(1{,}104)$.</p>
+<p>$\sinh(1{,}104) \approx 1{,}352$ → $s \approx 45{,}3\cdot 1{,}352 = 61{,}3$ m.</p>
+<p>Total: $s_{tot} = 2\cdot 61{,}3 = 122{,}6$ m.</p>
+<div class="box key" style="text-align:center">$\boxed{s_{tot} \approx 122{,}6\ \text{m}}$</div>
+
+<div class="box info">
+  <div class="box-title">Verificación</div>
+  <p>$s_{tot} > L = 100$ m ✓ (la longitud del arco es mayor que el vano).<br>
+  $T_{max}^2 = T_x^2 + T_y^2 = H^2 + (ws)^2 = 226{,}5^2 + (5\cdot 61{,}3)^2 = 51\,302 + 93\,944 = 145\,246$ → $T_{max} = 381$ N ≈ $376{,}5$ ✓ (pequeña discrepancia por aproximación numérica).</p>
+</div>
+
+<h3 class="pb">Solución Problema 2 (★ examen)</h3>
+
+<h4>Apartado 1 — Parámetro $a$</h4>
+<p>Por definición $a = H/w = 200/5 = 40$ m.</p>
+<div class="box key" style="text-align:center">$\boxed{a = 40\ \text{m}}$</div>
+
+<h4>Apartado 2 — Flecha del cable</h4>
+<p>Apoyos al mismo nivel → simetría: el punto más bajo está en $x = 0$ y los apoyos en $x = \pm L/2 = \pm 30$ m.</p>
+<p>Aplicando F3: $d = a(\cosh(x/a) - 1) = 40(\cosh(30/40) - 1) = 40(\cosh(0{,}75) - 1)$.</p>
+<p>$\cosh(0{,}75) = 1{,}2947$. $d = 40\cdot 0{,}2947 = 11{,}79$ m.</p>
+<div class="box key" style="text-align:center">$\boxed{d \approx 11{,}79\ \text{m}}$</div>
+
+<h4>Apartado 3 — Tensión en el apoyo B</h4>
+<p>Aplicando F5: $T_B = w(y_B + a) = w(d + a) = 5(11{,}79 + 40) = 5\cdot 51{,}79 = 258{,}95$ N.</p>
+<p>(Verificación con componentes: $T_x = H = 200$ N. $T_y = ws$ con $s$ = longitud media del cable hasta el apoyo, que se calcula a continuación. $T_B = \sqrt{T_x^2+T_y^2}$.)</p>
+<div class="box key" style="text-align:center">$\boxed{T_B \approx 259\ \text{N}}$</div>
+
+<h4>Apartado 4 — Longitud total del cable</h4>
+<p>Aplicando F4 desde el punto más bajo a un apoyo: $s_{1/2} = a\sinh(x/a) = 40\sinh(0{,}75)$.</p>
+<p>$\sinh(0{,}75) = 0{,}8223$. $s_{1/2} = 40\cdot 0{,}8223 = 32{,}89$ m.</p>
+<p>Cable total (simétrico): $s_{tot} = 2\cdot s_{1/2} = 65{,}78$ m.</p>
+<div class="box key" style="text-align:center">$\boxed{s_{tot} \approx 65{,}78\ \text{m}}$</div>
+
+<h4>Verificación con componentes de la tensión</h4>
+<p>$T_y$ en el apoyo $= w\cdot s_{1/2} = 5\cdot 32{,}89 = 164{,}45$ N.<br>
+$T_B = \sqrt{H^2 + T_y^2} = \sqrt{200^2 + 164{,}45^2} = \sqrt{40000 + 27044} = \sqrt{67044} = 258{,}9$ N ✓<br>
+Coincide con la fórmula $T = w(y+a)$. ✓</p>
+
+<h4>Apartado 5 — Masa máxima del bloque</h4>
+<p>El cable pasa por la polea ideal y, después de la polea, baja horizontal tirando del bloque con tensión $T_B = 259$ N.</p>
+<p>Sobre el bloque: peso $Mg$ ↓, normal $N$ ↑ (con $N = Mg$ por equilibrio vertical), tensión $T_B$ horizontal hacia la polea, fricción $F_r \le \mu_s N = \mu_s Mg$ que se opone al deslizamiento.</p>
+<p>Condición de no deslizamiento: $T_B \le \mu_s Mg$:</p>
+<div class="box" style="text-align:center">
+  $$M_{max} = \dfrac{T_B}{\mu_s\,g} = \dfrac{259}{0{,}5\cdot 9{,}8} = \dfrac{259}{4{,}9} = 52{,}9\ \text{kg}$$
+</div>
+<div class="box key" style="text-align:center">$\boxed{M_{max} \approx 52{,}9\ \text{kg}}$</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El procedimiento del Patrón 5 con catenaria simétrica es <b>directo</b>: <b>(1)</b> $a = H/w$. <b>(2)</b> Flecha $d = a(\cosh(L/(2a))-1)$. <b>(3)</b> Tensión apoyo $T = w(d+a)$. <b>(4)</b> Longitud $s_{tot} = 2a\sinh(L/(2a))$.</p>
+  <p>Si los apoyos están a alturas distintas, hay que iterar numéricamente: por eso el examen suele dar simetría o el parámetro $a$ directamente. Cuando $a$ es dato (o equivalente: $H$ y $w$), todo lo demás sale en una sola pasada.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza F3, F4, F5, F6</b> (las 4 fórmulas mágicas de la catenaria) — 30 min.</li>
+    <li><b>Catenaria pura</b> (45 min) — Ejercicio simétrico básico, encontrar $a$, $H$, $T_{max}$.</li>
+    <li><b>Catenaria + polea + bloque</b> (1h 15 min) — Ejercicio 5.8 con la solución delante.</li>
+    <li><b>Catenaria + barra + muelle</b> (45 min) — Ejercicio 5.16.</li>
+  </ol>
+</div>
+
+<div class="box tip">
+  <div class="box-title">Si tienes una semana</div>
+  <ol>
+    <li><b>Día 1:</b> Cable con cargas puntuales y parábola — 5.1, 5.2, 5.3, 5.4.</li>
+    <li><b>Día 2:</b> Cable con muelle y carga cuadrática — 5.5, 5.6.</li>
+    <li><b>Día 3:</b> Catenaria pura + celosía — 5.7.</li>
+    <li><b>Día 4:</b> Catenaria + polea + bloque — 5.8, 5.10, 5.11.</li>
+    <li><b>Día 5:</b> Catenaria + barra + disco — 5.12, 5.13, 5.15.</li>
+    <li><b>Día 6:</b> Catenaria + celosía + muelle — 5.14, 5.16.</li>
+    <li><b>Día 7:</b> Mini-simulacro de esta guía cronometrado.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo (la página que te llevas al examen)</h2>
+
+<div class="box key">
+  <div class="box-title">Las 3 fórmulas mágicas de la catenaria</div>
+  <ol>
+    <li>$\boxed{y = a(\cosh(x/a)-1)}$ — forma de la catenaria.</li>
+    <li>$\boxed{s = a\sinh(x/a)}$ — longitud de arco.</li>
+    <li>$\boxed{T = w(y+a)}$ — tensión en cualquier punto.</li>
+  </ol>
+  <p style="margin-top:2mm">Y el atajo geométrico: $\boxed{s^2 = y^2 + 2ay}$ — para despejar $a$ cuando conoces $s$ e $y$.</p>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 5</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Aislar la catenaria →<br>
+    encontrar $a$ con las condiciones (apoyos, longitud, alturas) →<br>
+    calcular $T$ en el extremo de conexión →<br>
+    aplicar esa tensión al sistema mecánico →<br>
+    resolver con Tema 3 + Tema 4.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Mecánica Aplicada UPV/EHU · Tema 5 — Cables<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Formulario Sistemas de Producción · UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 7mm 7mm 7mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Helvetica','Arial',sans-serif;font-size:8pt;line-height:1.28}
+  h2{font-size:9pt;font-weight:700;background:#111;color:#fff;padding:.8mm 2mm;margin:1.5mm 0 1mm;break-inside:avoid;break-after:avoid;-webkit-column-break-after:avoid}
+
+  .page {
+    column-count: 2;
+    column-gap: 3mm;
+    column-fill: balance;
+    page-break-after: always;
+  }
+  .page:last-of-type { page-break-after: auto }
+
+  .box{border:1px solid #888;border-radius:1mm;padding:1.2mm 2mm;margin-bottom:1.3mm;break-inside:avoid;-webkit-column-break-inside:avoid}
+  .box-title{font-weight:700;font-size:7.5pt;color:#444;margin-bottom:.5mm;text-transform:uppercase;letter-spacing:.04em}
+  .box.key{border:1.3px solid #b00;background:#fff5f5}
+  .box.key .box-title{color:#b00}
+
+  table{border-collapse:collapse;width:100%;font-size:7pt;margin-top:.3mm}
+  th,td{border:1px solid #888;padding:.4mm .8mm;vertical-align:top}
+  th{background:#222;color:#fff;font-size:6.5pt}
+  td.center,th.center{text-align:center}
+
+  .formula-line{margin:.2mm 0;text-align:center;font-size:8.5pt}
+  ul,ol{margin:.3mm 0 .3mm 4mm;padding:0}
+  li{margin-bottom:.2mm}
+
+  code{font-family:'Courier New',monospace;font-size:7pt;background:#f4f4f4;padding:.2mm 1mm;display:inline-block}
+  .code-block{font-family:'Courier New',monospace;font-size:7pt;line-height:1.35;background:#f8f8f8;padding:1.2mm 1.8mm;border-radius:.5mm;white-space:pre-wrap}
+
+  .footer{column-span:all;text-align:center;margin-top:2mm;font-size:6.5pt;color:#666;border-top:1px dashed #ccc;padding-top:1mm}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     PÁGINA 1 — Mecanizado por arranque de viruta convencional (T1-T2-T3)
+═══════════════════════════════════════════ -->
+<div class="page">
+
+  <h2>T1 · Torneado</h2>
+
+  <div class="box key">
+    <div class="box-title">Parámetros de corte</div>
+    <div class="formula-line">$v_c = \pi DN/1000$ [m/min]</div>
+    <div class="formula-line">$N = 1000\,v_c/(\pi D)$ [rpm]</div>
+    <div class="formula-line">$v_f = f\cdot N$ [mm/min], $t_c = L_w/v_f$</div>
+    <div class="formula-line">$h = f\sin\kappa_r$, $b = a_p/\sin\kappa_r$</div>
+    <div class="formula-line">$S_c = h\cdot b = f\cdot a_p$ [mm²]</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Fuerza y potencia</div>
+    <div class="formula-line">$F_c = p_s\cdot S_c$ [N]</div>
+    <div class="formula-line">$P_c = F_c\cdot v_c/60000$ [kW]</div>
+    <div class="formula-line">Verificar: $P_c\le P_{max}\cdot\eta$, $F_c\le F_{c,max}$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Kienzle (fuerza específica)</div>
+    <div class="formula-line">$p_s = K_{c1}\cdot h^{-m_c}$ N/mm²</div>
+    <div class="formula-line">Acero F-114: $K_{c1}\approx 2400$, $m_c\approx 0{,}24$</div>
+    <div class="formula-line">A más $h$, menor $p_s$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Taylor (vida herramienta)</div>
+    <div class="formula-line">$v_c\cdot T^n = C$ (cte)</div>
+    <div class="formula-line">$v_{c,2} = v_{c,1}(T_1/T_2)^n$</div>
+    <div class="formula-line">$T_2 = T_1(v_{c,1}/v_{c,2})^{1/n}$</div>
+    <div class="formula-line" style="font-size:7.5pt">$n$: HSS 0,1-0,2 · MD 0,2-0,5 · Cer 0,5-0,7</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Rugosidad teórica (torno)</div>
+    <div class="formula-line">$R_a = f^2/(32\,r_\varepsilon)\cdot 1000$ [µm]</div>
+    <div class="formula-line">$R_t = f^2/(8\,r_\varepsilon)\cdot 1000$</div>
+    <div class="formula-line">Acabado: $f_{max}=\sqrt{R_a\cdot 32 r_\varepsilon/1000}$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Procedimiento Sandvik</div>
+    <ol>
+      <li>Tipo herramienta (forma, ISO)</li>
+      <li>Tabla f-$a_p$ del catálogo</li>
+      <li>Tabla material vs $v_c$ (interpolar)</li>
+      <li>Verificar potencia → ajustar $f$ si excede</li>
+    </ol>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Operaciones torneado</div>
+    <ul>
+      <li>Cilindrado: avance Z (paralelo eje)</li>
+      <li>Refrentado: avance X (radial). Con G96: $v_c$ cte, $N$ varía</li>
+      <li>Roscado: $v_f = p\cdot N$ (sincronizado)</li>
+      <li>Tronzado: lama estrecha, plunge X</li>
+      <li>Cónico: chariot girado (no CNC)</li>
+    </ul>
+  </div>
+
+  <h2>T2 · Fresado</h2>
+
+  <div class="box key">
+    <div class="box-title">Cinemática (¡cuidado con $Z$!)</div>
+    <div class="formula-line">$v_c = \pi DN/1000$ ($D$ fresa)</div>
+    <div class="formula-line">$v_f = f_z\cdot Z\cdot N$ [mm/min]</div>
+    <div class="formula-line">$h(\theta) = f_z\sin\theta$ (variable)</div>
+    <div class="formula-line">$S_c = a_p\,f_z\sin\theta$ (instantánea)</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Dientes activos</div>
+    <div class="formula-line">$Z_{ef} = (\theta_s-\theta_e)/(360°/Z)$</div>
+    <div class="formula-line">Ranurado pleno ($a_e=D$): $Z_{ef} = Z/2$</div>
+    <div class="formula-line">Planeado simétrico (~130°): $Z_{ef}\approx Z/3$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Fuerza y potencia</div>
+    <div class="formula-line">$F_{c,medio} = p_s\cdot a_p f_z\sin\bar\theta\cdot Z_{ef}$</div>
+    <div class="formula-line">$P_c = F_{c,medio}\cdot v_c/60000$ [kW]</div>
+    <div class="formula-line">Atajo: $P_c \approx a_p a_e v_f p_s/(60\cdot 10^6)$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Rugosidad y caudal</div>
+    <div class="formula-line">$R_{max} = f_z^2/(4D)$, $R_a \approx R_{max}/4$</div>
+    <div class="formula-line">$Q = a_p\cdot a_e\cdot v_f$ [mm³/min]</div>
+    <div class="formula-line">$L_w = L_{pieza} + L_{entrada} + L_{salida}$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Operaciones y modos</div>
+    <ul>
+      <li>Planeado: $a_e\sim 70$-$80\%D$</li>
+      <li>Escuadrado: hombros 90°</li>
+      <li>Ranurado: $a_e=D$ (pleno)</li>
+      <li>Cajera: rampa o helicoidal de entrada</li>
+      <li>Concordancia (CNC, mejor) vs Oposición</li>
+    </ul>
+  </div>
+
+  <h2>T3 · Taladrado</h2>
+
+  <div class="box key">
+    <div class="box-title">Datos clave</div>
+    <div class="formula-line">$v_c = \pi DN/1000$, $v_f = f\cdot N$</div>
+    <div class="formula-line">$L_{herr} = D/(2\tan\kappa_r)$</div>
+    <div class="formula-line">HSS 118° → $L_{herr}\approx 0{,}30D$</div>
+    <div class="formula-line">CW 140° → $L_{herr}\approx 0{,}18D$</div>
+    <div class="formula-line">$F_c = f\cdot D\cdot p_s/2$ (2 filos)</div>
+    <div class="formula-line">$t_c^{pasante} = (L_w + L_{herr})/v_f$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Roscado métrico ($D_0 = M-p$)</div>
+    <table>
+      <tr><th>Rosca</th><th>Paso</th><th>$D_0$</th></tr>
+      <tr><td>M3</td><td>0,5</td><td>2,5</td></tr>
+      <tr><td>M4</td><td>0,7</td><td>3,3</td></tr>
+      <tr><td>M5</td><td>0,8</td><td>4,2</td></tr>
+      <tr><td>M6</td><td>1,0</td><td>5,0</td></tr>
+      <tr><td>M8</td><td>1,25</td><td>6,75</td></tr>
+      <tr><td>M10</td><td>1,5</td><td>8,5</td></tr>
+      <tr><td>M12</td><td>1,75</td><td>10,25</td></tr>
+      <tr><td>M16</td><td>2,0</td><td>14,0</td></tr>
+      <tr><td>M20</td><td>2,5</td><td>17,5</td></tr>
+      <tr><td>M24</td><td>3,0</td><td>21,0</td></tr>
+    </table>
+    <div class="formula-line" style="margin-top:1mm">$v_f = p\cdot N$ (sincronizado)</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Operaciones de taladrado</div>
+    <ul>
+      <li>Taladrar: broca helicoidal (2 filos)</li>
+      <li>Escariar: 6-8 filos, IT6-7, $R_a$<1,6 µm</li>
+      <li>Mandrinar: barra precisión IT5-6</li>
+      <li>Roscar con macho: corte (viruta) o deformación</li>
+      <li>Avellanar: cono 90° o 120°</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Velocidades típicas</div>
+    <div class="formula-line">Taladrar acero: $v_c$=20-40 m/min</div>
+    <div class="formula-line">Roscar: 5-15 m/min</div>
+    <div class="formula-line">Escariar: 20-40 m/min</div>
+    <div class="formula-line">Aluminio: ×2-3 las anteriores</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Taladrado profundo</div>
+    <ul>
+      <li>$L > 3D$: lubricación interna</li>
+      <li>$L > 5D$: peck drilling (G83), $f$ −30-50%</li>
+      <li>$L > 10D$: BTA o gundrilling (especializado)</li>
+    </ul>
+  </div>
+
+  <div class="footer">Sistemas de Producción UPV/EHU 2025-26 · Página 1/3 · T1 Torneado · T2 Fresado · T3 Taladrado</div>
+
+</div><!-- /page 1 -->
+
+
+<!-- ═══════════════════════════════════════════
+     PÁGINA 2 — T4 CNC (Fagor 8025M) en exclusiva
+═══════════════════════════════════════════ -->
+<div class="page">
+
+  <h2>T4 · Control Numérico CNC — Fagor 8025M</h2>
+
+  <div class="box key">
+    <div class="box-title">Inicio de programa SIEMPRE</div>
+    <div class="code-block">G90 G94 G40 G17       ; abs · mm/min · sin comp · plano XY
+T01 M06               ; cambio herramienta
+G43 D01 Z100          ; comp. longitud + Z seguro
+G97 S2000 M03 M08     ; husillo + refrigerante</div>
+  </div>
+
+  <div class="box key">
+    <div class="box-title">Cierre de programa SIEMPRE</div>
+    <div class="code-block">M09 M05               ; refr. + husillo OFF
+G40 G91 G28 Z0        ; anular comp + retorno máquina
+M30                   ; fin de programa</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Códigos G — Movimiento</div>
+    <ul>
+      <li><code>G0</code> — posicionamiento rápido (no mecaniza)</li>
+      <li><code>G1</code> — interpolación lineal a F</li>
+      <li><code>G2</code> — arco horario (CW)</li>
+      <li><code>G3</code> — arco antihorario (CCW)</li>
+      <li><code>G4 K_</code> — temporización (s)</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Códigos G — Compensación</div>
+    <ul>
+      <li><code>G40</code> — anula comp. radio (al inicio)</li>
+      <li><code>G41</code> — comp. radio izquierda (contorno ext. CCW)</li>
+      <li><code>G42</code> — comp. radio derecha (cajera CCW)</li>
+      <li><code>G43 D_</code> — comp. longitud (SIEMPRE activar)</li>
+      <li><code>G37 R_</code> / <code>G38 R_</code> — entrada/salida tang.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Códigos G — Modo</div>
+    <ul>
+      <li><code>G17/G18/G19</code> — plano XY/XZ/YZ</li>
+      <li><code>G90/G91</code> — absoluto / incremental</li>
+      <li><code>G94/G95</code> — F en mm/min · mm/rev</li>
+      <li><code>G96/G97</code> — $v_c$ cte (m/min) / $N$ cte (rpm)</li>
+      <li><code>G73</code> — espejo (mirror) · <code>G72</code> anula</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Ciclos fijos (agujeros)</div>
+    <ul>
+      <li><code>G79</code> — anula ciclo</li>
+      <li><code>G81 X_ Y_ Z_ R_ F_</code> — taladrado simple</li>
+      <li><code>G82</code> — taladrado con dwell (P)</li>
+      <li><code>G83 ... Q_</code> — peck drilling (Q=incremento)</li>
+      <li><code>G84</code> — roscado con macho (F=paso)</li>
+      <li><code>G85</code> — escariado (sale con F)</li>
+      <li><code>G86</code> — mandrinado con parada</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Cajeras G87 / G88</div>
+    <div class="code-block">G87 X_ Y_ Z_ I_ J_ K_ B_ C_ D_ H_ L_ V_</div>
+    <ul>
+      <li>X,Y,Z = posición y prof. inicial</li>
+      <li>I, J = dimensiones (rect.) · I = radio (G88)</li>
+      <li>K = prof. total · B = pasada axial</li>
+      <li>C = step-over · D = corrector radio</li>
+      <li>H = sentido (0 conc. / 1 opos.) · L = sobremetal</li>
+      <li>V = avance acabado final</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Códigos M auxiliares</div>
+    <ul>
+      <li><code>M00</code> — parada (continuar con CYCLE START)</li>
+      <li><code>M03/M04</code> — husillo CW / CCW</li>
+      <li><code>M05</code> — parada husillo</li>
+      <li><code>M06</code> — cambio herramienta (ATC)</li>
+      <li><code>M08/M09</code> — refrigerante ON / OFF</li>
+      <li><code>M30</code> — fin con rebobinado (preferido)</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Arcos G2/G3 con I, J o R</div>
+    <div class="code-block">G2 X_ Y_ I_ J_ F_     ; arco CW con centro relativo
+G3 X_ Y_ R_ F_        ; arco CCW con radio</div>
+    <ul>
+      <li>I, J = OFFSET desde punto inicial al centro</li>
+      <li>R positivo: arco corto (&lt;180°)</li>
+      <li>R negativo: arco largo (&gt;180°)</li>
+      <li>G2/G3 vistos desde el plano G17 (XY)</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Reglas de oro (errores caros)</div>
+    <ul>
+      <li>G43 SIEMPRE tras cambio de herramienta</li>
+      <li>G40 ANTES de cambiar herramienta</li>
+      <li>Roscado: G95 (mm/rev) + G84</li>
+      <li>G41 para contorno ext. recorrido CCW</li>
+      <li>G42 para cajeras (interior)</li>
+      <li>I, J = OFFSET, no coordenadas absolutas</li>
+      <li>Cierre siempre con G40 + G91 G28 Z0 + M30</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Patrón de agujeros — ejemplo</div>
+    <div class="code-block">G81 X20 Y20 Z-15 R2 F150
+X80 Y20    ; siguiente agujero
+X80 Y80
+X20 Y80
+G79        ; anular ciclo</div>
+    <div style="font-size:7pt;margin-top:.5mm">El ciclo persiste; solo cambia X,Y</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Sistemas de referencia</div>
+    <ul>
+      <li><b>M</b>: origen máquina (fijo, fabricante)</li>
+      <li><b>W</b>: origen pieza (G54-G59, programador)</li>
+      <li><b>P</b>: origen programa (= W normalmente)</li>
+      <li><b>T</b>: origen herramienta (controlado por G43)</li>
+    </ul>
+  </div>
+
+  <div class="footer">Sistemas de Producción UPV/EHU 2025-26 · Página 2/3 · T4 CNC (Fagor 8025M)</div>
+
+</div><!-- /page 2 -->
+
+
+<!-- ═══════════════════════════════════════════
+     PÁGINA 3 — Procesos especiales y calidad (T5-T8)
+═══════════════════════════════════════════ -->
+<div class="page">
+
+  <h2>T5 · Rectificado</h2>
+
+  <div class="box key">
+    <div class="box-title">Parámetros</div>
+    <div class="formula-line">$v_s = \pi D_s n_s/60$ [m/s] (20-45 m/s)</div>
+    <div class="formula-line">$v_w/v_s \approx 1/60$ a $1/100$</div>
+    <div class="formula-line">$Q_w = a_p v_w w$, $l_c = \sqrt{a_p D_e}$</div>
+    <div class="formula-line">$D_e = D_sD_w/(D_s\pm D_w)$ (+ext, −int)</div>
+    <div class="formula-line">$F_c = p_s\cdot A$, $p_s > 15000$ N/mm²</div>
+    <div class="formula-line">$G = V_w/V_g$ (grinding ratio)</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Selección muela (regla de oro)</div>
+    <ul>
+      <li>A=acero · C=fundición/no-férreo</li>
+      <li>CBN=acero duro · Diamante=carburo (NO acero)</li>
+      <li>Pieza dura → muela <b>blanda</b> (F-K)</li>
+      <li>Pieza blanda → muela <b>dura</b> (P-S)</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Denominación UNE 16-300-75</div>
+    <div class="formula-line"><code>D × esp × eje — A 46 H 6 V</code></div>
+    <ul style="font-size:7pt">
+      <li>Grano: 8-24 grueso · 30-60 medio · 70-180 fino</li>
+      <li>Grado: A-E muy blanda · L-Q media · U-Z muy dura</li>
+      <li>Aglutinante: V vitrif · B resin · R caucho · M metál</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Operaciones</div>
+    <ul>
+      <li>Plano (A1-A4)</li>
+      <li>Cilíndrico exterior/interior (B): long. o plongée</li>
+      <li>Sin centros (C): muela + reguladora + cuchilla</li>
+      <li>Diamantar (dressing): restaurar perfil</li>
+      <li>Equilibrar tras montar/diamantar (obligatorio)</li>
+    </ul>
+  </div>
+
+  <h2>T6 · Fundición</h2>
+
+  <div class="box key">
+    <div class="box-title">Chvorinov (fórmula estrella)</div>
+    <div class="formula-line">$T_{TS} = C_m\,(V/A)^2$</div>
+    <div class="formula-line">Mazarota: $V/A_{maz} > V/A_{pieza}$</div>
+    <div class="formula-line">Factor seguridad: $M_{maz}\approx 1{,}2\cdot M_{pieza}$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">$V/A$ típicos</div>
+    <table>
+      <tr><th>Forma</th><th>$V/A$</th></tr>
+      <tr><td>Plano grueso $e$</td><td>$e/2$</td></tr>
+      <tr><td>Cubo $a$</td><td>$a/6$</td></tr>
+      <tr><td>Cil. $h=D$ (todas caras)</td><td>$D/6$</td></tr>
+      <tr><td>Cil. $h=D$ (cubierto arriba)</td><td>$D/5$</td></tr>
+      <tr><td>Cil. $h=D$ (sobre la pieza)</td><td>$D/4$</td></tr>
+      <tr><td>Esfera $D$</td><td>$D/6$</td></tr>
+    </table>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Bebedero (Bernoulli)</div>
+    <div class="formula-line">$v = \sqrt{2gh}$, $Q = A\cdot v$</div>
+    <div class="formula-line">$t_{llenado} = V_{pieza}/Q$</div>
+    <div class="formula-line">$A_1 v_1 = A_2 v_2$ (continuidad)</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Procesos / defectos</div>
+    <ul>
+      <li><b>NO permanente</b> (alta $T_f$): A1 arena · A2 modelo perdido · A3 cáscara · A4 cera perdida</li>
+      <li><b>Permanente</b> (baja $T_f$): B1 coquilla · B2 HP die · B3 LP die</li>
+      <li>Rechupe → mazarota mal dim. · Porosidad gas → permeabilidad arena</li>
+      <li>Junta fría → subir T° vertido · Inclusiones → filtros</li>
+    </ul>
+  </div>
+
+  <h2>T7 · Metrología</h2>
+
+  <div class="box key">
+    <div class="box-title">Tolerancia aceptable</div>
+    <div class="formula-line">$T_{AS} = T_{ES} - U$, $T_{AI} = T_{EI} + U$</div>
+    <div class="formula-line">Aceptar si $[\bar{x}-U,\bar{x}+U] \subset [T_{EI},T_{ES}]$</div>
+    <div class="formula-line" style="font-size:7pt;color:#666">Duda → rechazar (conservador)</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Sistema ISO de tolerancias</div>
+    <ul>
+      <li><b>Mayúscula</b> H/G/F = agujero</li>
+      <li><b>Minúscula</b> h/g/f = eje</li>
+      <li>H/h posición base (en cero)</li>
+      <li>G/g → juego · K/k indeterminado · P/p aprieto</li>
+    </ul>
+    <div class="formula-line">$J_{max} = D_{a,max} - d_{e,min}$</div>
+    <div class="formula-line">$J_{min} = D_{a,min} - d_{e,max}$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Ajustes y grados IT</div>
+    <div class="formula-line">H7/g6: juego pequeño (eje girando)</div>
+    <div class="formula-line">H7/k6: indeterminado (centrado)</div>
+    <div class="formula-line">H7/p6: aprieto (prensado)</div>
+    <div style="font-size:7pt;margin-top:.5mm">IT5-7: precisión · IT8-11: normal · IT12+: bruto</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Rugosidad</div>
+    <div class="formula-line">$R_a = (1/l_n)\int|y(x)|dx$</div>
+    <div class="formula-line">$R_t = R_p + R_v \approx 4R_a$</div>
+    <div class="formula-line">Senoide $A$: $R_a = 2A/\pi$, $R_t = 2A$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Tolerancias geométricas (GD&T)</div>
+    <ul>
+      <li><b>Forma</b>: rectitud, planitud, redondez, cilindricidad</li>
+      <li><b>Orientación</b>: paralelismo, perpendicularidad, inclinación</li>
+      <li><b>Posición</b>: posición, concentricidad/coaxialidad</li>
+      <li><b>Oscilación</b>: run-out radial/axial</li>
+    </ul>
+    <div style="font-size:7pt">Cuadro: [Símbolo | Tolerancia | Datum]</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Resolución de instrumentos</div>
+    <ul>
+      <li>Calibre: 0,02-0,1 mm (IT12+)</li>
+      <li>Micrómetro: 0,01 mm (IT7+)</li>
+      <li>Reloj comparador: 0,001 mm</li>
+      <li>CMM: µm (mediciones complejas)</li>
+    </ul>
+    <div style="font-size:7pt">Regla: resolución ≤ tolerancia/10</div>
+  </div>
+
+  <h2>T8 · Deformación Plástica</h2>
+
+  <div class="box key">
+    <div class="box-title">Doblado V (matriz)</div>
+    <div class="formula-line">$F_{max} = k_f\,\sigma_{uts}\,t^2\,b/u$</div>
+    <div class="formula-line">$\alpha=90°$: $F = (1+4t/u)\,\sigma_{uts}\,t^2\,b/u$</div>
+    <div class="formula-line">$k_f$: V 1,2-1,35 · U 0,7-0,8 · pasante 0,3</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Springback</div>
+    <div class="formula-line">$t_r = 2R_n Y/E$</div>
+    <div class="formula-line">$K_s \approx 1 - 3(\sigma_y/E)\cdot R_n/t$</div>
+    <div class="formula-line">$R_n^{prog} = R_n^{deseado}\cdot K_s$ (sobre-doblar)</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Embutición</div>
+    <div class="formula-line">$\beta = d_0/d_1$, $\beta_{max,acero}\approx 2{,}0$</div>
+    <div class="formula-line">$d_0\approx 1{,}1\sqrt{d_1^2 + 4d_1 h}$</div>
+    <div class="formula-line">2ª: $\beta\le 1{,}5$-$1{,}6$ · 3ª: $\beta\le 1{,}3$</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Caliente vs frío</div>
+    <ul>
+      <li>Caliente: $T > 0{,}6T_f$ → menos $\sigma$, fibrado direccional</li>
+      <li>Frío: $T < 0{,}35T_f$ → mejor acabado, endurecimiento</li>
+      <li>$T_{recris}$ aceros: 400-700 °C</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Procesos volumétricos / corte</div>
+    <ul>
+      <li>Forja libre / con estampas</li>
+      <li>Laminación: $r=(t_0-t_f)/t_0\cdot 100\%$</li>
+      <li>Extrusión (perfiles) · Estirado (alambres)</li>
+      <li>Punzonado: $F = L_{corte}\cdot t\cdot \sigma_{cizalla}$</li>
+      <li>$\sigma_{cizalla}\approx 0{,}7\sigma_{uts}$ · holgura 5-10%$t$</li>
+    </ul>
+  </div>
+
+  <div class="footer">Sistemas de Producción UPV/EHU 2025-26 · Página 3/3 · T5 Rectificado · T6 Fundición · T7 Metrología · T8 Def. Plástica</div>
+
+</div><!-- /page 3 -->
+
+</body>
+</html>

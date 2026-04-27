@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T7 Metrología · Sistemas de Producción UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 7 — Metrología</h1>
+  <div class="cover-sub">Sistemas de Producción · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>7 de 8 (Calidad)</div>
+    <div><b>Tipo</b>Cualitativo + tolerancias</div>
+    <div><b>Patrones</b>5 tipos · 1 estrella</div>
+    <div><b>Fórmulas</b>8 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Conceptos: exactitud vs precisión, trazabilidad, error</td><td class="center">Media</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P2 ★</b></td><td><b>Tolerancia aceptable</b> con incertidumbre — criterio de aceptación/rechazo</td><td class="center"><b>MUY ALTA</b></td></tr>
+    <tr class="alt"><td class="center"><b>P3</b></td><td>Sistema ISO de tolerancias (H7, h6, ajustes)</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P4</b></td><td>Rugosidad: $R_a$, $R_t$, perfil</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P5</b></td><td>Selección de instrumento de medida</td><td class="center">Media</td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T7 incluye casi siempre:</b> aplicación del criterio de aceptación con incertidumbre $T_{AS} = T_{ES} - U$, $T_{AI} = T_{EI} + U$. Dado un valor medido y su incertidumbre, decidir si la pieza está aceptable, dudosa o rechazada.</p>
+  <p>La <b>regla clave</b>: una medida $Y \pm U$ está aceptada si <b>todo</b> el intervalo $[Y-U, Y+U]$ entra en la tolerancia especificada $[T_{EI}, T_{ES}]$. Si parte queda fuera → duda → se rechaza por seguridad.</p>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 8 fórmulas imprescindibles</h2>
+
+<h3>1 · Resultado de medición e incertidumbre</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F1 · ★ Expresión del resultado</div>
+    <div class="formula-body">$Y = \bar{x} \pm U$</div>
+    <div class="formula-note">$\bar{x}$ = valor medido (media). $U$ = incertidumbre (semiamplitud del intervalo).</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · Componentes del error</div>
+    <div class="formula-body">Error = sistemático + aleatorio</div>
+    <div class="formula-note">Sistemático: corregible. Aleatorio: estadístico, $\sigma/\sqrt{n}$ con $n$ medidas.</div>
+  </div>
+</div>
+
+<h3>2 · Tolerancia aceptable (criterio de aceptación)</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F3 · ★ Tolerancia aceptable</div>
+    <div class="formula-body">$T_{AS} = T_{ES} - U$</div>
+    <div class="formula-body">$T_{AI} = T_{EI} + U$</div>
+    <div class="formula-note">"AS" = aceptable superior, "ES" = especificada superior. Recorta la tolerancia por la incertidumbre.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Criterio de aceptación</div>
+    <div class="formula-body" style="font-size:9.5pt;text-align:left">• Si $T_{AI} \le \bar{x} - U$ y $\bar{x} + U \le T_{AS}$ → ACEPTAR<br>• Si $\bar{x}+U > T_{ES}$ o $\bar{x}-U < T_{EI}$ → RECHAZAR<br>• Caso intermedio → DUDA → rechazar</div>
+  </div>
+</div>
+
+<h3>3 · Rugosidad superficial</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F5 · Rugosidad media aritmética $R_a$</div>
+    <div class="formula-body">$R_a = \dfrac{1}{l_n}\int_0^{l_n}|y(x)|\,dx$</div>
+    <div class="formula-note">Promedio del valor absoluto de las desviaciones respecto a la línea media.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Rugosidad total $R_t$</div>
+    <div class="formula-body">$R_t = R_p + R_v$</div>
+    <div class="formula-note">$R_p$ pico máximo, $R_v$ valle máximo. $R_t \approx 4\,R_a$ aproximadamente.</div>
+  </div>
+</div>
+
+<h3>4 · Sistema ISO de tolerancias</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F7 · Estructura del código</div>
+    <div class="formula-body">$\boxed{D\ HG}$ — ej. $30\ H7$, $40\ h6$</div>
+    <div class="formula-note">$D$ = nominal (mm). Letra mayúsc. = agujero. Minúsc. = eje. Número = grado IT (calidad).</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Ajuste — juego o aprieto</div>
+    <div class="formula-body">$J_{max} = D_{agujero,max} - d_{eje,min}$</div>
+    <div class="formula-body">$J_{min} = D_{agujero,min} - d_{eje,max}$</div>
+    <div class="formula-note">Si $J_{min} < 0$: aprieto.</div>
+  </div>
+</div>
+
+<h2>📋 Sistema ISO — letras y grados</h2>
+
+<table>
+  <thead><tr><th>Letra</th><th>Posición</th><th>Tipo</th></tr></thead>
+  <tbody>
+    <tr><td class="center"><b>H</b> (agujero)</td><td>Justo encima de cero</td><td><b>Agujero base</b> — punto de referencia. Si la cota es H7: tolerancia +IT7, 0 (siempre por encima del nominal).</td></tr>
+    <tr class="alt"><td class="center"><b>h</b> (eje)</td><td>Justo debajo de cero</td><td><b>Eje base</b>. h7: tolerancia 0, −IT7 (siempre por debajo).</td></tr>
+    <tr><td class="center"><b>G, F, E...</b> (mayúsculas)</td><td>Por encima de cero</td><td>Agujeros más grandes que H. Ajuste con juego.</td></tr>
+    <tr class="alt"><td class="center"><b>K, M, N, P...</b> (mayúsculas)</td><td>Por debajo de cero</td><td>Agujeros más pequeños que H. Ajuste con aprieto.</td></tr>
+    <tr><td class="center"><b>g, f, e...</b> (minúsculas)</td><td>Por debajo de h</td><td>Ejes más pequeños. Juego.</td></tr>
+    <tr class="alt"><td class="center"><b>k, m, n, p...</b> (minúsculas)</td><td>Por encima de h</td><td>Ejes más grandes. Aprieto.</td></tr>
+  </tbody>
+</table>
+
+<div class="box info">
+  <div class="box-title">📋 Grados IT — calidad de fabricación</div>
+  <p>El número IT (1-18) indica el ancho de la tolerancia. Más bajo = más estrecho = más preciso = más caro.</p>
+  <ul>
+    <li><b>IT01-IT4:</b> calibración de patrones, instrumentos.</li>
+    <li><b>IT5-IT7:</b> mecanizado de precisión (rectificado, escariado). Para ajustes funcionales.</li>
+    <li><b>IT8-IT11:</b> mecanizado normal (torneado, fresado).</li>
+    <li><b>IT12-IT16:</b> piezas brutas, fundición.</li>
+  </ul>
+  <p>Más usados en fabricación: <b>H7/h6 (juego mínimo), H7/k6 (centrado), H7/p6 (aprieto)</b>.</p>
+</div>
+
+<h2>📋 Tipos de ajustes</h2>
+
+<table>
+  <thead><tr><th>Tipo</th><th>Característica</th><th>Ejemplos</th></tr></thead>
+  <tbody>
+    <tr><td><b>Ajuste con juego</b></td><td>$D_{agujero,min} > d_{eje,max}$ siempre</td><td>H7/g6, H8/f7. Cojinetes deslizantes, ejes giratorios libres.</td></tr>
+    <tr class="alt"><td><b>Ajuste indeterminado</b></td><td>Puede haber juego o aprieto según las medidas reales</td><td>H7/k6, H7/m6. Centrado de piezas (rodamientos en eje).</td></tr>
+    <tr><td><b>Ajuste con aprieto</b></td><td>$D_{agujero,max} < d_{eje,min}$ siempre</td><td>H7/p6, H7/s7. Ajuste prensado, no se desmonta sin destruir.</td></tr>
+  </tbody>
+</table>
+
+<h2>📋 Tolerancias geométricas (GD&T) — símbolos esenciales</h2>
+
+<table>
+  <thead><tr><th>Tipo</th><th class="center">Símbolo</th><th>Característica</th><th>Aplicación típica</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="4"><b>Forma</b><br>(no requiere referencia)</td><td class="center">$-$</td><td>Rectitud (straightness)</td><td>Ejes, generatriz cilindro</td></tr>
+    <tr class="alt"><td class="center">$\square$ vacío</td><td>Planitud (flatness)</td><td>Caras de mesa, pieza guía</td></tr>
+    <tr><td class="center">$○$</td><td>Redondez (roundness)</td><td>Sección circular, agujero</td></tr>
+    <tr class="alt"><td class="center">$\diameter$</td><td>Cilindricidad</td><td>Eje de motor, mandril</td></tr>
+    <tr><td rowspan="3"><b>Orientación</b><br>(requiere referencia)</td><td class="center">$\parallel$</td><td>Paralelismo</td><td>Caras paralelas, ejes paralelos</td></tr>
+    <tr class="alt"><td class="center">$\perp$</td><td>Perpendicularidad</td><td>Cara con eje, agujero perpendicular</td></tr>
+    <tr><td class="center">$\angle$</td><td>Inclinación</td><td>Superficie con ángulo respecto a referencia</td></tr>
+    <tr class="alt"><td rowspan="2"><b>Posición</b><br>(referencia)</td><td class="center">$\oplus$</td><td>Posición</td><td>Patrón de agujeros, ejes en CMM</td></tr>
+    <tr><td class="center">$◎$</td><td>Concentricidad / coaxialidad</td><td>Ejes concéntricos (rotor, eje de motor)</td></tr>
+    <tr class="alt"><td><b>Oscilación</b></td><td class="center">$↗$</td><td>Excentricidad radial / axial (run-out)</td><td>Verificación de eje rotando</td></tr>
+  </tbody>
+</table>
+
+<div class="box info">
+  <div class="box-title">📋 Lectura de un cuadro GD&T</div>
+  <p>El cuadro de tolerancia geométrica tiene 3 (o 4) compartimentos:<br>
+  <b>[Símbolo] [Tolerancia] [Referencia (datum)]</b></p>
+  <p>Ejemplo: $\boxed{\perp\ |\ 0{,}05\ |\ A}$ → la superficie debe ser perpendicular a la referencia A con tolerancia 0,05 mm.</p>
+  <p><b>Datum:</b> letras A, B, C... que indican qué cara/eje sirve de referencia. Se marcan con un triángulo y la letra dentro de un círculo en el plano.</p>
+</div>
+
+<h2 class="pb">🎯 Los 5 patrones de problema (recetas)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Conceptos: exactitud, precisión, trazabilidad</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Exactitud vs precisión</strong>Exactitud = cerca del valor real. Precisión = repetibilidad (mismo resultado en mediciones repetidas). Un instrumento puede ser preciso pero inexacto (sesgo sistemático).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Trazabilidad</strong>Cadena de patrones desde laboratorio nacional (CEM) → laboratorios acreditados (ENAC) → industria. Cada nivel tiene su patrón calibrado por el superior.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Error sistemático vs aleatorio</strong>Sistemático: corregible (calibración). Aleatorio: solo se reduce con $n$ mediciones (factor $1/\sqrt{n}$).</div></div>
+  </div>
+</div>
+
+<!-- P2 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P2 ★</span>
+    <span class="pattern-name" style="color:#b00">Tolerancia aceptable con incertidumbre</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "una pieza tiene cota 30±0,1. Se mide con calibre con $U=±0,02$. La medida obtenida es $\bar{x}=30,11$. ¿Aceptar o rechazar?".</p>
+
+  <h4>Receta universal</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica las tolerancias especificadas</strong>$T_{ES} = $ valor nominal + tolerancia superior. $T_{EI} = $ valor nominal − tolerancia inferior.<br>Ej. 30±0,1 → $T_{EI} = 29{,}9$, $T_{ES} = 30{,}1$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula tolerancias aceptables</strong>$T_{AS} = T_{ES} - U$. $T_{AI} = T_{EI} + U$.<br>Ej. $T_{AS} = 30{,}1 - 0{,}02 = 30{,}08$. $T_{AI} = 29{,}9 + 0{,}02 = 29{,}92$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Decisión sobre la medida $\bar{x}$</strong>Compara $\bar{x}$ con $[T_{AI}, T_{AS}]$:<br>• Si $T_{AI} \le \bar{x} \le T_{AS}$ → <b>ACEPTAR</b>: incluso con la incertidumbre, la pieza entra en tolerancia.<br>• Si $\bar{x} > T_{AS}$ o $\bar{x} < T_{AI}$ → ahora hay duda. Comprobar:<br>&nbsp;&nbsp;− Si $\bar{x}+U > T_{ES}$ o $\bar{x}-U < T_{EI}$ → <b>RECHAZAR</b>: la pieza puede estar fuera.<br>&nbsp;&nbsp;− Caso intermedio → DUDA, se rechaza por seguridad.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Ejemplo:</strong>$\bar{x} = 30{,}11$, $U = 0{,}02$.<br>Intervalo de la medida: $[30{,}09, 30{,}13]$.<br>$T_{AS} = 30{,}08$ → $\bar{x} > T_{AS}$.<br>$\bar{x} + U = 30{,}13 > T_{ES} = 30{,}1$ → <b>RECHAZAR</b> (parte del intervalo está fuera de tolerancia).</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Diagrama del criterio</div>
+    <p style="font-family:Courier,monospace;font-size:9.5pt">
+T_EI ───────────────── T_AI ─── T_AS ──────────────── T_ES<br>
+       ↑ rechazo      ↑ aceptable rango    ↑ rechazo<br>
+       (duda si Y-U)         (Y entre AI y AS, ✓)         (duda si Y+U)
+    </p>
+    <p style="margin-top:1.5mm">Si $T_{AS} < \bar{x} < T_{ES}$: el centro está dentro de tolerancia, pero $\bar{x}+U$ excede $T_{ES}$ → duda → rechazar.</p>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Sistema ISO — calcular un ajuste</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula el juego máximo y mínimo del ajuste H7/g6 para un nominal de 30 mm".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>De tablas ISO obtén las desviaciones</strong>Para D=30 (rango 24-30): IT7 = 21 µm, IT6 = 13 µm. Posición H = 0 (agujero), g = −20 (eje, posición debajo).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula límites del agujero (H7)</strong>$D_{min} = 30 + 0 = 30{,}000$. $D_{max} = 30 + 21 = 30{,}021$ mm.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula límites del eje (g6)</strong>$d_{max} = 30 - 20 = 29{,}980$. $d_{min} = 29{,}980 - 13 = 29{,}967$ mm.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula juego/aprieto</strong>$J_{max} = D_{max} - d_{min} = 30{,}021 - 29{,}967 = 0{,}054$.<br>$J_{min} = D_{min} - d_{max} = 30 - 29{,}980 = 0{,}020$.<br>Ambos positivos → ajuste con juego.</div></div>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Rugosidad — cálculo de $R_a$</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "dado el perfil $y(x)$ calcula $R_a$".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Línea media</strong>Sustrae la media: $y'(x) = y(x) - \bar{y}$. La línea media es la recta que minimiza $\int y'^2 dx$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aplicar la fórmula</strong>$R_a = \dfrac{1}{l_n}\int_0^{l_n}|y'(x)|\,dx$. Para perfil periódico, usa un número entero de períodos.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Aproximaciones útiles</strong>Para senoide $y = A\sin(\omega x)$: $R_a = (2A)/\pi \approx 0{,}637\,A$, $R_t = 2A$. Para triangular: $R_a = A/2$.</div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Selección de instrumento</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "qué instrumento usarías para medir un eje de 50 mm con tolerancia ±0,005".</p>
+  <table>
+    <thead><tr><th>Instrumento</th><th class="center">Resolución</th><th>Aplicación típica</th></tr></thead>
+    <tbody>
+      <tr><td>Calibre/pie de rey</td><td class="center">0,02-0,1 mm</td><td>Medidas generales, IT12+</td></tr>
+      <tr class="alt"><td>Micrómetro</td><td class="center">0,01 mm (0,001 con vernier)</td><td>Diámetros y espesores, IT7+</td></tr>
+      <tr><td>Reloj comparador</td><td class="center">0,001 mm</td><td>Concentricidad, planitud, comparación</td></tr>
+      <tr class="alt"><td>Galga de holgura</td><td class="center">0,01-1 mm</td><td>Distancias y holguras pequeñas</td></tr>
+      <tr><td>Bloques patrón (Johansson)</td><td class="center">0,0001 mm</td><td>Calibración de instrumentos</td></tr>
+      <tr class="alt"><td>Rugosímetro</td><td class="center">µm-nm</td><td>Rugosidad superficial $R_a, R_t$</td></tr>
+      <tr><td>Máquina de medir 3D (CMM)</td><td class="center">µm</td><td>Mediciones complejas, tolerancias geométricas</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:1.5mm"><b>Regla:</b> resolución del instrumento ≤ tolerancia/10. Para tolerancia ±0,005 mm (10 µm de banda total): instrumento con resolución ≤ 1 µm → micrómetro o CMM.</p>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 8 errores en T7</div>
+  <ol>
+    <li><b>Confundir exactitud con precisión.</b> Exactitud = cerca del real (sin sesgo). Precisión = repetibilidad (sin dispersión). Un instrumento puede ser preciso pero impreciso o viceversa.</li>
+    <li><b>No restar la incertidumbre $U$ a la tolerancia.</b> $T_{AS} = T_{ES} - U$, NO $T_{AS} = T_{ES}$.</li>
+    <li><b>Aceptar una medida en zona de duda.</b> Si parte del intervalo $[\bar{x}-U, \bar{x}+U]$ queda fuera de $[T_{EI}, T_{ES}]$ → rechazar (no aceptar por buena fe).</li>
+    <li><b>Confundir letras mayúsculas con minúsculas en ISO.</b> Mayúsculas (H, G, F...) = agujeros. Minúsculas (h, g, f...) = ejes.</li>
+    <li><b>Asumir H7 ↔ h7 son iguales.</b> H7 (agujero) tolerancia +IT7,0. h7 (eje) tolerancia 0,−IT7. SON OPUESTOS en posición.</li>
+    <li><b>Olvidar que $J_{min}$ se calcula con la situación más desfavorable.</b> Para juego: agujero pequeño + eje grande. Para aprieto: agujero grande + eje pequeño.</li>
+    <li><b>Confundir $R_a$ con $R_t$ y $R_p$.</b> $R_a$ es promedio (≈ 4× menor que $R_t$). $R_t = R_p + R_v$ es la suma de pico+valle máximos.</li>
+    <li><b>Aplicar resolución de instrumento mayor que la tolerancia.</b> Regla: resolución ≤ tolerancia/10 para que la medida tenga sentido.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (60 minutos)</h2>
+
+<h3>Pregunta 1 (15 min · Patrón P1)</h3>
+<div class="box">
+  <ol>
+    <li>Define exactitud, precisión, resolución y trazabilidad.</li>
+    <li>¿Cuándo y por qué se usan bloques patrón?</li>
+    <li>¿Por qué la incertidumbre recorta la tolerancia especificada?</li>
+  </ol>
+</div>
+
+<h3>Pregunta 2 (20 min · Patrón P2 ★)</h3>
+<div class="box exam">
+  <p>Una pieza tiene cota especificada $50\pm 0{,}05$ mm. Se mide con un instrumento de incertidumbre $U = \pm 0{,}01$ mm. Decide la aceptación/rechazo en cada caso:</p>
+  <ol>
+    <li>Medida = 50,03 mm</li>
+    <li>Medida = 50,045 mm</li>
+    <li>Medida = 50,06 mm</li>
+    <li>Medida = 49,955 mm</li>
+  </ol>
+</div>
+
+<h3 class="pb">Pregunta 3 (25 min · Patrón P3)</h3>
+<div class="box exam">
+  <p>Calcula el ajuste $\boxed{40\,H7/g6}$. Datos de tablas ISO para D=40: IT7 = 25 µm, IT6 = 16 µm, posición g = −9 µm.</p>
+  <ol>
+    <li>Límites del agujero (H7).</li>
+    <li>Límites del eje (g6).</li>
+    <li>$J_{max}$ y $J_{min}$.</li>
+    <li>Tipo de ajuste.</li>
+    <li>¿Para qué aplicación es típico este ajuste?</li>
+  </ol>
+</div>
+
+<h2 class="pb">✅ Soluciones del simulacro</h2>
+
+<h3>Solución Pregunta 1</h3>
+<ul>
+  <li><b>Exactitud:</b> capacidad del instrumento de dar una medida cercana al valor real (sin sesgo).</li>
+  <li><b>Precisión:</b> capacidad de reproducir la misma medida (repetibilidad).</li>
+  <li><b>Resolución (apreciación):</b> menor diferencia que el instrumento puede distinguir.</li>
+  <li><b>Trazabilidad:</b> cadena documentada de calibraciones que conecta una medida con un patrón nacional/internacional.</li>
+  <li><b>Bloques patrón (Johansson):</b> bloques metálicos de altísima precisión (0,1 µm) para calibrar otros instrumentos. Se apilan por adherencia molecular.</li>
+  <li><b>Incertidumbre recorta tolerancia:</b> porque cualquier medición tiene una "duda" $U$. Si la medida está cerca del límite, no podemos asegurar que el valor real esté dentro. La zona de duda se descuenta.</li>
+</ul>
+
+<h3>Solución Pregunta 2 (★)</h3>
+
+<p>$T_{ES} = 50{,}05$, $T_{EI} = 49{,}95$. $U = 0{,}01$.<br>
+$T_{AS} = 50{,}05 - 0{,}01 = 50{,}04$. $T_{AI} = 49{,}95 + 0{,}01 = 49{,}96$.</p>
+
+<table>
+  <thead><tr><th>Medida</th><th>$\bar{x}-U$</th><th>$\bar{x}+U$</th><th>Decisión</th><th>Justificación</th></tr></thead>
+  <tbody>
+    <tr><td>50,03</td><td>50,02</td><td>50,04</td><td><b>ACEPTAR ✓</b></td><td>$T_{AI}=49{,}96 \le 50{,}02$ y $50{,}04 \le T_{AS}=50{,}04$. Margen justo.</td></tr>
+    <tr class="alt"><td>50,045</td><td>50,035</td><td>50,055</td><td><b>RECHAZAR (duda)</b></td><td>$\bar{x}+U=50{,}055 > T_{ES}=50{,}05$. Parte del intervalo fuera.</td></tr>
+    <tr><td>50,06</td><td>50,05</td><td>50,07</td><td><b>RECHAZAR ✗</b></td><td>$\bar{x}=50{,}06 > T_{ES}=50{,}05$. Definitivamente fuera.</td></tr>
+    <tr class="alt"><td>49,955</td><td>49,945</td><td>49,965</td><td><b>RECHAZAR (duda)</b></td><td>$\bar{x}-U=49{,}945 < T_{EI}=49{,}95$. Parte del intervalo fuera por abajo.</td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El criterio "duda → rechazo" es <b>conservador</b>: en caso de incertidumbre, se prioriza no aceptar piezas defectuosas. Una medida en la zona $[T_{AS}, T_{ES}]$ es ambigua → rechazar.</p>
+</div>
+
+<h3 class="pb">Solución Pregunta 3</h3>
+
+<h4>Apartado 1 — Agujero H7</h4>
+<p>$D_{min} = 40$ mm (posición H = 0). $D_{max} = 40 + 25\cdot 10^{-3} = 40{,}025$ mm.</p>
+<div class="box key" style="text-align:center">$\boxed{D_{agujero}: 40{,}000\ \text{a}\ 40{,}025\ \text{mm}}$</div>
+
+<h4>Apartado 2 — Eje g6</h4>
+<p>$d_{max} = 40 + (-9)\cdot 10^{-3} = 39{,}991$ mm.<br>
+$d_{min} = d_{max} - IT6 = 39{,}991 - 0{,}016 = 39{,}975$ mm.</p>
+<div class="box key" style="text-align:center">$\boxed{d_{eje}: 39{,}975\ \text{a}\ 39{,}991\ \text{mm}}$</div>
+
+<h4>Apartado 3 — Juegos</h4>
+<p>$J_{max} = D_{max} - d_{min} = 40{,}025 - 39{,}975 = 0{,}050$ mm = 50 µm.<br>
+$J_{min} = D_{min} - d_{max} = 40{,}000 - 39{,}991 = 0{,}009$ mm = 9 µm.</p>
+<div class="box key" style="text-align:center">$\boxed{J_{max} = 50\ \mu\text{m},\ J_{min} = 9\ \mu\text{m}}$</div>
+
+<h4>Apartado 4 — Tipo de ajuste</h4>
+<p>$J_{min} = 9$ µm > 0 → <b>ajuste con juego</b> (siempre hay holgura).</p>
+
+<h4>Apartado 5 — Aplicación</h4>
+<p>H7/g6: <b>juego pequeño</b>, deslizamiento controlado. Aplicaciones: ejes giratorios sobre cojinetes con poca holgura (ej. eje de bomba), guías de precisión donde la pieza debe deslizar suavemente sin holgura excesiva.</p>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 1-2 horas</div>
+  <ol>
+    <li><b>Memoriza F1-F4</b> y el criterio de aceptación con incertidumbre (30 min).</li>
+    <li><b>Practica un caso de aceptación/rechazo</b> (30 min).</li>
+    <li><b>Practica un cálculo de ajuste H/g</b> (45 min).</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo</h2>
+
+<div class="box key">
+  <div class="box-title">Las 3 reglas que te salvan T7</div>
+  <ol>
+    <li><b>Tolerancia aceptable:</b> $T_{AS} = T_{ES} - U$, $T_{AI} = T_{EI} + U$. Si $\bar{x}\pm U$ no entra entera → rechazar.</li>
+    <li><b>Sistema ISO:</b> Mayúscula = agujero, minúscula = eje. H/h son las posiciones base (justo en cero).</li>
+    <li><b>Ajuste:</b> $J_{max} = D_{max,a} - d_{min,e}$. $J_{min} = D_{min,a} - d_{max,e}$. Si ambos > 0: juego. Si ambos < 0: aprieto. Si signo mixto: indeterminado.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 2</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Calcula $T_{ES}$ y $T_{EI}$ del plano →<br>
+    Calcula $T_{AS} = T_{ES} - U$, $T_{AI} = T_{EI} + U$ →<br>
+    Calcula intervalo de la medida $[\bar{x}-U, \bar{x}+U]$ →<br>
+    Si TODO el intervalo cabe en $[T_{EI}, T_{ES}]$: aceptar →<br>
+    Si parte queda fuera: rechazar (incluso por duda).
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Sistemas de Producción UPV/EHU · Tema 7 — Metrología<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T6 Fundición · Sistemas de Producción UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 6 — Fundición (Casting)</h1>
+  <div class="cover-sub">Sistemas de Producción · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>6 de 8 (Conformado)</div>
+    <div><b>Tipo</b>Cualitativo + Chvorinov</div>
+    <div><b>Patrones</b>5 tipos · 1 estrella</div>
+    <div><b>Fórmulas</b>8 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Clasificación de procesos (molde permanente vs no)</td><td class="center">Media</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Diseño del bebedero (Bernoulli + continuidad)</td><td class="center">Alta</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P3 ★</b></td><td><b>Ley de Chvorinov</b> — tiempo de solidificación y diseño de mazarota</td><td class="center"><b>MUY ALTA</b></td></tr>
+    <tr class="alt"><td class="center"><b>P4</b></td><td>Selección del proceso según pieza, material y serie</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P5</b></td><td>Defectos típicos y cómo evitarlos</td><td class="center">Media</td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T6 incluye casi siempre:</b> aplicación de la <b>Ley de Chvorinov</b> $T_{TS} = C_m\,(V/A)^n$ con $n = 2$ para diseñar la mazarota. Más una parte cualitativa sobre clasificación de procesos, defectos y aplicaciones.</p>
+  <p>La <b>regla clave</b>: la mazarota debe ser el último elemento en solidificar → $V/A$ de la mazarota > $V/A$ de la pieza. Maximizar $V/A$ es equivalente a minimizar la superficie de pérdida de calor.</p>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 8 fórmulas imprescindibles</h2>
+
+<h3>1 · Ley de Chvorinov (la fórmula estrella)</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F1 · ★ Tiempo de solidificación</div>
+    <div class="formula-body">$T_{TS} = C_m\cdot \left(\dfrac{V}{A}\right)^n$</div>
+    <div class="formula-note">Habitualmente $n = 2$. $C_m$ = constante del molde [min/cm²].</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F2 · ★ Condición de mazarota</div>
+    <div class="formula-body">$T_{TS,\text{mazarota}} > T_{TS,\text{pieza}}$</div>
+    <div class="formula-note">Equivale a $(V/A)_{maz}^2 > (V/A)_{pieza}^2$. La mazarota es el último elemento en solidificar.</div>
+  </div>
+</div>
+
+<h3>2 · Diseño del bebedero (Bernoulli)</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F3 · Velocidad de salida del bebedero</div>
+    <div class="formula-body">$v = \sqrt{2g\,h}$</div>
+    <div class="formula-note">$h$ = altura del fundido sobre la salida. Suponiendo flujo ideal.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Continuidad</div>
+    <div class="formula-body">$Q = A_1 v_1 = A_2 v_2$</div>
+    <div class="formula-note">Caudal constante. Si la sección se reduce, la velocidad aumenta.</div>
+  </div>
+</div>
+
+<h3>3 · Tiempo de llenado y módulo geométrico</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F5 · Tiempo de llenado</div>
+    <div class="formula-body">$t_{llenado} = \dfrac{V_{pieza}}{Q}$</div>
+    <div class="formula-note">Caudal $Q = A_{salida}\cdot v$.</div>
+  </div>
+  <div class="formula key">
+    <div class="formula-name">F6 · ★ Módulo de Chvorinov $M = V/A$</div>
+    <div class="formula-body">Plano grueso: $M = e/2$ (espesor/2)</div>
+    <div class="formula-body">Cilindro: $M = D/4$ (D=diámetro)</div>
+    <div class="formula-body">Esfera: $M = D/6$</div>
+    <div class="formula-note">Cuanto mayor $M$, más tarde solidifica. Memoriza estas tres geometrías.</div>
+  </div>
+</div>
+
+<h3>4 · Compactación y contracción</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F7 · Compactabilidad de la arena</div>
+    <div class="formula-body">$C = \dfrac{h_0 - h_f}{h_0}\cdot 100$ %</div>
+    <div class="formula-note">Reducción de altura al compactar. Compromiso permeabilidad vs resistencia.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Contracción del modelo</div>
+    <div class="formula-body">Modelo = pieza × (1 + ε_contracción)</div>
+    <div class="formula-note">$\varepsilon$ depende del material: Al ~1,3% · Acero ~2% · Fundición gris ~1%.</div>
+  </div>
+</div>
+
+<h2>📋 Clasificación de procesos de fundición</h2>
+
+<table>
+  <thead><tr><th>Tipo</th><th>Subtipo</th><th>Ejemplos</th><th class="center">Tf</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="4"><b>Molde NO permanente</b><br>(arena/desechable)</td><td>A1: Arena verde/seca</td><td>Bloques motor, tapas alcantarilla</td><td class="center">Alta</td></tr>
+    <tr class="alt"><td>A2: Modelo perdido (foam)</td><td>Carcasas grandes complejas</td><td class="center">Alta</td></tr>
+    <tr><td>A3: Cáscara (shell)</td><td>Piezas medianas precisas</td><td class="center">Alta</td></tr>
+    <tr class="alt"><td>A4: Cera perdida (investment)</td><td>Joyería, dental, álabes turbinas</td><td class="center">Alta</td></tr>
+    <tr><td rowspan="3"><b>Molde permanente</b><br>(metálico)</td><td>B1: Por gravedad / coquilla</td><td>Pistones automóvil, válvulas</td><td class="center">Baja</td></tr>
+    <tr class="alt"><td>B2: HP die casting (alta presión)</td><td>Carcasas, engranajes Al/Zn</td><td class="center">Baja</td></tr>
+    <tr><td>B3: LP die casting (baja presión)</td><td>Componentes Al automoción</td><td class="center">Baja</td></tr>
+  </tbody>
+</table>
+
+<div class="box info">
+  <div class="box-title">📋 Cuándo usar cada uno (regla de oro)</div>
+  <ul>
+    <li><b>Pieza única o serie pequeña:</b> arena verde (A1).</li>
+    <li><b>Pieza muy precisa, pequeña, alta serie:</b> cera perdida (A4) o cáscara (A3).</li>
+    <li><b>Aluminio en automoción serie alta:</b> die casting (B2/B3).</li>
+    <li><b>Fundiciones grandes:</b> arena (A1).</li>
+    <li><b>Pistones, válvulas:</b> coquilla (B1).</li>
+  </ul>
+</div>
+
+<h2 class="pb">🎯 Los 5 patrones de problema (recetas)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Clasificación de procesos</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "clasifica el proceso de fundición de un cuerpo de válvula de acero inoxidable / un pistón de aluminio".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Identifica si el molde es permanente o no</strong>Material con $T_f$ baja (Al, Zn) → permanente. Material con $T_f$ alta (acero, fundición) → no permanente (arena).</div></div>
+    <div class="paso"><div class="paso-body"><strong>Decide el subtipo</strong>Por geometría y serie: pequeño y preciso → cáscara o cera. Mediano y serie alta → die casting. Grande → arena.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Justifica</strong>Coste vs tolerancias vs cadencia.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Diseño del bebedero (Bernoulli + continuidad)</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "calcula la velocidad de salida del bebedero y el tiempo de llenado para una pieza de X volumen".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Velocidad en la salida del bebedero</strong>$v = \sqrt{2gh}$ con $h$ = altura del depósito sobre la salida.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Caudal de entrada</strong>$Q = A_{salida}\cdot v$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tiempo de llenado</strong>$t = V_{pieza}/Q$. Si es muy rápido → erosión del molde. Si muy lento → solidificación prematura.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Continuidad si hay reducciones</strong>$A_1 v_1 = A_2 v_2$. La velocidad aumenta donde la sección es menor.</div></div>
+  </div>
+</div>
+
+<!-- P3 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P3 ★</span>
+    <span class="pattern-name" style="color:#b00">Ley de Chvorinov — diseño de mazarota</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "diseña la mazarota cilíndrica para una pieza prismática de X mm. La constante $C_m = 4$ min/cm². ¿Cuánto tiempo tarda en solidificar?".</p>
+
+  <h4>Receta universal</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Calcula $V/A$ de la pieza</strong>Usa las geometrías típicas:<br>Plano grueso: $M = e/2$.<br>Cilindro: $M = D/4$.<br>Esfera: $M = D/6$.<br>Cubo $a^3$: $M = a/6$.<br>Para pieza compuesta: aproximar por la geometría dominante.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula $T_{TS,pieza} = C_m\cdot M_{pieza}^2$</strong>Tiempo de solidificación de la pieza.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Diseña la mazarota con $M_{maz} > M_{pieza}$</strong>Típicamente: factor de seguridad de 1,2 → $M_{maz} = 1{,}2\cdot M_{pieza}$.<br>Para mazarota cilíndrica $D\times D$ (relación 1:1): $M = D/4 \cdot \dfrac{V/A}{1}$. Hay que despejar $D$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Verifica</strong>Calcula $T_{TS,maz}$ con la geometría hallada y comprueba $T_{TS,maz} > T_{TS,pieza}$.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Geometrías típicas y su $V/A$ (con TODAS las caras expuestas)</div>
+    <table style="font-size:9.5pt">
+      <thead><tr><th>Forma</th><th class="center">$V$</th><th class="center">$A$ (sup. expuesta)</th><th class="center">$V/A$</th></tr></thead>
+      <tbody>
+        <tr><td>Plano grueso $L\times W\times e$</td><td class="center">$LWe$</td><td class="center">$2LW$ (cara superior+inferior, $e\ll L,W$)</td><td class="center">$e/2$</td></tr>
+        <tr class="alt"><td>Cubo $a^3$</td><td class="center">$a^3$</td><td class="center">$6a^2$</td><td class="center">$a/6$</td></tr>
+        <tr><td>Cilindro $D\times h$ (h=D)</td><td class="center">$\pi D^3/4$</td><td class="center">$1{,}5\pi D^2$ (lateral + 2 bases)</td><td class="center">$D/6$</td></tr>
+        <tr class="alt"><td>Esfera $D$</td><td class="center">$\pi D^3/6$</td><td class="center">$\pi D^2$</td><td class="center">$D/6$</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:9pt;color:#666;margin-top:1.5mm"><i>La esfera tiene la $V/A$ más alta para un volumen dado → solidifica más tarde. Esto es lo que se busca en mazarotas.</i></p>
+  </div>
+
+  <div class="box warn">
+    <div class="box-title">⚠ Mazarota CUBIERTA vs EXPUESTA — afecta a $V/A$</div>
+    <p>Cuando la mazarota tiene parte de su superficie tapada (típicamente la cara superior, cubierta con material aislante o arena), <b>esa cara NO cuenta como pérdida de calor</b>:</p>
+    <table style="font-size:9pt;margin-top:1mm">
+      <thead><tr><th>Mazarota cilíndrica $h=D$</th><th class="center">$V$</th><th class="center">$A_{efectiva}$</th><th class="center">$V/A$</th></tr></thead>
+      <tbody>
+        <tr><td><b>Expuesta</b> (todas las caras al aire)</td><td class="center">$\pi D^3/4$</td><td class="center">$1{,}5\pi D^2$</td><td class="center">$D/6$</td></tr>
+        <tr class="alt"><td><b>Cubierta arriba</b> (solo lateral + base inferior)</td><td class="center">$\pi D^3/4$</td><td class="center">$\pi D^2 + \pi D^2/4 = 5\pi D^2/4$</td><td class="center">$D/5$</td></tr>
+        <tr><td><b>Sobre la pieza</b> (solo cara lateral)</td><td class="center">$\pi D^3/4$</td><td class="center">$\pi D^2$</td><td class="center">$D/4$</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:1.5mm">Por eso cubrir la mazarota con material aislante <b>aumenta su $V/A$ efectivo</b> y hace que solidifique más tarde — más eficaz como reservorio.</p>
+  </div>
+</div>
+
+<!-- P4 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P4</span>
+    <span class="pattern-name">Selección de proceso por pieza/material/serie</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "selecciona el proceso de fundición más adecuado para fabricar 100.000 carcasas de Al en serie".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Material → temperatura de fusión → permanencia del molde</strong>$T_f$ baja (Al, Zn): permanente. $T_f$ alta (acero, fundición): arena.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tamaño y complejidad</strong>Pequeño y complejo → cera perdida. Grande → arena. Mediano y producción seriada → die casting.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Serie</strong>Pieza única → arena verde. Serie pequeña → cáscara. Serie alta → die casting o cera.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Tolerancias y acabado</strong>Tolerancias estrictas (IT8 o mejor) y Ra<3 µm → cera perdida o die casting. Tolerancias amplias → arena.</div></div>
+  </div>
+</div>
+
+<!-- P5 -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num">P5</span>
+    <span class="pattern-name">Defectos típicos y cómo evitarlos</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <table>
+    <thead><tr><th>Defecto</th><th>Causa</th><th>Solución</th></tr></thead>
+    <tbody>
+      <tr><td><b>Rechupe / cavidad de contracción</b></td><td>Solidificación sin alimentación suficiente</td><td>Mazarota correctamente dimensionada</td></tr>
+      <tr class="alt"><td><b>Porosidad de gas</b></td><td>Gases atrapados</td><td>Permeabilidad de la arena, evacuar gases</td></tr>
+      <tr><td><b>Inclusiones</b></td><td>Trozos de molde, escoria</td><td>Filtros en el sistema de alimentación</td></tr>
+      <tr class="alt"><td><b>Junta fría (cold shut)</b></td><td>Dos frentes de fluido se encuentran ya solidificados</td><td>Aumentar T° de vertido, mejorar diseño canales</td></tr>
+      <tr><td><b>Defectos de superficie (escamado)</b></td><td>Rotura de molde, expansión arena</td><td>Mejorar resistencia en verde, baja humedad</td></tr>
+      <tr class="alt"><td><b>Grietas (crack)</b></td><td>Contracción restringida</td><td>Diseño con radios suaves, sin esquinas vivas</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 8 errores en T6</div>
+  <ol>
+    <li><b>Aplicar $n=1$ en Chvorinov.</b> SIEMPRE $n=2$ a menos que el enunciado especifique otro.</li>
+    <li><b>Confundir mazarota con bebedero.</b> Bebedero = entrada del fundido. Mazarota = depósito que compensa la contracción durante la solidificación.</li>
+    <li><b>Olvidar contar la cara abierta de la mazarota cilíndrica.</b> La cara superior de la mazarota está expuesta al aire del molde → SE descuenta del área de pérdida de calor (varía según la fuente; en este curso típicamente: la cara superior NO cuenta porque la mazarota está cubierta o protegida).</li>
+    <li><b>Aplicar Bernoulli con altura cero.</b> $v = \sqrt{2gh}$ requiere $h > 0$ (el fundido cae por gravedad).</li>
+    <li><b>Confundir die casting con coquilla.</b> Die casting = inyección a presión (alta o baja). Coquilla = vertido por gravedad en molde metálico.</li>
+    <li><b>Asumir que más caliente es mejor.</b> Vertido a temperatura excesiva → más contracción, más porosidad de gas, mayor desgaste del molde.</li>
+    <li><b>No considerar la contracción al diseñar el modelo.</b> Modelo = pieza × (1+contracción) — el modelo es ligeramente mayor que la pieza final.</li>
+    <li><b>Confundir mazarota con macho.</b> Macho = pieza interna que crea cavidades. Mazarota = depósito externo que compensa contracción.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (60 minutos)</h2>
+
+<h3>Pregunta 1 (15 min · Patrón P1+P4)</h3>
+<div class="box">
+  <p>Para fabricar las siguientes piezas, indica el proceso de fundición más adecuado y justifícalo:</p>
+  <ol>
+    <li>Pistón de motor de aluminio en serie de 1 millón/año.</li>
+    <li>Carcasa de turbina de acero inoxidable, geometría compleja, prototipo único.</li>
+    <li>Engranaje de Zn de 50 mm para juguete, serie de 100.000.</li>
+    <li>Tapa de alcantarilla de fundición gris.</li>
+  </ol>
+</div>
+
+<h3>Pregunta 2 (15 min · Patrón P2)</h3>
+<div class="box">
+  <p>Un bebedero tiene altura $h = 250$ mm. La salida tiene una sección rectangular de 20×30 mm. Calcula:</p>
+  <ol>
+    <li>Velocidad de salida del fundido.</li>
+    <li>Caudal volumétrico.</li>
+    <li>Tiempo de llenado para una pieza de $V = 2$ litros.</li>
+  </ol>
+</div>
+
+<h3 class="pb">Pregunta 3 (30 min · Patrón P3 ★)</h3>
+<div class="box exam">
+  <p>Una pieza prismática de fundición tiene dimensiones $200\times 100\times 30$ mm. La constante del molde es $C_m = 4{,}5$ min/cm² (para arena verde, fundición de Al).</p>
+  <ol>
+    <li>Calcula el módulo $M_{pieza} = V/A$ de la pieza (considera todas las caras como pérdida de calor).</li>
+    <li>Calcula el tiempo de solidificación de la pieza.</li>
+    <li>Diseña una mazarota cilíndrica con relación altura/diámetro $h/D = 1$ que solidifique después de la pieza con un factor 1,25.</li>
+    <li>Verifica el tiempo de solidificación de la mazarota.</li>
+  </ol>
+</div>
+
+<h2 class="pb">✅ Soluciones del simulacro</h2>
+
+<h3>Solución Pregunta 1</h3>
+<ol>
+  <li><b>Pistón Al, 1M/año:</b> Die casting de alta presión (B2). Material baja Tf, serie alta, geometría regular.</li>
+  <li><b>Carcasa Inox compleja, prototipo único:</b> Cera perdida (A4). Acepta geometrías complejas, no necesita molde caro.</li>
+  <li><b>Engranaje Zn 100.000:</b> Die casting alta presión (B2). Zn tiene Tf baja, alta cadencia.</li>
+  <li><b>Tapa alcantarilla:</b> Arena verde (A1). Material Tf alta (fundición), pieza grande, serie media.</li>
+</ol>
+
+<h3>Solución Pregunta 2</h3>
+
+<h4>Velocidad de salida</h4>
+<p>$v = \sqrt{2g\,h} = \sqrt{2\cdot 9{,}8\cdot 0{,}25} = \sqrt{4{,}9} = 2{,}21$ m/s.</p>
+<div class="box key" style="text-align:center">$\boxed{v = 2{,}21\ \text{m/s}}$</div>
+
+<h4>Caudal</h4>
+<p>$A = 20\cdot 30 = 600$ mm² $= 0{,}0006$ m². $Q = A\cdot v = 0{,}0006\cdot 2{,}21 = 0{,}00133$ m³/s = 1,33 l/s.</p>
+<div class="box key" style="text-align:center">$\boxed{Q = 1{,}33\ \text{l/s}}$</div>
+
+<h4>Tiempo de llenado</h4>
+<p>$t = V/Q = 2/1{,}33 = 1{,}5$ s.</p>
+<div class="box key" style="text-align:center">$\boxed{t = 1{,}5\ \text{s}}$</div>
+
+<h3 class="pb">Solución Pregunta 3 (★)</h3>
+
+<h4>Apartado 1 — Módulo de la pieza</h4>
+<p>$V = 200\cdot 100\cdot 30 = 600\,000$ mm³ $= 600$ cm³.</p>
+<p>Área = $2\cdot(200\cdot 100 + 200\cdot 30 + 100\cdot 30) = 2\cdot(20000 + 6000 + 3000) = 58000$ mm² $= 580$ cm².</p>
+<p>$M_{pieza} = V/A = 600/580 = 1{,}034$ cm.</p>
+<div class="box key" style="text-align:center">$\boxed{M_{pieza} = 1{,}03\ \text{cm}}$</div>
+
+<h4>Apartado 2 — Tiempo de solidificación</h4>
+<p>$T_{TS,pieza} = C_m\cdot M^2 = 4{,}5\cdot 1{,}034^2 = 4{,}5\cdot 1{,}07 = 4{,}81$ min.</p>
+<div class="box key" style="text-align:center">$\boxed{T_{TS,pieza} \approx 4{,}81\ \text{min}}$</div>
+
+<h4>Apartado 3 — Diseño de la mazarota</h4>
+<p>Factor 1,25: $M_{maz} = 1{,}25\cdot 1{,}034 = 1{,}293$ cm.</p>
+<p>Mazarota cilíndrica con $h = D$ y solo cara superior expuesta al aire (no contribuye al área de pérdida — supuesto típico):</p>
+<p>$V_{maz} = \pi D^2 h/4 = \pi D^3/4$.<br>
+$A_{maz}$ (lateral + base inferior, ya que la superior es la cara expuesta no cuenta como pérdida): $A = \pi D h + \pi D^2/4 = \pi D^2 + \pi D^2/4 = 5\pi D^2/4$.</p>
+<p>$M_{maz} = V/A = (\pi D^3/4)/(5\pi D^2/4) = D/5$.</p>
+<p>Igualando: $D/5 = 1{,}293$ → $D = 6{,}47$ cm.</p>
+<p>Como $h = D$: altura mazarota = 6,47 cm. Volumen: $V_{maz} = \pi\cdot 6{,}47^3/4 = 213$ cm³.</p>
+<div class="box key" style="text-align:center">$\boxed{D_{maz} = h_{maz} = 6{,}47\ \text{cm},\ V_{maz} \approx 213\ \text{cm}^3}$</div>
+
+<h4>Apartado 4 — Verificación</h4>
+<p>$T_{TS,maz} = C_m\cdot M_{maz}^2 = 4{,}5\cdot 1{,}293^2 = 4{,}5\cdot 1{,}672 = 7{,}52$ min.</p>
+<p>Comparación: $T_{TS,maz} = 7{,}52 > T_{TS,pieza} = 4{,}81$ ✓.</p>
+<p>Ratio: $7{,}52/4{,}81 = 1{,}56$. La mazarota solidificará 1,56 veces más tarde que la pieza, suficiente margen.</p>
+<div class="box key" style="text-align:center">$\boxed{T_{TS,maz} = 7{,}52\ \text{min} > T_{TS,pieza}\ \text{✓}}$</div>
+
+<div class="box exam">
+  <div class="box-title">Lo que tienes que llevarte</div>
+  <p>El procedimiento de Chvorinov es <b>mecánico</b>: $V/A$ pieza → $T$ pieza → $V/A$ mazarota más alto → diseño geométrico → verificar.</p>
+  <p>Las geometrías típicas de mazarota (cilíndrica $h=D$ con solo cara superior expuesta) tienen $V/A = D/5$. Memoriza este factor.</p>
+</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2 horas</div>
+  <ol>
+    <li><b>Memoriza Chvorinov + condición de mazarota</b> (20 min).</li>
+    <li><b>Memoriza geometrías de $V/A$ típicas</b> (plano, cilindro, esfera, cubo) (15 min).</li>
+    <li><b>Practica un cálculo completo de mazarota</b> (45 min).</li>
+    <li><b>Repasa la clasificación A/B y los procesos</b> (40 min).</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo</h2>
+
+<div class="box key">
+  <div class="box-title">Las 3 reglas que te salvan T6</div>
+  <ol>
+    <li><b>Chvorinov:</b> $T_{TS} = C_m(V/A)^2$. Mazarota con mayor $V/A$ que la pieza.</li>
+    <li><b>Bernoulli al bebedero:</b> $v = \sqrt{2gh}$, $Q = Av$, $t = V/Q$.</li>
+    <li><b>Selección proceso:</b> $T_f$ baja → permanente. Serie alta → die casting. Pieza compleja+precisa → cera perdida.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 3 (Chvorinov)</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Calcula $V/A$ de la pieza →<br>
+    Calcula $T_{TS,pieza}$ →<br>
+    Diseña mazarota con $M_{maz} > 1{,}2\cdot M_{pieza}$ →<br>
+    Despeja dimensiones (típicamente cilindro $h=D$, $M=D/5$) →<br>
+    Verifica $T_{TS,maz} > T_{TS,pieza}$.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Sistemas de Producción UPV/EHU · Tema 6 — Fundición<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>

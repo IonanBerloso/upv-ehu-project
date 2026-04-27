@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Aprobado · T3 Taladrado · Sistemas de Producción UPV/EHU</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#fff;color:#111;font-family:'Georgia','Times New Roman',serif;font-size:10.5pt;line-height:1.45}
+  body{padding:0;max-width:190mm;margin:0 auto}
+  h1{font-family:'Helvetica','Arial',sans-serif;font-size:22pt;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:4mm;color:#0a0a0a}
+  h2{font-family:'Helvetica','Arial',sans-serif;font-size:14pt;font-weight:700;margin:6mm 0 3mm;border-bottom:1.5px solid #111;padding-bottom:1.5mm;page-break-after:avoid;color:#0a0a0a}
+  h3{font-family:'Helvetica','Arial',sans-serif;font-size:11.5pt;font-weight:700;margin:4mm 0 1.5mm;color:#111;page-break-after:avoid}
+  h4{font-family:'Helvetica','Arial',sans-serif;font-size:10pt;font-weight:700;margin:2.5mm 0 1mm;color:#222;text-transform:uppercase;letter-spacing:.04em;page-break-after:avoid}
+  p{margin:1.5mm 0} ul,ol{margin:1.5mm 0 1.5mm 6mm} li{margin-bottom:.8mm}
+  strong{font-weight:700;color:#000} em{font-style:italic}
+  .cover{padding:0 0 6mm;border-bottom:3px double #111;margin-bottom:6mm}
+  .cover-tag{font-family:'Helvetica';font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:#666;margin-bottom:2mm}
+  .cover-sub{font-family:'Helvetica';font-size:11pt;color:#333;margin-top:2mm}
+  .cover-meta{display:flex;gap:14mm;margin-top:5mm;font-size:9.5pt;color:#444}
+  .cover-meta b{display:block;font-size:8pt;color:#888;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5mm}
+  .box{border:1px solid #888;border-radius:2mm;padding:3mm 4mm;margin:2.5mm 0;background:#fafafa;page-break-inside:avoid}
+  .box.key{border:2px solid #111;background:#fff}
+  .box.warn{border-left:4px solid #b00;background:#fff7f7;padding-left:3.5mm}
+  .box.tip{border-left:4px solid #0a6;background:#f5fbf8;padding-left:3.5mm}
+  .box.exam{border:2px solid #b00;background:#fff5f5}
+  .box.info{border-left:4px solid #06b;background:#f5f9fd;padding-left:3.5mm}
+  .box-title{font-family:'Helvetica';font-weight:700;font-size:9.5pt;text-transform:uppercase;letter-spacing:.06em;color:#222;margin-bottom:1.5mm}
+  .box.warn .box-title{color:#b00} .box.exam .box-title{color:#b00} .box.tip .box-title{color:#0a6} .box.info .box-title{color:#06b}
+  table{border-collapse:collapse;width:100%;margin:2.5mm 0;font-size:9.5pt;page-break-inside:avoid}
+  th,td{border:1px solid #888;padding:1.5mm 2.5mm;text-align:left;vertical-align:top}
+  th{background:#222;color:#fff;font-family:'Helvetica';font-weight:600;font-size:9pt;letter-spacing:.04em}
+  td.center,th.center{text-align:center} tr.alt td{background:#f4f4f4}
+  .formula-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin:2mm 0}
+  .formula{border:1px solid #aaa;border-radius:1.5mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid}
+  .formula-name{font-family:'Helvetica';font-size:8.5pt;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:1mm}
+  .formula-body{font-size:11pt;text-align:center;padding:.5mm 0}
+  .formula-note{font-size:8.5pt;color:#666;margin-top:1mm;font-style:italic}
+  .pasos{counter-reset:paso;margin:2mm 0}
+  .paso{display:grid;grid-template-columns:8mm 1fr;gap:2mm;margin-bottom:2mm;page-break-inside:avoid}
+  .paso::before{counter-increment:paso;content:counter(paso);background:#111;color:#fff;width:6mm;height:6mm;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Helvetica';font-size:9pt;font-weight:700}
+  .paso-body{padding-top:.5mm} .paso-body strong{display:block;margin-bottom:.5mm;font-family:'Helvetica';font-size:10pt}
+  .pattern{margin:5mm 0;page-break-inside:avoid}
+  .pattern-head{display:flex;align-items:baseline;gap:3mm;border-left:5px solid #111;padding:1mm 0 1mm 3mm;margin-bottom:2mm}
+  .pattern-num{font-family:'Helvetica';font-size:14pt;font-weight:800;color:#111}
+  .pattern-name{font-family:'Helvetica';font-size:11.5pt;font-weight:700;color:#111}
+  .pattern-freq{font-family:'Helvetica';font-size:8pt;color:#fff;background:#888;padding:.5mm 2mm;border-radius:1mm;letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+  .pattern-freq.alta{background:#b00} .pattern-freq.muy-alta{background:#700} .pattern-freq.media{background:#c80} .pattern-freq.baja{background:#888}
+  .pb{page-break-before:always} .nbr{page-break-inside:avoid}
+  @media print { body{font-size:10pt} a{color:#000;text-decoration:none} .no-print{display:none !important} }
+  .print-hint{position:fixed;top:8px;right:8px;background:#111;color:#fff;padding:6px 12px;font-family:'Helvetica';font-size:9pt;border-radius:3px;z-index:1000;cursor:pointer}
+  .sim-blank{border:1px dashed #aaa;height:60mm;border-radius:2mm;margin:2mm 0;background:repeating-linear-gradient(0deg,transparent 0 7mm,#eee 7mm 7.2mm)}
+</style>
+</head>
+<body>
+
+<div class="print-hint no-print" onclick="window.print()">📄 Imprimir / Guardar como PDF</div>
+
+<section class="cover">
+  <div class="cover-tag">Guía mínima para aprobar · Examen tipo</div>
+  <h1>Tema 3 — Taladrado</h1>
+  <div class="cover-sub">Sistemas de Producción · Ingeniería Industrial · UPV/EHU</div>
+  <div class="cover-meta">
+    <div><b>Tema</b>3 de 8 (Mecanizado)</div>
+    <div><b>Ejercicios</b>6 totales · 2 nivel examen</div>
+    <div><b>Patrones</b>4 tipos · 1 patrón estrella</div>
+    <div><b>Fórmulas core</b>8 imprescindibles</div>
+  </div>
+</section>
+
+<h2>📊 Auditoría: ¿qué entra y qué pesa más?</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">Patrón</th><th>Tipo de problema</th><th class="center" style="width:18%">Frec. examen</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><b>P1</b></td><td>Taladrado simple — vc, N, vf, tc, Fc, Pc</td><td class="center">Base</td></tr>
+    <tr class="alt"><td class="center"><b>P2</b></td><td>Roscado con macho — diámetro D₀ del taladro previo</td><td class="center">Alta</td></tr>
+    <tr><td class="center"><b>P3</b></td><td>Taladrado profundo (L > 3D) — peck drilling</td><td class="center">Media</td></tr>
+    <tr style="background:#b00;color:#fff"><td class="center"><b>P4 ★</b></td><td><b>Pieza con múltiples agujeros</b> (taladrado + escariado + avellanado + roscado)</td><td class="center"><b>MUY ALTA</b></td></tr>
+  </tbody>
+</table>
+
+<div class="box exam">
+  <div class="box-title">⭐ Lo que tienes que saber con los ojos cerrados</div>
+  <p><b>El examen real de T3 es:</b> una pieza con varios agujeros que requieren operaciones combinadas. Ej: 4 agujeros M8 (taladro D₀ + roscado), 2 agujeros pasantes con avellanado, 1 agujero ciego escariado. Calcular parámetros de cada operación y tiempos.</p>
+  <p>El <b>punto más importante</b> es la <b>corrección de longitud de la punta</b> en el tiempo de taladrado: $L_{herr} = D/(2\tan\kappa_r)$ con $\kappa_r$ semiángulo de punta.</p>
+</div>
+
+<div class="pb"></div>
+
+<h2>🔑 Las 8 fórmulas que SÍ o SÍ debes saber</h2>
+
+<h3>1 · Parámetros cinemáticos</h3>
+<div class="formula-grid">
+  <div class="formula">
+    <div class="formula-name">F1 · vc, N (igual que torneado)</div>
+    <div class="formula-body">$v_c = \dfrac{\pi D N}{1000}$ m/min</div>
+    <div class="formula-body">$N = \dfrac{1000\,v_c}{\pi D}$ rpm</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F2 · vf, tc</div>
+    <div class="formula-body">$v_f = f\cdot N$ mm/min</div>
+    <div class="formula-body">$t_c = \dfrac{L_w + L_{herr}}{v_f}$ min</div>
+    <div class="formula-note">$L_{herr}$ = corrección por punta de la broca.</div>
+  </div>
+</div>
+
+<h3>2 · Geometría de la broca</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F3 · ★ Longitud de la punta de broca</div>
+    <div class="formula-body">$L_{herr} = \dfrac{D/2}{\tan\kappa_r} = \dfrac{D}{2\tan\kappa_r}$</div>
+    <div class="formula-note">$\kappa_r$ = semiángulo de punta. Para HSS (118°): $\kappa_r = 59°$, $\tan = 1{,}664$ → $L_{herr} \approx 0{,}30\,D$.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F4 · Sección de viruta por filo</div>
+    <div class="formula-body">$S_c = \dfrac{f\cdot D}{4}$ mm² por filo</div>
+    <div class="formula-note">La broca tiene 2 filos → la sección total instantánea es $f\cdot D/2$.</div>
+  </div>
+</div>
+
+<h3>3 · Fuerza y potencia</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F5 · ★ Fuerza de corte (2 filos)</div>
+    <div class="formula-body">$F_c = \dfrac{f\cdot D\cdot p_s}{2}$ N</div>
+    <div class="formula-note">Cada filo aporta $S_c\cdot p_s$ y hay 2 filos.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F6 · Potencia de corte</div>
+    <div class="formula-body">$P_c = \dfrac{F_c\cdot v_c}{60\,000}$ kW</div>
+    <div class="formula-note">Verificar $P_c \le P_{max}\eta$. Hay también componente axial (empuje) — no contribuye a potencia rotacional pero requiere fuerza de avance.</div>
+  </div>
+</div>
+
+<h3>4 · Roscado con macho</h3>
+<div class="formula-grid">
+  <div class="formula key">
+    <div class="formula-name">F7 · ★ Diámetro del taladro previo</div>
+    <div class="formula-body">$D_0 = M - p$ mm</div>
+    <div class="formula-note">$M$ = diámetro nominal rosca, $p$ = paso. Ej. M10×1,5 → $D_0 = 8{,}5$ mm.</div>
+  </div>
+  <div class="formula">
+    <div class="formula-name">F8 · Velocidad de avance en roscado</div>
+    <div class="formula-body">$v_f = p\cdot N$ mm/min</div>
+    <div class="formula-note">El avance está sincronizado con el giro: por cada vuelta avanza un paso.</div>
+  </div>
+</div>
+
+<h2>📋 Operaciones de taladrado</h2>
+
+<table>
+  <thead><tr><th>Operación</th><th>Herramienta</th><th>Notas</th></tr></thead>
+  <tbody>
+    <tr><td><b>Taladrado</b> (drilling)</td><td>Broca helicoidal</td><td>Crear agujero desde sólido. 2 filos.</td></tr>
+    <tr class="alt"><td><b>Escariado</b> (reaming)</td><td>Escariador (6-8 filos)</td><td>Mejora precisión (IT6-7) y acabado (Ra<1,6 µm). Stock de 0,1-0,3 mm.</td></tr>
+    <tr><td><b>Mandrinado</b> (boring)</td><td>Barra de mandrinar</td><td>Ampliar agujero existente con alta precisión (IT5-6).</td></tr>
+    <tr class="alt"><td><b>Roscado con macho</b> (tapping)</td><td>Macho de roscar</td><td>Genera rosca interior. $D_0 = M - p$. Sincroniza $v_f = p\cdot N$.</td></tr>
+    <tr><td><b>Avellanado</b> (countersinking)</td><td>Avellanador cónico (90° o 120°)</td><td>Cono de entrada para tornillos cabeza plana / Allen.</td></tr>
+    <tr class="alt"><td><b>Taladrado profundo</b> (L > 3D)</td><td>Brocas BTA / gun drill</td><td>Lubricación interna. Para L > 5D, peck drilling (G83).</td></tr>
+  </tbody>
+</table>
+
+<h3>📋 Tabla de roscado métrico (memorizar las más comunes)</h3>
+<table>
+  <thead><tr><th class="center">Rosca</th><th class="center">Paso (mm)</th><th class="center">$D_0$ taladro (mm)</th></tr></thead>
+  <tbody>
+    <tr><td class="center">M3</td><td class="center">0,5</td><td class="center">2,5</td></tr>
+    <tr class="alt"><td class="center">M4</td><td class="center">0,7</td><td class="center">3,3</td></tr>
+    <tr><td class="center">M5</td><td class="center">0,8</td><td class="center">4,2</td></tr>
+    <tr class="alt"><td class="center">M6</td><td class="center">1,0</td><td class="center">5,0</td></tr>
+    <tr><td class="center">M8</td><td class="center">1,25</td><td class="center">6,75</td></tr>
+    <tr class="alt"><td class="center">M10</td><td class="center">1,5</td><td class="center">8,5</td></tr>
+    <tr><td class="center">M12</td><td class="center">1,75</td><td class="center">10,25</td></tr>
+    <tr class="alt"><td class="center">M16</td><td class="center">2,0</td><td class="center">14,0</td></tr>
+    <tr><td class="center">M20</td><td class="center">2,5</td><td class="center">17,5</td></tr>
+    <tr class="alt"><td class="center">M24</td><td class="center">3,0</td><td class="center">21,0</td></tr>
+  </tbody>
+</table>
+
+<h2 class="pb">🎯 Los 4 patrones de problema (recetas paso a paso)</h2>
+
+<!-- P1 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P1</span>
+    <span class="pattern-name">Taladrado simple</span>
+    <span class="pattern-freq baja">Base</span>
+  </div>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>$N, v_f$</strong>$N = 1000\,v_c/(\pi D)$. $v_f = f\cdot N$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$L_{herr}$ — corrección de la punta</strong>Para HSS 118°: $L_{herr} \approx 0{,}30\,D$. Para CW 140°: $L_{herr} \approx 0{,}18\,D$. Solo se aplica en agujeros pasantes.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$t_c$</strong>$t_c = (L_w + L_{herr})/v_f$ para pasante. $t_c = L_{ciego}/v_f$ para agujero ciego.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$F_c, P_c$</strong>$F_c = f\cdot D\cdot p_s/2$. $P_c = F_c\cdot v_c/60000$. Verifica $P_c \le P_{max}\eta$.</div></div>
+  </div>
+</div>
+
+<!-- P2 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P2</span>
+    <span class="pattern-name">Roscado con macho</span>
+    <span class="pattern-freq alta">Frec. alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> "haz una rosca M8×1,25 en una pieza de 20 mm de espesor".</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Taladro previo</strong>$D_0 = M - p$. Para M8×1,25 → $D_0 = 6{,}75$ mm.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula tiempo del taladro previo</strong>Como en P1, con la broca de $D_0$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula roscado</strong>$N$ típicamente más bajo (vc=10-30 m/min para roscado). $v_f = p\cdot N$ (sincronizado). $t_c = L_{rosca}/v_f$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Considera tiempo de retorno</strong>El macho debe rotar en sentido contrario para salir → tiempo casi se duplica si el ciclo lo incluye.</div></div>
+  </div>
+  <div class="box tip">
+    <div class="box-title">Macho de corte vs deformación</div>
+    <p>Macho de <b>corte</b>: genera viruta, necesita ranurado. Bueno para fundición y aceros.<br>
+    Macho de <b>deformación plástica</b>: no genera viruta, deforma el material. Rosca más resistente. Solo Al y aceros blandos. $D_0$ ligeramente mayor.</p>
+  </div>
+</div>
+
+<!-- P3 -->
+<div class="pattern">
+  <div class="pattern-head">
+    <span class="pattern-num">P3</span>
+    <span class="pattern-name">Taladrado profundo (L > 3D)</span>
+    <span class="pattern-freq media">Frec. media</span>
+  </div>
+  <p><b>Cuándo aparece:</b> agujero con $L > 3D$. Hay que adaptar el ciclo.</p>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>$L > 3D$: lubricación interna</strong>A través del husillo o broca (BTA, gundrilling).</div></div>
+    <div class="paso"><div class="paso-body"><strong>$L > 5D$: peck drilling (ciclo G83)</strong>Reducir avance 30-50%. Retroceder periódicamente para romper viruta y enfriar. El tiempo aumenta significativamente.</div></div>
+    <div class="paso"><div class="paso-body"><strong>$L > 10D$: proceso especializado</strong>BTA o gundrilling — equipo dedicado.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Calcula tiempo efectivo</strong>$t_{efectivo} \approx t_{base}\cdot k_{peck}$ con $k_{peck} \approx 1{,}5$-$2$ por las paradas y retornos.</div></div>
+  </div>
+</div>
+
+<!-- P4 ★ -->
+<div class="pattern nbr">
+  <div class="pattern-head">
+    <span class="pattern-num" style="color:#b00">P4 ★</span>
+    <span class="pattern-name" style="color:#b00">Pieza con múltiples agujeros (PATRÓN ESTRELLA)</span>
+    <span class="pattern-freq muy-alta">Muy alta</span>
+  </div>
+  <p><b>Cuándo aparece:</b> placa o pieza con varios agujeros. Cada uno puede requerir taladro + escariado o taladro + roscado.</p>
+
+  <h4>Receta universal (Patrón 4)</h4>
+  <div class="pasos">
+    <div class="paso"><div class="paso-body"><strong>Lista los agujeros</strong>Diámetro, profundidad, tipo (pasante/ciego), tolerancia, acabado, rosca, avellanado.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para cada agujero, cadena de operaciones</strong>Pasante M8: taladro D=6,75 + roscado M8.<br>Pasante con tolerancia H7: taladro D-0,2 + escariado a D.<br>Pasante con cabeza Allen: taladro + avellanado 120°.<br>Profundo L=4D: taladro con peck drilling.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Para cada operación, calcula parámetros (P1)</strong>Tabla resumen como en T1: $D, L_w, f, v_c, N, v_f, t_c, F_c, P_c$.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Suma tiempos</strong>$t_{total} = \sum t_c + (n-1)\cdot t_{cambio}$ con $n$ = nº de cambios de herramienta.</div></div>
+    <div class="paso"><div class="paso-body"><strong>Optimiza el orden</strong>Agrupa agujeros del mismo $D$ para minimizar cambios de herramienta. Ej: primero todos los D=8,5 (taladros previos), después todos los machos M10.</div></div>
+  </div>
+
+  <div class="box exam">
+    <div class="box-title">⭐ Tabla resumen de agujeros</div>
+    <table style="font-size:8.5pt">
+      <thead><tr><th>Op</th><th>Tipo</th><th>$D$</th><th>$L_w$</th><th>$f$</th><th>$v_c$</th><th>$N$</th><th>$t_c$</th><th>$P_c$</th></tr></thead>
+      <tbody>
+        <tr><td>1a</td><td>Taladro M10 (D=8,5)</td><td>8,5</td><td>20</td><td>0,15</td><td>30</td><td>1124</td><td>~9 s</td><td>~0,3 kW</td></tr>
+        <tr class="alt"><td>1b</td><td>Roscado M10 (paso 1,5)</td><td>10</td><td>20</td><td>1,5</td><td>10</td><td>318</td><td>~8 s + ret.</td><td>~0,1 kW</td></tr>
+        <tr><td>2</td><td>Avellanado 90°</td><td>15</td><td>3</td><td>0,1</td><td>20</td><td>424</td><td>~4 s</td><td>~0,2 kW</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<h2 class="pb">⚠️ Errores típicos que bajan nota</h2>
+
+<div class="box warn">
+  <div class="box-title">Top 8 errores en T3</div>
+  <ol>
+    <li><b>Olvidar $L_{herr}$ en agujeros pasantes.</b> Aumenta el tiempo $t_c$ porque la broca tiene que salir completamente.</li>
+    <li><b>Confundir $\kappa_r$ con $2\kappa_r$.</b> El ángulo "118° de la broca HSS" es el ángulo total de la punta ($2\kappa_r$). El semiángulo es 59°.</li>
+    <li><b>Aplicar $D_0 = M - p$ con la rosca confundida.</b> Para M10×1,5 (paso fino del estándar) $D_0 = 8{,}5$. Para M10×1,25 (paso especial) $D_0 = 8{,}75$.</li>
+    <li><b>Olvidar la sincronización en roscado.</b> $v_f$ está fijado por $p$ y $N$, NO se puede elegir libremente.</li>
+    <li><b>No considerar lubricación en agujeros profundos.</b> $L > 3D$ exige lubricación interna o ciclo de retroceso.</li>
+    <li><b>Aplicar $v_c$ de taladrado universal a roscado.</b> Roscado va a $v_c$ MUY menor (10-30 m/min) por el alto stress en el macho.</li>
+    <li><b>Confundir $F_c$ con fuerza axial.</b> $F_c$ tangencial (la que crea el par); la axial (empuje) es independiente y depende de la geometría del labio transversal.</li>
+    <li><b>En agujeros con tolerancia: olvidar el escariado.</b> Para IT6-7 hay que dejar 0,1-0,3 mm para el escariador. La broca no lo da por sí sola.</li>
+  </ol>
+</div>
+
+<h2 class="pb">🧪 Mini-simulacro tipo examen (60 minutos · sin apuntes)</h2>
+
+<h3>Problema 1 (20 min · Patrón P1+P2)</h3>
+<div class="box">
+  <p>Pieza de acero F-114 de 25 mm de espesor. Hay que hacer una rosca M12×1,75. Datos:</p>
+  <ul>
+    <li>Broca HSS para taladro previo: $\kappa_r = 59°$ (semiángulo, broca 118° total).</li>
+    <li>Avance recomendado en taladro: $f = 0{,}2$ mm/rev.</li>
+    <li>Velocidades de corte: taladrado 30 m/min, roscado 10 m/min.</li>
+    <li>$p_s = 2400\cdot h^{-0{,}24}$ N/mm².</li>
+  </ul>
+  <ol>
+    <li>Calcula el diámetro $D_0$ del taladro previo.</li>
+    <li>Calcula el tiempo del taladro previo (incluyendo $L_{herr}$).</li>
+    <li>Calcula el tiempo del roscado.</li>
+    <li>Tiempo total y potencias.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h3 class="pb">Problema 2 (40 min · Patrón P4 ★)</h3>
+<div class="box exam">
+  <p>Una placa de aluminio (200×100×15 mm) tiene 8 agujeros: 4 roscados M6×1 (con avellanado 90° de 8 mm de diámetro), 4 pasantes de Ø10 H7. Datos: $v_c$ taladrado Al = 80 m/min, $v_c$ roscado = 20 m/min, $v_c$ avellanado = 50 m/min, $v_c$ escariado = 30 m/min. $f$ todas: 0,15 mm/rev. Tiempo de cambio de herramienta = 8 s.</p>
+  <ol>
+    <li>Diseña el orden óptimo de operaciones (minimiza cambios).</li>
+    <li>Calcula los tiempos de cada operación.</li>
+    <li>Tiempo total.</li>
+  </ol>
+</div>
+<div class="sim-blank"></div>
+
+<h2 class="pb">✅ Soluciones del mini-simulacro</h2>
+
+<h3>Solución Problema 1</h3>
+
+<h4>Apartado 1 — $D_0$</h4>
+<p>$D_0 = M - p = 12 - 1{,}75 = 10{,}25$ mm.</p>
+<div class="box key" style="text-align:center">$\boxed{D_0 = 10{,}25\ \text{mm}}$</div>
+
+<h4>Apartado 2 — Taladro previo</h4>
+<p>$N = 1000\cdot 30/(\pi\cdot 10{,}25) = 932$ rpm.<br>
+$v_f = 0{,}2\cdot 932 = 186$ mm/min.<br>
+$L_{herr} = 10{,}25/(2\tan 59°) = 10{,}25/3{,}33 = 3{,}08$ mm.<br>
+$L_{total} = 25 + 3{,}08 = 28{,}08$ mm.<br>
+$t_{taladro} = 28{,}08/186 = 0{,}151$ min = 9 s.</p>
+
+<p>$h = f = 0{,}2$ (taladro), $p_s = 2400\cdot 0{,}2^{-0{,}24} = 3545$ N/mm². $F_c = 0{,}2\cdot 10{,}25\cdot 3545/2 = 3633$ N. $P_c = 3633\cdot 30/60000 = 1{,}82$ kW.</p>
+<div class="box key" style="text-align:center">$\boxed{t_{taladro} \approx 9\ \text{s},\ P_c \approx 1{,}82\ \text{kW}}$</div>
+
+<h4>Apartado 3 — Roscado</h4>
+<p>$N_{rosca} = 1000\cdot 10/(\pi\cdot 12) = 265$ rpm.<br>
+$v_{f,rosca} = p\cdot N = 1{,}75\cdot 265 = 464$ mm/min.<br>
+$t_{rosca} = 25/464 = 0{,}054$ min = 3,2 s. <b>Más retorno:</b> ×2 ≈ 7 s.</p>
+<div class="box key" style="text-align:center">$\boxed{t_{rosca,total} \approx 7\ \text{s}}$</div>
+
+<h4>Apartado 4 — Total</h4>
+<p>$t_{total} \approx 9 + 7 + t_{cambio\,herramienta} \approx 16-25$ s según contemos cambio.</p>
+
+<h3 class="pb">Solución Problema 2 (★ examen)</h3>
+
+<h4>Orden óptimo</h4>
+<ol>
+  <li><b>Op 1:</b> Taladro $D_0 = 5$ mm para los 4 agujeros M6 (broca HSS 5 mm).</li>
+  <li><b>Op 2:</b> Avellanado 90° de los 4 agujeros M6 (avellanador 8 mm).</li>
+  <li><b>Op 3:</b> Macho M6×1 (roscado en los 4 agujeros).</li>
+  <li><b>Op 4:</b> Taladro D=9,8 mm para los 4 agujeros pasantes (deja 0,2 para escariado).</li>
+  <li><b>Op 5:</b> Escariado D=10 mm para tolerancia H7 en los 4 pasantes.</li>
+</ol>
+<p>Total: 5 cambios de herramienta = 4 cambios entre operaciones × 8 s = 32 s.</p>
+
+<h4>Tiempos por operación (estimaciones)</h4>
+<ul>
+  <li><b>Op 1:</b> 4 taladros M6, $D_0=5$. $N=80\cdot 1000/(\pi\cdot 5)=5093$ rpm; $v_f = 0{,}15\cdot 5093 = 764$ mm/min. $L_w = 15 + 1{,}5$ ($L_{herr}$) $= 16{,}5$. $t = 16{,}5/764 = 0{,}022$ min = 1,3 s. ×4 = <b>5,2 s</b>.</li>
+  <li><b>Op 2:</b> 4 avellanados, $D=8$, $L=3$ mm. $N=50\cdot 1000/(\pi\cdot 8)=1989$ rpm; $v_f=0{,}15\cdot 1989=298$ mm/min. $t=3/298=0{,}01$ min = 0,6 s. ×4 = <b>2,4 s</b>.</li>
+  <li><b>Op 3:</b> 4 roscados M6×1. $N=20\cdot 1000/(\pi\cdot 6)=1061$ rpm; $v_f = 1\cdot 1061 = 1061$ mm/min. $t = 15/1061 = 0{,}014$ min = 0,9 s. ×2 (retorno) = 1,8 s. ×4 = <b>7,2 s</b>.</li>
+  <li><b>Op 4:</b> 4 taladros D=9,8, $L_w = 15 + 2{,}94 = 17{,}94$. $N=80\cdot 1000/(\pi\cdot 9{,}8)=2598$ rpm; $v_f=0{,}15\cdot 2598=390$ mm/min. $t = 17{,}94/390 = 0{,}046$ min = 2,8 s. ×4 = <b>11,2 s</b>.</li>
+  <li><b>Op 5:</b> 4 escariados D=10, $L=15$. $N=30\cdot 1000/(\pi\cdot 10)=955$ rpm; $v_f=0{,}15\cdot 955=143$ mm/min. $t = 15/143 = 0{,}105$ min = 6,3 s. ×4 = <b>25,2 s</b>.</li>
+</ul>
+
+<h4>Tiempo total</h4>
+<p>$t_{total} = 5{,}2 + 2{,}4 + 7{,}2 + 11{,}2 + 25{,}2 + 32 = $ <b>~83 s</b> (con cambios de herramienta).</p>
+<div class="box key" style="text-align:center">$\boxed{t_{total} \approx 83\ \text{s} \approx 1{,}4\ \text{min}}$</div>
+
+<h2 class="pb">📚 Plan de estudio mínimo</h2>
+
+<div class="box info">
+  <div class="box-title">Si tienes 2-3 horas</div>
+  <ol>
+    <li><b>Memoriza F1-F8 + tabla rosca métrica</b> (30 min).</li>
+    <li><b>Taladrado + roscado simple</b> (45 min) — Ejercicio T3.1 o similar.</li>
+    <li><b>Pieza con múltiples agujeros</b> (1h 30 min) — Ejercicio examen ★.</li>
+  </ol>
+</div>
+
+<h2>🚀 Resumen ejecutivo</h2>
+
+<div class="box key">
+  <div class="box-title">Las 3 herramientas que te salvan T3</div>
+  <ol>
+    <li><b>$D_0 = M - p$</b> para roscado.</li>
+    <li><b>$L_{herr} = D/(2\tan\kappa_r)$</b> en pasantes.</li>
+    <li><b>$v_c$ adaptada a la operación:</b> taladrado 30-100, roscado 10-30, escariado 20-40.</li>
+  </ol>
+</div>
+
+<div class="box exam">
+  <div class="box-title">⭐ Mantra del Patrón 4</div>
+  <p style="font-size:11pt;text-align:center;font-style:italic">
+    Lista agujeros → cadena de operaciones por agujero →<br>
+    Agrupa por $D$ para minimizar cambios →<br>
+    Calcula tiempos con $L_{herr}$ → suma + cambios →<br>
+    Verifica tolerancias y rugosidad pedidas.
+  </p>
+</div>
+
+<p style="text-align:center;color:#888;font-size:9pt;margin-top:8mm">
+  Sistemas de Producción UPV/EHU · Tema 3 — Taladrado<br>
+  Ionan Berloso · Curso 2025-26
+</p>
+
+</body>
+</html>
