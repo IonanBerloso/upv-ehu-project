@@ -934,6 +934,36 @@ Datos: $s = 1{,}75$ (densidad relativa del fluido exterior), $\rho_{He} = 0{,}2\
       <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
       <div class="sec-body">
 
+        <div style="border:2px solid #fb923c;border-radius:8px;padding:14px 16px;background:rgba(251,146,60,0.08);margin-bottom:16px">
+          <div style="color:#fb923c;font-weight:700;font-size:.95em;margin-bottom:8px">🟧 Demostración — Vaciado en tanque cerrado (Bernoulli + Boyle + continuidad)</div>
+          <p style="font-size:.85em;color:#cbd5e1;margin-bottom:10px;font-style:italic">El enunciado advierte: "<strong>Los resultados sin deducción de la expresión NO SON VÁLIDOS</strong>". Hay que construir la EDO desde primeros principios.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin-bottom:6px"><strong style="color:#fb923c">🟧 Paso 1 — Bernoulli cuasi-estacionario</strong></p>
+          <p style="font-size:.85em">Como el orificio es muy pequeño respecto al depósito, $v_1\ll v_{or}$ (régimen cuasi-estacionario). Bernoulli entre la lámina libre (1) y el orificio (2):</p>
+          $$\dfrac{p_{gas}(z)}{\gamma}+z+\underbrace{\dfrac{v_1^2}{2g}}_{\approx 0}=\dfrac{p_{atm}}{\gamma}+0+\dfrac{v_{or}^2}{2g}$$
+          $$\Rightarrow v_{or}=\sqrt{2g\!\left[z+\dfrac{p_{gas}-p_{atm}}{\gamma}\right]}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 2 — Coeficiente de descarga del orificio</strong></p>
+          <p style="font-size:.85em">El chorro real sufre contracción y pérdidas viscosas. Se introduce $C_D$ tal que el caudal es:</p>
+          $$Q_{out}=C_D\,A_{or}\,v_{or,id}=C_D\dfrac{\pi d^2}{4}\sqrt{2g\!\left[z+\dfrac{p_{gas}-p_{atm}}{\gamma}\right]}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 3 — Ley de Boyle para el gas atrapado</strong></p>
+          <p style="font-size:.85em">El gas sobre la lámina libre se expande isotérmicamente. Si el volumen inicial es $V_{G,0}$ y el actual es $V_G(z)=A_{tk}(z_{sup}-z)$:</p>
+          $$p_{gas}(z)\,V_G(z)=p_{G,0}\,V_{G,0}\Rightarrow p_{gas}(z)=p_{G,0}\dfrac{z_{sup}-z_0}{z_{sup}-z}$$
+          <p style="font-size:.85em">A medida que $z$ disminuye, el volumen del gas aumenta, $p_{gas}$ baja y la fuerza motriz del vaciado se reduce (efecto característico del tanque cerrado).</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 4 — Conservación de masa: la EDO de vaciado</strong></p>
+          <p style="font-size:.85em">El caudal que sale por el orificio iguala la disminución del volumen líquido en el depósito:</p>
+          $$Q_{out}=-A_{tk}(z)\dfrac{dz}{dt}\Rightarrow \dfrac{dz}{dt}=-\dfrac{C_D\,A_{or}}{A_{tk}(z)}\sqrt{2g\!\left[z+\dfrac{p_{gas}(z)-p_{atm}}{\gamma}\right]}$$
+          <p style="font-size:.85em">Para la sección cuadrada $A_{tk}=L^2$ (constante); para la circular $A_{tk}=\pi D^2/4$.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 5 — Integración por separación de variables</strong></p>
+          <p style="font-size:.85em">Separando variables y integrando entre el nivel inicial $z_0$ y el actual $z(t)$:</p>
+          $$t=\!-\!\int_{z_0}^{z(t)}\!\!\dfrac{A_{tk}(z')\,dz'}{C_D\,A_{or}\sqrt{2g\!\left[z'+\frac{p_{gas}(z')-p_{atm}}{\gamma}\right]}}$$
+          <p style="font-size:.85em">Esta integral no tiene solución cerrada general — se resuelve numéricamente con el $p_{gas}(z)$ del paso 3.</p>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-top:8px">Solo después de esta deducción los apartados b) y c) tienen valor académico. El profesor anula los resultados numéricos sin esta justificación.</p>
+        </div>
+
         <div class="paso">
           <div class="paso-titulo">Paso a) — Deducción de la expresión de vaciado (sección cuadrada)</div>
           <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Bernoulli instantáneo + continuidad: $A(h)\frac{dh}{dt} = -C_d A_0 \sqrt{2gh}$. Para sección cuadrada $A = L^2$ (constante). Integrando: $t = \frac{2L^2}{C_d A_0}(\sqrt{h_0} - \sqrt{h})$.</p>

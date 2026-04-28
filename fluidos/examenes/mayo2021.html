@@ -430,6 +430,36 @@ Ayuda: $Q = C_v \cdot A_t \cdot \sqrt{\dfrac{2gR}{\left[1-\left(\dfrac{A_t}{A_e}
       <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
       <div class="sec-body">
 
+        <div style="border:2px solid #fb923c;border-radius:8px;padding:14px 16px;background:rgba(251,146,60,0.08);margin-bottom:16px">
+          <div style="color:#fb923c;font-weight:700;font-size:.95em;margin-bottom:8px">🟧 Demostración — Venturímetro + tubo de Pitot</div>
+          <p style="font-size:.85em;color:#cbd5e1;margin-bottom:10px;font-style:italic">Hay que demostrar dos fórmulas distintas: la del Venturi ($Q$ vs $\Delta p$) y la del Pitot ($v$ vs presión dinámica).</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin-bottom:6px"><strong style="color:#fb923c">🟧 Paso 1 — Venturi: Bernoulli + continuidad</strong></p>
+          <p style="font-size:.85em">Entre la sección de entrada y el cuello, sin pérdidas y plano horizontal, Bernoulli da:</p>
+          $$\dfrac{p_e-p_t}{\rho_0}=\dfrac{v_t^2-v_e^2}{2}$$
+          <p style="font-size:.85em">Por continuidad $v_t=v_e(A_e/A_t)$. Despejando:</p>
+          $$Q=A_t\,v_t=\dfrac{A_eA_t}{\sqrt{A_e^2-A_t^2}}\sqrt{\dfrac{2\Delta p}{\rho_0}}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 2 — Manómetro diferencial del Venturi</strong></p>
+          <p style="font-size:.85em">Recorriendo el tubo en U y eliminando los tramos comunes:</p>
+          $$\Delta p=p_e-p_t=(\gamma_m-\gamma_0)R\Rightarrow\Delta p=\rho_{agua}\,g\,R\,(s_m-s_0)$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 3 — Tubo de Pitot: presión de remanso</strong></p>
+          <p style="font-size:.85em">Aplicando Bernoulli entre un punto de la corriente libre y el punto de remanso (donde $v=0$ por choque) sobre la línea de corriente que termina en la boca del Pitot:</p>
+          $$p_{rem}=p_{est}+\dfrac{1}{2}\rho_0 v^2$$
+          <p style="font-size:.85em">La diferencia $p_{rem}-p_{est}=\tfrac12\rho_0 v^2$ se llama <strong>presión dinámica</strong> y es lo que mide el conjunto Pitot+piezómetro.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 4 — Lectura del piezómetro Pitot</strong></p>
+          <p style="font-size:.85em">El manómetro abierto conectado al Pitot da la lectura $R_{Pitot}$ a través de:</p>
+          $$\dfrac{1}{2}\rho_0 v^2=(\rho_m-\rho_0)\,g\,R_{Pitot}$$
+          <p style="font-size:.85em">Despejando la velocidad puntual:</p>
+          $$v=\sqrt{\dfrac{2g\,R_{Pitot}\,(\rho_m-\rho_0)/\rho_0}{1}}=\sqrt{2g\,R_{Pitot}\!\left(\dfrac{s_m}{s_0}-1\right)}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 5 — Compatibilidad fluido–manómetro</strong></p>
+          <p style="font-size:.85em">Para que el manómetro sea operativo, el fluido manométrico debe ser <strong>más denso</strong> que el de la tubería ($s_m>s_0$) y no miscible con él. Si en la tubería hubiera agua ($s=1$) y $s_m=0,726<1$, el fluido manométrico flotaría hacia arriba y el manómetro no funcionaría.</p>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-top:8px">Sin estas demostraciones la fórmula del Venturi y la del Pitot solo darían medio punto.</p>
+        </div>
+
         <div class="paso">
           <div class="paso-titulo">Apartado a) — Caudal Q de gasolina</div>
           <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> El venturímetro mide la diferencia de presión entre la entrada y el cuello. Bernoulli + continuidad dan $Q_t = C_d A_2\sqrt{2\Delta p/\rho/(1-(A_2/A_1)^2)}$. La lectura del manómetro determina $\Delta p$ a través de la ecuación manométrica.</p>
@@ -586,6 +616,30 @@ Se pide calcular en función de las variables indicadas:
     <div class="seccion s-resolucion sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
       <div class="sec-body">
+
+        <div style="border:2px solid #fb923c;border-radius:8px;padding:14px 16px;background:rgba(251,146,60,0.08);margin-bottom:16px">
+          <div style="color:#fb923c;font-weight:700;font-size:.95em;margin-bottom:8px">🟧 Demostración — TdCdM sobre depósito + álabe (sistemas en serie)</div>
+          <p style="font-size:.85em;color:#cbd5e1;margin-bottom:10px;font-style:italic">Hay tres VdC distintos en este problema (depósito, álabe, sistema completo) y cada uno requiere su propio balance de momento. El profesor exige justificar cada uno.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin-bottom:6px"><strong style="color:#fb923c">🟧 Paso 1 — Punto de partida: TdCdM en VdC fijo</strong></p>
+          <p style="font-size:.85em">En régimen estacionario, sobre cualquier VdC fijo:</p>
+          $$\sum\vec F_{ext}=\oint_{SC}\rho\vec V(\vec V\cdot\hat n)\,dA=\dot m_{sal}\vec V_{sal}-\dot m_{ent}\vec V_{ent}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 2 — VdC del depósito</strong></p>
+          <p style="font-size:.85em">El fluido entra con velocidad cero (lámina libre) y sale por el orificio con $v_s=\sqrt{2gH}$. Las únicas fuerzas externas son la barra $T_1$ y la presión atmosférica (que se anula al ser uniforme). El balance en $x$ da:</p>
+          $$T_1=\rho Q\,v_s$$
+          <p style="font-size:.85em">Es la fuerza de "cohete": el depósito sufre una reacción opuesta a la salida del chorro, y $T_1$ debe contrarrestarla.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 3 — VdC del álabe</strong></p>
+          <p style="font-size:.85em">El chorro entra al álabe con $v_s\hat x$ y sale a $v_s$ con ángulo $\alpha$. Por Newton III, la fuerza del fluido sobre el álabe (= $T_2$ en la barra de soporte) tiene componentes:</p>
+          $$R_x=\rho Q\,v_s(1-\cos\alpha),\quad R_y=\rho Q\,v_s\sin\alpha$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 4 — VdC global (depósito + álabe + barra T única)</strong></p>
+          <p style="font-size:.85em">Si se sustituyen $T_1$ y $T_2$ por una sola barra $T$ entre depósito y carro, el sistema "depósito + álabe" es <strong>internamente conexo</strong>. Sobre el VdC global, el balance da:</p>
+          $$T=\rho Q\,v_{sal,x}-\rho Q\,v_{ent,x}=\rho Q\,v_s\cos\alpha$$
+          <p style="font-size:.85em">Equivalentemente, $T=T_1-T_2=\rho Q v_s\cos\alpha$. Para $\alpha=90°$, $T=0$: el sistema es autoequilibrado.</p>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-top:8px">La clave es elegir bien el VdC: cuanto más grande, más fuerzas internas se cancelan, y solo queda la componente de momento que realmente "escapa" del sistema.</p>
+        </div>
 
         <div class="paso">
           <div class="paso-titulo">Apartado a) — Tensión en la barra T₁ (depósito)</div>

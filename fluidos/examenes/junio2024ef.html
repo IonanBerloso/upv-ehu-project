@@ -590,6 +590,35 @@ c) Si aguas abajo del venturímetro colocamos un rotámetro con la misma Q, ¿la
     <div class="seccion s-resolucion sec-open">
       <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
       <div class="sec-body">
+
+        <div style="border:2px solid #fb923c;border-radius:8px;padding:14px 16px;background:rgba(251,146,60,0.08);margin-bottom:16px">
+          <div style="color:#fb923c;font-weight:700;font-size:.95em;margin-bottom:8px">🟧 Demostración — Venturímetro inclinado: por qué la inclinación se cancela</div>
+          <p style="font-size:.85em;color:#cbd5e1;margin-bottom:10px;font-style:italic">Hay que demostrar de dónde sale $T=R(s_m/s_0-1)$ <strong>independientemente de la inclinación</strong>. Es la propiedad clave del Venturi diferencial.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin-bottom:6px"><strong style="color:#fb923c">🟧 Paso 1 — Bernoulli entre las dos tomas (con desnivel)</strong></p>
+          <p style="font-size:.85em">Tomando un eje vertical $z$ y aplicando Bernoulli entre la sección 1 (ancha) y la 2 (cuello), separadas un desnivel $\Delta z=z_2-z_1$:</p>
+          $$\dfrac{p_1}{\gamma_0}+z_1+\dfrac{v_1^2}{2g}=\dfrac{p_2}{\gamma_0}+z_2+\dfrac{v_2^2}{2g}$$
+          <p style="font-size:.85em">Defino la altura piezométrica diferencial:</p>
+          $$T=\left(\dfrac{p_1}{\gamma_0}+z_1\right)-\left(\dfrac{p_2}{\gamma_0}+z_2\right)=\dfrac{v_2^2-v_1^2}{2g}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 2 — Ecuación manométrica recorriendo el U</strong></p>
+          <p style="font-size:.85em">Se va de la toma 1 a la 2 atravesando el manómetro en U con fluido manométrico $\gamma_M$. Sumando $\gamma h$ al bajar y restando al subir:</p>
+          $$p_1+\gamma_0(a)+\gamma_0\!\cdot\!R-\gamma_M R-\gamma_0(a-\Delta z+R)=p_2$$
+          <p style="font-size:.85em">Reordenando y dividiendo por $\gamma_0$:</p>
+          $$\dfrac{p_1-p_2}{\gamma_0}+\Delta z=\dfrac{(\gamma_M-\gamma_0)R}{\gamma_0}=R\!\left(\dfrac{s_M}{s_0}-1\right)$$
+          <p style="font-size:.85em">El miembro izquierdo es exactamente $T$ (cota piezométrica diferencial), por lo que:</p>
+          $$\boxed{\;T=R\!\left(\dfrac{s_M}{s_0}-1\right)\;}$$
+          <p style="font-size:.85em">La <strong>inclinación se cancela</strong>: el manómetro diferencial mide directamente la altura piezométrica equivalente, sin importar el ángulo del Venturi.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 3 — Caudal a partir de $T$</strong></p>
+          <p style="font-size:.85em">Con $T$ conocida y aplicando continuidad $A_1v_1=A_2v_2$:</p>
+          $$Q_T=\dfrac{A_1A_2}{\sqrt{A_1^2-A_2^2}}\sqrt{2gT}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 4 — Coeficiente del Venturi y rotámetro</strong></p>
+          <p style="font-size:.85em">El coeficiente real $c_{vent}=Q_{real}/Q_T$ recoge pérdidas viscosas en el cuello. Para un rotámetro calibrado en agua y usado con aceite, el equilibrio del flotador depende del empuje $\rho_f g V_{flot}$: con menor densidad ($s_0<1$), el empuje es menor y el flotador sube menos → la <strong>lectura subestima</strong> el caudal real.</p>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-top:8px">Sin esta demostración el profesor solo daría medio punto al aplicar las fórmulas del Venturi inclinado.</p>
+        </div>
+
         <div class="paso">
           <div class="paso-titulo">Altura diferencial equivalente $T$ — ecuación manómetro + Bernoulli</div>
           <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> En un venturímetro inclinado, el manómetro diferencial en U mide la diferencia de presión $\Delta p$. Bernoulli entre entrada y cuello da $Q$ en función de $\Delta p$. La altura diferencial equivalente $T$ combina ambas ecuaciones de forma práctica.</p>
@@ -1090,6 +1119,36 @@ NOTA: iterar sólo cuando sea obligatorio. Limitar a 3 iteraciones o hasta que l
     <div class="seccion s-resolucion sec-open">
       <button class="sec-btn" onclick="toggleSec(this)"><span>🔢 Resolución</span><span class="sarr">▼</span></button>
       <div class="sec-body">
+
+        <div style="border:2px solid #fb923c;border-radius:8px;padding:14px 16px;background:rgba(251,146,60,0.08);margin-bottom:16px">
+          <div style="color:#fb923c;font-weight:700;font-size:.95em;margin-bottom:8px">🟧 Demostración — Hagen-Poiseuille y caudal máximo laminar</div>
+          <p style="font-size:.85em;color:#cbd5e1;margin-bottom:10px;font-style:italic">El profesor exige justificar de dónde sale $\Delta p=128\mu LQ/(\pi D^4)$ y $Q_{lam}=Re_{lim}\pi\mu D/(4\rho)$ antes de aplicarlos.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin-bottom:6px"><strong style="color:#fb923c">🟧 Paso 1 — Equilibrio en cilindro elemental</strong></p>
+          <p style="font-size:.85em">Sobre un cilindro coaxial de radio $r$ y longitud $L$ en el flujo laminar, la presión motriz $\Delta p\cdot\pi r^2$ se equilibra con la fuerza viscosa $\tau\cdot 2\pi r L$:</p>
+          $$\tau(r)=\dfrac{\Delta p\,r}{2L}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 2 — Ley de Newton de la viscosidad e integración</strong></p>
+          <p style="font-size:.85em">Igualando $\tau=-\mu\,dv/dr$ y aplicando $v(R)=0$:</p>
+          $$v(r)=\dfrac{\Delta p}{4\mu L}(R^2-r^2)$$
+          <p style="font-size:.85em">Es la <strong>parábola de Poiseuille</strong>.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 3 — Caudal de Hagen-Poiseuille</strong></p>
+          $$Q=\!\int_0^R v(r)\cdot 2\pi r\,dr=\dfrac{\pi\Delta p R^4}{8\mu L}=\dfrac{\pi D^4\,\Delta p}{128\mu L}$$
+          $$\boxed{\;\Delta p=\dfrac{128\mu L Q}{\pi D^4}\;}$$
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 4 — Caudal límite laminar</strong></p>
+          <p style="font-size:.85em">El número de Reynolds basado en velocidad media $v=4Q/(\pi D^2)$ es:</p>
+          $$Re=\dfrac{\rho v D}{\mu}=\dfrac{4\rho Q}{\pi\mu D}$$
+          <p style="font-size:.85em">Imponiendo $Re=Re_{lim}$ (típicamente 2000–2300) se despeja el caudal máximo laminar:</p>
+          $$\boxed{\;Q_{lam}=\dfrac{Re_{lim}\,\pi\mu D}{4\rho}\;}$$
+          <p style="font-size:.85em">Notas clave: (1) $Q_{lam}\propto D$, por lo que la tubería <strong>más estrecha</strong> es la limitante; (2) en paralelo, ambas tuberías comparten $\Delta p$, así que la $\Delta p$ máxima admisible es la que provoca $Re=Re_{lim}$ en la tubería limitante.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:10px 0 6px"><strong style="color:#fb923c">🟧 Paso 5 — Combinación con presencia de bomba</strong></p>
+          <p style="font-size:.85em">Si una rama incluye bomba con altura útil $H_m$, la pérdida disponible para la fricción es $\Delta p/\gamma+H_m$ (si la bomba ayuda) o $\Delta p/\gamma-H_m$ (si la bomba empuja contra la $\Delta p$). El caudal real en cada rama se obtiene del sistema acoplado, pero la condición <strong>$Re\le Re_{lim}$</strong> se aplica al tramo de aspiración independientemente de la bomba.</p>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-top:8px">Sin esta demostración el profesor solo daría medio punto al usar Hagen-Poiseuille y el límite laminar.</p>
+        </div>
+
         <div class="paso">
           <div class="paso-titulo">Caudal máximo laminar en cada tubería ($Re = 2000$)</div>
           <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> El límite de flujo laminar es $Re = 2000$. Para una tubería de diámetro $D$: $Q_{max} = Re_{max} \pi D \nu / 4$. Es el caudal máximo que puede circular sin que el flujo transite a turbulento.</p>
