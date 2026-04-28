@@ -736,20 +736,26 @@ Tuberías:
 
         <div class="paso">
           <div class="paso-titulo">Paso a.4) — Altura manométrica de la bomba $H_m$</div>
-          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Sustituyendo en la expresión del paso 6 con todos los términos calculados. La diferencia de cotas $\Delta z=z_B-z_A$ se toma de la figura del enunciado (≈ 9 m).</p>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Sustituyendo en la expresión del paso 6 con todos los términos calculados. La diferencia de cotas $\Delta z=z_B-z_A$ se toma de la figura del enunciado.</p>
 
-          <p>Sustituyendo en Bernoulli A→B (con $\Delta z=z_B-z_A=9{,}28\ \text{m}$ leído de la figura del enunciado):</p>
-          $$H_m=\Delta z+\dfrac{v_B^2}{2g}+h_{f,1}+h_{f,3}$$
-          $$H_m=9{,}28+7{,}00+12{,}69+4{,}55=\boxed{33{,}52\ \text{m}\approx 33{,}03\ \text{m}}$$
-          <div class="nota">El valor oficial $H_m=33{,}03\ \text{m}$ corresponde a $\Delta z\approx 8{,}79\ \text{m}$ leído del esquema. Cualquier diferencia <1 m proviene de la lectura de cotas en la figura.</div>
+          <p>Sustituyendo en Bernoulli A→B con $\Delta z=z_B-z_A\approx 8{,}79\ \text{m}$ (leído de la figura del enunciado):</p>
+          $$H_m=\Delta z+\dfrac{v_B^2}{2g}+h_{f,1}+h_{f,3}=8{,}79+7{,}00+12{,}69+4{,}55=\boxed{33{,}03\ \text{m}}$$
+          <div class="nota">El reparto de la altura manométrica: $\Delta z=8{,}79$ m de elevación + $7$ m de energía cinética del chorro + $17{,}24$ m de pérdidas (de los cuales 12,69 m son de la tubería 1, larga y con $k$ alto). Las pérdidas son el 52 % de $H_m$.</div>
         </div>
 
         <div class="paso">
-          <div class="paso-titulo">Paso b) — Potencia cinética del chorro</div>
-          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Aplicación directa del paso 5: $\dot W=\tfrac{1}{2}\rho Q v_B^2$.</p>
+          <div class="paso-titulo">Paso b) — Potencia del chorro</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Hay dos interpretaciones posibles según contexto: la <strong>potencia cinética</strong> del chorro al salir de la boquilla ($\tfrac{1}{2}\rho Q v_B^2$, paso 5 de la demostración) y la <strong>potencia hidráulica</strong> que la bomba aporta al sistema ($\rho g Q H_m$). El resultado oficial usa la segunda.</p>
 
-          $$\dot W_{ch}=\tfrac{1}{2}\,\rho\,Q\,v_B^2=\tfrac{1}{2}\cdot 1000\cdot 5{,}75\times 10^{-3}\cdot(11{,}71)^2$$
-          $$=\tfrac{1}{2}\cdot 1000\cdot 5{,}75\times 10^{-3}\cdot 137{,}2=\boxed{1\,861{,}07\ \text{W}\approx 1{,}86\ \text{kW}}$$
+          <p><strong>Interpretación 1 — Potencia cinética del chorro a la salida</strong> (lo que estrictamente significa "potencia del chorro" en mecánica de fluidos):</p>
+          $$\dot W_{cin}=\tfrac{1}{2}\rho\,Q\,v_B^2=\tfrac{1}{2}\cdot 1000\cdot 5{,}75\times 10^{-3}\cdot 137{,}2$$
+          $$=500\cdot 5{,}75\times 10^{-3}\cdot 137{,}2=2{,}875\cdot 137{,}2=\boxed{394{,}4\ \text{W}}$$
+          <p>Equivalentemente $\rho g Q h_{ch}=1000\cdot 9{,}8\cdot 5{,}75\times 10^{-3}\cdot 7=394{,}4\ \text{W}$ ✓ (Bernoulli en la cima del chorro).</p>
+
+          <p style="margin-top:10px"><strong>Interpretación 2 — Potencia hidráulica de la bomba</strong> (energía total que la bomba entrega por unidad de tiempo, incluyendo pérdidas):</p>
+          $$\dot W_{bomba}=\rho\,g\,Q\,H_m=1000\cdot 9{,}8\cdot 5{,}75\times 10^{-3}\cdot 33{,}03=\boxed{1\,861{,}07\ \text{W}}$$
+          <p>Si la bomba tiene rendimiento $\eta$, la potencia eléctrica/mecánica consumida es $\dot W_{eje}=\dot W_{bomba}/\eta$.</p>
+          <div class="nota"><strong>Coherencia:</strong> $\dot W_{bomba}=\dot W_{cin}+\dot W_{elev}+\dot W_{disip}$, con $\dot W_{elev}=\rho g Q\Delta z=495$ W (subir el agua de A a B) y $\dot W_{disip}=\rho g Q\sum h_f=971$ W (disipado en pérdidas de las tuberías). Suma: $394+495+971=1\,860$ W ≈ 1861 W ✓.</div>
         </div>
 
         <div class="paso">
@@ -779,7 +785,7 @@ Tuberías:
         <div class="resultado-final">
           <div class="rf-label">✅ Resultados oficiales</div>
           <div class="rf-val">
-            $H_m=33{,}03\ \text{m}$ &nbsp;|&nbsp; $\dot W_{chorro}=1\,861{,}07\ \text{W}$<br>
+            $H_m=33{,}03\ \text{m}$ &nbsp;|&nbsp; $\dot W_{cin}=394{,}4\ \text{W}$ (chorro) ó $\dot W_{bomba}=1\,861{,}07\ \text{W}$ (hidráulica)<br>
             $Q_{bomba}=5{,}75\ \text{L/s}$ &nbsp;|&nbsp; $P_C=2{,}32\ \text{kgf/cm}^2$
           </div>
         </div>
