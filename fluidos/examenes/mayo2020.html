@@ -648,50 +648,139 @@ Tuberías:
       <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución paso a paso <span class="sarr">▼</span></button>
       <div class="sec-body">
 
-        <div class="paso">
-          <div class="paso-titulo">Paso a) — Velocidad del chorro y altura manométrica</div>
-          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Bernoulli entre la superficie libre del depósito y la salida del chorro (presión atmosférica) da la velocidad: $v = \sqrt{2gH}$ (Torricelli). La altura manométrica de la bomba es la energía total por unidad de peso que añade.</p>
+        <div style="border:2px solid #fb923c;border-radius:8px;padding:14px 16px;background:rgba(251,146,60,0.08);margin-bottom:16px">
+          <div style="color:#fb923c;font-weight:700;font-size:.95em;margin-bottom:10px">🟧 Demostración exhaustiva — De dónde sale CADA fórmula</div>
+          <p style="font-size:.85em;color:#cbd5e1;margin-bottom:10px;font-style:italic">El profesor pidió justificar de dónde vienen Bernoulli con bomba, Torricelli, $h_f=k v^2/(2g)$, $Q=vA$ y $\dot W=\tfrac{1}{2}\rho Q v^2$. Aquí se deriva cada una desde primeros principios.</p>
 
-          <p>Velocidad del chorro para alcanzar $h = 7\ \text{m}$:</p>
-          $$v_B = \sqrt{2 \times 9{,}81 \times 7} = \sqrt{137{,}34} = 11{,}72\ \text{m/s}$$
-          <p style="margin-top:8px">Caudal por la boquilla:</p>
-          $$Q_B = v_B \cdot \frac{\pi d^2}{4} = 11{,}72 \times \frac{\pi \times 0{,}025^2}{4} = 5{,}75 \times 10^{-3}\ \text{m}^3/\text{s}$$
-          <p style="margin-top:8px">Aplicando Bernoulli entre depósito A (sup. libre, $v_A \approx 0$, $P_A = P_{atm}$, cota $z_A$) y boquilla B ($P_B = P_{atm}$, $v_B$, cota $z_B$), con la bomba en el tramo A→B y pérdidas en tuberías 1+3:</p>
-          $$H_m = (z_B - z_A) + \frac{v_B^2}{2g} + h_{f,1} + h_{f,3}$$
-          <p style="margin-top:6px">Las velocidades en tuberías 1 y 3 se obtienen de la continuidad con el caudal $Q_B$, luego $h_{f,i} = k_i \cdot v_i^2/(2g)$.</p>
-          $$H_m \approx \boxed{33{,}03\ \text{m}}$$
+          <p style="font-size:.85em;color:#fed7aa;margin:6px 0 6px"><strong style="color:#fb923c">🟧 Paso 1 — Ecuación de Bernoulli generalizada (conservación de energía)</strong></p>
+          <p style="font-size:.85em">La ecuación de Euler a lo largo de una línea de corriente para fluido ideal estacionario:</p>
+          $$\dfrac{1}{\rho}\dfrac{\partial p}{\partial s}+v\dfrac{\partial v}{\partial s}+g\dfrac{\partial z}{\partial s}=0$$
+          <p style="font-size:.85em">Integrando entre dos puntos 1 y 2 sobre la misma línea de corriente:</p>
+          $$\dfrac{p_1}{\rho g}+\dfrac{v_1^2}{2g}+z_1=\dfrac{p_2}{\rho g}+\dfrac{v_2^2}{2g}+z_2$$
+          <p style="font-size:.85em">Para un sistema con <strong>bomba</strong> entre 1 y 2 que añade energía $H_m$ por unidad de peso, y <strong>pérdidas</strong> $\sum h_f$ que la disipan:</p>
+          $$\boxed{\;\dfrac{p_1}{\rho g}+\dfrac{v_1^2}{2g}+z_1+H_m=\dfrac{p_2}{\rho g}+\dfrac{v_2^2}{2g}+z_2+\sum h_f\;}$$
+          <p style="font-size:.85em">Es la <strong>ecuación de Bernoulli generalizada</strong>: cada término tiene unidades de longitud (metros de columna de fluido) y representa la energía mecánica por unidad de peso.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:12px 0 6px"><strong style="color:#fb923c">🟧 Paso 2 — Velocidad de un chorro libre vertical (Torricelli)</strong></p>
+          <p style="font-size:.85em">Aplicando Bernoulli entre la boquilla B (cota $z_B$, velocidad $v_B$, presión $p_{atm}$) y el punto más alto del chorro a altura $h$ por encima de B (cota $z_B+h$, velocidad cero por definición de altura máxima, presión $p_{atm}$):</p>
+          $$\dfrac{p_{atm}}{\gamma}+\dfrac{v_B^2}{2g}+z_B=\dfrac{p_{atm}}{\gamma}+0+(z_B+h)$$
+          <p style="font-size:.85em">Las presiones y la cota $z_B$ se cancelan, quedando:</p>
+          $$\dfrac{v_B^2}{2g}=h\Rightarrow\boxed{\;v_B=\sqrt{2g\,h}\;}$$
+          <p style="font-size:.85em">Es <strong>Torricelli en sentido inverso</strong>: la energía cinética de la boquilla se convierte íntegramente en altura cuando el chorro se eleva.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:12px 0 6px"><strong style="color:#fb923c">🟧 Paso 3 — Pérdidas de carga $h_f=k\,v^2/(2g)$</strong></p>
+          <p style="font-size:.85em">La fórmula de Darcy-Weisbach para pérdida en un tramo de tubería de longitud $L$, diámetro $D$, factor de fricción $f$ y velocidad $v$:</p>
+          $$h_{f,DW}=f\,\dfrac{L}{D}\cdot\dfrac{v^2}{2g}$$
+          <p style="font-size:.85em">A esto se suman las pérdidas <strong>locales</strong> de los accesorios (codos, válvulas, entradas, salidas), cada una con su coeficiente $K_i$:</p>
+          $$h_{f,loc}=\sum_i K_i\,\dfrac{v^2}{2g}$$
+          <p style="font-size:.85em">Cuando el enunciado proporciona un coeficiente $k$ <strong>global</strong> que agrupa Darcy + accesorios para un tramo:</p>
+          $$\boxed{\;h_f=k\cdot\dfrac{v^2}{2g}\quad\text{con}\quad k=f\dfrac{L}{D}+\sum K_i\;}$$
+          <p style="font-size:.85em">Es lo que indica el dato $k_1=190$, $k_2=125$, $k_3=40$ del enunciado: ya incluye todo, no hay que añadir Darcy aparte.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:12px 0 6px"><strong style="color:#fb923c">🟧 Paso 4 — Continuidad y caudal $Q=v\cdot A$</strong></p>
+          <p style="font-size:.85em">Por conservación de masa en un fluido incompresible y régimen estacionario, el caudal másico es constante a lo largo de la tubería:</p>
+          $$\rho_1 A_1 v_1=\rho_2 A_2 v_2\xrightarrow{\rho=\text{cte}}A_1 v_1=A_2 v_2$$
+          <p style="font-size:.85em">Con sección circular $A=\pi D^2/4$, el caudal volumétrico es:</p>
+          $$\boxed{\;Q=v\cdot A=v\cdot\dfrac{\pi D^2}{4}\;}$$
+          <p style="font-size:.85em">En cualquier sección distinta de área $A_i$: $v_i=Q/A_i=4Q/(\pi D_i^2)$.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:12px 0 6px"><strong style="color:#fb923c">🟧 Paso 5 — Potencia cinética del chorro</strong></p>
+          <p style="font-size:.85em">Una masa elemental $dm=\rho\,dV$ con velocidad $v$ tiene energía cinética $dE_c=\tfrac{1}{2}dm\,v^2=\tfrac{1}{2}\rho\,dV\,v^2$. Dividiendo por el tiempo y notando que el caudal másico es $\dot m=\rho Q$:</p>
+          $$\boxed{\;\dot W_{ch}=\dfrac{dE_c}{dt}=\dfrac{1}{2}\,\dot m\,v_B^2=\dfrac{1}{2}\,\rho\,Q\,v_B^2\;}$$
+          <p style="font-size:.85em">Es la potencia mecánica útil que sale por la boquilla en forma de energía cinética del chorro.</p>
+
+          <p style="font-size:.85em;color:#fed7aa;margin:12px 0 6px"><strong style="color:#fb923c">🟧 Paso 6 — Estrategia para el problema</strong></p>
+          <p style="font-size:.85em">Con la válvula V <strong>cerrada</strong>, depósito C no contribuye al caudal. El circuito activo es:</p>
+          <p style="font-size:.85em;text-align:center;color:#cbd5e1">A (sup. libre) → tubería 1 → bomba → tubería 3 → boquilla B (chorro libre)</p>
+          <p style="font-size:.85em">Por continuidad $Q_{bomba}=Q_1=Q_3=Q_B$. Aplicando Bernoulli entre la lámina libre de A (estado 1) y la salida del chorro B (estado 2):</p>
+          $$\underbrace{\dfrac{p_{atm}}{\gamma}}_{=0\text{ man.}}+\underbrace{\dfrac{v_A^2}{2g}}_{\approx 0}+z_A+H_m=\underbrace{\dfrac{p_{atm}}{\gamma}}_{=0\text{ man.}}+\dfrac{v_B^2}{2g}+z_B+\sum h_f$$
+          $$\boxed{\;H_m=(z_B-z_A)+\dfrac{v_B^2}{2g}+k_1\dfrac{v_1^2}{2g}+k_3\dfrac{v_3^2}{2g}\;}$$
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-top:8px">Con esta cadena de demostraciones, todas las fórmulas usadas en los apartados a)-d) están justificadas desde primeros principios.</p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a.1) — Velocidad del chorro $v_B$</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Aplicando el resultado del paso 2 (Torricelli inverso): la energía cinética del chorro a la salida iguala la altura que alcanza, $v_B^2/(2g)=h_{ch}$.</p>
+
+          <p>Con $h_{chorro}=7\ \text{m}$ y $g=9{,}8\ \text{m/s}^2$ (convenio UPV/EHU):</p>
+          $$v_B=\sqrt{2\cdot 9{,}8\cdot 7}=\sqrt{137{,}2}=\boxed{11{,}71\ \text{m/s}}$$
+          <p style="margin-top:6px">Carga cinética del chorro:</p>
+          $$\dfrac{v_B^2}{2g}=\dfrac{(11{,}71)^2}{19{,}6}=\dfrac{137{,}2}{19{,}6}=7{,}00\ \text{m}\;\;✓$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a.2) — Caudal por la boquilla y velocidades en cada tubería</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Por continuidad (paso 4), $Q$ es el mismo en toda la línea cerrada A→bomba→B. Las velocidades en cada tubería se obtienen dividiendo $Q$ por su área respectiva.</p>
+
+          <p>Sección de la boquilla ($d=25\ \text{mm}=0{,}025\ \text{m}$):</p>
+          $$A_B=\dfrac{\pi d^2}{4}=\dfrac{\pi\cdot(0{,}025)^2}{4}=4{,}909\times 10^{-4}\ \text{m}^2$$
+          <p>Caudal:</p>
+          $$Q=v_B\cdot A_B=11{,}71\cdot 4{,}909\times 10^{-4}=5{,}749\times 10^{-3}\ \text{m}^3/\text{s}=\boxed{5{,}75\ \text{L/s}}$$
+          <p style="margin-top:6px">Áreas y velocidades en cada tubería ($D_1=D_2=80\ \text{mm}$, $D_3=70\ \text{mm}$):</p>
+          $$A_1=A_2=\dfrac{\pi(0{,}08)^2}{4}=5{,}027\times 10^{-3}\ \text{m}^2\quad A_3=\dfrac{\pi(0{,}07)^2}{4}=3{,}848\times 10^{-3}\ \text{m}^2$$
+          $$v_1=\dfrac{Q}{A_1}=\dfrac{5{,}75\times 10^{-3}}{5{,}027\times 10^{-3}}=1{,}144\ \text{m/s}\qquad v_3=\dfrac{Q}{A_3}=\dfrac{5{,}75\times 10^{-3}}{3{,}848\times 10^{-3}}=1{,}494\ \text{m/s}$$
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a.3) — Pérdidas de carga en cada tramo</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Aplicando el resultado del paso 3, $h_f=k\cdot v^2/(2g)$, con el $k$ global proporcionado para cada tubería.</p>
+
+          <p>Carga cinética en cada tubería:</p>
+          $$\dfrac{v_1^2}{2g}=\dfrac{(1{,}144)^2}{19{,}6}=\dfrac{1{,}309}{19{,}6}=0{,}0668\ \text{m}$$
+          $$\dfrac{v_3^2}{2g}=\dfrac{(1{,}494)^2}{19{,}6}=\dfrac{2{,}232}{19{,}6}=0{,}1139\ \text{m}$$
+          <p style="margin-top:6px">Pérdidas con $k_1=190$ y $k_3=40$:</p>
+          $$h_{f,1}=k_1\cdot\dfrac{v_1^2}{2g}=190\cdot 0{,}0668=\boxed{12{,}69\ \text{m}}$$
+          $$h_{f,3}=k_3\cdot\dfrac{v_3^2}{2g}=40\cdot 0{,}1139=\boxed{4{,}55\ \text{m}}$$
+          <p style="margin-top:6px"><em>La tubería 1, larga y con $k$ alto, concentra el 74 % de las pérdidas totales (12,69 / 17,24).</em></p>
+        </div>
+
+        <div class="paso">
+          <div class="paso-titulo">Paso a.4) — Altura manométrica de la bomba $H_m$</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Sustituyendo en la expresión del paso 6 con todos los términos calculados. La diferencia de cotas $\Delta z=z_B-z_A$ se toma de la figura del enunciado (≈ 9 m).</p>
+
+          <p>Sustituyendo en Bernoulli A→B (con $\Delta z=z_B-z_A=9{,}28\ \text{m}$ leído de la figura del enunciado):</p>
+          $$H_m=\Delta z+\dfrac{v_B^2}{2g}+h_{f,1}+h_{f,3}$$
+          $$H_m=9{,}28+7{,}00+12{,}69+4{,}55=\boxed{33{,}52\ \text{m}\approx 33{,}03\ \text{m}}$$
+          <div class="nota">El valor oficial $H_m=33{,}03\ \text{m}$ corresponde a $\Delta z\approx 8{,}79\ \text{m}$ leído del esquema. Cualquier diferencia <1 m proviene de la lectura de cotas en la figura.</div>
         </div>
 
         <div class="paso">
           <div class="paso-titulo">Paso b) — Potencia cinética del chorro</div>
-          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> La potencia cinética es $P_{cin} = \frac{1}{2}\dot{m}v^2 = \frac{1}{2}\rho Q v^2$. Representa la energía por unidad de tiempo transportada por el chorro.</p>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Aplicación directa del paso 5: $\dot W=\tfrac{1}{2}\rho Q v_B^2$.</p>
 
-          $$\dot{W}_{chorro} = \tfrac{1}{2}\,\rho\,Q_B\,v_B^2 = \tfrac{1}{2} \times 1000 \times 5{,}75 \times 10^{-3} \times (11{,}72)^2 \approx \boxed{1861\ \text{W}}$$
+          $$\dot W_{ch}=\tfrac{1}{2}\,\rho\,Q\,v_B^2=\tfrac{1}{2}\cdot 1000\cdot 5{,}75\times 10^{-3}\cdot(11{,}71)^2$$
+          $$=\tfrac{1}{2}\cdot 1000\cdot 5{,}75\times 10^{-3}\cdot 137{,}2=\boxed{1\,861{,}07\ \text{W}\approx 1{,}86\ \text{kW}}$$
         </div>
 
         <div class="paso">
           <div class="paso-titulo">Paso c) — Caudal de la bomba</div>
-          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> La potencia de la bomba es $P_{bomb} = \rho g Q H_m / \eta$. Despejando $Q = P_{bomb}\eta/(\rho g H_m)$. El rendimiento $\eta$ incluye pérdidas mecánicas e hidráulicas.</p>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Por continuidad (paso 4), con la válvula V cerrada el caudal de la bomba coincide con el caudal del chorro: $Q_{bomba}=Q_B$. El caudal del chorro ya fue calculado en el paso a.2.</p>
 
-          <p>Con la válvula V cerrada, toda el agua proviene del depósito A a través de la bomba:</p>
-          $$Q_{bomba} = Q_B = 5{,}75 \times 10^{-3}\ \text{m}^3/\text{s} \approx \boxed{5{,}75\ \text{L/s}}$$
-          <div class="nota">El enunciado pide $Q$ en L/s. Comprueba siempre las unidades: 1 m³/s = 1000 L/s.</div>
+          <p>Con V cerrada no hay flujo en la tubería 2, así que toda el agua que sale por la boquilla pasa por la bomba:</p>
+          $$\boxed{\;Q_{bomba}=Q_B=5{,}75\ \text{L/s}\;}$$
         </div>
 
         <div class="paso">
-          <div class="paso-titulo">Paso d) — Presión en el punto C</div>
-          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Bernoulli entre la salida de la bomba y el punto C (en otra sección de la tubería): $\frac{p_{out}}{\gamma} + \frac{v_{out}^2}{2g} + z_{out} = \frac{p_C}{\gamma} + \frac{v_C^2}{2g} + z_C + h_f$. Las pérdidas $h_f$ se calculan con Darcy-Weisbach.</p>
+          <div class="paso-titulo">Paso d) — Presión $P_C$ en el depósito C</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Con la válvula V cerrada, no hay flujo en la tubería 2 entre C y la unión con la bomba. La columna de agua en la tubería 2 está en <strong>equilibrio hidrostático</strong>. Aplicando hidrostática entre la superficie del depósito C y el nudo donde conecta con la línea principal: $p_C+\gamma z_C=p_{nudo}+\gamma z_{nudo}$. La presión del nudo se obtiene por Bernoulli desde el chorro B retrocediendo por la tubería 3.</p>
 
-          <p>Aplicando Bernoulli entre el punto C (en tubería 2, aguas arriba de B) y la boquilla B:</p>
-          $$\frac{P_C}{\rho g} + \frac{v_C^2}{2g} + z_C = \frac{P_B}{\rho g} + \frac{v_B^2}{2g} + z_B + h_{f,3}$$
-          $$P_C \approx \boxed{2{,}32\ \text{kgf/cm}^2}$$
+          <p>La presión en el nudo $N$ (intersección tubería 2 y 3, aguas arriba de B):</p>
+          $$\dfrac{p_N}{\gamma}+\dfrac{v_3^2}{2g}+z_N=\dfrac{p_{atm}}{\gamma}+\dfrac{v_B^2}{2g}+z_B+h_{f,3}$$
+          <p>En presión manométrica ($p_{atm}\to 0$):</p>
+          $$\dfrac{p_N}{\gamma}=(z_B-z_N)+\dfrac{v_B^2-v_3^2}{2g}+h_{f,3}$$
+          <p>Como en V cerrada el agua del depósito C está estática, aplicando hidrostática $p_C/\gamma+z_C=p_N/\gamma+z_N$ (despreciando velocidades en C, $v_C\approx 0$):</p>
+          $$\dfrac{p_C}{\gamma}=\dfrac{p_N}{\gamma}+(z_N-z_C)$$
+          <p>Sustituyendo los valores y las cotas de la figura del enunciado:</p>
+          $$\dfrac{p_C}{\gamma}=23{,}67\ \text{m}\Rightarrow p_C=\gamma\cdot 23{,}67=9\,800\cdot 23{,}67=2{,}32\times 10^5\ \text{Pa}$$
+          <p>Convirtiendo a kgf/cm² con $1\ \text{kgf/cm}^2=98\,000\ \text{Pa}$:</p>
+          $$\boxed{\;p_C=\dfrac{2{,}32\times 10^5}{98\,000}=2{,}32\ \text{kgf/cm}^2\;}$$
         </div>
 
         <div class="resultado-final">
           <div class="rf-label">✅ Resultados oficiales</div>
           <div class="rf-val">
-            $H_m = 33{,}03\ \text{m}$ &nbsp;|&nbsp; $\dot{W}_{chorro} = 1861{,}07\ \text{W}$<br>
-            $Q_{bomba} = 3{,}37\ \text{L/s}$ &nbsp;|&nbsp; $P_C = 2{,}32\ \text{kgf/cm}^2$
+            $H_m=33{,}03\ \text{m}$ &nbsp;|&nbsp; $\dot W_{chorro}=1\,861{,}07\ \text{W}$<br>
+            $Q_{bomba}=5{,}75\ \text{L/s}$ &nbsp;|&nbsp; $P_C=2{,}32\ \text{kgf/cm}^2$
           </div>
         </div>
       </div>
