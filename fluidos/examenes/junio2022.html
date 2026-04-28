@@ -319,9 +319,60 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color
     <div class="seccion s-resolucion sec-open">
       <button class="sec-btn" onclick="toggleSec(this)">🔢 Resolución<span class="sarr">▼</span></button>
       <div class="sec-body">
+
+        <!-- ═══════════════ DEMOSTRACIÓN DEL PERFIL PARABÓLICO ═══════════════ -->
+        <div class="paso" style="border:2px solid #fb923c;border-radius:8px;padding:14px 16px;background:rgba(251,146,60,0.08)">
+          <div class="paso-titulo" style="color:#fb923c">⭐ Apartado a (demostración) — Origen físico del perfil parabólico (Hagen–Poiseuille)</div>
+          <p style="font-size:.83em;color:#fde68a;font-style:italic;margin-bottom:8px">
+            <strong style="color:#fb923c;font-style:normal">¿Por qué hay que demostrarlo?</strong> El enunciado da la forma $v = a + b y^2$ pero <strong>no</strong> justifica por qué el perfil es parabólico. La demostración parte del <strong>equilibrio de fuerzas</strong> sobre un elemento cilíndrico de fluido y la <strong>ley de Newton de la viscosidad</strong>; sin esta justificación, la solución vale solo medio punto.
+          </p>
+
+          <p style="font-weight:700;color:#fb923c;margin-top:6px">🟧 Paso 1 — Equilibrio de un elemento cilíndrico de fluido</p>
+          <p>Consideramos un elemento cilíndrico de fluido de <strong>radio $y$</strong> (con $y \le R$) y <strong>longitud $L$</strong>, coaxial con la tubería. En régimen <em>permanente</em> y <em>plenamente desarrollado</em> (no hay aceleración), la suma de fuerzas axiales es cero. Las fuerzas que actúan son:</p>
+          <ul style="margin-left:18px">
+            <li>Fuerza de presión en la cara aguas arriba: $p_1 \cdot \pi y^2$ (sentido +x)</li>
+            <li>Fuerza de presión en la cara aguas abajo: $p_2 \cdot \pi y^2$ (sentido −x)</li>
+            <li>Fuerza viscosa sobre la superficie lateral cilíndrica: $\tau \cdot 2\pi y \cdot L$ (oposesta al flujo, sentido −x)</li>
+          </ul>
+          <p>Equilibrio axial $\sum F_x = 0$:</p>
+          $$p_1\,\pi y^2 - p_2\,\pi y^2 - \tau\cdot 2\pi y\,L = 0$$
+          <p>Despejando $\tau$ con $\Delta p = p_1 - p_2 > 0$ (caída de presión):</p>
+          $$\boxed{\tau(y) = \dfrac{\Delta p\cdot y}{2L}}$$
+          <p style="font-size:.85em;color:#cfd8dc">La tensión cortante es <strong>lineal en $y$</strong>: cero en el eje (por simetría) y máxima en la pared. Esto es independiente del fluido: solo depende del balance de fuerzas.</p>
+
+          <p style="font-weight:700;color:#fb923c;margin-top:14px">🟧 Paso 2 — Ley de Newton de la viscosidad</p>
+          <p>Para un fluido <strong>newtoniano</strong>, la tensión cortante es proporcional al gradiente de velocidad:</p>
+          $$\tau = -\mu\,\dfrac{dv}{dy}$$
+          <p>El signo negativo refleja que $v$ <em>decrece</em> con $y$ (máxima en el eje, nula en la pared), de modo que $dv/dy < 0$ y $\tau > 0$.</p>
+          <p>Igualando con el resultado del Paso 1:</p>
+          $$-\mu\,\dfrac{dv}{dy} = \dfrac{\Delta p\,y}{2L} \quad\Longleftrightarrow\quad \dfrac{dv}{dy} = -\dfrac{\Delta p}{2\mu L}\,y$$
+
+          <p style="font-weight:700;color:#fb923c;margin-top:14px">🟧 Paso 3 — Integración para obtener $v(y)$</p>
+          <p>Integramos respecto a $y$:</p>
+          $$v(y) = -\dfrac{\Delta p}{4\mu L}\,y^2 + C$$
+          <p>La constante $C$ se obtiene con la condición de <strong>no deslizamiento</strong> en la pared $v(R) = 0$:</p>
+          $$0 = -\dfrac{\Delta p}{4\mu L}\,R^2 + C \implies C = \dfrac{\Delta p}{4\mu L}\,R^2$$
+          <p>Sustituyendo:</p>
+          $$v(y) = \dfrac{\Delta p}{4\mu L}\,(R^2 - y^2)$$
+
+          <p style="font-weight:700;color:#fb923c;margin-top:14px">🟧 Paso 4 — Identificación con la forma propuesta</p>
+          <p>Esta es <strong>parabólica en $y$</strong>, justo como propone el enunciado: $v = a + b\,y^2$. La velocidad máxima en el eje es:</p>
+          $$v_0 = v(0) = \dfrac{\Delta p\cdot R^2}{4\mu L}$$
+          <p>Por lo que el perfil se reescribe:</p>
+          $$\boxed{v(y) = v_0\left[1 - \left(\dfrac{y}{R}\right)^2\right]} \quad\Longleftrightarrow\quad a = v_0\,,\ \ b = -\dfrac{v_0}{R^2}$$
+          <p style="font-size:.85em;color:#cfd8dc;margin-top:6px">Queda <strong>demostrado</strong> que el perfil de velocidades es parabólico (no es una hipótesis del enunciado, sino una consecuencia directa de las ecuaciones de Navier-Stokes para flujo laminar plenamente desarrollado).</p>
+
+          <p style="font-weight:700;color:#fb923c;margin-top:14px">🟧 Paso 5 — Tensión $\tau(y)$ a partir del perfil demostrado</p>
+          <p>Derivando el perfil:</p>
+          $$\dfrac{dv}{dy} = v_0\cdot\left(-\dfrac{2y}{R^2}\right) = -\dfrac{2v_0\,y}{R^2}$$
+          <p>Aplicando la ley de Newton (con el convenio del enunciado, $\tau = \mu\,dv/dy$):</p>
+          $$\boxed{\tau(y) = \mu\,\dfrac{dv}{dy} = -\dfrac{2\mu v_0}{R^2}\,y}$$
+          <p style="font-size:.85em;color:#cfd8dc">Coincide con el Paso 1 (en módulo): $|\tau| = 2\mu v_0\,y/R^2 = \Delta p\cdot y/(2L)$, ya que $\Delta p / L = 4\mu v_0/R^2$.</p>
+        </div>
+
         <div class="paso">
-          <div class="paso-titulo">Apartado a — Determinación de $a$ y $b$</div>
-          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> El perfil de velocidades en flujo viscoso entre placas sigue $v(y) = ay + by^2$ (Couette-Poiseuille). Las constantes $a$ y $b$ se determinan aplicando las condiciones de contorno: velocidad de la placa en $y=0$ y $y=h$, y el gradiente de presión impuesto.</p>
+          <div class="paso-titulo">Apartado a (cálculo numérico) — Determinación de $a$ y $b$</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Una vez demostrado que el perfil es $v = a + by^2$, las constantes $a$ y $b$ se obtienen aplicando las dos condiciones de contorno con los valores numéricos del enunciado.</p>
 
           <p>Condición de contorno en el eje ($y=0$): velocidad máxima $v_0 = 0{,}12\ \text{m/s}$:</p>
           $$v(0) = a + b \cdot 0^2 = a \quad \Rightarrow \quad a = v_0 = 0{,}12\ \text{m/s}$$
