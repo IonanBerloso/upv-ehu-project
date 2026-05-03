@@ -1,0 +1,443 @@
+/* ══════════════════════════════════════════════════
+   PRINT.CSS — Hoja de estilos exclusiva para impresión / PDF.
+   Se inyecta sólo durante la generación de PDFs (build_pdfs.py)
+   y se activa también con Ctrl+P en el navegador.
+   Convierte el tema oscuro de la web en un PDF claro A4
+   con TODAS las secciones desplegadas.
+══════════════════════════════════════════════════ */
+
+@media print, screen.print-mode {
+
+/* ─── 1) OCULTAR ELEMENTOS DE NAVEGACIÓN ─────────── */
+.topbar,
+nav.topbar,
+header.topbar,
+.topbar-back,
+.topbar-brand,
+.topbar-title,
+.topbar-extra,
+.sidebar,
+aside.sidebar,
+.tema-picker,
+.tema-dropdown,
+.tema-picker-btn,
+.read-progress,
+#readProgress,
+#mobile-reload-btn,
+.mobile-reload,
+.qg-footer,
+.toggle-theme,
+.fb-fab,
+.feedback-fab,
+.dropdown,
+.sb-footer,
+.fab,
+button[onclick*="reload"],
+.search-bar,
+[data-no-print],
+.no-print,
+.tema-counter,
+.page-indicator,
+.bottom-bar,
+.scroll-progress,
+.topic-nav,
+nav.topic-nav,
+.bottom-nav,
+.exam-nav-bottom,
+.nav-bottom {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: -9999px !important;
+}
+
+/* ─── 2) LAYOUT: UN SOLO FLUJO VERTICAL ──────────── */
+html, body {
+  background: #ffffff !important;
+  color: #111827 !important;
+  font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 10.5pt !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  height: auto !important;
+  min-height: 0 !important;
+  animation: none !important;
+}
+
+/* Forzar TODO el texto a oscuro (texto descriptivo del proyecto era gris claro casi invisible) */
+body, body * {
+  text-shadow: none !important;
+}
+p, li, span, td, dd, dt, blockquote,
+.prose, .prose p, .prose li,
+.text2, .text3, .meta, .desc, .description,
+small, em, i, strong, b {
+  color: #1f2937 !important;
+}
+.text3, .meta, small.muted, .muted {
+  color: #4b5563 !important;
+}
+.layout {
+  display: block !important;
+  flex-direction: unset !important;
+  padding-top: 0 !important;
+  min-height: 0 !important;
+}
+.content,
+main,
+main.content,
+.wrap,
+.contenido {
+  display: block !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  flex: none !important;
+}
+
+/* ─── 3) DESPLEGAR TODOS LOS PANELES Y SECCIONES ── */
+.topic-panel,
+.topic-panel:not(.active),
+.tab-content,
+.tab-pane,
+.collapse,
+.collapsible {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  animation: none !important;
+}
+
+/* Forzar que todas las secciones plegables aparezcan abiertas */
+.section-wrap,
+.section-wrap:not(.sec-open) {
+  display: block !important;
+}
+.sec-body,
+.section-wrap .sec-body {
+  display: block !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+.sec-btn .sarr,
+.ex-arrow {
+  display: none !important;
+}
+
+/* ─── 4) TEMA CLARO PARA TINTA ───────────────────── */
+.panel-header,
+.panel-header-exam,
+.enunciado,
+.section-wrap,
+.s-datos, .s-formulas, .s-teoria, .s-resolucion,
+.paso,
+.resultado-final,
+.verificacion,
+.errores,
+.nota,
+section.sec,
+.concept,
+.formula,
+.formula-box,
+.steps,
+.note,
+.tabla,
+.t-datos,
+.tdatos,
+.exam-card,
+.card,
+.t-card,
+.tema-card,
+.rec-card,
+.ex,
+article.ex {
+  background: #ffffff !important;
+  color: #111827 !important;
+  border-color: #d1d5db !important;
+  box-shadow: none !important;
+}
+
+/* Encabezados negros */
+h1, h2, h3, h4, h5,
+.panel-title, .panel-tag,
+.t-title, .t-tag, .t-meta,
+.head h1, .head .tag, .head .sub,
+.ex-num, .ex-title,
+.paso-titulo,
+section.sec h2,
+section.sec h3 {
+  color: #111827 !important;
+  text-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Acento violeta para títulos */
+.panel-title,
+.t-title,
+.head h1,
+section.sec h2 {
+  color: #5b21b6 !important;
+  border-bottom-color: #c4b5fd !important;
+}
+.panel-tag,
+.t-tag,
+.head .tag {
+  color: #7c3aed !important;
+}
+
+/* Cajas de info: borde de color, fondo blanco */
+.s-datos { border-left: 3px solid #7c3aed !important; }
+.s-datos .sec-btn { background: #f5f3ff !important; color: #5b21b6 !important; border-color: #c4b5fd !important; }
+.s-formulas, .s-teoria { border-left: 3px solid #f59e0b !important; }
+.s-formulas .sec-btn, .s-teoria .sec-btn { background: #fffbeb !important; color: #b45309 !important; border-color: #fde68a !important; }
+.s-resolucion { border-left: 3px solid #059669 !important; }
+.s-resolucion .sec-btn { background: #ecfdf5 !important; color: #047857 !important; border-color: #a7f3d0 !important; }
+
+.concept,
+.formula,
+.formula-box {
+  background: #faf5ff !important;
+  border-left: 3px solid #7c3aed !important;
+  color: #1f2937 !important;
+}
+.concept-label,
+.formula-label { color: #5b21b6 !important; }
+
+.note,
+.nota,
+.warning,
+.warn,
+.callout,
+.callout-warning,
+.alert {
+  background: #fffbeb !important;
+  border: 1px solid #fde68a !important;
+  border-left: 3px solid #f59e0b !important;
+  color: #78350f !important;
+}
+.note *,
+.nota *,
+.warning *,
+.callout *,
+.alert * {
+  color: #78350f !important;
+}
+.note strong, .nota strong, .warning strong, .callout strong, .alert strong,
+.note b, .nota b, .warning b, .callout b, .alert b {
+  color: #92400e !important;
+}
+
+.paso {
+  background: #f0fdf4 !important;
+  border-left: 3px solid #059669 !important;
+  color: #1f2937 !important;
+}
+.paso-titulo { color: #047857 !important; }
+.porque { color: #6b7280 !important; }
+.porque b, .porque strong { color: #c2410c !important; }
+
+.resultado-final {
+  background: #ecfdf5 !important;
+  border: 1px solid #6ee7b7 !important;
+  border-radius: 6px !important;
+}
+.rf-label { color: #047857 !important; }
+.rf-val { color: #064e3b !important; }
+
+.verificacion {
+  background: #eff6ff !important;
+  border: 1px solid #93c5fd !important;
+  border-left: 3px solid #2563eb !important;
+  color: #1e3a8a !important;
+}
+.verificacion .vlabel { color: #1d4ed8 !important; }
+
+.errores {
+  background: #fef2f2 !important;
+  border: 1px solid #fca5a5 !important;
+  border-left: 3px solid #dc2626 !important;
+  color: #7f1d1d !important;
+}
+.errores .elabel { color: #b91c1c !important; }
+
+.enunciado {
+  background: #f9fafb !important;
+  border-left: 3px solid #c4b5fd !important;
+  color: #1f2937 !important;
+}
+
+/* ─── 5) TABLAS ─────────────────────────────────── */
+table, .tabla, .t-datos, .tdatos {
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  width: 100% !important;
+}
+th {
+  background: #f5f3ff !important;
+  color: #5b21b6 !important;
+  border: 1px solid #c4b5fd !important;
+  padding: 6px 9px !important;
+}
+td {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+  padding: 6px 9px !important;
+}
+tr:nth-child(even) td {
+  background: #faf5ff !important;
+}
+
+/* ─── 6) IMÁGENES ───────────────────────────────── */
+img, .fig-wrap img, svg {
+  max-width: 100% !important;
+  height: auto !important;
+  page-break-inside: avoid !important;
+}
+.fig-wrap {
+  text-align: center !important;
+  margin: 8px 0 !important;
+}
+
+/* ─── 7) KaTeX ──────────────────────────────────── */
+.katex {
+  font-size: 1em !important;
+  color: #111827 !important;
+}
+.katex-display {
+  margin: 8px 0 !important;
+  overflow: visible !important;
+  page-break-inside: avoid !important;
+  text-align: center !important;
+}
+
+/* ─── 8) PAGE BREAKS ────────────────────────────── */
+.paso,
+.section-wrap,
+.formula,
+.formula-box,
+.resultado-final,
+.verificacion,
+.errores,
+.concept,
+.note,
+.nota,
+.enunciado,
+.katex-display,
+table,
+.tabla,
+.fig-wrap,
+.steps {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+h1, h2, h3,
+.panel-title,
+.paso-titulo,
+section.sec h2 {
+  page-break-after: avoid !important;
+  break-after: avoid !important;
+}
+
+/* Cada ejercicio empieza en página nueva (excepto el primero) */
+.topic-panel + .topic-panel,
+article.ex + article.ex {
+  page-break-before: always !important;
+  break-before: page !important;
+}
+
+/* Títulos de capítulo (apartados grandes) */
+.panel-header,
+section.sec {
+  page-break-inside: avoid !important;
+}
+
+/* ─── 9) ENLACES ────────────────────────────────── */
+a {
+  color: #5b21b6 !important;
+  text-decoration: none !important;
+}
+
+/* ─── 10) PÁGINA A4 ─────────────────────────────── */
+@page {
+  size: A4;
+  margin: 18mm 16mm;
+}
+@page :first {
+  margin-top: 22mm;
+}
+
+/* ─── 11) OCULTAR ELEMENTOS INTERACTIVOS ────────── */
+button:not(.sec-btn),
+input,
+select,
+textarea,
+.btn,
+.search,
+.search-input {
+  display: none !important;
+}
+.sec-btn {
+  cursor: default !important;
+  background: #f9fafb !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 4px !important;
+  padding: 6px 10px !important;
+  font-weight: 600 !important;
+}
+
+/* ─── 12) AJUSTES PARTICULARES ──────────────────── */
+/* Fondo y scanlines del index principal */
+body::before, body::after,
+.amb {
+  display: none !important;
+  background: none !important;
+}
+
+/* Dividers, separators */
+hr, .divider {
+  border-color: #d1d5db !important;
+}
+
+/* Breadcrumbs y navegación interna */
+.breadcrumb, .nav, .navigation {
+  display: none !important;
+}
+
+}  /* fin @media print */
+
+/* ─── MODO DE IMPRESIÓN FORZADO PARA PDF ────────────
+   Si el HTML tiene la clase .force-print-mode en <html>,
+   se aplican las mismas reglas también en pantalla.
+   Útil para previsualizar el PDF sin imprimir. */
+
+html.force-print-mode body {
+  background: #ffffff !important;
+  color: #111827 !important;
+}
+html.force-print-mode .topbar,
+html.force-print-mode .sidebar,
+html.force-print-mode .tema-picker,
+html.force-print-mode .read-progress,
+html.force-print-mode #mobile-reload-btn {
+  display: none !important;
+}
+html.force-print-mode .topic-panel,
+html.force-print-mode .section-wrap,
+html.force-print-mode .sec-body {
+  display: block !important;
+  height: auto !important;
+}

@@ -1,4 +1,4 @@
-const CACHE = 'upv-study-hub-v15';
+const CACHE = 'upv-study-hub-v16';
 
 const PRECACHE = [
   '/upv-ehu-project/',
@@ -39,8 +39,16 @@ self.addEventListener('activate', e => {
 });
 
 // Cache-first para recursos propios, network-first para externos
+// EXCLUSIÓN: los PDFs (carpeta /pdf/) no se cachean para no inflar la PWA (~60 MB).
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+
+  // No cachear PDFs ni binarios pesados
+  if (url.pathname.includes('/pdf/') && url.pathname.endsWith('.pdf')) {
+    e.respondWith(fetch(e.request).catch(() => new Response('', {status: 503})));
+    return;
+  }
+
   if (url.origin === location.origin) {
     e.respondWith(
       caches.match(e.request).then(cached =>
