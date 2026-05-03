@@ -332,8 +332,11 @@ def main():
 
         with sync_playwright() as p:
             browser = p.chromium.launch()
+            # Viewport ≈ A4 a 96 DPI (794x1123) para evitar franjas
+            # negras a la derecha cuando algún elemento mantiene el ancho del viewport.
             ctx = browser.new_context(
-                viewport={"width": 1280, "height": 1800},
+                viewport={"width": 794, "height": 1123},
+                device_scale_factor=2,
             )
             page = ctx.new_page()
 

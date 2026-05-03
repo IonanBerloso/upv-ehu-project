@@ -63,9 +63,22 @@ html, body {
   margin: 0 !important;
   padding: 0 !important;
   overflow: visible !important;
+  overflow-x: hidden !important;       /* evita franja oscura por overflow horizontal */
   height: auto !important;
   min-height: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;          /* limita el ancho al área renderizable A4 */
+  min-width: 0 !important;
   animation: none !important;
+}
+
+/* Cualquier elemento de bloque grande no debe ser más ancho que el viewport.
+   Cubre el caso de elementos con min-width implícito que dejaban hueco oscuro. */
+main, section, article, .content, .wrap, .layout, .container,
+.tema-content, .tema, header, footer {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
 }
 
 /* Forzar TODO el texto a oscuro (texto descriptivo del proyecto era gris claro casi invisible) */
