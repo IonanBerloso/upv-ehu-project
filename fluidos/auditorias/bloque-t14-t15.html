@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<title>Bloque T14–T15 · Playbook · Mecánica de Fluidos</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--bg:#0a0a0a;--s1:#0f0f0f;--s2:#161616;--s3:#1d1d1d;--accent:#7dd3fc;--accent-dim:rgba(125,211,252,.12);--accent-border:rgba(125,211,252,.3);--gold:#fbbf24;--green:#34d399;--orange:#fb923c;--rose:#fb7185;--purple:#a78bfa;--line:rgba(255,255,255,.06);--line2:rgba(255,255,255,.12);--txt:#e2e8f0;--txt2:#94a3b8;--txt3:#64748b;--mono:'JetBrains Mono',monospace;--ui:'Space Grotesk',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-family:var(--ui),sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);height:52px;display:flex;align-items:center;padding:0 24px}
+.topbar-back{display:flex;align-items:center;gap:8px;color:var(--txt2);font-family:var(--mono);font-size:.72em;text-transform:uppercase;letter-spacing:.1em;font-weight:600;text-decoration:none;padding-right:18px;border-right:1px solid var(--line);height:100%;line-height:52px}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{margin-left:18px;font-size:.85em;color:#f1f5f9;font-weight:600}
+.topbar-title em{color:var(--accent);font-style:normal}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 32px 80px}
+@media(max-width:768px){.wrap{padding:20px 16px 60px}}
+.head{margin-bottom:32px;padding:24px 28px;background:linear-gradient(135deg,rgba(125,211,252,.06) 0%,transparent 70%);border:1px solid var(--accent-border);border-left:3px solid var(--accent);border-radius:0 12px 12px 0}
+.head .tag{font-family:var(--mono);font-size:.7em;font-weight:700;color:var(--accent);letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.head h1{font-size:1.85em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px}
+.head .sub{font-family:var(--mono);font-size:.82em;color:var(--txt2);line-height:1.5}
+.intro{background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:32px}
+.intro h2{font-size:1em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-family:var(--mono);font-weight:700}
+.intro p{color:#cbd5e1;margin-bottom:8px;font-size:.95em}
+.toc{background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:36px}
+.toc h2{font-size:.78em;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;font-family:var(--mono);font-weight:700}
+.toc ol{list-style:none;counter-reset:tipo;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:6px}
+.toc li{counter-increment:tipo;padding:8px 12px;background:var(--s2);border-left:2px solid var(--accent);border-radius:4px;font-size:.86em;display:flex;align-items:center;gap:10px}
+.toc li::before{content:counter(tipo,decimal-leading-zero);font-family:var(--mono);color:var(--accent);font-weight:700;font-size:.9em;flex-shrink:0;width:22px}
+.toc li a{color:#e2e8f0;text-decoration:none;flex:1;line-height:1.3}
+.toc li a:hover{color:var(--accent)}
+.tipo{background:var(--s1);border:1px solid var(--line);border-radius:12px;margin-bottom:32px;overflow:hidden;page-break-inside:avoid}
+.tipo-head{padding:18px 24px;background:linear-gradient(135deg,rgba(125,211,252,.08) 0%,transparent 60%);border-bottom:1px solid var(--line)}
+.tipo-num{font-family:var(--mono);font-size:.7em;color:var(--accent);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.tipo-titulo{font-size:1.4em;font-weight:700;color:#f1f5f9;letter-spacing:-.01em;line-height:1.25}
+.tipo-meta{font-family:var(--mono);font-size:.75em;color:var(--txt2);margin-top:8px;display:flex;gap:18px;flex-wrap:wrap}
+.tipo-meta .badge{padding:3px 9px;background:var(--s3);border:1px solid var(--line2);border-radius:12px;color:var(--txt2);font-size:.92em}
+.tipo-meta .badge.green{color:var(--green);border-color:rgba(52,211,153,.3)}
+.tipo-meta .badge.gold{color:var(--gold);border-color:rgba(251,191,36,.3)}
+.tipo-body{padding:20px 24px}
+.bloque{margin-bottom:22px;page-break-inside:avoid}
+.bloque-titulo{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.78em;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.bloque-titulo .icon{font-size:1.3em;line-height:1}
+.recono .bloque-titulo{color:#60a5fa}
+.teoria .bloque-titulo{color:var(--accent)}
+.formula-bloque .bloque-titulo{color:var(--purple)}
+.pasos .bloque-titulo{color:var(--green)}
+.errores .bloque-titulo{color:var(--rose)}
+.donde .bloque-titulo{color:var(--gold)}
+.bloque ul{padding-left:22px;color:#cbd5e1;font-size:.93em}
+.bloque ul li{margin-bottom:5px;line-height:1.55}
+.bloque ul li b{color:#f1f5f9}
+.pasos ol{list-style:none;counter-reset:paso;padding-left:0;margin:0}
+.pasos ol li{counter-increment:paso;padding:10px 12px 10px 46px;position:relative;background:rgba(52,211,153,.05);border-left:2px solid rgba(52,211,153,.3);border-radius:0 6px 6px 0;margin-bottom:7px;font-size:.92em;color:#cbd5e1;line-height:1.55}
+.pasos ol li::before{content:counter(paso);position:absolute;left:11px;top:9px;width:22px;height:22px;background:rgba(52,211,153,.12);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.78em;font-weight:700;color:var(--green)}
+.pasos ol li b{color:#a7f3d0}
+.pasos .sub{display:block;font-size:.86em;color:#94a3b8;font-style:italic;margin-top:4px}
+.formulas{background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.2);border-left:3px solid var(--purple);border-radius:6px;padding:14px 18px}
+.formulas .formula-item{margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed rgba(167,139,250,.18)}
+.formulas .formula-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.formulas .formula-label{font-family:var(--mono);font-size:.7em;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.formulas .formula-katex{text-align:center;padding:6px 0}
+.formulas .formula-note{font-size:.84em;color:#94a3b8;margin-top:6px;font-style:italic}
+.formulas .formula-note b{color:#fb923c;font-style:normal}
+.errores ul{background:rgba(251,113,133,.05);border:1px solid rgba(251,113,133,.18);border-left:2px solid var(--rose);border-radius:0 6px 6px 0;padding:10px 16px 10px 32px;list-style:none}
+.errores ul li{padding:4px 0;color:#fecdd3;font-size:.9em;position:relative}
+.errores ul li::before{content:'⚠';position:absolute;left:-18px;color:var(--rose)}
+.recono ul{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-left:2px solid #60a5fa;border-radius:0 6px 6px 0;padding:10px 16px 10px 32px;list-style:none}
+.recono ul li{padding:4px 0;color:#bfdbfe;font-size:.9em;position:relative}
+.recono ul li::before{content:'◈';position:absolute;left:-18px;color:#60a5fa;font-size:.85em}
+.teoria ul{padding-left:24px}
+.teoria ul li{color:#cbd5e1;font-size:.93em}
+.donde-list{display:flex;flex-wrap:wrap;gap:8px}
+.donde-tag{padding:5px 10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:14px;font-family:var(--mono);font-size:.74em;color:var(--gold);font-weight:600}
+.donde-tag b{color:#fef3c7}
+.footer{text-align:center;padding:30px 20px 0;color:var(--txt3);font-size:.75em;font-family:var(--mono);border-top:1px solid var(--line);margin-top:40px}
+.katex{font-size:1.06em;color:#e9d5ff}
+.katex-display{margin:8px 0;overflow-x:auto;overflow-y:hidden}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../teoria.html">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Fluidos
+  </a>
+  <span class="topbar-title">Bloque <em>T14 · T15</em> · Playbook de examen</span>
+<a class="topbar-pdf no-print" href="../pdf/auditoria_t14-t15.pdf" download="auditoria_t14-t15.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+
+<div class="wrap">
+
+  <header class="head">
+    <div class="tag">▶ Auditoría · Bloque temático</div>
+    <h1>T14 · Cantidad de movimiento (QDM)<br>T15 · Aplicaciones de QDM</h1>
+    <div class="sub">Manual práctico — 8 tipos de problema (codos, toberas, chorros, álabes, bifurcaciones, Borda-Carnot, Pelton)</div>
+  </header>
+
+  <section class="intro">
+    <h2>📖 Cómo usar esta guía</h2>
+    <p>El bloque T14-T15 es <b>nuclear</b>: aparece en casi todos los exámenes de junio. La metodología es siempre la misma: <em>definir VC, plantear continuidad y Bernoulli, aplicar QDM por ejes, despejar la fuerza</em>.</p>
+    <p><b>Estrategia:</b> aprende los 5 pasos de la teoría QDM (sección Tipo 01) de memoria. Las aplicaciones (codo, chorro, álabe) son adaptaciones de la misma plantilla.</p>
+  </section>
+
+  <section class="toc">
+    <h2>📑 Índice de tipos de problema</h2>
+    <ol>
+      <li><a href="#t1">QDM — Plantilla básica (5 pasos)</a></li>
+      <li><a href="#t2">Codo en tubería (90°, 180°)</a></li>
+      <li><a href="#t3">Tobera / boquilla con chorro libre</a></li>
+      <li><a href="#t4">Chorro sobre placa fija (perp. o inclinada)</a></li>
+      <li><a href="#t5">Chorro sobre álabe móvil — Pelton</a></li>
+      <li><a href="#t6">Bifurcación / pieza con varias salidas</a></li>
+      <li><a href="#t7">Chorro vertical alcanza altura H</a></li>
+      <li><a href="#t8">Borda-Carnot (ensanchamiento brusco)</a></li>
+    </ol>
+  </section>
+
+  <!-- TIPO 1 -->
+  <article class="tipo" id="t1">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 01 · Plantilla QDM</div>
+      <h2 class="tipo-titulo">QDM — Plantilla genérica de 5 pasos (TODO problema de QDM la sigue)</h2>
+      <div class="tipo-meta"><span class="badge green">★★★ Imprescindible</span><span class="badge gold">Aprende esto y todo lo demás se adapta</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li><b>Teorema de Reynolds</b> aplicado a cantidad de movimiento (régimen estacionario, 1 entrada, 1 salida):
+            $\sum \vec{F} = \dot{m}(\vec{v}_2 - \vec{v}_1) = \rho Q (\vec{v}_2 - \vec{v}_1)$.</li>
+          <li>Las <b>fuerzas</b> en $\sum \vec{F}$ son: presión (manométrica) en entrada y salida, peso del fluido en el VC, reacción de la estructura.</li>
+          <li>El resultado $\vec{R}$ es la fuerza de la <b>estructura sobre el fluido</b>. La fuerza sobre la estructura (la que se pide) es $-\vec{R}$.</li>
+          <li>Se proyecta en cada eje por separado.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave (memorizar SIEMPRE)</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Continuidad (incompresible)</div>
+            <div class="formula-katex">$$Q_1 = Q_2 \quad \Rightarrow \quad A_1 v_1 = A_2 v_2$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Bernoulli (relaciona presiones y velocidades)</div>
+            <div class="formula-katex">$$\frac{p_1}{\rho g} + \frac{v_1^2}{2g} + z_1 = \frac{p_2}{\rho g} + \frac{v_2^2}{2g} + z_2$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Cantidad de movimiento (régimen estacionario)</div>
+            <div class="formula-katex">$$\sum \vec{F} = \rho Q (\vec{v}_2 - \vec{v}_1)$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Componentes (proyección por ejes)</div>
+            <div class="formula-katex">$$\sum F_x = \rho Q (v_{2x} - v_{1x}) \qquad \sum F_y = \rho Q (v_{2y} - v_{1y})$$</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Los 5 pasos genéricos (memorizar y aplicar SIEMPRE)</div>
+        <ol>
+          <li><b>Definir el VC (volumen de control)</b> — envoltura que incluye el fluido de interés. Identificar entradas y salidas.</li>
+          <li><b>Sistema de ejes</b> $x$-$y$ con sentido positivo claro. Proyectar todo.</li>
+          <li><b>Continuidad</b>: $Q_1 = Q_2$ → obtener $v_2$ si conoces $v_1$ y las áreas.</li>
+          <li><b>QDM en cada eje:</b> $\sum F_x = \dot{m}(v_{2x}-v_{1x})$, ídem en $y$. Las fuerzas a sumar: $p_1 A_1$ (entrada), $-p_2 A_2$ (salida, opuesto al flujo), peso, reacción $R$.</li>
+          <li><b>Despejar</b> $R_x$, $R_y$. La fuerza sobre la estructura es $\vec{F}_{estructura} = -\vec{R}$.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Usar presión <em>absoluta</em> en QDM: usar siempre <b>manométrica</b> (la atmosférica se cancela en VC abierto al exterior).</li>
+          <li>Olvidar el sentido de las velocidades al proyectar (chorros que salen ↔ entran).</li>
+          <li>Confundir $\vec{R}$ (estructura sobre fluido) con $-\vec{R}$ (lo que pide el examen).</li>
+          <li>Aplicar QDM en régimen no estacionario sin incluir el término de derivada temporal.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Aplicada en TODOS los demás tipos del bloque</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 2 -->
+  <article class="tipo" id="t2">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 02 · Codo</div>
+      <h2 class="tipo-titulo">Codo en tubería (90°, 180°) — fuerza sobre la pieza</h2>
+      <div class="tipo-meta"><span class="badge green">★★★ Frecuencia: ALTA</span><span class="badge gold">junio2023, mayo2024</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Tubería con un cambio de dirección (codo 90°, 180°, U).</li>
+          <li>Te piden la <b>fuerza sobre los pernos</b> o la <b>reacción de los soportes</b>.</li>
+          <li>Datos: presión y velocidad de entrada, ángulo del codo, áreas (a veces iguales 1=2, a veces distintas).</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Misma sección 1 y 2 (sin estrechamiento) ⟹ $v_1 = v_2 = v$ por continuidad.</li>
+          <li>La presión $p_1 = p_2$ si no hay pérdidas (Bernoulli simple sin $\Delta z$). Si hay pérdidas o $\Delta z$, $p_2$ se calcula con Bernoulli generalizado.</li>
+          <li>QDM: la dirección de $v$ cambia ⟹ aparece reacción $R$ que sostiene el codo.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Codo 90° en plano horizontal (entrada x, salida y)</div>
+            <div class="formula-katex">$$F_x = p_1 A + \rho Q v_1 \qquad F_y = -(p_2 A + \rho Q v_2)$$</div>
+            <div class="formula-note">Fuerza sobre el codo: $F = -R$. Módulo: $|F| = \sqrt{F_x^2 + F_y^2}$.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Codo 180° (U) — flujo entra y sale en sentidos opuestos</div>
+            <div class="formula-katex">$$F = 2(p A + \rho Q v) \quad \text{(en la dirección del flujo de entrada)}$$</div>
+            <div class="formula-note">El factor 2 viene de invertir totalmente la velocidad: $\Delta v = -2v$.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Aplicar los 5 pasos QDM</b> (Tipo 01) al VC del codo.</li>
+          <li><b>Continuidad:</b> con áreas iguales, $v_1 = v_2$. Con áreas distintas, $v_2 = v_1 A_1/A_2$.</li>
+          <li><b>Si se pide $p_2$:</b> Bernoulli (con o sin pérdidas).</li>
+          <li><b>Plantear QDM por ejes:</b> proyectar las fuerzas de presión y los términos $\rho Q v$ según el ángulo del codo.</li>
+          <li><b>Calcular módulo y ángulo</b> de la fuerza resultante sobre el codo.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Confundir signos al proyectar las velocidades en cada eje.</li>
+          <li>Olvidar el peso del fluido en el VC si está en plano vertical.</li>
+          <li>Usar presión absoluta en lugar de manométrica.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2023</b> — codo retorno 180°</span>
+          <span class="donde-tag"><b>mayo2024</b> Ej 2 — codo + boquilla</span>
+          <span class="donde-tag"><b>junio2022ef</b> Ej 4 — bifurcación</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 3 -->
+  <article class="tipo" id="t3">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 03 · Tobera</div>
+      <h2 class="tipo-titulo">Tobera o boquilla — chorro libre a la atmósfera</h2>
+      <div class="tipo-meta"><span class="badge green">★★ Frecuencia: alta</span><span class="badge gold">junio2020ef</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Una tubería termina en una <b>tobera</b> (cono convergente) que descarga a la atmósfera.</li>
+          <li>Te piden la <b>fuerza sobre la tobera</b> (que tiende a soltarse).</li>
+          <li>$p_2 = 0$ (manométrica) en la salida: chorro libre a presión atmosférica.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>El chorro libre tiene $p_{salida} = p_{atm}$, así que en manométricas $p_2 = 0$.</li>
+          <li>Bernoulli (1 → 2) entre la entrada de la tobera y la salida da $v_2$ a partir de $v_1$ y $p_1$.</li>
+          <li>QDM en eje del flujo: $F_{tobera} = p_1 A_1 + \rho Q (v_1 - v_2)$. Como $v_2 \gg v_1$, sale negativa: <b>la tobera es empujada hacia atrás</b>.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Velocidad de salida (Bernoulli)</div>
+            <div class="formula-katex">$$v_2 = \sqrt{v_1^2 + \frac{2 p_1}{\rho}} \approx \sqrt{\frac{2 p_1}{\rho}}\ \text{si } v_1 \ll v_2$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Fuerza sobre la tobera (eje del flujo)</div>
+            <div class="formula-katex">$$F_{tobera} = p_1 A_1 - \rho Q (v_2 - v_1)$$</div>
+            <div class="formula-note">Si sale negativa, la tobera tira hacia ATRÁS (sentido opuesto al chorro). Es la reacción del chorro.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>VC = tobera entera.</b> Sección 1 = entrada (área $A_1$, $p_1$, $v_1$). Sección 2 = salida ($A_2$, $p_2 = 0$, $v_2$).</li>
+          <li><b>Continuidad:</b> $v_2 = v_1 A_1/A_2$.</li>
+          <li><b>Bernoulli</b> 1 → 2 para verificar $v_2$ o despejar $p_1$.</li>
+          <li><b>QDM en eje del chorro:</b> $\sum F_x = \rho Q (v_2 - v_1)$ con $\sum F_x = p_1 A_1 - p_2 A_2 + R$ (R = reacción de la tobera).</li>
+          <li><b>Despejar R</b> y la fuerza sobre la tobera es $-R$.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Usar $p_2 \neq 0$ en chorro libre.</li>
+          <li>Aplicar Bernoulli con pérdidas cuando el enunciado dice "tobera ideal" (sin pérdidas).</li>
+          <li>Olvidar el término $p_1 A_1$ (presión a la entrada del VC).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2020ef</b> Ej 4 — Bernoulli + tobera + cono</span>
+          <span class="donde-tag">Subproblema en bombas con chorro</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 4 -->
+  <article class="tipo" id="t4">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 04 · Chorro placa</div>
+      <h2 class="tipo-titulo">Chorro libre sobre placa fija (perpendicular o inclinada)</h2>
+      <div class="tipo-meta"><span class="badge green">★★ Frecuencia: alta</span><span class="badge gold">junio2023ef</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Un chorro libre golpea una <b>placa fija</b> y se desvía (en una dirección o en dos ramas).</li>
+          <li>Te piden la <b>fuerza del chorro sobre la placa</b> o el ángulo óptimo.</li>
+          <li>Datos: velocidad del chorro $v$, área $A$, ángulo de la placa $\theta$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>El chorro libre mantiene $p = p_{atm}$ en todo momento (manométrica = 0).</li>
+          <li>Por tanto $|v_1| = |v_2| = v$ (no cambia el módulo). Solo cambia la <b>dirección</b>.</li>
+          <li><b>Placa perpendicular:</b> el chorro se reparte simétricamente en dos ramas → $F = \rho Q v$ en la dirección del chorro original.</li>
+          <li><b>Placa inclinada $\theta$:</b> el chorro se divide asimétricamente, $Q_1 = Q(1+\cos\theta)/2$, $Q_2 = Q(1-\cos\theta)/2$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Placa perpendicular al chorro</div>
+            <div class="formula-katex">$$F = \rho Q v = \rho A v^2$$</div>
+            <div class="formula-note">Fuerza en la dirección del chorro original. El chorro se divide simétricamente al impactar.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Placa inclinada (ángulo θ con el chorro)</div>
+            <div class="formula-katex">$$F_\perp = \rho Q v \sin\theta$$</div>
+            <div class="formula-note">Fuerza perpendicular a la placa. $\theta = 90°$ ⟹ caso anterior. $\theta = 0°$ ⟹ chorro paralelo, F = 0.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Reparto del caudal en placa inclinada</div>
+            <div class="formula-katex">$$Q_1 = \frac{Q(1+\cos\theta)}{2} \qquad Q_2 = \frac{Q(1-\cos\theta)}{2}$$</div>
+            <div class="formula-note">$Q_1$ = rama "siguiendo" la dirección del chorro, $Q_2$ = rama "rebotando".</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>VC alrededor de la placa</b> incluyendo el chorro entrante y los dos chorros salientes.</li>
+          <li><b>Velocidad sale igual que entra</b> ($p$ atm en todo el VC). Solo cambia dirección.</li>
+          <li><b>QDM en la dirección perpendicular a la placa:</b> el momento del chorro entrante en esa componente desaparece después (los chorros salientes están en la dirección de la placa).</li>
+          <li><b>$F_\perp = \rho Q v \sin\theta$</b> directamente.</li>
+          <li><b>Si te piden el ángulo óptimo:</b> derivar y maximizar (típicamente $\theta = 90°$ para máxima $F$).</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Confundir $\theta$ del chorro con $\theta$ de la placa.</li>
+          <li>Asumir que $v_2 \neq v$ en chorro libre (el módulo se mantiene).</li>
+          <li>Olvidar que para placa perpendicular el reparto es simétrico (mitades iguales).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2023ef</b> Ej 4 — chorro sobre placa fija</span>
+          <span class="donde-tag">Boletín T14-T15</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 5 -->
+  <article class="tipo" id="t5">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 05 · Álabe móvil / Pelton</div>
+      <h2 class="tipo-titulo">Chorro sobre álabe móvil — turbina Pelton, carro</h2>
+      <div class="tipo-meta"><span class="badge green">★★ Frecuencia: alta</span><span class="badge gold">junio2021, mayo2021</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Un álabe (paleta) o cazo de Pelton se mueve a velocidad $u$ en la dirección del chorro.</li>
+          <li>Te piden <b>fuerza sobre el álabe</b>, <b>potencia</b> entregada o <b>velocidad óptima</b>.</li>
+          <li>Datos: velocidad del chorro $v_j$, velocidad del álabe $u$, ángulo de salida $\beta$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li><b>Trabajar en sistema de referencia móvil del álabe</b>: la velocidad relativa del chorro al álabe es $w = v_j - u$.</li>
+          <li>El módulo $|w|$ se conserva al rebotar en el álabe (chorro libre).</li>
+          <li>El caudal que <em>realmente</em> impacta el álabe es $Q_{relativo} = A(v_j - u)$ — no es $A v_j$.</li>
+          <li><b>Potencia máxima</b> en Pelton se da a $u = v_j/2$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Fuerza sobre álabe móvil (ángulo de salida $\beta$ medido desde la dirección de entrada)</div>
+            <div class="formula-katex">$$F = \rho A (v_j - u)^2 (1 - \cos\beta)$$</div>
+            <div class="formula-note">$\beta = 180°$: cazo Pelton ideal, $1-\cos\beta = 2$, fuerza máxima.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Potencia útil del álabe / cazo</div>
+            <div class="formula-katex">$$P = F \cdot u = \rho A (v_j - u)^2 (1 - \cos\beta) \cdot u$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Velocidad óptima (potencia máxima)</div>
+            <div class="formula-katex">$$u_{opt} = \frac{v_j}{2} \quad \Rightarrow \quad P_{max} = \frac{\rho A v_j^3 (1-\cos\beta)}{4}$$</div>
+            <div class="formula-note">Demostración: derivar $P(u)$, igualar a 0. Resultado clásico de turbinas Pelton.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Cambiar al sistema de referencia del álabe.</b> Velocidad relativa $w = v_j - u$.</li>
+          <li><b>Aplicar QDM en el álabe</b> con $w$ entrando y saliendo (módulo conservado, dirección rotada $\beta$).</li>
+          <li><b>Caudal que impacta:</b> $Q_{rel} = A \cdot w = A(v_j - u)$.</li>
+          <li><b>Fuerza:</b> $F = \rho Q_{rel} (w_{2x} - w_{1x}) = \rho A(v_j-u)^2 (1-\cos\beta)$ en la dirección del movimiento.</li>
+          <li><b>Potencia:</b> $P = F \cdot u$ (trabajo por unidad de tiempo).</li>
+          <li><b>Para velocidad óptima:</b> derivar $P(u)$ e igualar a 0.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Usar $v_j$ en lugar de $w = v_j - u$ en las fórmulas (¡error sistemático!).</li>
+          <li>Usar $A v_j$ como caudal que impacta (es $A(v_j - u)$).</li>
+          <li>Confundir $\beta$ medido desde la dirección de entrada con $\beta$ medido desde la dirección de salida.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2021</b> — turbina Pelton</span>
+          <span class="donde-tag"><b>mayo2021</b> Ej 3 — depósito + álabe + carro</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 6 -->
+  <article class="tipo" id="t6">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 06 · Bifurcación</div>
+      <h2 class="tipo-titulo">Bifurcación o pieza con varias salidas</h2>
+      <div class="tipo-meta"><span class="badge gold">junio2022ef, mayo2024</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Una tubería se divide en <b>dos o más ramales</b> (Y, T, codo + boquilla).</li>
+          <li>Te piden la fuerza sobre la pieza completa.</li>
+          <li>Datos: caudal y dirección en cada rama, presiones en cada sección.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Continuidad: $Q_1 = Q_2 + Q_3 + ...$ (la suma de caudales que salen = caudal que entra).</li>
+          <li>QDM aplicada a TODAS las entradas y salidas: $\sum F_x = \rho [Q_2 v_{2x} + Q_3 v_{3x} - Q_1 v_{1x}]$ (ídem en y).</li>
+          <li>Cada rama contribuye con su propio término $\rho Q_i v_i$ proyectado en cada eje.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Continuidad (1 entrada, 2 salidas)</div>
+            <div class="formula-katex">$$Q_1 = Q_2 + Q_3$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">QDM generalizada (varias entradas/salidas)</div>
+            <div class="formula-katex">$$\sum \vec{F} = \sum_{salidas} \rho Q_i \vec{v}_i - \sum_{entradas} \rho Q_j \vec{v}_j$$</div>
+            <div class="formula-note">Proyectar en cada eje. Las fuerzas $\sum \vec{F}$ incluyen presiones en cada sección + reacción.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>VC envolvente de toda la pieza</b>, identificando 1 entrada (índice 1) y N salidas (índices 2, 3, ...).</li>
+          <li><b>Continuidad:</b> $Q_1 = \sum Q_i$.</li>
+          <li><b>Bernoulli</b> entre entrada y cada salida (con pérdidas si las hay) para obtener velocidades / presiones desconocidas.</li>
+          <li><b>QDM en cada eje</b> sumando contribuciones de TODAS las secciones (presión + caudal·velocidad).</li>
+          <li><b>Despejar la reacción $R$</b> de la pieza.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Olvidar una rama en la suma de QDM.</li>
+          <li>Continuidad mal: si una salida es a chorro libre, $p_i = 0$ pero $Q_i$ se mantiene.</li>
+          <li>Mezclar signos al proyectar velocidades de cada rama.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2022ef</b> Ej 4 — bifurcación horizontal</span>
+          <span class="donde-tag"><b>mayo2024</b> Ej 2 — pieza codo + boquilla</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 7 -->
+  <article class="tipo" id="t7">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 07 · Chorro vertical</div>
+      <h2 class="tipo-titulo">Chorro vertical alcanza altura H — Bernoulli + QDM</h2>
+      <div class="tipo-meta"><span class="badge gold">mayo2020</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Un chorro vertical sale de una boquilla y alcanza una altura $H$ máxima.</li>
+          <li>Te piden la altura de la bomba, presión inicial o potencia del chorro.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>El chorro sube hasta que toda la energía cinética se convierte en potencial: $v^2/(2g) = H$ ⟹ $v = \sqrt{2gH}$.</li>
+          <li>La altura alcanzada NO depende del caudal, solo de la velocidad de salida.</li>
+          <li>Potencia del chorro = energía cinética por segundo = $\frac{1}{2} \rho Q v^2$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Velocidad de salida para alcanzar altura H</div>
+            <div class="formula-katex">$$v = \sqrt{2gH}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Potencia cinética del chorro</div>
+            <div class="formula-katex">$$P = \frac{1}{2} \rho Q v^2 = \frac{1}{2} \rho A v^3$$</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Velocidad de salida:</b> $v = \sqrt{2gH}$.</li>
+          <li><b>Caudal:</b> $Q = A v$ con $A$ del orificio.</li>
+          <li><b>Potencia del chorro:</b> $P = \frac{1}{2}\rho Q v^2$.</li>
+          <li><b>Altura de la bomba:</b> Bernoulli entre depósito → boquilla con $H_b$ y pérdidas; $v_{salida}$ ya conocida.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Asumir que la altura alcanzada depende de $Q$ (solo depende de $v$).</li>
+          <li>Olvidar las pérdidas al calcular la altura de la bomba.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>mayo2020</b> — chorro a 7m con bomba</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 8 -->
+  <article class="tipo" id="t8">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 08 · Borda-Carnot</div>
+      <h2 class="tipo-titulo">Pérdida de carga en ensanchamiento brusco (Borda-Carnot)</h2>
+      <div class="tipo-meta"><span class="badge">★ Frecuencia: media</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Tubería que sufre un <b>ensanchamiento brusco</b> (no gradual) de $A_1$ a $A_2$.</li>
+          <li>Te piden la <b>pérdida de carga</b> debido al ensanchamiento.</li>
+          <li>Caso particular: $A_2 \to \infty$ (descarga a depósito).</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>El ensanchamiento brusco crea torbellinos que disipan energía cinética.</li>
+          <li>La fórmula de Borda-Carnot se deriva de aplicar QDM al VC del ensanchamiento.</li>
+          <li>$h_f = (v_1 - v_2)^2 / (2g)$. La energía cinética perdida en el "salto" se disipa.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Pérdida de carga Borda-Carnot</div>
+            <div class="formula-katex">$$h_f = \frac{(v_1 - v_2)^2}{2g}$$</div>
+            <div class="formula-note">$v_1$ = velocidad antes (sección estrecha), $v_2$ = velocidad después (sección ancha).</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Caso $A_2 \gg A_1$ (descarga a depósito)</div>
+            <div class="formula-katex">$$h_f = \frac{v_1^2}{2g}$$</div>
+            <div class="formula-note">Toda la energía cinética se disipa. Equivale a un coeficiente $K = 1$ en la salida a depósito.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Identificar el ensanchamiento brusco</b> y sus dos secciones $A_1 < A_2$.</li>
+          <li><b>Continuidad:</b> $v_2 = v_1 A_1/A_2$.</li>
+          <li><b>Aplicar Borda-Carnot:</b> $h_f = (v_1-v_2)^2/(2g)$.</li>
+          <li><b>Sumar a las pérdidas totales</b> en Bernoulli generalizado.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Aplicar a un ensanchamiento <em>gradual</em> (cono difusor): la fórmula NO es válida (ahí las pérdidas son menores).</li>
+          <li>Confundir el orden: $v_1$ es siempre la velocidad MAYOR (sección estrecha).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Subproblema en redes de tuberías</span>
+          <span class="donde-tag">Boletín T14-T15</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    UPV/EHU · Mecánica de Fluidos · 2025-26 · Auditoría T14-T15 · v1
+  </footer>
+
+</div>
+</body>
+</html>

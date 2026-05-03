@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<title>Bloque T16 · Playbook · Mecánica de Fluidos</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--bg:#0a0a0a;--s1:#0f0f0f;--s2:#161616;--s3:#1d1d1d;--accent:#7dd3fc;--accent-dim:rgba(125,211,252,.12);--accent-border:rgba(125,211,252,.3);--gold:#fbbf24;--green:#34d399;--orange:#fb923c;--rose:#fb7185;--purple:#a78bfa;--line:rgba(255,255,255,.06);--line2:rgba(255,255,255,.12);--txt:#e2e8f0;--txt2:#94a3b8;--txt3:#64748b;--mono:'JetBrains Mono',monospace;--ui:'Space Grotesk',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-family:var(--ui),sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);height:52px;display:flex;align-items:center;padding:0 24px}
+.topbar-back{display:flex;align-items:center;gap:8px;color:var(--txt2);font-family:var(--mono);font-size:.72em;text-transform:uppercase;letter-spacing:.1em;font-weight:600;text-decoration:none;padding-right:18px;border-right:1px solid var(--line);height:100%;line-height:52px}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{margin-left:18px;font-size:.85em;color:#f1f5f9;font-weight:600}
+.topbar-title em{color:var(--accent);font-style:normal}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 32px 80px}
+@media(max-width:768px){.wrap{padding:20px 16px 60px}}
+.head{margin-bottom:32px;padding:24px 28px;background:linear-gradient(135deg,rgba(125,211,252,.06) 0%,transparent 70%);border:1px solid var(--accent-border);border-left:3px solid var(--accent);border-radius:0 12px 12px 0}
+.head .tag{font-family:var(--mono);font-size:.7em;font-weight:700;color:var(--accent);letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.head h1{font-size:1.85em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px}
+.head .sub{font-family:var(--mono);font-size:.82em;color:var(--txt2);line-height:1.5}
+.intro{background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:32px}
+.intro h2{font-size:1em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-family:var(--mono);font-weight:700}
+.intro p{color:#cbd5e1;margin-bottom:8px;font-size:.95em}
+.toc{background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:36px}
+.toc h2{font-size:.78em;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;font-family:var(--mono);font-weight:700}
+.toc ol{list-style:none;counter-reset:tipo;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:6px}
+.toc li{counter-increment:tipo;padding:8px 12px;background:var(--s2);border-left:2px solid var(--accent);border-radius:4px;font-size:.86em;display:flex;align-items:center;gap:10px}
+.toc li::before{content:counter(tipo,decimal-leading-zero);font-family:var(--mono);color:var(--accent);font-weight:700;font-size:.9em;flex-shrink:0;width:22px}
+.toc li a{color:#e2e8f0;text-decoration:none;flex:1;line-height:1.3}
+.toc li a:hover{color:var(--accent)}
+.tipo{background:var(--s1);border:1px solid var(--line);border-radius:12px;margin-bottom:32px;overflow:hidden;page-break-inside:avoid}
+.tipo-head{padding:18px 24px;background:linear-gradient(135deg,rgba(125,211,252,.08) 0%,transparent 60%);border-bottom:1px solid var(--line)}
+.tipo-num{font-family:var(--mono);font-size:.7em;color:var(--accent);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.tipo-titulo{font-size:1.4em;font-weight:700;color:#f1f5f9;letter-spacing:-.01em;line-height:1.25}
+.tipo-meta{font-family:var(--mono);font-size:.75em;color:var(--txt2);margin-top:8px;display:flex;gap:18px;flex-wrap:wrap}
+.tipo-meta .badge{padding:3px 9px;background:var(--s3);border:1px solid var(--line2);border-radius:12px;color:var(--txt2);font-size:.92em}
+.tipo-meta .badge.green{color:var(--green);border-color:rgba(52,211,153,.3)}
+.tipo-meta .badge.gold{color:var(--gold);border-color:rgba(251,191,36,.3)}
+.tipo-body{padding:20px 24px}
+.bloque{margin-bottom:22px;page-break-inside:avoid}
+.bloque-titulo{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.78em;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.bloque-titulo .icon{font-size:1.3em;line-height:1}
+.recono .bloque-titulo{color:#60a5fa}
+.teoria .bloque-titulo{color:var(--accent)}
+.formula-bloque .bloque-titulo{color:var(--purple)}
+.pasos .bloque-titulo{color:var(--green)}
+.errores .bloque-titulo{color:var(--rose)}
+.donde .bloque-titulo{color:var(--gold)}
+.bloque ul{padding-left:22px;color:#cbd5e1;font-size:.93em}
+.bloque ul li{margin-bottom:5px;line-height:1.55}
+.bloque ul li b{color:#f1f5f9}
+.pasos ol{list-style:none;counter-reset:paso;padding-left:0;margin:0}
+.pasos ol li{counter-increment:paso;padding:10px 12px 10px 46px;position:relative;background:rgba(52,211,153,.05);border-left:2px solid rgba(52,211,153,.3);border-radius:0 6px 6px 0;margin-bottom:7px;font-size:.92em;color:#cbd5e1;line-height:1.55}
+.pasos ol li::before{content:counter(paso);position:absolute;left:11px;top:9px;width:22px;height:22px;background:rgba(52,211,153,.12);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.78em;font-weight:700;color:var(--green)}
+.pasos ol li b{color:#a7f3d0}
+.pasos .sub{display:block;font-size:.86em;color:#94a3b8;font-style:italic;margin-top:4px}
+.formulas{background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.2);border-left:3px solid var(--purple);border-radius:6px;padding:14px 18px}
+.formulas .formula-item{margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed rgba(167,139,250,.18)}
+.formulas .formula-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.formulas .formula-label{font-family:var(--mono);font-size:.7em;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.formulas .formula-katex{text-align:center;padding:6px 0}
+.formulas .formula-note{font-size:.84em;color:#94a3b8;margin-top:6px;font-style:italic}
+.formulas .formula-note b{color:#fb923c;font-style:normal}
+.errores ul{background:rgba(251,113,133,.05);border:1px solid rgba(251,113,133,.18);border-left:2px solid var(--rose);border-radius:0 6px 6px 0;padding:10px 16px 10px 32px;list-style:none}
+.errores ul li{padding:4px 0;color:#fecdd3;font-size:.9em;position:relative}
+.errores ul li::before{content:'⚠';position:absolute;left:-18px;color:var(--rose)}
+.recono ul{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-left:2px solid #60a5fa;border-radius:0 6px 6px 0;padding:10px 16px 10px 32px;list-style:none}
+.recono ul li{padding:4px 0;color:#bfdbfe;font-size:.9em;position:relative}
+.recono ul li::before{content:'◈';position:absolute;left:-18px;color:#60a5fa;font-size:.85em}
+.teoria ul{padding-left:24px}
+.teoria ul li{color:#cbd5e1;font-size:.93em}
+.donde-list{display:flex;flex-wrap:wrap;gap:8px}
+.donde-tag{padding:5px 10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:14px;font-family:var(--mono);font-size:.74em;color:var(--gold);font-weight:600}
+.donde-tag b{color:#fef3c7}
+.footer{text-align:center;padding:30px 20px 0;color:var(--txt3);font-size:.75em;font-family:var(--mono);border-top:1px solid var(--line);margin-top:40px}
+.katex{font-size:1.06em;color:#e9d5ff}
+.katex-display{margin:8px 0;overflow-x:auto;overflow-y:hidden}
+table.dim-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.88em}
+table.dim-table th{background:rgba(125,211,252,.1);color:var(--accent);padding:6px 10px;border:1px solid var(--line2);text-align:left}
+table.dim-table td{padding:6px 10px;border:1px solid var(--line);color:#cbd5e1}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../teoria.html">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Fluidos
+  </a>
+  <span class="topbar-title">Bloque <em>T16</em> · Playbook de examen</span>
+<a class="topbar-pdf no-print" href="../pdf/auditoria_t16.pdf" download="auditoria_t16.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+
+<div class="wrap">
+
+  <header class="head">
+    <div class="tag">▶ Auditoría · Bloque temático</div>
+    <h1>T16 · Análisis dimensional</h1>
+    <div class="sub">Manual práctico — 5 tipos de problema (Buckingham Π, repetidoras, grupos típicos, similitud, aplicaciones de examen)</div>
+  </header>
+
+  <section class="intro">
+    <h2>📖 Cómo usar esta guía</h2>
+    <p>El análisis dimensional aparece en CASI TODOS los exámenes (junio 2020-2025) como pregunta independiente. La metodología es <b>casi mecánica</b>: identificar variables, contar dimensiones, elegir repetidoras, formar grupos.</p>
+    <p><b>Estrategia:</b> aprende los 4 pasos del Tipo 01 + las dimensiones de las variables comunes (Tipo 03). El resto son adaptaciones a aplicaciones concretas.</p>
+  </section>
+
+  <section class="toc">
+    <h2>📑 Índice de tipos de problema</h2>
+    <ol>
+      <li><a href="#t1">Buckingham Π — Plantilla genérica (4 pasos)</a></li>
+      <li><a href="#t2">Elección de variables repetidoras</a></li>
+      <li><a href="#t3">Grupos adimensionales típicos (Re, Eu, Fr, We, Ma)</a></li>
+      <li><a href="#t4">Similitud dinámica modelo ↔ prototipo</a></li>
+      <li><a href="#t5">Aplicaciones de examen (bomba, ala, vertedero)</a></li>
+    </ol>
+  </section>
+
+  <!-- TIPO 1 -->
+  <article class="tipo" id="t1">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 01 · Buckingham</div>
+      <h2 class="tipo-titulo">Teorema Π de Buckingham — plantilla mecánica de 4 pasos</h2>
+      <div class="tipo-meta"><span class="badge green">★★★ IMPRESCINDIBLE</span><span class="badge gold">Aparece en TODOS los exámenes</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Te dan una lista de <b>variables físicas</b> que afectan a un fenómeno (típicamente 5-8 variables).</li>
+          <li>Te piden los <b>grupos adimensionales</b> que describen el problema.</li>
+          <li>Aparecen palabras: "análisis dimensional", "Buckingham", "grupos Π", "variables repetidoras".</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li><b>Teorema Π de Buckingham:</b> si un fenómeno depende de $n$ variables y se usan $r$ dimensiones independientes, el problema se puede escribir con $k = n - r$ <b>grupos adimensionales</b> $\Pi_1, \Pi_2, ..., \Pi_k$.</li>
+          <li>En MF las dimensiones fundamentales son típicamente 3: $M$ (masa), $L$ (longitud), $T$ (tiempo). Por tanto $r = 3$ generalmente.</li>
+          <li>Las <b>variables repetidoras</b> son $r$ variables (3 normalmente) que aparecen en TODOS los grupos $\Pi$. Deben ser dimensionalmente independientes entre sí.</li>
+          <li>Cada grupo $\Pi_i$ se forma combinando una variable NO repetidora con las $r$ repetidoras hasta hacerla adimensional.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Número de grupos adimensionales</div>
+            <div class="formula-katex">$$k = n - r$$</div>
+            <div class="formula-note">$n$ = nº de variables del problema, $r$ = nº de dimensiones fundamentales (típicamente 3 en MF).</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Forma de cada grupo Π</div>
+            <div class="formula-katex">$$\Pi_i = X_i \cdot V_a^{\alpha_i} V_b^{\beta_i} V_c^{\gamma_i}$$</div>
+            <div class="formula-note">$X_i$ = variable no repetidora, $V_a, V_b, V_c$ = repetidoras. Los exponentes $\alpha, \beta, \gamma$ se determinan imponiendo que $[\Pi_i] = M^0 L^0 T^0$.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Los 4 pasos genéricos</div>
+        <ol>
+          <li><b>Identificar las $n$ variables</b> que intervienen en el problema (incluida la incógnita).</li>
+          <li><b>Determinar las dimensiones fundamentales</b> (en MF normalmente $r = 3$: M, L, T).</li>
+          <li><b>Elegir $r$ variables repetidoras</b> dimensionalmente independientes (que NO formen ya un grupo $\Pi$ entre sí). Suelen tomarse: una geométrica ($D$ o $L$), una cinemática ($v$ o $\omega$), una dinámica ($\rho$ o $\mu$).</li>
+          <li><b>Combinar cada variable NO repetidora</b> con las repetidoras: imponer $[\Pi_i] = M^0 L^0 T^0$ y resolver el sistema lineal de exponentes. Resultado: $k = n - r$ grupos.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Olvidar contar la incógnita como una de las $n$ variables.</li>
+          <li>Elegir repetidoras NO independientes (forman ya un grupo $\Pi$): el método falla.</li>
+          <li>Mezclar dimensiones fundamentales (si usas FLT en lugar de MLT, $r$ sigue siendo 3, pero las dimensiones cambian).</li>
+          <li>Olvidar variables que ya son adimensionales (ángulo $\theta$): no entran en el conteo $n$, son ya un $\Pi$ por sí mismas.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">TODOS los exámenes 2020-2025</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 2 -->
+  <article class="tipo" id="t2">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 02 · Repetidoras</div>
+      <h2 class="tipo-titulo">Elección de variables repetidoras</h2>
+      <div class="tipo-meta"><span class="badge gold">Crítico — define todo el problema</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>El enunciado a veces te dice qué repetidoras usar ("variables repetidas: $D$, $\rho$, $v$").</li>
+          <li>Otras veces tienes que elegirlas tú.</li>
+          <li>La elección AFECTA a la forma de los $\Pi$, pero no al número.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Las repetidoras tienen que ser <b>dimensionalmente independientes</b>: que no formen ya un grupo $\Pi$ entre ellas.</li>
+          <li>Combinación clásica en MF: <b>una geométrica</b> ($D$, $L$) + <b>una cinemática</b> ($v$, $\omega$, $a$) + <b>una propiedad del fluido</b> ($\rho$, $\mu$).</li>
+          <li>Tradicionalmente NO se elige la incógnita como repetidora (porque entonces aparecería como repetidora en TODOS los $\Pi$ y no se "aislaría" en uno solo).</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Combinaciones típicas</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Combinación clásica (problema general MF)</div>
+            <div class="formula-katex">$$\{D,\ v,\ \rho\} \quad \text{o} \quad \{L,\ v,\ \rho\}$$</div>
+            <div class="formula-note">Conduce naturalmente a Re, Eu, Fr como grupos típicos.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Para problemas con bombas / turbinas</div>
+            <div class="formula-katex">$$\{D,\ \omega,\ \rho\}$$</div>
+            <div class="formula-note">Conduce a coeficientes de bomba $C_Q = Q/(\omega D^3)$, $C_H = gH/(\omega^2 D^2)$, $C_P = P/(\rho \omega^3 D^5)$.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos para elegir repetidoras</div>
+        <ol>
+          <li><b>Listar todas las variables</b> y sus dimensiones.</li>
+          <li><b>Identificar las dimensiones fundamentales</b> presentes (M, L, T).</li>
+          <li><b>Elegir 3 variables</b> tales que entre ellas aparezcan TODAS las dimensiones fundamentales y NO formen un grupo Π entre sí.</li>
+          <li><b>NO elegir como repetidora la variable de la que quieres "aislar" el comportamiento</b> (incógnita principal).</li>
+          <li><b>Verificar independencia</b>: la matriz de exponentes de las repetidoras debe ser de rango $r$.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Elegir 3 longitudes (D, L, h) → dimensionalmente dependientes (todas son L).</li>
+          <li>Elegir la incógnita como repetidora: no la podrás aislar en un único Π.</li>
+          <li>Si el enunciado especifica las repetidoras, NO las cambies (aunque tu elección "natural" sea otra).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Todos los exámenes con análisis dimensional</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 3 -->
+  <article class="tipo" id="t3">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 03 · Grupos típicos</div>
+      <h2 class="tipo-titulo">Grupos adimensionales clásicos (Re, Eu, Fr, We, Ma, St)</h2>
+      <div class="tipo-meta"><span class="badge green">★★★ Memorizar</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>El examen pregunta el "significado físico" de un grupo Π.</li>
+          <li>Tienes que interpretar qué fuerzas relacionan los grupos obtenidos.</li>
+          <li>O directamente identificar Re, Eu, etc. en una lista de grupos.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible — significado físico</div>
+        <ul>
+          <li>Cada grupo adimensional clásico es un <b>cociente de dos fuerzas</b> características.</li>
+          <li><b>Re (Reynolds)</b>: inercia / viscosidad. Régimen laminar/turbulento.</li>
+          <li><b>Fr (Froude)</b>: inercia / gravedad. Canales abiertos, flotación de barcos.</li>
+          <li><b>Eu (Euler)</b>: presión / inercia. Hidráulica, presión dinámica.</li>
+          <li><b>We (Weber)</b>: inercia / tensión superficial. Gotas, burbujas, atomización.</li>
+          <li><b>Ma (Mach)</b>: velocidad / sonido. Compresibilidad de gases.</li>
+          <li><b>St (Strouhal)</b>: tiempo característico / período. Oscilaciones (vórtices).</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Tabla de grupos adimensionales (memorizar)</div>
+        <table class="dim-table">
+          <thead><tr><th>Grupo</th><th>Definición</th><th>Significado</th><th>Aplicación</th></tr></thead>
+          <tbody>
+          <tr><td><b>Reynolds</b></td><td>$Re = \rho v L / \mu$</td><td>inercia / viscosidad</td><td>Tuberías, capa límite</td></tr>
+          <tr><td><b>Froude</b></td><td>$Fr = v / \sqrt{gL}$</td><td>inercia / gravedad</td><td>Canales, vertederos, barcos</td></tr>
+          <tr><td><b>Euler</b></td><td>$Eu = \Delta p / (\rho v^2)$</td><td>presión / inercia</td><td>Hidráulica</td></tr>
+          <tr><td><b>Weber</b></td><td>$We = \rho v^2 L / \sigma$</td><td>inercia / tensión sup.</td><td>Gotas, burbujas</td></tr>
+          <tr><td><b>Mach</b></td><td>$Ma = v / c$</td><td>velocidad / sonido</td><td>Aerodinámica compresible</td></tr>
+          <tr><td><b>Strouhal</b></td><td>$St = f L / v$</td><td>frecuencia adim.</td><td>Vórtices oscilantes</td></tr>
+          <tr><td><b>Cavitación</b></td><td>$\sigma_c = (p-p_v)/(\rho v^2/2)$</td><td>presión / dinámica</td><td>Bombas, hélices</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos para identificar / interpretar grupos</div>
+        <ol>
+          <li><b>Comparar el grupo obtenido</b> con los clásicos de la tabla.</li>
+          <li><b>Si coincide:</b> nombrarlo y dar su significado físico.</li>
+          <li><b>Si no coincide pero es un producto/cociente</b> de clásicos: descomponerlo.</li>
+          <li><b>Si es completamente nuevo:</b> interpretar qué fuerzas o efectos compara según las variables que contiene.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Confundir Re ($\rho v L/\mu$) con Re cinemático ($v L/\nu$) — son IGUALES, $\nu = \mu/\rho$.</li>
+          <li>Olvidar que Eu se define a veces con el factor $1/2$ (presión dinámica).</li>
+          <li>Mezclar Mach con velocidad supersónica (Ma > 1 = supersónico).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Pregunta corta común</span>
+          <span class="donde-tag">Apartado b/c en problemas de Buckingham</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 4 -->
+  <article class="tipo" id="t4">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 04 · Similitud</div>
+      <h2 class="tipo-titulo">Similitud dinámica modelo ↔ prototipo</h2>
+      <div class="tipo-meta"><span class="badge">★★ Frecuencia: media-alta</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Se ensaya un <b>modelo a escala</b> (1:50, 1:100) y te piden los resultados en el <b>prototipo</b> real.</li>
+          <li>Aparecen palabras "modelo", "prototipo", "escala", "similitud", "ensayo".</li>
+          <li>Aplicaciones: barcos (Fr), tuberías (Re), aviones (Ma), vertederos (Fr).</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li><b>Similitud geométrica:</b> mismas proporciones (escala lineal $\lambda = L_m/L_p$).</li>
+          <li><b>Similitud cinemática:</b> mismos campos de velocidades adimensionales.</li>
+          <li><b>Similitud dinámica:</b> los grupos $\Pi$ relevantes son iguales en modelo y prototipo.</li>
+          <li>Si el fenómeno está dominado por inercia/viscosidad: $Re_m = Re_p$. Si por gravedad: $Fr_m = Fr_p$. Etc.</li>
+          <li>NO siempre se pueden cumplir todos los grupos a la vez (incompatibilidad entre Re y Fr en barcos: se elige uno y se corrige el otro empíricamente).</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Similitud por Reynolds</div>
+            <div class="formula-katex">$$\frac{\rho_m v_m L_m}{\mu_m} = \frac{\rho_p v_p L_p}{\mu_p}$$</div>
+            <div class="formula-note">Si mismo fluido: $v_m / v_p = L_p / L_m$ (modelo más pequeño → velocidad mayor).</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Similitud por Froude</div>
+            <div class="formula-katex">$$\frac{v_m}{\sqrt{g L_m}} = \frac{v_p}{\sqrt{g L_p}} \quad \Rightarrow \quad v_m = v_p \sqrt{L_m/L_p}$$</div>
+            <div class="formula-note">Modelo más pequeño → velocidad MENOR (factor $\sqrt{\lambda}$).</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Escalas derivadas (similitud por Froude)</div>
+            <div class="formula-katex">$$\frac{Q_m}{Q_p} = \lambda^{5/2} \qquad \frac{F_m}{F_p} = \lambda^3 \qquad \frac{P_m}{P_p} = \lambda^{7/2}$$</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Identificar el grupo Π relevante</b> (Re para tuberías, Fr para canales/barcos, etc.).</li>
+          <li><b>Igualar ese grupo</b> entre modelo y prototipo: $\Pi_m = \Pi_p$.</li>
+          <li><b>Despejar la velocidad u otra magnitud</b> del modelo en función del prototipo.</li>
+          <li><b>Para magnitudes derivadas</b> (Q, F, P): usar las relaciones de escala correspondientes.</li>
+          <li><b>Para resultados al prototipo</b>: medir en el modelo y aplicar la escala inversa.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Aplicar similitud Re cuando el fenómeno depende de Fr (canal abierto) o viceversa.</li>
+          <li>Pretender cumplir Re y Fr a la vez con el mismo fluido (imposible si $L_m \neq L_p$).</li>
+          <li>Confundir las escalas derivadas: $Q_m/Q_p \neq \lambda^3$ (depende del régimen).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Apartado b/c en muchos exámenes</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 5 -->
+  <article class="tipo" id="t5">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 05 · Aplicaciones</div>
+      <h2 class="tipo-titulo">Aplicaciones típicas de examen — Bomba · Ala · Vertedero · Compuerta</h2>
+      <div class="tipo-meta"><span class="badge gold">junio2024ef, junio2025ef, mayo2025</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>El enunciado describe una <b>aplicación concreta</b> (bomba, ala de avión, vertedero en V, compuerta) y pide los grupos adimensionales.</li>
+          <li>Te dan una lista clara de variables y, a veces, las repetidoras.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible — combinaciones por aplicación</div>
+        <ul>
+          <li><b>Bomba/turbina:</b> variables = {Q, H, P, ρ, μ, ω, D}. Repetidoras = {ρ, ω, D}. Grupos = $C_Q$, $C_H$, $C_P$, Re.</li>
+          <li><b>Ala de avión:</b> variables = {F, ρ, v, c, μ, c_{son}}. Grupos = $C_L$, Re, Ma.</li>
+          <li><b>Vertedero:</b> variables = {Q, H, b, ρ, g, μ}. Grupos = $C_d$, Re, Fr.</li>
+          <li><b>Compuerta en tubería:</b> variables = {ΔP, v, D, h, ρ, μ, θ}. Grupos = Eu, Re, h/D, θ.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Coeficientes adimensionales por aplicación</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Bomba — coeficientes característicos</div>
+            <div class="formula-katex">$$C_Q = \frac{Q}{\omega D^3} \quad C_H = \frac{gH}{\omega^2 D^2} \quad C_P = \frac{P}{\rho \omega^3 D^5}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Ala — coeficientes aerodinámicos</div>
+            <div class="formula-katex">$$C_L = \frac{F_L}{\frac{1}{2}\rho v^2 A} \quad C_D = \frac{F_D}{\frac{1}{2}\rho v^2 A}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Vertedero — coeficiente de descarga</div>
+            <div class="formula-katex">$$C_d = \frac{Q}{\sqrt{g}\,b\,H^{3/2}}$$</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Reconocer el tipo de aplicación</b> y sus variables características.</li>
+          <li><b>Aplicar Buckingham</b> con las repetidoras adecuadas.</li>
+          <li><b>Identificar los grupos resultantes</b> con los coeficientes clásicos de la aplicación (CQ, CH, CL, Cd...).</li>
+          <li><b>Si te piden interpretar:</b> dar el significado físico de cada grupo.</li>
+          <li><b>Si te piden similitud:</b> igualar los grupos relevantes entre modelo y prototipo.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Olvidar que Q ya está incluido como variable cuando se busca $C_Q$.</li>
+          <li>Confundir coeficientes $C_L$ (sustentación) y $C_D$ (resistencia) de un ala.</li>
+          <li>Para vertederos: incluir $\mu$ cuando el flujo es turbulento (Re alto), donde $\mu$ no influye.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2024ef</b> — Bomba interplanetaria</span>
+          <span class="donde-tag"><b>junio2025ef</b> — Vertedero en V</span>
+          <span class="donde-tag"><b>mayo2025</b> — Compuerta tubería</span>
+          <span class="donde-tag"><b>junio2021ef</b> — Ala</span>
+          <span class="donde-tag"><b>junio2022</b> — Análisis dim. general</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    UPV/EHU · Mecánica de Fluidos · 2025-26 · Auditoría T16 · v1
+  </footer>
+
+</div>
+</body>
+</html>

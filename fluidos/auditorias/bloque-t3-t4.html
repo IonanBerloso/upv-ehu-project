@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<title>Bloque T3–T4 · Playbook · Mecánica de Fluidos</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{--bg:#0a0a0a;--s1:#0f0f0f;--s2:#161616;--s3:#1d1d1d;--accent:#7dd3fc;--accent-dim:rgba(125,211,252,.12);--accent-border:rgba(125,211,252,.3);--gold:#fbbf24;--green:#34d399;--orange:#fb923c;--rose:#fb7185;--purple:#a78bfa;--line:rgba(255,255,255,.06);--line2:rgba(255,255,255,.12);--txt:#e2e8f0;--txt2:#94a3b8;--txt3:#64748b;--mono:'JetBrains Mono',monospace;--ui:'Space Grotesk',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-family:var(--ui),sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);height:52px;display:flex;align-items:center;padding:0 24px}
+.topbar-back{display:flex;align-items:center;gap:8px;color:var(--txt2);font-family:var(--mono);font-size:.72em;text-transform:uppercase;letter-spacing:.1em;font-weight:600;text-decoration:none;padding-right:18px;border-right:1px solid var(--line);height:100%;line-height:52px}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{margin-left:18px;font-size:.85em;color:#f1f5f9;font-weight:600}
+.topbar-title em{color:var(--accent);font-style:normal}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 32px 80px}
+@media(max-width:768px){.wrap{padding:20px 16px 60px}}
+.head{margin-bottom:32px;padding:24px 28px;background:linear-gradient(135deg,rgba(125,211,252,.06) 0%,transparent 70%);border:1px solid var(--accent-border);border-left:3px solid var(--accent);border-radius:0 12px 12px 0}
+.head .tag{font-family:var(--mono);font-size:.7em;font-weight:700;color:var(--accent);letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.head h1{font-size:1.85em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px}
+.head .sub{font-family:var(--mono);font-size:.82em;color:var(--txt2);line-height:1.5}
+.intro{background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:32px}
+.intro h2{font-size:1em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-family:var(--mono);font-weight:700}
+.intro p{color:#cbd5e1;margin-bottom:8px;font-size:.95em}
+.toc{background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:36px}
+.toc h2{font-size:.78em;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;font-family:var(--mono);font-weight:700}
+.toc ol{list-style:none;counter-reset:tipo;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:6px}
+.toc li{counter-increment:tipo;padding:8px 12px;background:var(--s2);border-left:2px solid var(--accent);border-radius:4px;font-size:.86em;display:flex;align-items:center;gap:10px}
+.toc li::before{content:counter(tipo,decimal-leading-zero);font-family:var(--mono);color:var(--accent);font-weight:700;font-size:.9em;flex-shrink:0;width:22px}
+.toc li a{color:#e2e8f0;text-decoration:none;flex:1;line-height:1.3}
+.toc li a:hover{color:var(--accent)}
+.tipo{background:var(--s1);border:1px solid var(--line);border-radius:12px;margin-bottom:32px;overflow:hidden;page-break-inside:avoid}
+.tipo-head{padding:18px 24px;background:linear-gradient(135deg,rgba(125,211,252,.08) 0%,transparent 60%);border-bottom:1px solid var(--line)}
+.tipo-num{font-family:var(--mono);font-size:.7em;color:var(--accent);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.tipo-titulo{font-size:1.4em;font-weight:700;color:#f1f5f9;letter-spacing:-.01em;line-height:1.25}
+.tipo-meta{font-family:var(--mono);font-size:.75em;color:var(--txt2);margin-top:8px;display:flex;gap:18px;flex-wrap:wrap}
+.tipo-meta .badge{padding:3px 9px;background:var(--s3);border:1px solid var(--line2);border-radius:12px;color:var(--txt2);font-size:.92em}
+.tipo-meta .badge.green{color:var(--green);border-color:rgba(52,211,153,.3)}
+.tipo-meta .badge.gold{color:var(--gold);border-color:rgba(251,191,36,.3)}
+.tipo-body{padding:20px 24px}
+.bloque{margin-bottom:22px;page-break-inside:avoid}
+.bloque-titulo{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.78em;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.bloque-titulo .icon{font-size:1.3em;line-height:1}
+.recono .bloque-titulo{color:#60a5fa}
+.teoria .bloque-titulo{color:var(--accent)}
+.formula-bloque .bloque-titulo{color:var(--purple)}
+.pasos .bloque-titulo{color:var(--green)}
+.errores .bloque-titulo{color:var(--rose)}
+.donde .bloque-titulo{color:var(--gold)}
+.bloque ul{padding-left:22px;color:#cbd5e1;font-size:.93em}
+.bloque ul li{margin-bottom:5px;line-height:1.55}
+.bloque ul li b{color:#f1f5f9}
+.pasos ol{list-style:none;counter-reset:paso;padding-left:0;margin:0}
+.pasos ol li{counter-increment:paso;padding:10px 12px 10px 46px;position:relative;background:rgba(52,211,153,.05);border-left:2px solid rgba(52,211,153,.3);border-radius:0 6px 6px 0;margin-bottom:7px;font-size:.92em;color:#cbd5e1;line-height:1.55}
+.pasos ol li::before{content:counter(paso);position:absolute;left:11px;top:9px;width:22px;height:22px;background:rgba(52,211,153,.12);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.78em;font-weight:700;color:var(--green)}
+.pasos ol li b{color:#a7f3d0}
+.pasos .sub{display:block;font-size:.86em;color:#94a3b8;font-style:italic;margin-top:4px}
+.formulas{background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.2);border-left:3px solid var(--purple);border-radius:6px;padding:14px 18px}
+.formulas .formula-item{margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed rgba(167,139,250,.18)}
+.formulas .formula-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.formulas .formula-label{font-family:var(--mono);font-size:.7em;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.formulas .formula-katex{text-align:center;padding:6px 0}
+.formulas .formula-note{font-size:.84em;color:#94a3b8;margin-top:6px;font-style:italic}
+.formulas .formula-note b{color:#fb923c;font-style:normal}
+.errores ul{background:rgba(251,113,133,.05);border:1px solid rgba(251,113,133,.18);border-left:2px solid var(--rose);border-radius:0 6px 6px 0;padding:10px 16px 10px 32px;list-style:none}
+.errores ul li{padding:4px 0;color:#fecdd3;font-size:.9em;position:relative}
+.errores ul li::before{content:'⚠';position:absolute;left:-18px;color:var(--rose)}
+.recono ul{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-left:2px solid #60a5fa;border-radius:0 6px 6px 0;padding:10px 16px 10px 32px;list-style:none}
+.recono ul li{padding:4px 0;color:#bfdbfe;font-size:.9em;position:relative}
+.recono ul li::before{content:'◈';position:absolute;left:-18px;color:#60a5fa;font-size:.85em}
+.teoria ul{padding-left:24px}
+.teoria ul li{color:#cbd5e1;font-size:.93em}
+.donde-list{display:flex;flex-wrap:wrap;gap:8px}
+.donde-tag{padding:5px 10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:14px;font-family:var(--mono);font-size:.74em;color:var(--gold);font-weight:600}
+.donde-tag b{color:#fef3c7}
+.footer{text-align:center;padding:30px 20px 0;color:var(--txt3);font-size:.75em;font-family:var(--mono);border-top:1px solid var(--line);margin-top:40px}
+.katex{font-size:1.06em;color:#e9d5ff}
+.katex-display{margin:8px 0;overflow-x:auto;overflow-y:hidden}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../teoria.html">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Fluidos
+  </a>
+  <span class="topbar-title">Bloque <em>T3 · T4</em> · Playbook de examen</span>
+<a class="topbar-pdf no-print" href="../pdf/auditoria_t3-t4.pdf" download="auditoria_t3-t4.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+
+<div class="wrap">
+
+  <header class="head">
+    <div class="tag">▶ Auditoría · Bloque temático</div>
+    <h1>T3 · Estática de fluidos<br>T4 · Hidrostática y manómetros</h1>
+    <div class="sub">Manual práctico — 6 tipos de problema (presiones, manómetros U/diferenciales/inclinados, atmósfera, equilibrio relativo)</div>
+  </header>
+
+  <section class="intro">
+    <h2>📖 Cómo usar esta guía</h2>
+    <p>Para cada tipo de ejercicio típico de <em>estática</em> e <em>hidrostática</em>, te indica: cómo reconocerlo, teoría, fórmulas, pasos exactos y errores frecuentes. <b>Estrategia:</b> aprende los pasos de memoria; cuando veas un manómetro, identifica el tipo y aplica el procedimiento adaptando los datos.</p>
+  </section>
+
+  <section class="toc">
+    <h2>📑 Índice de tipos de problema</h2>
+    <ol>
+      <li><a href="#t1">Presión absoluta vs manométrica</a></li>
+      <li><a href="#t2">Manómetro en U (simple)</a></li>
+      <li><a href="#t3">Manómetro diferencial (dos puntos)</a></li>
+      <li><a href="#t4">Manómetro inclinado (sensibilidad)</a></li>
+      <li><a href="#t5">Atmósfera estándar / variación con altitud</a></li>
+      <li><a href="#t6">Equilibrio relativo (acelerado / rotación)</a></li>
+    </ol>
+  </section>
+
+  <!-- TIPO 1 -->
+  <article class="tipo" id="t1">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 01 · Presiones</div>
+      <h2 class="tipo-titulo">Presión absoluta vs manométrica · Lecturas básicas</h2>
+      <div class="tipo-meta"><span class="badge">★ Frecuencia: básica</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Te dan presión en bar/atm/mmHg/m.c.a. y piden convertirla.</li>
+          <li>Lectura de manómetro: pide presión absoluta o manométrica.</li>
+          <li>Profundidad bajo la lámina libre y piden presión a esa profundidad.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li><b>Presión hidrostática:</b> $p = \rho g h$ ($h$ = profundidad).</li>
+          <li><b>Absoluta:</b> referida al vacío. <b>Manométrica:</b> referida a la atmosférica. Relación: $p_{abs} = p_{atm} + p_{man}$.</li>
+          <li>Atmosférica estándar: $p_{atm} = 101\,325$ Pa $\approx 1{,}013$ bar $= 760$ mmHg $= 10{,}33$ m.c.a.</li>
+          <li>Memorizar la cadena: 1 atm = 101,3 kPa = 1,013 bar = 10,33 m.c.a. = 760 mmHg = 1,033 kgf/cm².</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Presión hidrostática</div>
+            <div class="formula-katex">$$p(h) = p_{sup} + \rho g h$$</div>
+            <div class="formula-note">$p_{sup}$ = presión en la superficie libre (suele ser $p_{atm}$ si está abierto).</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Conversiones</div>
+            <div class="formula-katex">$$1\ \text{bar} = 10^5\ \text{Pa} \quad 1\ \text{atm} = 1{,}013\ \text{bar} \quad 1\ \text{m.c.a.} = 9800\ \text{Pa}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Manométrica ↔ absoluta</div>
+            <div class="formula-katex">$$p_{abs} = p_{atm} + p_{man} \qquad p_{man} = p_{abs} - p_{atm}$$</div>
+            <div class="formula-note">$p_{man}$ puede ser <b>negativa</b> (vacío parcial). Cavitación = $p_{abs} \leq p_v$.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Identificar qué tipo de presión te dan</b> (absoluta vs manométrica) y cuál te piden.</li>
+          <li><b>Convertir todas las presiones al SI</b> (Pa) usando la cadena de conversiones.</li>
+          <li><b>Si hay profundidad:</b> $p = p_{sup} + \rho g h$.</li>
+          <li><b>Sumar/restar atmosférica</b> para pasar entre absoluta y manométrica.</li>
+          <li><b>Comprobar el orden de magnitud:</b> 1 m de agua ≈ 0,1 bar ≈ 10 kPa.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Mezclar absoluta y manométrica en el mismo cálculo.</li>
+          <li>Olvidar la presión atmosférica en problemas de cavitación o NPSH.</li>
+          <li>Usar 1 bar = 1 atm (¡son distintos por un 1,3%!).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Pre-requisito en TODOS los ejercicios</span>
+          <span class="donde-tag">Pregunta corta inicial</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 2 -->
+  <article class="tipo" id="t2">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 02 · Manómetro U</div>
+      <h2 class="tipo-titulo">Manómetro en U simple — diferencia de altura entre dos columnas</h2>
+      <div class="tipo-meta"><span class="badge green">★★ Frecuencia: alta</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Tubo en forma de U con un fluido manométrico (mercurio, agua).</li>
+          <li>Conectado a un depósito o tubería; lectura $h$ = diferencia de altura entre las dos columnas.</li>
+          <li>Te piden la presión del fluido del depósito.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li><b>Principio fundamental:</b> en un fluido en reposo, dos puntos a la <em>misma cota</em> dentro del MISMO fluido tienen la <em>misma presión</em>.</li>
+          <li><b>Recorrido por el manómetro:</b> bajar = sumar $\rho g h$, subir = restar $\rho g h$.</li>
+          <li>El fluido manométrico debe ser más denso que el fluido medido (Hg para gases/agua) o no miscible.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Ecuación general (recorrido punto-a-punto)</div>
+            <div class="formula-katex">$$p_A + \sum_i \pm \rho_i g h_i = p_B$$</div>
+            <div class="formula-note"><b>Signo +</b> al bajar (gana presión), <b>signo −</b> al subir (pierde presión). Recorrer desde A hasta B siguiendo la columna.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Manómetro U abierto (lectura $h$ del fluido manométrico)</div>
+            <div class="formula-katex">$$p_A = \rho_m g h - \rho g h_a$$</div>
+            <div class="formula-note">$\rho_m$ = densidad fluido manométrico, $\rho$ = densidad fluido medido, $h_a$ = altura de columna del fluido medido sobre A.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Dibujar el manómetro</b> con las cotas y los fluidos identificados.</li>
+          <li><b>Elegir un punto de partida</b> (típicamente la conexión al depósito) y un punto final (atmósfera o referencia conocida).</li>
+          <li><b>Recorrer el manómetro</b> sumando $\rho g h$ al bajar y restando al subir.</li>
+          <li><b>Igualar a la presión final</b> (0 manométrica si es atmósfera).</li>
+          <li><b>Despejar la incógnita</b> ($p_A$ o lectura $h$).</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Confundir el sentido del recorrido (subir/bajar): SIEMPRE seguir la dirección física del fluido.</li>
+          <li>Cambiar la densidad mal cuando se cruza una interfaz entre fluidos.</li>
+          <li>Olvidar que en columnas de gas el peso es despreciable (se desprecia $\rho_{gas} g h$).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Boletín T3-T4 — múltiples ej</span>
+          <span class="donde-tag">Subproblema en otros temas</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 3 -->
+  <article class="tipo" id="t3">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 03 · Manómetro diferencial</div>
+      <h2 class="tipo-titulo">Manómetro diferencial — diferencia de presión entre dos puntos</h2>
+      <div class="tipo-meta"><span class="badge green">★★ Frecuencia: alta</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>El manómetro conecta DOS depósitos o DOS puntos de una tubería (no es a la atmósfera).</li>
+          <li>Te piden $\Delta p = p_A - p_B$ a partir de la lectura $h$.</li>
+          <li>Aparece en el contexto de Venturi, Pitot o tuberías con cambio de sección.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Misma idea que el manómetro U pero ambos extremos están en presión incógnita.</li>
+          <li>La diferencia $\Delta p = p_A - p_B$ se obtiene haciendo el recorrido completo del manómetro.</li>
+          <li>Ventaja: es independiente de la cota de los puntos A, B (queda cancelada al recorrer).</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Diferencia de presión (manómetro diferencial con fluido más denso)</div>
+            <div class="formula-katex">$$p_A - p_B = (\rho_m - \rho) g h$$</div>
+            <div class="formula-note">$\rho_m$ = densidad del fluido manométrico, $\rho$ = densidad del fluido en la tubería, $h$ = lectura.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Manómetro invertido (fluido manométrico más ligero, encima)</div>
+            <div class="formula-katex">$$p_A - p_B = (\rho - \rho_m) g h$$</div>
+            <div class="formula-note">Útil cuando $\Delta p$ es muy pequeño y se quiere amplificar la lectura.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Identificar los dos puntos A y B</b> y la lectura $h$ del fluido manométrico.</li>
+          <li><b>Plantear la ecuación de recorrido</b> desde A hasta B sumando/restando $\rho g h_i$ por cada tramo.</li>
+          <li><b>Simplificar</b>: las cotas iguales se cancelan, queda solo la diferencia.</li>
+          <li><b>Despejar $\Delta p$</b> en función de $h$, $\rho_m$ y $\rho$.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Olvidar restar $\rho$ (densidad del fluido principal) → la fórmula simplificada NO es $\rho_m g h$ sino $(\rho_m-\rho)gh$.</li>
+          <li>Mezclar el sentido del manómetro: A más alto vs B más alto.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Conectado a Venturi (T13)</span>
+          <span class="donde-tag">Boletín T3-T4 — ej diferenciales</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 4 -->
+  <article class="tipo" id="t4">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 04 · Manómetro inclinado</div>
+      <h2 class="tipo-titulo">Manómetro inclinado — amplificación de la lectura</h2>
+      <div class="tipo-meta"><span class="badge">★ Frecuencia: media</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>El brazo del manómetro forma un ángulo $\alpha$ con la horizontal.</li>
+          <li>Se usa para medir <b>diferencias de presión muy pequeñas</b> (gases, ventilación).</li>
+          <li>La lectura es a lo largo del tubo inclinado ($L$), no en vertical ($h$).</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Lo único que cambia respecto al U vertical es la relación entre la lectura inclinada $L$ y la altura vertical $h$.</li>
+          <li>Relación: $h = L \sin\alpha$. La presión depende solo de $h$ (vertical).</li>
+          <li><b>Ventaja:</b> con $\alpha$ pequeño, una pequeña diferencia de presión produce una lectura $L$ grande (amplificación $1/\sin\alpha$).</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Conversión lectura inclinada → altura efectiva</div>
+            <div class="formula-katex">$$h = L \sin\alpha$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Presión medida</div>
+            <div class="formula-katex">$$\Delta p = \rho_m g h = \rho_m g L \sin\alpha$$</div>
+            <div class="formula-note">Sensibilidad amplificada por factor $1/\sin\alpha$. Para $\alpha = 30°$: × 2. Para $\alpha = 5°$: × 11,5.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Identificar el ángulo $\alpha$</b> del brazo inclinado.</li>
+          <li><b>Convertir la lectura $L$ a altura vertical:</b> $h = L \sin\alpha$.</li>
+          <li><b>Aplicar la ecuación del manómetro normal</b> con $h$.</li>
+          <li><b>Si te piden la sensibilidad:</b> calcular el factor $1/\sin\alpha$.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Usar directamente $L$ en lugar de $h = L \sin\alpha$ (¡error sistemático!).</li>
+          <li>Confundir $\alpha$ con la horizontal vs con la vertical.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Boletín T3-T4 — ej de manómetros sensibles</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 5 -->
+  <article class="tipo" id="t5">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 05 · Atmósfera</div>
+      <h2 class="tipo-titulo">Atmósfera estándar — variación de presión con la altitud</h2>
+      <div class="tipo-meta"><span class="badge">★ Frecuencia: baja</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Atmósfera, altitud, vuelo, presión a $z$ metros sobre el nivel del mar.</li>
+          <li>Distingue entre <b>atmósfera isoterma</b> (T constante) y <b>troposfera con lapsus</b> (T disminuye linealmente).</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Equilibrio hidrostático para fluido compresible: $dp/dz = -\rho g$.</li>
+          <li>Para gas ideal: $\rho = pM/(RT)$ ⟹ $dp/p = -gM/(RT) dz$.</li>
+          <li><b>Isoterma:</b> $T$ = cte. Solución exponencial.</li>
+          <li><b>Troposfera estándar:</b> $T(z) = T_0 - \beta z$ con $\beta \approx 6{,}5$ K/km.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Atmósfera isoterma</div>
+            <div class="formula-katex">$$p(z) = p_0 \, e^{-z/H} \quad \text{con} \quad H = \frac{RT}{Mg}$$</div>
+            <div class="formula-note">$H$ = altura de escala. Para aire a 288 K: $H \approx 8\,400$ m.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Atmósfera con lapso (troposfera)</div>
+            <div class="formula-katex">$$p(z) = p_0 \left(1 - \frac{\beta z}{T_0}\right)^{Mg/(R\beta)}$$</div>
+            <div class="formula-note">$\beta = 6{,}5$ K/km, $T_0 = 288$ K, $p_0 = 101\,325$ Pa.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Identificar el modelo</b>: isotermo (problema simple) o lapso (más realista).</li>
+          <li><b>Aplicar la fórmula correspondiente</b> con datos: $p_0$, $T_0$, $z$, $M_{aire} = 28{,}96$ g/mol.</li>
+          <li><b>Despejar la incógnita</b> ($p$, $z$ o $T$).</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Aplicar la fórmula isoterma cuando hay variación de T significativa (>1 km).</li>
+          <li>Olvidar que $M$ es la masa molar del aire en kg/mol (0,02896), NO en g/mol.</li>
+          <li>Usar T en °C en lugar de K.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Pregunta corta sobre atmósfera</span>
+          <span class="donde-tag">Problema de globos sonda</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- TIPO 6 -->
+  <article class="tipo" id="t6">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 06 · Equilibrio relativo</div>
+      <h2 class="tipo-titulo">Equilibrio relativo — recipiente acelerado o en rotación</h2>
+      <div class="tipo-meta"><span class="badge">★ Frecuencia: media</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Recipiente que <b>se mueve</b> (no en reposo): aceleración lineal o rotación.</li>
+          <li>El líquido en su interior se redistribuye: superficie inclinada (si lineal) o paraboloide (si rotación).</li>
+          <li>Te piden la <b>forma de la superficie libre</b>, la presión en un punto, o el ángulo / altura del paraboloide.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>El líquido está <b>en reposo respecto al recipiente</b> (equilibrio relativo). Se puede aplicar estática añadiendo la fuerza ficticia (pseudofuerza).</li>
+          <li><b>Acel. lineal $a$:</b> superficie libre se inclina $\tan\theta = a/g$.</li>
+          <li><b>Rotación $\omega$:</b> superficie libre forma paraboloide $z(r) = \omega^2 r^2/(2g)$.</li>
+          <li>La presión sigue siendo $p = \rho g_{ef} h_{ef}$ con la "gravedad efectiva" combinando $g$ y la pseudofuerza.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Aceleración lineal horizontal $a$</div>
+            <div class="formula-katex">$$\tan\theta = \frac{a}{g}$$</div>
+            <div class="formula-note">$\theta$ = ángulo de inclinación de la superficie libre respecto a la horizontal.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Rotación a velocidad angular $\omega$</div>
+            <div class="formula-katex">$$z(r) = \frac{\omega^2 r^2}{2g}$$</div>
+            <div class="formula-note">Altura del paraboloide en función del radio. $r = 0$: punto más bajo. $r = R$: punto más alto.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Volumen del paraboloide (líquido formando paraboloide)</div>
+            <div class="formula-katex">$$V_{parab} = \frac{1}{2} \pi R^2 h$$</div>
+            <div class="formula-note">$h$ = altura del paraboloide. Útil para problemas de "qué fracción se derrama" o "altura mínima de la pared".</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Identificar el tipo de movimiento:</b> lineal acelerado o rotación uniforme.</li>
+          <li><b>Aplicar la fórmula geométrica</b>: $\tan\theta = a/g$ o $z = \omega^2 r^2/(2g)$.</li>
+          <li><b>Usar conservación del volumen</b> para relacionar la nueva forma con el volumen inicial (típico: paraboloide reemplaza líquido a la altura original).</li>
+          <li><b>Calcular presiones</b> en puntos concretos con $p = \rho g h$ usando la nueva geometría.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Olvidar la conservación del volumen: el líquido se redistribuye pero NO desaparece.</li>
+          <li>Confundir $\omega$ (rad/s) con $n$ (rpm). Conversión: $\omega = 2\pi n/60$.</li>
+          <li>Usar $g_{ef}$ donde no hace falta. La superficie libre es perpendicular a $g_{ef}$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Boletín T3-T4 — ej de equilibrio relativo</span>
+          <span class="donde-tag">Pregunta corta sobre vasija giratoria</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    UPV/EHU · Mecánica de Fluidos · 2025-26 · Auditoría T3-T4 · v1
+  </footer>
+
+</div>
+</body>
+</html>
