@@ -37,6 +37,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
 ROOT = Path(__file__).resolve().parent.parent  # upv-ehu-project/
 MANIFEST = ROOT / "tools" / "pdf_manifest.json"
 PRINT_CSS = ROOT / "shared" / "print.css"
+VERSIONS_FILE = ROOT / "tools" / "pdf_versions.json"
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -146,18 +147,71 @@ def render_one(page, html_path: Path, pdf_path: Path, titulo: str = "",
         return False, f"ERROR: {type(e).__name__}: {e}"
 
 
-def merge_subject(asig_data: dict, output_dir: Path) -> tuple[bool, str]:
-    """Concatena los PDFs individuales en el libro completo."""
+def load_versions() -> dict:
+    """Carga el fichero de versiones (o devuelve por defecto)."""
+    if VERSIONS_FILE.is_file():
+        return json.loads(VERSIONS_FILE.read_text(encoding="utf-8"))
+    return {"mecanica": 1, "fluidos": 1, "sistemas": 1}
+
+
+def save_versions(versions: dict) -> None:
+    """Guarda el fichero de versiones."""
+    import datetime
+    versions["_updated"] = datetime.date.today().isoformat()
+    VERSIONS_FILE.write_text(
+        json.dumps(versions, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
+def cleanup_old_versions(output_dir: Path, base_name: str, current_version: int) -> list[str]:
+    """Borra versiones anteriores del libro. Devuelve los nombres borrados.
+    base_name es 'Mecanica' (sin _vN.pdf)."""
+    import re
+    deleted = []
+    pattern = re.compile(rf'^{re.escape(base_name)}_v(\d+)\.pdf$', re.IGNORECASE)
+    for f in output_dir.glob(f"{base_name}_v*.pdf"):
+        m = pattern.match(f.name)
+        if m and int(m.group(1)) != current_version:
+            try:
+                f.unlink()
+                deleted.append(f.name)
+            except OSError:
+                pass
+    # También borrar el "Mecanica.pdf" sin sufijo si existe (legacy)
+    legacy = output_dir / f"{base_name}.pdf"
+    if legacy.is_file():
+        try:
+            legacy.unlink()
+            deleted.append(legacy.name)
+        except OSError:
+            pass
+    return deleted
+
+
+def merge_subject(asig_data: dict, output_dir: Path, asig_name: str = "",
+                  versions: dict = None) -> tuple[bool, str, str]:
+    """Concatena los PDFs individuales en el libro completo.
+    Devuelve (ok, mensaje, nombre_pdf_final)."""
     try:
         from pypdf import PdfWriter, PdfReader
     except ImportError:
-        return False, "pypdf no instalado (pip install pypdf)"
+        return False, "pypdf no instalado (pip install pypdf)", ""
 
     libro = asig_data.get("libro")
     if not libro:
-        return False, "sin entrada 'libro' en manifest"
+        return False, "sin entrada 'libro' en manifest", ""
 
-    book_path = output_dir / libro["pdf"]
+    # Determinar nombre con versión
+    base_pdf = libro["pdf"]  # ej "Mecanica.pdf"
+    base_name = base_pdf.rsplit(".", 1)[0]  # "Mecanica"
+    if versions is not None and asig_name in versions:
+        v = versions[asig_name]
+        book_filename = f"{base_name}_v{v}.pdf"
+    else:
+        book_filename = base_pdf
+
+    book_path = output_dir / book_filename
     writer = PdfWriter()
 
     # Construir mapa pdf_name → metadata para bookmarks
@@ -199,11 +253,14 @@ def merge_subject(asig_data: dict, output_dir: Path) -> tuple[bool, str]:
         writer.add_outline_item(titulo, page_idx_start, parent=seccion_outline)
 
     if not writer.pages:
-        return False, "ningún PDF agregado al libro"
+        return False, "ningún PDF agregado al libro", ""
 
-    # Metadata del PDF
+    # Metadata del PDF (incluye versión)
+    version_str = ""
+    if versions and asig_name in versions:
+        version_str = f" · v{versions[asig_name]}"
     writer.add_metadata({
-        "/Title": libro.get("titulo", asig_data.get("output_dir", "")),
+        "/Title": libro.get("titulo", asig_data.get("output_dir", "")) + version_str,
         "/Author": "UPV/EHU · 2025-26",
         "/Subject": "Material de estudio",
         "/Producer": "build_pdfs.py · upv-ehu-project",
@@ -212,7 +269,7 @@ def merge_subject(asig_data: dict, output_dir: Path) -> tuple[bool, str]:
     with open(book_path, "wb") as f:
         writer.write(f)
 
-    return True, f"OK · {len(writer.pages)} pgs · {_format_size(book_path.stat().st_size)}"
+    return True, f"OK · {len(writer.pages)} pgs · {_format_size(book_path.stat().st_size)}", book_filename
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -225,6 +282,8 @@ def main():
     parser.add_argument("--html", help="Generar solo este HTML (ruta relativa al root)")
     parser.add_argument("--no-individual", action="store_true",
                         help="Saltar la generación de PDFs individuales (solo merge)")
+    parser.add_argument("--bump", default=None,
+                        help="Incrementar versión de los libros indicados (separados por comas, ej: --bump=fluidos,mecanica). Usar 'all' para todas las asignaturas presentes. Borra los PDFs de versión anterior.")
     args = parser.parse_args()
 
     if not MANIFEST.is_file():
@@ -303,13 +362,89 @@ def main():
         dt = time.time() - t0
         print(f"\n[INDIVIDUAL] {ok_count} OK · {fail_count} fallos · {dt:.1f}s")
 
-    # Merge libros
+    # Merge libros con versionado
     if not args.skip_merge:
+        versions = load_versions()
+
+        # Procesar --bump
+        bump_set = set()
+        if args.bump:
+            if args.bump.lower() == "all":
+                bump_set = set(asignaturas.keys())
+            else:
+                bump_set = {a.strip().lower() for a in args.bump.split(",")}
+
+        for asig in bump_set:
+            if asig in versions:
+                versions[asig] = int(versions[asig]) + 1
+                print(f"[BUMP] {asig}: nueva versión v{versions[asig]}")
+
         print(f"\n=== MERGE LIBROS COMPLETOS ===")
+        generated = []
         for asig_name, data in asignaturas.items():
             output_dir = ROOT / data["output_dir"]
-            ok, msg = merge_subject(data, output_dir)
-            print(f"  {data.get('libro',{}).get('pdf','?'):<20} {msg}")
+            current_v = versions.get(asig_name, 1)
+            ok, msg, fname = merge_subject(data, output_dir, asig_name, versions)
+
+            if ok and fname:
+                # Limpiar versiones anteriores
+                base = data["libro"]["pdf"].rsplit(".", 1)[0]
+                deleted = cleanup_old_versions(output_dir, base, current_v)
+                extra = f" · borradas: {len(deleted)}" if deleted else ""
+                print(f"  {fname:<22} v{current_v}  {msg}{extra}")
+                generated.append((asig_name, fname))
+            else:
+                print(f"  {data.get('libro',{}).get('pdf','?'):<22}     {msg}")
+
+        # Guardar versiones (siempre, para reflejar fecha)
+        save_versions({k: v for k, v in versions.items() if not k.startswith("_")})
+
+        # Actualizar enlaces en index.html
+        if generated:
+            update_index_links(generated)
+
+
+def update_index_links(generated: list[tuple[str, str]]) -> None:
+    """Actualiza los enlaces de los libros en el index.html principal con
+    los nombres de fichero actuales (incluyendo versión)."""
+    index_path = ROOT / "index.html"
+    if not index_path.is_file():
+        return
+
+    import re
+    content = index_path.read_text(encoding="utf-8")
+    original = content
+
+    # Mapping asig → carpeta destino
+    folder = {"mecanica": "mecanica/pdf", "fluidos": "fluidos/pdf", "sistemas": "sistemas/pdf"}
+
+    for asig, fname in generated:
+        if asig not in folder:
+            continue
+        new_href = f"{folder[asig]}/{fname}"
+        # Extraer número de versión del nombre (Mecanica_v3.pdf → 3, o "" si no tiene)
+        m = re.search(r'_v(\d+)\.pdf$', fname, re.IGNORECASE)
+        version_n = m.group(1) if m else ""
+
+        # Patrón 1: actualizar el href apuntando a Mecanica*.pdf
+        base = fname.split("_v")[0]  # "Mecanica"
+        pattern_href = re.compile(
+            rf'href="{re.escape(folder[asig])}/{re.escape(base)}(?:_v\d+)?\.pdf"',
+            re.IGNORECASE,
+        )
+        content = pattern_href.sub(f'href="{new_href}"', content)
+
+        # Patrón 2: actualizar el badge "v1"/"v2" dentro del enlace lib-{asig}
+        if version_n:
+            pattern_badge = re.compile(
+                rf'(<a [^>]*id="lib-{re.escape(asig)}"[^>]*>.*?)v\d+(</span>)',
+                re.IGNORECASE | re.DOTALL,
+            )
+            content = pattern_badge.sub(rf'\1v{version_n}\2', content)
+
+    if content != original:
+        index_path.write_text(content, encoding="utf-8")
+        print(f"\n[INDEX] enlaces de libros actualizados en index.html")
 
 
 if __name__ == "__main__":
