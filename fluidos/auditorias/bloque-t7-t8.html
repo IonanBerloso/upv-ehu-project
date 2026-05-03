@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<title>Bloque T7–T8 · Playbook · Mecánica de Fluidos</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+<style>
+:root{
+  --bg:#0a0a0a; --s1:#0f0f0f; --s2:#161616; --s3:#1d1d1d;
+  --accent:#7dd3fc; --accent-dim:rgba(125,211,252,.12); --accent-border:rgba(125,211,252,.3);
+  --gold:#fbbf24; --green:#34d399; --orange:#fb923c; --rose:#fb7185; --purple:#a78bfa;
+  --line:rgba(255,255,255,.06); --line2:rgba(255,255,255,.12);
+  --txt:#e2e8f0; --txt2:#94a3b8; --txt3:#64748b;
+  --mono:'JetBrains Mono',monospace; --ui:'Space Grotesk',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-family:var(--ui),sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);height:52px;display:flex;align-items:center;padding:0 24px}
+.topbar-back{display:flex;align-items:center;gap:8px;color:var(--txt2);font-family:var(--mono);font-size:.72em;text-transform:uppercase;letter-spacing:.1em;font-weight:600;text-decoration:none;padding-right:18px;border-right:1px solid var(--line);height:100%;line-height:52px}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-title{margin-left:18px;font-size:.85em;color:#f1f5f9;font-weight:600}
+.topbar-title em{color:var(--accent);font-style:normal}
+
+/* ── WRAP ── */
+.wrap{max-width:1100px;margin:0 auto;padding:32px 32px 80px}
+@media(max-width:768px){.wrap{padding:20px 16px 60px}}
+
+/* ── HEADER ── */
+.head{margin-bottom:32px;padding:24px 28px;background:linear-gradient(135deg,rgba(125,211,252,.06) 0%,transparent 70%);border:1px solid var(--accent-border);border-left:3px solid var(--accent);border-radius:0 12px 12px 0}
+.head .tag{font-family:var(--mono);font-size:.7em;font-weight:700;color:var(--accent);letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.head h1{font-size:1.85em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.2;margin-bottom:8px}
+.head .sub{font-family:var(--mono);font-size:.82em;color:var(--txt2);line-height:1.5}
+
+/* ── INTRO ── */
+.intro{background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:32px}
+.intro h2{font-size:1em;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-family:var(--mono);font-weight:700}
+.intro p{color:#cbd5e1;margin-bottom:8px;font-size:.95em}
+.intro ul{padding-left:20px;color:#cbd5e1}
+.intro li{margin-bottom:4px;font-size:.92em}
+
+/* ── ÍNDICE ── */
+.toc{background:var(--s1);border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:36px}
+.toc h2{font-size:.78em;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px;font-family:var(--mono);font-weight:700}
+.toc ol{list-style:none;counter-reset:tipo;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:6px}
+.toc li{counter-increment:tipo;padding:8px 12px;background:var(--s2);border-left:2px solid var(--accent);border-radius:4px;font-size:.86em;display:flex;align-items:center;gap:10px}
+.toc li::before{content:counter(tipo,decimal-leading-zero);font-family:var(--mono);color:var(--accent);font-weight:700;font-size:.9em;flex-shrink:0;width:22px}
+.toc li a{color:#e2e8f0;text-decoration:none;flex:1;line-height:1.3}
+.toc li a:hover{color:var(--accent)}
+
+/* ── TARJETA POR TIPO ── */
+.tipo{background:var(--s1);border:1px solid var(--line);border-radius:12px;margin-bottom:32px;overflow:hidden;page-break-inside:avoid}
+.tipo-head{padding:18px 24px;background:linear-gradient(135deg,rgba(125,211,252,.08) 0%,transparent 60%);border-bottom:1px solid var(--line)}
+.tipo-num{font-family:var(--mono);font-size:.7em;color:var(--accent);font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.tipo-titulo{font-size:1.4em;font-weight:700;color:#f1f5f9;letter-spacing:-.01em;line-height:1.25}
+.tipo-meta{font-family:var(--mono);font-size:.75em;color:var(--txt2);margin-top:8px;display:flex;gap:18px;flex-wrap:wrap}
+.tipo-meta .badge{padding:3px 9px;background:var(--s3);border:1px solid var(--line2);border-radius:12px;color:var(--txt2);font-size:.92em}
+.tipo-meta .badge.green{color:var(--green);border-color:rgba(52,211,153,.3)}
+.tipo-meta .badge.gold{color:var(--gold);border-color:rgba(251,191,36,.3)}
+
+.tipo-body{padding:20px 24px}
+
+/* ── BLOQUES INTERNOS ── */
+.bloque{margin-bottom:22px;page-break-inside:avoid}
+.bloque-titulo{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:.78em;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.bloque-titulo .icon{font-size:1.3em;line-height:1}
+
+.recono .bloque-titulo{color:#60a5fa}
+.teoria .bloque-titulo{color:var(--accent)}
+.formula-bloque .bloque-titulo{color:var(--purple)}
+.pasos .bloque-titulo{color:var(--green)}
+.errores .bloque-titulo{color:var(--rose)}
+.donde .bloque-titulo{color:var(--gold)}
+
+.bloque ul{padding-left:22px;color:#cbd5e1;font-size:.93em}
+.bloque ul li{margin-bottom:5px;line-height:1.55}
+.bloque ul li b{color:#f1f5f9}
+
+/* Pasos numerados con círculo verde */
+.pasos ol{list-style:none;counter-reset:paso;padding-left:0;margin:0}
+.pasos ol li{counter-increment:paso;padding:10px 12px 10px 46px;position:relative;background:rgba(52,211,153,.05);border-left:2px solid rgba(52,211,153,.3);border-radius:0 6px 6px 0;margin-bottom:7px;font-size:.92em;color:#cbd5e1;line-height:1.55}
+.pasos ol li::before{content:counter(paso);position:absolute;left:11px;top:9px;width:22px;height:22px;background:rgba(52,211,153,.12);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.78em;font-weight:700;color:var(--green)}
+.pasos ol li b{color:#a7f3d0}
+.pasos .sub{display:block;font-size:.86em;color:#94a3b8;font-style:italic;margin-top:4px}
+
+/* Caja de fórmula KaTeX */
+.formulas{background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.2);border-left:3px solid var(--purple);border-radius:6px;padding:14px 18px}
+.formulas .formula-item{margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed rgba(167,139,250,.18)}
+.formulas .formula-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.formulas .formula-label{font-family:var(--mono);font-size:.7em;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.formulas .formula-katex{text-align:center;padding:6px 0}
+.formulas .formula-note{font-size:.84em;color:#94a3b8;margin-top:6px;font-style:italic}
+.formulas .formula-note b{color:#fb923c;font-style:normal}
+
+/* Errores: caja rosada */
+.errores ul{background:rgba(251,113,133,.05);border:1px solid rgba(251,113,133,.18);border-left:2px solid var(--rose);border-radius:0 6px 6px 0;padding:10px 16px 10px 32px;list-style:none}
+.errores ul li{padding:4px 0;color:#fecdd3;font-size:.9em;position:relative}
+.errores ul li::before{content:'⚠';position:absolute;left:-18px;color:var(--rose)}
+
+/* Reconocer: caja azul */
+.recono ul{background:rgba(96,165,250,.05);border:1px solid rgba(96,165,250,.18);border-left:2px solid #60a5fa;border-radius:0 6px 6px 0;padding:10px 16px 10px 32px;list-style:none}
+.recono ul li{padding:4px 0;color:#bfdbfe;font-size:.9em;position:relative}
+.recono ul li::before{content:'◈';position:absolute;left:-18px;color:#60a5fa;font-size:.85em}
+
+/* Teoría: lista normal */
+.teoria ul{padding-left:24px}
+.teoria ul li{color:#cbd5e1;font-size:.93em}
+
+/* Dónde aparece: tags */
+.donde-list{display:flex;flex-wrap:wrap;gap:8px}
+.donde-tag{padding:5px 10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:14px;font-family:var(--mono);font-size:.74em;color:var(--gold);font-weight:600}
+.donde-tag b{color:#fef3c7}
+
+/* Footer */
+.footer{text-align:center;padding:30px 20px 0;color:var(--txt3);font-size:.75em;font-family:var(--mono);border-top:1px solid var(--line);margin-top:40px}
+
+/* KaTeX */
+.katex{font-size:1.06em;color:#e9d5ff}
+.katex-display{margin:8px 0;overflow-x:auto;overflow-y:hidden}
+
+/* Print: tema claro lo gestiona shared/print.css */
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../teoria.html">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Fluidos
+  </a>
+  <span class="topbar-title">Bloque <em>T7 · T8</em> · Playbook de examen</span>
+<a class="topbar-pdf no-print" href="../pdf/auditoria_t7-t8.pdf" download="auditoria_t7-t8.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+
+<div class="wrap">
+
+  <header class="head">
+    <div class="tag">▶ Auditoría · Bloque temático</div>
+    <h1>T7 · Fuerzas sobre superficies sumergidas<br>T8 · Empuje y flotación</h1>
+    <div class="sub">Manual práctico para examen — 9 tipos de problema identificados en exámenes 2020–2025</div>
+  </header>
+
+  <section class="intro">
+    <h2>📖 Cómo usar esta guía</h2>
+    <p>Este documento es un <strong>playbook</strong>: para cada tipo de ejercicio que aparece en los exámenes de <em>Fluidos</em>, te indica:</p>
+    <ul>
+      <li>👁️ <b>Cómo reconocerlo</b> — palabras clave del enunciado que identifican el tipo.</li>
+      <li>📐 <b>Qué teoría hay que dominar</b> — los conceptos imprescindibles.</li>
+      <li>📋 <b>Fórmulas clave</b> — lo que tienes que tener escrito en el formulario / saber de memoria.</li>
+      <li>⚙️ <b>Pasos de resolución</b> — el procedimiento, paso a paso, que casi nunca cambia.</li>
+      <li>⚠️ <b>Errores frecuentes</b> — los que se repiten año tras año en exámenes.</li>
+      <li>📌 <b>Dónde aparece</b> — referencias a los exámenes reales con ese tipo.</li>
+    </ul>
+    <p style="margin-top:10px"><b>Estrategia:</b> apréndete los <em>pasos</em> y las <em>fórmulas</em> de memoria por tipo. Cuando veas un enunciado nuevo, identifica el TIPO con las pistas de "cómo reconocerlo" y aplica los pasos correspondientes adaptando los datos.</p>
+  </section>
+
+  <section class="toc">
+    <h2>📑 Índice de tipos de problema</h2>
+    <ol>
+      <li><a href="#t1">Fuerza sobre superficie PLANA vertical</a></li>
+      <li><a href="#t2">Fuerza sobre superficie PLANA inclinada</a></li>
+      <li><a href="#t3">Fuerza sobre superficie CURVA (FH/FV)</a></li>
+      <li><a href="#t4">Compuerta articulada (equilibrio de momentos)</a></li>
+      <li><a href="#t5">Empuje sobre cuerpo TOTALMENTE sumergido</a></li>
+      <li><a href="#t6">Empuje sobre cuerpo PARCIALMENTE sumergido (flotación)</a></li>
+      <li><a href="#t7">Cuerpo flotante en DOS fluidos estratificados</a></li>
+      <li><a href="#t8">Estabilidad y metacentro (vuelco / aire atrapado)</a></li>
+      <li><a href="#t9">Cuerpo sumergido con LASTRE / cable / anclaje</a></li>
+    </ol>
+  </section>
+
+  <!-- ═════════════════════════════ TIPO 1 ═════════════════════════════ -->
+  <article class="tipo" id="t1">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 01 · Plana vertical</div>
+      <h2 class="tipo-titulo">Fuerza hidrostática sobre superficie PLANA vertical</h2>
+      <div class="tipo-meta"><span class="badge">★ Frecuencia: media</span><span class="badge gold">Examen tipo</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Una pared vertical (compuerta, lateral de depósito) en contacto con líquido.</li>
+          <li>Te piden la <b>fuerza resultante</b>, el <b>punto de aplicación</b> (centro de presiones) o ambos.</li>
+          <li>La superficie es plana y rectangular o circular (no se curva).</li>
+          <li>Datos típicos: profundidad de la lámina libre, dimensiones, densidad del fluido.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>La presión en un punto sumergido es $p = \rho g h$ con $h$ = profundidad bajo la <em>lámina libre</em>.</li>
+          <li>La <b>fuerza resultante</b> sobre una superficie plana es <em>presión en el centroide × área</em>.</li>
+          <li>El <b>centro de presiones</b> está siempre <em>por debajo</em> del centroide (más cerca del fondo) porque la presión crece con la profundidad.</li>
+          <li>La distancia entre centroide y centro de presiones depende de la <b>inercia de la sección</b>.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Fuerza resultante</div>
+            <div class="formula-katex">$$F = p_G \cdot A = \rho g \, h_G \, A$$</div>
+            <div class="formula-note">$h_G$ = profundidad del <b>centroide G</b> bajo la lámina libre.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Profundidad del centro de presiones (CP)</div>
+            <div class="formula-katex">$$h_{CP} = h_G + \dfrac{I_{xG}}{h_G \cdot A}$$</div>
+            <div class="formula-note">$I_{xG}$ = inercia respecto al eje horizontal que pasa por G. Para rectángulo $b \times h$: $I_{xG} = bh^3/12$.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Inercias típicas (memorizar)</div>
+            <div class="formula-katex">$$\text{Rect } b\times h: \tfrac{bh^3}{12} \quad \text{Triáng. } b,h: \tfrac{bh^3}{36} \quad \text{Círculo } R: \tfrac{\pi R^4}{4}$$</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Dibujar el esquema</b> con la lámina libre arriba y marcar el centroide G de la superficie. <span class="sub">Si no hay esquema en el enunciado, hazlo tú: es imprescindible.</span></li>
+          <li><b>Calcular $h_G$</b> midiendo desde la lámina libre hasta el centroide. <span class="sub">Si la superficie está parcialmente sumergida, $h_G$ es solo de la parte sumergida.</span></li>
+          <li><b>Calcular el área $A$</b> de la superficie sumergida.</li>
+          <li><b>Aplicar $F = \rho g \, h_G \, A$</b> para la fuerza resultante.</li>
+          <li><b>Calcular $h_{CP}$</b> con la inercia $I_{xG}$ de la sección.</li>
+          <li><b>Si te piden equilibrio</b> (compuerta articulada), aplicar $\sum M = 0$ en el punto de la articulación con la fuerza F aplicada en el CP.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Usar $h_G$ desde el techo del depósito en vez de desde la lámina libre.</li>
+          <li>Olvidar que el CP NO coincide con el centroide; usar $F$ aplicada en G para calcular momentos.</li>
+          <li>No restar la presión atmosférica cuando ambas caras están a $p_{atm}$ (se cancela, no incluir).</li>
+          <li>Confundir $I_{xG}$ con $I_{xCP}$ (Steiner sí, pero respecto al eje correcto).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2023</b> Ej 3 — depósito bicompartimento</span>
+          <span class="donde-tag">Boletín T7 — ej 2.22 a 2.30</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ═════════════════════════════ TIPO 2 ═════════════════════════════ -->
+  <article class="tipo" id="t2">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 02 · Plana inclinada</div>
+      <h2 class="tipo-titulo">Fuerza hidrostática sobre superficie PLANA inclinada</h2>
+      <div class="tipo-meta"><span class="badge">★ Frecuencia: media</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Compuerta o pared inclinada un <em>ángulo α</em> respecto a la vertical (o a la horizontal).</li>
+          <li>Aparecen ángulos como 30°, 45°, 60° en el dato.</li>
+          <li>La superficie sigue siendo PLANA (no curva).</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>La fórmula de la fuerza es la <b>misma que la vertical</b>: $F = \rho g h_G A$. Lo único que cambia es cómo calculas $h_G$.</li>
+          <li>Hay que distinguir entre <b>distancia inclinada $y_G$</b> (a lo largo del plano) y <b>profundidad vertical $h_G$</b> (perpendicular a la lámina libre).</li>
+          <li>Relación clave: $h_G = y_G \cdot \sin\alpha$ (con α medido respecto a la horizontal).</li>
+          <li>El CP también se desplaza a lo largo del plano: usar $y_{CP} = y_G + I_{xG}/(y_G \cdot A)$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Fuerza (igual que vertical, con $h_G$ vertical)</div>
+            <div class="formula-katex">$$F = \rho g \, h_G \, A = \rho g \, y_G \sin\alpha \, A$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Centro de presiones medido a lo largo del plano</div>
+            <div class="formula-katex">$$y_{CP} = y_G + \dfrac{I_{xG}}{y_G \cdot A}$$</div>
+            <div class="formula-note"><b>Importante:</b> $y_{CP}$ es la coordenada a lo largo del plano inclinado, no la profundidad vertical.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Dibujar dos sistemas:</b> uno vertical (para presiones) y uno a lo largo del plano (para áreas y momentos).</li>
+          <li><b>Calcular $h_G$</b> = profundidad vertical del centroide bajo la lámina libre.</li>
+          <li><b>Calcular $y_G$</b> = distancia del centroide a lo largo del plano desde la lámina libre. Relación: $h_G = y_G \sin\alpha$.</li>
+          <li><b>Aplicar $F = \rho g h_G A$</b> para la fuerza.</li>
+          <li><b>Calcular $y_{CP}$</b> a lo largo del plano (no $h_{CP}$ vertical).</li>
+          <li><b>Para momentos / equilibrio</b>, trabajar siempre en el plano de la compuerta usando $y_{CP}$.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Confundir $h_G$ (vertical) con $y_G$ (sobre el plano). El error se propaga a F.</li>
+          <li>Aplicar $\sin\alpha$ con α medido respecto a la otra referencia (vertical vs. horizontal).</li>
+          <li>Usar $y_{CP}$ en lugar de $h_{CP}$ cuando se necesita la profundidad real.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Boletín T7 — ej 2.31, 2.32</span>
+          <span class="donde-tag">Casos preparatorios para examen</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ═════════════════════════════ TIPO 3 ═════════════════════════════ -->
+  <article class="tipo" id="t3">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 03 · Curva FH/FV</div>
+      <h2 class="tipo-titulo">Fuerza sobre superficie CURVA (componentes horizontal FH y vertical FV)</h2>
+      <div class="tipo-meta"><span class="badge green">★★★ Frecuencia: ALTA</span><span class="badge gold">Examen 2020, 2022, 2023</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>La superficie en contacto con el fluido es <b>CURVA</b>: cuarto de círculo, semicírculo, semitubo, parábola, etc.</li>
+          <li>El enunciado pide la <b>fuerza sobre la superficie curva</b> o la reacción en sus apoyos.</li>
+          <li>A menudo se acompaña de palabras tipo "compuerta curva", "tubería sumergida", "muro circular".</li>
+          <li>Datos típicos: radio $R$, longitud (perpendicular al plano del dibujo), altura del agua.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Sobre una superficie curva, la fuerza tiene <b>componente horizontal $F_H$ y vertical $F_V$</b>. NO hay una "fuerza única" como en plana.</li>
+          <li><b>$F_H$</b> es igual a la fuerza que actuaría sobre la <em>proyección vertical</em> de la superficie. Se trata como superficie plana vertical.</li>
+          <li><b>$F_V$</b> es igual al <em>peso del volumen de líquido</em> que hay encima (o que ocuparía si fuera líquido) de la superficie curva, hasta la lámina libre.</li>
+          <li>La fuerza total: $F = \sqrt{F_H^2 + F_V^2}$ con dirección $\tan\theta = F_V/F_H$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Componente horizontal</div>
+            <div class="formula-katex">$$F_H = \rho g \, h_G \, A_{proy.\,vertical}$$</div>
+            <div class="formula-note">$A_{proy.\,vertical}$ = área de la <b>sombra</b> de la superficie curva proyectada sobre un plano vertical. $h_G$ = centroide de esa sombra.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Componente vertical</div>
+            <div class="formula-katex">$$F_V = \rho g \, V_{líquido\,encima}$$</div>
+            <div class="formula-note">El <b>volumen</b> es el del líquido <em>real</em> que descansa sobre la superficie curva, o el <em>imaginario</em> entre la superficie y la lámina libre si el líquido está debajo. <b>Sentido:</b> hacia abajo si el líquido está arriba, hacia arriba (empuje) si está debajo.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Fuerza total y dirección</div>
+            <div class="formula-katex">$$F = \sqrt{F_H^2 + F_V^2} \qquad \tan\theta = \dfrac{F_V}{F_H}$$</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Identificar la superficie curva</b> y dibujarla en el esquema marcando dónde está el líquido (arriba/debajo).</li>
+          <li><b>Proyectar la curva sobre un plano vertical</b> (proyección horizontal de F): obtienes un rectángulo o cuarto de círculo. Calcula su área $A_v$ y su centroide $h_G$.</li>
+          <li><b>Calcular $F_H = \rho g h_G A_v$</b> aplicada en el CP de la proyección. <span class="sub">Mismo método que superficie plana.</span></li>
+          <li><b>Determinar el volumen $V$</b> que está sobre/bajo la curva hasta la lámina libre. Geometría típica: rectángulo + cuarto de círculo, o resta de áreas.</li>
+          <li><b>Calcular $F_V = \rho g V$</b> con sentido <em>hacia abajo</em> (peso) o <em>hacia arriba</em> (empuje) según la disposición.</li>
+          <li><b>Componer:</b> $F = \sqrt{F_H^2 + F_V^2}$ y ángulo con la horizontal.</li>
+          <li><b>Si hay equilibrio</b> (cable, articulación), aplicar $\sum M = 0$ usando $F_H$ y $F_V$ por separado en sus puntos de aplicación.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Confundir el <b>signo / sentido</b> de $F_V$: si el líquido está debajo del cuerpo curvo, $F_V$ apunta hacia ARRIBA (es empuje).</li>
+          <li>Calcular $V$ mal cuando hay zonas convexas/cóncavas: <em>siempre</em> es el volumen entre la curva y la lámina libre vertical.</li>
+          <li>Olvidar la longitud perpendicular al plano del dibujo (multiplicar área 2D por la profundidad).</li>
+          <li>Aplicar $F_H$ y $F_V$ en el mismo punto: tienen <em>distintas líneas de acción</em>.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2022</b> Ej 5 — compuerta cuarto de círculo</span>
+          <span class="donde-tag"><b>junio2023ef</b> Ej 3 — compuerta articulada OABO</span>
+          <span class="donde-tag"><b>mayo2020</b> — semitubo helio/fluido denso</span>
+          <span class="donde-tag">Boletín T7 — ej 2.36 a 2.40</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ═════════════════════════════ TIPO 4 ═════════════════════════════ -->
+  <article class="tipo" id="t4">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 04 · Compuerta articulada</div>
+      <h2 class="tipo-titulo">Compuerta articulada — equilibrio de momentos para hallar tensión / reacción</h2>
+      <div class="tipo-meta"><span class="badge green">★★ Frecuencia: alta</span><span class="badge gold">Examen 2023, 2023ef</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Una compuerta sujeta por una <b>articulación</b> en un extremo y por <b>otro apoyo</b> (cable, tope, peso) en el otro.</li>
+          <li>El enunciado pregunta por la <b>tensión del cable</b>, la <b>reacción en la articulación</b> o el <b>peso necesario</b> para mantener cerrada la compuerta.</li>
+          <li>Puede ser plana (vertical/inclinada) o curva.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Es un problema de <b>estática del sólido rígido</b> aplicado a una compuerta sometida a fuerza hidrostática.</li>
+          <li>Se necesitan TODAS las fuerzas que actúan sobre la compuerta: <em>fuerza hidrostática (en el CP)</em>, <em>peso propio (en su centroide)</em>, <em>tensión / reacción</em> en cada apoyo.</li>
+          <li>Tomar momentos respecto a la articulación CANCELA la reacción en ella, dejando una sola incógnita normalmente.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Equilibrio (3 ecuaciones planas)</div>
+            <div class="formula-katex">$$\sum F_x = 0 \quad \sum F_y = 0 \quad \sum M_O = 0$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Momento de la fuerza hidrostática</div>
+            <div class="formula-katex">$$M_F = F \cdot d_{F\,a\,O}$$</div>
+            <div class="formula-note"><b>$d$ es la distancia perpendicular</b> de la línea de acción de F al punto O. Si F está descompuesta en $F_H$ y $F_V$, calcula los momentos por separado.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Diagrama de sólido libre</b> de la compuerta: marca articulación O, apoyo (cable/peso), peso propio si es no despreciable, fuerza hidrostática F.</li>
+          <li><b>Calcular F</b> según el tipo (plana T1/T2 o curva T3). Localizar su CP (= punto de aplicación).</li>
+          <li><b>Tomar momentos respecto a la articulación O</b>: $\sum M_O = 0$. Esto elimina la reacción en O y deja la tensión / peso como única incógnita.</li>
+          <li><b>Despejar la incógnita</b> (T, W, ángulo, etc.).</li>
+          <li><b>Si piden la reacción en O</b>, aplicar $\sum F_x = 0$ y $\sum F_y = 0$ con la T ya conocida.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Aplicar la fuerza hidrostática en el centroide G en lugar del centro de presiones CP.</li>
+          <li>Olvidar el peso propio cuando NO es despreciable (en el enunciado a veces lo dan).</li>
+          <li>Confundir el sentido del momento (horario vs antihorario) — usar criterio de signos coherente.</li>
+          <li>Tomar momentos respecto a un punto no útil: SIEMPRE respecto a la articulación.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2023</b> Ej 3 — compuerta L bicompartimento</span>
+          <span class="donde-tag"><b>junio2023ef</b> Ej 3 — compuerta curva OABO</span>
+          <span class="donde-tag">Boletín T7 — ej 2.30 a 2.34</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ═════════════════════════════ TIPO 5 ═════════════════════════════ -->
+  <article class="tipo" id="t5">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 05 · Cuerpo totalmente sumergido</div>
+      <h2 class="tipo-titulo">Empuje de Arquímedes sobre cuerpo TOTALMENTE sumergido</h2>
+      <div class="tipo-meta"><span class="badge">★★ Frecuencia: media</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Cuerpo (esfera, cilindro, cubo, prisma) <b>completamente bajo el agua</b>, sin parte fuera de la lámina libre.</li>
+          <li>Te piden <b>peso aparente</b>, <b>tensión del cable</b> que lo sostiene, o <b>fuerza neta</b>.</li>
+          <li>El cuerpo puede ser más denso (hundirse, hay tensión hacia arriba que lo sujeta) o menos denso (flotaría, hay cable hacia abajo).</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li><b>Principio de Arquímedes:</b> el empuje es igual al peso del fluido desalojado.</li>
+          <li>Si está totalmente sumergido, el volumen desalojado = volumen total del cuerpo.</li>
+          <li>El empuje actúa en el <b>centroide del volumen sumergido</b> (centro de empuje C), no en el centro de gravedad G.</li>
+          <li>Equilibrio vertical: $W = E + T$ (si T = tensión hacia arriba) o $W + T = E$ (si T tira hacia abajo).</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Empuje de Arquímedes</div>
+            <div class="formula-katex">$$E = \rho_{fluido} \cdot g \cdot V_{sumergido}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Peso del cuerpo</div>
+            <div class="formula-katex">$$W = \rho_{cuerpo} \cdot g \cdot V_{cuerpo}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Equilibrio vertical (con cable / tensión)</div>
+            <div class="formula-katex">$$\sum F_y = 0 : \quad E - W \pm T = 0$$</div>
+            <div class="formula-note">El signo de T depende de si el cable tira hacia arriba o hacia abajo. Dibuja siempre el DSL.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>DSL del cuerpo:</b> peso $W$ hacia abajo en G, empuje $E$ hacia arriba en C, tensión / reacción $T$ con su sentido correcto.</li>
+          <li><b>Calcular $V_{cuerpo}$</b> (volumen geométrico — fórmula según forma).</li>
+          <li><b>Calcular $E = \rho_f g V$</b> (con la densidad del FLUIDO, no del cuerpo).</li>
+          <li><b>Calcular $W = \rho_c g V$</b> (con la densidad del CUERPO).</li>
+          <li><b>Aplicar $\sum F_y = 0$</b> y despejar la incógnita (T, ρ, V, etc.).</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Usar $V_{total}$ del cuerpo cuando no está completamente sumergido (ver tipo 06).</li>
+          <li>Confundir densidad del fluido con la del cuerpo en las fórmulas.</li>
+          <li>Olvidar el sentido de $T$: dibuja siempre el DSL antes de plantear la ecuación.</li>
+          <li>Aplicar $E$ en el centro de gravedad cuando se piden momentos (E va en C, W va en G).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag">Boletín T8 — ej 2.41 a 2.43</span>
+          <span class="donde-tag">Subproblema en compuertas con peso</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ═════════════════════════════ TIPO 6 ═════════════════════════════ -->
+  <article class="tipo" id="t6">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 06 · Flotación parcialmente sumergido</div>
+      <h2 class="tipo-titulo">Empuje sobre cuerpo PARCIALMENTE sumergido (flotación)</h2>
+      <div class="tipo-meta"><span class="badge green">★★★ Frecuencia: ALTA</span><span class="badge gold">Examen 2024ef, 2021, 2020ef</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Cuerpo <b>flotando</b> en la superficie: parte fuera del agua, parte sumergida.</li>
+          <li>Términos clave: "flota", "calado", "fracción sumergida", "altura de la línea de flotación".</li>
+          <li>Datos: densidad del cuerpo (o material), densidad del fluido, dimensiones del cuerpo, masa total.</li>
+          <li>Te piden el <b>calado</b>, la <b>fracción sumergida</b>, o la <b>masa máxima</b> que puede llevar sin hundirse.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>En equilibrio de flotación, el peso TOTAL del cuerpo iguala al empuje sobre el VOLUMEN SUMERGIDO.</li>
+          <li><b>Fracción sumergida</b> $= \rho_{cuerpo} / \rho_{fluido}$ (para un cuerpo macizo de densidad uniforme).</li>
+          <li>Para cuerpos con peso adicional (carga, plomo, etc.), $W_{cuerpo} + W_{carga} = E$.</li>
+          <li>Densidad relativa $s = \rho_{cuerpo}/\rho_{agua}$. Flota si $s < 1$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Equilibrio de flotación</div>
+            <div class="formula-katex">$$W_{total} = E = \rho_{fluido} \cdot g \cdot V_{sumergido}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Fracción sumergida (cuerpo macizo)</div>
+            <div class="formula-katex">$$\dfrac{V_{sum}}{V_{total}} = \dfrac{\rho_{cuerpo}}{\rho_{fluido}}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Calado para forma simple (prisma de área $A_b$)</div>
+            <div class="formula-katex">$$h_{calado} = \dfrac{V_{sumergido}}{A_b}$$</div>
+            <div class="formula-note">$A_b$ = área de la base (sección horizontal en la línea de flotación).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>DSL del cuerpo flotando:</b> $W$ hacia abajo (peso total = cuerpo + carga), $E$ hacia arriba (en el centro del volumen sumergido).</li>
+          <li><b>Calcular el peso total $W$.</b> Si hay carga adicional (otros bloques, líquido dentro), súmalo.</li>
+          <li><b>Plantear $W = E$</b> y despejar $V_{sumergido}$.</li>
+          <li><b>De $V_{sumergido}$ obtener el calado</b> dividiendo por el área de la sección horizontal.</li>
+          <li><b>Si te piden la masa máxima</b> antes de hundirse: $V_{sum,max} = V_{cuerpo}$ y resolver hacia atrás.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Usar $V_{total}$ en lugar de $V_{sumergido}$ en el empuje.</li>
+          <li>Confundir densidad relativa (adimensional) con fracción sumergida.</li>
+          <li>Olvidar incluir el peso de la carga / contenido en el balance.</li>
+          <li>Para formas que cambian de sección (cilindro+cono), no descomponer el volumen sumergido por tramos.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2024ef</b> Ej 2 — gabarra del Athletic</span>
+          <span class="donde-tag"><b>mayo2021</b> Ej 3 — cilindro + cono</span>
+          <span class="donde-tag"><b>junio2020ef</b> Ej 3 — cuerpo compuesto</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ═════════════════════════════ TIPO 7 ═════════════════════════════ -->
+  <article class="tipo" id="t7">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 07 · Dos fluidos estratificados</div>
+      <h2 class="tipo-titulo">Cuerpo flotante en DOS fluidos estratificados (ej. agua + aceite)</h2>
+      <div class="tipo-meta"><span class="badge green">★★ Frecuencia: media</span><span class="badge gold">Examen 2021, 2020ef</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Hay <b>dos líquidos no miscibles</b> superpuestos (típico: aceite encima, agua debajo).</li>
+          <li>El cuerpo está parcialmente sumergido en ambos: parte en el aceite, parte en el agua, parte fuera.</li>
+          <li>Densidades: $\rho_1$ (arriba, menos densa) < $\rho_2$ (abajo, más densa).</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>El empuje TOTAL es la <b>suma de los dos empujes</b>: uno por cada fluido sobre la parte sumergida correspondiente.</li>
+          <li>Hay que separar el cuerpo en TRES tramos: fuera, en fluido 1, en fluido 2.</li>
+          <li>El equilibrio de flotación sigue siendo $W = E_{total}$, pero $E_{total} = E_1 + E_2$.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Empuje total con dos fluidos</div>
+            <div class="formula-katex">$$E_{total} = \rho_1 g V_{cuerpo\,en\,1} + \rho_2 g V_{cuerpo\,en\,2}$$</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Equilibrio</div>
+            <div class="formula-katex">$$W_{cuerpo} = E_{total}$$</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Dibujar el esquema</b> con las dos láminas de fluido y el cuerpo cruzándolas. Marcar los TRES tramos del cuerpo (fuera, en 1, en 2).</li>
+          <li><b>Definir variables geométricas</b>: la altura del cuerpo en cada fluido en función del calado o de la posición.</li>
+          <li><b>Calcular $V_{cuerpo,1}$ y $V_{cuerpo,2}$</b> usando la geometría del cuerpo. Para formas compuestas (cilindro + cono), descomponer.</li>
+          <li><b>Plantear $W = \rho_1 g V_1 + \rho_2 g V_2$</b> y resolver para la incógnita (posición de la línea de flotación, calado, etc.).</li>
+          <li><b>Verificar coherencia:</b> el calado debe ser positivo y menor que la altura total del cuerpo.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Usar la misma densidad para todo el volumen sumergido.</li>
+          <li>Confundir qué fluido está arriba y cuál abajo (siempre el más denso debajo).</li>
+          <li>Geometría mal: no descomponer correctamente cuerpos compuestos (cilindro+cono).</li>
+          <li>Olvidar que la interfaz entre los dos fluidos es horizontal y que el cuerpo la cruza por algún punto definido por las densidades.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>mayo2021</b> Ej 3 — cilindro + cono en agua/aceite</span>
+          <span class="donde-tag"><b>junio2020ef</b> Ej 3 — cuerpo compuesto en dos fluidos</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ═════════════════════════════ TIPO 8 ═════════════════════════════ -->
+  <article class="tipo" id="t8">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 08 · Estabilidad y metacentro</div>
+      <h2 class="tipo-titulo">Estabilidad de flotación · Metacentro · Vuelco con aire atrapado</h2>
+      <div class="tipo-meta"><span class="badge gold">Examen 2024ef</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Te preguntan si el cuerpo flotando es <b>estable</b> o si <b>vuelca</b> al inclinarlo.</li>
+          <li>Aparecen palabras como "metacentro", "altura metacéntrica", "se invierte", "estabilidad".</li>
+          <li>Casos especiales: cuerpo con aire atrapado (gabarra hueca), barco que se inclina al cargar.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li><b>Centro de gravedad G:</b> donde actúa el peso (depende de la masa).</li>
+          <li><b>Centro de empuje C (o B):</b> centroide del volumen SUMERGIDO. Cambia si el cuerpo se inclina.</li>
+          <li><b>Metacentro M:</b> punto sobre el cual gira el cuerpo cuando se inclina ligeramente. Está sobre la vertical por C en el cuerpo inclinado.</li>
+          <li><b>Estable</b> si M está <em>por encima</em> de G ($\overline{GM} > 0$). Inestable si M está debajo.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Distancia metacéntrica</div>
+            <div class="formula-katex">$$\overline{BM} = \dfrac{I_{xx}}{V_{sumergido}}$$</div>
+            <div class="formula-note">$I_{xx}$ = inercia del área de la sección de flotación respecto al eje sobre el que se inclina (eje horizontal en la lámina libre).</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Altura metacéntrica</div>
+            <div class="formula-katex">$$\overline{GM} = \overline{BM} - \overline{BG}$$</div>
+            <div class="formula-note"><b>$\overline{BG}$</b> = distancia entre el centro de empuje B y el centro de gravedad G. Si <b>$\overline{GM}>0$</b>: estable. Si <b>$<0$</b>: inestable (vuelca).</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Aire atrapado: presión interna</div>
+            <div class="formula-katex">$$p_{aire} = p_{atm} + \rho g h$$</div>
+            <div class="formula-note">Si el aire está confinado y la profundidad cambia, usar Boyle: $p_1 V_1 = p_2 V_2$.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>Localizar G y B</b> en el cuerpo flotando en posición vertical (sin inclinar).</li>
+          <li><b>Calcular $\overline{BM}$</b> con la inercia de la sección de flotación.</li>
+          <li><b>Calcular $\overline{GM} = \overline{BM} - \overline{BG}$.</b> Si positivo, estable.</li>
+          <li><b>Para aire atrapado</b> (gabarra hueca): plantear el equilibrio con la presión del aire interior y aplicar Boyle si cambia el volumen del aire.</li>
+          <li><b>Para vuelco/inversión:</b> ver si la posición invertida también es estable y comparar energías potenciales.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Confundir $I_{xx}$ del cuerpo entero con la del área de la SECCIÓN de flotación (solo la huella en la lámina libre).</li>
+          <li>Olvidar el signo de $\overline{BG}$: positivo si G está por encima de B.</li>
+          <li>No considerar que el aire atrapado se comprime al sumergir más el cuerpo (Boyle).</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2024ef</b> Ej 2 — gabarra Athletic, vuelco e inversión</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- ═════════════════════════════ TIPO 9 ═════════════════════════════ -->
+  <article class="tipo" id="t9">
+    <header class="tipo-head">
+      <div class="tipo-num">Tipo 09 · Lastre / cable / anclaje</div>
+      <h2 class="tipo-titulo">Cuerpo sumergido o flotante con LASTRE, cable o anclaje</h2>
+      <div class="tipo-meta"><span class="badge gold">Examen 2022ef</span></div>
+    </header>
+    <div class="tipo-body">
+
+      <div class="bloque recono">
+        <div class="bloque-titulo"><span class="icon">👁️</span> Cómo lo reconozco</div>
+        <ul>
+          <li>Una <b>tubería submarina</b>, <b>boya</b> u objeto flotante <b>anclado al fondo</b> con un cable o sujeto con un lastre.</li>
+          <li>Te piden la <b>tensión del cable</b>, el <b>peso del lastre</b> necesario o si la tubería <b>flota o se hunde</b>.</li>
+          <li>Datos típicos: dimensiones de la tubería, densidad del material y del agua, densidad del lastre.</li>
+        </ul>
+      </div>
+
+      <div class="bloque teoria">
+        <div class="bloque-titulo"><span class="icon">📐</span> Teoría imprescindible</div>
+        <ul>
+          <li>Es un caso de <b>cuerpo totalmente sumergido (T5)</b> con una fuerza adicional: la tensión del cable o el peso del lastre.</li>
+          <li>Hay que considerar también el peso PROPIO del cable / lastre si NO es despreciable y si está parcial o totalmente sumergido (con su propio empuje).</li>
+          <li>La tubería puede contener fluido en su interior: el peso del fluido interno cuenta como peso adicional.</li>
+        </ul>
+      </div>
+
+      <div class="bloque formula-bloque">
+        <div class="bloque-titulo"><span class="icon">📋</span> Fórmulas clave</div>
+        <div class="formulas">
+          <div class="formula-item">
+            <div class="formula-label">Equilibrio vertical (tubería sumergida con tensión)</div>
+            <div class="formula-katex">$$E_{tubería} - W_{tubería} - W_{contenido} - T_{cable} = 0$$</div>
+            <div class="formula-note">Si la tubería tiende a flotar, T tira hacia abajo. Si tiende a hundirse, T tira hacia arriba (la cuerda iría a la superficie). Dibuja DSL.</div>
+          </div>
+          <div class="formula-item">
+            <div class="formula-label">Peso del lastre necesario para anclar</div>
+            <div class="formula-katex">$$W_{lastre} - E_{lastre} = T_{cable}$$</div>
+            <div class="formula-note">El lastre real "pesa" en el agua $W - E$ (peso aparente). Por eso lastres densos como hormigón son eficientes.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque pasos">
+        <div class="bloque-titulo"><span class="icon">⚙️</span> Pasos de resolución</div>
+        <ol>
+          <li><b>DSL completo:</b> tubería con W (incluyendo contenido si lo hay), empuje E, tensión T del cable. Lastre con su W y su empuje propio.</li>
+          <li><b>Calcular el empuje sobre la tubería</b>: $\rho_{agua} g V_{externo\,tubería}$. <em>Importante:</em> el empuje es sobre el volumen externo, no el del material.</li>
+          <li><b>Calcular peso del material y del contenido</b>: $W = \rho_{mat} g V_{material} + \rho_{contenido} g V_{interno}$.</li>
+          <li><b>Aplicar $\sum F_y = 0$</b> y despejar T (tensión del cable).</li>
+          <li><b>Para el lastre:</b> calcular su peso aparente en agua y verificar que iguala a la tensión.</li>
+        </ol>
+      </div>
+
+      <div class="bloque errores">
+        <div class="bloque-titulo"><span class="icon">⚠️</span> Errores frecuentes</div>
+        <ul>
+          <li>Olvidar el contenido interno de la tubería (si está llena de agua, gas, etc.).</li>
+          <li>Confundir el volumen externo (para empuje) con el volumen del material (para peso del tubo).</li>
+          <li>Olvidar que el lastre, al estar sumergido, también sufre empuje: usar peso aparente.</li>
+          <li>Dirección de T mal: si el cuerpo tiende a flotar, T tira hacia abajo desde el fondo.</li>
+        </ul>
+      </div>
+
+      <div class="bloque donde">
+        <div class="bloque-titulo"><span class="icon">📌</span> Dónde aparece</div>
+        <div class="donde-list">
+          <span class="donde-tag"><b>junio2022ef</b> Ej 3 — tubería submarina con hormigón</span>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    UPV/EHU · Mecánica de Fluidos · 2025-26 · Auditoría T7-T8 · v1
+  </footer>
+
+</div>
+
+</body>
+</html>
