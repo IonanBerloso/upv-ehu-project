@@ -189,8 +189,223 @@ def cleanup_old_versions(output_dir: Path, base_name: str, current_version: int)
     return deleted
 
 
+def generate_cover_and_toc(asig_data: dict, output_dir: Path,
+                           page_offsets: dict, version: int,
+                           css_text: str, asig_name: str) -> Path | None:
+    """Genera un PDF de portada + índice (TOC) para el libro completo.
+    page_offsets es {pdf_filename: página_inicial_en_libro}.
+    Devuelve el path del PDF generado o None si falla."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return None
+
+    libro = asig_data.get("libro", {})
+    titulo = libro.get("titulo", asig_name.title())
+    pdf_to_meta = {it["pdf"]: it for it in asig_data["items"]}
+
+    # Construir filas del TOC agrupadas por sección
+    toc_rows = []
+    seccion_actual = None
+    for pdf_name in libro.get("orden", []):
+        meta = pdf_to_meta.get(pdf_name, {})
+        seccion = meta.get("seccion", "")
+        item_titulo = meta.get("titulo", pdf_name)
+        page = page_offsets.get(pdf_name, "?")
+        if seccion != seccion_actual:
+            seccion_actual = seccion
+            toc_rows.append(f'<tr class="toc-sec"><td colspan="2"><strong>{seccion}</strong></td></tr>')
+        toc_rows.append(
+            f'<tr class="toc-item"><td class="toc-title">{item_titulo}</td>'
+            f'<td class="toc-page">{page}</td></tr>'
+        )
+
+    toc_html = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>{titulo}</title>
+<style>
+@page {{ size: A4; margin: 24mm 18mm; }}
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  color: #111827;
+  background: #ffffff;
+  padding: 0;
+}}
+
+/* PORTADA */
+.cover {{
+  page-break-after: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 240mm;
+  text-align: center;
+  padding: 40mm 20mm;
+}}
+.cover .tag {{
+  font-family: 'Courier New', monospace;
+  font-size: 11pt;
+  letter-spacing: 4pt;
+  color: #5b21b6;
+  margin-bottom: 12mm;
+}}
+.cover h1 {{
+  font-size: 36pt;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 12mm;
+}}
+.cover .sub {{
+  font-size: 14pt;
+  color: #6b7280;
+  margin-bottom: 30mm;
+}}
+.cover .meta {{
+  font-family: 'Courier New', monospace;
+  font-size: 10pt;
+  color: #9ca3af;
+  letter-spacing: 1pt;
+  border-top: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
+  padding: 8mm 0;
+  width: 60%;
+}}
+.cover .meta strong {{ color: #5b21b6; font-weight: 700; }}
+
+/* ÍNDICE */
+.toc {{
+  padding: 0;
+}}
+.toc h2 {{
+  font-size: 24pt;
+  color: #5b21b6;
+  border-bottom: 2px solid #c4b5fd;
+  padding-bottom: 4mm;
+  margin-bottom: 8mm;
+  font-weight: 700;
+}}
+.toc table {{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10.5pt;
+}}
+.toc tr {{
+  page-break-inside: avoid;
+}}
+.toc-sec td {{
+  padding: 6mm 0 2mm;
+  font-size: 10pt;
+  color: #5b21b6;
+  letter-spacing: 1pt;
+  text-transform: uppercase;
+  border-bottom: 1px dashed #d1d5db;
+}}
+.toc-sec:first-child td {{ padding-top: 0; }}
+.toc-item td {{
+  padding: 1.6mm 0;
+  vertical-align: bottom;
+  color: #1f2937;
+}}
+.toc-title {{
+  width: 85%;
+  position: relative;
+  padding-right: 6mm;
+}}
+.toc-title::after {{
+  content: '';
+  position: absolute;
+  bottom: 0.7em;
+  left: 0;
+  right: 6mm;
+  border-bottom: 1px dotted #d1d5db;
+  z-index: -1;
+}}
+.toc-title span.t {{
+  background: #ffffff;
+  padding-right: 4pt;
+  position: relative;
+  z-index: 1;
+}}
+.toc-page {{
+  text-align: right;
+  font-family: 'Courier New', monospace;
+  color: #6b7280;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #ffffff;
+  padding-left: 4pt;
+}}
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="tag">UPV / EHU · ENGINEERING</div>
+  <h1>{titulo}</h1>
+  <div class="sub">Material completo de estudio</div>
+  <div class="meta">
+    <strong>v{version}</strong> &nbsp; · &nbsp; Curso 2025-26 &nbsp; · &nbsp; Generado autom.
+  </div>
+</section>
+
+<section class="toc">
+  <h2>Índice</h2>
+  <table>
+    {chr(10).join(toc_rows)}
+  </table>
+</section>
+
+</body>
+</html>
+"""
+
+    toc_html_path = output_dir / f"_toc_{asig_name}.html"
+    toc_html_path.write_text(toc_html, encoding="utf-8")
+
+    toc_pdf_path = output_dir / f"_toc_{asig_name}.pdf"
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            ctx = browser.new_context(viewport={"width": 794, "height": 1123})
+            page = ctx.new_page()
+            page.goto(toc_html_path.absolute().as_uri(), wait_until="networkidle", timeout=60_000)
+            # Reemplazar el span del título para que el ::after del leader funcione
+            page.evaluate("""() => {
+                document.querySelectorAll('.toc-title').forEach(td => {
+                    const txt = td.textContent;
+                    td.innerHTML = '<span class="t">' + txt + '</span>';
+                });
+            }""")
+            page.wait_for_timeout(300)
+            page.pdf(
+                path=str(toc_pdf_path),
+                format="A4",
+                margin={"top": "24mm", "bottom": "24mm", "left": "18mm", "right": "18mm"},
+                print_background=True,
+                prefer_css_page_size=True,
+            )
+            browser.close()
+    except Exception as e:
+        print(f"  ! TOC error: {e}")
+        return None
+    finally:
+        # Limpiar el HTML temporal
+        try:
+            toc_html_path.unlink()
+        except OSError:
+            pass
+
+    return toc_pdf_path
+
+
 def merge_subject(asig_data: dict, output_dir: Path, asig_name: str = "",
-                  versions: dict = None) -> tuple[bool, str, str]:
+                  versions: dict = None, css_text: str = "") -> tuple[bool, str, str]:
     """Concatena los PDFs individuales en el libro completo.
     Devuelve (ok, mensaje, nombre_pdf_final)."""
     try:
@@ -212,10 +427,50 @@ def merge_subject(asig_data: dict, output_dir: Path, asig_name: str = "",
         book_filename = base_pdf
 
     book_path = output_dir / book_filename
+
+    # PASO 1: Calcular page_offsets (página inicial de cada PDF en el libro)
+    # Antes de meterlos al writer final, necesitamos saber dónde empezarán.
+    # Pero como añadiremos un TOC delante, hay que estimar el tamaño del TOC.
+    # Estrategia: sumar páginas de cada PDF + reservar 2 páginas para portada+TOC.
+    TOC_PAGES_RESERVED = 2
+    page_offsets_no_toc = {}
+    cumulative = 0
+    for pdf_name in libro["orden"]:
+        pdf_path = output_dir / pdf_name
+        if not pdf_path.is_file():
+            continue
+        try:
+            n_pages = len(PdfReader(str(pdf_path)).pages)
+        except Exception:
+            n_pages = 1
+        page_offsets_no_toc[pdf_name] = cumulative + 1  # 1-indexed
+        cumulative += n_pages
+
+    # PASO 2: Generar el TOC con offsets ajustados (sumando reservadas)
+    toc_pdf_path = None
+    current_v = versions.get(asig_name, 1) if versions else 1
+    page_offsets = {k: v + TOC_PAGES_RESERVED for k, v in page_offsets_no_toc.items()}
+
+    if asig_name and css_text is not None:
+        toc_pdf_path = generate_cover_and_toc(
+            asig_data, output_dir, page_offsets, current_v, css_text, asig_name
+        )
+
     writer = PdfWriter()
 
     # Construir mapa pdf_name → metadata para bookmarks
     pdf_to_meta = {it["pdf"]: it for it in asig_data["items"]}
+
+    # PASO PRIMERO: añadir portada + TOC al inicio del libro
+    if toc_pdf_path and toc_pdf_path.is_file():
+        try:
+            toc_reader = PdfReader(str(toc_pdf_path))
+            for p in toc_reader.pages:
+                writer.add_page(p)
+            # Bookmark "Índice"
+            writer.add_outline_item("📑 Índice", 0)
+        except Exception as e:
+            print(f"  ! TOC merge error: {e}")
 
     # Agrupar por sección
     seccion_actual = None
@@ -251,6 +506,13 @@ def merge_subject(asig_data: dict, output_dir: Path, asig_name: str = "",
 
         # Bookmark del item dentro de la sección
         writer.add_outline_item(titulo, page_idx_start, parent=seccion_outline)
+
+    # Limpiar el PDF temporal del TOC
+    if toc_pdf_path and toc_pdf_path.is_file():
+        try:
+            toc_pdf_path.unlink()
+        except OSError:
+            pass
 
     if not writer.pages:
         return False, "ningún PDF agregado al libro", ""
@@ -334,9 +596,10 @@ def main():
             browser = p.chromium.launch()
             # Viewport ≈ A4 a 96 DPI (794x1123) para evitar franjas
             # negras a la derecha cuando algún elemento mantiene el ancho del viewport.
+            # No usar device_scale_factor: rompe el rendering de KaTeX (denominadores
+            # se hacen ilegiblemente pequeños).
             ctx = browser.new_context(
                 viewport={"width": 794, "height": 1123},
-                device_scale_factor=2,
             )
             page = ctx.new_page()
 
@@ -387,7 +650,7 @@ def main():
         for asig_name, data in asignaturas.items():
             output_dir = ROOT / data["output_dir"]
             current_v = versions.get(asig_name, 1)
-            ok, msg, fname = merge_subject(data, output_dir, asig_name, versions)
+            ok, msg, fname = merge_subject(data, output_dir, asig_name, versions, css_text)
 
             if ok and fname:
                 # Limpiar versiones anteriores

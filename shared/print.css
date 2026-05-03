@@ -73,12 +73,12 @@ html, body {
 }
 
 /* Cualquier elemento de bloque grande no debe ser más ancho que el viewport.
-   Cubre el caso de elementos con min-width implícito que dejaban hueco oscuro. */
+   Cubre el caso de elementos con min-width implícito que dejaban hueco oscuro.
+   IMPORTANTE: NO usar overflow-x:hidden aquí porque recorta las fracciones de KaTeX. */
 main, section, article, .content, .wrap, .layout, .container,
 .tema-content, .tema, header, footer {
   max-width: 100% !important;
   min-width: 0 !important;
-  overflow-x: hidden !important;
 }
 
 /* Forzar TODO el texto a oscuro (texto descriptivo del proyecto era gris claro casi invisible) */
@@ -443,22 +443,61 @@ img, .fig-wrap img, svg {
 }
 
 /* ─── 7) KaTeX ──────────────────────────────────── */
-.katex {
-  font-size: 1em !important;
-  color: #111827 !important;
-}
-.katex-display {
-  margin: 8px 0 !important;
-  overflow: visible !important;
-  page-break-inside: avoid !important;
-  text-align: center !important;
+/* CRÍTICO: las fracciones de KaTeX (dp/dV, 1/K, dv/dy) deben tener
+   ESPACIO VERTICAL suficiente para mostrar el denominador. Si algún
+   contenedor las recortaba, la mitad inferior quedaba cortada. */
+/* PROTECCIÓN ESPECIAL DE KATEX:
+   El catch-all anterior ([class*="list"], [class*="col"], etc.) matchea
+   clases internas de KaTeX como .vlist, .vlist-r, .col-align-l y les
+   aplicaba background:#fff y color:#1f2937 que rompía el rendering
+   (denominadores ilegibles, fracciones desalineadas).
+   Aquí RESETEAMOS esas propiedades dentro de .katex para devolver el
+   control a KaTeX. */
+
+.katex,
+.katex * {
+  background-color: transparent !important;
+  background-image: none !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  /* NO tocar height, width, display, font-size, line-height, position */
 }
 
+/* Color base del KaTeX (herencia desde body que es #111827) */
+.katex {
+  color: #111827 !important;
+}
+.katex .frac-line {
+  border-bottom-color: currentColor !important;
+}
+.katex-display {
+  page-break-inside: avoid !important;
+  overflow: visible !important;
+}
+
+/* Contenedores con KaTeX dentro: sin overflow:hidden ni max-height */
+.fblock, .fkey, .box, .callout, .formula-box,
+.callout-warning, .callout-info, .callout-note,
+.formula, .formula-line, .sc-formula-box,
+p, td, li {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* (bloque consolidado más arriba en la sección KaTeX) */
+
 /* ─── 8) PAGE BREAKS ────────────────────────────── */
+/* CRÍTICO: las fracciones de KaTeX y los superíndices NO deben
+   atravesar el corte de página. Si se parten, el denominador queda
+   huérfano en la siguiente página. */
 .paso,
 .section-wrap,
 .formula,
 .formula-box,
+.formula-line,
 .resultado-final,
 .verificacion,
 .errores,
@@ -467,10 +506,29 @@ img, .fig-wrap img, svg {
 .nota,
 .enunciado,
 .katex-display,
+.katex,
+.katex-html,
+.katex .mfrac,
+.katex .vlist,
 table,
 .tabla,
 .fig-wrap,
-.steps {
+.steps,
+/* Cajas de información de fluidos/teoría */
+.callout, .callout-warning, .callout-info, .callout-note,
+.box, .box.key, .box.info, .box.warn, .box.note, .box.danger,
+.fblock, .fkey,
+.sc-card, .sc-formula-box, .sc-error-box, .sc-pasos-list,
+/* Catch-all defensivo para cualquier caja con fórmulas dentro */
+[class*="callout"], [class*="formula"] {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+  -webkit-column-break-inside: avoid !important;
+}
+
+/* Cualquier párrafo, lista o tabla con KaTeX dentro tampoco debe partirse */
+p:has(.katex), li:has(.katex), td:has(.katex), tr:has(.katex),
+div:has(> .katex-display) {
   page-break-inside: avoid !important;
   break-inside: avoid !important;
 }
@@ -506,9 +564,18 @@ a {
 @page {
   size: A4;
   margin: 18mm 16mm;
+  background: #ffffff;
 }
 @page :first {
   margin-top: 22mm;
+  background: #ffffff;
+}
+
+/* CRÍTICO: forzar fondo blanco también en html (no solo body)
+   para evitar la franja oscura residual en márgenes. */
+html {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
 }
 
 /* ─── 11) OCULTAR ELEMENTOS INTERACTIVOS ────────── */
