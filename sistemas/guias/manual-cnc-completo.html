@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#000000" name="theme-color"/>
+<title>Manual completo CNC — T4 Sistemas UPV/EHU</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;
+  --surface:rgba(255,255,255,.04);
+  --surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.10);
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --text3:#64748b;
+  --accent:#ffd93d;
+  --accent-dim:rgba(255,217,61,.10);
+  --accent-border:rgba(255,217,61,.30);
+  --green:#10b981;
+  --blue:#38bdf8;
+  --orange:#fb923c;
+  --red:#ef4444;
+  --purple:#a78bfa;
+  --ff:'Space Grotesk',system-ui,sans-serif;
+  --ff-mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.65;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:.22s;white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9}
+
+.layout{max-width:920px;margin:0 auto;padding:72px 32px 60px}
+.cover{padding:80px 0 60px;text-align:center;border-bottom:2px solid var(--accent-border);margin-bottom:40px}
+.cover-tag{font-family:var(--ff-mono);font-size:.78em;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.cover h1{font-size:2.3em;font-weight:700;color:#f1f5f9;letter-spacing:-.03em;line-height:1.15;margin-bottom:12px}
+.cover .sub{font-size:1.05em;color:var(--text2);font-weight:500;line-height:1.6}
+.cover-meta{display:flex;justify-content:center;gap:24px;margin-top:24px;font-size:.82em;color:var(--text3);font-family:var(--ff-mono)}
+
+.toc{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:20px 24px;margin-bottom:40px}
+.toc-title{font-size:.78em;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.toc ol{padding-left:24px;font-size:.92em;line-height:2;color:var(--text)}
+.toc a{color:var(--text);text-decoration:none}
+.toc a:hover{color:var(--accent)}
+
+h2{font-size:1.5em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;margin:48px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--accent-border);page-break-before:auto}
+h2.pb{page-break-before:always}
+h3{font-size:1.15em;font-weight:600;color:var(--accent);margin:24px 0 10px}
+h4{font-size:1em;font-weight:600;color:#f1f5f9;margin:14px 0 6px}
+
+p{margin-bottom:10px;line-height:1.7;color:var(--text)}
+ul,ol{padding-left:22px;margin-bottom:12px;line-height:1.8;color:var(--text2)}
+ul li,ol li{margin-bottom:5px}
+
+table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:.86em}
+th{background:var(--accent-dim);color:var(--accent);padding:8px 10px;text-align:left;border:1px solid var(--accent-border);font-weight:700}
+td{padding:8px 10px;border:1px solid var(--border);color:var(--text)}
+tr:nth-child(even) td{background:rgba(255,217,61,.04)}
+
+.code,.formula{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:10px 14px;margin:8px 0;color:#fed7aa;font-family:var(--ff-mono);font-size:.83em;white-space:pre-wrap;line-height:1.75;overflow-x:auto}
+.fagor{background:#020a04;border-radius:6px;padding:12px 14px;margin:8px 0;color:#7dd87d;font-family:var(--ff-mono);font-size:.82em;white-space:pre;line-height:1.75;overflow-x:auto;border:1px solid #0e3318}
+
+.callout{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.30);border-left:3px solid var(--blue);border-radius:6px;padding:11px 14px;margin:12px 0;font-size:.88em;color:#bae6fd}
+.callout-title{font-weight:700;color:var(--blue);font-size:.78em;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.warn{background:rgba(244,63,94,.05);border:1px solid rgba(244,63,94,.22);border-left:3px solid var(--red);border-radius:6px;padding:11px 14px;margin:12px 0;font-size:.88em;color:#fecdd3}
+.warn-title{font-weight:700;color:var(--red);font-size:.78em;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.tip{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.28);border-left:3px solid var(--green);border-radius:6px;padding:11px 14px;margin:12px 0;font-size:.88em;color:#a7f3d0}
+.tip-title{font-weight:700;color:var(--green);font-size:.78em;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center;font-size:.78em;color:var(--text3);font-family:var(--ff-mono)}
+
+@media print{
+  body{font-size:11.5pt;background:#fff;color:#000}
+  .topbar{display:none}
+  .layout{padding:0;max-width:100%}
+  .cover{padding:0 0 30px;border-bottom:2px solid #c9a000}
+  .cover h1{color:#000}
+  .cover .sub{color:#444}
+  h2{page-break-after:avoid;color:#000;border-bottom:1.5px solid #c9a000}
+  h3,h4{color:#a07000;page-break-after:avoid}
+  p,li{color:#000}
+  table th{background:#fff3c4;color:#a07000;border-color:#c9a000}
+  table td{color:#000;border-color:#ccc}
+  table tr:nth-child(even) td{background:#fffae6}
+  .code,.formula{background:#fff8e7;color:#5c3300;border-left-color:#c9a000;page-break-inside:avoid}
+  .fagor{background:#f0fdf4;color:#14532d;border-color:#86efac;page-break-inside:avoid}
+  .callout{background:#eff6ff;color:#1e3a8a;border-color:#93c5fd;page-break-inside:avoid}
+  .warn{background:#fef2f2;color:#7f1d1d;border-color:#fca5a5;page-break-inside:avoid}
+  .tip{background:#f0fdf4;color:#14532d;border-color:#86efac;page-break-inside:avoid}
+  a{color:#1d4ed8;text-decoration:underline}
+  footer{border-top-color:#ccc;color:#666}
+}
+</style>
+<link rel="stylesheet" href="../../shared/print.css">
+</head>
+<body>
+
+<nav class="topbar no-print">
+<a class="topbar-back" href="../teoria.html"><svg fill="none" height="14" viewbox="0 0 16 16" width="14"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a>
+<span class="topbar-title">📘 Manual completo T4 CNC — para imprimir y estudiar de 0</span>
+</nav>
+
+<div class="layout">
+
+<div class="cover">
+<div class="cover-tag">★ Manual de auto-estudio · Sistemas UPV/EHU</div>
+<h1>Manual completo<br>T4 — Control Numérico CNC</h1>
+<div class="sub">Fagor 8025M / 8025T · todo lo necesario para aprender de 0<br>y aprobar los 3 puntos del examen de Sistemas</div>
+<div class="cover-meta">
+<span>Curso 2025-2026</span>
+<span>·</span>
+<span>~12 h de estudio</span>
+<span>·</span>
+<span>3 pts del examen</span>
+</div>
+</div>
+
+<div class="toc">
+<div class="toc-title">📑 Índice</div>
+<ol>
+<li><a href="#parte1">Fundamentos: qué es CNC + glosario + fórmulas</a></li>
+<li><a href="#parte2">Programación Fagor 8025M: estructura del programa</a></li>
+<li><a href="#parte3">Códigos G y M esenciales</a></li>
+<li><a href="#parte4">Ciclos fijos: G81, G83, G87, G88, G86</a></li>
+<li><a href="#parte5">Técnicas avanzadas: tangencial, compensación, espejo, subrutinas</a></li>
+<li><a href="#parte6">Tu primer programa (T4.P0) — paso a paso</a></li>
+<li><a href="#parte7">Errores típicos a evitar (los 6 grandes)</a></li>
+<li><a href="#parte8">CHULETA oficial del examen (referencia rápida)</a></li>
+<li><a href="#parte9">Plan de estudio y mapa de ejercicios</a></li>
+</ol>
+</div>
+
+<!-- ════════ PARTE 1 ════════ -->
+<h2 id="parte1">1 · Fundamentos: qué es CNC + glosario + fórmulas</h2>
+
+<h3>1.1 ¿Qué es CNC?</h3>
+<p><b>CNC (Control Numérico Computerizado)</b> = máquina herramienta cuyos movimientos están controlados por un programa escrito en código G. La máquina lee línea a línea y ejecuta cada movimiento con precisión µm.</p>
+<p><b>Diferencia con una máquina manual:</b></p>
+<ul>
+<li><b>Manual:</b> el operario mueve volantes (manivelas) para posicionar la herramienta. Cada cota se ajusta a mano.</li>
+<li><b>CNC:</b> se escribe un programa, se carga en el control, se pulsa "ciclo automático" → la máquina ejecuta todo sola con repetibilidad.</li>
+</ul>
+<p>Esto permite: (1) <b>repetibilidad</b> µm pieza tras pieza, (2) <b>geometrías complejas</b> con interpolaciones, (3) <b>5 ejes</b> simultáneos para superficies libres, (4) <b>reducción de errores</b> humanos.</p>
+
+<h3>1.2 Sistema de coordenadas</h3>
+<p>Todo programa CNC funciona en un sistema cartesiano. Hay <b>dos ceros importantes</b>:</p>
+<ul>
+<li><b>Cero máquina</b>: punto físico de referencia de la máquina (esquina del banco, por ejemplo). NO se cambia.</li>
+<li><b>Cero pieza</b> (G54): el operario lo define cuando amarra la pieza. Suele ponerse en una esquina o el centro de la pieza. Es a este cero a donde se refieren las coordenadas del programa.</li>
+</ul>
+
+<p><b>Convenios de ejes:</b></p>
+<table>
+<tr><th>Máquina</th><th>X</th><th>Y</th><th>Z</th></tr>
+<tr><td>Fresadora</td><td>longitudinal mesa</td><td>transversal mesa</td><td>vertical (cabezal)</td></tr>
+<tr><td>Torno</td><td>radial (en DIÁMETRO)</td><td>tangencial (no se programa)</td><td>axial (eje pieza)</td></tr>
+</table>
+
+<div class="warn"><div class="warn-title">⚠ Atención torneado</div>X siempre se programa en <b>DIÁMETRO</b>, no radio. Un chaflán 1,5×45° hace X subir 3 mm (porque 1,5×2 lados = 3 mm en diámetro).</div>
+
+<h3>1.3 Glosario de términos básicos</h3>
+<table>
+<tr><th>Símbolo</th><th>Significado</th><th>Unidad</th></tr>
+<tr><td><b>vc</b></td><td>Velocidad de corte (velocidad tangencial filo-pieza)</td><td>m/min</td></tr>
+<tr><td><b>N</b> (o S en código)</td><td>Velocidad de giro del cabezal</td><td>rpm</td></tr>
+<tr><td><b>vf</b> (o F en código)</td><td>Velocidad de avance (mesa o herramienta)</td><td>mm/min</td></tr>
+<tr><td><b>fz</b></td><td>Avance por diente — fresado</td><td>mm/Z/rev</td></tr>
+<tr><td><b>f</b></td><td>Avance por revolución — torneado/taladrado</td><td>mm/rev</td></tr>
+<tr><td><b>Z</b></td><td>Número de dientes / filos</td><td>—</td></tr>
+<tr><td><b>D</b></td><td>Diámetro (fresa, broca o pieza según contexto)</td><td>mm</td></tr>
+<tr><td><b>ap</b></td><td>Profundidad de corte axial ("cuánto bajas en Z")</td><td>mm</td></tr>
+<tr><td><b>ae</b></td><td>Profundidad de corte radial ("cuánto entras de lado")</td><td>mm</td></tr>
+<tr><td><b>hmax</b></td><td>Espesor máximo de viruta</td><td>mm</td></tr>
+<tr><td><b>Kr</b></td><td>Ángulo de posición del filo</td><td>°</td></tr>
+<tr><td><b>ps</b></td><td>Fuerza específica de corte (propiedad del material)</td><td>N/mm²</td></tr>
+<tr><td><b>Fc</b></td><td>Fuerza de corte (Fc = ps · ap · f)</td><td>N</td></tr>
+<tr><td><b>Pc</b></td><td>Potencia de corte (Pc = Fc · vc / 60.000)</td><td>kW</td></tr>
+<tr><td><b>L/D</b></td><td>Relación esbeltez en taladrado</td><td>—</td></tr>
+<tr><td><b>Ra</b></td><td>Rugosidad media superficial</td><td>µm</td></tr>
+</table>
+
+<h3>1.4 Las 6 fórmulas que SIEMPRE entran</h3>
+<div class="formula">★ vc = π · D · N / 1000             [m/min · D en mm · N en rpm]
+
+★ N  = 1000 · vc / (π · D)            [rpm]
+
+★ vf (FRESADO)   = N · Z · fz         [mm/min]
+★ vf (TORNEADO)  = N · f              [mm/min]
+★ vf (TALADRADO) = N · f              [mm/min]
+
+★ Pc = Fc · vc / 60.000               [kW · Fc en N · vc en m/min]
+
+★ Fc = ps · ap · f                     [N — sección viruta × ps]
+
+★ Q (caudal viruta torneado)  = vc · ap · f    [mm³/min]
+★ Q (caudal viruta fresado)   = vf · ap · ae   [mm³/min]
+
+★ Ra ≈ f² / (8 · rε) · 1000             [µm — sólo torneado acabado]</div>
+
+<p><b>Valores típicos de ps (memoriza el ORDEN):</b></p>
+<div class="formula">Aluminio        ≈  600-800 N/mm²    (más blando)
+Acero (P)       ≈  1.500-2.000
+Acero inox (M)  ≈  1.800-2.300
+Fundición (K)   ≈  900-1.300
+Titanio/Inconel ≈  2.500-3.500     (más duro)
+RECTIFICADO     ≈  30.000-60.000   (¡10× más alta!)</div>
+
+<!-- ════════ PARTE 2 ════════ -->
+<h2 class="pb" id="parte2">2 · Programación Fagor 8025M: estructura del programa</h2>
+
+<p>Todo programa CNC tiene una estructura que se repite. <b>Memoriza esta plantilla</b> y solo cambia el contenido del bloque de mecanizado:</p>
+
+<div class="fagor">% NOMBRE DEL PROGRAMA               ; comentario inicial (no obligatorio)
+
+; ═══ CABECERA / SETUP de la primera herramienta ═══
+N010 T1.1                          ; selecciona herramienta T1 + corrector 1
+N020 M6                            ; M6 = cambio automático de herramienta
+N030 G43                           ; activa compensación de longitud Z
+N040 G90 G17 G96 G94 G0 X__ Y__ Z100 S__ F__ M3
+;     G90 = coordenadas absolutas
+;     G17 = plano XY (típico fresado)
+;     G96 = velocidad de corte cte (vc) | G97 = N cte (taladrado)
+;     G94 = avance mm/min
+;     G0  = posicionamiento rápido
+;     S__ = vc en G96, o N en G97
+;     F__ = avance vf en mm/min
+;     M3  = arranca cabezal CW (sentido horario)
+
+; ═══ MECANIZADO ═══
+N050 G0 Z2                         ; aproxima 2 mm sobre la pieza
+N060 G1 Z-__ F___                  ; baja al material (avance LENTO)
+N070 G1 X__ Y__                    ; movimiento de corte (en plano)
+;     ... aquí va la lógica de tu ejercicio ...
+N___ G0 Z100                       ; retira a posición segura
+N___ G40 G44                       ; cancela G40 (radio) + G44 (longitud)
+
+; ═══ Cambio a SIGUIENTE herramienta (mismo patrón) ═══
+N___ T2.2
+N___ M6
+N___ G43
+N___ G90 G17 G96 G94 G0 ... S__ F__ M3
+;     ... mecanizado con T2 ...
+N___ G0 Z100
+N___ G40 G44
+
+; ═══ CIERRE ═══
+N___ M5                            ; para cabezal
+N___ M30                           ; FIN programa</div>
+
+<div class="tip"><div class="tip-title">🔑 Reglas de oro</div>
+<ul style="margin:4px 0 0 18px">
+<li><b>SIEMPRE G43</b> al inicio de cada herramienta nueva.</li>
+<li><b>SIEMPRE G40 G44</b> antes del cambio o al final.</li>
+<li><b>Z=100 mm</b> es el "lugar seguro" estándar para retiradas.</li>
+<li><b>M30</b> al final, SIEMPRE.</li>
+<li>Numera los bloques de 10 en 10 (N010, N020...) para poder insertar.</li>
+</ul>
+</div>
+
+<!-- ════════ PARTE 3 ════════ -->
+<h2 class="pb" id="parte3">3 · Códigos G y M esenciales</h2>
+
+<h3>3.1 Funciones G principales (chuleta UPV/EHU)</h3>
+<div class="formula">G00   Interpolación lineal RÁPIDA (máximo avance, sin cortar)
+G01   Interpolación LINEAL con avance F
+G02   Interpolación circular CW (horario)
+G03   Interpolación circular CCW (antihorario)
+
+G17 / G18 / G19   Selección de plano (G17 = XY estándar fresado)
+
+G90 / G91   Coordenadas absolutas / incrementales
+
+G93   Preselección origen polar
+
+G43 / G44   Compensación longitud activar / desactivar
+
+G40 / G41 / G42   Compensación RADIO
+   G40 : desactivar
+   G41 : pieza a la DERECHA del filo (= fresa por la izquierda del avance)
+   G42 : pieza a la IZQUIERDA del filo (= fresa por la derecha)
+
+G37   Entrada tangencial (con radio R del arco)
+G38   Salida tangencial
+G36   Redondeo de aristas
+
+G73   Giro del sistema (G73 Aθ rota θ grados)
+
+G10 / G11 / G12 / G13   Funciones espejo
+   G10 : desactivar
+   G11 : cambio coord X (invierte X = espejo eje Y)
+   G12 : cambio coord Y (invierte Y = espejo eje X)
+   G13 : cambio coord Z (no se usa)
+
+G96 / G97   vc constante (CSS) / N constante
+G94 / G95   Avance mm/min / mm/rev
+G70 / G71   Cotas pulgadas / mm (por defecto mm)</div>
+
+<h3>3.2 Funciones M</h3>
+<div class="formula">M03   Arrancar cabezal HORARIO (CW)  ← el habitual
+M04   Arrancar cabezal antihorario  (no se usa)
+M05   Parar cabezal
+M06   Cambio automático de herramienta
+M30   FIN de programa (con rewind)</div>
+
+<h3>3.3 Subrutinas (chuleta UPV/EHU — atención al orden)</h3>
+<div class="formula">G22 N1      INICIO de la subrutina o subprograma número 1
+G24         FINAL de la subrutina
+G20 N1.k    LLAMADA a la subrutina 1 con k repeticiones (k=1, 5, ...)</div>
+
+<div class="warn"><div class="warn-title">⚠ Confusión típica</div>
+La estructura ES:
+<ul style="margin:4px 0 0 18px">
+<li>Programa principal contiene <b>G20 N1.1</b> donde se quiere ejecutar la subrutina</li>
+<li>Termina con <b>M30</b></li>
+<li>DESPUÉS de M30, define la subrutina con <b>G22 N1 ... G24</b></li>
+<li>(NO al revés: G22 N1 NO es una llamada)</li>
+</ul>
+</div>
+
+<!-- ════════ PARTE 4 ════════ -->
+<h2 class="pb" id="parte4">4 · Ciclos fijos: G81, G83, G87, G88, G86</h2>
+
+<h3>4.1 G81 — Taladrado simple</h3>
+<div class="formula">G81 G98 X30 Y0 Z2 I-15
+
+  G98 / G99 : retorno
+  X, Y      : coordenadas absolutas del centro del agujero
+  Z         : plano de REFERENCIA (positivo sobre la pieza, p.ej. Z=2)
+  I         : profundidad del agujero (cota absoluta, NEGATIVA hacia -Z)</div>
+
+<p>Uso: agujeros simples con relación L/D &lt; 3 (la viruta sale sola).</p>
+
+<h3>4.2 G83 — Taladrado profundo con desahogo (peck drilling)</h3>
+<div class="formula">G83 G98 X0 Y0 Z2 I-30 J3 K0.5
+
+  Igual que G81 más:
+  J : valor del PECK (mm que baja cada vez antes de retroceder)
+  K : retroceso para romper viruta (mm)</div>
+
+<p>Uso: agujeros profundos (L/D &gt; 3-4) donde la viruta puede atascarse.</p>
+
+<h3>4.3 G87 — Cajera RECTANGULAR (★ no confundir con G88)</h3>
+<div class="formula">G87 G99 X10 Y10 Z5 I-20 J20 K20 B5 C5 D5 H300 L0.4
+
+  X, Y : centro de la cajera
+  Z    : plano de REFERENCIA
+  I    : profundidad (NEGATIVA)
+  J    : ★ SEMIBASE rectángulo (X) ← MITAD del ancho, no total
+  K    : ★ SEMIALTURA rectángulo (Y) ← MITAD del alto
+  B    : paso de profundización Z por nivel
+  C    : paso radial (espiral XY)
+  D    : distancia pieza ↔ plano referencia (Z)
+  H    : avance de acabado
+  L    : sobremedida radial (demasía)</div>
+
+<div class="warn"><div class="warn-title">⚠ J/K son SEMIDIMENSIONES</div>Para cajera 40×40 → J=20, K=20. Si pones J=40 K=40 obtienes una cajera de 80×80 (error frecuente).</div>
+
+<h3>4.4 G88 — Cajera CIRCULAR (★ no es la rectangular)</h3>
+<div class="formula">G88 G98 X0 Y0 Z10 I-12 J20 B4 C5 D5 H300 L0.4
+
+  X, Y : centro de la cajera
+  Z    : plano de REFERENCIA
+  I    : profundidad (NEGATIVA)
+  J    : ★ RADIO de la cajera ← NO es diámetro
+  B, C, D, H, L : iguales que en G87</div>
+
+<h3>4.5 G86 — Roscado longitudinal (torneado)</h3>
+<div class="formula">G86 X29.05 Z-LROS P1.5 Q0.975 R0.05 K1
+
+  X     : diámetro FINAL (fondo de rosca) = D − 2·Q
+  Z     : longitud del roscado
+  P     : paso de la rosca (mm)
+  Q     : profundidad total radial (≈ 0,65·paso para métrica)
+  R     : distancia de seguridad
+  K     : número de pasadas finales con misma profundidad</div>
+
+<p><b>Cálculo fondo de rosca:</b> para M30×1,5 → Q = 0,65·1,5 = 0,975 → X_fondo = 30 − 2·0,975 = <b>28,05</b> (no 29,05).</p>
+
+<!-- ════════ PARTE 5 ════════ -->
+<h2 class="pb" id="parte5">5 · Técnicas avanzadas</h2>
+
+<h3>5.1 G37/G38 — Entrada y salida tangencial</h3>
+<p>Para que la fresa entre y salga del contorno SIN dejar marca, se usan arcos tangenciales de radio R:</p>
+<div class="fagor">N220 G1 G42 G37 R10 X40 Y0    ; ENTRADA tangencial con arco R10
+N230 G2 I-40 J0                ; círculo completo
+N240 G38 R10 X60 Y0            ; SALIDA tangencial con arco R10</div>
+
+<p>El control inserta automáticamente un arco de radio R que conecta el punto anterior con el contorno de forma tangente. <b>Transición C1 (sin marca).</b></p>
+
+<h3>5.2 G41/G42 — Compensación de radio de herramienta</h3>
+<p>El control desplaza la trayectoria programada el radio de la fresa para que el FILO siga exactamente el contorno.</p>
+<table>
+<tr><th>Caso</th><th>G41 + sentido</th><th>G42 + sentido</th></tr>
+<tr><td>Contornear POR FUERA (perfil exterior)</td><td>G41 + G2 (CW) ✓</td><td>G42 + G3 (CCW) ✓</td></tr>
+<tr><td>Contornear POR DENTRO (cajera)</td><td>G41 + G3 (CCW) ✓</td><td>G42 + G2 (CW) ✓</td></tr>
+</table>
+<div class="warn"><div class="warn-title">⚠ Error muy típico</div>G42 + G2 cuando contorneas POR FUERA: la fresa queda DENTRO del círculo → muerde el contorno.</div>
+
+<h3>5.3 G73 — Giro del sistema de coordenadas</h3>
+<div class="formula">G73 A60   ; rota el sistema 60° respecto al origen
+G73 A0    ; RESTAURA el sistema original (¡importante al final!)</div>
+<p>Útil para piezas con simetría rotacional: programar UNA pieza y replicarla con G73 + subrutina.</p>
+
+<div class="warn"><div class="warn-title">⚠ G73 A180 ≠ Reflexión</div>G73 A180 es <b>rotación</b> 180° que invierte AMBOS ejes (x,y) → (−x,−y). Para REFLEXIÓN sobre eje X (invertir solo Y), usa <b>G12</b>.</div>
+
+<h3>5.4 G11/G12 — Espejos</h3>
+<div class="formula">G11   ESPEJO X (invierte coord X) = reflexión sobre eje Y
+G12   ESPEJO Y (invierte coord Y) = reflexión sobre eje X
+G10   DESACTIVA espejo</div>
+
+<h3>5.5 Subrutinas con G22/G24/G20</h3>
+<p>Patrón completo (cabezas de tornillo, pétalos, ranuras radiales):</p>
+<div class="fagor">; ═══ PROGRAMA PRINCIPAL ═══
+N010 ... cabecera ...
+N100 G20 N1.1            ; LLAMA subrutina 1 (1 vez)
+N110 G73 A90              ; rota 90°
+N120 G20 N1.1            ; LLAMA otra vez (rotada)
+N130 G73 A0               ; restaura
+N140 M30                  ; FIN main
+
+; ═══ DEFINICIÓN SUBRUTINA ═══
+N150 G22 N1               ; INICIO subrutina 1
+N160 ... contenido ...
+N170 G24                  ; FIN subrutina</div>
+
+<!-- ════════ PARTE 6 ════════ -->
+<h2 class="pb" id="parte6">6 · Tu primer programa — T4.P0</h2>
+
+<p><b>Pieza:</b> placa cuadrada de <b>50×50×20 mm</b> con <b>UN solo taladro Ø10 pasante</b> en el centro. Broca D10, vc=25 m/min, f=0,1 mm/rev.</p>
+
+<h3>6.1 Planteamiento en 5 pasos</h3>
+<ol>
+<li><b>Cero pieza</b>: en el centro de la cara superior. X=Y=0 = centro. Z=0 = cara superior.</li>
+<li><b>N (rpm)</b>: N = 1000·25/(π·10) = 796 ≈ <b>800 rpm</b>.</li>
+<li><b>F (mm/min)</b>: F = N·f = 800·0,1 = <b>80 mm/min</b>.</li>
+<li><b>Profundidad I</b>: placa 20 mm + 3 mm pico broca → I = <b>−23 mm</b>.</li>
+<li><b>Ciclo G81</b> con X0 Y0, Z2 (plano referencia), I−23.</li>
+</ol>
+
+<h3>6.2 Programa completo (12 líneas)</h3>
+<div class="fagor">%PRIMER PROGRAMA — TALADRO D10
+
+; ═══ CABECERA ═══
+N010 T1.1                        ; broca D10 con corrector 1
+N020 M6                          ; cambio automático
+N030 G43                         ; compensación longitud
+N040 G90 G17 G97 G94 G0 X0 Y0 Z100 S800 F80 M3
+;    G97 = N constante (broca tiene D fijo, no G96)
+;    Z100 = altura segura
+;    S800 = 800 rpm, F80 = 80 mm/min, M3 = cabezal CW
+
+; ═══ MECANIZADO ═══
+N050 G81 G99 X0 Y0 Z2 I-23      ; taladrado simple
+N060 G80                         ; cancela G81
+
+; ═══ CIERRE ═══
+N070 G0 Z100                     ; sube
+N080 G40 G44                     ; cancela compensaciones
+N090 M5                          ; para cabezal
+N100 M30                         ; FIN</div>
+
+<div class="tip"><div class="tip-title">🔑 Resumen</div>En 12 líneas has hecho tu primer programa CNC. Las piezas complejas no son más que VARIAS de estas estructuras encadenadas: cabecera + mecanizado + cierre, repetido por cada herramienta.</div>
+
+<!-- ════════ PARTE 7 ════════ -->
+<h2 class="pb" id="parte7">7 · Errores típicos a evitar</h2>
+
+<p>Estos son los errores que un compañero detectó auditando ejercicios. Léelos para reconocerlos antes de cometerlos:</p>
+
+<h3>7.1 Ciclos fijos</h3>
+<div class="warn">
+<ul style="margin:4px 0 0 18px">
+<li><b>G88 ≠ G87:</b> G87 = rectangular, G88 = circular.</li>
+<li><b>J/K en G87 son SEMI-dimensiones</b>: cajera 40×40 → J=20, K=20.</li>
+<li><b>J en G88 es RADIO</b> (no diámetro): Ø60 → J=30.</li>
+<li><b>G81 vs G83</b>: usa G83 (peck) cuando L/D &gt; 3-4.</li>
+</ul>
+</div>
+
+<h3>7.2 Compensación de radio</h3>
+<div class="warn">
+<ul style="margin:4px 0 0 18px">
+<li><b>G42 + G2 ≠ contornear por fuera</b>: la fresa queda dentro.</li>
+<li><b>Olvidar G40 al final</b>: la compensación queda activa.</li>
+</ul>
+</div>
+
+<h3>7.3 Subrutinas (chuleta UPV/EHU)</h3>
+<div class="warn">
+<ul style="margin:4px 0 0 18px">
+<li><b>G22 N1 = INICIO</b> (definición), <b>NO llamada</b>.</li>
+<li><b>G20 N1.k = LLAMADA</b> (k = nº repeticiones).</li>
+<li><b>G24 = FIN</b> subrutina.</li>
+<li><b>G73 A180 ≠ reflexión</b>: es rotación. Para reflexión usa G11/G12.</li>
+</ul>
+</div>
+
+<h3>7.4 Torneado</h3>
+<div class="warn">
+<ul style="margin:4px 0 0 18px">
+<li><b>X en torneado = DIÁMETRO</b>, no radio.</li>
+<li><b>Fondo de rosca = D − 2·Q</b> (no D − Q).</li>
+<li><b>Aproximación inicial FUERA del bruto</b> (Ø60 → X62, no X60).</li>
+<li><b>Tronzado:</b> G97 con N baja (300 rpm). Con G96 vc→∞ al llegar al centro.</li>
+</ul>
+</div>
+
+<h3>7.5 Avances y velocidades</h3>
+<div class="warn">
+<ul style="margin:4px 0 0 18px">
+<li>Lee BIEN el enunciado: cada herramienta tiene su fz/f.</li>
+<li><b>F en taladrado:</b> F = N·f (no N·Z·fz).</li>
+<li><b>F en fresado:</b> F = N·Z·fz.</li>
+<li>Comprueba que N ≤ N_máx del cabezal.</li>
+</ul>
+</div>
+
+<h3>7.6 Interpretación del plano</h3>
+<div class="warn">
+<ul style="margin:4px 0 0 18px">
+<li><b>Líneas PUNTEADAS = referencia</b>, no contorno mecanizable.</li>
+<li>Mira siempre el <b>corte A-A</b> (alzado) para entender escalones Z.</li>
+<li>Verifica si una cota es <b>centro-a-centro o longitud total</b>.</li>
+<li>Si el plano pide <b>chaflán/avellanado</b>, prográmalo (avellanadora + G81).</li>
+</ul>
+</div>
+
+<!-- ════════ PARTE 8 ════════ -->
+<h2 class="pb" id="parte8">8 · CHULETA oficial del examen</h2>
+
+<p>Esto es lo que se puede llevar al examen. Memorízalo o tenlo siempre delante mientras resuelves:</p>
+
+<h3>8.1 Funciones G principales</h3>
+<div class="formula">G00   Interpolación lineal rápida
+G01   Interpolación lineal
+G02   Interpolación circular CW
+G03   Interpolación circular CCW
+G17/G18/G19   Selección plano (G17 = XY)
+G90/G91   Coords absolutas / incrementales
+G93   Origen polar
+G43/G44   Compensación longitud / desact.
+G40/G41/G42   Comp. radio (G41=pieza dcha, G42=pieza izq)
+G37/G38   Entrada / salida tangencial
+G36   Redondeo de aristas
+G20/G22/G24   Subprogramas
+   G22 N1 : INICIO sub 1
+   G24    : FIN sub
+   G20 N1.k : LLAMA sub 1 con k reps
+G10/G11/G12/G13   Espejo (G11=X, G12=Y)
+G73   Giro sistema (G73 Aθ)
+G96/G97   vc cte / N cte
+G94/G95   mm/min / mm/rev
+G70/G71   Pulgadas / mm</div>
+
+<h3>8.2 Funciones M</h3>
+<div class="formula">M03 / M04 / M05   Giro cabezal CW / CCW / parar
+M06   Cambio herramienta
+M30   FIN programa</div>
+
+<h3>8.3 Ciclos fijos</h3>
+<div class="formula">G81 G98 X30 Y0 Z2 I-15            Taladrado
+  X,Y centro · Z plano ref · I prof (negativa)
+
+G87 G99 X10 Y10 Z5 I-20 J20 K20 B5 C5 D5 H300 L0.4    Cajera RECTANGULAR
+  J=SEMIBASE X · K=SEMIALTURA Y
+  B paso Z · C paso radial · D distancia · H F acabado · L demasía
+
+G88 G98 X0 Y0 Z10 I-12 J20 B4 C5 D5 H300 L0.4         Cajera CIRCULAR
+  J=RADIO (no diámetro)</div>
+
+<!-- ════════ PARTE 9 ════════ -->
+<h2 class="pb" id="parte9">9 · Plan de estudio y mapa de ejercicios</h2>
+
+<h3>9.1 Ruta recomendada (de 0 al examen)</h3>
+<table>
+<tr><th>#</th><th>Hito</th><th>Tiempo</th></tr>
+<tr><td>1</td><td>Lee este manual (capítulos 1-5)</td><td>2 h</td></tr>
+<tr><td>2</td><td>Resuelve <b>T4.P0</b> (primer programa, capítulo 6)</td><td>30 min</td></tr>
+<tr><td>3</td><td>Lee errores típicos (capítulo 7) — DOS veces</td><td>30 min</td></tr>
+<tr><td>4</td><td>Resuelve T4.P1 (torneado CNC)</td><td>1 h</td></tr>
+<tr><td>5</td><td>Resuelve T4.P2, P3, P4, P5 (fresado básico)</td><td>3 h</td></tr>
+<tr><td>6</td><td>Memoriza la CHULETA (capítulo 8)</td><td>30 min</td></tr>
+<tr><td>7</td><td>Resuelve T4.P6 (ejercicio maestro)</td><td>1 h</td></tr>
+<tr><td>8</td><td>Resuelve T4.P7 → T4.P13</td><td>3 h</td></tr>
+<tr><td>9</td><td>Repaso final + simulacro de examen</td><td>1 h</td></tr>
+<tr><td></td><td><b>TOTAL</b></td><td><b>~12 h</b></td></tr>
+</table>
+
+<h3>9.2 Mapa de los 13 ejercicios resueltos</h3>
+<table>
+<tr><th>Ejercicio</th><th>Tema principal</th><th>Dificultad</th></tr>
+<tr><td>T4.P0</td><td>Primer programa — taladrado simple</td><td>★</td></tr>
+<tr><td>T4.P1</td><td>Torneado CNC — eje con rosca M30</td><td>★★★★</td></tr>
+<tr><td>T4.P2</td><td>Fresado — ranuras curvas + espejo G12</td><td>★★★</td></tr>
+<tr><td>T4.P3</td><td>Brida cuadrada Ø80 + cajera + taladros PCD</td><td>★★★</td></tr>
+<tr><td>T4.P4</td><td>Disco con slot oblongo + 8 taladros PCD</td><td>★★★</td></tr>
+<tr><td>T4.P5</td><td>Placa grande con 2 PCDs concéntricos</td><td>★★★</td></tr>
+<tr><td>T4.P6 ★</td><td>Pieza con cruz y lóbulos (★ ejercicio maestro)</td><td>★★★★★</td></tr>
+<tr><td>T4.P7</td><td>Cajeras+slot con plunge milling</td><td>★★★</td></tr>
+<tr><td>T4.P8</td><td>Hexágono regular + ranura oval</td><td>★★★</td></tr>
+<tr><td>T4.P9</td><td>Cuadrado R10 + cajera interior R4</td><td>★★</td></tr>
+<tr><td>T4.P10</td><td>Cajera anidada 3 niveles Z</td><td>★★★★</td></tr>
+<tr><td>T4.P11</td><td>Cajera R8 + alveolo central + agujeros</td><td>★★★</td></tr>
+<tr><td>T4.P12</td><td>Disco D80 con entrada tangencial calculada</td><td>★★★</td></tr>
+<tr><td>T4.P13 ★</td><td>4 pétalos con subrutina + G73 (★ cierre)</td><td>★★★★★</td></tr>
+</table>
+
+<h3>9.3 Estrategia para el día del examen</h3>
+<ol>
+<li><b>Lee TODO el enunciado primero</b> (1 min). Identifica: bruto, perfil exterior, cajeras, taladros, chaflanes, ROSCAS (¡estas se olvidan!), avellanados.</li>
+<li><b>Calcula N y F</b> de cada herramienta APARTE en la esquina del papel (5 min). Así no te equivocas al copiar al programa.</li>
+<li><b>Escribe la cabecera tipo</b> (T_N → M6 → G43 → G90 G17 G96 G94 G0 ... M3) y úsala para cada herramienta. No la reinventes.</li>
+<li><b>Empieza por planeado</b> (la primera operación SIEMPRE).</li>
+<li><b>Después contorneos</b> (con entrada/salida tangencial G37/G38).</li>
+<li><b>Luego cajeras</b> (G87 rectangular o G88 circular — recuerda semibase!).</li>
+<li><b>Después taladros</b> (G81 simples o G83 profundos).</li>
+<li><b>Finalmente chaflanes</b> y operaciones secundarias.</li>
+<li><b>Cierra con M5 + M30</b>.</li>
+<li><b>Revisa</b>: ¿G43 al inicio de cada herramienta? ¿G40 G44 al final? ¿Sentido de compensación correcto? ¿Profundidades NEGATIVAS?</li>
+</ol>
+
+<div class="tip"><div class="tip-title">🎯 Suerte</div>3 puntos de 10 es mucho. Si dominas este manual y los 13 ejercicios, llegas al examen con ventaja. <b>El truco no es memorizar código, es entender LA ESTRUCTURA.</b> Cada programa CNC se construye igual: cabecera + mecanizado + cierre, por cada herramienta.</div>
+
+</div>
+
+<footer>
+Manual completo T4 CNC · Sistemas de Producción y Fabricación · UPV/EHU 2025-2026<br>
+Documento para imprimir y estudiar offline · v1.0
+</footer>
+
+</body>
+</html>
