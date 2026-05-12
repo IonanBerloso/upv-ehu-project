@@ -154,6 +154,7 @@ footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-
 <li><a href="#parte7">Errores típicos a evitar (los 6 grandes)</a></li>
 <li><a href="#parte8">CHULETA oficial del examen (referencia rápida)</a></li>
 <li><a href="#parte9">Plan de estudio y mapa de ejercicios</a></li>
+<li><a href="#parte10">Auditoría: qué confirmar con el profesor</a></li>
 </ol>
 </div>
 
@@ -223,6 +224,19 @@ footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-
 ★ Q (caudal viruta fresado)   = vf · ap · ae   [mm³/min]
 
 ★ Ra ≈ f² / (8 · rε) · 1000             [µm — sólo torneado acabado]</div>
+
+<div class="warn"><div class="warn-title">⚠ Redondeo: N exacto antes de F</div>Si calculas N=796 rpm y rediondeas a 800, después <b>F = N·f = 796·0,1 = 79,6 ≈ 80</b>. Si rediondeas N PRIMERO y haces F=800·0,1=80, casi siempre llegas al mismo número, PERO el correcto es <b>calcular con N exacto y redondear el resultado FINAL</b>. En el examen, escribe ambos cálculos (N exacto y N redondeado) para que el examinador vea que entiendes la diferencia.</div>
+
+<h4>Fórmula completa de Fc en fresado (suele faltar)</h4>
+<div class="formula">Fc (por filo, fresado) = ps · ae · hmax    [N]
+   con hmax ≈ fz · sin(ϕ_engagement)  (depende del recorrido del diente)
+
+Aproximación práctica para Fc TOTAL en fresado:
+   Fc_total ≈ ps · ap · ae · (Z_en_contacto / Z_total) / D · 2·fz
+   (la mitad de los dientes están en contacto en planeado normal)
+
+Simplificación usada en clase:
+   Fc ≈ ps · S_viruta = ps · ap · fz   [por diente]</div>
 
 <p><b>Valores típicos de ps (memoriza el ORDEN):</b></p>
 <div class="formula">Aluminio        ≈  600-800 N/mm²    (más blando)
@@ -366,6 +380,8 @@ La estructura ES:
 
 <p>Uso: agujeros profundos (L/D &gt; 3-4) donde la viruta puede atascarse.</p>
 
+<div class="warn"><div class="warn-title">⚠ Verifica que G83 está en tu chuleta del examen</div>G83 NO aparece explícitamente en la chuleta UPV/EHU que tienes (solo G81, G87, G88). Si el profesor no lo admite, usa <b>G81 con una nota explicando "haría G83 si pudiera"</b> y baja el avance F para compensar. Pregúntale antes del examen para confirmar.</div>
+
 <h3>4.3 G87 — Cajera RECTANGULAR (★ no confundir con G88)</h3>
 <div class="formula">G87 G99 X10 Y10 Z5 I-20 J20 K20 B5 C5 D5 H300 L0.4
 
@@ -403,6 +419,14 @@ La estructura ES:
 
 <p><b>Cálculo fondo de rosca:</b> para M30×1,5 → Q = 0,65·1,5 = 0,975 → X_fondo = 30 − 2·0,975 = <b>28,05</b> (no 29,05).</p>
 
+<div class="warn"><div class="warn-title">⚠ Factor de Q a confirmar con el profe</div>El factor 0,65·p es una <b>aproximación</b> habitual. Otros textos usan 0,613·p (perfil métrico ISO truncado teórico) o 0,649·p. El valor exacto depende del convenio del fabricante de cuchilla y de lo que enseñe tu profesor.
+<ul style="margin:4px 0 0 18px">
+<li>Si profe da el valor → úsalo directamente.</li>
+<li>Si no → usa 0,65·p y deja el código limpio (el examinador verá que sabes la fórmula).</li>
+<li>Para M30×1,5: 0,613·1,5=0,920 / 0,649·1,5=0,974 / 0,65·1,5=0,975 (similares, dan fondos 28,16 / 28,05 / 28,05).</li>
+</ul>
+</div>
+
 <!-- ════════ PARTE 5 ════════ -->
 <h2 class="pb" id="parte5">5 · Técnicas avanzadas</h2>
 
@@ -416,12 +440,34 @@ N240 G38 R10 X60 Y0            ; SALIDA tangencial con arco R10</div>
 
 <h3>5.2 G41/G42 — Compensación de radio de herramienta</h3>
 <p>El control desplaza la trayectoria programada el radio de la fresa para que el FILO siga exactamente el contorno.</p>
-<table>
-<tr><th>Caso</th><th>G41 + sentido</th><th>G42 + sentido</th></tr>
-<tr><td>Contornear POR FUERA (perfil exterior)</td><td>G41 + G2 (CW) ✓</td><td>G42 + G3 (CCW) ✓</td></tr>
-<tr><td>Contornear POR DENTRO (cajera)</td><td>G41 + G3 (CCW) ✓</td><td>G42 + G2 (CW) ✓</td></tr>
-</table>
-<div class="warn"><div class="warn-title">⚠ Error muy típico</div>G42 + G2 cuando contorneas POR FUERA: la fresa queda DENTRO del círculo → muerde el contorno.</div>
+
+<div class="tip"><div class="tip-title">🔑 Regla única (memoriza ESTO, no una tabla)</div>
+Según la chuleta UPV/EHU:
+<ul style="margin:4px 0 0 18px">
+<li><b>G41</b> = pieza a la <b>DERECHA</b> del avance (visto desde la fresa mirando hacia donde va)</li>
+<li><b>G42</b> = pieza a la <b>IZQUIERDA</b> del avance</li>
+<li><b>G40</b> = desactivar</li>
+</ul>
+<p style="margin-top:8px">Razona <b>caso a caso</b>: dibuja un trozo del contorno, marca la flecha del avance, pregúntate "¿dónde queda la PIEZA respecto a esa flecha?" y aplica.</p>
+</div>
+
+<p><b>Ejemplo razonado — contorno EXTERIOR de un círculo:</b></p>
+<ul>
+<li>Vas a contornear un cilindro Ø80 con la fresa POR FUERA (quitas material alrededor).</li>
+<li>Decides recorrer el círculo en <b>sentido horario (G2)</b> empezando en (40, 0) hacia abajo.</li>
+<li>En ese punto inicial, la dirección del avance es hacia −Y; la PIEZA (el cilindro a tu lado) queda a tu <b>DERECHA</b>.</li>
+<li>Por tanto: <b>G41</b>.</li>
+</ul>
+
+<p><b>Ejemplo razonado — cajera circular interior:</b></p>
+<ul>
+<li>Mecanizas una cajera Ø60 desde dentro (la fresa elimina el material del interior).</li>
+<li>Recorres el contorno en G2 (CW) desde (30, 0) hacia abajo.</li>
+<li>Ahora la PIEZA es la pared exterior del agujero, que queda a tu <b>IZQUIERDA</b>.</li>
+<li>Por tanto: <b>G42</b>.</li>
+</ul>
+
+<div class="warn"><div class="warn-title">⚠ Error muy típico</div>Usar G41 o G42 sin pensar dónde queda la PIEZA. Si te equivocas, la fresa cruza el contorno y muerde la pieza (o se queda lejos sin tocarla).</div>
 
 <h3>5.3 G73 — Giro del sistema de coordenadas</h3>
 <div class="formula">G73 A60   ; rota el sistema 60° respecto al origen
@@ -449,6 +495,8 @@ N140 M30                  ; FIN main
 N150 G22 N1               ; INICIO subrutina 1
 N160 ... contenido ...
 N170 G24                  ; FIN subrutina</div>
+
+<div class="warn"><div class="warn-title">⚠ Verifica con un ejercicio resuelto del profe</div>La estructura <b>G22 N1 ... G24</b> (definición) + <b>G20 N1.k</b> (llamada) sigue la chuleta UPV/EHU. Pero algunos textos/cursos usan <b>L20 / L22</b> en lugar de G20/G22, o intercambian su significado. Antes del examen <b>busca un ejercicio resuelto OFICIAL del profesor</b> (apuntes, examen del año pasado) y compara su sintaxis con esta. Si no coincide, ajusta.</div>
 
 <!-- ════════ PARTE 6 ════════ -->
 <h2 class="pb" id="parte6">6 · Tu primer programa — T4.P0</h2>
@@ -646,6 +694,26 @@ G88 G98 X0 Y0 Z10 I-12 J20 B4 C5 D5 H300 L0.4         Cajera CIRCULAR
 </ol>
 
 <div class="tip"><div class="tip-title">🎯 Suerte</div>3 puntos de 10 es mucho. Si dominas este manual y los 13 ejercicios, llegas al examen con ventaja. <b>El truco no es memorizar código, es entender LA ESTRUCTURA.</b> Cada programa CNC se construye igual: cabecera + mecanizado + cierre, por cada herramienta.</div>
+
+<!-- ════════ PARTE 10 — AUDITORÍA ════════ -->
+<h2 class="pb" id="parte10">10 · Auditoría del manual: qué confirmar con el profesor</h2>
+
+<p>Este manual se ha contrastado contra la chuleta oficial UPV/EHU y contra las auditorías de un compañero del primer cuatrimestre. Quedan 6 puntos que <b>conviene verificar directamente con el profesor</b> antes del examen:</p>
+
+<table>
+<tr><th>Prio</th><th>Punto a confirmar</th><th>Qué hacer</th></tr>
+<tr><td>🔴 Alta</td><td>Tabla G41/G42 con G2/G3 (cap 5.2)</td><td>NO memorices tabla. Usa la regla "pieza a la izquierda → G42, a la derecha → G41" y razona caso a caso dibujando flecha del avance.</td></tr>
+<tr><td>🔴 Alta</td><td>¿G83 está en la chuleta del examen?</td><td>Confirma con tu profe. Si no está, usa <b>G81</b> con avance F bajo y nota explicando que "haría G83 si pudiera".</td></tr>
+<tr><td>🟠 Media</td><td>Factor Q en G86 (28,05 vs 28,16)</td><td>Pregunta el factor que usa el profe (0,613·p, 0,649·p o 0,65·p) y memorízalo. Diferencia &lt; 0,1 mm pero importa.</td></tr>
+<tr><td>🟠 Media</td><td>Estructura subrutinas G22/G24/G20</td><td>Cogerá un ejercicio resuelto oficial y verifica la sintaxis. Algunos textos usan L20/L22 en vez de G20/G22.</td></tr>
+<tr><td>🟢 Baja</td><td>Redondeo de N antes de F</td><td>Calcula con N exacto, redondea al final. Escribe ambos números (exacto y redondeado) en el examen.</td></tr>
+<tr><td>🟢 Baja</td><td>Falta fórmula Fc para fresado completa</td><td>Si te lo preguntan en teoría: Fc ≈ ps · ap · fz por diente; Fc_total ≈ ps · ap · ae · (hmax/D)·Z_engaged.</td></tr>
+</table>
+
+<div class="tip"><div class="tip-title">🔑 Filosofía del manual</div>
+<p>Este documento es una <b>herramienta de auto-estudio</b> contrastada con auditorías reales. Pero no reemplaza al profesor: cuando una duda sea crítica (especialmente las marcadas 🔴 Alta), pregunta directamente.</p>
+<p><b>Si dominas:</b> (1) la chuleta del cap 8, (2) la regla razonada de G41/G42, (3) los 6 ciclos fijos del cap 4, y (4) la estructura de subrutinas — tienes los 3 puntos del examen en el bolsillo.</p>
+</div>
 
 </div>
 
