@@ -733,11 +733,17 @@ T4.4 (broca D8,5, vc=25 m/min, f=0,1 mm/rev):
 <div class="topic-panel" id="ex4">
 <div class="panel-header">
 <div class="panel-tag">T4.P4</div>
-<h1 class="panel-title">Fresado — brida circular D100, ranuras radiales</h1>
-<div class="panel-meta">Planeado · Ranuras radiales tipo T · Patrón PCD · Cajera central</div>
+<h1 class="panel-title">Fresado — disco D100 con slot oblongo + 8 taladros PCD</h1>
+<div class="panel-meta">Planeado · Slot/cajera oblonga 60×14×10 · 8 taladros Ø10 en PCD Ø80</div>
 </div>
 <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Disco cilíndrico con ranuras radiales tipo T, 6 agujeros en PCD y cajera central Ø80/R30. Planeado de 5 mm. Dimensiones de partida: <b>D100 × 25 mm</b>.</p>
+<p><b>Pieza (★ corrección auditoría):</b> disco cilíndrico D100×25 con:</p>
+<ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
+<li>Planeado superior de 5 mm</li>
+<li><b>Slot/cajera oblonga central</b> 60×14×10 con extremos redondeados R7 (forma de "cabeza de tornillo de pala")</li>
+<li><b>8 taladros Ø10</b> distribuidos en PCD Ø80 (radio 40)</li>
+<li>El Ø80 punteado del plano es REFERENCIA del PCD, NO una cajera circular</li>
+</ul>
 <p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D30: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm</li><li>Fresa D8: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm</li><li>Brocas: definir a conveniencia</li></ul>
 </div>
 <div class="fig-plano"><img alt="p04_a" loading="lazy" src="img/t4/p04_a.png"/></div>
@@ -772,86 +778,111 @@ N160 G40 G44                        ; cancela compensaciones</span>
 <p class="res-note"><b>🔑 Planeado de pieza circular:</b> al usar pasadas paralelas en un disco, las pasadas más alejadas del centro cortan tramos cortos. El control no "sabe" dónde hay material — sigue el patrón programado. Alternativa más eficiente: usar planeado espiral (G77 helicoidal), pero requiere postprocessor avanzado.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 2 — Cajera circular central Ø80/R30 (T2.2 · fresa D30)</div>
-<p><b>📋 Planteamiento:</b> en el centro hay una cajera circular Ø80 con profundidad 20 mm. Usamos <b>ciclo G89 (cajera circular)</b> propietario de Fagor que hace todas las pasadas en espiral automáticamente. La fresa D30 es lo bastante pequeña para entrar en la cajera Ø80 (radio fresa 15 &lt; radio cajera 40).</p>
-<span class="res-code">% CAJERA CENTRAL D80 R30
+<div class="paso"><div class="paso-titulo">★ Sección 2 — Slot/cajera oblonga 60×14×10 (T2.2 · fresa D8)</div>
+<p><b>📋 Planteamiento (★ FIX auditoría completa):</b> en el centro hay una <b>ranura/slot oblonga</b> tipo "cabeza de tornillo de pala": rectángulo de 60×14 mm con los dos extremos redondeados R7 (semicírculos), profundidad 10 mm. NO es una cajera circular Ø80 (eso era una mala interpretación — el Ø80 punteado es la referencia del PCD de taladros).</p>
+<p>Programamos el slot manualmente con fresa D8 (Z=3): bajamos al centro, recorremos el contorno oblongo en varias pasadas Z hasta llegar a la profundidad final.</p>
+<p><b>Geometría del slot 60×14:</b> longitud total = 60 mm, ancho 14 mm. Si los 60 son centro-a-centro de los dos arcos R7, entonces los centros están en (±30, 0) y los puntos de tangencia entre arco y recta están en (±30, ±7).</p>
+<span class="res-code">% SLOT OBLONGO CENTRAL 60x14x10 (con fresa D8)
 
-N170 T2.2                          ; misma fresa D30 (otro corrector si afilado)
+N170 T2.2                          ; fresa D8 enteriza (Z=3)
 N180 M6
 N190 G43
-N200 G96 G94 G0 X0 Y0 Z100 F1911 S150 M3
-;     X0 Y0 = centro de la cajera (= centro de la pieza)
-N210 G89 G99 X0 Y0 Z0 I-20 R40 B3 C5 D2 H50 L0.3
-;     G89 = ciclo CAJERA CIRCULAR Fagor
-;     G99 = retorno al plano R intermedio
-;     X0 Y0 Z0 = centro de la cajera, Z0 = cara superior
-;     I-20 = profundidad TOTAL (20 mm hacia -Z)
-;     R40  = RADIO de la cajera (no diámetro: Ø80 → R40)
-;     B3   = incremento Z por pasada (3 mm/pasada × 7 ≈ 20 mm)
-;     C5   = paso lateral (cuánto avanza radialmente entre pasadas espirales)
-;     D2   = distancia de seguridad sobre Z0
-;     H50  = avance lento entrada en Z (rampeo seguro al material)
-;     L0.3 = sobremedida radial para acabado posterior
-N220 G80 G44 Z100                   ; cancela ciclo + longitud, sube a Z100</span>
-<p class="res-note"><b>🔑 G89 vs G88:</b> G89 = cajera CIRCULAR (parámetro R = radio), G88 = cajera RECTANGULAR (parámetros J/K = anchos). Ambos hacen el desbaste interno completo. El parámetro <b>L0.3</b> deja una pasada de acabado: tras G89, hacer un contorneado final con la fresa para llegar a la geometría final con superficie limpia.</p>
+N200 G97 G94 G0 X-30 Y0 Z100 F2387 S7958 M3
+;     S7958 = N = 1000·200/(π·8) = 7.958 rpm
+;     F2387 = N·Z·fz = 7958·3·0,1 = 2.387 mm/min
+;     X-30 Y0 = aproximación al centro del arco izquierdo del slot
+
+; ===== Bajada por el centro (penetración axial) =====
+N210 G0 Z2                          ; aproxima 2 mm sobre la pieza
+N220 G1 Z-2 F500                    ; PRIMERA pasada Z=-2 (avance lento de penetración)
+
+; ===== Recorrido del CONTORNO oblongo (en sentido horario, CW) =====
+;       Forma: rectángulo central 60×14 + 2 semicírculos R7 en los extremos
+N230 G1 X30 Y7 F2387                ; lateral SUPERIOR del rectángulo (X-30→X30, Y=+7)
+N240 G2 X30 Y-7 R7                  ; ARCO derecho R7 (semicírculo de Y+7 a Y-7)
+;       G2 = CW, R7 = radio 7 mm, centro automático
+N250 G1 X-30 Y-7                    ; lateral INFERIOR (X30→X-30, Y=-7)
+N260 G2 X-30 Y7 R7                  ; ARCO izquierdo R7 (cierra el contorno)
+
+; ===== Repetir pasadas Z hasta profundidad final =====
+N270 G1 Z-5 F500                    ; baja a Z=-5 (segunda pasada)
+N280 G1 X30 Y7 F2387                ; recorre el contorno completo a -5
+N290 G2 X30 Y-7 R7
+N300 G1 X-30 Y-7
+N310 G2 X-30 Y7 R7
+
+N320 G1 Z-8 F500                    ; baja a Z=-8
+N330 G1 X30 Y7 F2387
+N340 G2 X30 Y-7 R7
+N350 G1 X-30 Y-7
+N360 G2 X-30 Y7 R7
+
+N370 G1 Z-10 F500                   ; ÚLTIMA pasada Z=-10 (profundidad final)
+N380 G1 X30 Y7 F2387
+N390 G2 X30 Y-7 R7
+N400 G1 X-30 Y-7
+N410 G2 X-30 Y7 R7
+
+N420 G0 Z100                        ; sube a Z seguro
+N430 G40 G44                        ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Alternativa más limpia:</b> definir el contorno completo como SUBRUTINA y llamarla N veces bajando la Z entre cada llamada. Para el examen, esta versión paso a paso es más explícita y didáctica.</p>
+<p class="res-note"><b>⚠ Verificar cota:</b> si los 60 mm son LONGITUD TOTAL (de extremo a extremo) y no centro-a-centro, los centros estarían en (±23, 0) y los puntos de tangencia en (±23, ±7). Revisar el plano.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — 6 ranuras radiales con subrutina + G73 (T3.3 · fresa D8)</div>
-<p><b>📋 Planteamiento:</b> las 6 ranuras radiales están distribuidas a 60° entre sí. La forma más eficiente es definir UNA ranura como SUBRUTINA (con G20/G24) y llamarla 6 veces, rotando el sistema de coordenadas con <b>G73 Aθ</b> cada vez. Esto reduce el programa de ~6×6=36 líneas a ~6+6=12 líneas.</p>
-<span class="res-code">% RANURAS RADIALES
+<div class="paso"><div class="paso-titulo">★ Sección 3 — 8 taladros Ø10 en PCD Ø80 (★ FIX: añadida, antes faltaba)</div>
+<p><b>📋 Planteamiento:</b> 8 taladros Ø10 equiespaciados en un PCD Ø80 (R=40). Coordenadas: con cos 45° = sin 45° = √2/2 = 0,7071 → 40·0,7071 = 28,28.</p>
+<p><b>Profundidad:</b> según el corte A-A del plano, los taladros son PASANTES a través de los 20 mm del disco (espesor restante tras planeado de 5 mm) → Z = -25 = 20 mm + 5 mm de margen para el pico cónico de la broca (~118°).</p>
+<p><b>Ciclo:</b> L/D = 25/10 = 2,5 — al límite. Usamos G83 (peck drilling) para mayor seguridad.</p>
+<span class="res-code">% 8 TALADROS PCD D80 (R=40), pasantes
 
-N230 T3.3                          ; fresa D8 enteriza para ranuras
-N240 M6
-N250 G43
-N260 G96 G94 G0 X40 Y0 Z100 F2387 S200 M3
-;     X40 Y0 = inicio de la primera ranura (exterior del disco, R=40+margen)
-
-; --- DEFINICIÓN de la SUBRUTINA "Ranura tipo" ---
-N270 G22 N2                        ; LLAMA a subrutina N2 (sin ejecutar todavía)
-N280 G0 X40 Y0                     ; (Inicio del cuerpo de la subrutina N2)
-;     Es el patrón de UNA ranura: aproximar, bajar, cortar, subir
-N290 G0 Z2                         ; baja rápido a 2 mm sobre la pieza
-N300 G1 Z-5 F500                   ; baja con avance lento al fondo de ranura (-5 mm)
-N310 G1 X25 F2387                  ; recorrido RADIAL de exterior (X40) a interior (X25)
-;     X25 = inicio del PCD interior de la ranura
-N320 G0 Z5                         ; sube fuera de la pieza
-N330 G24                           ; RETORNO de subrutina (return)
-N340 G20 N2.1                      ; ETIQUETA: define el inicio de la subrutina N2
-
-; --- LLAMADAS rotadas ---
-N350 G73 A60                       ; rota el sistema 60° respecto al origen
-N360 G22 N2                        ; ejecuta la subrutina → ranura a 60°
-N370 G73 A120                      ; rota 120°
-N380 G22 N2                        ; ejecuta → ranura a 120°
-N390 G73 A180                      ; ranura a 180°
-N400 G22 N2
-N410 G73 A240                      ; ranura a 240°
-N420 G22 N2
-N430 G73 A300                      ; ranura a 300°
-N440 G22 N2
-N450 G73 A0                        ; RESTAURA el sistema original (importante!)
-N460 G0 Z100                       ; retira a Z seguro
-N470 G40 G44                       ; cancela compensaciones
-N480 M5                             ; para cabezal
-N490 M30                            ; FIN programa</span>
-<p class="res-note"><b>🔑 Subrutinas + G73:</b> patrón estándar de Fagor para piezas con simetría rotacional. <b>Importante:</b> el ángulo A es ABSOLUTO (respecto al origen del CN), no relativo, por eso programamos 60°, 120°, 180°... y no 60° seis veces. Al final <b>G73 A0</b> restaura el sistema.</p>
+N440 T3.3                          ; broca helicoidal Ø10
+N450 M6
+N460 G43
+N470 G97 G94 G0 X40 Y0 Z100 F80 S800 M3
+;     S800 = N = 1000·25/(π·10) = 796 ≈ 800 rpm (broca, vc=25 m/min)
+;     F80 = N·f = 800·0,1 = 80 mm/min
+N480 G83 G99 X40 Y0 Z0 I-25 J5 K1   ; TALADRO 1 (0°)
+;     G83 peck, I-25 prof, J5 peck size, K1 retroceso
+N490 X28.28 Y28.28                  ; TALADRO 2 (45°): 40·cos45°=28,28; 40·sin45°=28,28
+N500 X0 Y40                         ; TALADRO 3 (90°)
+N510 X-28.28 Y28.28                 ; TALADRO 4 (135°)
+N520 X-40 Y0                        ; TALADRO 5 (180°)
+N530 X-28.28 Y-28.28                ; TALADRO 6 (225°)
+N540 X0 Y-40                        ; TALADRO 7 (270°)
+N550 X28.28 Y-28.28                 ; TALADRO 8 (315°)
+N560 G80 G44 Z100                   ; cancela ciclo
+N570 M5
+N580 M30                            ; FIN programa</span>
+<p class="res-note"><b>🔑 Alternativa MUY elegante con G77:</b> Fagor tiene el ciclo <b>G77 (patrón circular)</b> que ejecuta un ciclo fijo (G81/G83) en N puntos distribuidos uniformemente sobre un círculo. <b>Una sola línea</b> sustituiría las 8 coordenadas:
+<br><span style="font-family:var(--ff-mono);color:#7dd87d">N480 G77 N=8 R=40 A=0 G83 Z0 I-25 J5 K1</span>
+<br>Es la sintaxis preferida en exámenes — ahorra cálculos trigonométricos y reduce errores.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
-<div class="formula-box">T1.1 + T2.2 (fresa D30, vc=150 m/min, Z=6, fz=0,2 mm/Z/rev):
-  N  = 1000·150/(π·30) = 1.592 rpm
-  vf = 1.592·6·0,2 = <b>1.911 mm/min</b>
+<div class="formula-box">T1.1 (fresa D30 planeado, vc=150, Z=6, fz=0,2):
+  N=1.592 rpm, vf=1.911 mm/min
 
-T3.3 (fresa D8 ranuras, vc=200 m/min, Z=3, fz=0,1 mm/Z/rev):
-  N  = 1000·200/(π·8) = 7.958 rpm
-  vf = 7.958·3·0,1 = <b>2.387 mm/min</b></div>
-<p class="res-note"><b>🔑 Por qué la fresa de cajera es la misma que la de planeado:</b> con D30, ambos procesos son productivos y la rigidez es buena. Para acabado del contorno de la cajera convendría una fresa más pequeña (D8) para alcanzar las esquinas R5 si las hubiera.</p>
+T2.2 (fresa D8 slot, vc=200, Z=3, fz=0,1):
+  N=7.958 rpm, vf=2.387 mm/min
+
+T3.3 (broca D10, vc=25, f=0,1):
+  N=800 rpm, vf=80 mm/min</div>
 </div>
 
 </div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Las <b>6 ranuras radiales</b> aprovechan la simetría rotacional con <b>G73 Aθ + subrutina G22 N2</b>: programar UNA ranura y repetirla 6 veces rotando 60° cada una. Alternativa sin G73: calcular coordenadas X/Y de cada extremo con trigonometría (X=R·cos θ, Y=R·sin θ para θ=0°, 60°, 120°…). <b>G89</b> (cajera circular) tiene parámetros: I=prof, R=radio del cajero, B=inc.Z, C=inc.radial, D=seguridad, H=F entrada, L=acabado.</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Disco D100×25 con planeado, slot oblongo central y 8 taladros PCD Ø80.
+<br><br>
+<b>🔍 Auditoría aplicada (revisión MAYOR — 4 fixes críticos del compañero):</b>
+<ol style="margin:6px 0 0 18px;font-size:.93em;line-height:1.7">
+<li><b>Sec 2 REHECHA:</b> NO era una cajera circular Ø80. Es un <b>slot oblongo 60×14×10</b> (forma de cabeza de tornillo de pala) con extremos R7. El Ø80 punteado del plano era REFERENCIA del PCD, no contorno mecanizable.</li>
+<li><b>Sec 3 BORRADA:</b> me había INVENTADO 6 ranuras radiales que no existen en el plano. Lo que se veía en perspectiva eran los 8 taladros del PCD.</li>
+<li><b>Sec 3 NUEVA:</b> añadidos <b>8 taladros Ø10 en PCD Ø80</b> (R=40), distribuidos a 0°, 45°, 90°, … 315°. Coordenadas (R·cos θ, R·sin θ) con 28,28 = 40·sin 45°.</li>
+<li><b>G83 para taladros:</b> con L/D=2,5 está al límite, peck drilling es la opción segura. Alternativa con <b>G77 patrón circular</b> = una línea para los 8 taladros.</li>
+</ol>
+<b>La técnica de subrutina + G73 Aθ</b> (que estaba bien explicada) se conserva como template para ejercicios con simetría rotacional REAL (P10 cajera anidada, P13 pétalos).
+</div>
 </div>
 <div class="topic-panel" id="ex5">
 <div class="panel-header">
