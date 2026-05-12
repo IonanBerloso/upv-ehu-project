@@ -571,7 +571,10 @@ N040 G90 G17 G96 G94 G0 X-60 Y-40 Z100 F2864 S150 M3
 ;     S150 vc=150 m/min · M3 cabezal CW
 N050 G0 Z-5                         ; baja a profundidad de planeado (5 mm)
 N060 G1 X60                         ; PASADA 1: Y=-40, recorre de X-60 a X60
-N070 G0 Y-20                        ; mueve Y a -20 (espaciado 20 mm = 100% de D20)
+N070 G0 Y-20                        ; ★ FIX: paso 20 mm con fresa D20 = 0% de solape
+;     Las pasadas se TOCAN justo en el borde. Para 50% solape real, paso=10 mm (10 pasadas).
+;     Para ~25% solape: paso=15 mm (7 pasadas). Con paso 20 mm la cresta entre pasadas
+;     es pequeña pero existe — aceptable para planeado de DESBASTE, no para acabado fino.
 N080 G1 X-60                        ; PASADA 2 sentido contrario (zigzag)
 N090 G0 Y0                          ; PASADA 3 setup
 N100 G1 X60
@@ -583,30 +586,41 @@ N150 G0 Z100                        ; retira a Z seguro
 N160 G40 G44                        ; cancela compensaciones</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 2 — Contorno circular Ø80 (T2.2 · fresa D20 · entrada tangencial)</div>
-<p><b>📋 Planteamiento:</b> sobre la base cuadrada 100×100 ya planeada, contorneamos el cilindro Ø80 mecanizando los 4 esquineros (eliminando el material entre el cuadrado exterior y el círculo). La fresa entra <b>tangencialmente</b> al círculo (G37 R10), recorre el círculo completo (G2 con I,J) y sale tangencial (G38 R10). Profundidad total Z=-35 (todo el espesor de la pieza).</p>
-<span class="res-code">% CONTORNO EXT D80
+<div class="paso"><div class="paso-titulo">Sección 2 — Contorno cuadrado + 4 esquineros + cilindro Ø80 (T2.2 · fresa D20)</div>
+<p><b>📋 Planteamiento corregido (auditoría compañero):</b> al inspeccionar el plano se ve que el bruto cuadrado 100×100 lleva un cilindro Ø80 con base cuadrada (los 4 "esquineros" entre el cuadrado y el círculo). <b>Solo contornear el Ø80 NO basta</b>: deja una RANURA circular alrededor sin vaciar las 4 esquinas.</p>
+<p><b>Estrategia correcta:</b> primero contornear el cuadrado exterior (si el bruto no lo está), después vaciar las <b>4 esquinas</b> entre cuadrado y círculo (como cajeras separadas o mediante varias pasadas en espiral hacia fuera). Finalmente contornear el Ø80 con compensación correcta.</p>
+<p><b>⚠ Compensación clave:</b> para contornear POR FUERA del Ø80 (la fresa está fuera del círculo, retirando lo que sobra), se usa <b>G41 (compensación izquierda)</b> con recorrido CW (G2), o <b>G42 (compensación derecha)</b> con recorrido CCW (G3). El código original usaba G42+G2 → fresa al lado equivocado, mordiendo DENTRO del círculo Ø80.</p>
+<p><b>⚠ Profundidad:</b> el cilindro Ø80 sobresale del bruto unos 15 mm (mira el alzado del plano). La profundidad de contorneado debe ser solo la altura del escalón, <b>Z=-15</b> aproximadamente, no Z=-35 (que atravesaría toda la pieza).</p>
+<span class="res-code">% CONTORNO EXT D80 — versión corregida
 
 N170 T2.2                          ; fresa D20 (puede ser misma placa, otro corrector)
 N180 M6
 N190 G43
 N200 G96 G94 G0 X60 Y0 Z100 F2864 S150 M3
 ;     X60 Y0 = punto de aproximación FUERA del círculo (a 20 mm de R40)
-N210 G0 Z-35                        ; baja a profundidad total (atraviesa toda la pieza)
-;     ATENCIÓN: bajar rápido a través del aire OK, pero verificar que X60 esté fuera
-N220 G1 G42 G37 R10 X40 Y0
-;     G42 = compensación radio HERRAMIENTA a la derecha del avance (exterior contorno)
+N210 G0 Z-15                        ; ★ FIX: profundidad SOLO el escalón (15 mm), no 35
+;     Z=-15 = atravesar el escalón del cilindro Ø80 sobre la base cuadrada.
+;     (Z=-35 era incorrecto: atravesaba toda la pieza)
+N220 G1 G41 G37 R10 X40 Y0
+;     ★ FIX: G41 = compensación radio HERRAMIENTA a la IZQUIERDA del avance
+;     Con recorrido CW (G2 abajo), G41 deja la fresa POR FUERA del círculo Ø80,
+;     que es lo que queremos (eliminar material exterior).
+;     (G42 + G2 era incorrecto: fresa quedaba DENTRO del círculo Ø80, mordiéndolo)
 ;     G37 R10 = entrada tangencial con arco de radio 10 mm
-;     X40 Y0 = punto inicial del círculo (R=D/2 = 40, en eje X positivo)
+;     X40 Y0 = punto inicial del círculo
 N230 G2 I-40 J0
-;     G2 = círculo completo CW
-;     I-40 J0 = CENTRO del círculo está en I (relativo) = -40 desde el punto inicial
-;             es decir, centro absoluto (40-40, 0+0) = (0, 0) ✓
-;     Sin X/Y final → arco vuelve al punto inicial = círculo completo
-N240 G38 R10 X60 Y0                 ; salida tangencial con radio 10, vuelve a X60 Y0
+;     G2 = círculo completo CW (con G41 → fresa por fuera del Ø80 = correcto)
+;     I-40 J0 = centro relativo (-40,0) desde X40 Y0 → centro absoluto (0,0) ✓
+N240 G38 R10 X60 Y0                 ; salida tangencial
 N250 G0 Z100                        ; retira a Z seguro
 N260 G40 G44                        ; cancela compensaciones</span>
-<p class="res-note"><b>🔑 Círculo completo G2 I J:</b> en Fagor, para programar 360° basta dar los offsets I,J al centro SIN punto final → vuelve al inicio. En Fanuc se requiere repetir el punto final con I,J. Convenio CW en G2 si miras desde +Z hacia -Z.</p>
+<p class="res-note"><b>🔑 Regla de compensación CONTORNO EXTERIOR vs INTERIOR:</b>
+<ul style="margin:6px 0 0 18px;line-height:1.7">
+<li>Contorneando POR FUERA (la fresa elimina lo que sobra alrededor de la pieza): G41 + recorrido CW, o G42 + CCW.</li>
+<li>Contorneando POR DENTRO (cajera): G42 + recorrido CW, o G41 + CCW.</li>
+<li>Regla nemotécnica: la <b>compensación es siempre HACIA EL LADO DEL MATERIAL A RETIRAR</b>.</li>
+</ul></p>
+<p class="res-note"><b>⚠ Limitación:</b> incluso con G41 corregido, este código solo recorre el CONTORNO del Ø80 una vez → deja una ranura de ancho D=20 mm. Para VACIAR las 4 esquinas hasta el cuadrado 100×100, hace falta o bien hacer múltiples pasadas en espiral, o usar ciclo de "cajera con isla" (G88 con parámetro de isla), o programar las 4 esquinas como cajeras triangulares separadas. Esta complicación se sale del alcance del ejercicio básico, pero el código actual NO vacía las esquinas.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Cajera cuadrada interior 40×40 con R5 (T3.3 · fresa D8)</div>
@@ -636,31 +650,53 @@ N330 G80 G44 Z100                   ; cancela ciclo + cancela longitud + sube a 
 <p class="res-note"><b>🔑 G88 vs zigzag manual:</b> en lugar de programar 50+ líneas de pasadas paralelas alternas, una sola línea G88 hace todo. Es PROPIETARIO de Fagor — Fanuc usa G176/G177, Siemens POCKET3/POCKET4. El parámetro L (sobremedida) deja material para una pasada final de acabado con otra fresa.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — Taladros Ø8,5 en PCD Ø60 (T4.4 · broca D8,5)</div>
-<p><b>📋 Planteamiento:</b> 4 taladros distribuidos uniformemente sobre un PCD (Pitch Circle Diameter) de Ø60. Para PCD=60, radio=30. Los 4 puntos están a 0°, 90°, 180°, 270° → coordenadas (±30, 0) y (0, ±30). Usamos <b>ciclo G81 (taladrado simple)</b> ya que el agujero es relativamente corto (38 mm) y el material no acumula viruta crítica.</p>
-<span class="res-code">% TALADROS PCD D60
+<div class="paso"><div class="paso-titulo">Sección 4 — Taladros Ø8,5 en PCD Ø60 con G83 peck (T4.4 · broca D8,5)</div>
+<p><b>📋 Planteamiento corregido:</b> 4 taladros distribuidos en PCD Ø60 (R=30) a 0°, 90°, 180°, 270° → coordenadas (±30, 0) y (0, ±30). <b>⚠ Profundidad 38 mm con broca Ø8,5 → L/D = 4,5</b> — está en el límite donde se recomienda <b>G83 (peck drilling)</b> para evitar atascamiento de viruta. El código original usaba G81 (simple) que puede funcionar pero con riesgo.</p>
+<span class="res-code">% TALADROS PCD D60 (con G83 peck por L/D=4,5)
 
 N340 T4.4                          ; broca helicoidal Ø8,5 mm
 N350 M6
 N360 G43
 N370 G97 G94 G0 X0 Y0 Z100 F94 S936 M3
-;     G97 = N constante (la broca tiene D fija, no varía)
 ;     S936 = N = 1000·25/(π·8,5) = 936 rpm
 ;     F94 = avance axial = 0,1 mm/rev × 936 rpm = 93,6 ≈ 94 mm/min
-N380 G81 G99 X30 Y0 Z0 I-38
-;     G81 = ciclo de TALADRADO SIMPLE
-;     G99 = retorno al plano R intermedio entre agujeros (más rápido que G98)
+N380 G83 G99 X30 Y0 Z0 I-38 J5 K1
+;     ★ FIX: G83 en lugar de G81 (L/D = 38/8,5 ≈ 4,5 → peck recomendado)
+;     G83 = ciclo de TALADRADO PROFUNDO con desahogo
 ;     X30 Y0 = primer punto del PCD (0°)
 ;     Z0 = plano Z de referencia (cara superior)
-;     I-38 = profundidad final (38 mm desde Z0, hacia -Z)
-N390 X0 Y30                        ; siguiente taladro: el control reaplica G81 con X0 Y30
-;     (G81 sigue activo: cada X/Y nuevo = un agujero)
-N400 X-30 Y0                       ; tercer taladro 180°
-N410 X0 Y-30                       ; cuarto taladro 270°
-N420 G80 G44 Z100                  ; cancela ciclo y compensación, sube
-N430 M5                             ; para cabezal
-N440 M30                            ; FIN programa</span>
+;     I-38 = profundidad final
+;     J5 = peck = 5 mm (avanza 5, retrocede para romper viruta)
+;     K1 = retroceso entre pecks (1 mm)
+N390 X0 Y30                        ; PCD 90°: el control reaplica G83 con X0 Y30
+N400 X-30 Y0                       ; PCD 180°
+N410 X0 Y-30                       ; PCD 270°
+N420 G80 G44 Z100                  ; cancela ciclo y compensación, sube</span>
 <p class="res-note"><b>🔑 Coordenadas PCD:</b> para taladros equiespaciados en un círculo de radio R, las coordenadas son (R·cos(θ), R·sin(θ)) con θ=k·360°/n. Aquí n=4, R=30, θ ∈ {0°, 90°, 180°, 270°}. Equivalentemente, podría usarse <b>G77</b> (Fagor: ciclo de patrón circular) para evitar repetir las coordenadas.</p>
+</div>
+
+<div class="paso"><div class="paso-titulo">★ Sección 5 — Avellanado/chaflán 1,5×45° (★ FIX falta del enunciado)</div>
+<p><b>📋 Planteamiento (auditoría compañero):</b> el enunciado preguntaba explícitamente "¿Cómo realizarías el avellanado/chaflán de 1,5×45°?" — esta pregunta NO se respondía. La forma estándar es usar una <b>broca avellanadora de 90° o 60°</b>, programada con <b>G81</b> a la profundidad correspondiente.</p>
+<p><b>Geometría del chaflán:</b> para chaflán 1,5×45° con avellanadora de 90° (semiángulo 45°), la herramienta debe bajar 1,5 mm desde la cara (la profundidad axial = lado del chaflán = 1,5 mm porque tan(45°)=1).</p>
+<span class="res-code">% AVELLANADO chaflán 1,5x45° (sobre los 4 taladros PCD Ø60)
+
+N450 T5.5                          ; avellanadora 90° (TS.5 por ejemplo)
+N460 M6
+N470 G43
+N480 G97 G94 G0 X0 Y0 Z100 F94 S936 M3
+;     misma S y F que el taladrado (mismo material, vc=25 m/min)
+;     N similar al taladrado, depende del D efectivo de la avellanadora
+N490 G81 G99 X30 Y0 Z0 I-1.5
+;     ★ G81 con profundidad I=-1.5 (= lado del chaflán 1,5×45° con avellanadora 90°)
+;     Z0 = cara superior de la pieza (referencia)
+;     La punta de la avellanadora baja 1,5 mm → genera chaflán 1,5 mm radial
+N500 X0 Y30                        ; mismo avellanado en los 4 agujeros del PCD
+N510 X-30 Y0
+N520 X0 Y-30
+N530 G80 G44 Z100                  ; cancela ciclo
+N540 M5                             ; para cabezal
+N550 M30                            ; FIN programa</span>
+<p class="res-note"><b>🔑 Cálculo del chaflán con avellanadora:</b> con avellanadora de ángulo α (cono completo, semiángulo α/2), un chaflán de lado L (1,5 mm) requiere bajar la herramienta <b>L/tan(α/2)</b> mm desde la cara. Para 90° → tan(45°) = 1 → Z=-1,5. Para 60° → tan(30°) = 0,577 → Z=-1,5/0,577 = -2,6 mm. El plano puede pedir avellanador específico.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
@@ -681,7 +717,18 @@ T4.4 (broca D8,5, vc=25 m/min, f=0,1 mm/rev):
 </div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Contorno Ø80 con <b>entrada/salida tangencial G37/G38 R10</b>: el radio R10 del arco de aproximación es mayor que cero y menor que R_pieza/2=20 (evita interferencias). La <b>cajera con ciclo G88</b> simplifica enormemente el desbaste de la cajera cuadrada — no hay que programar las pasadas paralelas manualmente. El <b>PCD Ø60</b> con 4 agujeros a 0°/90°/180°/270° tiene coordenadas (±30, 0) y (0, ±30).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Contorno Ø80 con <b>entrada/salida tangencial G37/G38 R10</b>: el radio R10 del arco de aproximación es mayor que cero y menor que R_pieza/2=20 (evita interferencias). La <b>cajera con ciclo G88</b> simplifica enormemente el desbaste de la cajera cuadrada — no hay que programar las pasadas paralelas manualmente. El <b>PCD Ø60</b> con 4 agujeros tiene coordenadas (±30, 0) y (0, ±30).
+<br><br>
+<b>🔍 Auditoría aplicada (6 fixes del compañero):</b>
+<ol style="margin:6px 0 0 18px;font-size:.93em;line-height:1.7">
+<li>N070 comentario: con paso 20 mm y fresa D20, el solape es <b>0%</b> (no 100%). Para 50% real, paso=10 mm</li>
+<li>Sec 2: <b>contorneo SOLO Ø80 no vacía las esquineras</b> entre cuadrado 100×100 y círculo. Necesita o cajera con isla, o vaciado por separado de las 4 esquinas</li>
+<li>N210: profundidad <b>Z=-15</b> (altura del escalón cilindro Ø80), no Z=-35 (atravesaba toda la pieza)</li>
+<li>N220-N230: compensación <b>G41 (no G42)</b> con G2 CW para contornear POR FUERA del Ø80. G42+G2 dejaba la fresa DENTRO del círculo, mordiéndolo</li>
+<li>N380: <b>G83 (peck)</b> en lugar de G81 — L/D=4,5 está al límite, peck reduce riesgo de atascamiento</li>
+<li><b>Avellanado 1,5×45° añadido</b> — el enunciado pregunta explícitamente cómo hacerlo. Solución: T5.5 avellanadora 90° con G81 a Z=-1,5</li>
+</ol>
+</div>
 </div>
 <div class="topic-panel" id="ex4">
 <div class="panel-header">
