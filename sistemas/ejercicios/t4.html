@@ -186,6 +186,8 @@ table th[style*="ffd93d"],table th[style*="FFD93D"]{background:var(--accent-dim)
 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
 PDF</a></nav><div class="read-progress" id="readProgress"></div><div class="layout"><aside class="sidebar"><div class="sb-head"><div class="sb-subtitle">T4 · Control Numérico</div><div class="sb-current" id="sbCurrent">Torneado CNC — eje D57→M30×1,5, taladro D10</div></div>
 <div class="sb-list">
+<button class="sb-item" data-id="bienvenida" onclick="showEx('bienvenida')" style="border-bottom:1px solid rgba(252,211,77,.25);margin-bottom:6px;padding-bottom:8px"><span class="sb-tag">📚</span><span class="sb-name" style="color:#fcd34d;font-weight:600">Empezar de 0 (manual)</span></button>
+<button class="sb-item" data-id="ex0" onclick="showEx('ex0')" style="border-bottom:1px solid rgba(252,211,77,.15);margin-bottom:6px;padding-bottom:8px"><span class="sb-tag">T4.P0</span><span class="sb-name" style="color:#fcd34d">★ Primer programa (nivel 0)</span></button>
 <button class="sb-item" data-id="ex1" onclick="showEx('ex1')"><span class="sb-tag">T4.P1</span><span class="sb-name">Torneado CNC — eje D57→M30×1,5, taladro D10</span></button>
 <button class="sb-item" data-id="ex2" onclick="showEx('ex2')"><span class="sb-tag">T4.P2</span><span class="sb-name">Fresado CNC — ranuras curvas 120×70×18 mm</span></button>
 <button class="sb-item" data-id="ex3" onclick="showEx('ex3')"><span class="sb-tag">T4.P3</span><span class="sb-name">Fresado+taladrado — brida cuadrada Ø80 (100×100×35)</span></button>
@@ -201,7 +203,331 @@ PDF</a></nav><div class="read-progress" id="readProgress"></div><div class="layo
 <button class="sb-item" data-id="ex13" onclick="showEx('ex13')"><span class="sb-tag">T4.P13</span><span class="sb-name">Fresado — pieza con patrón pétalos 80×80×30 (entrada tangenc…</span></button>
 <button class="sb-item" data-id="chuleta" onclick="showEx('chuleta')" style="border-top:1px solid rgba(255,217,61,.25);margin-top:6px;padding-top:8px"><span class="sb-tag">📑</span><span class="sb-name" style="color:#fcd34d;font-weight:600">CHULETA del examen</span></button>
 </div>
-<div class="sb-footer"><a class="sb-link sb-link-yellow" href="../teoria.html"><svg fill="none" height="13" viewbox="0 0 16 16" width="13"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a></div></aside><main class="content"><div class="topic-panel" id="ex1">
+<div class="sb-footer"><a class="sb-link sb-link-yellow" href="../teoria.html"><svg fill="none" height="13" viewbox="0 0 16 16" width="13"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a></div></aside><main class="content">
+
+<!-- ════════════════ PANEL BIENVENIDA — Manual para empezar de 0 ════════════════ -->
+<div class="topic-panel" id="bienvenida">
+<div class="panel-header" style="background:linear-gradient(135deg,rgba(252,211,77,.18) 0%,transparent 60%);border-color:rgba(252,211,77,.4);border-left-color:#fcd34d">
+<div class="panel-tag" style="color:#fcd34d">📚 MANUAL DE BIENVENIDA</div>
+<h1 class="panel-title">Empezar de 0 en CNC — ruta + glosario + plantilla + errores típicos</h1>
+<div class="panel-meta">Si nunca has visto CNC, empieza por aquí. Después ve a T4.P0.</div>
+</div>
+
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🗺️ Ruta de aprendizaje recomendada <span class="sarr">▼</span></button>
+<div class="sec-body">
+<p>Si tu compañero no ha asistido a clase o quiere aprender de 0, este es el orden:</p>
+<ol style="padding-left:18px;color:#94a3b8;font-size:.92em;line-height:1.9">
+<li><b><a href="../guias/tema4.html" style="color:var(--accent)">Guía teórica de T4</a></b> — qué es CNC, sistema de coordenadas, programa básico (1 h)</li>
+<li><b>Glosario + Fórmulas</b> (abajo en este panel) — qué significa vc, vf, fz, ap... (15 min)</li>
+<li><b>Plantilla esqueleto</b> (abajo) — la estructura que se repite en TODOS los programas (10 min)</li>
+<li><b>T4.P0 (Primer programa)</b> ★ — el ejercicio más simple: 1 taladro, 12 líneas (30 min)</li>
+<li><b>Errores típicos</b> (abajo) — lee esto ANTES de hacer ejercicios para evitar pifias (15 min)</li>
+<li><b>T4.P1 → T4.P5</b> — ejercicios crecientes en dificultad (4 h total)</li>
+<li><b>CHULETA</b> — al final, para repasar la sintaxis exacta del examen (15 min)</li>
+<li><b>T4.P6 → T4.P13</b> — ejercicios avanzados con subrutinas, espejos, etc. (5 h)</li>
+</ol>
+<p><b>Total estimado:</b> ~11 h para dominar el tema (3 pts del examen).</p>
+</div>
+</div>
+
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Glosario de términos básicos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<table class="t-datos">
+<tr><th>Símbolo</th><th>Significado</th><th>Unidad</th><th>Notas</th></tr>
+<tr><td><b>vc</b></td><td>Velocidad de corte</td><td>m/min</td><td>Dada por la tabla del material/herramienta</td></tr>
+<tr><td><b>N</b></td><td>Velocidad de giro del cabezal</td><td>rpm</td><td>Calculada de vc y D</td></tr>
+<tr><td><b>vf</b></td><td>Velocidad de avance (la mesa o la herramienta)</td><td>mm/min</td><td>= F en el código CNC</td></tr>
+<tr><td><b>fz</b></td><td>Avance por diente (sólo fresado)</td><td>mm/Z/rev</td><td>Dato del fabricante de la fresa</td></tr>
+<tr><td><b>f</b></td><td>Avance por revolución (torneado/taladrado)</td><td>mm/rev</td><td>Equivale a fz en fresado de 1 diente</td></tr>
+<tr><td><b>Z</b></td><td>Número de dientes / filos</td><td>—</td><td>Fresa de placas Z=6 típico</td></tr>
+<tr><td><b>D</b></td><td>Diámetro</td><td>mm</td><td>De fresa, broca o pieza según contexto</td></tr>
+<tr><td><b>ap</b></td><td>Profundidad de corte axial</td><td>mm</td><td>"Cuánto baja en Z" por pasada</td></tr>
+<tr><td><b>ae</b></td><td>Profundidad de corte radial</td><td>mm</td><td>"Cuánto entra lateralmente" en fresado</td></tr>
+<tr><td><b>hmax</b></td><td>Espesor máximo de viruta</td><td>mm</td><td>Indicador de carga sobre el filo</td></tr>
+<tr><td><b>Kr</b></td><td>Ángulo de posición del filo</td><td>°</td><td>Reparto entre fuerza radial/axial</td></tr>
+<tr><td><b>ps</b></td><td>Fuerza específica de corte</td><td>N/mm²</td><td>Propiedad del material a mecanizar</td></tr>
+<tr><td><b>Fc</b></td><td>Fuerza de corte</td><td>N</td><td>Fc = ps · ap · f (sección × ps)</td></tr>
+<tr><td><b>Pc</b></td><td>Potencia de corte</td><td>kW</td><td>Pc = Fc · vc / 60.000</td></tr>
+<tr><td><b>L/D</b></td><td>Relación esbeltez (taladrado)</td><td>—</td><td>L/D > 3 → riesgo, usar G83 peck</td></tr>
+<tr><td><b>Ra</b></td><td>Rugosidad media</td><td>µm</td><td>Calidad superficial</td></tr>
+</table>
+</div>
+</div>
+
+<div class="section-wrap s-formulas sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Fórmulas básicas (memoriza estas 6) <span class="sarr">▼</span></button>
+<div class="sec-body">
+<div class="formula-box">★ vc = π · D · N / 1000           [m/min, con D en mm, N en rpm]
+
+★ N = 1000 · vc / (π · D)         [rpm]
+
+★ vf (fresado)   = N · Z · fz     [mm/min]
+★ vf (torneado)  = N · f          [mm/min]
+★ vf (taladrado) = N · f          [mm/min]
+
+★ Pc = Fc · vc / 60.000           [kW, con Fc en N, vc en m/min]
+
+★ Fc = ps · ap · f                 [N]  (sección de viruta × ps)
+
+★ Q (caudal viruta torneado)  = vc · ap · f      [mm³/min]
+★ Q (caudal viruta fresado)   = vf · ap · ae     [mm³/min]
+
+★ Ra ≈ f² / (8 · rε) · 1000        [µm, con f y rε en mm]
+                                    (sólo en torneado de acabado)</div>
+
+<p style="margin-top:10px"><b>Valores típicos de ps (memoriza el orden):</b></p>
+<div class="formula-box">Aluminio        ≈  600-800 N/mm²    (más blando)
+Acero (P)       ≈  1.500-2.000
+Acero inox (M)  ≈  1.800-2.300
+Fundición (K)   ≈  900-1.300
+Titanio/Inconel ≈  2.500-3.500     (más duro)
+RECTIFICADO     ≈  30.000-60.000   (¡10× más alta!)</div>
+</div>
+</div>
+
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">🧱 Plantilla esqueleto del programa <span class="sarr">▼</span></button>
+<div class="sec-body">
+<p>Esta estructura se REPITE en todos los programas Fagor 8025M. Memorízala y solo cambia el contenido del bloque de mecanizado.</p>
+<span class="res-code">% NOMBRE DEL PROGRAMA               ; comentario inicial
+
+; ═══ CABECERA / SETUP de la primera herramienta ═══
+N010 T1.1                          ; selecciona herramienta T1 + corrector 1
+N020 M6                            ; cambio automático de herramienta
+N030 G43                           ; activa compensación de longitud Z
+N040 G90 G17 G96 G94 G0 X__ Y__ Z100 S__ F__ M3
+;     G90 = coordenadas absolutas
+;     G17 = plano XY (fresado)
+;     G96 = velocidad de corte cte | G97 = N cte (taladrado)
+;     G94 = avance mm/min
+;     G0  = posicionamiento rápido al punto seguro
+;     S__ = vc en G96, o N en G97
+;     F__ = avance vf
+;     M3  = arranque cabezal CW
+
+; ═══ MECANIZADO ═══
+N050 G0 Z2                         ; aproxima 2 mm sobre la pieza
+N060 G1 Z-__ F___                  ; baja al material (avance LENTO)
+N070 G1 X__ Y__                    ; movimiento de corte (en plano)
+;     ... aquí va la lógica de tu ejercicio ...
+N___ G0 Z100                       ; retira a posición segura
+N___ G40 G44                       ; cancela G40 (radio) + G44 (longitud)
+
+; ═══ (opcional) Cambio a SIGUIENTE herramienta — patrón se repite ═══
+N___ T2.2
+N___ M6
+N___ G43
+N___ G90 G17 G96 G94 G0 ... S__ F__ M3
+;     ... mecanizado con T2 ...
+N___ G0 Z100
+N___ G40 G44
+
+; ═══ CIERRE ═══
+N___ M5                            ; para cabezal
+N___ M30                           ; FIN programa (con rewind a la primera línea)</span>
+<p class="res-note"><b>🔑 Reglas de oro:</b> (1) <b>siempre G43</b> al inicio de cada herramienta. (2) <b>siempre G40 G44</b> antes del cambio o al final. (3) <b>Z=100 mm</b> es el "lugar seguro" estándar. (4) <b>M30</b> al final SIEMPRE.</p>
+</div>
+</div>
+
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)" style="background:rgba(244,63,94,.10);color:#f43f5e;border-color:rgba(244,63,94,.30)">⚠️ Errores típicos (lee ANTES de hacer ejercicios) <span class="sarr">▼</span></button>
+<div class="sec-body" style="background:rgba(244,63,94,.04);border:1px solid rgba(244,63,94,.20);border-top:none">
+<p>Esto es lo que un compañero detectó auditando los primeros ejercicios. Cualquiera de estos errores ENGAÑA fácil — léelos para reconocerlos:</p>
+
+<div style="background:rgba(244,63,94,.06);padding:10px 14px;border-radius:6px;margin:8px 0">
+<b style="color:#f43f5e">❌ CICLOS FIJOS</b>
+<ul style="padding-left:18px;font-size:.9em;line-height:1.85;color:#fecdd3;margin-top:6px">
+<li><b>G88 ≠ G87:</b> en la chuleta UPV/EHU <b>G87 = cajera RECTANGULAR</b> y <b>G88 = cajera CIRCULAR</b>. Es FÁCIL confundirlos.</li>
+<li><b>J/K en G87 son SEMI-dimensiones</b> (la MITAD): para cajera 40×40 → J20 K20. Si pones J40 K40 obtienes cajera de 80×80.</li>
+<li><b>J en G88 es RADIO</b>: para Ø60 → J=30. No es diámetro.</li>
+<li><b>G81 vs G83:</b> usa G83 (peck) cuando L/D > 3-4 (broca puede atascarse).</li>
+</ul>
+</div>
+
+<div style="background:rgba(244,63,94,.06);padding:10px 14px;border-radius:6px;margin:8px 0">
+<b style="color:#f43f5e">❌ COMPENSACIÓN DE RADIO</b>
+<ul style="padding-left:18px;font-size:.9em;line-height:1.85;color:#fecdd3;margin-top:6px">
+<li><b>G42 + G2 ≠ contornear por fuera</b>: con G42 (fresa a la derecha del avance) y G2 (CW), la fresa queda DENTRO del círculo → MORDERÁS el contorno.</li>
+<li><b>Regla:</b> para contornear POR FUERA → G41+G2 (CW) o G42+G3 (CCW). Para cajera (POR DENTRO) → al revés.</li>
+<li><b>Olvido G40 al final:</b> la compensación queda activa y arruina el siguiente movimiento.</li>
+</ul>
+</div>
+
+<div style="background:rgba(244,63,94,.06);padding:10px 14px;border-radius:6px;margin:8px 0">
+<b style="color:#f43f5e">❌ SUBRUTINAS (chuleta UPV/EHU)</b>
+<ul style="padding-left:18px;font-size:.9em;line-height:1.85;color:#fecdd3;margin-top:6px">
+<li><b>G22 N1 = INICIO</b> de la subrutina, <b>NO llamada.</b></li>
+<li><b>G20 N1.k = LLAMADA</b> (k = nº repeticiones).</li>
+<li><b>G24 = FIN</b> de la subrutina.</li>
+<li>Estructura: programa main con G20 N1.1 → ... → M30; luego G22 N1 ... G24.</li>
+<li><b>G73 A180 ≠ reflexión:</b> es ROTACIÓN 180° que invierte AMBOS ejes (x,y)→(-x,-y).</li>
+<li>Para reflexión sobre eje X: <b>G12</b> (invierte Y). Para eje Y: <b>G11</b>. Desactivar: <b>G10</b>.</li>
+</ul>
+</div>
+
+<div style="background:rgba(244,63,94,.06);padding:10px 14px;border-radius:6px;margin:8px 0">
+<b style="color:#f43f5e">❌ TORNEADO</b>
+<ul style="padding-left:18px;font-size:.9em;line-height:1.85;color:#fecdd3;margin-top:6px">
+<li><b>X en torneado = DIÁMETRO, no radio.</b> Un chaflán 1,5×45° hace X subir 3 mm (porque 1,5×2 lados = 3 en diámetro).</li>
+<li><b>Fondo de rosca = D − 2·Q</b> (no D − Q): para M30×1,5 con Q=0,975 → fondo = 30 − 1,95 = 28,05 (no 29,05).</li>
+<li><b>Aproximación INICIAL</b> debe ser FUERA del bruto: si Ø=60, aproxima a X=62, no X=60 (chocas).</li>
+<li><b>Tronzado:</b> usar G97 con N baja (300 rpm típico). Con G96 vc→∞ al llegar al centro.</li>
+</ul>
+</div>
+
+<div style="background:rgba(244,63,94,.06);padding:10px 14px;border-radius:6px;margin:8px 0">
+<b style="color:#f43f5e">❌ AVANCES Y VELOCIDADES</b>
+<ul style="padding-left:18px;font-size:.9em;line-height:1.85;color:#fecdd3;margin-top:6px">
+<li>Lee BIEN el enunciado: el fz/f que da puede ser distinto para cada herramienta. NO mezcles datos.</li>
+<li><b>F en taladrado:</b> F = N·f (NO N·Z·fz). Aunque la broca tenga 2 filos, f es por revolución global.</li>
+<li><b>F en fresado:</b> F = N·Z·fz (cada diente contribuye).</li>
+<li>Comprueba que N ≤ N_máx del cabezal. Para D pequeños (D4) N puede llegar a 15.000 rpm — al límite.</li>
+</ul>
+</div>
+
+<div style="background:rgba(244,63,94,.06);padding:10px 14px;border-radius:6px;margin:8px 0">
+<b style="color:#f43f5e">❌ INTERPRETACIÓN DEL PLANO</b>
+<ul style="padding-left:18px;font-size:.9em;line-height:1.85;color:#fecdd3;margin-top:6px">
+<li><b>Líneas PUNTEADAS = referencia</b>, no contorno mecanizable. Suele marcar el PCD de taladros o ejes de simetría.</li>
+<li>Mira siempre el corte A-A (alzado) para entender los ESCALONES (alturas Z relativas).</li>
+<li>Verifica si una cota es CENTRO-A-CENTRO o longitud TOTAL (importante en slots oblongos).</li>
+<li>Si el plano pide chaflán/avellanado, NO te olvides de programarlo (sección con avellanadora + G81).</li>
+</ul>
+</div>
+</div>
+</div>
+
+</div>
+
+
+<!-- ════════════════ PANEL T4.P0 — PRIMER PROGRAMA (NIVEL CERO) ════════════════ -->
+<div class="topic-panel" id="ex0">
+<div class="panel-header" style="background:linear-gradient(135deg,rgba(252,211,77,.10) 0%,transparent 60%);border-color:rgba(252,211,77,.30);border-left-color:#fcd34d">
+<div class="panel-tag" style="color:#fcd34d">★ T4.P0 — NIVEL 0</div>
+<h1 class="panel-title">Tu primer programa CNC: un taladro en una placa</h1>
+<div class="panel-meta">El ejercicio más simple posible · 1 herramienta · 12 líneas · cada línea explicada</div>
+</div>
+
+<div class="enunciado">
+<p><b>Tarea:</b> escribir el programa CNC más simple posible para una pieza muy básica.</p>
+<p><b>Pieza:</b> placa cuadrada de <b>50×50×20 mm</b> con <b>UN solo taladro Ø10 pasante</b> en el centro.</p>
+<p><b>Herramientas:</b> broca helicoidal D10 (vc=25 m/min, f=0,1 mm/rev).</p>
+<p><b>Objetivo:</b> entender la <b>estructura</b> básica de un programa Fagor 8025M y el ciclo fijo más simple (G81).</p>
+</div>
+
+<div class="section-wrap s-teoria sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📐 Planteamiento — descompón el problema en 5 pasos <span class="sarr">▼</span></button>
+<div class="sec-body">
+<ol style="padding-left:18px;color:#94a3b8;font-size:.92em;line-height:1.9">
+<li><b>Establecer el cero pieza</b>: ponemos el origen en el CENTRO de la cara superior de la placa. X=Y=0 = centro. Z=0 = cara superior. Por debajo Z es negativo (entras en el material).</li>
+<li><b>Calcular N (rpm)</b> a partir de vc y D: <span style="font-family:var(--ff-mono)">N = 1000·25/(π·10) = 796 rpm</span> → redondeamos a <b>800 rpm</b>.</li>
+<li><b>Calcular F (mm/min)</b>: <span style="font-family:var(--ff-mono)">F = N·f = 800·0,1 = 80 mm/min</span>.</li>
+<li><b>Profundidad I del agujero</b>: la placa tiene 20 mm de espesor, el agujero es pasante. Damos 3 mm extra para el pico cónico de la broca → <b>I = -23 mm</b> (negativo hacia abajo).</li>
+<li><b>Ciclo fijo G81</b> (taladrado simple): X0 Y0 (centro), Z2 (plano referencia 2 mm sobre la pieza), I-23 (profundidad).</li>
+</ol>
+</div>
+</div>
+
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚙️ Programa CNC (12 líneas — léelas una a una) <span class="sarr">▼</span></button>
+<div class="sec-body">
+<span class="res-code">%PRIMER PROGRAMA — TALADRO D10        ; comentario inicial, nombre
+
+; ═══ CABECERA: preparar la herramienta ═══
+N010 T1.1                          ; selecciona herramienta T1 con corrector 1
+                                   ; (T1 = broca D10, corrector 1 = sus medidas)
+N020 M6                            ; M6 = ejecuta el cambio físico de herramienta
+N030 G43                           ; activa compensación de longitud (la máquina
+                                   ; baja/sube Z según la longitud de la broca)
+N040 G90 G17 G97 G94 G0 X0 Y0 Z100 S800 F80 M3
+;     G90 = coordenadas ABSOLUTAS (no incrementales)
+;     G17 = trabajamos en plano XY (típico en fresado)
+;     G97 = velocidad de giro N CONSTANTE
+;          (NO G96 porque la broca tiene D fijo, no varía)
+;     G94 = avance en mm/min (NO mm/rev)
+;     G0  = posicionamiento RÁPIDO (sin cortar)
+;     X0 Y0 = centro de la pieza (donde irá el taladro)
+;     Z100 = altura de SEGURIDAD (100 mm por encima de la pieza)
+;     S800 = velocidad de giro 800 rpm
+;     F80  = avance 80 mm/min
+;     M3   = ARRANCA el cabezal en sentido horario (CW)
+
+; ═══ MECANIZADO: el ciclo de taladrado ═══
+N050 G81 G99 X0 Y0 Z2 I-23
+;     G81 = ciclo fijo de TALADRADO SIMPLE
+;     G99 = retorno al plano de referencia (intermedio, más rápido)
+;     X0 Y0 = centro del agujero (mismo que la posición actual)
+;     Z2   = plano de REFERENCIA (la broca arranca el corte desde aquí,
+;            2 mm sobre la cara superior)
+;     I-23 = profundidad final del agujero
+;            (atraviesa los 20 mm de la placa + 3 mm extra
+;             para el pico cónico de la broca)
+N060 G80                           ; cancela el ciclo fijo G81
+
+; ═══ CIERRE: retirar y parar ═══
+N070 G0 Z100                       ; sube rápido a Z=100 (zona segura)
+N080 G40 G44                       ; cancela compensaciones (G40 radio, G44 long.)
+N090 M5                            ; PARA el cabezal
+N100 M30                           ; FIN del programa (con rewind a la primera línea)</span>
+
+<p class="res-note" style="margin-top:14px"><b>🔑 Eso es TODO un programa CNC simple.</b> En 12 líneas has hecho un taladro pasante. Las piezas complejas (T4.P1 a T4.P13) no son más que VARIAS de estas estructuras encadenadas: cabecera + mecanizado + cierre × número-de-herramientas.</p>
+</div>
+</div>
+
+<div class="section-wrap s-datos sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📋 Cálculos paso a paso (qué hicimos antes de programar) <span class="sarr">▼</span></button>
+<div class="sec-body">
+<div class="formula-box">PASO 1 — Velocidad de giro N
+  Datos: vc = 25 m/min (broca acero rápido, valor típico)
+         D = 10 mm (diámetro de la broca)
+
+  N = 1000 · vc / (π · D)
+  N = 1000 · 25 / (π · 10)
+  N = 25.000 / 31,416
+  N = 795,8 rpm  →  redondear a S = 800 rpm
+
+PASO 2 — Velocidad de avance vf (= F)
+  Datos: N = 800 rpm (calculado arriba)
+         f = 0,1 mm/rev (dato del enunciado)
+
+  vf = N · f
+  vf = 800 · 0,1
+  vf = 80 mm/min  →  F = 80
+
+PASO 3 — Profundidad I
+  Espesor placa = 20 mm (agujero pasante)
+  Margen pico broca = 3 mm (~½ D para asegurar salida)
+  Total = 20 + 3 = 23 mm
+  Como I se da NEGATIVO (hacia -Z): I = -23
+
+PASO 4 — Plano referencia Z
+  Z = +2 mm (2 mm sobre la cara superior)
+  El ciclo G81 baja desde Z2 hasta Z2+I = 2 + (-23) = -21 mm
+  Cara inferior está en Z=-20, así que la broca sale 1 mm.</div>
+</div>
+</div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación de tu primer programa</span>
+Antes de "ejecutarlo" mentalmente, comprueba:
+<ul style="margin:6px 0 0 16px;font-size:.92em;line-height:1.7">
+<li>✅ Hay <b>cabecera completa</b>: T1.1 → M6 → G43 → G90 G17 G97 G94 G0...</li>
+<li>✅ El cabezal arranca con <b>M3</b></li>
+<li>✅ Coordenadas en <b>absoluto (G90)</b></li>
+<li>✅ Para taladrado uso <b>G97 (N constante)</b>, no G96</li>
+<li>✅ El <b>ciclo G81</b> con X/Y del centro, Z plano referencia, I profundidad NEGATIVA</li>
+<li>✅ Cierro el ciclo con <b>G80</b></li>
+<li>✅ Retorno a <b>Z=100 (seguro)</b></li>
+<li>✅ Cancelo <b>G40 G44</b></li>
+<li>✅ <b>M5</b> para cabezal y <b>M30</b> fin programa</li>
+</ul>
+<p style="margin-top:10px"><b>Si este programa te queda claro, estás listo para T4.P1.</b> Si algo no entiendes, vuelve al panel "📚 Empezar de 0" y relee el glosario o la plantilla esqueleto.</p>
+</div>
+</div>
+
+
+<div class="topic-panel" id="ex1">
 <div class="panel-header">
 <div class="panel-tag">T4.P1</div>
 <h1 class="panel-title">Torneado CNC — eje D57→M30×1,5, taladro D10</h1>
