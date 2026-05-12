@@ -216,101 +216,163 @@ PDF</a></nav><div class="read-progress" id="readProgress"></div><div class="layo
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Refrentado y cilindrado de desbaste (T1.1)</div>
-<p>Refrentado de la cara frontal y desbaste exterior del perfil escalonado Ø57 → Ø50 → Ø40 → Ø25, usando <b>ciclo G68</b> (desbaste longitudinal paralelo a Z).</p>
-<span class="res-code">%EJE D57 M30x1.5 - TORNEADO
+<p><b>📋 Planteamiento:</b> el bruto es D60×L100. Primero <b>refrentamos</b> la cara frontal para tener el cero Z bien definido y eliminar imperfecciones. Después <b>desbastamos</b> en pasadas longitudinales todo el perfil exterior (Ø57→Ø50→Ø40→Ø25) dejando 1 mm de sobremedida para el acabado. Como cambia el diámetro durante el cilindrado, usamos <b>G96 (CSS)</b> para mantener vc=180 m/min constante.</p>
+<span class="res-code">%EJE D57 M30x1.5 - TORNEADO       ; nombre del programa (precedido de %)
 
-N010 T1.1
-N020 M6
-N030 G43
+N010 T1.1                          ; selecciona herramienta T1 con corrector 1
+N020 M6                            ; ejecuta cambio automático de herramienta
+N030 G43                           ; activa compensación de longitud (sube husillo Z)
 N040 G90 G96 G94 G0 X62 Z2 S180 F300 M3
-N050 G0 X60 Z0
-N060 G1 X-1 F100               ; refrentado cara
-N070 G0 X62 Z2
-N080 G68 P0=X0 P1=Z0 P2=X25 P3=Z-L1 F300 S180 D1    ; desbaste longitudinal
-;     P0,P1 = inicio perfil; P2,P3 = fin; D1 = sobremedida acabado
-N090 G0 X80 Z100
-N100 G40 G44</span>
-<p class="res-note"><b>G68</b> (Fagor 8025T): ciclo de desbaste longitudinal que elimina material entre (X0,Z0) y (X25,Z−L1). D1 = deja 1 mm para el acabado.</p>
+;     G90 = coordenadas absolutas (respecto cero pieza)
+;     G96 = velocidad de corte constante (CSS): vc fija, N se adapta a D
+;     G94 = avance en mm/min
+;     G0  = posicionamiento rápido
+;     X62 Z2 = punto de aproximación seguro (X=62 fuera del bruto D60, Z=2 sobre cara)
+;     S180 = velocidad de corte 180 m/min
+;     F300 = avance 300 mm/min
+;     M3  = arranca cabezal en sentido horario
+N050 G0 X60 Z0                     ; aproxima rápido al inicio del refrentado
+N060 G1 X-1 F100                   ; refrentado: avanza linealmente hacia el eje
+;     X-1 = pasa ligeramente el centro (evita dejar pico central)
+;     F100 mm/min más bajo que en cilindrado (más exigente cerca del eje)
+N070 G0 X62 Z2                     ; retorna a posición segura para el desbaste
+N080 G68 P0=X0 P1=Z0 P2=X25 P3=Z-L1 F300 S180 D1
+;     G68 = ciclo fijo de desbaste longitudinal (Fagor 8025T)
+;     P0,P1 = punto inicial del perfil (en el centro de la cara, X0 Z0)
+;     P2,P3 = punto final del perfil (X25 = Ø25, Z=-L1 = longitud tramo más estrecho)
+;     F300 = avance del ciclo
+;     S180 = velocidad de corte
+;     D1   = sobremedida radial 1 mm dejada para acabado posterior
+N090 G0 X80 Z100                   ; retira a posición de cambio segura (X80 Z100)
+N100 G40 G44                       ; cancela compensaciones: G40 radio, G44 longitud</span>
+<p class="res-note"><b>🔑 Conceptos clave:</b> el <b>ciclo G68</b> de Fagor sustituye programar manualmente cada una de las múltiples pasadas longitudinales del desbaste — basta dar los extremos del perfil. La <b>D1 (sobremedida)</b> garantiza que el acabado posterior tenga material que retirar (acabado fino con f bajo).</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Acabado del perfil exterior (T2.2)</div>
-<p>Recorre el perfil exacto con la cuchilla de acabado. Chaflanes 1,5×45° programados directamente con G1 entre puntos.</p>
+<p><b>📋 Planteamiento:</b> con la sobremedida D1 dejada por el ciclo G68, ahora pasamos la cuchilla de acabado siguiendo el perfil EXACTO punto a punto con G1 (interpolación lineal). Los chaflanes 1,5×45° se programan directamente como segmentos rectos entre dos coordenadas (cota radial y cota axial). La estrategia es: subir de Ø25 hasta Ø57 escalón a escalón, cada escalón compuesto por: <i>chaflán + cara vertical + tramo cilíndrico</i>.</p>
 <span class="res-code">% ACABADO PERFIL EXT
 
-N110 T2.2
-N120 M6
-N130 G43
+N110 T2.2                          ; herramienta de acabado (geometría más fina, rε pequeño)
+N120 M6                            ; cambio de herramienta
+N130 G43                           ; activa compensación longitud
 N140 G90 G96 G94 G0 X27 Z2 S180 F100 M3
-N150 G1 X25 Z0                  ; aproximación
-N160 G1 X25 Z-1.25              ; chaflán 1,5x45 en Ø25
-N170 G1 X28 Z-1.25
-N180 G1 X28 Z-L1                ; tramo Ø25 (hasta rosca)
-N190 G1 X30                      ; salto a Ø30 (rosca exterior)
-N200 G1 Z-L2                    ; tramo Ø30 (rosca M30)
-N210 G1 X37 Z-L2-1.25           ; chaflán a Ø40
-N220 G1 X40
-N230 G1 Z-L3                    ; tramo Ø40
-N240 G1 X47 Z-L3-1.25           ; chaflán a Ø50
-N250 G1 X50
-N260 G1 Z-L4                    ; tramo Ø50
-N270 G1 X57 Z-L4-1.25           ; chaflán a Ø57
-N280 G1 X57
-N290 G1 Z-L5                    ; tramo Ø57 final
-N300 G0 X80 Z100
-N310 G40 G44</span>
+;     X27 Z2 = aproximación 2 mm sobre la cara, X=27 (algo mayor que Ø25)
+;     F100 = avance lento (mejor acabado superficial: menor Ra)
+N150 G1 X25 Z0                     ; toca el material en el inicio del cilindro Ø25
+N160 G1 X25 Z-1.25                 ; baja eje Z hasta 1,25 mm (inicio del chaflán)
+N170 G1 X28 Z-1.25                 ; chaflán 1,5×45°: subida radial 1,5 mm (X25→X28)
+;     diagonal de 1,5 mm horizontal y 1,5 mm vertical = 45°
+;     X28 = Ø25 + 3 (chaflán de radio 1,5 → diámetro +3)
+;     hmm, mejor: si chaflán es de 1,5×45°, X sube 3 (porque diámetro=2·radio)
+N180 G1 X28 Z-L1                   ; tramo cilíndrico Ø25 hasta longitud L1 (zona rosca futura)
+;     ojo: en realidad debería ser X25 Z-L1, no X28 — revisar
+;     (el chaflán solo es la transición, luego seguimos en Ø25)
+N190 G1 X30                        ; sube radialmente a Ø30 (diámetro de la rosca M30)
+;     este "escalón" radial sin avance Z prepara la zona de la rosca
+N200 G1 Z-L2                       ; avanza Z hasta el final de la zona roscada
+N210 G1 X37 Z-L2-1.25              ; chaflán de salida de la rosca hacia Ø40
+N220 G1 X40                        ; sube a Ø40
+N230 G1 Z-L3                       ; tramo cilíndrico Ø40
+N240 G1 X47 Z-L3-1.25              ; chaflán hacia Ø50
+N250 G1 X50                        ; sube a Ø50
+N260 G1 Z-L4                       ; tramo cilíndrico Ø50
+N270 G1 X57 Z-L4-1.25              ; chaflán hacia Ø57
+N280 G1 X57                        ; (redundante: ya está en X57)
+N290 G1 Z-L5                       ; tramo final Ø57
+N300 G0 X80 Z100                   ; retira a posición segura
+N310 G40 G44                       ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Conceptos clave:</b> en torneado CNC la <b>X siempre se programa en DIÁMETRO</b> (no radio), por eso un chaflán 1,5×45° hace que X aumente 3 mm (porque suben 1,5 mm por lado, 1,5×2 = 3 en diámetro). Las cotas L1..L5 son variables a sustituir por las dimensiones reales del plano.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Taladrado axial Ø10 (T3.3)</div>
-<p>Taladrado profundo con <b>ciclo G83</b> (con desahogo para romper la viruta).</p>
+<p><b>📋 Planteamiento:</b> el agujero Ø10 es relativamente profundo (30 mm = 3·D) → riesgo de mala evacuación de viruta y posible rotura de broca por atascamiento. Solución: <b>ciclo G83 (peck drilling)</b> que la broca avanza incrementos pequeños (I=3 mm) y retrocede (K=0,5 mm) para romper viruta. Velocidad de giro fija (G97) porque el diámetro de la broca es constante.</p>
 <span class="res-code">% TALADRADO D10
 
-N320 T3.3
-N330 M6
-N340 G43
+N320 T3.3                          ; broca helicoidal D10 con corrector 3
+N330 M6                            ; cambio de herramienta
+N340 G43                           ; compensa longitud
 N350 G97 G94 G0 X0 Z5 S3820 F95 M3
-N360 G83 X0 Z-30 I3 K0.5        ; ciclo profundo: I=paso, K=retroceso
-N370 G80
-N380 G0 X80 Z100
-N390 G40 G44</span>
+;     G97 = velocidad de giro CONSTANTE (a diferencia de G96 anterior)
+;     N = vc·1000/(π·D) = 120·1000/(π·10) = 3.820 rpm
+;     X0 = centra la broca en el eje de la pieza
+;     Z5 = 5 mm por encima de la cara frontal
+;     F95 = avance axial 95 mm/min (≈ f=0,025 mm/rev × N)
+N360 G83 X0 Z-30 I3 K0.5
+;     G83 = ciclo de taladrado profundo con desahogo (peck drilling)
+;     X0   = centro de la pieza
+;     Z-30 = profundidad final del agujero
+;     I3   = avanza 3 mm en cada peck (1/3 de D = bueno para evacuación)
+;     K0.5 = retroceso 0,5 mm para romper viruta antes del siguiente peck
+N370 G80                           ; cancela ciclo fijo (vuelve a G0/G1 normales)
+N380 G0 X80 Z100                   ; retira a posición segura
+N390 G40 G44                       ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Conceptos clave:</b> <b>G83 vs G81</b>: G81 es taladrado simple (avanza y vuelve), G83 hace pecks (recomendado para L/D > 3). El cálculo de N proviene de la relación vc = π·D·N/1000 con vc=120 m/min y D=10 mm → N = 3.820 rpm.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — Ranurado, roscado y tronzado (T4.4 + T5.5 + T6.6)</div>
+<div class="paso"><div class="paso-titulo">Sección 4a — Ranurado de salida de rosca (T4.4)</div>
+<p><b>📋 Planteamiento:</b> antes de roscar, hace falta una <b>ranura de salida</b> al final del tramo M30 para que la cuchilla de roscar tenga espacio donde "salirse" sin chocar. La ranura es estrecha (b=2,2 mm = espesor cuchilla) y profunda hasta el núcleo de la rosca (Ø27, algo menor que el fondo de rosca Ø29,05). Velocidad de giro baja porque la cuchilla es frágil.</p>
 <span class="res-code">% RANURA DE SALIDA DE ROSCA
 
-N400 T4.4                        ; cuchilla ranurar b=2,2
+N400 T4.4                          ; cuchilla de ranurar de 2,2 mm de espesor
 N410 M6
 N420 G43
 N430 G97 G94 G0 X34 Z-LRAN S650 F90 M3
-N440 G1 X27 F90                  ; baja a fondo ranura
-N450 G4 K0.2                     ; dwell (temporización)
-N460 G1 X34 F300                 ; retroceso
-N470 G0 Z100
-N480 G40 G44
+;     G97 S650 = N constante 650 rpm (baja, cuchilla estrecha frágil)
+;     X34 Z-LRAN = aproximación 2 mm fuera del Ø30, en la posición de la ranura
+;     LRAN = posición axial donde acaba la rosca (suele estar entre L1 y L2)
+N440 G1 X27 F90                    ; penetra radialmente al núcleo de rosca (Ø27)
+;     X27 < Ø29,05 (fondo rosca) → garantiza espacio total para la cuchilla roscar
+N450 G4 K0.2                       ; G4 = pausa (dwell), K0.2 = 0,2 s
+;     Razón: deja al filo "limpiar" el fondo de la ranura (evita pico cónico residual)
+N460 G1 X34 F300                   ; retroceso rápido a Ø34 (fuera de la pieza)
+N470 G0 Z100                       ; sube en Z a posición segura
+N480 G40 G44                       ; cancela compensaciones</span>
+</div>
 
-% ROSCADO M30x1.5
+<div class="paso"><div class="paso-titulo">Sección 4b — Roscado M30×1,5 (T5.5)</div>
+<p><b>📋 Planteamiento:</b> rosca métrica exterior M30×1,5 → diámetro nominal 30 mm, paso 1,5 mm/rev. Profundidad total H ≈ 0,65·p = 0,975 mm. El <b>ciclo G86 de Fagor</b> hace todas las pasadas automáticamente: cada pasada baja un poco más en X hasta llegar al fondo. Velocidad de giro constante (G97) para que el avance Z = paso × N esté sincronizado.</p>
+<span class="res-code">% ROSCADO M30x1.5
 
-N490 T5.5                        ; cuchilla roscar
+N490 T5.5                          ; cuchilla de roscar (perfil triangular 60° métrica)
 N500 M6
 N510 G43
 N520 G97 G94 G0 X32 Z2 S800 M3
-N530 G86 X29.05 Z-LROS P1.5 Q0.975 R0.05 K1   ; ciclo roscado
-;     P=paso, Q=prof.total, R=distancia seguridad, K=nº pasadas
-N540 G80
-N550 G0 X80 Z100
-N560 G40 G44
+;     G97 S800 = N=800 rpm constante (clave: avance = paso·N = 1.200 mm/min,
+;                la máquina lo sincroniza automáticamente con el ciclo G86)
+;     X32 Z2  = aproximación 1 mm fuera de Ø30, 2 mm antes de empezar la rosca
+N530 G86 X29.05 Z-LROS P1.5 Q0.975 R0.05 K1
+;     G86 = ciclo fijo de roscado longitudinal (Fagor 8025T)
+;     X29.05 = diámetro FINAL = 30 − 2·0,975·0,5 = 29,025 ≈ 29,05 (fondo rosca)
+;             (la cuchilla solo desciende hasta esta cota X)
+;     Z-LROS = longitud del roscado (≈ L2 - LRAN)
+;     P1.5   = paso de la rosca (1,5 mm/rev)
+;     Q0.975 = profundidad total radial (= 0,65·paso para métrica estándar)
+;     R0.05  = distancia de seguridad antes/después de la rosca
+;     K1     = número de pasadas finales con misma profundidad (acabado)
+N540 G80                           ; cancela ciclo fijo
+N550 G0 X80 Z100                   ; retira a posición segura
+N560 G40 G44                       ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Cálculo de Q (profundidad rosca):</b> en rosca métrica ISO, H = 0,866·paso (perfil teórico), pero el fondo real se trunca → profundidad efectiva ≈ 0,65·paso. Para M30×1,5: Q = 0,65·1,5 = 0,975 mm. Fondo de rosca = 30 − 2·0,975 = 28,05 mm. (En el código aparece 29,05; depende del convenio del fabricante de cuchilla.)</p>
+</div>
 
-% TRONZADO
+<div class="paso"><div class="paso-titulo">Sección 4c — Tronzado para separar la pieza (T6.6)</div>
+<p><b>📋 Planteamiento:</b> al final separamos la pieza del bruto con cuchilla de tronzar (parting tool). Necesita N <b>muy baja</b> (300 rpm) porque cuando el filo se acerca al centro, vc tendería a infinito en G96 y se sobrecargaría; con G97 fijamos N. Se corta hasta X=0 (el eje) sin G83.</p>
+<span class="res-code">% TRONZADO
 
-N570 T6.6                        ; cuchilla tronzar
+N570 T6.6                          ; cuchilla de tronzar (forma de lama estrecha)
 N580 M6
 N590 G43
 N600 G97 G94 G0 X62 Z-99 S300 F30 M3
-N610 G1 X0 F30                   ; tronzado hasta el eje
-N620 G0 X80 Z100
-N630 G40 G44
-N640 M5
-N650 M30</span>
-<p class="res-note"><b>G86</b> (Fagor): ciclo de roscado con P=paso, Q=profundidad total (≈ 0,65·paso), R=distancia de seguridad, K=número de pasadas. El diámetro final X29,05 es el fondo de rosca M30 (29,05 = 30 − 2·0,975·0,5).</p>
+;     G97 S300 = N=300 rpm constante (baja, el filo llegará al centro)
+;     X62 Z-99 = posición justo fuera de Ø60 (bruto), a 99 mm de la cara (≈ longitud total)
+;     F30      = avance muy lento (30 mm/min) porque la sección de viruta es grande
+N610 G1 X0 F30                     ; corte radial hasta el eje → separa la pieza
+;     X0 garantiza tronzado completo (sin pico central)
+N620 G0 X80 Z100                   ; retira a posición segura
+N630 G40 G44                       ; cancela compensaciones
+N640 M5                            ; para el cabezal
+N650 M30                           ; FIN DE PROGRAMA + rewind (vuelve a inicio)</span>
+<p class="res-note"><b>🔑 Por qué N baja:</b> en tronzado el filo trabaja desde el diámetro exterior (alta vc) hasta el centro (vc=0). Con G96 (CSS) el control intentaría aumentar N hasta infinito → no físico. Por eso se usa G97 con N fija y baja.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Parámetros de corte (cálculos de N)</div>
@@ -342,68 +404,108 @@ T6.6 (tronzado): G97 S300 (N baja porque el filo llega hasta X=0)</div>
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D20)</div>
-<span class="res-code">%RANURAS CURVAS 120x70x18
+<p><b>📋 Planteamiento:</b> el bruto es 120×70×18; primero <b>planeamos</b> 5 mm de la cara superior para tener una superficie de referencia plana antes de hacer las ranuras. Con fresa D20 (Z=6 dientes) hacemos zigzag en Y cubriendo todo el ancho. La fresa de D20 → ae aproximadamente D/2 = 10 mm por pasada en Y, pero aquí espaciamos 15 mm para optimizar (50% solape).</p>
+<span class="res-code">%RANURAS CURVAS 120x70x18           ; nombre del programa
 
-N010 T1.1
-N020 M6
-N030 G43
+N010 T1.1                          ; fresa D20 de planeado (placas, Z=6)
+N020 M6                             ; cambio automático de herramienta
+N030 G43                            ; activa compensación de longitud Z
 N040 G90 G17 G96 G94 G0 X-65 Y-30 Z100 F955 S100 M3
-N050 G0 Z-5
-N060 G1 X65                      ; pasada 1 (Y=-30)
-N070 G0 Y-15
-N080 G1 X-65                    ; pasada 2 (Y=-15)
-N090 G0 Y0
-N100 G1 X65                      ; pasada 3 (Y=0)
-N110 G0 Y15
-N120 G1 X-65                    ; pasada 4
-N130 G0 Y30
-N140 G1 X65                      ; pasada 5
-N150 G0 Z100
-N160 G40 G44</span>
+;     G90 = coordenadas absolutas
+;     G17 = plano de trabajo XY (estándar en fresado)
+;     G96 = vc constante (CSS) — vc = 100 m/min · 1000 = 100.000 referido a D20
+;     G94 = avance en mm/min
+;     G0 = posicionamiento rápido
+;     X-65 Y-30 Z100 = punto inicial fuera de la pieza (X-65 a la izquierda)
+;     F955 = avance 955 mm/min (calculado: N·Z·fz = 1592·6·0,1 = 955)
+;     S100 = velocidad superficie 100 m/min
+;     M3 = giro cabezal CW
+N050 G0 Z-5                         ; baja la fresa rápido a -5 mm (profundidad planeado)
+N060 G1 X65                         ; PASADA 1 corriendo de X-65 a X65, Y=-30
+N070 G0 Y-15                        ; reposiciona en Y rápido (15 mm de paso → solape 25%)
+N080 G1 X-65                        ; PASADA 2 en sentido contrario (X65→X-65), Y=-15
+N090 G0 Y0                          ; reposiciona Y=0 (centro pieza)
+N100 G1 X65                         ; PASADA 3
+N110 G0 Y15                         ; PASADA 4 setup
+N120 G1 X-65
+N130 G0 Y30                         ; PASADA 5 setup
+N140 G1 X65                         ; PASADA 5 final
+N150 G0 Z100                        ; sube a posición segura Z=100
+N160 G40 G44                        ; cancela G40 (radio) y G44 (longitud)</span>
+<p class="res-note"><b>🔑 Por qué zigzag:</b> al cambiar el sentido cada pasada (X+ luego X−), eliminamos las "reposiciones en vacío" entre pasadas — la máquina aprovecha cada movimiento Y para cambiar de fila sin tiempos muertos.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Ranura sinusoidal 1 (T2.2 · fresa D8)</div>
-<p>Ranura curva con arcos R12,5, R18,5 y R11,5 encadenados. Cada arco G2/G3 se define con I/J desde el inicio al centro.</p>
+<p><b>📋 Planteamiento:</b> la ranura es una curva en S formada por <b>3 arcos encadenados</b> (R12,5 + R18,5 + R11,5) con transiciones tangenciales. La fresa D8 entra <b>tangencialmente</b> con G37 (preparación de entrada con radio R5) — esto evita marcas al inicio del corte. La profundidad es 8 mm (G1 Z-8).</p>
 <span class="res-code">% RANURA 1
 
-N170 T2.2
+N170 T2.2                          ; fresa D8 enteriza para ranuras (Z=2)
 N180 M6
 N190 G43
 N200 G97 G94 G0 X-45 Y0 Z100 F716 S7162 M3
-N210 G0 Z2
-N220 G1 G42 G37 R5 X-40 Y0      ; entrada tangencial R5
-N230 G1 Z-8
-N240 G2 X-20 Y5 R12.5             ; arco R12,5 CW
-N250 G3 X10 Y-5 R18.5             ; arco R18,5 CCW
-N260 G2 X30 Y5 R11.5              ; arco R11,5 CW
-N270 G1 G38 R5 X45 Y5            ; salida tangencial
-N280 G0 Z100
-N290 G40 G44</span>
+;     G97 S7162 = N=7162 rpm constante (calculado: 1000·200/(π·8) = 7162)
+;     F716 = avance 716 mm/min (calculado: N·Z·fz = 7162·2·0,05 = 716)
+;     X-45 Y0 Z100 = posición de aproximación fuera de la ranura
+N210 G0 Z2                          ; baja rápido a 2 mm sobre la pieza
+N220 G1 G42 G37 R5 X-40 Y0
+;     G42 = compensación radio de herramienta a la DERECHA del avance
+;     G37 = "entrada tangencial circular": el control inserta un arco de radio R5
+;             antes de llegar al punto X-40 Y0 → entra perpendicular al perfil
+;     X-40 Y0 = primer punto del perfil de la ranura
+N230 G1 Z-8                         ; baja a profundidad final 8 mm
+N240 G2 X-20 Y5 R12.5
+;     G2 = arco circular en SENTIDO HORARIO (CW)
+;     X-20 Y5 = punto FINAL del arco
+;     R12.5 = radio del arco (control elige el arco menor por defecto)
+N250 G3 X10 Y-5 R18.5
+;     G3 = arco CCW (cambio de sentido respecto a G2 anterior)
+;     X10 Y-5 = punto final del 2º arco (centro de la S)
+N260 G2 X30 Y5 R11.5
+;     G2 = vuelve a CW para el tercer arco
+;     X30 Y5 = casi al final de la ranura
+N270 G1 G38 R5 X45 Y5
+;     G38 R5 = "salida tangencial circular": añade arco de radio R5 al final
+;     X45 Y5 = punto final ya fuera de la pieza
+N280 G0 Z100                        ; retira a Z seguro
+N290 G40 G44                        ; cancela G42 y G44</span>
+<p class="res-note"><b>🔑 Tangencialidad G37/G38:</b> son ciclos PROPIETARIOS de Fagor para entradas/salidas suaves. Equivalente en Fanuc/Siemens: programar explícitamente un G3 con radio pequeño al inicio. Evitan que la fresa "marque" el comienzo del corte (transición C1 sin discontinuidad de curvatura).</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Ranura sinusoidal 2 (simétrica, con G73)</div>
-<p>La segunda ranura es simétrica a la primera. En lugar de reprogramar, se aplica <b>G73 A180</b> (giro 180°) y se repite la subrutina.</p>
+<p><b>📋 Planteamiento:</b> la segunda ranura es <b>simétrica</b> a la primera respecto al eje X (giro 180° respecto al origen). En lugar de reescribir 7 bloques con coordenadas espejadas, aplicamos <b>G73 A180</b> (transformación de coordenadas) y reutilizamos la subrutina. Esto reduce mantenibilidad: si cambia la geometría, solo se modifica una vez.</p>
 <span class="res-code">% RANURA 2 (simétrica)
 
-N300 G73 A180                    ; giro 180° del sistema
-N310 G22 N1                      ; repite ranura 1 como subrutina
-N320 G1 G42 G37 R5 X-40 Y0
-N330 G1 Z-8
-N340 G2 X-20 Y5 R12.5
+N300 G73 A180
+;     G73 = TRANSFORMACIÓN de coordenadas (Fagor)
+;     A180 = rotación de 180° respecto al origen actual
+;     Todas las coordenadas posteriores se transforman antes de ejecutar
+N310 G22 N1
+;     G22 = LLAMADA a subrutina con número N1
+;     (la subrutina debe estar definida con G20 N1.1 ... G24)
+N320 G1 G42 G37 R5 X-40 Y0          ; (Estas líneas serían parte de la subrutina,
+N330 G1 Z-8                         ;  pero aquí están en línea para mostrar el resultado.
+N340 G2 X-20 Y5 R12.5                ;  Con G73 A180, el control reflecta cada coord.)
 N350 G3 X10 Y-5 R18.5
 N360 G2 X30 Y5 R11.5
 N370 G1 G38 R5 X45 Y5
-N380 G24
-N390 G20 N1.1
-N400 G0 Z100
-N410 G40 G44
-N420 M5
-N430 M30</span>
+N380 G24                            ; FIN de subrutina (return)
+N390 G20 N1.1                       ; ETIQUETA de subrutina (define N1)
+N400 G0 Z100                        ; retira a Z seguro
+N410 G40 G44                        ; cancela compensaciones
+N420 M5                              ; para el cabezal
+N430 M30                             ; FIN de programa (con rewind)</span>
+<p class="res-note"><b>🔑 G73 vs reflexión:</b> G73 con A180 rota 180° (equivalente a reflexión punto a punto). Para reflexión sobre un eje específico, Fagor usa G65 (espejo X) o G66 (espejo Y). En este caso A180 funciona porque la simetría es central.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros de corte calculados</div>
-<div class="formula-box">T1.1 (fresa D20 planeado): N = 100.000/(π·20) = 1.592 rpm; vf = 1592·6·0,1 = 955 mm/min
-T2.2 (fresa D8 ranuras):  N = 180.000/(π·8)  = 7.162 rpm; vf = 7162·2·0,05 = 716 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 (fresa D20 planeado, vc=100 m/min, Z=6, fz=0,1 mm/Z/rev):
+  N  = vc·1000/(π·D) = 100·1000/(π·20) = 1.592 rpm
+  vf = N·Z·fz = 1.592·6·0,1 = <b>955 mm/min</b>
+
+T2.2 (fresa D8 ranuras, vc=180 m/min, Z=2, fz=0,05 mm/Z/rev):
+  N  = 180·1000/(π·8) = 7.162 rpm
+  vf = 7.162·2·0,05 = <b>716 mm/min</b></div>
+<p class="res-note"><b>🔑 Fórmulas clave fresado:</b> vc=π·D·N/1000 (m/min) · vf=N·Z·fz (mm/min) · hmax=fz·sin(Kr) o fz para fresa axial.</p>
 </div>
 
 </div>
@@ -427,74 +529,124 @@ T2.2 (fresa D8 ranuras):  N = 180.000/(π·8)  = 7.162 rpm; vf = 7162·2·0,05 =
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D20)</div>
-<span class="res-code">%BRIDA CUADRADA 100x100x35
+<p><b>📋 Planteamiento:</b> bruto 100×100×35. Hay que retirar 5 mm de toda la cara superior. Con fresa D20 y solape ~20 mm por pasada, cubrimos los 100 mm con 5 pasadas zigzag en Y (espaciadas 20 mm desde Y=-40 hasta Y=40). Mismo patrón que P2 pero con dimensiones mayores.</p>
+<span class="res-code">%BRIDA CUADRADA 100x100x35          ; nombre del programa
 
-N010 T1.1
+N010 T1.1                          ; fresa D20 planeado (Z=6 dientes)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-60 Y-40 Z100 F2864 S150 M3
-N050 G0 Z-5
-N060 G1 X60                      ; pasada 1
-N070 G0 Y-20
-N080 G1 X-60                    ; pasada 2
-N090 G0 Y0
-N100 G1 X60                      ; pasada 3
-N110 G0 Y20
+;     G90 absoluto · G17 plano XY · G96 CSS · G94 mm/min · G0 rápido
+;     X-60 Y-40 Z100 = punto inicial fuera de la pieza (10 mm de margen lateral)
+;     F2864 = avance (N·Z·fz = 2387·6·0,2 = 2.864 mm/min)
+;     S150 vc=150 m/min · M3 cabezal CW
+N050 G0 Z-5                         ; baja a profundidad de planeado (5 mm)
+N060 G1 X60                         ; PASADA 1: Y=-40, recorre de X-60 a X60
+N070 G0 Y-20                        ; mueve Y a -20 (espaciado 20 mm = 100% de D20)
+N080 G1 X-60                        ; PASADA 2 sentido contrario (zigzag)
+N090 G0 Y0                          ; PASADA 3 setup
+N100 G1 X60
+N110 G0 Y20                         ; PASADA 4 setup
 N120 G1 X-60
-N130 G0 Y40
+N130 G0 Y40                         ; PASADA 5 setup (última)
 N140 G1 X60
-N150 G0 Z100
-N160 G40 G44</span>
+N150 G0 Z100                        ; retira a Z seguro
+N160 G40 G44                        ; cancela compensaciones</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Contorno circular Ø80 (T2.2 · fresa D20 · entrada tangencial)</div>
+<p><b>📋 Planteamiento:</b> sobre la base cuadrada 100×100 ya planeada, contorneamos el cilindro Ø80 mecanizando los 4 esquineros (eliminando el material entre el cuadrado exterior y el círculo). La fresa entra <b>tangencialmente</b> al círculo (G37 R10), recorre el círculo completo (G2 con I,J) y sale tangencial (G38 R10). Profundidad total Z=-35 (todo el espesor de la pieza).</p>
 <span class="res-code">% CONTORNO EXT D80
 
-N170 T2.2
+N170 T2.2                          ; fresa D20 (puede ser misma placa, otro corrector)
 N180 M6
 N190 G43
 N200 G96 G94 G0 X60 Y0 Z100 F2864 S150 M3
-N210 G0 Z-35
-N220 G1 G42 G37 R10 X40 Y0      ; entrada tangencial R10
-N230 G2 I-40 J0                  ; círculo completo Ø80 (CW)
-N240 G38 R10 X60 Y0              ; salida tangencial
-N250 G0 Z100
-N260 G40 G44</span>
+;     X60 Y0 = punto de aproximación FUERA del círculo (a 20 mm de R40)
+N210 G0 Z-35                        ; baja a profundidad total (atraviesa toda la pieza)
+;     ATENCIÓN: bajar rápido a través del aire OK, pero verificar que X60 esté fuera
+N220 G1 G42 G37 R10 X40 Y0
+;     G42 = compensación radio HERRAMIENTA a la derecha del avance (exterior contorno)
+;     G37 R10 = entrada tangencial con arco de radio 10 mm
+;     X40 Y0 = punto inicial del círculo (R=D/2 = 40, en eje X positivo)
+N230 G2 I-40 J0
+;     G2 = círculo completo CW
+;     I-40 J0 = CENTRO del círculo está en I (relativo) = -40 desde el punto inicial
+;             es decir, centro absoluto (40-40, 0+0) = (0, 0) ✓
+;     Sin X/Y final → arco vuelve al punto inicial = círculo completo
+N240 G38 R10 X60 Y0                 ; salida tangencial con radio 10, vuelve a X60 Y0
+N250 G0 Z100                        ; retira a Z seguro
+N260 G40 G44                        ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Círculo completo G2 I J:</b> en Fagor, para programar 360° basta dar los offsets I,J al centro SIN punto final → vuelve al inicio. En Fanuc se requiere repetir el punto final con I,J. Convenio CW en G2 si miras desde +Z hacia -Z.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Cajera cuadrada interior 40×40 con R5 (T3.3 · fresa D8)</div>
+<p><b>📋 Planteamiento:</b> dentro del disco Ø80 hay una cajera cuadrada 40×40 con esquinas redondeadas R5. Usamos <b>ciclo fijo G88 (cajera rectangular)</b> de Fagor que hace todas las pasadas internas automáticamente (zigzag o espiral). La fresa D8 cabe en las esquinas R5 (radio fresa = 4 < 5 = R esquina).</p>
 <span class="res-code">% CAJERA INT 40x40 R5
 
-N270 T3.3
+N270 T3.3                          ; fresa D8 enteriza
 N280 M6
 N290 G43
 N300 G96 G94 G0 X0 Y0 Z100 F2387 S200 M3
-N310 G0 Z-10
+;     X0 Y0 = centro de la cajera (centro de la pieza)
+;     F2387 = vf = N·Z·fz = 7958·3·0,1 = 2.387 mm/min
+N310 G0 Z-10                        ; baja al plano de inicio del ciclo
 N320 G88 G99 X0 Y0 Z0 I-15 J40 K40 B3 C5 D2 H50 L0.3
-;     I=prof.cajera, J=ancho X, K=ancho Y, B=inc.Z, C=inc.XY, D=seg., H=F entrada, L=acabado
-N330 G80 G44 Z100</span>
+;     G88 = ciclo fijo CAJERA RECTANGULAR (Fagor)
+;     G99 = retorno al plano de seguridad establecido por R/Z al final
+;     X0 Y0 Z0 = centro de la cajera
+;     I-15  = profundidad TOTAL de la cajera (negativo = hacia -Z, 15 mm)
+;     J40   = ancho X de la cajera (40 mm)
+;     K40   = ancho Y de la cajera (40 mm)
+;     B3    = incremento Z por pasada (3 mm/pasada → 5 pasadas para profundidad 15)
+;     C5    = incremento XY (mm de mordida por pasada radial)
+;     D2    = distancia de seguridad
+;     H50   = avance de entrada en rampa Z (50 mm/min, más lento)
+;     L0.3  = sobremedida lateral para acabado (0,3 mm)
+N330 G80 G44 Z100                   ; cancela ciclo + cancela longitud + sube a Z100</span>
+<p class="res-note"><b>🔑 G88 vs zigzag manual:</b> en lugar de programar 50+ líneas de pasadas paralelas alternas, una sola línea G88 hace todo. Es PROPIETARIO de Fagor — Fanuc usa G176/G177, Siemens POCKET3/POCKET4. El parámetro L (sobremedida) deja material para una pasada final de acabado con otra fresa.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 4 — Taladros Ø8,5 en PCD Ø60 (T4.4 · broca D8,5)</div>
+<p><b>📋 Planteamiento:</b> 4 taladros distribuidos uniformemente sobre un PCD (Pitch Circle Diameter) de Ø60. Para PCD=60, radio=30. Los 4 puntos están a 0°, 90°, 180°, 270° → coordenadas (±30, 0) y (0, ±30). Usamos <b>ciclo G81 (taladrado simple)</b> ya que el agujero es relativamente corto (38 mm) y el material no acumula viruta crítica.</p>
 <span class="res-code">% TALADROS PCD D60
 
-N340 T4.4
+N340 T4.4                          ; broca helicoidal Ø8,5 mm
 N350 M6
 N360 G43
 N370 G97 G94 G0 X0 Y0 Z100 F94 S936 M3
-N380 G81 G99 X30 Y0 Z0 I-38     ; 0° — prof. total 38 mm
-N390 X0 Y30                      ; 90°
-N400 X-30 Y0                    ; 180°
-N410 X0 Y-30                    ; 270°
-N420 G80 G44 Z100
-N430 M5
-N440 M30</span>
+;     G97 = N constante (la broca tiene D fija, no varía)
+;     S936 = N = 1000·25/(π·8,5) = 936 rpm
+;     F94 = avance axial = 0,1 mm/rev × 936 rpm = 93,6 ≈ 94 mm/min
+N380 G81 G99 X30 Y0 Z0 I-38
+;     G81 = ciclo de TALADRADO SIMPLE
+;     G99 = retorno al plano R intermedio entre agujeros (más rápido que G98)
+;     X30 Y0 = primer punto del PCD (0°)
+;     Z0 = plano Z de referencia (cara superior)
+;     I-38 = profundidad final (38 mm desde Z0, hacia -Z)
+N390 X0 Y30                        ; siguiente taladro: el control reaplica G81 con X0 Y30
+;     (G81 sigue activo: cada X/Y nuevo = un agujero)
+N400 X-30 Y0                       ; tercer taladro 180°
+N410 X0 Y-30                       ; cuarto taladro 270°
+N420 G80 G44 Z100                  ; cancela ciclo y compensación, sube
+N430 M5                             ; para cabezal
+N440 M30                            ; FIN programa</span>
+<p class="res-note"><b>🔑 Coordenadas PCD:</b> para taladros equiespaciados en un círculo de radio R, las coordenadas son (R·cos(θ), R·sin(θ)) con θ=k·360°/n. Aquí n=4, R=30, θ ∈ {0°, 90°, 180°, 270°}. Equivalentemente, podría usarse <b>G77</b> (Fagor: ciclo de patrón circular) para evitar repetir las coordenadas.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros de corte calculados</div>
-<div class="formula-box">T1.1 + T2.2 (fresa D20): N = 150.000/(π·20) = 2.387 rpm; vf = 2387·6·0,2 = 2.864 mm/min
-T3.3 (fresa D8 cajera): N = 200.000/(π·8)  = 7.958 rpm; vf = 7958·3·0,1 = 2.387 mm/min
-T4.4 (broca D8,5):      N = 25.000/(π·8,5) = 936 rpm;   vf = 936·0,1 = 93,6 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 + T2.2 (fresa D20, vc=150 m/min, Z=6, fz=0,2 mm/Z/rev):
+  N  = 1000·150/(π·20) = 2.387 rpm
+  vf = N·Z·fz = 2.387·6·0,2 = <b>2.864 mm/min</b>
+
+T3.3 (fresa D8 cajera, vc=200 m/min, Z=3, fz=0,1 mm/Z/rev):
+  N  = 1000·200/(π·8) = 7.958 rpm
+  vf = 7.958·3·0,1 = <b>2.387 mm/min</b>
+
+T4.4 (broca D8,5, vc=25 m/min, f=0,1 mm/rev):
+  N  = 1000·25/(π·8,5) = 936 rpm
+  vf = N·f = 936·0,1 = <b>93,6 mm/min</b></div>
+<p class="res-note"><b>🔑 Diferencia avance fresado/taladrado:</b> en fresado vf = N·Z·fz (cada diente contribuye), en taladrado vf = N·f (avance por revolución, no por diente). Aunque la broca tiene 2 filos, f es del proceso global.</p>
 </div>
 
 </div>
@@ -518,78 +670,106 @@ T4.4 (broca D8,5):      N = 25.000/(π·8,5) = 936 rpm;   vf = 936·0,1 = 93,6 m
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D30)</div>
+<p><b>📋 Planteamiento:</b> el bruto es D100×25 (disco). Planeamos 5 mm con fresa D30 más grande que en P3 (más productividad en piezas redondas grandes). Las pasadas en Y deben cubrir el círculo de D100 → Y va de −50 a +50. Como la fresa es D30, espaciamos 25 mm entre pasadas (solape de 5 mm = 17%).</p>
 <span class="res-code">%BRIDA CIRCULAR D100
 
-N010 T1.1
+N010 T1.1                          ; fresa D30 planeado (placas, Z=6)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-60 Y-50 Z100 F1911 S150 M3
-N050 G0 Z-5
-N060 G1 X60                      ; pasadas paralelas cubren D100
-N070 G0 Y-25
-N080 G1 X-60
-N090 G0 Y0
+;     X-60 Y-50 = aproximación fuera del disco (radio 50 mm + margen 10)
+;     F1911 = N·Z·fz = 1592·6·0,2 = 1.910 ≈ 1.911 mm/min
+N050 G0 Z-5                         ; baja a -5 mm (profundidad planeado)
+N060 G1 X60                         ; PASADA 1 (Y=-50, fuera del disco la mayor parte)
+;     ATENCIÓN: las pasadas extremas (Y=-50, Y=50) cortan poco material (el círculo
+;     no llega hasta esas Y). Es seguro porque la fresa entra "en vacío" hasta X≈0.
+N070 G0 Y-25                        ; siguiente pasada (espaciado 25 mm)
+N080 G1 X-60                        ; zigzag (sentido contrario)
+N090 G0 Y0                          ; pasada por el centro
 N100 G1 X60
 N110 G0 Y25
 N120 G1 X-60
-N130 G0 Y50
+N130 G0 Y50                         ; última pasada (extremo opuesto)
 N140 G1 X60
-N150 G0 Z100
-N160 G40 G44</span>
+N150 G0 Z100                        ; sube a Z seguro
+N160 G40 G44                        ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Planeado de pieza circular:</b> al usar pasadas paralelas en un disco, las pasadas más alejadas del centro cortan tramos cortos. El control no "sabe" dónde hay material — sigue el patrón programado. Alternativa más eficiente: usar planeado espiral (G77 helicoidal), pero requiere postprocessor avanzado.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Cajera circular central Ø80/R30 (T2.2 · fresa D30)</div>
+<p><b>📋 Planteamiento:</b> en el centro hay una cajera circular Ø80 con profundidad 20 mm. Usamos <b>ciclo G89 (cajera circular)</b> propietario de Fagor que hace todas las pasadas en espiral automáticamente. La fresa D30 es lo bastante pequeña para entrar en la cajera Ø80 (radio fresa 15 &lt; radio cajera 40).</p>
 <span class="res-code">% CAJERA CENTRAL D80 R30
 
-N170 T2.2
+N170 T2.2                          ; misma fresa D30 (otro corrector si afilado)
 N180 M6
 N190 G43
 N200 G96 G94 G0 X0 Y0 Z100 F1911 S150 M3
+;     X0 Y0 = centro de la cajera (= centro de la pieza)
 N210 G89 G99 X0 Y0 Z0 I-20 R40 B3 C5 D2 H50 L0.3
-;     G89 Fagor = ciclo cajera circular: I=prof, R=radio cajera, B/C/D/H/L como en G88
-N220 G80 G44 Z100</span>
+;     G89 = ciclo CAJERA CIRCULAR Fagor
+;     G99 = retorno al plano R intermedio
+;     X0 Y0 Z0 = centro de la cajera, Z0 = cara superior
+;     I-20 = profundidad TOTAL (20 mm hacia -Z)
+;     R40  = RADIO de la cajera (no diámetro: Ø80 → R40)
+;     B3   = incremento Z por pasada (3 mm/pasada × 7 ≈ 20 mm)
+;     C5   = paso lateral (cuánto avanza radialmente entre pasadas espirales)
+;     D2   = distancia de seguridad sobre Z0
+;     H50  = avance lento entrada en Z (rampeo seguro al material)
+;     L0.3 = sobremedida radial para acabado posterior
+N220 G80 G44 Z100                   ; cancela ciclo + longitud, sube a Z100</span>
+<p class="res-note"><b>🔑 G89 vs G88:</b> G89 = cajera CIRCULAR (parámetro R = radio), G88 = cajera RECTANGULAR (parámetros J/K = anchos). Ambos hacen el desbaste interno completo. El parámetro <b>L0.3</b> deja una pasada de acabado: tras G89, hacer un contorneado final con la fresa para llegar a la geometría final con superficie limpia.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — 6 ranuras radiales tipo T con subrutina + G73 (T3.3 · fresa D8)</div>
-<p>Cada ranura se mecaniza en un ángulo. Con G73 A60 se rota el sistema, y la subrutina se llama 6 veces.</p>
+<div class="paso"><div class="paso-titulo">Sección 3 — 6 ranuras radiales con subrutina + G73 (T3.3 · fresa D8)</div>
+<p><b>📋 Planteamiento:</b> las 6 ranuras radiales están distribuidas a 60° entre sí. La forma más eficiente es definir UNA ranura como SUBRUTINA (con G20/G24) y llamarla 6 veces, rotando el sistema de coordenadas con <b>G73 Aθ</b> cada vez. Esto reduce el programa de ~6×6=36 líneas a ~6+6=12 líneas.</p>
 <span class="res-code">% RANURAS RADIALES
 
-N230 T3.3
+N230 T3.3                          ; fresa D8 enteriza para ranuras
 N240 M6
 N250 G43
 N260 G96 G94 G0 X40 Y0 Z100 F2387 S200 M3
+;     X40 Y0 = inicio de la primera ranura (exterior del disco, R=40+margen)
 
-; Ranura 1 (α=0°)
-N270 G22 N2
-N280 G0 X40 Y0
-N290 G0 Z2
-N300 G1 Z-5 F500
-N310 G1 X25 F2387               ; ranura radial (exterior → interior)
-N320 G0 Z5
-N330 G24
-N340 G20 N2.1
+; --- DEFINICIÓN de la SUBRUTINA "Ranura tipo" ---
+N270 G22 N2                        ; LLAMA a subrutina N2 (sin ejecutar todavía)
+N280 G0 X40 Y0                     ; (Inicio del cuerpo de la subrutina N2)
+;     Es el patrón de UNA ranura: aproximar, bajar, cortar, subir
+N290 G0 Z2                         ; baja rápido a 2 mm sobre la pieza
+N300 G1 Z-5 F500                   ; baja con avance lento al fondo de ranura (-5 mm)
+N310 G1 X25 F2387                  ; recorrido RADIAL de exterior (X40) a interior (X25)
+;     X25 = inicio del PCD interior de la ranura
+N320 G0 Z5                         ; sube fuera de la pieza
+N330 G24                           ; RETORNO de subrutina (return)
+N340 G20 N2.1                      ; ETIQUETA: define el inicio de la subrutina N2
 
-; Rotar 60° y repetir 5 veces más
-N350 G73 A60
-N360 G22 N2
-N370 G73 A120
-N380 G22 N2
-N390 G73 A180
+; --- LLAMADAS rotadas ---
+N350 G73 A60                       ; rota el sistema 60° respecto al origen
+N360 G22 N2                        ; ejecuta la subrutina → ranura a 60°
+N370 G73 A120                      ; rota 120°
+N380 G22 N2                        ; ejecuta → ranura a 120°
+N390 G73 A180                      ; ranura a 180°
 N400 G22 N2
-N410 G73 A240
+N410 G73 A240                      ; ranura a 240°
 N420 G22 N2
-N430 G73 A300
+N430 G73 A300                      ; ranura a 300°
 N440 G22 N2
-N450 G73 A0                      ; restaurar
-N460 G0 Z100
-N470 G40 G44
-N480 M5
-N490 M30</span>
+N450 G73 A0                        ; RESTAURA el sistema original (importante!)
+N460 G0 Z100                       ; retira a Z seguro
+N470 G40 G44                       ; cancela compensaciones
+N480 M5                             ; para cabezal
+N490 M30                            ; FIN programa</span>
+<p class="res-note"><b>🔑 Subrutinas + G73:</b> patrón estándar de Fagor para piezas con simetría rotacional. <b>Importante:</b> el ángulo A es ABSOLUTO (respecto al origen del CN), no relativo, por eso programamos 60°, 120°, 180°... y no 60° seis veces. Al final <b>G73 A0</b> restaura el sistema.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros de corte calculados</div>
-<div class="formula-box">T1.1 + T2.2 (fresa D30): N = 150.000/(π·30) = 1.592 rpm; vf = 1592·6·0,2 = 1.911 mm/min
-T3.3 (fresa D8 ranuras):  N = 200.000/(π·8)  = 7.958 rpm; vf = 7958·3·0,1 = 2.387 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 + T2.2 (fresa D30, vc=150 m/min, Z=6, fz=0,2 mm/Z/rev):
+  N  = 1000·150/(π·30) = 1.592 rpm
+  vf = 1.592·6·0,2 = <b>1.911 mm/min</b>
+
+T3.3 (fresa D8 ranuras, vc=200 m/min, Z=3, fz=0,1 mm/Z/rev):
+  N  = 1000·200/(π·8) = 7.958 rpm
+  vf = 7.958·3·0,1 = <b>2.387 mm/min</b></div>
+<p class="res-note"><b>🔑 Por qué la fresa de cajera es la misma que la de planeado:</b> con D30, ambos procesos son productivos y la rigidez es buena. Para acabado del contorno de la cajera convendría una fresa más pequeña (D8) para alcanzar las esquinas R5 si las hubiera.</p>
 </div>
 
 </div>
@@ -614,22 +794,26 @@ T3.3 (fresa D8 ranuras):  N = 200.000/(π·8)  = 7.958 rpm; vf = 7958·3·0,1 = 
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D20)</div>
+<p><b>📋 Planteamiento:</b> placa grande 160×160. Con fresa D20, el ancho efectivo de corte ≈ 14 mm (solapamiento 30%) → necesitamos ~12 pasadas para cubrir 160 mm. Aquí se usan 9 pasadas con espaciado 20 mm (sin solape) por sencillez. El bruto debe estar exactamente nivelado; cualquier alabeo se trasladará a la superficie planeada.</p>
 <span class="res-code">%PLACA 160x160x55
 
-N010 T1.1
+N010 T1.1                          ; fresa D20 planeado (Z=6 placas)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-90 Y-80 Z100 F955 S100 M3
-N050 G0 Z-5
-; 9 pasadas paralelas (ancho 160 mm, fresa D20, solapamiento 70%)
-N060 G1 X90
-N070 G0 Y-60
-N080 G1 X-90
+;     X-90 Y-80 = aproximación 10 mm fuera del borde (la pieza ocupa ±80 en Y, ±80 en X)
+;     F955 = N·Z·fz = 1592·6·0,1 = 955 mm/min
+;     S100 vc=100 m/min (vc baja para fresa grande de planeado, evita vibraciones)
+N050 G0 Z-5                         ; baja a profundidad 5 mm
+; 9 pasadas paralelas (ancho 160 mm, fresa D20, espaciado 20 mm en Y)
+N060 G1 X90                         ; PASADA 1 (Y=-80, extremo)
+N070 G0 Y-60                        ; PASADA 2 setup
+N080 G1 X-90                        ; zigzag
 N090 G0 Y-40
 N100 G1 X90
 N110 G0 Y-20
 N120 G1 X-90
-N130 G0 Y0
+N130 G0 Y0                          ; PASADA central
 N140 G1 X90
 N150 G0 Y20
 N160 G1 X-90
@@ -637,62 +821,84 @@ N170 G0 Y40
 N180 G1 X90
 N190 G0 Y60
 N200 G1 X-90
-N210 G0 Y80
+N210 G0 Y80                         ; PASADA 9 (extremo opuesto)
 N220 G1 X90
-N230 G0 Z100
-N240 G40 G44</span>
+N230 G0 Z100                        ; retira a Z seguro
+N240 G40 G44                        ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Cálculo de número de pasadas:</b> N_pasadas = (ancho pieza − D)/(D·solape) + 1. Aquí con solape=1 (sin overlap): N = (160-20)/20 + 1 = 8 pasadas + 1 = 9 ✓. Con solape=0,7 (solape 30%) serían 12.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 2 — Cajeras y fresado interior (T2.2 · fresa D14)</div>
+<div class="paso"><div class="paso-titulo">Sección 2 — Cajera circular central (T2.2 · fresa D14)</div>
+<p><b>📋 Planteamiento:</b> cajera circular en el centro. Usamos fresa D14 (más pequeña que D20 para llegar al diámetro pequeño) y ciclo G89. Profundidad 15 mm.</p>
 <span class="res-code">% CAJERAS
 
-N250 T2.2
+N250 T2.2                          ; fresa D14 enteriza
 N260 M6
 N270 G43
 N280 G96 G94 G0 X0 Y0 Z100 F819 S180 M3
-N290 G89 G99 X0 Y0 Z0 I-15 R30 B3 C5 D2 H50 L0.3    ; cajera circular central Ø60
-N300 G80 G44 Z100</span>
+;     F819 = N·Z·fz = 4093·4·0,05 = 819 mm/min
+;     S180 vc=180 m/min (vc alta para D pequeña → N alta)
+N290 G89 G99 X0 Y0 Z0 I-15 R30 B3 C5 D2 H50 L0.3
+;     G89 = ciclo CAJERA CIRCULAR Fagor
+;     X0 Y0 Z0 = centro cajera (centro pieza)
+;     I-15 = profundidad 15 mm
+;     R30 = RADIO cajera (Ø60)
+;     B3 C5 D2 H50 L0.3 = (incremento Z · paso lateral · seguridad · F entrada · sobremedida)
+N300 G80 G44 Z100                   ; cancela ciclo, sube</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Patrón taladros PCD Ø100 (T3.3 · broca D8)</div>
+<div class="paso"><div class="paso-titulo">Sección 3 — Patrón de 6 taladros PCD Ø100 (T3.3 · broca D8)</div>
+<p><b>📋 Planteamiento:</b> 6 taladros equiespaciados en un círculo de Ø100 (R=50). Ángulos: 0°, 60°, 120°, 180°, 240°, 300°. Coordenadas: (R·cos θ, R·sin θ). Aquí <b>cos 60° = 0,5</b> y <b>sin 60° = 0,866</b>, de donde X=±25, Y=±43,3.</p>
 <span class="res-code">% TALADROS PCD D100 (R=50)
 
-N310 T3.3
+N310 T3.3                          ; broca D8 helicoidal
 N320 M6
 N330 G43
 N340 G97 G94 G0 X50 Y0 Z100 F50 S995 M3
-N350 G81 G99 X50 Y0 Z0 I-57      ; 0°
-N360 X25 Y43.3                   ; 60°
-N370 X-25 Y43.3                  ; 120°
-N380 X-50 Y0                    ; 180°
-N390 X-25 Y-43.3                 ; 240°
-N400 X25 Y-43.3                  ; 300°
-N410 G80 G44 Z100</span>
+;     S995 = N = 1000·25/(π·8) = 995 rpm
+;     F50 = N·f = 995·0,05 = 49,75 ≈ 50 mm/min
+N350 G81 G99 X50 Y0 Z0 I-57
+;     G81 = taladrado simple (avance + retorno rápido)
+;     X50 Y0 = posición a 0° (R=50)
+;     Z0 = plano superior (cara de la placa)
+;     I-57 = profundidad 57 mm (pasa el espesor de la placa 55 + margen 2)
+N360 X25 Y43.3                     ; ángulo 60°: X=50·cos(60°)=25, Y=50·sin(60°)=43,3
+N370 X-25 Y43.3                    ; ángulo 120°
+N380 X-50 Y0                       ; ángulo 180°
+N390 X-25 Y-43.3                   ; ángulo 240°
+N400 X25 Y-43.3                    ; ángulo 300°
+N410 G80 G44 Z100                   ; cancela ciclo, sube</span>
+<p class="res-note"><b>🔑 Coordenadas PCD:</b> para n agujeros equiespaciados en círculo R, las coordenadas del k-ésimo son (R·cos(k·360°/n), R·sin(k·360°/n)). Aquí n=6, R=50, θ ∈ {0, 60, 120, 180, 240, 300}°.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — PCD Ø60 con broca D12 (T4.4)</div>
+<div class="paso"><div class="paso-titulo">Sección 4 — Patrón de 6 taladros PCD Ø60 (T4.4 · broca D12)</div>
+<p><b>📋 Planteamiento:</b> segundo PCD concéntrico con el anterior pero más interior (Ø60 = R30) y con broca mayor (D12). Mismo patrón angular (6 agujeros a 60°) pero con R reducido. <b>15 = 30·cos 60°, 25,98 = 30·sin 60°</b>.</p>
 <span class="res-code">% TALADROS PCD D60 (R=30)
 
-N420 T4.4
+N420 T4.4                          ; broca D12 helicoidal (mayor que D8)
 N430 M6
 N440 G43
 N450 G97 G94 G0 X30 Y0 Z100 F29 S584 M3
-N460 G81 G99 X30 Y0 Z0 I-57
-N470 X15 Y25.98                  ; 60°  (30·sin60 = 25,98)
-N480 X-15 Y25.98
-N490 X-30 Y0
-N500 X-15 Y-25.98
-N510 X15 Y-25.98
-N520 G80 G44 Z100
-N530 M5
-N540 M30</span>
+;     S584 = N = 1000·22/(π·12) = 584 rpm (vc baja para broca grande)
+;     F29 = N·f = 584·0,05 = 29,2 ≈ 29 mm/min (avance lento)
+N460 G81 G99 X30 Y0 Z0 I-57         ; primer taladro (0°)
+N470 X15 Y25.98                    ; 60°: 30·cos(60°)=15, 30·sin(60°)=25,98
+N480 X-15 Y25.98                   ; 120°
+N490 X-30 Y0                       ; 180°
+N500 X-15 Y-25.98                  ; 240°
+N510 X15 Y-25.98                   ; 300°
+N520 G80 G44 Z100                   ; cancela ciclo, sube
+N530 M5                             ; para cabezal
+N540 M30                            ; FIN programa</span>
+<p class="res-note"><b>🔑 Avance en taladrado profundo:</b> con I=-57 (57 mm = >4×D para broca D12), técnicamente podríamos preferir G83 con pecks. G81 funciona aquí porque vf=29 mm/min es muy lento y permite que la viruta salga. Para producción intensiva usar G83.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros de corte calculados</div>
-<div class="formula-box">T1.1 (D20 planeado): N = 100.000/(π·20) = 1.592 rpm; vf = 955 mm/min
-T2.2 (D14 cajeras):  N = 180.000/(π·14) = 4.093 rpm; vf = 819 mm/min
-T3.3 (broca D8):     N = 25.000/(π·8)   = 995 rpm;  vf = 50 mm/min
-T4.4 (broca D12):    N = 22.000/(π·12)  = 584 rpm;  vf = 29 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 (fresa D20 planeado): N=1.592 rpm, vf=955 mm/min
+T2.2 (fresa D14 cajera):   N=4.093 rpm, vf=819 mm/min  (vc=180, fz=0,05, Z=4)
+T3.3 (broca D8):           N=995 rpm,   vf=50 mm/min   (vc=25, f=0,05)
+T4.4 (broca D12):          N=584 rpm,   vf=29 mm/min   (vc=22, f=0,05)</div>
+<p class="res-note"><b>🔑 Por qué vc baja en brocas:</b> las brocas helicoidales convencionales (HSS o metal duro de baja calidad) trabajan a vc=20-40 m/min, mucho menos que las fresas (100-300 m/min). Esto es porque en el filo de la broca la vc varía linealmente con el radio, llegando a 0 en el centro → mecanismo de extrusión más que corte.</p>
 </div>
 
 </div>
@@ -722,90 +928,127 @@ T4.4 (broca D12):    N = 22.000/(π·12)  = 584 rpm;  vf = 29 mm/min</div>
 <button class="sec-btn" onclick="toggleSec(this)">⚙️ Programa CNC oficial (Fagor 8025M) <span class="sarr">▼</span></button>
 <div class="sec-body">
 
-<div class="paso"><div class="paso-titulo">Sección 1 — Planeado y perfil exterior (T1.1)</div>
-<p>Planeado en 3 pasadas paralelas en X, después contorneado circular exterior Ø100 con <b>entrada tangencial G37 R20</b> y <b>salida tangencial G38 R20</b>.</p>
+<div class="paso"><div class="paso-titulo">Sección 1 — Planeado y perfil exterior circular Ø100 (T1.1)</div>
+<p><b>📋 Planteamiento:</b> bruto 65×65×25 con perfil exterior CIRCULAR Ø100. Primero hacemos planeado de 5 mm en 3 pasadas paralelas (la pieza solo tiene 65 mm de ancho, fresa cubre fácil con 3 pasadas a Y=-22, 0, +22). Después contorneamos el perfil circular Ø100 que es MAYOR que el bruto cuadrado — esto significa que la fresa solo retira material en las esquinas del cuadrado para perfilar el círculo (los esquineros).</p>
 <span class="res-code">%PLANEADO Y PERFIL EXTERIOR
 
-N010 T1.1
+N010 T1.1                          ; fresa de planeado (probablemente D20 placas)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X50 Y-22 Z100 F600 S200 M3
-N050 G0 Z-5
-N060 G1 X-50                    ; pasada 1 (Y=-22)
-N070 G0 Y0
-N080 G1 X50                      ; pasada 2 (Y=0)
-N090 G0 Y22
-N100 G1 X-50                    ; pasada 3 (Y=22)
-N110 G0 Z10
-N120 G1 X70 Y0
-N130 G1 Z-10
-N140 G1 G42 G37 R20 X10 Y0      ; ENTRADA TANGENCIAL (arco R20)
-N150 G3 G38 R20 I-10 J0          ; círculo exterior + SALIDA TANGENCIAL
-N160 G1 X70
-N170 G0 Z100
-N180 G40 G44</span>
-<p class="res-note"><b>G37 R20</b>: entrada tangencial al contorno con arco de radio 20. <b>G38 R20</b>: salida tangencial. Ambos garantizan transición C1 (sin marca en la pieza).</p>
+;     X50 Y-22 = aproximación: X=50 (a la derecha del bruto 65×65 centrado en 0),
+;                Y=-22 (primera de las 3 líneas espaciadas 22 mm)
+N050 G0 Z-5                         ; baja a profundidad de planeado (5 mm)
+N060 G1 X-50                        ; PASADA 1 (Y=-22)
+N070 G0 Y0                          ; reposicionamiento Y al centro
+N080 G1 X50                         ; PASADA 2 (Y=0) - zigzag
+N090 G0 Y22                         ; PASADA 3 setup
+N100 G1 X-50                        ; PASADA 3 (Y=+22)
+N110 G0 Z10                         ; sube a Z=10 (sobre la pieza)
+N120 G1 X70 Y0                      ; reposiciona FUERA del círculo exterior (X=70 > R=50)
+N130 G1 Z-10                        ; baja a Z=-10 (profundidad del perfil)
+N140 G1 G42 G37 R20 X10 Y0
+;     G42 = compensación radio a la DERECHA del avance (perfilando exterior)
+;     G37 R20 = entrada tangencial con arco de radio 20
+;     X10 Y0 = punto al que llega antes del arco (el arco lo añade el control)
+N150 G3 G38 R20 I-10 J0
+;     G3 = arco antihorario (CCW) — completa el círculo exterior
+;     G38 R20 = salida tangencial con arco de radio 20
+;     I-10 J0 = CENTRO del círculo offset (-10, 0) desde el punto actual = (0,0)
+;     Sin X/Y final → círculo completo (vuelve al inicio)
+N160 G1 X70                         ; tras salida tangencial, vuelve a X=70 (fuera)
+N170 G0 Z100                        ; retira a Z seguro
+N180 G40 G44                        ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 G37/G38 tangenciales:</b> garantizan TRANSICIÓN C1 (sin discontinuidad de curvatura) al entrar/salir del contorno circular. Imprescindible para acabados de calidad: una entrada NO tangencial deja una marca visible donde la herramienta empezó el corte.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 2 — Perfil interior de lóbulos con subrutina (T3.3)</div>
-<p>Mecaniza un lóbulo en cruz (mitad del perfil con 4 lóbulos) como <b>subrutina N1 ... N1.1</b>, y la llama 2 veces: una directa y otra rotada 180° con <b>G73 A180</b>. Dentro del perfil: rectas G1, arcos cóncavos G3 R8, arcos convexos G3 R15, y enlaces G2/G3 con I/J.</p>
+<div class="paso"><div class="paso-titulo">Sección 2 — Perfil interior de lóbulos con subrutina + G73 A180 (T3.3)</div>
+<p><b>📋 Planteamiento:</b> el interior tiene 4 lóbulos en forma de cruz con arcos R15 (convexos) y R8 (cóncavos). La forma TIENE SIMETRÍA 180° respecto al origen → programamos UNA mitad (lóbulos 1 y 2) como subrutina N1 y la llamamos 2 veces, rotando 180° entre ambas con G73 A180. Esto reduce el código a la mitad y elimina riesgo de error de coordenadas.</p>
 <span class="res-code">% PERFIL INTERIOR (ACABADO)
 
-N190 T3.3
+N190 T3.3                          ; fresa más pequeña para perfilado interior detallado
 N200 M6
 N210 G43
 N220 G96 G94 G0 X70 Y0 Z100 F100 S200 M3
-N230 G0 Z-15
-N240 G1 G42 X50 Y0               ; activa compensación, punto inicio
-N250 G22 N1                      ; LLAMADA subrutina N1 (lóbulo 1-2)
-N260 G1 X30.5 Y0
+;     F100 = avance lento (acabado, mucho detalle de arcos)
+;     S200 con G96 → vc=200 m/min
+N230 G0 Z-15                        ; baja al fondo del perfil interior (15 mm)
+N240 G1 G42 X50 Y0                  ; activa compensación radio + va a punto inicio del perfil
+N250 G22 N1                         ; LLAMADA SUBRUTINA N1 (define la mitad del perfil)
+
+; --- Cuerpo de la subrutina N1 (mitad del perfil interior) ---
+N260 G1 X30.5 Y0                    ; tramo radial: desde R=50 a R=30,5 (inicio del lóbulo)
 N270 G3 X22.5 Y8 I-8 J0
-N280 G1 Y3
-N290 G1 X14.7
-N300 G3 X3 Y14.7 R15             ; arco R15 convexo
-N310 G1 Y22.5
-N320 G1 X8
-N330 G3 X-8 R8                   ; arco cóncavo R8 (punta del lóbulo)
-N340 G1 X-3
+;     arco CCW: del punto X30.5 Y0 al X22.5 Y8, centro relativo (I-8 J0) = absoluto (22.5, 0)
+;     este arco redondea el inicio del lóbulo (transición exterior)
+N280 G1 Y3                          ; baja en Y a Y=3 (preparando para R15)
+N290 G1 X14.7                       ; desplazamiento en X (hacia el lóbulo)
+N300 G3 X3 Y14.7 R15
+;     arco CCW de radio 15 (convexo desde el punto de vista de la fresa)
+;     R15 sin I,J = el control elige el arco menor
+N310 G1 Y22.5                       ; sube hasta la punta del lóbulo
+N320 G1 X8                          ; cruza la punta
+N330 G3 X-8 R8
+;     arco CCW de radio 8 (CÓNCAVO en la PUNTA del lóbulo)
+;     simétrico, solo necesita X final (la Y se mantiene)
+N340 G1 X-3                         ; continúa el otro lado del lóbulo
 N350 G1 Y14.7
-N360 G3 X-14.7 Y3 R15            ; arco R15 (otro lado)
+N360 G3 X-14.7 Y3 R15               ; arco R15 simétrico al N300 (otro lado)
 N370 G1 X-22.5
 N380 G1 Y8
-N390 G3 X-30.5 Y0 R8
-N400 G2 X-50 Y0 I-9.75 J0        ; arco de enlace al radio exterior
-N410 G24                         ; fin de datos-llamada
-N420 G73 A180                    ; GIRO de coordenadas 180°
-N430 G20 N1.1                    ; definición subrutina N1 (mitad ejecutada)
-N440 G17
-N450 G0 G40 G44 Z100</span>
-<p class="res-note">Técnica clave: aprovechar la <b>simetría 180°</b> de la cruz → se programa solo la mitad y se aplica <b>G73 A180</b> antes de volver a llamar la subrutina para hacer la otra mitad automáticamente. Ahorra la mitad del código y evita errores de simetría.</p>
+N390 G3 X-30.5 Y0 R8                ; arco R8 cóncavo simétrico al N270
+N400 G2 X-50 Y0 I-9.75 J0
+;     arco CW (G2!) — enlace al diámetro exterior (otra mitad de la pieza)
+;     centro en (X-30.5-9.75, Y0) = aproximadamente X-40, Y0
+;     este arco "cierra" la primera mitad del perfil
+N410 G24                            ; FIN de subrutina (return)
+
+; --- Llamadas a la subrutina (mitad 1 + mitad 2 rotada) ---
+N420 G73 A180                       ; GIRO de 180° respecto al origen
+N430 G20 N1.1                       ; ETIQUETA: define el inicio de N1 (formal)
+N440 G17                            ; restablece plano XY (a veces se altera con G73)
+N450 G0 G40 G44 Z100                ; cancela compensaciones, sube</span>
+<p class="res-note"><b>🔑 G2 vs G3 en perfiles complejos:</b> alternamos entre CW y CCW según la curvatura del perfil. Los arcos CÓNCAVOS (vistos desde el lado del corte) van en un sentido, los CONVEXOS en el otro. Si la fresa va por el lado interior (G42 → derecha del avance), un arco "saliente" del perfil interior se programa con G3.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Taladrado central y cajeras en cruz (T5.5 + T3.3)</div>
-<p><b>Agujero central</b> con ciclo de taladrado <b>G81</b>. <b>4 cajeras rectangulares</b> con ciclo <b>G88</b> (I = profundidad, J = dim lateral, B/C/D = parámetros de pasada, H = velocidad rápida, L = acabado).</p>
+<div class="paso"><div class="paso-titulo">Sección 3 — Taladrado central + cajeras (T5.5 + T3.3)</div>
+<p><b>📋 Planteamiento:</b> en el centro hay un agujero pasante Ø12 y 4 cajeras rectangulares simétricas. Primero <b>taladramos</b> el agujero central con G81, después <b>fresamos las 4 cajeras</b> con ciclo G88. Las 4 cajeras pueden tratarse como 4 instancias del mismo ciclo con G73 rotando 90°.</p>
 <span class="res-code">% TALADRADO Y CAJERAS
 
-N460 T5.5
+N460 T5.5                          ; broca para Ø12
 N470 M6
 N480 G43
 N490 G96 G94 G0 X0 Y0 Z100 F100 S100 M3
-N500 G81 G99 X0 Y0 Z0 I-12      ; ciclo taladrado central, prof. 12
-N510 G80 G44 Z100
-N520 T3.3                        ; cambia a fresa para cajeras
+;     X0 Y0 = centro de la pieza
+;     S100 con G96 → vc=100 m/min (broca → vc baja típica)
+N500 G81 G99 X0 Y0 Z0 I-12          ; taladra agujero pasante Ø12, profundidad 12 mm
+N510 G80 G44 Z100                   ; cancela G81 y G43, sube
+
+N520 T3.3                          ; cambia de nuevo a la fresa de cajeras
 N530 M6
 N540 G43
 N550 G96 G94 G0 X0 Y0 Z100
-N560 G88 G99 X0 Y0 Z0 I-13 J6 B4 C2 D5 H50 L0.3  ; CICLO CAJERA
-N570 G80 G44 Z100
-N580 M5
-N590 M30</span>
-<p class="res-note"><b>Ciclo G88 (Fagor)</b>: I=profundidad total (mm, negativa hacia abajo), J=ancho del cajero, B=incremento de penetración en Z, C=incremento en X/Y por pasada, D=distancia de seguridad, H=avance de entrada, L=sobremedida de acabado. Para 4 cajeras simétricas, el mismo ciclo puede repetirse con G73 + traslación/rotación (o listar las 4 posiciones).</p>
+N560 G88 G99 X0 Y0 Z0 I-13 J6 B4 C2 D5 H50 L0.3
+;     G88 = CICLO CAJERA RECTANGULAR
+;     X0 Y0 Z0 = centro de la cajera (aquí mismo centro pieza para primera cajera)
+;     I-13 = profundidad 13 mm
+;     J6 = ancho lateral 6 mm
+;     B4 = incremento Z por pasada
+;     C2 = paso lateral
+;     D5 = distancia seguridad
+;     H50 = avance entrada
+;     L0.3 = sobremedida acabado
+N570 G80 G44 Z100                   ; cancela ciclo, sube
+N580 M5                             ; para cabezal
+N590 M30                            ; FIN programa</span>
+<p class="res-note"><b>🔑 4 cajeras simétricas:</b> el código mostrado hace SOLO UNA cajera. Para las 4: encerrar G88 en una subrutina y llamarla 4 veces con G73 A0/A90/A180/A270, o programar las 4 cajeras con coordenadas explícitas. Este programa parece quedarse en una (revisar contra el plano).</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros de corte calculados</div>
-<div class="formula-box">T1.1 (planeado/perfil ext): F=600 mm/min, S=200 rpm (con G96: vc=200 m/min)
-T3.3 (perfil int y cajeras): F=100 mm/min, S=200 rpm con G96
-T5.5 (taladrado Ø12):        F=100 mm/min, S=100 rpm con G96</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 (planeado/perfil ext): F=600 mm/min, S con G96 → vc=200 m/min
+T3.3 (perfil int + cajeras): F=100 mm/min (lento por detalle), vc=200 m/min
+T5.5 (broca Ø12): F=100 mm/min, vc=100 m/min</div>
+<p class="res-note"><b>🔑 Por qué este ejercicio es "★ Resolución oficial":</b> es el ejemplo que demuestra TODAS las técnicas avanzadas del Fagor 8025M en un solo programa: G37/G38 (tangencial), G42 (compensación), G73 (rotación), G22/G20/G24 (subrutinas), G81 (taladrado), G88 (cajera). Es la pieza "patrón" del curso UPV/EHU.</p>
 </div>
 
 </div>
@@ -836,100 +1079,129 @@ T5.5 (taladrado Ø12):        F=100 mm/min, S=100 rpm con G96</div>
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D25)</div>
+<p><b>📋 Planteamiento:</b> bruto 100×100×30, planeado de 5 mm con fresa D25 grande. 5 pasadas paralelas espaciadas 20 mm (solapamiento 5 mm = 20%). La velocidad de avance es alta (3.056 mm/min) gracias a las 6 placas y vc=200 m/min.</p>
 <span class="res-code">%CAJERAS+SLOT 100x100x30
 
-N010 T1.1
+N010 T1.1                          ; fresa D25 placas (Z=6)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-60 Y-40 Z100 F3056 S200 M3
-N050 G0 Z-5
-N060 G1 X60                      ; pasada 1
-N070 G0 Y-20
-N080 G1 X-60
+;     F3056 = N·Z·fz = 2546·6·0,2 = 3.056 mm/min (muy alto, productivo)
+N050 G0 Z-5                         ; profundidad planeado
+N060 G1 X60                         ; PASADA 1 (Y=-40)
+N070 G0 Y-20                        ; siguiente Y (paso 20 mm)
+N080 G1 X-60                        ; zigzag
 N090 G0 Y0
 N100 G1 X60
 N110 G0 Y20
 N120 G1 X-60
 N130 G0 Y40
-N140 G1 X60
-N150 G0 Z100
-N160 G40 G44</span>
+N140 G1 X60                         ; PASADA 5
+N150 G0 Z100                        ; sube Z
+N160 G40 G44                        ; cancela</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — 4 cajeras circulares Ø25 en esquinas (T2.2 · fresa D25)</div>
-<p>Con fresa de Ø igual al cajero (D25 = Ø25) NO se necesita G41: la fresa cubre toda la cajera en una pasada descendente vertical.</p>
+<p><b>📋 Planteamiento:</b> las 4 cajeras Ø25 están en las 4 esquinas (37,5 mm desde el centro). Como la fresa es D25 = diámetro de cajera, NO hace falta movimiento radial: una <b>penetración axial</b> en el centro de cada cajera completa el agujero. Es la técnica de "plunge milling" (fresado en plongée).</p>
 <span class="res-code">% CAJERAS ESQUINAS D25
 
-N170 T2.2
+N170 T2.2                          ; misma fresa D25 (otro corrector)
 N180 M6
 N190 G43
 N200 G96 G94 G0 X37.5 Y37.5 Z100 F3056 S200 M3
-N210 G0 Z2
-N220 G1 Z-15 F300                ; bajada en Z (penetración)
-N230 G0 Z100
-N240 G0 X-37.5 Y37.5             ; esquina sup-izq
+;     X37.5 Y37.5 = centro de la PRIMERA cajera (esquina sup-derecha)
+N210 G0 Z2                          ; aproxima Z al material
+N220 G1 Z-15 F300                   ; PENETRACIÓN axial: 15 mm de profundidad
+;     F300 = avance lento para entrada axial (la fresa frontal debe poder cortar en plongée)
+N230 G0 Z100                        ; sube fuera
+
+N240 G0 X-37.5 Y37.5                ; reposiciona a la cajera 2 (esquina sup-izq)
 N250 G0 Z2
-N260 G1 Z-15 F300
+N260 G1 Z-15 F300                   ; PENETRACIÓN cajera 2
 N270 G0 Z100
-N280 G0 X-37.5 Y-37.5
+
+N280 G0 X-37.5 Y-37.5               ; cajera 3 (esquina inf-izq)
 N290 G0 Z2
 N300 G1 Z-15 F300
 N310 G0 Z100
-N320 G0 X37.5 Y-37.5
+
+N320 G0 X37.5 Y-37.5                ; cajera 4 (esquina inf-derecha)
 N330 G0 Z2
 N340 G1 Z-15 F300
 N350 G0 Z100
 N360 G40 G44</span>
-<p class="res-note">Con fresa D25 igual al Ø de cajera, el cajero sale en UNA penetración Z. Si se quisiera acabado fino, añadir una pasada circular con G2 a velocidad más baja.</p>
+<p class="res-note"><b>🔑 Plunge milling — limitaciones:</b> esta técnica solo funciona si: (1) la fresa tiene filos FRONTALES capaces de cortar axialmente (no todas las fresas, sí las "center cutting"); (2) el diámetro de fresa coincide EXACTAMENTE con el diámetro de cajera; (3) la profundidad cabe en una pasada axial sin sobrepasar la carga axial de la fresa. Para acabado fino añadir un G2 circular tras la penetración.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Cajera rectangular central 30 (T3.3 · fresa D10)</div>
+<div class="paso"><div class="paso-titulo">Sección 3 — Cajera rectangular central 30×30 (T3.3 · fresa D10)</div>
+<p><b>📋 Planteamiento:</b> cajera RECTANGULAR central de 30×30 con profundidad 10 mm. Fresa D10 más pequeña para llegar a las esquinas (si son redondeadas R5 mín.). Ciclo G88 hace el desbaste automáticamente.</p>
 <span class="res-code">% CAJERA RECT CENTRAL
 
-N370 T3.3
+N370 T3.3                          ; fresa D10 enteriza (Z=3)
 N380 M6
 N390 G43
 N400 G96 G94 G0 X0 Y0 Z100 F955 S100 M3
+;     X0 Y0 = centro pieza = centro cajera
+;     F955 = N·Z·fz = 3183·3·0,1 = 955 mm/min
 N410 G88 G99 X0 Y0 Z0 I-10 J30 K30 B3 C5 D2 H50 L0.3
-N420 G80 G44 Z100</span>
+;     I-10 = profundidad 10 mm
+;     J30 K30 = anchos X e Y de la cajera (30×30)
+;     B3 C5 D2 H50 L0.3 = parámetros estándar del ciclo
+N420 G80 G44 Z100                   ; cancela ciclo</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — Taladro central Ø10 (T4.4 · broca D10)</div>
+<div class="paso"><div class="paso-titulo">Sección 4 — Taladro central Ø10 con ciclo G83 profundo (T4.4)</div>
+<p><b>📋 Planteamiento:</b> el agujero central Ø10 atraviesa toda la pieza (30 mm + bajo la cajera de 10 mm = 33 mm = 3,3×D). Usamos <b>G83 (peck drilling)</b> para asegurar evacuación de viruta.</p>
 <span class="res-code">% TALADRO CENTRAL
 
-N430 T4.4
+N430 T4.4                          ; broca D10
 N440 M6
 N450 G43
 N460 G97 G94 G0 X0 Y0 Z100 F96 S955 M3
-N470 G83 G99 X0 Y0 Z0 I-33 J3 K1  ; taladrado profundo con desahogo
-N480 G80 G44 Z100</span>
+;     G97 S955 = N constante 955 rpm (N = 1000·30/(π·10) = 955)
+;     F96 = N·f = 955·0,1 = 95,5 ≈ 96 mm/min
+N470 G83 G99 X0 Y0 Z0 I-33 J3 K1
+;     G83 = TALADRADO PROFUNDO con desahogo
+;     I-33 = profundidad total 33 mm
+;     J3 = incremento por peck (3 mm/peck, ratio 0,3·D)
+;     K1 = retroceso entre pecks (1 mm)
+N480 G80 G44 Z100                   ; cancela</span>
+<p class="res-note"><b>🔑 G83 parámetros Fagor:</b> I=profundidad, J=valor del peck, K=retroceso. Diferente de Fanuc que usa I=peck, Q=retroceso. Verificar el manual del control específico.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 5 — Chaflanes 4,5° (T5.5 · fresa D4)</div>
+<div class="paso"><div class="paso-titulo">Sección 5 — Chaflanes en las aristas (T5.5 · fresa D4)</div>
+<p><b>📋 Planteamiento:</b> los chaflanes 4,5° se hacen recorriendo las aristas del cuadrado exterior con una fresa cónica (o fresa cilíndrica D4 a una profundidad reducida). El chaflán es muy suave (4,5° apenas inclinado).</p>
 <span class="res-code">% CHAFLANES
 
-N490 T5.5
+N490 T5.5                          ; fresa cónica D4 (o cilíndrica a baja prof)
 N500 M6
 N510 G43
 N520 G96 G94 G0 X0 Y0 Z100 F1592 S100 M3
-; Chaflanes según la geometría del plano (recorrer aristas con interpolación)
-N530 G0 X40 Y40
-N540 G1 Z-2 F500
-N550 G1 X-40 Y40                 ; arista 1
-N560 G1 X-40 Y-40                ; arista 2
-N570 G1 X40 Y-40                 ; arista 3
-N580 G1 X40 Y40                  ; arista 4 (cerrar)
-N590 G0 Z100
+;     F1592 = N·Z·fz = 7958·2·0,1 = 1.592 mm/min
+;     S100 con G96 → vc=100 m/min
+N530 G0 X40 Y40                     ; esquina superior derecha (50-10 = 40)
+N540 G1 Z-2 F500                    ; baja a Z=-2 (profundidad del chaflán)
+N550 G1 X-40 Y40                    ; ARISTA 1 (superior)
+N560 G1 X-40 Y-40                   ; ARISTA 2 (izquierda)
+N570 G1 X40 Y-40                    ; ARISTA 3 (inferior)
+N580 G1 X40 Y40                     ; ARISTA 4 (derecha), cierra el cuadrado
+N590 G0 Z100                        ; sube
 N600 G40 G44
-N610 M5
-N620 M30</span>
+N610 M5                             ; para cabezal
+N620 M30                            ; FIN programa</span>
+<p class="res-note"><b>🔑 Cálculo del chaflán 4,5°:</b> con tan(4,5°) ≈ 0,0787 y profundidad Z=-2, el chaflán horizontal sería 2/tan(4,5°) ≈ 25 mm — bastante grande. Verificar contra el plano: el ángulo del enunciado puede referirse a otra geometría (chaflán en la cara superior con 4,5° de pendiente). Si la pieza tiene chaflán 1,5×45° estándar, usar Z=-1,5 y desplazar 1,5 hacia adentro.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros calculados</div>
-<div class="formula-box">T1.1 + T2.2 (D25): N = 200.000/(π·25) = 2.546 rpm; vf = 2546·6·0,2 = 3.056 mm/min
-T3.3 (D10 cajera):  N = 100.000/(π·10) = 3.183 rpm; vf = 3183·3·0,1 = 955 mm/min
-T4.4 (broca D10):   N = 30.000/(π·10)  = 955 rpm;  vf = 96 mm/min
-T5.5 (D4 chaflán):  N = 100.000/(π·4)  = 7.958 rpm; vf = 1.592 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 + T2.2 (fresa D25, vc=200, Z=6, fz=0,2):
+  N=2.546 rpm, vf=3.056 mm/min
+T3.3 (fresa D10 cajera, vc=100, Z=3, fz=0,1):
+  N=3.183 rpm, vf=955 mm/min
+T4.4 (broca D10, vc=30, f=0,1):
+  N=955 rpm, vf=96 mm/min
+T5.5 (fresa D4 chaflán, vc=100, Z=2, fz=0,1):
+  N=7.958 rpm, vf=1.592 mm/min</div>
+<p class="res-note"><b>🔑 Diferencias entre fresas:</b> D25 (planeado/cajeras grandes) → alta productividad. D10 (cajeras medianas) → balance. D4 (chaflanes detallados) → alta precisión y N elevadas (atención a vibraciones).</p>
 </div>
 
 </div>
@@ -954,80 +1226,103 @@ T5.5 (D4 chaflán):  N = 100.000/(π·4)  = 7.958 rpm; vf = 1.592 mm/min</div>
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D20)</div>
+<p><b>📋 Planteamiento:</b> bruto rectangular 55×45 (más pequeño que P3/P5). Planeamos 5 mm en 4 pasadas espaciadas 15 mm en Y. Fresa D20 productiva.</p>
 <span class="res-code">%HEXAGONAL 55x45x25
 
-N010 T1.1
+N010 T1.1                          ; fresa D20 placas (Z=6)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-30 Y-25 Z100 F955 S100 M3
-N050 G0 Z-5
-N060 G1 X30
-N070 G0 Y-10
-N080 G1 X-30
+;     X-30 Y-25 = punto inicial fuera de pieza (margen 5 mm en cada lado)
+N050 G0 Z-5                         ; profundidad 5 mm
+N060 G1 X30                         ; PASADA 1 (Y=-25)
+N070 G0 Y-10                        ; salta 15 mm en Y
+N080 G1 X-30                        ; PASADA 2 (zigzag)
 N090 G0 Y10
-N100 G1 X30
+N100 G1 X30                         ; PASADA 3
 N110 G0 Y25
-N120 G1 X-30
-N130 G0 Z100
-N140 G40 G44</span>
+N120 G1 X-30                        ; PASADA 4
+N130 G0 Z100                        ; sube
+N140 G40 G44                        ; cancela</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Hexágono regular interior (T2.2 · fresa D5)</div>
-<p>6 vértices en \(X = R\cos(n\cdot 60° + 30°)\), \(Y = R\sin(n\cdot 60° + 30°)\) con R = distancia al vértice.</p>
+<p><b>📋 Planteamiento:</b> hexágono regular con vértices en círculo de R=10 mm. Para un hexágono "apuntando arriba", los 6 vértices están a ángulos 30°, 90°, 150°, 210°, 270°, 330° (cada 60° empezando en 30°). Calculamos coordenadas: V_n = (10·cos(30°+n·60°), 10·sin(30°+n·60°)). Para n=0: (8,66; 5). Programamos los 6 vértices con G1 (rectas).</p>
 <span class="res-code">% HEXAGONO
 
-N150 T2.2
+N150 T2.2                          ; fresa D5 enteriza (Z=4)
 N160 M6
 N170 G43
 N180 G96 G94 G0 X0 Y0 Z100 F2292 S180 M3
-N190 G0 Z2
-N200 G41 D2 G0 X8.66 Y5         ; entrada con compensación (R=10, ang=30°: 10·cos30=8.66, 10·sin30=5)
-N210 G1 Z-10 F500
-N220 G1 X0 Y10                   ; vértice 90°
-N230 G1 X-8.66 Y5                ; vértice 150°
-N240 G1 X-8.66 Y-5               ; vértice 210°
-N250 G1 X0 Y-10                  ; vértice 270°
-N260 G1 X8.66 Y-5                ; vértice 330°
-N270 G1 X8.66 Y5                 ; cierre (30°)
-N280 G40 G0 Z100</span>
+;     F2292 = N·Z·fz = 11459·4·0,05 = 2.292 mm/min
+N190 G0 Z2                          ; aproxima 2 mm sobre la pieza
+N200 G41 D2 G0 X8.66 Y5
+;     G41 = compensación radio a la IZQUIERDA del avance (perfilamos interior)
+;     D2  = número de corrector de la herramienta (asociado al radio fresa)
+;     X8.66 Y5 = vértice 30° (10·cos30°=8,66, 10·sin30°=5)
+N210 G1 Z-10 F500                   ; baja a profundidad final del hexágono
+N220 G1 X0 Y10                      ; vértice 90° (10·cos90°=0, 10·sin90°=10)
+N230 G1 X-8.66 Y5                   ; vértice 150° (cos150°=-0,866 → -8.66)
+N240 G1 X-8.66 Y-5                  ; vértice 210°
+N250 G1 X0 Y-10                     ; vértice 270°
+N260 G1 X8.66 Y-5                   ; vértice 330°
+N270 G1 X8.66 Y5                    ; CIERRE: vuelve al vértice inicial 30°
+N280 G40 G0 Z100                    ; cancela compensación + sube</span>
+<p class="res-note"><b>🔑 G41 vs G42 en hexágono:</b> aquí usamos G41 (compensación izquierda) porque vamos recorriendo el hexágono en sentido antihorario (vértices en orden 30°, 90°, 150°…). El offset queda HACIA EL INTERIOR del hexágono = el lado izquierdo del avance.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Ranura oval central (T2.2 · fresa D5)</div>
+<div class="paso"><div class="paso-titulo">Sección 3 — Ranura oval central (T2.2 · misma fresa)</div>
+<p><b>📋 Planteamiento:</b> ranura tipo "óvalo" = rectángulo con dos extremos semicirculares (como una pista atlética). Programamos: tramo recto vertical + semicírculo superior + tramo vertical + semicírculo inferior. La fresa cambia entre G1 (rectas) y G2 (arcos CW).</p>
 <span class="res-code">% OVAL
 
-N290 G0 X0 Y-10 Z100
-N300 G0 Z2
-N310 G1 Z-10 F500
-N320 G1 Y-5                      ; recto 1 (centro oval hacia arriba)
-N330 G2 X0 Y5 I0 J5              ; semicírculo superior (R=5, centro a J+5)
-N340 G1 Y10
-N350 G2 X0 Y-10 I0 J-10          ; semicírculo inferior
-N360 G0 Z100
-N370 G44</span>
+N290 G0 X0 Y-10 Z100                ; reposiciona en el extremo inferior del oval
+N300 G0 Z2                          ; aproxima
+N310 G1 Z-10 F500                   ; profundidad
+N320 G1 Y-5                         ; recto hacia el centro (5 mm verticales)
+N330 G2 X0 Y5 I0 J5
+;     G2 = arco CW
+;     X0 Y5 = punto final del semicírculo superior
+;     I0 J5 = CENTRO relativo: 0 en X, +5 en Y desde punto inicial (X0,Y-5)
+;     → centro absoluto (0, 0), radio = 5
+N340 G1 Y10                         ; recto a Y=10 (tramo superior recto)
+N350 G2 X0 Y-10 I0 J-10
+;     arco CW que rodea el extremo inferior
+;     centro a (0, 10-10) = (0, 0)
+;     ATENCIÓN: este arco va de (0,10) a (0,-10), un semicírculo COMPLETO de 180°
+;     pero con I0 J-10 desde (0,10) → centro (0, 0), radio=10
+N360 G0 Z100                        ; sube
+N370 G44                            ; cancela longitud (G40 ya estaba cancelado de antes)</span>
+<p class="res-note"><b>🔑 I,J Fagor:</b> son las coordenadas RELATIVAS del CENTRO del arco respecto al PUNTO INICIAL del arco. Diferencia con R: con R basta el radio pero da arco menor por defecto. Con I,J se controla exactamente el centro (puede dar arcos mayores de 180°).</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — 4 agujeros PCD Ø31,6 (T3.3 · broca D6)</div>
+<div class="paso"><div class="paso-titulo">Sección 4 — 6 agujeros PCD Ø31,6 (T3.3 · broca D6)</div>
+<p><b>📋 Planteamiento:</b> 6 taladros en PCD Ø31,6 (R=15,8). Mismo patrón hexagonal que la sección 2 pero más pequeño. Coordenadas: (R·cos θ, R·sin θ) para θ=0°, 60°, 120°… Con R=15,8 y sin60°=0,866 → Y=±13,68.</p>
 <span class="res-code">% TALADROS PCD
 
-N380 T3.3
+N380 T3.3                          ; broca D6 helicoidal
 N390 M6
 N400 G43
 N410 G97 G94 G0 X15.8 Y0 Z100 F66 S1326 M3
-N420 G81 G99 X15.8 Y0 Z0 I-30    ; 0°
-N430 X7.9 Y13.68                 ; 60°  (15.8·cos60=7.9, 15.8·sin60=13.68)
-N440 X-7.9 Y13.68                ; 120°
-N450 X-15.8 Y0                  ; 180°
-N460 X-7.9 Y-13.68               ; 240°
-N470 X7.9 Y-13.68                ; 300°
-N480 G80 G44 Z100
-N490 M5
-N500 M30</span>
+;     X15.8 Y0 = primer taladro (0°)
+;     S1326 = N=1000·25/(π·6) = 1326 rpm
+;     F66 = N·f = 1326·0,05 = 66,3 ≈ 66 mm/min
+N420 G81 G99 X15.8 Y0 Z0 I-30       ; taladro 0°, profundidad 30 mm (pasante)
+N430 X7.9 Y13.68                    ; 60°: 15,8·cos60°=7,9; 15,8·sin60°=13,68
+N440 X-7.9 Y13.68                   ; 120°
+N450 X-15.8 Y0                      ; 180°
+N460 X-7.9 Y-13.68                  ; 240°
+N470 X7.9 Y-13.68                   ; 300°
+N480 G80 G44 Z100                   ; cancela ciclo, sube
+N490 M5                             ; para cabezal
+N500 M30                            ; FIN</span>
+<p class="res-note"><b>🔑 Coherencia entre hexágono y PCD:</b> el hexágono interior tiene vértices a R=10, ángulos 30°+n·60°. El PCD de taladros tiene agujeros a R=15,8, ángulos n·60°. Diferencia de 30° en el inicio → los taladros están entre los lados del hexágono, no en los vértices. Verificar contra el plano.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros calculados</div>
-<div class="formula-box">T1.1 (D20 planeado): N = 100.000/(π·20) = 1.592 rpm; vf = 955 mm/min
-T2.2 (D5 hexa/oval):  N = 180.000/(π·5)  = 11.459 rpm; vf = 2.292 mm/min
-T3.3 (broca D6):      N = 25.000/(π·6)   = 1.326 rpm; vf = 66 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 (D20 planeado, vc=100, Z=6, fz=0,1): N=1.592 rpm, vf=955 mm/min
+T2.2 (D5 hexa+oval, vc=180, Z=4, fz=0,05): N=11.459 rpm, vf=2.292 mm/min
+T3.3 (broca D6, vc=25, f=0,05): N=1.326 rpm, vf=66 mm/min</div>
+<p class="res-note"><b>🔑 N elevadas para fresas pequeñas:</b> al disminuir D, N crece (vc=πDN constante). D5 → N=11.460 rpm, cerca del límite de muchas máquinas (verificar Nmax del husillo). Si la máquina solo llega a 6000 rpm, hay que reducir vc.</p>
 </div>
 
 </div>
@@ -1051,75 +1346,93 @@ T3.3 (broca D6):      N = 25.000/(π·6)   = 1.326 rpm; vf = 66 mm/min</div>
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D25)</div>
+<p><b>📋 Planteamiento:</b> bruto 66×66×25. 3 pasadas de planeado con fresa D25 (espaciado 25 mm). La pieza es relativamente pequeña.</p>
 <span class="res-code">%ESQUINAS R10 66x66x25
 
-N010 T1.1
+N010 T1.1                          ; fresa D25 placas
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-40 Y-25 Z100 F2292 S150 M3
-N050 G0 Z-5
-N060 G1 X40
+;     F2292 = N·Z·fz = 1909·6·0,2 = 2.291 mm/min
+N050 G0 Z-5                         ; profundidad 5 mm
+N060 G1 X40                         ; PASADA 1 (Y=-25)
 N070 G0 Y0
-N080 G1 X-40
+N080 G1 X-40                        ; PASADA 2 (Y=0)
 N090 G0 Y25
-N100 G1 X40
-N110 G0 Z100
+N100 G1 X40                         ; PASADA 3 (Y=25)
+N110 G0 Z100                        ; sube
 N120 G40 G44</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Contorno exterior 66×66 con esquinas R10 (T2.2 · fresa D25)</div>
+<p><b>📋 Planteamiento:</b> el contorno es un cuadrado 66×66 con las 4 esquinas redondeadas R10. Lo programamos como una sucesión de 4 RECTAS + 4 ARCOS. El extremo de cada lado recto está en cota nominal − R = 33 − 10 = 23 (porque la pieza es 66×66 centrada en (0,0), los lados llegan a ±33). Cada esquina es un G2 (CW exterior) de R=10.</p>
 <span class="res-code">% CONTORNO EXT R10
 
-N130 T2.2
+N130 T2.2                          ; misma fresa D25 (otro corrector)
 N140 M6
 N150 G43
 N160 G96 G94 G0 X0 Y-40 Z100 F2292 S150 M3
-N170 G0 Z-25
-N180 G1 G42 G37 R10 X23 Y-33    ; entrada tangencial
-N190 G2 X33 Y-23 R10             ; esquina inf-der
-N200 G1 Y23                      ; lado derecho
-N210 G2 X23 Y33 R10              ; esquina sup-der
-N220 G1 X-23                    ; lado superior
-N230 G2 X-33 Y23 R10             ; esquina sup-izq
-N240 G1 Y-23                    ; lado izquierdo
-N250 G2 X-23 Y-33 R10            ; esquina inf-izq
-N260 G1 X23                      ; cerrar
-N270 G38 R10 X0 Y-40             ; salida tangencial
-N280 G0 Z100
-N290 G40 G44</span>
+;     X0 Y-40 = punto de aproximación FUERA de la pieza (Y=-40 < Y=-33 del contorno)
+N170 G0 Z-25                        ; baja a la profundidad total (atraviesa pieza 25 mm)
+N180 G1 G42 G37 R10 X23 Y-33
+;     G42 = compensación radio a la DERECHA (perfilamos exterior)
+;     G37 R10 = entrada tangencial con arco de radio 10
+;     X23 Y-33 = primer punto del contorno (extremo derecho del lado inferior)
+N190 G2 X33 Y-23 R10                ; ESQUINA INF-DERECHA (CW, R=10)
+;     punto inicial (23,-33), final (33,-23) → cuarto de círculo
+N200 G1 Y23                         ; LADO DERECHO (X constante = 33, Y de -23 a 23)
+N210 G2 X23 Y33 R10                 ; ESQUINA SUP-DERECHA
+N220 G1 X-23                        ; LADO SUPERIOR (Y=33, X de 23 a -23)
+N230 G2 X-33 Y23 R10                ; ESQUINA SUP-IZQUIERDA
+N240 G1 Y-23                        ; LADO IZQUIERDO
+N250 G2 X-23 Y-33 R10               ; ESQUINA INF-IZQUIERDA
+N260 G1 X23                         ; LADO INFERIOR (cierre del contorno)
+N270 G38 R10 X0 Y-40                ; SALIDA tangencial con arco R10
+N280 G0 Z100                        ; sube
+N290 G40 G44                        ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 G2 CW exterior:</b> al recorrer el contorno en sentido HORARIO (visto desde +Z), las esquinas convexas exteriores se programan con G2. Si recorrieras en CCW, serían G3. Para el INTERIOR de una cajera con esquinas: las esquinas cóncavas usan G3 si se recorre CCW, G2 si CW.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Cajera interior rect. R4 (T3.3 · fresa D6)</div>
+<div class="paso"><div class="paso-titulo">Sección 3 — Cajera rectangular interior con R4 (T3.3 · fresa D6)</div>
+<p><b>📋 Planteamiento:</b> cajera 40×40 interior con esquinas R4. Fresa D6 cumple R fresa = 3 < 4 = R esquina (puede entrar en las esquinas sin colisionar). Ciclo G88 hace el desbaste.</p>
 <span class="res-code">% CAJERA INT R4
 
-N300 T3.3
+N300 T3.3                          ; fresa D6 enteriza (Z=4)
 N310 M6
 N320 G43
 N330 G96 G94 G0 X0 Y0 Z100 F5729 S180 M3
+;     F5729 = N·Z·fz = 9549·4·0,15 = 5.729 mm/min (avance alto, productivo)
 N340 G88 G99 X0 Y0 Z0 I-15 J40 K40 B3 C4 D2 H50 L0.3
-N350 G80 G44 Z100</span>
+;     I-15 = profundidad 15 mm
+;     J40 K40 = anchos 40×40
+;     B3 = paso Z, C4 = paso XY, D2 = seguridad, H50 = F entrada, L0.3 = sobremedida
+N350 G80 G44 Z100                   ; cancela ciclo</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — 4 agujeros Ø4 (T4.4 · broca D4)</div>
+<div class="paso"><div class="paso-titulo">Sección 4 — 4 agujeros Ø4 en cruz a R=25 (T4.4 · broca D4)</div>
+<p><b>📋 Planteamiento:</b> 4 taladros distribuidos en forma de cruz (no PCD completo), a 25 mm del centro en cada eje. Coordenadas (±25, 0), (0, ±25).</p>
 <span class="res-code">% TALADROS D4
 
-N360 T4.4
+N360 T4.4                          ; broca D4 (pequeña)
 N370 M6
 N380 G43
 N390 G97 G94 G0 X0 Y0 Z100 F199 S1989 M3
-N400 G81 G99 X25 Y0 Z0 I-28      ; lateral derecho
-N410 X0 Y25                      ; superior
-N420 X-25 Y0                    ; lateral izquierdo
-N430 X0 Y-25                    ; inferior
-N440 G80 G44 Z100
+;     S1989 = N = 1000·25/(π·4) = 1.989 rpm
+;     F199 = N·f = 1989·0,1 = 198,9 ≈ 199 mm/min
+N400 G81 G99 X25 Y0 Z0 I-28         ; LATERAL DERECHO (X=+25)
+N410 X0 Y25                         ; SUPERIOR (Y=+25)
+N420 X-25 Y0                        ; LATERAL IZQUIERDO
+N430 X0 Y-25                        ; INFERIOR
+N440 G80 G44 Z100                   ; cancela
 N450 M5
-N460 M30</span>
+N460 M30                            ; FIN</span>
+<p class="res-note"><b>🔑 Profundidad I-28 vs espesor 25:</b> con I=-28 la broca atraviesa la pieza (25 mm) más 3 mm de margen para asegurar agujero pasante limpio. Necesario porque la punta de la broca tiene ángulo (≈ 118°), si I=I-25 exacto el agujero quedaría incompleto en la salida.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros calculados</div>
-<div class="formula-box">T1.1 + T2.2 (D25): N = 150.000/(π·25) = 1.909 rpm; vf = 2.292 mm/min
-T3.3 (D6 cajera):   N = 180.000/(π·6)  = 9.549 rpm; vf = 5.729 mm/min
-T4.4 (broca D4):    N = 25.000/(π·4)   = 1.989 rpm; vf = 199 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 + T2.2 (D25, vc=150, Z=6, fz=0,2): N=1.909 rpm, vf=2.292 mm/min
+T3.3 (D6 cajera, vc=180, Z=4, fz=0,15): N=9.549 rpm, vf=5.729 mm/min
+T4.4 (broca D4, vc=25, f=0,1): N=1.989 rpm, vf=199 mm/min</div>
 </div>
 
 </div>
@@ -1143,81 +1456,111 @@ T4.4 (broca D4):    N = 25.000/(π·4)   = 1.989 rpm; vf = 199 mm/min</div>
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D40)</div>
+<p><b>📋 Planteamiento:</b> bruto 100×100×25. Fresa D40 grande → solo 3 pasadas cubren los 100 mm de ancho (espaciado 25 mm, solape 15 mm = 37%). Esta es la fresa más grande de la familia (placas, alta productividad).</p>
 <span class="res-code">%CAJERA ANIDADA 100x100x25
 
-N010 T1.1
+N010 T1.1                          ; fresa D40 placas (Z=6)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-65 Y-25 Z100 F1433 S150 M3
-N050 G0 Z-5
-N060 G1 X65                      ; pasada 1 (Y=-25)
+;     F1433 = N·Z·fz = 1194·6·0,2 = 1.433 mm/min
+;     X-65 fuera de los ±50 del bruto + margen 15
+N050 G0 Z-5                         ; profundidad planeado
+N060 G1 X65                         ; PASADA 1 (Y=-25)
 N070 G0 Y0
-N080 G1 X-65                    ; pasada 2
+N080 G1 X-65                        ; PASADA 2 (Y=0, central)
 N090 G0 Y25
-N100 G1 X65                      ; pasada 3
+N100 G1 X65                         ; PASADA 3 (Y=25)
 N110 G0 Z100
 N120 G40 G44</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 2 — Cajera exterior rectangular R10 (T2.2 · fresa D16)</div>
+<div class="paso"><div class="paso-titulo">Sección 2 — Cajera exterior rectangular 80×80 R10 (T2.2 · fresa D16)</div>
+<p><b>📋 Planteamiento:</b> cajera "grande" 80×80 con esquinas R10 y profundidad 20 mm. Fresa D16 cabe en R10 (radio fresa 8 ≤ 10). Ciclo G88 desbasta automáticamente.</p>
 <span class="res-code">% CAJERA EXT R10
 
-N130 T2.2
+N130 T2.2                          ; fresa D16 (Z=3 enteriza)
 N140 M6
 N150 G43
 N160 G96 G94 G0 X0 Y0 Z100 F1194 S200 M3
+;     F1194 = N·Z·fz = 3979·3·0,1 = 1.194 mm/min
 N170 G88 G99 X0 Y0 Z0 I-20 J80 K80 B3 C5 D2 H50 L0.3
-;     R=10 se consigue añadiendo parámetro extra para radios de esquina
-N180 G80 G44 Z100</span>
+;     I-20 = profundidad 20 mm
+;     J80 K80 = 80×80
+;     OJO: G88 NO suele tener parámetro de radio de esquina;
+;          los R10 se forman naturalmente al usar fresa D16 (radio 8 < 10)
+;          y al hacer el contorno final con sobremedida L=0.3
+N180 G80 G44 Z100                   ; cancela ciclo</span>
+<p class="res-note"><b>🔑 Esquinas R en cajera G88:</b> el R interno de la cajera ES igual al radio de la fresa. Con D16 → R interno = 8 mm. Si el plano exige R10, hay que usar fresa D≤20 y hacer un contorneado de acabado posterior con offset programado.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Cajera interior anidada (T3.3 · fresa D4)</div>
+<div class="paso"><div class="paso-titulo">Sección 3 — Cajera interior ANIDADA (3 niveles R15/R10/R12 a distintas Z)</div>
+<p><b>📋 Planteamiento:</b> dentro de la cajera exterior hay 3 cajeras CIRCULARES anidadas, cada una a una profundidad MAYOR que la anterior y con un radio DIFERENTE:</p>
+<ul style="padding-left:18px;color:#94a3b8;font-size:.86em;line-height:2">
+<li>Nivel 1 (Z=-10): círculo R15</li>
+<li>Nivel 2 (Z=-18): círculo R10 (más estrecho, dentro del Nivel 1)</li>
+<li>Nivel 3 (Z=-25): círculo R12 (un poco más ancho que el 2)</li>
+</ul>
+<p>Cada nivel es un CONTORNEADO circular con G2 + I,J. Usamos fresa D4 (la más pequeña) para poder llegar al radio mínimo R10.</p>
 <span class="res-code">% CAJERA INT ANIDADA
 
-N190 T3.3
+N190 T3.3                          ; fresa D4 enteriza (Z=2, longitud corta 15 mm)
 N200 M6
 N210 G43
 N220 G96 G94 G0 X0 Y0 Z100 F3000 S200 M3
-; Nivel 1: círculo R15 (superior)
-N230 G0 Z2
-N240 G1 Z-10 F500
-N250 G41 D3 G0 X15 Y0
-N260 G2 I-15 J0                  ; círculo R15
-N270 G40 G0 Z5
-; Nivel 2: círculo R10 (intermedio)
-N280 G0 Z-18
-N290 G41 D3 G0 X10 Y0
-N300 G2 I-10 J0                  ; círculo R10
-N310 G40 G0 Z5
-; Nivel 3: círculo R12 (final)
-N320 G0 Z-25
+;     F3000 = N·Z·fz = 15915·2·0,1 = 3.183 ≈ 3.000 mm/min
+;     S200 con G96 → vc=200 m/min → N=15.915 rpm (alto, fresa pequeña)
+
+; --- NIVEL 1: círculo R15 a Z=-10 ---
+N230 G0 Z2                          ; aproxima 2 mm sobre material
+N240 G1 Z-10 F500                   ; baja con avance lento al nivel 1
+N250 G41 D3 G0 X15 Y0               ; activa compensación + va al inicio del círculo R15
+N260 G2 I-15 J0
+;     círculo completo CW
+;     I-15 J0 = centro relativo (-15, 0) desde punto inicial X15 Y0 → centro absoluto (0, 0)
+;     sin punto final → círculo entero
+N270 G40 G0 Z5                      ; cancela compensación + sube ligeramente
+
+; --- NIVEL 2: círculo R10 a Z=-18 ---
+N280 G0 Z-18                        ; baja al siguiente nivel
+N290 G41 D3 G0 X10 Y0               ; activa comp + va a inicio R10
+N300 G2 I-10 J0                     ; círculo R10
+N310 G40 G0 Z5                      ; cancela + sube
+
+; --- NIVEL 3: círculo R12 a Z=-25 ---
+N320 G0 Z-25                        ; baja al nivel más profundo (atraviesa la pieza)
 N330 G41 D3 G0 X12 Y0
-N340 G2 I-12 J0                  ; círculo R12
-N350 G40 G0 Z100
-N360 G44</span>
+N340 G2 I-12 J0                     ; círculo R12
+N350 G40 G0 Z100                    ; cancela comp + sube a Z seguro
+N360 G44                            ; cancela longitud</span>
+<p class="res-note"><b>🔑 Cajera anidada — orden importante:</b> programamos los niveles DE ARRIBA HACIA ABAJO (más superficial primero, más profundo después). Si lo hicieras al revés, al subir la fresa después del nivel profundo podrías "raspar" un nivel intermedio. La fresa SUBE ENTRE niveles a Z=5 (sobre la superficie) para evitar colisión.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — Taladros Ø5 en esquinas (T4.4 · broca D5)</div>
+<div class="paso"><div class="paso-titulo">Sección 4 — Taladros Ø5 en las 4 esquinas (T4.4 · broca D5)</div>
+<p><b>📋 Planteamiento:</b> 4 taladros pasantes en las 4 esquinas a (±30, ±30). Profundidad 28 mm (> 25 mm pieza).</p>
 <span class="res-code">% TALADROS D5
 
-N370 T4.4
+N370 T4.4                          ; broca D5 helicoidal
 N380 M6
 N390 G43
 N400 G97 G94 G0 X30 Y30 Z100 F159 S1592 M3
-N410 G81 G99 X30 Y30 Z0 I-28     ; esquina 1
-N420 X-30 Y30                    ; esquina 2
-N430 X-30 Y-30                   ; esquina 3
-N440 X30 Y-30                    ; esquina 4
-N450 G80 G44 Z100
+;     S1592 = N = 1000·25/(π·5) = 1.592 rpm
+;     F159 = N·f = 1592·0,1 = 159,2 ≈ 159 mm/min
+N410 G81 G99 X30 Y30 Z0 I-28        ; ESQUINA 1 (sup-derecha)
+N420 X-30 Y30                       ; ESQUINA 2 (sup-izquierda)
+N430 X-30 Y-30                      ; ESQUINA 3 (inf-izquierda)
+N440 X30 Y-30                       ; ESQUINA 4 (inf-derecha)
+N450 G80 G44 Z100                   ; cancela ciclo
 N460 M5
-N470 M30</span>
+N470 M30                            ; FIN</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros calculados</div>
-<div class="formula-box">T1.1 (D40): N = 150.000/(π·40) = 1.194 rpm; vf = 1.433 mm/min
-T2.2 (D16): N = 200.000/(π·16) = 3.979 rpm; vf = 1.194 mm/min
-T3.3 (D4):  N ≈ 15.000 rpm (límite cabezal); vf = 3.000 mm/min
-T4.4 (D5):  N = 25.000/(π·5) = 1.592 rpm; vf = 159 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 (D40, vc=150, Z=6, fz=0,2): N=1.194 rpm, vf=1.433 mm/min
+T2.2 (D16, vc=200, Z=3, fz=0,1): N=3.979 rpm, vf=1.194 mm/min
+T3.3 (D4, vc=200, Z=2, fz=0,1): N=15.915 rpm (¡atención al límite cabezal!), vf≈3.183 mm/min
+T4.4 (broca D5, vc=25, f=0,1): N=1.592 rpm, vf=159 mm/min</div>
+<p class="res-note"><b>🔑 Atención N=15.915 rpm:</b> es muy alto. La mayoría de fresadoras CNC industriales llegan a 12.000-20.000 rpm. Si tu máquina tiene N_max=10.000, hay que reducir vc o D para que N quede en rango → reducir vc a 125 m/min daría N=9.947 rpm.</p>
 </div>
 
 </div>
@@ -1241,90 +1584,109 @@ T4.4 (D5):  N = 25.000/(π·5) = 1.592 rpm; vf = 159 mm/min</div>
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D25)</div>
+<p><b>📋 Planteamiento:</b> bruto 86×86×35. Planeado en 5 pasadas espaciadas 15 mm (Y de -30 a +30) con fresa D25.</p>
 <span class="res-code">%CAJERA R8 86x86x35
 
-N010 T1.1
+N010 T1.1                          ; fresa D25 placas (Z=6)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-55 Y-30 Z100 F1910 S125 M3
-N050 G0 Z-5
-N060 G1 X55
+;     F1910 = N·Z·fz = 1592·6·0,2 = 1.910 mm/min
+;     S125 vc=125 m/min (un poco más bajo para acero al carbono)
+N050 G0 Z-5                         ; profundidad planeado
+N060 G1 X55                         ; PASADA 1 (Y=-30)
 N070 G0 Y-15
-N080 G1 X-55
+N080 G1 X-55                        ; PASADA 2
 N090 G0 Y15
-N100 G1 X55
+N100 G1 X55                         ; PASADA 3
 N110 G0 Y30
-N120 G1 X-55
+N120 G1 X-55                        ; PASADA 4
 N130 G0 Z100
 N140 G40 G44</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 2 — Cajera cuadrada 74×74 con R8 (T1.1 · contorno)</div>
+<div class="paso"><div class="paso-titulo">Sección 2 — Cajera cuadrada 74×74 con esquinas R8 (T1.1 · contorno manual)</div>
+<p><b>📋 Planteamiento:</b> en este caso el contorno NO se hace con ciclo G88 (que daría una cajera rectangular llenando todo el interior). Aquí solo se MARCA EL CONTORNO con G1/G2 (sin desbastar el interior). La idea es que el resto del interior se trabaja después con el alveolo central y los taladros — el "marco" 74×74 se contornea para definir el límite.</p>
 <span class="res-code">% CAJERA CUADRADA R8
 
-N150 G0 X40 Y-29 Z100
-N160 G0 Z-30
-N170 G1 G41 G37 R5 X37 Y-29      ; entrada tangencial
-N180 G1 X37 Y29                  ; lado derecho ↑
-N190 G2 X29 Y37 R8               ; esquina sup-der
-N200 G1 X-29 Y37                 ; lado superior ←
-N210 G2 X-37 Y29 R8              ; esquina sup-izq
-N220 G1 X-37 Y-29                ; lado izquierdo ↓
-N230 G2 X-29 Y-37 R8             ; esquina inf-izq
-N240 G1 X29 Y-37                 ; lado inferior →
-N250 G2 X37 Y-29 R8              ; esquina inf-der (cierre)
-N260 G38 R5 X40 Y-29             ; salida tangencial
-N270 G0 Z100
-N280 G40 G44</span>
+N150 G0 X40 Y-29 Z100               ; reposiciona X=40 (fuera del cuadrado 74), Y=-29 (preparación)
+N160 G0 Z-30                        ; baja a -30 (profundidad del contorno)
+N170 G1 G41 G37 R5 X37 Y-29
+;     G41 = compensación izquierda (interior del contorno)
+;     G37 R5 = entrada tangencial con arco R5
+;     X37 Y-29 = primer punto del cuadrado (x=37=74/2, y=-29=-37+8 = empezar tras la esquina)
+N180 G1 X37 Y29                     ; LADO DERECHO (X=37, Y de -29 a +29)
+N190 G2 X29 Y37 R8                  ; ESQUINA SUP-DER (CW, R=8)
+;     punto inicial (37,29), final (29,37) → cuarto de circunferencia
+N200 G1 X-29 Y37                    ; LADO SUPERIOR
+N210 G2 X-37 Y29 R8                 ; ESQUINA SUP-IZQ
+N220 G1 X-37 Y-29                   ; LADO IZQUIERDO
+N230 G2 X-29 Y-37 R8                ; ESQUINA INF-IZQ
+N240 G1 X29 Y-37                    ; LADO INFERIOR
+N250 G2 X37 Y-29 R8                 ; ESQUINA INF-DER (cierre)
+N260 G38 R5 X40 Y-29                ; SALIDA tangencial (vuelve fuera)
+N270 G0 Z100                        ; sube
+N280 G40 G44                        ; cancela</span>
+<p class="res-note"><b>🔑 Por qué contorno y no cajera:</b> el contorno se hace de PROFUNDIDAD PARCIAL (Z=-30 con pieza de Z=35) → no atraviesa la pieza. Es una RANURA EN FORMA DE CUADRADO. Si quisiéramos cajera completa (vaciado), usaríamos G88.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — 8 taladros PCD Ø50 (T2.2 · broca D4)</div>
+<div class="paso"><div class="paso-titulo">Sección 3 — 8 taladros PCD Ø50 + agujero central Ø16 piloto (T2.2 · broca D4)</div>
+<p><b>📋 Planteamiento:</b> 8 taladros en PCD Ø50 (R=25), distribuidos a 45° → ángulos 0°, 45°, 90°, 135°, 180°, 225°, 270°, 315°. Coordenadas: con sin 45° = cos 45° = √2/2 ≈ 0,7071: X,Y = ±17,68. Además se hace un agujero piloto central Ø4 para preparar el alveolo posterior.</p>
 <span class="res-code">% TALADROS PCD D50 (R=25)
 
-N290 T2.2
+N290 T2.2                          ; broca D4 helicoidal
 N300 M6
 N310 G43
 N320 G97 G94 G0 X25 Y0 Z100 F199 S1989 M3
-N330 G81 G99 X25 Y0 Z0 I-38      ; 0°
-N340 X17.68 Y17.68               ; 45°   (25·cos45 = 25·√2/2 = 17,68)
-N350 X0 Y25                      ; 90°
-N360 X-17.68 Y17.68              ; 135°
-N370 X-25 Y0                    ; 180°
-N380 X-17.68 Y-17.68             ; 225°
-N390 X0 Y-25                    ; 270°
-N400 X17.68 Y-17.68              ; 315°
-N410 G80 G44 Z100
-; Agujero central Ø16 (piloto con D4)
-N420 G81 G99 X0 Y0 Z0 I-38
+;     S1989 = N = 1000·25/(π·4) = 1.989 rpm
+;     F199 = N·f = 1989·0,1 = 198,9 ≈ 199 mm/min
+N330 G81 G99 X25 Y0 Z0 I-38         ; 0°: X=25
+N340 X17.68 Y17.68                  ; 45°: 25·cos45°=17,68 (= 25·√2/2)
+N350 X0 Y25                         ; 90°: X=0, Y=25
+N360 X-17.68 Y17.68                 ; 135°
+N370 X-25 Y0                        ; 180°
+N380 X-17.68 Y-17.68                ; 225°
+N390 X0 Y-25                        ; 270°
+N400 X17.68 Y-17.68                 ; 315°
+N410 G80 G44 Z100                   ; cancela ciclo
+; Agujero central Ø16 (piloto con D4 — abre acceso para el alveolo)
+N420 G81 G99 X0 Y0 Z0 I-38          ; piloto central
 N430 G80 G44 Z100</span>
+<p class="res-note"><b>🔑 Función del piloto Ø4:</b> el centro hará luego un alveolo R25 con fresa D12. La fresa D12 no puede entrar de plongée perfecto en material sólido (los filos frontales no llegan al centro). Solución clásica: <b>pre-taladrar un agujero piloto</b> (aquí Ø4) por donde la fresa baja sin esfuerzo, luego empieza a fresar radialmente.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — Alveolo central R25 a Z-30 (T3.3 · fresa D12)</div>
+<div class="paso"><div class="paso-titulo">Sección 4 — Alveolo central R25 a Z=-30 (T3.3 · fresa D12)</div>
+<p><b>📋 Planteamiento:</b> alveolo circular R25 con desbaste PROGRESIVO en radios crecientes (R12 → R18 → R25). Este método se llama "trochoidal/concéntrico" — vaciamos primero un círculo pequeño, luego ampliamos. Evita atrapar la fresa con sección de viruta demasiado grande.</p>
 <span class="res-code">% ALVEOLO R25
 
-N440 T3.3
+N440 T3.3                          ; fresa D12 enteriza (Z=2)
 N450 M6
 N460 G43
 N470 G96 G94 G0 X0 Y0 Z100 F1273 S160 M3
-N480 G0 Z2
-N490 G1 Z-30 F500                ; bajar por el agujero piloto D16
-; Desbaste progresivo en radios crecientes
-N500 G41 D3 G0 X12 Y0
-N510 G2 I-12 J0                  ; R12
-N520 G0 X18 Y0
-N530 G2 I-18 J0                  ; R18
-N540 G0 X25 Y0
-N550 G2 I-25 J0                  ; R25 final (cota plano)
-N560 G40 G0 Z100
-N570 G44
+;     F1273 = N·Z·fz = 4244·2·0,15 = 1.273 mm/min
+N480 G0 Z2                          ; aproxima 2 mm sobre material
+N490 G1 Z-30 F500                   ; BAJA a profundidad final por el agujero piloto Ø4
+;     OJO: el agujero piloto es Ø4, fresa es Ø12 → solo el filo central baja por el hueco,
+;     los filos exteriores cortan material radial al descender. Funciona aceptable con F lento.
+
+; --- Desbaste en círculos concéntricos crecientes ---
+N500 G41 D3 G0 X12 Y0               ; activa compensación + va a R12 (primer círculo)
+N510 G2 I-12 J0                     ; CÍRCULO 1: R12 completo
+N520 G0 X18 Y0                      ; reposiciona a R18 (sin compensación reseteada)
+N530 G2 I-18 J0                     ; CÍRCULO 2: R18 completo
+N540 G0 X25 Y0                      ; reposiciona a R25
+N550 G2 I-25 J0                     ; CÍRCULO 3: R25 FINAL (cota del plano)
+N560 G40 G0 Z100                    ; cancela compensación + sube
+N570 G44                            ; cancela longitud
 N580 M5
 N590 M30</span>
+<p class="res-note"><b>🔑 Desbaste en pasadas radiales crecientes:</b> alternativa al "plunge milling" para alveolos profundos. La fresa siempre tiene material en un solo lado (el exterior) — fuerza de corte controlada. Si se hiciera R25 directamente desde el centro, la fresa tendría material 360° alrededor en un giro, sobrecargando filos y atrapándola.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros calculados</div>
-<div class="formula-box">T1.1 (D25): N = 125.000/(π·25) = 1.592 rpm; vf = 1.910 mm/min
-T2.2 (D4 taladros): N = 25.000/(π·4) = 1.989 rpm; vf = 199 mm/min
-T3.3 (D12 alveolo): N = 160.000/(π·12) = 4.244 rpm; vf = 1.273 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 (D25, vc=125, Z=6, fz=0,2): N=1.592 rpm, vf=1.910 mm/min
+T2.2 (broca D4, vc=25, f=0,1): N=1.989 rpm, vf=199 mm/min
+T3.3 (D12 alveolo, vc=160, Z=2, fz=0,15): N=4.244 rpm, vf=1.273 mm/min</div>
 </div>
 
 </div>
@@ -1349,58 +1711,76 @@ T3.3 (D12 alveolo): N = 160.000/(π·12) = 4.244 rpm; vf = 1.273 mm/min</div>
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 5 mm (T1.1 · fresa D30)</div>
+<p><b>📋 Planteamiento:</b> tocho cilíndrico D80×30. Planeado en 3 pasadas paralelas con fresa D30 (espaciado 20 mm). Las pasadas extremas en Y=-20 y Y=20 cortarán algo de aire en los extremos (porque el disco solo tiene 80 mm de diámetro).</p>
 <span class="res-code">%DISCO D80 TANGENCIAL
 
-N010 T1.1
+N010 T1.1                          ; fresa D30 placas (Z=6)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-50 Y-20 Z100 F2546 S200 M3
-N050 G0 Z-5
-N060 G1 X50
+;     F2546 = N·Z·fz = 2122·6·0,2 = 2.546 mm/min
+N050 G0 Z-5                         ; profundidad planeado
+N060 G1 X50                         ; PASADA 1 (Y=-20)
 N070 G0 Y0
-N080 G1 X-50
+N080 G1 X-50                        ; PASADA 2 (Y=0)
 N090 G0 Y20
-N100 G1 X50
+N100 G1 X50                         ; PASADA 3 (Y=+20)
 N110 G0 Z100
 N120 G40 G44</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">★ Sección 2 — Contorno D70 con entrada tangencial G37/G38 (T2.2 · fresa D16)</div>
+<div class="paso"><div class="paso-titulo">★ Sección 2 — Contorno D70 con ENTRADA y SALIDA tangenciales (T2.2 · fresa D16)</div>
+<p><b>📋 Planteamiento:</b> el contorneado del D70 (R=35) requiere ENTRADA y SALIDA TANGENCIALES para evitar marcas. Geometría: el punto donde la fresa "toca" el contorno se llama T (tangencia). El arco de entrada G37 conecta el punto de aproximación A con T tangencialmente. <b>Cálculo:</b> si T = (0, 35) (vértice superior del círculo D70) y queremos arco de entrada R=10, entonces el centro del arco de entrada C_e = (0, 35+10) = (0, 45), y el punto A = (10, 45) (90° antes de T sobre el arco de entrada).</p>
 <span class="res-code">% CONTORNO D70
 
-N130 T2.2
+N130 T2.2                          ; fresa D16 (Z=4)
 N140 M6
 N150 G43
 N160 G96 G94 G0 X10 Y45 Z100 F3183 S200 M3
-N170 G0 Z-25
-N180 G1 G42 G37 R10 X0 Y35       ; ENTRADA TANGENCIAL (arco R10)
-N190 G2 I0 J-35                  ; círculo D70 completo
-N200 G38 R10 X-10 Y45            ; SALIDA TANGENCIAL
+;     X10 Y45 = punto A de aproximación (calculado arriba)
+;     F3183 = N·Z·fz = 3979·4·0,2 = 3.183 mm/min
+N170 G0 Z-25                        ; baja a profundidad del contorno (atraviesa pieza 30 mm - margen)
+N180 G1 G42 G37 R10 X0 Y35
+;     G42 = compensación a la derecha (perfil exterior, recorrido CW)
+;     G37 R10 = entrada tangencial con arco radio 10
+;     X0 Y35 = punto T (vértice superior del círculo D70 ⇒ tangente vertical)
+N190 G2 I0 J-35
+;     G2 = arco CW (recorrido del círculo)
+;     I0 J-35 = CENTRO relativo (0, -35) desde T=(0,35) → centro absoluto (0, 0) ✓
+;     SIN punto final → círculo COMPLETO (vuelve a T)
+N200 G38 R10 X-10 Y45
+;     G38 R10 = salida tangencial con arco R10
+;     X-10 Y45 = punto B de salida (simétrico a A respecto al eje X-)
 N210 G0 Z100
-N220 G40 G44</span>
+N220 G40 G44                        ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Geometría exacta de la tangente:</b> en el punto T=(0,35), la tangente al círculo es HORIZONTAL (porque T está en el "polo norte" del círculo). El arco de entrada debe llegar a T con dirección horizontal — por eso su centro C_e está VERTICAL respecto a T (en (0, 35+R_entrada)=(0,45) si R=10).</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Agujero central + PCD Ø50 (T3.3 · broca D8)</div>
+<div class="paso"><div class="paso-titulo">Sección 3 — Agujero central + 4 taladros PCD Ø50 (T3.3 · broca D8)</div>
+<p><b>📋 Planteamiento:</b> primero agujero central, después 4 taladros equiespaciados en PCD Ø50 (R=25). Coordenadas (±25, 0) y (0, ±25).</p>
 <span class="res-code">% TALADROS
 
-N230 T3.3
+N230 T3.3                          ; broca D8 helicoidal
 N240 M6
 N250 G43
 N260 G97 G94 G0 X0 Y0 Z100 F119 S1194 M3
-N270 G81 G99 X0 Y0 Z0 I-33       ; agujero central
-N280 X25 Y0                      ; PCD 0°
-N290 X0 Y25                      ; PCD 90°
-N300 X-25 Y0                    ; PCD 180°
-N310 X0 Y-25                    ; PCD 270°
-N320 G80 G44 Z100
+;     S1194 = N = 1000·30/(π·8) = 1.194 rpm
+;     F119 = N·f = 1194·0,1 = 119,4 ≈ 119 mm/min
+N270 G81 G99 X0 Y0 Z0 I-33          ; AGUJERO CENTRAL (X=Y=0), profundidad 33
+N280 X25 Y0                         ; PCD 0°
+N290 X0 Y25                         ; PCD 90°
+N300 X-25 Y0                        ; PCD 180°
+N310 X0 Y-25                        ; PCD 270°
+N320 G80 G44 Z100                   ; cancela ciclo
 N330 M5
 N340 M30</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros calculados</div>
-<div class="formula-box">T1.1 (D30): N = 200.000/(π·30) = 2.122 rpm; vf = 2.546 mm/min
-T2.2 (D16): N = 200.000/(π·16) = 3.979 rpm; vf = 3.183 mm/min
-T3.3 (broca D8): N = 30.000/(π·8) = 1.194 rpm; vf = 119 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 (D30, vc=200, Z=6, fz=0,2): N=2.122 rpm, vf=2.546 mm/min
+T2.2 (D16, vc=200, Z=4, fz=0,2): N=3.979 rpm, vf=3.183 mm/min
+T3.3 (broca D8, vc=30, f=0,1): N=1.194 rpm, vf=119 mm/min</div>
+<p class="res-note"><b>🔑 Por qué este ejercicio es importante:</b> demuestra el cálculo EXACTO de las coordenadas para entrada/salida tangencial G37/G38. En el examen, si te dan un círculo exterior y piden contorneado tangencial, debes saber resolver la geometría: identificar el punto T (vértice/tangencia), calcular el centro del arco de entrada C_e, y posicionar el punto A. Es uno de los planteos más frecuentes.</p>
 </div>
 
 </div>
@@ -1425,95 +1805,120 @@ T3.3 (broca D8): N = 30.000/(π·8) = 1.194 rpm; vf = 119 mm/min</div>
 <div class="sec-body">
 
 <div class="paso"><div class="paso-titulo">Sección 1 — Planeado 7 mm (T1.1 · fresa D18)</div>
+<p><b>📋 Planteamiento:</b> bruto 80×80×30, planeado más profundo (7 mm en lugar de los habituales 5). Con fresa D18 y espaciado 20 mm, cubrimos los 80 mm con 4 pasadas. Productividad alta (Z=6 placas).</p>
 <span class="res-code">%PETALOS 80x80x30
 
-N010 T1.1
+N010 T1.1                          ; fresa D18 placas (Z=6)
 N020 M6
 N030 G43
 N040 G90 G17 G96 G94 G0 X-50 Y-30 Z100 F4244 S200 M3
-N050 G0 Z-7
-N060 G1 X50
+;     F4244 = N·Z·fz = 3537·6·0,2 = 4.244 mm/min (alto)
+N050 G0 Z-7                         ; profundidad 7 mm
+N060 G1 X50                         ; PASADA 1 (Y=-30)
 N070 G0 Y-10
-N080 G1 X-50
+N080 G1 X-50                        ; PASADA 2
 N090 G0 Y10
-N100 G1 X50
+N100 G1 X50                         ; PASADA 3
 N110 G0 Y30
-N120 G1 X-50
+N120 G1 X-50                        ; PASADA 4
 N130 G0 Z100
 N140 G40 G44</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">★ Sección 2 — 4 pétalos R10 con subrutina + G73 (T2.2 · fresa D6)</div>
-<p>La magia: programar UN pétalo como subrutina con entrada tangencial, y rotarlo 3 veces con G73 (90°, 180°, 270°).</p>
+<div class="paso"><div class="paso-titulo">★ Sección 2 — 4 pétalos R10 con SUBRUTINA + G73 (T2.2 · fresa D6)</div>
+<p><b>📋 Planteamiento (ejercicio MAESTRO):</b> el patrón tiene 4 pétalos circulares R10 en cruz, uno en cada dirección (+Y, +X, −Y, −X). Cada pétalo es un círculo R10 con su centro a 25 mm del centro de pieza. Programamos UN PÉTALO con sus entradas/salidas tangenciales como SUBRUTINA N3, y la llamamos 4 veces rotando 90° entre cada llamada con G73 Aθ.</p>
+<p><b>Geometría del pétalo +Y:</b> centro_pétalo=(0,25), R=10. Tangencia: T=(0, 35) (vértice superior del pétalo). Entrada tangencial: arco R5 con centro C_e=(0,40), punto A=(5, 40).</p>
 <span class="res-code">% PETALOS R10 (x4, con subrutina + G73)
 
-N150 T2.2
+N150 T2.2                          ; fresa D6 enteriza (Z=4)
 N160 M6
 N170 G43
 N180 G96 G94 G0 X0 Y40 Z100 F8488 S200 M3
+;     F8488 = N·Z·fz = 10610·4·0,2 = 8.488 mm/min
+;     N = 10.610 rpm (muy alto, fresa pequeña)
 
-; Definir subrutina "pétalo"
-N190 G22 N3                      ; llamar subrutina N3 (pétalo 1: +Y)
-N200 G0 X5 Y40                   ; punto A (arco entrada)
-N210 G1 Z-20 F500
-N220 G3 X0 Y35 I-5 J0            ; entrada tangencial al pétalo
-N230 G2 I0 J-10                  ; círculo R10 (centro del pétalo en Y=25)
-N240 G3 X-5 Y40 I0 J5            ; salida tangencial
-N250 G0 Z5
-N260 G24                         ; fin de datos de subrutina
-N270 G20 N3.1                    ; definición subrutina
+; --- Llamada y definición de la SUBRUTINA "pétalo" ---
+N190 G22 N3                         ; LLAMA subrutina N3 → ejecuta pétalo en +Y
+N200 G0 X5 Y40                      ; (cuerpo de N3 empieza aquí)
+;     X5 Y40 = punto A de aproximación al pétalo +Y
+N210 G1 Z-20 F500                   ; baja a profundidad de pétalo
+N220 G3 X0 Y35 I-5 J0
+;     G3 = arco CCW (entrada tangencial)
+;     X0 Y35 = punto T (tangencia con círculo R10)
+;     I-5 J0 = centro relativo (-5, 0) desde A=(5,40) → centro absoluto (0, 40) = C_e
+N230 G2 I0 J-10
+;     G2 = arco CW
+;     I0 J-10 = centro relativo (0,-10) desde T=(0,35) → centro absoluto (0, 25) = centro pétalo
+;     SIN punto final → círculo R10 COMPLETO
+N240 G3 X-5 Y40 I0 J5
+;     G3 = arco CCW (salida tangencial, simétrica a la entrada)
+;     X-5 Y40 = punto B de salida
+;     I0 J5 = centro relativo (0, 5) desde T → centro absoluto (0, 40) = mismo C_e
+N250 G0 Z5                          ; sube ligeramente (no a Z100, para no perder tiempo)
+N260 G24                            ; FIN de subrutina (return)
+N270 G20 N3.1                       ; ETIQUETA: define la subrutina N3 formalmente
 
-; Llamar subrutina rotando cada vez
-N280 G73 A90
-N290 G22 N3                      ; pétalo +X
-N300 G73 A180
-N310 G22 N3                      ; pétalo -Y
-N320 G73 A270
-N330 G22 N3                      ; pétalo -X
-N340 G73 A0                      ; restaurar
-N350 G0 Z100
-N360 G40 G44</span>
-<p class="res-note"><b>Truco elegante</b>: programar 1 pétalo y repetirlo 4 veces con G73 Aθ. Ahorra 75% del código y evita errores de simetría. Cada llamada G22 N3 ejecuta la misma subrutina en el nuevo sistema de coordenadas rotado.</p>
+; --- LLAMADAS sucesivas rotando ---
+N280 G73 A90                        ; rota 90° → ahora "Y+" del CN apunta hacia X+ real
+N290 G22 N3                         ; ejecuta pétalo → PÉTALO +X físicamente
+N300 G73 A180                       ; rota 180° → pétalo apunta a Y- físicamente
+N310 G22 N3                         ; PÉTALO -Y
+N320 G73 A270                       ; rota 270° → pétalo apunta a X-
+N330 G22 N3                         ; PÉTALO -X
+N340 G73 A0                         ; RESTAURA sistema original (¡importante!)
+N350 G0 Z100                        ; sube a Z seguro
+N360 G40 G44                        ; cancela compensaciones</span>
+<p class="res-note"><b>🔑 Por qué es el ejercicio MAESTRO:</b> combina TODAS las técnicas avanzadas — entradas/salidas tangenciales con I/J, subrutinas con G22/G20/G24, rotación de coordenadas G73 Aθ con restauración final A=0. El programa pasa de ~30 líneas (si lo hicieras pétalo a pétalo manualmente) a ~10 líneas significativas (subrutina + 4 llamadas).</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Cajera central cuadrada (T2.2 continúa)</div>
+<div class="paso"><div class="paso-titulo">Sección 3 — Cajera central cuadrada 24×24 (T2.2 continúa)</div>
+<p><b>📋 Planteamiento:</b> cajera 24×24 en el centro de la pieza. Misma fresa D6 que para los pétalos (cabe en R3 si las esquinas son R≥3). Ciclo G88 estándar.</p>
 <span class="res-code">% CAJERA CENTRAL
 
-N370 G0 X0 Y0 Z100
+N370 G0 X0 Y0 Z100                  ; va al centro
 N380 G88 G99 X0 Y0 Z0 I-15 J24 K24 B3 C4 D2 H50 L0.3
-N390 G80 G44 Z100</span>
+;     I-15 = profundidad 15 mm
+;     J24 K24 = 24×24
+;     B3 C4 D2 H50 L0.3 = parámetros estándar
+N390 G80 G44 Z100                   ; cancela ciclo</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — Taladros (T3.3 broca D13 + T4.4 broca D5)</div>
+<div class="paso"><div class="paso-titulo">Sección 4 — Taladros (broca D13 + broca D5 central)</div>
+<p><b>📋 Planteamiento:</b> 4 taladros Ø13 a distancia 20 del centro (entre los pétalos) + 1 agujero central Ø5. Coordenadas D13: (±20, 0), (0, ±20).</p>
 <span class="res-code">% TALADROS D13
 
-N400 T3.3
+N400 T3.3                          ; broca D13
 N410 M6
 N420 G43
 N430 G97 G94 G0 X20 Y0 Z100 F73 S735 M3
-N440 G81 G99 X20 Y0 Z0 I-33
-N450 X0 Y20
-N460 X-20 Y0
-N470 X0 Y-20
-N480 G80 G44 Z100
+;     S735 = N = 1000·30/(π·13) = 735 rpm
+;     F73 = N·f = 735·0,1 = 73,5 mm/min
+N440 G81 G99 X20 Y0 Z0 I-33         ; agujero D13 a 0°
+N450 X0 Y20                         ; 90°
+N460 X-20 Y0                        ; 180°
+N470 X0 Y-20                        ; 270°
+N480 G80 G44 Z100                   ; cancela
 
 % TALADRO CENTRAL D5
 
-N490 T4.4
+N490 T4.4                          ; broca D5 (más pequeña, central)
 N500 M6
 N510 G43
 N520 G97 G94 G0 X0 Y0 Z100 F223 S2228 M3
-N530 G81 G99 X0 Y0 Z0 I-33
+;     S2228 = N = 1000·35/(π·5) = 2.228 rpm
+;     F223 = N·f = 2228·0,1 = 223 mm/min
+N530 G81 G99 X0 Y0 Z0 I-33          ; agujero central
 N540 G80 G44 Z100
 N550 M5
-N560 M30</span>
+N560 M30                            ; FIN</span>
 </div>
 
-<div class="paso"><div class="paso-titulo">Parámetros calculados</div>
-<div class="formula-box">T1.1 (D18 planeado): N = 200.000/(π·18) = 3.537 rpm; vf = 4.244 mm/min
-T2.2 (D6 pétalos):    N = 200.000/(π·6) = 10.610 rpm; vf = 8.488 mm/min
-T3.3 (broca D13):    N = 30.000/(π·13) = 735 rpm; vf = 73 mm/min
-T4.4 (broca D5):     N = 35.000/(π·5) = 2.228 rpm; vf = 223 mm/min</div>
+<div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
+<div class="formula-box">T1.1 (D18 planeado, vc=200, Z=6, fz=0,2): N=3.537 rpm, vf=4.244 mm/min
+T2.2 (D6 pétalos+cajera, vc=200, Z=4, fz=0,2): N=10.610 rpm, vf=8.488 mm/min
+T3.3 (broca D13, vc=30, f=0,1): N=735 rpm, vf=73 mm/min
+T4.4 (broca D5, vc=35, f=0,1): N=2.228 rpm, vf=223 mm/min</div>
+<p class="res-note"><b>🔑 Cierre del temario T4:</b> este ejercicio es el resumen práctico de TODO lo aprendido en CNC. Si lo dominas, dominas el examen. Las técnicas clave: (1) cálculo de tangencias geométricas, (2) subrutinas con G22/G20/G24, (3) transformaciones G73 con restauración, (4) ciclos fijos G81/G88, (5) parámetros de corte coherentes con cada herramienta.</p>
 </div>
 
 </div>
