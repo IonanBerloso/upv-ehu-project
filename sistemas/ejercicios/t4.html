@@ -1884,12 +1884,19 @@ T4.4 (broca D4, vc=25, f=0,1): N=1.989 rpm, vf=199 mm/min</div>
 <div class="topic-panel" id="ex10">
 <div class="panel-header">
 <div class="panel-tag">T4.P10</div>
-<h1 class="panel-title">Fresado — cajera anidada compleja (100×100×25)</h1>
-<div class="panel-meta">Cajera exterior · Cajera interior anidada · Agujeros de distintas profundidades</div>
+<h1 class="panel-title">Fresado — cajera con isla rombal + 4 taladros (100×100×25)</h1>
+<div class="panel-meta">Planeado · Cajera exterior R10/R12/R15 · Cajera interior alrededor isla rombal R8 · 4 taladros Ø5</div>
 </div>
 <div class="enunciado"><p><b>Tarea:</b> Usando lenguaje de CN, <b>desarrollar el programa CNC</b> de la pieza descrita.</p>
-<p><b>Pieza:</b> Cajera exterior grande R10 + cajera interior R15/R10/R12 anidada + agujeros Ø5 y Ø8 de distintas profundidades. Planeado de 5 mm. Dimensiones de partida: <b>100 × 100 × 25 mm</b>.</p>
-<p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D40: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm</li><li>Fresa D16: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm</li><li>Fresa D4: v<sub>c</sub>=200 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev; L=15 mm</li><li>Broca D5: v<sub>c</sub>=25 m/min; Z=2; f<sub>z</sub>=0,1 mm/rev; L=60 mm</li></ul>
+<p><b>Pieza (★ corregido auditoría):</b> placa cuadrada 100×100×25 con:</p>
+<ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
+<li><b>Planeado de 5 mm</b> en cara superior</li>
+<li><b>Cajera exterior rectangular</b> con esquinas variables R10/R12/R15, profundidad 5 mm</li>
+<li><b>Cajera interior</b> (alrededor de la isla rombal), profundidad 5 mm adicional</li>
+<li><b>Isla rombal central</b> (rombo girado 45°) con esquinas R8 — queda en relieve 5 mm sobre el fondo de la cajera interior</li>
+<li><b>4 taladros Ø5</b> pasantes en las 4 esquinas a 6 mm del borde</li>
+</ul>
+<p><b>Herramientas:</b></p><ul style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9"><li>Fresa D40: v<sub>c</sub>=150 m/min; Z=6; f<sub>z</sub>=0,2 mm/Z/rev; L=60 mm</li><li>Fresa D16: v<sub>c</sub>=200 m/min; Z=3; f<sub>z</sub>=0,1 mm/Z/rev; L=40 mm</li><li>Fresa D4: v<sub>c</sub>=200 m/min; Z=2; f<sub>z</sub>=0,1 mm/Z/rev; L=15 mm</li><li>Broca D5: v<sub>c</sub>=25 m/min; Z=2; f=0,1 mm/rev; L=60 mm</li></ul>
 </div>
 <div class="fig-plano"><img alt="p10_a" loading="lazy" src="img/t4/p10_a.png"/></div>
 <div class="section-wrap s-resolucion sec-open">
@@ -1925,24 +1932,21 @@ N140 M6
 N150 G43
 N160 G96 G94 G0 X0 Y0 Z100 F1194 S200 M3
 ;     F1194 = N·Z·fz = 3979·3·0,1 = 1.194 mm/min
-N170 G87 G99 X0 Y0 Z5 I-20 J40 K40 B3 C5 D2 H50 L0.3
-;     I-20 = profundidad 20 mm
-;     J80 K80 = 80×80
-;     OJO: G88 NO suele tener parámetro de radio de esquina;
-;          los R10 se forman naturalmente al usar fresa D16 (radio 8 < 10)
-;          y al hacer el contorno final con sobremedida L=0.3
+N170 G87 G99 X0 Y0 Z-3 I-10 J44 K44 B3 C5 D5 H100 L0.3
+;     ★ FIX: cajera 88×88 (J=K=44 SEMI-dim) con prof. solo 5 mm
+;     Z=-3 plano referencia (sobre cara planeada Z=-5)
+;     I=-10 prof. ABSOLUTA (5 planeado + 5 cajera = 10)
+;     J=44 SEMI-base X / K=44 SEMI-altura Y → cajera 88×88
+;     Esquinas R=8 (radio fresa D16/2). Plano marca R10/R12/R15 →
+;     aproximación R8 con G87. Para los R exactos: contornear manual con G2.
 N180 G80 G44 Z100                   ; cancela ciclo</span>
 <p class="res-note"><b>🔑 Esquinas R en cajera G88:</b> el R interno de la cajera ES igual al radio de la fresa. Con D16 → R interno = 8 mm. Si el plano exige R10, hay que usar fresa D≤20 y hacer un contorneado de acabado posterior con offset programado.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Cajera interior ANIDADA (3 niveles R15/R10/R12 a distintas Z)</div>
-<p><b>📋 Planteamiento:</b> dentro de la cajera exterior hay 3 cajeras CIRCULARES anidadas, cada una a una profundidad MAYOR que la anterior y con un radio DIFERENTE:</p>
-<ul style="padding-left:18px;color:#94a3b8;font-size:.86em;line-height:2">
-<li>Nivel 1 (Z=-10): círculo R15</li>
-<li>Nivel 2 (Z=-18): círculo R10 (más estrecho, dentro del Nivel 1)</li>
-<li>Nivel 3 (Z=-25): círculo R12 (un poco más ancho que el 2)</li>
-</ul>
-<p>Cada nivel es un CONTORNEADO circular con G2 + I,J. Usamos fresa D4 (la más pequeña) para poder llegar al radio mínimo R10.</p>
+<div class="paso"><div class="paso-titulo">Sección 3 — Cajera interior alrededor de isla ROMBAL R8 (T3.3 · fresa D4)</div>
+<p><b>📋 Planteamiento (★ FIX auditoría completa):</b> dentro de la cajera exterior se vacía 5 mm MÁS, pero <b>solo alrededor de la isla rombal</b>. Eso deja el rombo central como ISLA EN RELIEVE de 5 mm de altura sobre el fondo de la cajera interior. <b>Profundidad: Z=-15 absoluto</b> (10 mm bajo la cara planeada).</p>
+<p><b>Geometría del rombo:</b> diagonal 70 → vértices (35,0), (0,35), (-35,0), (0,-35) con esquinas R8. Tangencias a 5,66 mm de cada vértice (= 8/√2).</p>
+<p><b>Estrategia:</b> contornear alrededor del rombo en <b>pasadas concéntricas crecientes</b> con offset radial. Compensación G42 (isla a la izquierda del avance, recorrido CCW).</p>
 <span class="res-code">% CAJERA INT ANIDADA
 
 N190 T3.3                          ; fresa D4 enteriza (Z=2, longitud corta 15 mm)
@@ -1952,48 +1956,41 @@ N220 G96 G94 G0 X0 Y0 Z100 F3000 S200 M3
 ;     F3000 = N·Z·fz = 15915·2·0,1 = 3.183 ≈ 3.000 mm/min
 ;     S200 con G96 → vc=200 m/min → N=15.915 rpm (alto, fresa pequeña)
 
-; --- NIVEL 1: círculo R15 a Z=-10 ---
-N230 G0 Z2                          ; aproxima 2 mm sobre material
-N240 G1 Z-10 F500                   ; baja con avance lento al nivel 1
-N250 G41 D3 G0 X15 Y0               ; activa compensación + va al inicio del círculo R15
-N260 G2 I-15 J0
-;     círculo completo CW
-;     I-15 J0 = centro relativo (-15, 0) desde punto inicial X15 Y0 → centro absoluto (0, 0)
-;     sin punto final → círculo entero
-N270 G40 G0 Z5                      ; cancela compensación + sube ligeramente
-
-; --- NIVEL 2: círculo R10 a Z=-18 ---
-N280 G0 Z-18                        ; baja al siguiente nivel
-N290 G41 D3 G0 X10 Y0               ; activa comp + va a inicio R10
-N300 G2 I-10 J0                     ; círculo R10
-N310 G40 G0 Z5                      ; cancela + sube
-
-; --- NIVEL 3: círculo R12 a Z=-25 ---
-N320 G0 Z-25                        ; baja al nivel más profundo (atraviesa la pieza)
-N330 G41 D3 G0 X12 Y0
-N340 G2 I-12 J0                     ; círculo R12
-N350 G40 G0 Z100                    ; cancela comp + sube a Z seguro
-N360 G44                            ; cancela longitud</span>
-<p class="res-note"><b>🔑 Cajera anidada — orden importante:</b> programamos los niveles DE ARRIBA HACIA ABAJO (más superficial primero, más profundo después). Si lo hicieras al revés, al subir la fresa después del nivel profundo podrías "raspar" un nivel intermedio. La fresa SUBE ENTRE niveles a Z=5 (sobre la superficie) para evitar colisión.</p>
+; ★ FIX: contorno del rombo (1 pasada) — para acabado real añadir pasadas concéntricas
+N230 G0 Z2                          ; aproxima
+N240 G1 Z-15 F300                   ; baja al fondo de la cajera interior
+N250 G1 G42 X29.34 Y-5.66 F1600     ; G42 + tangencia inf del vértice (35,0)
+N260 G3 X29.34 Y5.66 R8             ; arco R8 vértice (35,0) CCW
+N270 G1 X5.66 Y29.34                ; lado a (0,35)
+N280 G3 X-5.66 Y29.34 R8            ; arco R8 vértice (0,35)
+N290 G1 X-29.34 Y5.66
+N300 G3 X-29.34 Y-5.66 R8           ; arco R8 vértice (-35,0)
+N310 G1 X-5.66 Y-29.34
+N320 G3 X5.66 Y-29.34 R8            ; arco R8 vértice (0,-35)
+N330 G1 X29.34 Y-5.66                ; cierra contorno
+N340 G40 G0 Z100                    ; cancela G42 + sube
+N350 G44                            ; cancela longitud</span>
+<p class="res-note"><b>🔑 Isla en relieve — limitación práctica:</b> Fagor 8025M NO tiene ciclo para "cajera con isla". El vaciado del área entre rombo e isla se hace MANUALMENTE con pasadas concéntricas crecientes. Aquí solo se muestra la PRIMERA pasada de contorno del rombo. Para acabado real añadir 5-6 pasadas más con offset radial creciente hasta tocar los lados de la cajera exterior 88×88.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 4 — Taladros Ø5 en las 4 esquinas (T4.4 · broca D5)</div>
-<p><b>📋 Planteamiento:</b> 4 taladros pasantes en las 4 esquinas a (±30, ±30). Profundidad 28 mm (> 25 mm pieza).</p>
+<div class="paso"><div class="paso-titulo">Sección 4 — 4 taladros Ø5 en esquinas a 6 mm del borde (T4.4 · broca D5)</div>
+<p><b>📋 Planteamiento:</b> 4 taladros pasantes Ø5 a 6 mm de cada borde. Coords centradas en (±44, ±44). Profundidad I=-28 (atraviesa los 20 mm restantes + 3 mm de margen para salida limpia).</p>
 <span class="res-code">% TALADROS D5
 
-N370 T4.4                          ; broca D5 helicoidal
-N380 M6
-N390 G43
-N400 G97 G94 G0 X30 Y30 Z100 F159 S1592 M3
+N360 T4.4                          ; broca D5 helicoidal
+N370 M6
+N380 G43
+N390 G90 G17 G97 G94 G0 X-44 Y-44 Z100 F159 S1592 M3
+;     ★ G97 N constante (broca tiene D fijo)
 ;     S1592 = N = 1000·25/(π·5) = 1.592 rpm
-;     F159 = N·f = 1592·0,1 = 159,2 ≈ 159 mm/min
-N410 G81 G99 X30 Y30 Z0 I-28        ; ESQUINA 1 (sup-derecha)
-N420 X-30 Y30                       ; ESQUINA 2 (sup-izquierda)
-N430 X-30 Y-30                      ; ESQUINA 3 (inf-izquierda)
-N440 X30 Y-30                       ; ESQUINA 4 (inf-derecha)
-N450 G80 G44 Z100                   ; cancela ciclo
-N460 M5
-N470 M30                            ; FIN</span>
+;     F159 = N·f = 1592·0,1 = 159 mm/min
+N400 G81 G99 X-44 Y-44 Z2 I-28      ; ESQUINA 1 (inf-izq, marca B)
+N410 X-44 Y44                       ; ESQUINA 2 (sup-izq)
+N420 X44 Y44                        ; ESQUINA 3 (sup-der)
+N430 X44 Y-44                       ; ESQUINA 4 (inf-der)
+N440 G80 G44 Z100                   ; cancela ciclo
+N450 M5
+N460 M30                            ; FIN</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
@@ -2007,7 +2004,49 @@ T4.4 (broca D5, vc=25, f=0,1): N=1.592 rpm, vf=159 mm/min</div>
 </div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>La cajera anidada tiene <b>3 niveles de profundidad</b> con radios R15/R10/R12 distintos — se programa cada nivel como un círculo G2 aislado (G41 activar, G2 con I/J, G40 cancelar) a la Z correspondiente. La fresa D4 con <b>S=15.000 rpm</b> está en el límite de cabezales estándar (12.000-20.000) — verificar que la máquina lo soporta. La secuencia planeado→cajera ext→cajera int→taladrado evita dañar geometrías ya hechas con herramientas mayores.</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación corregida</span>
+Geometría real: <b>cajera exterior 88×88 (5 mm)</b> + <b>cajera interior alrededor del rombo R8 (5 mm más)</b> + <b>4 taladros Ø5</b>. La isla rombal queda en relieve 5 mm sobre el fondo interior. Secuencia: planeado D40 → cajera ext D16 → cajera int D4 (con contorno del rombo) → taladros D5.
+<br><br>
+<b>🔍 Auditoría aplicada (corrección de interpretación):</b>
+<ol style="margin:6px 0 0 18px;font-size:.93em;line-height:1.7">
+<li><b>Geometría REHECHA:</b> antes interpreté como "3 cajeras circulares anidadas R15/R10/R12 a niveles Z=−10/−18/−25". La realidad del plano es <b>1 cajera rectangular + 1 isla rombal R8</b>. Mismo número de operaciones, diferente geometría.</li>
+<li><b>Profundidades corregidas:</b> Z=−10 (fondo cajera exterior) y Z=−15 (fondo cajera interior alrededor del rombo). Antes tenía Z=−10/−18/−25 (mal).</li>
+<li><b>Taladros:</b> 4 esquinas a 6 mm del borde → coords (±44, ±44). Antes tenía (±30, ±30).</li>
+<li><b>R en esquinas variables (R10/R12/R15):</b> aproximación R8 con fresa D16. Para los R exactos hay que contornear manual.</li>
+</ol>
+</div>
+
+<div class="paso" style="background:rgba(252,211,77,.08);border:2px solid rgba(252,211,77,.30);border-radius:8px;padding:14px 18px;margin-top:18px">
+<div class="paso-titulo" style="color:#fcd34d;font-size:.95em">📅 TODO mañana en clase (laboratorio Winunisoft) — Pieza 4</div>
+<p style="color:#fcd34d;font-weight:600;margin-top:6px">Esta es la MISMA pieza estructural que ya tienes en <code>IonAndoniBerloso4.nc</code> del laboratorio (con 5 mm de bruto más para planear).</p>
+<ol style="padding-left:18px;font-size:.92em;color:#e2e8f0;line-height:2;margin-top:8px">
+<li><b>Abrir Winunisoft</b> con el control Fagor 8025M (la máquina "Armoni" de tu .prj).</li>
+<li><b>Cargar el archivo</b> <code>c:/Users/Usuario/Desktop/sistemas lab/sistemas labionan/Pieza4/IonAndoniBerloso4.nc</code></li>
+<li><b>Verificar la simulación 3D</b>: ejecutar paso a paso y observar:
+  <ul style="margin:4px 0 0 16px">
+  <li>OP1 (T1.1 D32): 5 pasadas de planeado → cara superior baja a Z=-5</li>
+  <li>OP2 (T3.3 D10): cajera 70×65 a 5 mm de profundidad respecto cara planeada</li>
+  <li>OP3 (T4.4 D2.5): contorno del rombo en el fondo (este paso es PARCIAL — solo marca el rombo, no vacía el área alrededor)</li>
+  <li>OP4 (T5.5 D5): 4 taladros en esquinas (±44, ±44) pasantes</li>
+  </ul>
+</li>
+<li><b>Comprobar que las herramientas T1.1, T3.3, T4.4 y T5.5</b> existen en tu librería de la máquina (en tu .prj están como Fresa D32, Fresa D10, Fresa D2.5, Broca D5). Si no, ajustar los números.</li>
+<li><b>Si la simulación funciona:</b>
+  <ul style="margin:4px 0 0 16px">
+  <li>Guardar el .nc en la carpeta <code>PIEZA4 ENTREGAR</code> (crear carpeta si no existe).</li>
+  <li>Copiar el .prj y .txt/.wmf desde el intento1 a la carpeta nueva.</li>
+  <li>Renombrarlo a <code>IonAndoniBerloso4.nc</code> (consistente con piezas 1, 2, 3).</li>
+  </ul>
+</li>
+<li><b>Si hay errores en la simulación:</b> anotar exactamente qué línea N falla y consultar al profesor. Posibles fallos: colisión por Z=2 plano referencia, herramienta no encontrada, parámetro fuera de rango.</li>
+<li><b>Si la isla rombal NO queda en relieve</b> (porque el contorno solo marca, no vacía el material alrededor): aceptar la simplificación, o programar pasadas concéntricas adicionales antes de OP4. El profesor puede aceptar la versión simplificada para nota de laboratorio.</li>
+<li><b>Verificar profundidades:</b> taladros con I=-33 deberían atravesar los 25 mm de pieza tras planeado + margen. Si la simulación muestra que no atraviesan, ajustar a I=-35 o I=-40.</li>
+<li><b>Comprobar tiempo total de mecanizado</b> (Winunisoft lo calcula): si es muy alto (>30 min), reducir avances o quitar pasadas.</li>
+<li><b>Confirmar las 4 piezas funcionando:</b> abrir cada archivo .nc de PIEZA1, PIEZA2, PIEZA3 y PIEZA4 en Winunisoft y verificar que simulan sin errores. Si todas OK → ENTREGAR. ✅</li>
+</ol>
+<p style="margin-top:10px;color:#fcd34d"><b>Si te piden la hoja de proceso:</b> usa el formato de tu intento1.txt vacío que tienes; rellena con las 4 operaciones (planeado, cajera, contorneo rombo, taladros) y los parámetros vc/N/F de cada herramienta.</p>
+</div>
+
 </div>
 <div class="topic-panel" id="ex11">
 <div class="panel-header">
