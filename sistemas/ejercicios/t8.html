@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#000000" name="theme-color"/>
+<title>T8 Deformación plástica - Ejercicios - Sistemas UPV/EHU</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--accent:#ffd93d;--accent-dim:rgba(255,217,61,.10);--accent-border:rgba(255,217,61,.25);--gold:#f59e0b;--green:#10b981;--blue:#38bdf8;--orange:#fb923c;--ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;--radius:10px;--radius-sm:6px;--topbar-h:52px;--sidebar-w:264px;--transition:.22s cubic-bezier(.4,0,.2,1)}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:var(--topbar-h)}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-back svg{transition:transform var(--transition)}
+.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:200px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker.open .tema-dropdown{display:block}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover{background:var(--accent-dim);color:var(--accent);text-decoration:none}
+.td-item.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
+.read-progress{position:fixed;top:var(--topbar-h);left:var(--sidebar-w);right:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--accent),var(--orange));transform-origin:left;transform:scaleX(0);transition:transform .08s linear}
+.layout{display:flex;padding-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h))}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:var(--topbar-h);left:0;bottom:0;background:rgba(255,255,255,.025);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{width:100%;display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.78em;cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:36px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-yellow{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
+.topic-panel{display:none;max-width:860px}
+.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:22px;padding:14px 18px 16px;background:linear-gradient(135deg,var(--accent-dim) 0%,transparent 60%);border:1px solid rgba(255,217,61,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-title{font-size:1.25em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:12px;border-left:3px solid var(--accent-border)}
+.resultado-enunciado{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-radius:var(--radius-sm);padding:8px 14px;font-size:.83em;color:#a7f3d0;margin-bottom:14px;border-left:3px solid rgba(16,185,129,.4)}
+.res-label{font-weight:700;color:#6ee7b7}
+.section-wrap{margin-bottom:12px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.2);border-top:none}
+.s-datos .sec-btn{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border)}
+.s-datos .sec-body{background:rgba(255,217,61,.04);border:1px solid var(--accent-border);border-top:none}
+.s-teoria .sec-btn{background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
+.s-teoria .sec-body{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.2);border-top:none}
+.s-formulas .sec-btn{background:rgba(251,146,60,.1);color:var(--orange);border:1px solid rgba(251,146,60,.25)}
+.s-formulas .sec-body{background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.2);border-top:none}
+.t-datos{width:100%;border-collapse:collapse;font-size:.84em}
+.t-datos th{background:var(--accent-dim);color:var(--accent);padding:7px 10px;text-align:left;border:1px solid var(--accent-border)}
+.t-datos td{padding:7px 10px;border:1px solid var(--border);color:var(--text2)}
+.t-datos tr:nth-child(even) td{background:rgba(255,217,61,.04)}
+.formula-box{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:8px 13px;margin:6px 0;color:#fed7aa;overflow-x:auto;font-family:var(--ff-mono);font-size:.82em;white-space:pre-wrap;line-height:1.7}
+.paso{margin-bottom:13px;padding:10px 13px;background:rgba(16,185,129,.06);border-radius:var(--radius-sm);border-left:3px solid rgba(16,185,129,.4)}
+.paso-titulo{color:var(--green);font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.porque{font-size:.82em;color:#94a3b8;font-style:italic;margin-bottom:6px}
+.porque strong{color:var(--orange);font-style:normal;font-weight:700}
+.resultado-final{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-sm);padding:11px 15px;margin-top:12px}
+.rf-label{font-size:.7em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:700}
+.rf-val{color:#d1fae5;font-size:.9em;line-height:1.9}
+.nota{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:var(--radius-sm);padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+.verificacion{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.25);border-left:3px solid #38bdf8;border-radius:var(--radius-sm);padding:10px 14px;margin-top:10px;font-size:.82em;color:#bae6fd}
+.verificacion .vlabel{font-family:var(--ff-mono);font-size:.7em;color:#38bdf8;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px;display:block}
+@media(max-width:768px){body{font-size:17px}.sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.layout{flex-direction:column}.content{margin-left:0;padding:20px 16px 40px}.sb-list{max-height:200px}.read-progress{left:0}}
+</style>
+<link rel="stylesheet" href="../../shared/ehulab.css">
+</head>
+<body>
+<nav class="topbar">
+<a class="topbar-back" href="../teoria.html"><svg fill="none" height="16" viewbox="0 0 16 16" width="16"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a>
+<span class="topbar-title">⚙️ Sistemas · T8 · Deformación plástica — Ejercicios</span>
+<div class="tema-picker" id="temaPicker">
+<button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T8 ▾</button>
+<div class="tema-dropdown">
+<a class="td-item" href="t1.html"><span class="td-num">T1</span> Torneado</a>
+<a class="td-item" href="t2.html"><span class="td-num">T2</span> Fresado</a>
+<a class="td-item" href="t3.html"><span class="td-num">T3</span> Taladrado</a>
+<a class="td-item" href="t4.html"><span class="td-num">T4</span> CNC</a>
+<a class="td-item" href="t5.html"><span class="td-num">T5</span> Rectificado</a>
+<a class="td-item" href="t6.html"><span class="td-num">T6</span> Fundición</a>
+<a class="td-item" href="t7.html"><span class="td-num">T7</span> Metrología</a>
+<a class="td-item td-active" href="t8.html"><span class="td-num">T8</span> Deformación pl.</a>
+</div>
+</div>
+<a class="topbar-pdf no-print" href="../pdf/ejercicios_t8.pdf" download="ejercicios_t8.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+<div class="read-progress" id="readProgress"></div>
+<div class="layout">
+<aside class="sidebar">
+<div class="sb-head">
+<div class="sb-subtitle">T8 · Deformación plástica</div>
+<div class="sb-current" id="sbCurrent">Doblado AISI 304 — radio mínimo</div>
+</div>
+<div class="sb-list">
+<button class="sb-item" data-id="ex1" onclick="showEx('ex1')"><span class="sb-tag">T8.P1</span><span class="sb-name">Doblado AISI 304 — matriz V mínima</span></button>
+<button class="sb-item" data-id="ex2" onclick="showEx('ex2')"><span class="sb-tag">T8.P2</span><span class="sb-name">Doblado en U — matriz U, prensa</span></button>
+<button class="sb-item" data-id="ex3" onclick="showEx('ex3')"><span class="sb-tag">T8.P3</span><span class="sb-name">Doblado titanio Grado 2 — recuperación</span></button>
+<button class="sb-item" data-id="ex4" onclick="showEx('ex4')"><span class="sb-tag">T8.P4</span><span class="sb-name">Doblado Al 6063 — 2 dobleces, línea neutra</span></button>
+<button class="sb-item" data-id="ex5" onclick="showEx('ex5')"><span class="sb-tag">T8.P5</span><span class="sb-name">Embutición — recipiente cilíndrico Al</span></button>
+<button class="sb-item" data-id="ex6" onclick="showEx('ex6')"><span class="sb-tag">T8.P6</span><span class="sb-name">Embutición — cilindro de latón ASTM 70/30</span></button>
+</div>
+<div class="sb-footer"><a class="sb-link sb-link-yellow" href="../teoria.html"><svg fill="none" height="13" viewbox="0 0 16 16" width="13"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a></div>
+</aside>
+
+<main class="content">
+
+<!-- ════ P1 ════ -->
+<div class="topic-panel" id="ex1">
+<div class="panel-header"><div class="panel-tag">T8.P1</div><h1 class="panel-title">Doblado AISI 304 — radio mínimo y matriz V</h1><div class="panel-meta">Radio mínimo de doblado · Abertura mínima · Compensación springback</div></div>
+<div class="enunciado">
+<p>Se desea doblar a <b>90°</b> una chapa de acero inoxidable <b>AISI 304</b> de <b>2 mm</b> de espesor, con un radio interior de doblado igual a la <b>mitad del radio máximo</b> de doblado con objeto de asegurar la deformación permanente del material. Para ello, se pretende diseñar una matriz en V con una abertura que sea la mínima posible. Calcular:</p>
+<ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
+<li>Radio de doblado de la chapa.</li>
+<li>Abertura mínima posible de la matriz.</li>
+<li>Ángulo que ha de tener la matriz, teniendo en cuenta la compensación de la recuperación elástica.</li>
+</ol>
+</div>
+<div class="resultado-enunciado"><span class="res-label">Resultado boletín:</span> [sin valores explícitos]</div>
+
+<div class="section-wrap s-teoria sec-open"><button class="sec-btn" onclick="toggleSec(this)">📐 Conceptos y fórmulas <span class="sarr">▼</span></button><div class="sec-body">
+<div class="formula-box">Radio máximo de doblado:  R<sub>max</sub> ≈ E·e / (2·σ<sub>F</sub>)
+   (e=espesor, σ_F=límite elástico)
+
+Radio mínimo de doblado:  R<sub>min</sub> ≈ e/2  (depende del material; AISI 304 = e a 2e)
+
+Abertura mínima matriz V:  W = 2·(R + e)·sin(α/2) + 2·R<sub>matriz</sub>
+   simplificado: W ≈ 6·e a 8·e (regla práctica)
+
+Recuperación elástica (springback):
+   β/β' = 1 - 3·R·σ_F/(E·e) + 4·(R·σ_F/(E·e))³
+
+Ángulo de matriz corregido:  α<sub>matriz</sub> = α<sub>final</sub> - Δβ
+   (sobre-doblar para compensar el retorno elástico)</div>
+</div></div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Datos AISI 304 (típicos)</div>
+<div class="formula-box">σ<sub>F</sub> ≈ 240 MPa  (límite elástico AISI 304 recocido)
+E ≈ 200.000 MPa = 200 GPa
+e = 2 mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Apartado a) Radio interior de doblado</div>
+<p class="porque"><strong>¿Por qué?</strong> El enunciado pide R = R<sub>max</sub>/2. Primero calculamos R<sub>max</sub>:</p>
+<div class="formula-box">R<sub>max</sub> = E·e / (2·σ<sub>F</sub>) = 200.000·2 / (2·240) = 400.000/480 = <b>833,3 mm</b>
+
+R = R<sub>max</sub>/2 = <b>416,7 mm</b></div>
+<div class="nota">El R<sub>max</sub> es el radio por debajo del cual la deformación es permanente. Si se dobla con R mayor, la chapa "vuelve" toda al estirar. Por seguridad se usa R = R<sub>max</sub>/2.</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Apartado b) Abertura mínima de la matriz V</div>
+<p class="porque"><strong>¿Por qué?</strong> La matriz en V debe ser suficientemente abierta para que la chapa pueda flexionar sin atascarse. La regla práctica: W ≈ 8·e para 90° en V de 88°.</p>
+<div class="formula-box">W<sub>min</sub> = 2·(R + e)·sin(α/2)
+α = 90° → α/2 = 45° → sin(45°) = 0,707
+W<sub>min</sub> = 2·(416,7 + 2)·0,707 = 2·418,7·0,707 = <b>592 mm</b></div>
+<div class="nota">Esta abertura es enorme porque el R interior pedido es muy grande. En la práctica, con un radio así, no se usa matriz V sino doblado con rodillos. Si el enunciado pide algo más realista (R ≈ e), W ≈ 5,6 mm.</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Apartado c) Ángulo de la matriz con springback</div>
+<p class="porque"><strong>¿Por qué?</strong> Al liberar la fuerza, la chapa retorna elásticamente Δβ. La matriz se hace MÁS CERRADA en Δβ para que al recuperarse quede a 90°.</p>
+<div class="formula-box">R·σ<sub>F</sub>/(E·e) = 416,7 · 240 / (200.000·2) = 0,25
+
+β<sub>final</sub>/β<sub>matriz</sub> = 1 - 3·(0,25) + 4·(0,25)³ = 1 - 0,75 + 0,0625 = 0,3125
+
+Si β<sub>final</sub> = 90°, entonces:
+β<sub>matriz</sub> = β<sub>final</sub> / 0,3125 = 288°  (¡imposible, springback excesivo!)</div>
+<div class="nota">El factor R·σ/(E·e) = 0,25 es alto: el material recupera muchísimo. Esto confirma que el R pedido es demasiado grande para deformación plástica eficaz. Se debería reducir R para que R·σ/(E·e) ≤ 0,1 (springback razonable). Si R = e (mínimo), R·σ/(E·e) = 240/200.000 = 0,0012 y casi no hay springback.</div>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Resultados (valores típicos para AISI 304 con R = R_max/2)</div><div class="rf-val">
+a) R = <b>416,7 mm</b> · b) W<sub>min</sub> ≈ <b>592 mm</b> · c) α<sub>matriz</sub> &gt; 90° (sobre-doblar muchísimo, o reconsiderar R)
+</div></div>
+</div></div>
+</div>
+
+
+<!-- ════ P2 ════ -->
+<div class="topic-panel" id="ex2">
+<div class="panel-header"><div class="panel-tag">T8.P2</div><h1 class="panel-title">Doblado en U — aluminio ASTM 2024</h1><div class="panel-meta">Radio interior · Longitud chapa · Selección prensa</div></div>
+<div class="enunciado">
+<p>Se desea fabricar un lote de piezas con sección transversal en <b>U</b>, a partir de chapas de aluminio <b>ASTM 2024</b> de <b>3 mm</b> de espesor, utilizando una matriz de doblado en U. Considerando un <b>factor de seguridad del 70%</b> para el radio interior de doblado, calcular:</p>
+<ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
+<li>Radio interior de doblado.</li>
+<li>Longitud total de chapa a conformar (altura U = 400 mm, ancho base = 900 mm).</li>
+<li>Seleccionar la prensa más adecuada usando el mayor ancho posible sin sobrepasar 10 kN.</li>
+</ol>
+<p>Prensas: B1400CNC (4 kW, 1.455 mm máx, 9,3 mm/s) · B3003CNC (9,5 kW, 3.125 mm máx, 6,7 mm/s).</p>
+</div>
+<div class="resultado-enunciado"><span class="res-label">Resultado:</span> [sin valores explícitos]</div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Datos Al 2024 (típicos)</div>
+<div class="formula-box">σ<sub>F</sub> ≈ 280 MPa  (Al 2024-T3)
+σ<sub>R</sub> ≈ 470 MPa  (resistencia a tracción)
+E ≈ 73.000 MPa = 73 GPa
+e = 3 mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Apartado a) Radio interior de doblado</div>
+<p class="porque"><strong>¿Por qué?</strong> Aplicamos R = (1 / FS) · R<sub>max</sub> donde FS=70% significa que solo usamos el 70% del rango disponible (más conservador, no se aproxima al límite).</p>
+<div class="formula-box">R<sub>max</sub> = E·e / (2·σ<sub>F</sub>) = 73.000·3 / (2·280) = 219.000/560 = <b>391,1 mm</b>
+R = 0,70 · R<sub>max</sub> = <b>273,8 mm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Apartado b) Longitud de chapa</div>
+<p class="porque"><strong>¿Por qué?</strong> La longitud de la fibra neutra atraviesa los dos arcos de 90° más los tramos rectos. La fibra neutra está aproximadamente en la mitad del espesor (con k=0,5):</p>
+<div class="formula-box">L<sub>arco_neutra</sub> = (π/2) · (R + k·e) = (π/2)·(273,8 + 0,5·3) = (π/2)·275,3 = 432,4 mm (90°)
+
+Hay DOS dobleces de 90°: 2 × 432,4 = 864,7 mm
+
+Tramo recto base = 900 - 2·(R+e) = 900 - 2·276,8 = 346,4 mm
+Tramos rectos laterales = 400 - (R+e) = 400 - 276,8 = 123,2 mm cada uno (2 laterales)
+
+L<sub>total</sub> = 864,7 + 346,4 + 2·123,2 = <b>1.457,5 mm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Apartado c) Selección de prensa</div>
+<p class="porque"><strong>¿Por qué?</strong> Buscamos la prensa que maneje el ancho de chapa (probablemente 1000 mm dado en el enunciado original) con fuerza ≤ 10 kN. La fuerza máxima de doblado se aproxima por:</p>
+<div class="formula-box">F<sub>doblado</sub> = k · σ<sub>R</sub> · e² · L / W   (k≈1,33 para U, σ_R en MPa, dims en mm)
+
+Para esta chapa: F = 1,33 · 470 · 3² · 1000 / 100 ≈ 56 kN (excede 10 kN si ancho = 1000 mm)
+
+⇒ Hay que reducir el ancho de chapa por golpe. Con 10 kN:
+   10.000 = 1,33·470·9·B/100 → B = 178 mm
+
+⇒ Doblar de 178 mm en 178 mm (varios golpes con sectorizado)</div>
+<p>Conclusión: ambas prensas pueden hacer la operación si dividimos la longitud por golpes. La <b>B1400CNC (4 kW)</b> es suficiente para anchos típicos hasta 1.455 mm. Es más económica y suficiente para este caso.</p>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Resultados</div><div class="rf-val">a) R<sub>int</sub> = <b>273,8 mm</b> · b) L<sub>chapa</sub> = <b>1.457,5 mm</b> · c) <b>Prensa B1400CNC</b> (menos potente pero suficiente, abertura máx 1.455 mm cubre L)</div></div>
+</div></div>
+</div>
+
+
+<!-- ════ P3 ════ -->
+<div class="topic-panel" id="ex3">
+<div class="panel-header"><div class="panel-tag">T8.P3</div><h1 class="panel-title">Doblado titanio ASTM Grado 2 — recuperación elástica</h1><div class="panel-meta">Radio herramienta · Fuerza · Longitud doblado · Limitar springback a 1°</div></div>
+<div class="enunciado">
+<p>Se desea realizar el conformado de chapas de titanio ASTM Grado 2 de <b>3,6 mm</b> de espesor y <b>1000 mm</b> de ancho, en primera fase requiere un doblado a <b>30°</b>. Se requiere que la recuperación elástica no sea mayor de <b>1°</b> y se debe tener en cuenta que, para este material, el radio de la herramienta de doblado debe ser el <b>10% de la abertura de la matriz</b>. Determinar:</p>
+<ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
+<li>Radio de la herramienta (equivalente al radio interior de doblado).</li>
+<li>Fuerza máxima de doblado.</li>
+<li>Longitud de doblado.</li>
+</ol>
+</div>
+<div class="resultado-enunciado"><span class="res-label">Resultado:</span> [sin valores explícitos]</div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Datos Ti ASTM Grado 2</div>
+<div class="formula-box">σ<sub>F</sub> ≈ 275 MPa
+σ<sub>R</sub> ≈ 345 MPa
+E ≈ 105.000 MPa = 105 GPa
+e = 3,6 mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Apartado a) Radio de herramienta con springback ≤ 1°</div>
+<p class="porque"><strong>¿Por qué?</strong> El springback se controla mediante R. Con la fórmula simplificada Δβ/β ≈ 3·R·σ<sub>F</sub>/(E·e), despejamos R máximo:</p>
+<div class="formula-box">Δβ/β ≤ 1°/30° = 0,0333
+Δβ/β ≈ 3·R·σ<sub>F</sub>/(E·e)
+0,0333 ≥ 3·R·275/(105.000·3,6)
+R ≤ 0,0333 · 105.000·3,6 / (3·275) = <b>15,3 mm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Apartado b) Fuerza máxima de doblado</div>
+<p class="porque"><strong>¿Por qué?</strong> R<sub>herramienta</sub> = 10% · W ⟹ W = R/0,1 = 153 mm. Fuerza:</p>
+<div class="formula-box">F = k · σ<sub>R</sub> · e² · L / W   (V abierta, k ≈ 1,33)
+F = 1,33 · 345 · 3,6² · 1000 / 153 = 1,33·345·12,96·1000/153
+F = <b>38.870 N ≈ 38,9 kN</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Apartado c) Longitud de doblado</div>
+<p class="porque"><strong>¿Por qué?</strong> La longitud de doblado es el ancho de la chapa donde se aplica el doblez: L<sub>doblado</sub> = 1000 mm (ancho dado).</p>
+<div class="formula-box">L<sub>doblado</sub> = ancho de chapa = <b>1.000 mm</b></div>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Resultados</div><div class="rf-val">a) R<sub>herramienta</sub> = <b>15,3 mm</b> · b) F = <b>38,9 kN</b> · c) L<sub>doblado</sub> = <b>1.000 mm</b></div></div>
+</div></div>
+</div>
+
+
+<!-- ════ P4 ════ -->
+<div class="topic-panel" id="ex4">
+<div class="panel-header"><div class="panel-tag">T8.P4</div><h1 class="panel-title">Doblado Al 6063 — 2 dobleces</h1><div class="panel-meta">Línea neutra · Longitud total · Fuerza máxima</div></div>
+<div class="enunciado">
+<p>Se desea doblar una chapa de aluminio <b>ASTM 6063</b> de <b>10 mm</b> de espesor y <b>100 mm</b> de ancho. Geometría: dos dobleces, uno de 90° y otro de 45°. Los radios interiores son <b>12 mm</b>. Tramos rectos: 10 mm, 50 mm, 80 mm y 60 mm.</p>
+<ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
+<li>Longitudes de la línea neutra de ambos doblados.</li>
+<li>Longitud total de chapa.</li>
+<li>Fuerza máxima usando matriz V de 20 mm (45°) y pasante (90°).</li>
+</ol>
+</div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Datos Al 6063</div>
+<div class="formula-box">σ<sub>F</sub> ≈ 145 MPa (T5)
+σ<sub>R</sub> ≈ 185 MPa
+E ≈ 69 GPa, e = 10 mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Apartado a) Longitudes de línea neutra</div>
+<p class="porque"><strong>¿Por qué?</strong> La fibra neutra (k=0,5 aprox) en cada doblez tiene longitud (α en rad)·(R+k·e).</p>
+<div class="formula-box">L<sub>neutra,90°</sub> = (π/2)·(12 + 0,5·10) = (π/2)·17 = <b>26,7 mm</b>
+L<sub>neutra,45°</sub> = (π/4)·17 = <b>13,4 mm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Apartado b) Longitud total</div>
+<div class="formula-box">L<sub>total</sub> = tramos rectos + arcos
+= 10 + 50 + 80 + 60 + 26,7 + 13,4
+= <b>240,1 mm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Apartado c) Fuerzas máximas</div>
+<div class="formula-box">F = k · σ<sub>R</sub> · e² · L / W
+
+Doblez 45° con V=20 mm: F<sub>45</sub> = 1,33·185·100·100/20 = <b>123 kN</b>
+Doblez 90° con pasante (W ≈ 8·e = 80): F<sub>90</sub> = 1,33·185·100·100/80 = <b>31 kN</b></div>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Resultados</div><div class="rf-val">a) Línea neutra: 26,7 mm (90°) + 13,4 mm (45°) · b) L<sub>chapa</sub> = <b>240,1 mm</b> · c) F<sub>45°</sub> = <b>123 kN</b>, F<sub>90°</sub> = <b>31 kN</b></div></div>
+</div></div>
+</div>
+
+
+<!-- ════ P5 ════ -->
+<div class="topic-panel" id="ex5">
+<div class="panel-header"><div class="panel-tag">T8.P5</div><h1 class="panel-title">Embutición — recipiente cilíndrico de Al</h1><div class="panel-meta">Espesor · Dimensiones · Etapas · Fuerzas</div></div>
+<div class="enunciado">
+<p>Recipientes cilíndricos de <b>430 mm</b> de diámetro de aluminio ASTM 6063, con mayor espesor y altura posibles, volumen embutido <b>5.500 cm³ = 5,5·10⁶ mm³</b>. Espesores disponibles: 0,5 / 1 / 2 / 3 mm. Prensa: 56 kW, 3.725 kN, diámetro máx 233 mm, profundidad máx 191 mm.</p>
+</div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Apartado a) Espesor a utilizar</div>
+<p class="porque"><strong>¿Por qué?</strong> Con D=430 mm grande y tirada normal, espesor pequeño no garantiza integridad. Se elige el MAYOR posible que la prensa pueda procesar.</p>
+<div class="formula-box">Mayor espesor disponible: <b>3 mm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Apartado b) Dimensiones h, d1, d2 finales</div>
+<p class="porque"><strong>¿Por qué?</strong> Volumen = π·(d₁/2)²·h = 5,5·10⁶. Diámetro de la prensa limita d₁ ≤ 233 mm.</p>
+<div class="formula-box">d<sub>1</sub> = 233 mm (máximo)
+h = V / (π·(d<sub>1</sub>/2)²) = 5,5·10⁶ / (π·116,5²) = 5,5·10⁶ / 42.640 = 129 mm
+d<sub>2</sub> ≈ d<sub>1</sub> + 2·e = 233 + 6 = <b>239 mm</b> (diámetro exterior)
+h = <b>129 mm</b> (cabe en prof. máx 191 mm)</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Apartado c) Número de etapas</div>
+<p class="porque"><strong>¿Por qué?</strong> La relación de embutición β = D<sub>chapa</sub>/d<sub>pieza</sub>. Conservación de volumen ⇒ D_chapa = √(d²+4·d·h):</p>
+<div class="formula-box">D<sub>chapa</sub> = √(d² + 4·d·h) = √(233² + 4·233·129)
+   = √(54.289 + 120.228) = √174.517 = <b>418 mm</b>
+
+β = D<sub>chapa</sub> / d = 418/233 = <b>1,79</b>
+
+Relación máxima por etapa: β<sub>max,1</sub> ≈ 1,8-2 → <b>1 etapa</b> es suficiente (al límite)</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Apartado d) Fuerzas de corte y embutición</div>
+<div class="formula-box">Corte del disco (φ418):
+F<sub>corte</sub> = π·D·e·σ<sub>R</sub> = π·418·3·185 = <b>728 kN</b>
+
+Embutición:
+F<sub>emb</sub> = π·d·e·σ<sub>R</sub>·k_β  (k ≈ 0,7 para β=1,79)
+F<sub>emb</sub> = π·233·3·185·0,7 = <b>284 kN</b>  &lt; 3725 kN ✓</div>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Resultados</div><div class="rf-val">a) e = <b>3 mm</b> · b) d<sub>1</sub>=233, d<sub>2</sub>=239, h=129 mm · c) <b>1 etapa</b> · d) F<sub>corte</sub> = <b>728 kN</b>, F<sub>emb</sub> = <b>284 kN</b></div></div>
+</div></div>
+</div>
+
+
+<!-- ════ P6 ════ -->
+<div class="topic-panel" id="ex6">
+<div class="panel-header"><div class="panel-tag">T8.P6</div><h1 class="panel-title">Embutición — pieza cilíndrica de latón ASTM 70/30</h1><div class="panel-meta">Disco inicial · Fuerza corte · Relación embutición · Fuerza embutición</div></div>
+<div class="enunciado">
+<p>Pieza cilíndrica embutida en latón ASTM 70/30 de espesor de chapa <b>5 mm</b> → recipiente d=40 mm interior, espesor pared 3 mm, altura 100 mm. Calcular: diámetro inicial chapa, F<sub>corte</sub>, β, reducción de sección %, F<sub>embutición</sub>.</p>
+</div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Datos Latón ASTM 70/30 (CuZn30)</div>
+<div class="formula-box">σ<sub>R</sub> ≈ 320 MPa
+e<sub>inicial</sub> = 5 mm; e<sub>pared</sub> = 3 mm
+d = 40 mm interior; h = 100 mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Apartado a) Diámetro inicial de chapa (disco)</div>
+<p class="porque"><strong>¿Por qué?</strong> Conservación de volumen: V<sub>disco</sub> = V<sub>recipiente</sub>.</p>
+<div class="formula-box">V<sub>rec</sub> = base + paredes
+       = π·(40/2)²·3 + π·(40+3)·100·3   (área base + área lateral × espesor)
+       ≈ π·400·3 + π·43·100·3
+       = 3770 + 40.527 = 44.297 mm³
+
+V<sub>disco</sub> = π·D<sub>0</sub>²/4 · 5 = V<sub>rec</sub>
+D<sub>0</sub> = √(4·44.297/(π·5)) = √11.282 = <b>106,2 mm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Apartado b) Fuerza de corte del disco</div>
+<div class="formula-box">F<sub>corte</sub> = π · D<sub>0</sub> · e · σ<sub>R</sub>
+       = π · 106,2 · 5 · 320 = <b>533.700 N ≈ 534 kN</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Apartado c) Relación de embutición β</div>
+<div class="formula-box">β = D<sub>0</sub> / d<sub>pieza</sub> = 106,2 / (40 + 2·3) = 106,2 / 46 = <b>2,31</b>
+
+β > β_max,1 etapa (1,8) ⇒ necesita 2 etapas mínimo</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Apartado d) Reducción de sección porcentual</div>
+<div class="formula-box">RS = (1 - 1/β²) · 100 = (1 - 1/5,33) · 100
+   = (1 - 0,188) · 100 = <b>81,3 %</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 5 — Apartado e) Fuerza de embutición</div>
+<div class="formula-box">F<sub>emb</sub> = π · d · e · σ<sub>R</sub> · k(β)
+   k(β=2,31) ≈ 1,0 (alto, cerca del límite)
+F<sub>emb</sub> = π · 46 · 5 · 320 · 1,0 = <b>231.144 N ≈ 231 kN</b></div>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Resultados</div><div class="rf-val">
+a) D<sub>0</sub> = <b>106,2 mm</b> · b) F<sub>corte</sub> = <b>534 kN</b> · c) β = <b>2,31</b> (necesita 2 etapas) · d) RS = <b>81,3%</b> · e) F<sub>emb</sub> = <b>231 kN</b>
+</div></div>
+</div></div>
+</div>
+
+</main>
+</div>
+
+<script>
+var _allPanels = document.querySelectorAll('.topic-panel');
+var _allItems  = document.querySelectorAll('.sb-item');
+var _sbCurrent = document.getElementById('sbCurrent');
+var _readProg  = document.getElementById('readProgress');
+function showEx(id) {
+  _allPanels.forEach(function(p){ p.classList.remove('active'); });
+  _allItems.forEach(function(b){ b.classList.remove('active'); });
+  var panel = document.getElementById(id);
+  var btn   = document.querySelector('[data-id="'+id+'"]');
+  if (panel) panel.classList.add('active');
+  if (btn)   btn.classList.add('active');
+  if (_sbCurrent && btn) _sbCurrent.textContent = btn.querySelector('.sb-name').textContent;
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
+}
+function toggleSec(btn) { btn.parentElement.classList.toggle('sec-open'); }
+function updateProgress() {
+  if (!_readProg) return;
+  var el = document.querySelector('.topic-panel.active');
+  if (!el) { _readProg.style.transform='scaleX(0)'; return; }
+  var st = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+  _readProg.style.transform = 'scaleX('+(h>0?Math.min(st/h,1):0)+')';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+var _tp = document.getElementById('temaPicker');
+document.addEventListener('click', function(e){ if(_tp && !_tp.contains(e.target)) _tp.classList.remove('open'); });
+document.addEventListener('DOMContentLoaded', function(){
+  var first = document.querySelector('.sb-item');
+  if (first) showEx(first.getAttribute('data-id'));
+});
+</script>
+</body>
+</html>

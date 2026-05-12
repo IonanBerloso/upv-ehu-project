@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#000000" name="theme-color"/>
+<title>T7 Metrología - Ejercicios - Sistemas UPV/EHU</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--accent:#ffd93d;--accent-dim:rgba(255,217,61,.10);--accent-border:rgba(255,217,61,.25);--gold:#f59e0b;--green:#10b981;--blue:#38bdf8;--orange:#fb923c;--red:#ef4444;--ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;--radius:10px;--radius-sm:6px;--topbar-h:52px;--sidebar-w:264px;--transition:.22s cubic-bezier(.4,0,.2,1)}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:var(--topbar-h)}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-back svg{transition:transform var(--transition)}
+.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:200px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker.open .tema-dropdown{display:block}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover{background:var(--accent-dim);color:var(--accent);text-decoration:none}
+.td-item.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
+.read-progress{position:fixed;top:var(--topbar-h);left:var(--sidebar-w);right:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--accent),var(--orange));transform-origin:left;transform:scaleX(0);transition:transform .08s linear}
+.layout{display:flex;padding-top:var(--topbar-h);min-height:calc(100vh - var(--topbar-h))}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:var(--topbar-h);left:0;bottom:0;background:rgba(255,255,255,.025);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{width:100%;display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.78em;cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:36px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-yellow{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
+.topic-panel{display:none;max-width:860px}
+.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:22px;padding:14px 18px 16px;background:linear-gradient(135deg,var(--accent-dim) 0%,transparent 60%);border:1px solid rgba(255,217,61,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-title{font-size:1.25em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:12px;border-left:3px solid var(--accent-border)}
+.resultado-enunciado{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-radius:var(--radius-sm);padding:8px 14px;font-size:.83em;color:#a7f3d0;margin-bottom:14px;border-left:3px solid rgba(16,185,129,.4)}
+.res-label{font-weight:700;color:#6ee7b7}
+.section-wrap{margin-bottom:12px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.2);border-top:none}
+.s-datos .sec-btn{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border)}
+.s-datos .sec-body{background:rgba(255,217,61,.04);border:1px solid var(--accent-border);border-top:none}
+.s-teoria .sec-btn{background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
+.s-teoria .sec-body{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.2);border-top:none}
+.s-formulas .sec-btn{background:rgba(251,146,60,.1);color:var(--orange);border:1px solid rgba(251,146,60,.25)}
+.s-formulas .sec-body{background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.2);border-top:none}
+.t-datos{width:100%;border-collapse:collapse;font-size:.84em}
+.t-datos th{background:var(--accent-dim);color:var(--accent);padding:7px 10px;text-align:left;border:1px solid var(--accent-border)}
+.t-datos td{padding:7px 10px;border:1px solid var(--border);color:var(--text2)}
+.t-datos tr:nth-child(even) td{background:rgba(255,217,61,.04)}
+.formula-box{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:8px 13px;margin:6px 0;color:#fed7aa;overflow-x:auto;font-family:var(--ff-mono);font-size:.82em;white-space:pre-wrap;line-height:1.7}
+.paso{margin-bottom:13px;padding:10px 13px;background:rgba(16,185,129,.06);border-radius:var(--radius-sm);border-left:3px solid rgba(16,185,129,.4)}
+.paso-titulo{color:var(--green);font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.porque{font-size:.82em;color:#94a3b8;font-style:italic;margin-bottom:6px}
+.porque strong{color:var(--orange);font-style:normal;font-weight:700}
+.resultado-final{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-sm);padding:11px 15px;margin-top:12px}
+.rf-label{font-size:.7em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:700}
+.rf-val{color:#d1fae5;font-size:.9em;line-height:1.9}
+.nota{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:var(--radius-sm);padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+.verificacion{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.25);border-left:3px solid #38bdf8;border-radius:var(--radius-sm);padding:10px 14px;margin-top:10px;font-size:.82em;color:#bae6fd}
+.verificacion .vlabel{font-family:var(--ff-mono);font-size:.7em;color:#38bdf8;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px;display:block}
+.aceptacion-yes{color:var(--green);font-weight:700}
+.aceptacion-no{color:var(--red);font-weight:700}
+@media(max-width:768px){body{font-size:17px}.sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.layout{flex-direction:column}.content{margin-left:0;padding:20px 16px 40px}.sb-list{max-height:200px}.read-progress{left:0}}
+</style>
+<link rel="stylesheet" href="../../shared/ehulab.css">
+</head>
+<body>
+<nav class="topbar">
+<a class="topbar-back" href="../teoria.html"><svg fill="none" height="16" viewbox="0 0 16 16" width="16"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a>
+<span class="topbar-title">⚙️ Sistemas · T7 · Metrología — Ejercicios</span>
+<div class="tema-picker" id="temaPicker">
+<button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T7 ▾</button>
+<div class="tema-dropdown">
+<a class="td-item" href="t1.html"><span class="td-num">T1</span> Torneado</a>
+<a class="td-item" href="t2.html"><span class="td-num">T2</span> Fresado</a>
+<a class="td-item" href="t3.html"><span class="td-num">T3</span> Taladrado</a>
+<a class="td-item" href="t4.html"><span class="td-num">T4</span> CNC</a>
+<a class="td-item" href="t5.html"><span class="td-num">T5</span> Rectificado</a>
+<a class="td-item" href="t6.html"><span class="td-num">T6</span> Fundición</a>
+<a class="td-item td-active" href="t7.html"><span class="td-num">T7</span> Metrología</a>
+<a class="td-item" href="t8.html"><span class="td-num">T8</span> Deformación pl.</a>
+</div>
+</div>
+<a class="topbar-pdf no-print" href="../pdf/ejercicios_t7.pdf" download="ejercicios_t7.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+<div class="read-progress" id="readProgress"></div>
+<div class="layout">
+<aside class="sidebar">
+<div class="sb-head">
+<div class="sb-subtitle">T7 · Metrología</div>
+<div class="sb-current" id="sbCurrent">Aceptación de pieza con incertidumbre</div>
+</div>
+<div class="sb-list">
+<button class="sb-item" data-id="ex1" onclick="showEx('ex1')"><span class="sb-tag">T7.P1</span><span class="sb-name">Aceptación de pieza con incertidumbre</span></button>
+<button class="sb-item" data-id="ex2" onclick="showEx('ex2')"><span class="sb-tag">T7.P2</span><span class="sb-name">3 mediciones con calibre — aceptar o rechazar</span></button>
+<button class="sb-item" data-id="ex3" onclick="showEx('ex3')"><span class="sb-tag">T7.P3</span><span class="sb-name">Elegir instrumento por precisión</span></button>
+</div>
+<div class="sb-footer"><a class="sb-link sb-link-yellow" href="../teoria.html"><svg fill="none" height="13" viewbox="0 0 16 16" width="13"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a></div>
+</aside>
+
+<main class="content">
+
+<!-- ════ P1 ════ -->
+<div class="topic-panel" id="ex1">
+<div class="panel-header"><div class="panel-tag">T7.P1</div><h1 class="panel-title">Aceptación de pieza con incertidumbre</h1><div class="panel-meta">Medición + incertidumbre vs tolerancia · Criterio ISO 14253</div></div>
+<div class="enunciado">
+<p>Se han extraído los siguientes datos de la medición de la cota de una pieza. ¿Debe aceptarse la pieza, sí o no?</p>
+<table class="t-datos" style="margin-top:8px;max-width:380px">
+<tr><th>Magnitud</th><th>Valor</th></tr>
+<tr><td>Medición obtenida</td><td>100,45 mm</td></tr>
+<tr><td>Incertidumbre, U</td><td>±0,1 mm</td></tr>
+<tr><td>Cota nominal</td><td>100 mm</td></tr>
+<tr><td>Tolerancia en plano</td><td>±0,5 mm</td></tr>
+</table>
+</div>
+<div class="resultado-enunciado"><span class="res-label">Resultado:</span> [criterio razonado de aceptación]</div>
+
+<div class="section-wrap s-teoria sec-open"><button class="sec-btn" onclick="toggleSec(this)">📐 Criterio de aceptación (ISO 14253-1) <span class="sarr">▼</span></button><div class="sec-body">
+<p>Norma ISO 14253-1: <b>aceptar solo si el intervalo [medida−U, medida+U] está completamente dentro de la zona de tolerancia</b>.</p>
+<div class="formula-box">Aceptar ⟺ medida ± U ⊂ [nominal − T, nominal + T]
+Rechazar ⟺ medida ± U ⊃ algún punto fuera de la zona de tolerancia
+Zona ambigua ⟺ el intervalo se superpone con un límite</div>
+<p>Es el llamado <b>principio de "Conformity by inspection"</b>: la incertidumbre se carga al fabricante para evitar aceptar piezas que realmente están fuera de tolerancia.</p>
+</div></div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Zona de tolerancia</div>
+<div class="formula-box">Cota nominal: 100 mm
+Tolerancia: ±0,5 mm
+Zona de tolerancia: [99,5; 100,5] mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Intervalo de la medición</div>
+<div class="formula-box">Medida: 100,45 mm
+Incertidumbre: ±0,1 mm
+Intervalo: [100,45 − 0,1; 100,45 + 0,1] = [100,35; 100,55] mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Comparación</div>
+<p class="porque"><strong>¿Por qué?</strong> Comprobamos si [100,35; 100,55] ⊂ [99,5; 100,5].</p>
+<div class="formula-box">Límite inferior medida: 100,35 ≥ 99,5 ✓
+Límite superior medida: 100,55 > 100,5 ✗  (¡fuera del límite superior!)</div>
+<p>El intervalo de medición INVADE la zona fuera de tolerancia (100,5 a 100,55).</p>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Decisión</div><div class="rf-val"><span class="aceptacion-no">RECHAZAR la pieza</span> (zona ambigua según ISO 14253-1: la medida + U se sale por arriba de la tolerancia superior). Hay riesgo real de que la pieza esté fuera de la tolerancia 100,5 mm. Por el principio de prudencia, no se acepta.</div></div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>
+Si la incertidumbre fuese ±0,02 mm (más precisa), el intervalo sería [100,43; 100,47] y SÍ entraría completamente en tolerancia → aceptaría. El instrumento de medida tiene precisión insuficiente para garantizar la aceptación de esta pieza concreta.
+</div>
+</div></div>
+</div>
+
+
+<!-- ════ P2 ════ -->
+<div class="topic-panel" id="ex2">
+<div class="panel-header"><div class="panel-tag">T7.P2</div><h1 class="panel-title">Tres mediciones — aceptación con incertidumbre</h1><div class="panel-meta">Media de medidas · Aceptación ISO 14253-1</div></div>
+<div class="enunciado">
+<p>La tolerancia de una determinada cota en plano es <b>40 ± 0,2</b>. Se han realizado tres mediciones: <b>40,10 − 40,18 − 40,19</b>. Si la precisión o incertidumbre del calibre es <b>±0,02</b>, ¿debe darse la pieza por buena, sí o no?</p>
+</div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Promedio de las mediciones</div>
+<p class="porque"><strong>¿Por qué?</strong> Con varias medidas se reduce el error aleatorio promediando. La incertidumbre del calibre (±0,02) se mantiene como sistemática.</p>
+<div class="formula-box">x̄ = (40,10 + 40,18 + 40,19) / 3 = 120,47/3 = <b>40,157 mm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Zona de tolerancia</div>
+<div class="formula-box">Tolerancia: 40 ± 0,2 → [39,8; 40,2] mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Intervalo de medida ± U</div>
+<div class="formula-box">[40,157 − 0,02; 40,157 + 0,02] = [40,137; 40,177] mm</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 4 — Comparación</div>
+<div class="formula-box">[40,137; 40,177] ⊂ [39,8; 40,2] ?
+   límite inferior: 40,137 ≥ 39,8 ✓
+   límite superior: 40,177 ≤ 40,2 ✓
+SÍ está completamente dentro de la zona de tolerancia.</div>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Decisión</div><div class="rf-val"><span class="aceptacion-yes">ACEPTAR la pieza</span>. El intervalo de medición [40,137; 40,177] está completamente contenido en la tolerancia [39,8; 40,2].</div></div>
+
+<div class="nota">Atención a la dispersión: las medidas 40,10 y 40,19 difieren en 0,09 mm, mucho mayor que la incertidumbre individual ±0,02 mm. Esto indica que el error aleatorio del operario/montaje es superior al instrumental. Convendría revisar el procedimiento de medida.</div>
+</div></div>
+</div>
+
+
+<!-- ════ P3 ════ -->
+<div class="topic-panel" id="ex3">
+<div class="panel-header"><div class="panel-tag">T7.P3</div><h1 class="panel-title">Elegir instrumento adecuado por precisión</h1><div class="panel-meta">Regla 1/10 · Compatibilidad instrumento ↔ tolerancia</div></div>
+<div class="enunciado">
+<p>Se desea controlar el diámetro de un determinado eje. Su dimensión nominal es <b>25 mm</b> y su intervalo de tolerancia <b>±50 µm</b>. Se dispone de las tres alternativas siguientes para su medición:</p>
+<ol style="padding-left:18px;font-size:.87em;color:#94a3b8;line-height:1.9">
+<li>Calibre de precisión U = 25 µm.</li>
+<li>Micrómetro centesimal con precisión U = 5 µm.</li>
+<li>Micrómetro micrométrico con precisión U = 1 µm.</li>
+</ol>
+<p>Elegir la herramienta más adecuada.</p>
+</div>
+<div class="resultado-enunciado"><span class="res-label">Resultado:</span> Micrómetro centesimal.</div>
+
+<div class="section-wrap s-teoria sec-open"><button class="sec-btn" onclick="toggleSec(this)">📐 Regla de la décima parte <span class="sarr">▼</span></button><div class="sec-body">
+<p>Regla práctica de metrología: <b>la incertidumbre del instrumento debe ser ≈ 1/10 de la tolerancia</b> a controlar (regla de Berndt o regla 1:10).</p>
+<div class="formula-box">U<sub>instrumento</sub> ≤ T<sub>amplitud</sub> / 10
+
+Si U > T/10  → instrumento INSUFICIENTE
+Si U ≤ T/10  → adecuado
+Si U &lt;&lt; T/10 → sobrecalidad (caro innecesario)</div>
+<p>Razón: garantizar que el error de medición es pequeño frente a la tolerancia a controlar (la incertidumbre "se come" parte de la zona aceptable).</p>
+</div></div>
+
+<div class="section-wrap s-resolucion sec-open"><button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button><div class="sec-body">
+
+<div class="paso">
+<div class="paso-titulo">Paso 1 — Amplitud de tolerancia y umbral 1/10</div>
+<div class="formula-box">Tolerancia: ±50 µm → amplitud total = 100 µm
+Umbral 1/10: U ≤ 100/10 = <b>10 µm</b></div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 2 — Evaluación de las tres opciones</div>
+<div class="formula-box">1) Calibre U=25 µm → 25 > 10 → <span style="color:#ef4444">INSUFICIENTE</span>
+2) Micrómetro centesimal U=5 µm → 5 ≤ 10 → <span style="color:#10b981">ADECUADO ✓</span>
+3) Micrómetro micrométrico U=1 µm → 1 &lt;&lt; 10 → SOBRECALIDAD (innecesariamente preciso, caro y lento)</div>
+</div>
+
+<div class="paso">
+<div class="paso-titulo">Paso 3 — Elección razonada</div>
+<p>El micrómetro CENTESIMAL (U=5 µm) es la elección óptima: cumple la regla 1/10 con margen y es el más económico/práctico de los compatibles. El micrómetro micrométrico aporta precisión innecesaria (más caro, más lento, requiere ambiente controlado).</p>
+</div>
+
+<div class="resultado-final"><div class="rf-label">Selección</div><div class="rf-val"><b>Micrómetro centesimal (U = 5 µm)</b>. Cumple la regla 1/10 (5 ≤ 10) sin sobrecalidad.</div></div>
+
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>
+Aplicación del criterio ISO 14253-1: con U=5 µm, una medida 25,045 mm tiene intervalo [25,040; 25,050] que aún cabe en [24,950; 25,050]. Margen apretado pero válido. Con U=25 µm la medida 25,030 daría [25,005; 25,055] que SE SALE → no permite decidir aceptación con certeza.
+</div>
+</div></div>
+</div>
+
+</main>
+</div>
+
+<script>
+var _allPanels = document.querySelectorAll('.topic-panel');
+var _allItems  = document.querySelectorAll('.sb-item');
+var _sbCurrent = document.getElementById('sbCurrent');
+var _readProg  = document.getElementById('readProgress');
+function showEx(id) {
+  _allPanels.forEach(function(p){ p.classList.remove('active'); });
+  _allItems.forEach(function(b){ b.classList.remove('active'); });
+  var panel = document.getElementById(id);
+  var btn   = document.querySelector('[data-id="'+id+'"]');
+  if (panel) panel.classList.add('active');
+  if (btn)   btn.classList.add('active');
+  if (_sbCurrent && btn) _sbCurrent.textContent = btn.querySelector('.sb-name').textContent;
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
+}
+function toggleSec(btn) { btn.parentElement.classList.toggle('sec-open'); }
+function updateProgress() {
+  if (!_readProg) return;
+  var el = document.querySelector('.topic-panel.active');
+  if (!el) { _readProg.style.transform='scaleX(0)'; return; }
+  var st = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+  _readProg.style.transform = 'scaleX('+(h>0?Math.min(st/h,1):0)+')';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+var _tp = document.getElementById('temaPicker');
+document.addEventListener('click', function(e){ if(_tp && !_tp.contains(e.target)) _tp.classList.remove('open'); });
+document.addEventListener('DOMContentLoaded', function(){
+  var first = document.querySelector('.sb-item');
+  if (first) showEx(first.getAttribute('data-id'));
+});
+</script>
+</body>
+</html>
