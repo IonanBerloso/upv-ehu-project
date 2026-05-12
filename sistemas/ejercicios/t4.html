@@ -231,21 +231,25 @@ N040 G90 G96 G94 G0 X62 Z2 S180 F300 M3
 ;     S180 = velocidad de corte 180 m/min
 ;     F300 = avance 300 mm/min
 ;     M3  = arranca cabezal en sentido horario
-N050 G0 X60 Z0                     ; aproxima rápido al inicio del refrentado
+N050 G0 X62 Z0                     ; ★ FIX: aproxima a X=62 (FUERA del bruto Ø60), NO a X60
+;     Si fuera X60 chocaría con el bruto al posicionar. X62 = 1 mm de margen radial.
 N060 G1 X-1 F100                   ; refrentado: avanza linealmente hacia el eje
 ;     X-1 = pasa ligeramente el centro (evita dejar pico central)
 ;     F100 mm/min más bajo que en cilindrado (más exigente cerca del eje)
 N070 G0 X62 Z2                     ; retorna a posición segura para el desbaste
-N080 G68 P0=X0 P1=Z0 P2=X25 P3=Z-L1 F300 S180 D1
-;     G68 = ciclo fijo de desbaste longitudinal (Fagor 8025T)
-;     P0,P1 = punto inicial del perfil (en el centro de la cara, X0 Z0)
-;     P2,P3 = punto final del perfil (X25 = Ø25, Z=-L1 = longitud tramo más estrecho)
-;     F300 = avance del ciclo
-;     S180 = velocidad de corte
-;     D1   = sobremedida radial 1 mm dejada para acabado posterior
+N080 G68 X25 Z-L1 B1 D2 I0.5 F300 S180
+;     ★ FIX: sintaxis CORRECTA del ciclo G68 de Fagor 8025T:
+;     G68 = ciclo de desbaste longitudinal
+;     X25 Z-L1 = punto FINAL del perfil (Ø25, Z=-L1)
+;     B1 = sobremedida (1 mm radial dejada para acabado)
+;     D2 = profundidad de pasada (2 mm/pasada)
+;     I0.5 = retroceso entre pasadas (0,5 mm)
+;     F300 = avance / S180 = vc
+;     (Nota: la sintaxis P0/P1/P2/P3 que aparece en algunos apuntes es del ciclo
+;      G66 de "seguimiento de perfil"; en G68 estándar 8025T se usa X..Z..B..D..I..)
 N090 G0 X80 Z100                   ; retira a posición de cambio segura (X80 Z100)
 N100 G40 G44                       ; cancela compensaciones: G40 radio, G44 longitud</span>
-<p class="res-note"><b>🔑 Conceptos clave:</b> el <b>ciclo G68</b> de Fagor sustituye programar manualmente cada una de las múltiples pasadas longitudinales del desbaste — basta dar los extremos del perfil. La <b>D1 (sobremedida)</b> garantiza que el acabado posterior tenga material que retirar (acabado fino con f bajo).</p>
+<p class="res-note"><b>🔑 Conceptos clave:</b> el <b>ciclo G68</b> de Fagor sustituye programar manualmente cada una de las múltiples pasadas longitudinales del desbaste — basta dar el punto final del perfil + sobremedida (B) + profundidad de pasada (D). <b>Importante</b>: revisar el manual del control específico, ya que las versiones de Fagor 8025T pueden usar parámetros ligeramente distintos (P/B/D/I).</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Acabado del perfil exterior (T2.2)</div>
@@ -258,30 +262,28 @@ N130 G43                           ; activa compensación longitud
 N140 G90 G96 G94 G0 X27 Z2 S180 F100 M3
 ;     X27 Z2 = aproximación 2 mm sobre la cara, X=27 (algo mayor que Ø25)
 ;     F100 = avance lento (mejor acabado superficial: menor Ra)
-N150 G1 X25 Z0                     ; toca el material en el inicio del cilindro Ø25
-N160 G1 X25 Z-1.25                 ; baja eje Z hasta 1,25 mm (inicio del chaflán)
-N170 G1 X28 Z-1.25                 ; chaflán 1,5×45°: subida radial 1,5 mm (X25→X28)
-;     diagonal de 1,5 mm horizontal y 1,5 mm vertical = 45°
-;     X28 = Ø25 + 3 (chaflán de radio 1,5 → diámetro +3)
-;     hmm, mejor: si chaflán es de 1,5×45°, X sube 3 (porque diámetro=2·radio)
-N180 G1 X28 Z-L1                   ; tramo cilíndrico Ø25 hasta longitud L1 (zona rosca futura)
-;     ojo: en realidad debería ser X25 Z-L1, no X28 — revisar
-;     (el chaflán solo es la transición, luego seguimos en Ø25)
-N190 G1 X30                        ; sube radialmente a Ø30 (diámetro de la rosca M30)
-;     este "escalón" radial sin avance Z prepara la zona de la rosca
+N145 G1 X22 Z0 F100                ; ★ FIX: aproxima a X=22 (centro), Z=0 para entrar al chaflán
+N150 G1 X25 Z-1.5                  ; ★ CHAFLÁN inicial 1,5×45° en Ø25
+;     entra desde el centro (X=22 ≈ centro-margen) y sube a Ø25 con desplazamiento axial -1,5
+;     pendiente 45°: ΔX/2 = ΔZ → (25-22)/2 = 1,5 mm axial ✓
+N160 G1 Z-L1                       ; ★ FIX: tramo cilíndrico Ø25 (X SIGUE en 25, no en 28)
+;     L1 = longitud del tramo Ø25 hasta el inicio de la rosca
+N170 G1 X27 Z-L1-1                 ; (opcional) chaflán de entrada a la rosca Ø25→Ø30
+;     ★ AVISO: si el plano marca una transición VIVA (escalón recto) Ø25→Ø30, OMITIR esta línea
+;     Si hay chaflán 1×45° entre Ø25 y Ø30, usar este formato.
+N180 G1 X30                        ; sube vertical de Ø27 a Ø30 (inicio de la rosca M30)
 N200 G1 Z-L2                       ; avanza Z hasta el final de la zona roscada
-N210 G1 X37 Z-L2-1.25              ; chaflán de salida de la rosca hacia Ø40
+N210 G1 X37 Z-L2-1.5               ; chaflán de salida de rosca hacia Ø40 (1,5×45°)
 N220 G1 X40                        ; sube a Ø40
 N230 G1 Z-L3                       ; tramo cilíndrico Ø40
-N240 G1 X47 Z-L3-1.25              ; chaflán hacia Ø50
+N240 G1 X47 Z-L3-1.5               ; chaflán hacia Ø50
 N250 G1 X50                        ; sube a Ø50
 N260 G1 Z-L4                       ; tramo cilíndrico Ø50
-N270 G1 X57 Z-L4-1.25              ; chaflán hacia Ø57
-N280 G1 X57                        ; (redundante: ya está en X57)
-N290 G1 Z-L5                       ; tramo final Ø57
+N270 G1 X57 Z-L4-1.5               ; chaflán hacia Ø57
+N290 G1 Z-L5                       ; tramo final Ø57 (★ FIX: N280 X57 redundante BORRADO)
 N300 G0 X80 Z100                   ; retira a posición segura
 N310 G40 G44                       ; cancela compensaciones</span>
-<p class="res-note"><b>🔑 Conceptos clave:</b> en torneado CNC la <b>X siempre se programa en DIÁMETRO</b> (no radio), por eso un chaflán 1,5×45° hace que X aumente 3 mm (porque suben 1,5 mm por lado, 1,5×2 = 3 en diámetro). Las cotas L1..L5 son variables a sustituir por las dimensiones reales del plano.</p>
+<p class="res-note"><b>🔑 Conceptos clave:</b> en torneado CNC la <b>X siempre se programa en DIÁMETRO</b> (no radio), por eso un chaflán 1,5×45° hace que X aumente 3 mm (porque suben 1,5 mm por lado, 1,5×2 = 3 en diámetro), pero el desplazamiento axial coincide con el "1,5". <b>Auditoría compañero (3 fixes):</b> (1) tras el chaflán Ø25 se sigue en X25 no X28; (2) chaflán de entrada a la rosca Ø25→Ø30 si el plano lo lleva; (3) eliminada línea redundante N280. Las cotas L1..L5 son variables a sustituir por dimensiones del plano.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Taladrado axial Ø10 (T3.3)</div>
@@ -291,12 +293,12 @@ N310 G40 G44                       ; cancela compensaciones</span>
 N320 T3.3                          ; broca helicoidal D10 con corrector 3
 N330 M6                            ; cambio de herramienta
 N340 G43                           ; compensa longitud
-N350 G97 G94 G0 X0 Z5 S3820 F95 M3
+N350 G97 G94 G0 X0 Z5 S3820 F382 M3
 ;     G97 = velocidad de giro CONSTANTE (a diferencia de G96 anterior)
 ;     N = vc·1000/(π·D) = 120·1000/(π·10) = 3.820 rpm
 ;     X0 = centra la broca en el eje de la pieza
 ;     Z5 = 5 mm por encima de la cara frontal
-;     F95 = avance axial 95 mm/min (≈ f=0,025 mm/rev × N)
+;     ★ FIX: F382 = N·f = 3820·0,1 = 382 mm/min (el enunciado pide f=0,1 mm/rev, no 0,025)
 N360 G83 X0 Z-30 I3 K0.5
 ;     G83 = ciclo de taladrado profundo con desahogo (peck drilling)
 ;     X0   = centro de la pieza
@@ -310,21 +312,22 @@ N390 G40 G44                       ; cancela compensaciones</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 4a — Ranurado de salida de rosca (T4.4)</div>
-<p><b>📋 Planteamiento:</b> antes de roscar, hace falta una <b>ranura de salida</b> al final del tramo M30 para que la cuchilla de roscar tenga espacio donde "salirse" sin chocar. La ranura es estrecha (b=2,2 mm = espesor cuchilla) y profunda hasta el núcleo de la rosca (Ø27, algo menor que el fondo de rosca Ø29,05). Velocidad de giro baja porque la cuchilla es frágil.</p>
+<p><b>📋 Planteamiento:</b> antes de roscar, hace falta una <b>ranura de salida</b> al final del tramo M30 para que la cuchilla de roscar tenga espacio donde "salirse" sin chocar. La ranura es estrecha (b=2,2 mm = espesor cuchilla) y profunda hasta el núcleo de la rosca (Ø27, algo menor que el fondo de rosca Ø28,05). Velocidad de giro baja porque la cuchilla es frágil.</p>
 <span class="res-code">% RANURA DE SALIDA DE ROSCA
 
 N400 T4.4                          ; cuchilla de ranurar de 2,2 mm de espesor
 N410 M6
 N420 G43
-N430 G97 G94 G0 X34 Z-LRAN S650 F90 M3
+N430 G97 G94 G0 X34 Z-LRAN S650 F98 M3
 ;     G97 S650 = N constante 650 rpm (baja, cuchilla estrecha frágil)
 ;     X34 Z-LRAN = aproximación 2 mm fuera del Ø30, en la posición de la ranura
 ;     LRAN = posición axial donde acaba la rosca (suele estar entre L1 y L2)
-N440 G1 X27 F90                    ; penetra radialmente al núcleo de rosca (Ø27)
-;     X27 < Ø29,05 (fondo rosca) → garantiza espacio total para la cuchilla roscar
+;     ★ FIX: F98 = N·f = 650·0,15 = 97,5 ≈ 98 mm/min (enunciado: f=0,15 mm/rev)
+N440 G1 X27 F98                    ; penetra radialmente al núcleo de rosca (Ø27)
+;     X27 < Ø28,05 (fondo rosca) → garantiza espacio total para la cuchilla roscar
 N450 G4 K0.2                       ; G4 = pausa (dwell), K0.2 = 0,2 s
 ;     Razón: deja al filo "limpiar" el fondo de la ranura (evita pico cónico residual)
-N460 G1 X34 F300                   ; retroceso rápido a Ø34 (fuera de la pieza)
+N460 G1 X34 F300                   ; retroceso a Ø34 (fuera de la pieza, F más alto OK)
 N470 G0 Z100                       ; sube en Z a posición segura
 N480 G40 G44                       ; cancela compensaciones</span>
 </div>
@@ -340,10 +343,12 @@ N520 G97 G94 G0 X32 Z2 S800 M3
 ;     G97 S800 = N=800 rpm constante (clave: avance = paso·N = 1.200 mm/min,
 ;                la máquina lo sincroniza automáticamente con el ciclo G86)
 ;     X32 Z2  = aproximación 1 mm fuera de Ø30, 2 mm antes de empezar la rosca
-N530 G86 X29.05 Z-LROS P1.5 Q0.975 R0.05 K1
+N530 G86 X28.05 Z-LROS P1.5 Q0.975 R0.05 K1
 ;     G86 = ciclo fijo de roscado longitudinal (Fagor 8025T)
-;     X29.05 = diámetro FINAL = 30 − 2·0,975·0,5 = 29,025 ≈ 29,05 (fondo rosca)
-;             (la cuchilla solo desciende hasta esta cota X)
+;     ★ FIX: X28.05 = diámetro FINAL = 30 − 2·0,975 = 28,05 mm (fondo rosca real)
+;             (no 29,05 como tenía antes — eso era un error de cálculo de 1 mm)
+;             Para rosca métrica M30×1,5: d3 teórico ≈ 28,16 mm, valor usado 28,05 conservador.
+;             La cuchilla desciende radialmente hasta esta cota X.
 ;     Z-LROS = longitud del roscado (≈ L2 - LRAN)
 ;     P1.5   = paso de la rosca (1,5 mm/rev)
 ;     Q0.975 = profundidad total radial (= 0,65·paso para métrica estándar)
@@ -352,7 +357,7 @@ N530 G86 X29.05 Z-LROS P1.5 Q0.975 R0.05 K1
 N540 G80                           ; cancela ciclo fijo
 N550 G0 X80 Z100                   ; retira a posición segura
 N560 G40 G44                       ; cancela compensaciones</span>
-<p class="res-note"><b>🔑 Cálculo de Q (profundidad rosca):</b> en rosca métrica ISO, H = 0,866·paso (perfil teórico), pero el fondo real se trunca → profundidad efectiva ≈ 0,65·paso. Para M30×1,5: Q = 0,65·1,5 = 0,975 mm. Fondo de rosca = 30 − 2·0,975 = 28,05 mm. (En el código aparece 29,05; depende del convenio del fabricante de cuchilla.)</p>
+<p class="res-note"><b>🔑 Cálculo de Q (profundidad rosca):</b> en rosca métrica ISO, H = 0,866·paso (perfil teórico), pero el fondo real se trunca → profundidad efectiva ≈ 0,65·paso. Para M30×1,5: Q = 0,65·1,5 = 0,975 mm. <b>Fondo de rosca = 30 − 2·0,975 = 28,05 mm</b> (★ FIX auditoría: antes el código tenía 29,05 que era incorrecto — desfase de 1 mm).</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 4c — Tronzado para separar la pieza (T6.6)</div>
@@ -386,7 +391,20 @@ T6.6 (tronzado): G97 S300 (N baja porque el filo llega hasta X=0)</div>
 </div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Torneado Fagor 8025T: revisar que las <b>variables L1, L2, L3, L4, L5</b> (longitudes de cada tramo) se sustituyen por las cotas reales del plano. El <b>ciclo G68</b> (desbaste longitudinal) reemplaza el trabajo manual de programar cada pasada. El <b>ciclo G86</b> (roscado) con Q=0,975 mm deja la rosca métrica M30×1,5 a la profundidad correcta (≈0,65·paso). G96 (CSS) mantiene v<sub>c</sub>=180 m/min constante durante el cilindrado — N aumenta cuando el filo se acerca al eje.</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Torneado Fagor 8025T: revisar que las <b>variables L1, L2, L3, L4, L5</b> (longitudes de cada tramo) se sustituyen por las cotas reales del plano. El <b>ciclo G68</b> (desbaste longitudinal) reemplaza el trabajo manual de programar cada pasada (sintaxis Fagor: <code>G68 X.. Z.. B.. D.. I.. F.. S..</code>). El <b>ciclo G86</b> (roscado) con Q=0,975 mm deja la rosca métrica M30×1,5 a la profundidad correcta (≈0,65·paso) → fondo de rosca en X=28,05. G96 (CSS) mantiene v<sub>c</sub>=180 m/min constante durante el cilindrado — N aumenta cuando el filo se acerca al eje.
+<br><br>
+<b>🔍 Auditoría aplicada (7 fixes del compañero):</b>
+<ol style="margin:6px 0 0 18px;font-size:.93em;line-height:1.7">
+<li>N050: X60 → X62 (aproximación FUERA del bruto Ø60)</li>
+<li>N080: sintaxis G68 corregida a Fagor 8025T real (X..Z..B..D..I..)</li>
+<li>N160: tras chaflán Ø25, X queda en 25 (no 28)</li>
+<li>N170: añadido chaflán opcional entre Ø25→Ø30 si el plano lo lleva</li>
+<li>N280 redundante: eliminada</li>
+<li>N350: F=382 mm/min (con f=0,1 mm/rev, no 0,025)</li>
+<li>N430/N440: F=98 mm/min (con f=0,15 mm/rev, no 0,15·600 mal calculado)</li>
+<li>N530: X=28,05 (fondo rosca real = 30 − 2·Q), no 29,05</li>
+</ol>
+</div>
 </div>
 <div class="topic-panel" id="ex2">
 <div class="panel-header">
