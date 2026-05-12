@@ -865,7 +865,7 @@ T2.2 (fresa D8 ranuras, vc=180 m/min, Z=2, fz=0,05 mm/Z/rev):
 <li>Radii: R12,5 → <b>R11,5</b> según el plano (3 arcos R11,5 + R18,5 alternados)</li>
 <li>Coordenadas Y de tangencias: Y=0 (línea media), no Y=±5</li>
 <li>Sentidos G2/G3: revisados para coherencia con geometría real</li>
-<li>Espejo Ranura 2: <b>G66 (reflexión sobre eje X)</b>, no G73 A180 (rotación)</li>
+<li>Espejo Ranura 2: <b>G12 (invierte Y = reflexión sobre eje X)</b>, no G73 A180 (rotación)</li>
 <li>Estructura subrutina: <b>G22 N1 ... G24</b> (definición) + <b>G20 N1.k</b> (llamada), según chuleta UPV/EHU</li>
 </ol>
 </div>
@@ -980,6 +980,7 @@ N330 G80 G44 Z100                   ; cancela ciclo + cancela longitud + sube a 
 
 <div class="paso"><div class="paso-titulo">Sección 4 — Taladros Ø8,5 en PCD Ø60 con G83 peck (T4.4 · broca D8,5)</div>
 <p><b>📋 Planteamiento corregido:</b> 4 taladros distribuidos en PCD Ø60 (R=30) a 0°, 90°, 180°, 270° → coordenadas (±30, 0) y (0, ±30). <b>⚠ Profundidad 38 mm con broca Ø8,5 → L/D = 4,5</b> — está en el límite donde se recomienda <b>G83 (peck drilling)</b> para evitar atascamiento de viruta. El código original usaba G81 (simple) que puede funcionar pero con riesgo.</p>
+<div class="errores" style="background:rgba(244,63,94,.05);border:1px solid rgba(244,63,94,.22);border-left:3px solid #f43f5e;padding:8px 12px;margin:8px 0;font-size:.86em;color:#fecdd3"><b>⚠ G83 NO está en la chuleta UPV/EHU.</b> Si el profesor no lo admite, usa <b>G81 con F bajo</b> y añade un comentario explicando "haría G83 si pudiera". Mantén el cálculo igual.</div>
 <span class="res-code">% TALADROS PCD D60 (con G83 peck por L/D=4,5)
 
 N340 T4.4                          ; broca helicoidal Ø8,5 mm
@@ -1169,8 +1170,9 @@ N460 G43
 N470 G97 G94 G0 X40 Y0 Z100 F80 S800 M3
 ;     S800 = N = 1000·25/(π·10) = 796 ≈ 800 rpm (broca, vc=25 m/min)
 ;     F80 = N·f = 800·0,1 = 80 mm/min
-N480 G83 G99 X40 Y0 Z0 I-25 J5 K1   ; TALADRO 1 (0°)
+N480 G83 G99 X40 Y0 Z0 I-25 J5 K1   ; TALADRO 1 (0°) — ⚠ G83 no está en chuleta examen
 ;     G83 peck, I-25 prof, J5 peck size, K1 retroceso
+;     ★ Si profesor no admite G83: usar G81 con F bajo (≈ N·f/3 para compensar)
 N490 X28.28 Y28.28                  ; TALADRO 2 (45°): 40·cos45°=28,28; 40·sin45°=28,28
 N500 X0 Y40                         ; TALADRO 3 (90°)
 N510 X-28.28 Y28.28                 ; TALADRO 4 (135°)
@@ -1465,11 +1467,12 @@ N520 T3.3                          ; cambia de nuevo a la fresa de cajeras
 N530 M6
 N540 G43
 N550 G96 G94 G0 X0 Y0 Z100
-N560 G88 G99 X0 Y0 Z0 I-13 J6 B4 C2 D5 H50 L0.3
-;     G87 = CICLO CAJERA RECTANGULAR (★ chuleta UPV/EHU)
-;     X0 Y0 Z0 = centro de la cajera (aquí mismo centro pieza para primera cajera)
-;     I-13 = profundidad 13 mm
-;     J6 = ancho lateral 6 mm
+N560 G88 G99 X0 Y0 Z5 I-13 J6 B4 C2 D5 H50 L0.3
+;     ★ FIX chuleta: G88 = CAJERA CIRCULAR (NO confundir con G87 rectangular)
+;     X0 Y0 = centro de la cajera (centro pieza)
+;     Z5    = plano de REFERENCIA (positivo sobre la pieza)
+;     I-13 = profundidad 13 mm (negativa)
+;     J6 = RADIO de la cajera circular (Ø12)
 ;     B4 = incremento Z por pasada
 ;     C2 = paso lateral
 ;     D5 = distancia seguridad
@@ -1597,8 +1600,9 @@ N450 G43
 N460 G97 G94 G0 X0 Y0 Z100 F96 S955 M3
 ;     G97 S955 = N constante 955 rpm (N = 1000·30/(π·10) = 955)
 ;     F96 = N·f = 955·0,1 = 95,5 ≈ 96 mm/min
-N470 G83 G99 X0 Y0 Z0 I-33 J3 K1
+N470 G83 G99 X0 Y0 Z0 I-33 J3 K1    ; ⚠ G83 no está en chuleta UPV/EHU
 ;     G83 = TALADRADO PROFUNDO con desahogo
+;     ★ Si profe solo admite G81: cambiar a "G81 G99 X0 Y0 Z0 I-33" con F bajo
 ;     I-33 = profundidad total 33 mm
 ;     J3 = incremento por peck (3 mm/peck, ratio 0,3·D)
 ;     K1 = retroceso entre pecks (1 mm)
