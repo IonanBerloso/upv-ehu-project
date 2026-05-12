@@ -538,6 +538,15 @@ function renderExamQuestion(){
       e.answers[e.idx] = i;
       renderExamQuestion();
       renderQMap();
+      // Auto-avance a la siguiente pregunta (no avanza en la última para no terminar sin querer)
+      if (e.idx < e.questions.length - 1) {
+        setTimeout(() => {
+          if (!STATE.exam || STATE.exam.finished) return;
+          e.idx++;
+          renderExamQuestion();
+          renderQMap();
+        }, 250);
+      }
     });
   });
   document.getElementById('qFlag').addEventListener('click', () => {
