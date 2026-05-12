@@ -199,6 +199,7 @@ PDF</a></nav><div class="read-progress" id="readProgress"></div><div class="layo
 <button class="sb-item" data-id="ex11" onclick="showEx('ex11')"><span class="sb-tag">T4.P11</span><span class="sb-name">Fresado — cajera cuadrada R8 + patrón agujeros (86×86×35)</span></button>
 <button class="sb-item" data-id="ex12" onclick="showEx('ex12')"><span class="sb-tag">T4.P12</span><span class="sb-name">Fresado — disco cilíndrico D80 con contorneado tangencial</span></button>
 <button class="sb-item" data-id="ex13" onclick="showEx('ex13')"><span class="sb-tag">T4.P13</span><span class="sb-name">Fresado — pieza con patrón pétalos 80×80×30 (entrada tangenc…</span></button>
+<button class="sb-item" data-id="chuleta" onclick="showEx('chuleta')" style="border-top:1px solid rgba(255,217,61,.25);margin-top:6px;padding-top:8px"><span class="sb-tag">📑</span><span class="sb-name" style="color:#fcd34d;font-weight:600">CHULETA del examen</span></button>
 </div>
 <div class="sb-footer"><a class="sb-link sb-link-yellow" href="../teoria.html"><svg fill="none" height="13" viewbox="0 0 16 16" width="13"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Teoría</a></div></aside><main class="content"><div class="topic-panel" id="ex1">
 <div class="panel-header">
@@ -468,51 +469,50 @@ N200 G97 G94 G0 X-50 Y0 Z100 F716 S7162 M3
 ;     X-50 Y0 = posición de aproximación fuera de la pieza, a la izquierda
 
 ; ===== LLAMADA 1: ranura superior (directa) =====
-N210 G22 N1                         ; llama subrutina N1 (definida abajo)
+N210 G20 N1.1                       ; ★ FIX chuleta: G20 N1.1 = LLAMADA subrutina N1 (1 repetición)
 N220 G0 Z100
 N230 G40 G44
 
-; ===== LLAMADA 2: ranura inferior (con espejo en Y) =====
-N240 G66 K1                         ; ★ FIX: G66 = ESPEJO en Y (refleja sobre eje X)
-;     equivalente a (x,y) → (x,-y) — esto es la simetría real
-;     entre las dos ranuras (no rotación 180°)
-;     K1 = parámetro de activación del espejo (depende de la versión Fagor)
-N250 G22 N1                         ; vuelve a llamar la MISMA subrutina, ahora espejada
-N260 G65                            ; cancela el espejo (vuelve a coordenadas normales)
+; ===== LLAMADA 2: ranura inferior (con espejo Y = reflexión eje X) =====
+N240 G12                            ; ★ FIX chuleta: G12 = espejo Y (invierte Y, refleja sobre eje X)
+;     equivalente a (x,y) → (x,-y) — simetría correcta entre las dos ranuras
+;     (no rotación 180° con G73 A180 que invertiría AMBOS ejes)
+N250 G20 N1.1                       ; llama OTRA VEZ la misma subrutina, ahora con Y invertida
+N260 G10                            ; ★ FIX chuleta: G10 = desactiva espejo (coordenadas normales)
 N270 G0 Z100
 N280 M5                              ; para cabezal
 N290 M30                             ; FIN programa principal
 
-; ===== DEFINICIÓN DE LA SUBRUTINA N1 (separada del main) =====
-N300 G21 N1                         ; ★ FIX: G21 inicia subrutina (en Fagor 8025M)
+; ===== DEFINICIÓN DE LA SUBRUTINA N1 (al final del programa) =====
+N300 G22 N1                         ; ★ FIX chuleta: G22 N1 = INICIO de la subrutina N1
 N310 G0 Z2                          ; baja rápido a 2 mm sobre pieza
 N320 G1 G42 G37 R5 X0 Y0            ; entrada tangencial con G42, primer punto Y=0
-;     ★ FIX: punto inicial en Y=0 (línea media), no en Y=5
 N330 G1 Z-8                         ; baja a profundidad 8 mm
-N340 G3 X60 Y0 R18.5
-;     ★ FIX: arco G3 (CCW) de R18,5, va de X0 Y0 a X60 Y0
-;            (el arco "se abre" hacia +Y o -Y según sentido)
-N350 G2 X90 Y0 R11.5
-;     ★ FIX: arco G2 (CW) de R11,5, cambia el sentido en la transición
-N360 G3 X120 Y0 R18.5
-;     ★ FIX: tercer arco R18,5 simétrico al primero
+N340 G3 X60 Y0 R18.5                ; arco G3 (CCW) de R18,5, va de X0 Y0 a X60 Y0
+N350 G2 X90 Y0 R11.5                ; arco G2 (CW) de R11,5, cambia el sentido en la transición
+N360 G3 X120 Y0 R18.5               ; tercer arco R18,5 simétrico al primero
 N370 G1 G38 R5 X130 Y0              ; salida tangencial con G38
 N380 G0 Z100                         ; retira Z
 N390 G40 G44                         ; cancela compensaciones
-N400 G24                             ; FIN de subrutina (return al main)</span>
+N400 G24                             ; ★ FIX chuleta: G24 = FIN de la subrutina (return al main)</span>
 <p class="res-note"><b>🔑 Cambios respecto a la versión anterior (auditoría compañero):</b>
 <ul style="margin:6px 0 0 18px;line-height:1.7">
 <li><b>Radii corregidos:</b> R11,5 y R18,5 (no R12,5 que era error de lectura del plano).</li>
 <li><b>Coordenadas Y=0 en tangencias:</b> los puntos donde se unen arcos están en la línea media Y=0, no en Y=±5.</li>
 <li><b>Sentidos G2/G3:</b> alternan según concavidad del arco. R18,5 son los arcos "externos" (G3 CCW si abren a +Y, G2 CW si abren a -Y); R11,5 son los "internos" (sentido opuesto).</li>
-<li><b>Estructura subrutina:</b> definida APARTE con G21 N1 ... G24 (no en línea entre el código principal). Esto permite reutilizarla con espejo activado para la ranura 2.</li>
+<li><b>Estructura subrutina (chuleta UPV/EHU):</b> definida APARTE con <b>G22 N1 ... G24</b> y llamada con <b>G20 N1.k</b> (donde k = nº repeticiones). Esto permite reutilizarla con espejo G12 activado para la ranura 2.</li>
 </ul></p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Ranura sinusoidal 2 (simétrica respecto eje X, con G66 espejo Y)</div>
-<p><b>📋 Planteamiento corregido:</b> la ranura 2 es la <b>reflexión sobre el eje X</b> de la ranura 1 (es decir, (x,y) → (x,-y) — misma X, Y opuesta). NO es una rotación 180° (que invertiría AMBOS ejes (x,y) → (-x,-y), dando una curva que iría de derecha a izquierda y arriba a abajo).</p>
-<p>Para reflexión sobre eje X en Fagor, se usa el comando <b>"espejo en Y"</b>. Confusamente, "espejo Y" en Fagor significa "invierte el eje Y", lo que equivale a una <b>reflexión sobre el eje X</b>. El código depende de la versión Fagor: <b>G66</b> (algunas versiones) o <b>G11/G12</b> (otras). Verificar con el manual concreto.</p>
-<p><b>⚠ Importante:</b> con G73 A180 (rotación) NO se obtiene la simetría correcta — esa fue la corrección clave del compañero.</p>
+<div class="paso"><div class="paso-titulo">Sección 3 — Ranura sinusoidal 2 (simétrica eje X · G12 espejo Y según chuleta)</div>
+<p><b>📋 Planteamiento corregido:</b> la ranura 2 es la <b>reflexión sobre el eje X</b> de la ranura 1: (x,y) → (x,−y) — misma X, Y opuesta. NO es una rotación 180° (que invertiría AMBOS ejes).</p>
+<p><b>Códigos chuleta UPV/EHU:</b></p>
+<ul style="padding-left:18px;color:#94a3b8;font-size:.86em;line-height:1.9">
+<li><b>G12</b> = cambio coordenada Y (invierte el eje Y) = reflexión sobre eje X ← lo que necesitamos</li>
+<li><b>G11</b> = cambio coordenada X (invierte X) = reflexión sobre eje Y</li>
+<li><b>G10</b> = desactiva espejo</li>
+</ul>
+<p>El código ya integrado arriba usa G12/G20 N1.1/G10 conforme a la chuleta.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
@@ -538,7 +538,7 @@ T2.2 (fresa D8 ranuras, vc=180 m/min, Z=2, fz=0,05 mm/Z/rev):
 <li>Coordenadas Y de tangencias: Y=0 (línea media), no Y=±5</li>
 <li>Sentidos G2/G3: revisados para coherencia con geometría real</li>
 <li>Espejo Ranura 2: <b>G66 (reflexión sobre eje X)</b>, no G73 A180 (rotación)</li>
-<li>Estructura subrutina: separada con <b>G21 N1 ... G24</b>, no en línea con el código principal</li>
+<li>Estructura subrutina: <b>G22 N1 ... G24</b> (definición) + <b>G20 N1.k</b> (llamada), según chuleta UPV/EHU</li>
 </ol>
 </div>
 </div>
@@ -624,7 +624,7 @@ N260 G40 G44                        ; cancela compensaciones</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Cajera cuadrada interior 40×40 con R5 (T3.3 · fresa D8)</div>
-<p><b>📋 Planteamiento:</b> dentro del disco Ø80 hay una cajera cuadrada 40×40 con esquinas redondeadas R5. Usamos <b>ciclo fijo G88 (cajera rectangular)</b> de Fagor que hace todas las pasadas internas automáticamente (zigzag o espiral). La fresa D8 cabe en las esquinas R5 (radio fresa = 4 < 5 = R esquina).</p>
+<p><b>📋 Planteamiento:</b> dentro del disco Ø80 hay una cajera cuadrada 40×40 con esquinas redondeadas R5. Usamos <b>ciclo fijo G87 (cajera RECTANGULAR — chuleta UPV/EHU)</b> de Fagor que hace todas las pasadas internas automáticamente. La fresa D8 cabe en las esquinas R5 (radio fresa = 4 < 5 = R esquina).</p>
 <span class="res-code">% CAJERA INT 40x40 R5
 
 N270 T3.3                          ; fresa D8 enteriza
@@ -633,21 +633,21 @@ N290 G43
 N300 G96 G94 G0 X0 Y0 Z100 F2387 S200 M3
 ;     X0 Y0 = centro de la cajera (centro de la pieza)
 ;     F2387 = vf = N·Z·fz = 7958·3·0,1 = 2.387 mm/min
-N310 G0 Z-10                        ; baja al plano de inicio del ciclo
-N320 G88 G99 X0 Y0 Z0 I-15 J40 K40 B3 C5 D2 H50 L0.3
-;     G88 = ciclo fijo CAJERA RECTANGULAR (Fagor)
-;     G99 = retorno al plano de seguridad establecido por R/Z al final
-;     X0 Y0 Z0 = centro de la cajera
-;     I-15  = profundidad TOTAL de la cajera (negativo = hacia -Z, 15 mm)
-;     J40   = ancho X de la cajera (40 mm)
-;     K40   = ancho Y de la cajera (40 mm)
-;     B3    = incremento Z por pasada (3 mm/pasada → 5 pasadas para profundidad 15)
-;     C5    = incremento XY (mm de mordida por pasada radial)
-;     D2    = distancia de seguridad
-;     H50   = avance de entrada en rampa Z (50 mm/min, más lento)
-;     L0.3  = sobremedida lateral para acabado (0,3 mm)
+N320 G87 G99 X0 Y0 Z5 I-15 J20 K20 B3 C5 D5 H300 L0.3
+;     ★ FIX chuleta: G87 (cajera RECTANGULAR), NO G88 (que es circular)
+;     G99 = retorno al plano de referencia (intermedio, más rápido)
+;     X0 Y0 = centro de la cajera (absoluto)
+;     Z5    = plano de REFERENCIA = 5 mm sobre la pieza (cota positiva)
+;     I-15  = profundidad final de la cajera (negativo, hacia -Z)
+;     J20   = ★ SEMIBASE del rectángulo (X) = la MITAD del ancho 40 → 20 mm
+;     K20   = ★ SEMIALTURA del rectángulo (Y) = la MITAD del alto 40 → 20 mm
+;     B3    = paso de profundización Z por nivel (mm)
+;     C5    = paso radial (espiral XY)
+;     D5    = distancia pieza-plano referencia (Z)
+;     H300  = avance de acabado (última pasada)
+;     L0.3  = paso radial acabado (demasía/sobremedida)
 N330 G80 G44 Z100                   ; cancela ciclo + cancela longitud + sube a Z100</span>
-<p class="res-note"><b>🔑 G88 vs zigzag manual:</b> en lugar de programar 50+ líneas de pasadas paralelas alternas, una sola línea G88 hace todo. Es PROPIETARIO de Fagor — Fanuc usa G176/G177, Siemens POCKET3/POCKET4. El parámetro L (sobremedida) deja material para una pasada final de acabado con otra fresa.</p>
+<p class="res-note"><b>🔑 ★ Atención G87 (chuleta UPV/EHU):</b> J y K son <b>SEMIBASE/SEMIALTURA</b> (la mitad), no las dimensiones totales. Para cajera 40×40 se programa J20 K20. Si pusieras J40 K40 obtendrías una cajera de <b>80×80</b> — error común. <b>G87 = rectangular ≠ G88 que es CIRCULAR.</b></p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 4 — Taladros Ø8,5 en PCD Ø60 con G83 peck (T4.4 · broca D8,5)</div>
@@ -717,7 +717,7 @@ T4.4 (broca D8,5, vc=25 m/min, f=0,1 mm/rev):
 </div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Contorno Ø80 con <b>entrada/salida tangencial G37/G38 R10</b>: el radio R10 del arco de aproximación es mayor que cero y menor que R_pieza/2=20 (evita interferencias). La <b>cajera con ciclo G88</b> simplifica enormemente el desbaste de la cajera cuadrada — no hay que programar las pasadas paralelas manualmente. El <b>PCD Ø60</b> con 4 agujeros tiene coordenadas (±30, 0) y (0, ±30).
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Contorno Ø80 con <b>entrada/salida tangencial G37/G38 R10</b>: el radio R10 del arco de aproximación es mayor que cero y menor que R_pieza/2=20 (evita interferencias). La <b>cajera con ciclo G87</b> (rectangular según chuleta UPV/EHU) simplifica el desbaste — no hay que programar las pasadas paralelas manualmente. El <b>PCD Ø60</b> con 4 agujeros tiene coordenadas (±30, 0) y (0, ±30).
 <br><br>
 <b>🔍 Auditoría aplicada (6 fixes del compañero):</b>
 <ol style="margin:6px 0 0 18px;font-size:.93em;line-height:1.7">
@@ -935,9 +935,9 @@ N240 G40 G44                        ; cancela compensaciones</span>
 <p class="res-note"><b>🔑 Cálculo de número de pasadas:</b> N_pasadas = (ancho pieza − D)/(D·solape) + 1. Aquí con solape=1 (sin overlap): N = (160-20)/20 + 1 = 8 pasadas + 1 = 9 ✓. Con solape=0,7 (solape 30%) serían 12.</p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 2 — Cajera circular central (T2.2 · fresa D14)</div>
-<p><b>📋 Planteamiento:</b> cajera circular en el centro. Usamos fresa D14 (más pequeña que D20 para llegar al diámetro pequeño) y ciclo G89. Profundidad 15 mm.</p>
-<span class="res-code">% CAJERAS
+<div class="paso"><div class="paso-titulo">Sección 2 — Cajera circular central Ø60 (T2.2 · fresa D14)</div>
+<p><b>📋 Planteamiento:</b> cajera circular en el centro. Usamos fresa D14 y <b>ciclo G88 (cajera CIRCULAR — chuleta UPV/EHU)</b>. Profundidad 15 mm.</p>
+<span class="res-code">% CAJERA CIRCULAR D60
 
 N250 T2.2                          ; fresa D14 enteriza
 N260 M6
@@ -945,13 +945,15 @@ N270 G43
 N280 G96 G94 G0 X0 Y0 Z100 F819 S180 M3
 ;     F819 = N·Z·fz = 4093·4·0,05 = 819 mm/min
 ;     S180 vc=180 m/min (vc alta para D pequeña → N alta)
-N290 G89 G99 X0 Y0 Z0 I-15 R30 B3 C5 D2 H50 L0.3
-;     G89 = ciclo CAJERA CIRCULAR Fagor
-;     X0 Y0 Z0 = centro cajera (centro pieza)
-;     I-15 = profundidad 15 mm
-;     R30 = RADIO cajera (Ø60)
-;     B3 C5 D2 H50 L0.3 = (incremento Z · paso lateral · seguridad · F entrada · sobremedida)
+N290 G88 G99 X0 Y0 Z5 I-15 J30 B3 C5 D5 H300 L0.3
+;     ★ FIX chuleta: G88 (cajera CIRCULAR), NO G89 (G89 no existe en chuleta)
+;     X0 Y0 = centro cajera (centro pieza)
+;     Z5    = plano de REFERENCIA (positivo, 5 mm sobre la pieza)
+;     I-15  = profundidad final 15 mm (negativa)
+;     J30   = ★ RADIO de la cajera (Ø60 → R=30) — en G88 el parám es J, no R
+;     B3 C5 D5 H300 L0.3 = pasada Z · paso radial · distancia · F acabado · sobremedida
 N300 G80 G44 Z100                   ; cancela ciclo, sube</span>
+<p class="res-note"><b>🔑 ★ Atención G88 (chuleta):</b> es la cajera <b>CIRCULAR</b>. El parámetro es <b>J=RADIO</b> (no R, no diámetro). Para Ø60 → J=30.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Patrón de 6 taladros PCD Ø100 (T3.3 · broca D8)</div>
@@ -1025,7 +1027,7 @@ T4.4 (broca D12):          N=584 rpm,   vf=29 mm/min   (vc=22, f=0,05)</div>
   <li>Perfil exterior <b>circular Ø100</b> con entradas y salidas tangenciales.</li>
   <li>Perfil interior con <b>4 lóbulos en cruz</b> (R15 convexos, R8 cóncavos) — simetría 180°.</li>
   <li>Agujero central Ø12 (con ciclo G81).</li>
-  <li>4 cajeras rectangulares Ø8 (ciclo G88) distribuidas en cruz.</li>
+  <li>4 cajeras rectangulares (ciclo G87) distribuidas en cruz.</li>
 </ul>
 <p><b>Herramientas</b>: fresa planeado (T1.1), fresa perfilado (T3.3), broca (T5.5).</p>
 </div>
@@ -1081,7 +1083,7 @@ N220 G96 G94 G0 X70 Y0 Z100 F100 S200 M3
 ;     S200 con G96 → vc=200 m/min
 N230 G0 Z-15                        ; baja al fondo del perfil interior (15 mm)
 N240 G1 G42 X50 Y0                  ; activa compensación radio + va a punto inicio del perfil
-N250 G22 N1                         ; LLAMADA SUBRUTINA N1 (define la mitad del perfil)
+N250 G20 N1.1                       ; ★ FIX chuleta: G20 N1.1 = LLAMA subrutina 1 (1 vez)
 
 ; --- Cuerpo de la subrutina N1 (mitad del perfil interior) ---
 N260 G1 X30.5 Y0                    ; tramo radial: desde R=50 a R=30,5 (inicio del lóbulo)
@@ -1112,14 +1114,14 @@ N410 G24                            ; FIN de subrutina (return)
 
 ; --- Llamadas a la subrutina (mitad 1 + mitad 2 rotada) ---
 N420 G73 A180                       ; GIRO de 180° respecto al origen
-N430 G20 N1.1                       ; ETIQUETA: define el inicio de N1 (formal)
+N430 G22 N1                         ; ★ FIX chuleta: G22 N1 = INICIO subrutina (estructura formal)
 N440 G17                            ; restablece plano XY (a veces se altera con G73)
 N450 G0 G40 G44 Z100                ; cancela compensaciones, sube</span>
 <p class="res-note"><b>🔑 G2 vs G3 en perfiles complejos:</b> alternamos entre CW y CCW según la curvatura del perfil. Los arcos CÓNCAVOS (vistos desde el lado del corte) van en un sentido, los CONVEXOS en el otro. Si la fresa va por el lado interior (G42 → derecha del avance), un arco "saliente" del perfil interior se programa con G3.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Taladrado central + cajeras (T5.5 + T3.3)</div>
-<p><b>📋 Planteamiento:</b> en el centro hay un agujero pasante Ø12 y 4 cajeras rectangulares simétricas. Primero <b>taladramos</b> el agujero central con G81, después <b>fresamos las 4 cajeras</b> con ciclo G88. Las 4 cajeras pueden tratarse como 4 instancias del mismo ciclo con G73 rotando 90°.</p>
+<p><b>📋 Planteamiento:</b> en el centro hay un agujero pasante Ø12 y 4 cajeras rectangulares simétricas. Primero <b>taladramos</b> el agujero central con G81, después <b>fresamos las 4 cajeras</b> con ciclo G87 (RECTANGULAR — chuleta UPV/EHU). Las 4 cajeras pueden tratarse como 4 instancias del mismo ciclo con G73 rotando 90°.</p>
 <span class="res-code">% TALADRADO Y CAJERAS
 
 N460 T5.5                          ; broca para Ø12
@@ -1136,7 +1138,7 @@ N530 M6
 N540 G43
 N550 G96 G94 G0 X0 Y0 Z100
 N560 G88 G99 X0 Y0 Z0 I-13 J6 B4 C2 D5 H50 L0.3
-;     G88 = CICLO CAJERA RECTANGULAR
+;     G87 = CICLO CAJERA RECTANGULAR (★ chuleta UPV/EHU)
 ;     X0 Y0 Z0 = centro de la cajera (aquí mismo centro pieza para primera cajera)
 ;     I-13 = profundidad 13 mm
 ;     J6 = ancho lateral 6 mm
@@ -1155,7 +1157,7 @@ N590 M30                            ; FIN programa</span>
 <div class="formula-box">T1.1 (planeado/perfil ext): F=600 mm/min, S con G96 → vc=200 m/min
 T3.3 (perfil int + cajeras): F=100 mm/min (lento por detalle), vc=200 m/min
 T5.5 (broca Ø12): F=100 mm/min, vc=100 m/min</div>
-<p class="res-note"><b>🔑 Por qué este ejercicio es "★ Resolución oficial":</b> es el ejemplo que demuestra TODAS las técnicas avanzadas del Fagor 8025M en un solo programa: G37/G38 (tangencial), G42 (compensación), G73 (rotación), G22/G20/G24 (subrutinas), G81 (taladrado), G88 (cajera). Es la pieza "patrón" del curso UPV/EHU.</p>
+<p class="res-note"><b>🔑 Por qué este ejercicio es "★ Resolución oficial":</b> es el ejemplo que demuestra TODAS las técnicas avanzadas del Fagor 8025M en un solo programa: G37/G38 (tangencial), G42 (compensación), G73 (rotación), G20/G22/G24 (subrutinas chuleta), G81 (taladrado), G87/G88 (cajeras). Es la pieza "patrón" del curso UPV/EHU.</p>
 </div>
 
 </div>
@@ -1164,7 +1166,7 @@ T5.5 (broca Ø12): F=100 mm/min, vc=100 m/min</div>
 <div class="verificacion"><span class="vlabel">✓ Verificación</span>Técnicas clave del programa oficial (Fagor 8025M):
 <ul style="margin:4px 0 0 16px">
   <li><b>G37/G38</b> (entrada/salida tangencial con radio) — evita marca de entrada en el contorno circular exterior.</li>
-  <li><b>G22 N1 ... G20 N1.1</b> (llamada y definición de subrutina) combinado con <b>G73 A180</b> (giro) — mecaniza la cruz aprovechando su simetría de 180° con la mitad del código.</li>
+  <li><b>G22 N1 ... G24</b> (definición subrutina) + <b>G20 N1.k</b> (llamada) combinado con <b>G73 A180</b> (giro) — mecaniza la cruz aprovechando su simetría de 180° con la mitad del código.</li>
   <li><b>G81/G88</b> (ciclos fijos Fagor): G81 = taladrado, G88 = cajera rectangular con parámetros I/J/B/C/D/H/L.</li>
   <li><b>G42/G40</b> compensación de radio a la derecha del avance — activar con un tramo recto (línea N240) y desactivar al final (N450).</li>
 </ul>
@@ -1241,7 +1243,7 @@ N360 G40 G44</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Cajera rectangular central 30×30 (T3.3 · fresa D10)</div>
-<p><b>📋 Planteamiento:</b> cajera RECTANGULAR central de 30×30 con profundidad 10 mm. Fresa D10 más pequeña para llegar a las esquinas (si son redondeadas R5 mín.). Ciclo G88 hace el desbaste automáticamente.</p>
+<p><b>📋 Planteamiento:</b> cajera RECTANGULAR central de 30×30 con profundidad 10 mm. Fresa D10 más pequeña para llegar a las esquinas (si son redondeadas R5 mín.). Ciclo G87 hace el desbaste automáticamente (cajera RECTANGULAR según chuleta).</p>
 <span class="res-code">% CAJERA RECT CENTRAL
 
 N370 T3.3                          ; fresa D10 enteriza (Z=3)
@@ -1250,7 +1252,7 @@ N390 G43
 N400 G96 G94 G0 X0 Y0 Z100 F955 S100 M3
 ;     X0 Y0 = centro pieza = centro cajera
 ;     F955 = N·Z·fz = 3183·3·0,1 = 955 mm/min
-N410 G88 G99 X0 Y0 Z0 I-10 J30 K30 B3 C5 D2 H50 L0.3
+N410 G87 G99 X0 Y0 Z5 I-10 J15 K15 B3 C5 D2 H50 L0.3
 ;     I-10 = profundidad 10 mm
 ;     J30 K30 = anchos X e Y de la cajera (30×30)
 ;     B3 C5 D2 H50 L0.3 = parámetros estándar del ciclo
@@ -1314,7 +1316,7 @@ T5.5 (fresa D4 chaflán, vc=100, Z=2, fz=0,1):
 </div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Las 4 <b>cajeras Ø25 en esquinas</b> se mecanizan con fresa D25 <b>sin G41</b> (fresa del mismo diámetro que la cajera → una penetración Z vertical basta). La <b>cajera central 30×30</b> usa ciclo G88. El <b>chaflán 4,5°</b> con fresa D4 recorre las aristas a profundidad Z-2 (tangente de 4,5° ≈ 0,079, así que un Z=-2 da un chaflán de 25 mm — ajustar a la cota del plano).</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Las 4 <b>cajeras Ø25 en esquinas</b> se mecanizan con fresa D25 <b>sin G41</b> (fresa del mismo diámetro que la cajera → una penetración Z vertical basta). La <b>cajera central 30×30</b> usa ciclo G87 (rectangular). El <b>chaflán 4,5°</b> con fresa D4 recorre las aristas a profundidad Z-2 (tangente de 4,5° ≈ 0,079, así que un Z=-2 da un chaflán de 25 mm — ajustar a la cota del plano).</div>
 </div>
 <div class="topic-panel" id="ex8">
 <div class="panel-header">
@@ -1501,7 +1503,7 @@ N290 G40 G44                        ; cancela compensaciones</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Cajera rectangular interior con R4 (T3.3 · fresa D6)</div>
-<p><b>📋 Planteamiento:</b> cajera 40×40 interior con esquinas R4. Fresa D6 cumple R fresa = 3 < 4 = R esquina (puede entrar en las esquinas sin colisionar). Ciclo G88 hace el desbaste.</p>
+<p><b>📋 Planteamiento:</b> cajera 40×40 interior con esquinas R4. Fresa D6 cumple R fresa = 3 < 4 = R esquina (puede entrar en las esquinas sin colisionar). Ciclo G87 hace el desbaste (rectangular — chuleta UPV/EHU).</p>
 <span class="res-code">% CAJERA INT R4
 
 N300 T3.3                          ; fresa D6 enteriza (Z=4)
@@ -1509,7 +1511,7 @@ N310 M6
 N320 G43
 N330 G96 G94 G0 X0 Y0 Z100 F5729 S180 M3
 ;     F5729 = N·Z·fz = 9549·4·0,15 = 5.729 mm/min (avance alto, productivo)
-N340 G88 G99 X0 Y0 Z0 I-15 J40 K40 B3 C4 D2 H50 L0.3
+N340 G87 G99 X0 Y0 Z5 I-15 J20 K20 B3 C4 D2 H50 L0.3
 ;     I-15 = profundidad 15 mm
 ;     J40 K40 = anchos 40×40
 ;     B3 = paso Z, C4 = paso XY, D2 = seguridad, H50 = F entrada, L0.3 = sobremedida
@@ -1591,7 +1593,7 @@ N140 M6
 N150 G43
 N160 G96 G94 G0 X0 Y0 Z100 F1194 S200 M3
 ;     F1194 = N·Z·fz = 3979·3·0,1 = 1.194 mm/min
-N170 G88 G99 X0 Y0 Z0 I-20 J80 K80 B3 C5 D2 H50 L0.3
+N170 G87 G99 X0 Y0 Z5 I-20 J40 K40 B3 C5 D2 H50 L0.3
 ;     I-20 = profundidad 20 mm
 ;     J80 K80 = 80×80
 ;     OJO: G88 NO suele tener parámetro de radio de esquina;
@@ -1713,7 +1715,7 @@ N140 G40 G44</span>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Cajera cuadrada 74×74 con esquinas R8 (T1.1 · contorno manual)</div>
-<p><b>📋 Planteamiento:</b> en este caso el contorno NO se hace con ciclo G88 (que daría una cajera rectangular llenando todo el interior). Aquí solo se MARCA EL CONTORNO con G1/G2 (sin desbastar el interior). La idea es que el resto del interior se trabaja después con el alveolo central y los taladros — el "marco" 74×74 se contornea para definir el límite.</p>
+<p><b>📋 Planteamiento:</b> en este caso el contorno NO se hace con ciclo G87 (que daría una cajera rectangular llenando todo el interior). Aquí solo se MARCA EL CONTORNO con G1/G2 (sin desbastar el interior). La idea es que el resto del interior se trabaja después con el alveolo central y los taladros — el "marco" 74×74 se contornea para definir el límite.</p>
 <span class="res-code">% CAJERA CUADRADA R8
 
 N150 G0 X40 Y-29 Z100               ; reposiciona X=40 (fuera del cuadrado 74), Y=-29 (preparación)
@@ -1944,38 +1946,30 @@ N180 G96 G94 G0 X0 Y40 Z100 F8488 S200 M3
 ;     F8488 = N·Z·fz = 10610·4·0,2 = 8.488 mm/min
 ;     N = 10.610 rpm (muy alto, fresa pequeña)
 
-; --- Llamada y definición de la SUBRUTINA "pétalo" ---
-N190 G22 N3                         ; LLAMA subrutina N3 → ejecuta pétalo en +Y
-N200 G0 X5 Y40                      ; (cuerpo de N3 empieza aquí)
-;     X5 Y40 = punto A de aproximación al pétalo +Y
-N210 G1 Z-20 F500                   ; baja a profundidad de pétalo
-N220 G3 X0 Y35 I-5 J0
-;     G3 = arco CCW (entrada tangencial)
-;     X0 Y35 = punto T (tangencia con círculo R10)
-;     I-5 J0 = centro relativo (-5, 0) desde A=(5,40) → centro absoluto (0, 40) = C_e
-N230 G2 I0 J-10
-;     G2 = arco CW
-;     I0 J-10 = centro relativo (0,-10) desde T=(0,35) → centro absoluto (0, 25) = centro pétalo
-;     SIN punto final → círculo R10 COMPLETO
-N240 G3 X-5 Y40 I0 J5
-;     G3 = arco CCW (salida tangencial, simétrica a la entrada)
-;     X-5 Y40 = punto B de salida
-;     I0 J5 = centro relativo (0, 5) desde T → centro absoluto (0, 40) = mismo C_e
-N250 G0 Z5                          ; sube ligeramente (no a Z100, para no perder tiempo)
-N260 G24                            ; FIN de subrutina (return)
-N270 G20 N3.1                       ; ETIQUETA: define la subrutina N3 formalmente
+; --- LLAMADAS al pétalo (4 veces, rotando 90° entre cada una) ---
+N190 G20 N3.1                       ; ★ FIX chuleta: G20 N3.1 = LLAMA subrutina N3 (1 vez) → pétalo en +Y
+N200 G73 A90                        ; rota 90°
+N210 G20 N3.1                       ; pétalo +X
+N220 G73 A180                       ; rota 180°
+N230 G20 N3.1                       ; pétalo -Y
+N240 G73 A270                       ; rota 270°
+N250 G20 N3.1                       ; pétalo -X
+N260 G73 A0                         ; RESTAURA sistema original (¡importante!)
+N270 G0 Z100                        ; sube a Z seguro
+N280 G40 G44                        ; cancela compensaciones
+N290 M5                             ; para cabezal
+N300 M30                            ; FIN main
 
-; --- LLAMADAS sucesivas rotando ---
-N280 G73 A90                        ; rota 90° → ahora "Y+" del CN apunta hacia X+ real
-N290 G22 N3                         ; ejecuta pétalo → PÉTALO +X físicamente
-N300 G73 A180                       ; rota 180° → pétalo apunta a Y- físicamente
-N310 G22 N3                         ; PÉTALO -Y
-N320 G73 A270                       ; rota 270° → pétalo apunta a X-
-N330 G22 N3                         ; PÉTALO -X
-N340 G73 A0                         ; RESTAURA sistema original (¡importante!)
-N350 G0 Z100                        ; sube a Z seguro
-N360 G40 G44                        ; cancela compensaciones</span>
-<p class="res-note"><b>🔑 Por qué es el ejercicio MAESTRO:</b> combina TODAS las técnicas avanzadas — entradas/salidas tangenciales con I/J, subrutinas con G22/G20/G24, rotación de coordenadas G73 Aθ con restauración final A=0. El programa pasa de ~30 líneas (si lo hicieras pétalo a pétalo manualmente) a ~10 líneas significativas (subrutina + 4 llamadas).</p>
+; --- DEFINICIÓN de la SUBRUTINA N3 (al final del programa) ---
+N310 G22 N3                         ; ★ FIX chuleta: G22 N3 = INICIO subrutina N3
+N320 G0 X5 Y40                      ; punto A de aproximación al pétalo (en sistema base +Y)
+N330 G1 Z-20 F500                   ; baja a profundidad de pétalo
+N340 G3 X0 Y35 I-5 J0               ; entrada tangencial CCW: arco R5 de A=(5,40) a T=(0,35)
+N350 G2 I0 J-10                     ; círculo R10 COMPLETO CW (centro a (0,25))
+N360 G3 X-5 Y40 I0 J5               ; salida tangencial CCW: arco R5 de T=(0,35) a B=(-5,40)
+N370 G0 Z5                          ; sube ligeramente
+N380 G24                            ; ★ FIX chuleta: G24 = FIN subrutina (return)</span>
+<p class="res-note"><b>🔑 Por qué es el ejercicio MAESTRO:</b> combina TODAS las técnicas avanzadas — entradas/salidas tangenciales con I/J, subrutinas con G22 N (inicio) ... G24 (fin) llamadas con G20 N.k, rotación G73 Aθ con restauración final A=0. El programa pasa de ~30 líneas (si lo hicieras pétalo a pétalo manualmente) a ~10 líneas significativas (subrutina + 4 llamadas).</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Cajera central cuadrada 24×24 (T2.2 continúa)</div>
@@ -1983,7 +1977,7 @@ N360 G40 G44                        ; cancela compensaciones</span>
 <span class="res-code">% CAJERA CENTRAL
 
 N370 G0 X0 Y0 Z100                  ; va al centro
-N380 G88 G99 X0 Y0 Z0 I-15 J24 K24 B3 C4 D2 H50 L0.3
+N380 G87 G99 X0 Y0 Z5 I-15 J12 K12 B3 C4 D2 H50 L0.3
 ;     I-15 = profundidad 15 mm
 ;     J24 K24 = 24×24
 ;     B3 C4 D2 H50 L0.3 = parámetros estándar
@@ -2025,14 +2019,147 @@ N560 M30                            ; FIN</span>
 T2.2 (D6 pétalos+cajera, vc=200, Z=4, fz=0,2): N=10.610 rpm, vf=8.488 mm/min
 T3.3 (broca D13, vc=30, f=0,1): N=735 rpm, vf=73 mm/min
 T4.4 (broca D5, vc=35, f=0,1): N=2.228 rpm, vf=223 mm/min</div>
-<p class="res-note"><b>🔑 Cierre del temario T4:</b> este ejercicio es el resumen práctico de TODO lo aprendido en CNC. Si lo dominas, dominas el examen. Las técnicas clave: (1) cálculo de tangencias geométricas, (2) subrutinas con G22/G20/G24, (3) transformaciones G73 con restauración, (4) ciclos fijos G81/G88, (5) parámetros de corte coherentes con cada herramienta.</p>
+<p class="res-note"><b>🔑 Cierre del temario T4:</b> este ejercicio es el resumen práctico de TODO lo aprendido en CNC. Si lo dominas, dominas el examen. Las técnicas clave: (1) cálculo de tangencias geométricas, (2) subrutinas G22..G24 + llamadas G20 N.k, (3) transformaciones G73 con restauración, (4) ciclos fijos G81/G87/G88 según chuleta, (5) parámetros de corte coherentes con cada herramienta.</p>
 </div>
 
 </div>
 </div>
 
 <div class="verificacion"><span class="vlabel">✓ Verificación</span>★ <b>Regla general entrada tangencial a pétalo</b>: C_entrada = centro_pétalo + (R_pétalo + r_entrada)·dir_radial. Para el pétalo +Y: centro=(0, 25), R=10, r_entrada=5 → C_e=(0, 40), A=(5, 40), T=(0, 35). La <b>subrutina N3 + G73 Aθ</b> aprovecha la simetría 4× del patrón — ejercicio maestro de programación estructurada en Fagor.</div>
-</div></main></div>
+</div>
+
+<!-- ════════════════ PANEL CHULETA ════════════════ -->
+<div class="topic-panel" id="chuleta">
+<div class="panel-header" style="background:linear-gradient(135deg,rgba(252,211,77,.12) 0%,transparent 60%);border-color:rgba(252,211,77,.35);border-left-color:#fcd34d">
+<div class="panel-tag" style="color:#fcd34d">📑 CHULETA</div>
+<h1 class="panel-title">Chuleta oficial UPV/EHU — Fagor 8025M/T</h1>
+<div class="panel-meta">Documento que se puede llevar al examen · sintaxis exacta de los códigos G/M y ciclos fijos</div>
+</div>
+
+<div class="enunciado" style="border-left-color:#fcd34d">
+<p><b>📌 Importancia:</b> Toda la sintaxis de los ejercicios en esta página se ha verificado contra esta chuleta. <b>Si el examen marca un código G que difiere de aquí, prevalece la chuleta del profesor.</b></p>
+</div>
+
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📑 FUNCIONES G PRINCIPALES <span class="sarr">▼</span></button>
+<div class="sec-body">
+<span class="res-code">G00   Interpolación lineal rápida (máximo avance)
+G01   Interpolación lineal
+G02   Interpolación circular CW (sentido horario)
+G03   Interpolación circular CCW (sentido antihorario)
+
+G17 / G18 / G19   Selección de plano de trabajo (G17 = XY, estándar fresado)
+
+G90 / G91   Coordenadas absolutas / incrementales
+
+G93   Preselección de origen polar
+      (programación en coordenadas polares alrededor de un punto predefinido)
+
+G43 / G44   Compensación de longitud / Desactivación
+
+G40 / G41 / G42   Compensación de RADIO
+      G40 : desactivar compensación
+      G41 : pieza a la DERECHA (= fresa por la izquierda del avance)
+      G42 : pieza a la IZQUIERDA (= fresa por la derecha del avance)
+
+G37   Entrada tangencial (con radio del arco)
+G38   Salida tangencial (con radio del arco)
+G36   Redondeo de aristas
+
+G20-G22-G24   Subprogramas (★ atención al orden, ver abajo)
+      G22 N1   : INICIO de la subrutina o subprograma 1
+      G24      : FINAL de la subrutina o subprograma
+      G20 N1.k : LLAMADA a subrutina 1 con k repeticiones (G20 N1.1 = 1 vez)
+
+G10 / G11 / G12 / G13   Funciones espejo
+      G10 : desactivar espejo
+      G11 : cambio coordenada X (invierte X = espejo eje Y)
+      G12 : cambio coordenada Y (invierte Y = espejo eje X)
+      G13 : cambio coordenada Z (no se usa)
+
+G73   Giro del sistema de referencia (G73 Aθ rota θ grados)
+
+G96 / G97   Velocidad de corte constante (CSS) / Velocidad de giro constante
+
+G94 / G95   Avance en mm/min / Avance en mm/rev
+
+G70 / G71   Cotas en pulgadas / mm (por defecto mm)</span>
+</div>
+</div>
+
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📑 FUNCIONES M <span class="sarr">▼</span></button>
+<div class="sec-body">
+<span class="res-code">M03 / M04 / M05   Giro principal husillo
+      M03 : activación giro horario (CW) — el habitual
+      M04 : activación giro antihorario (no usamos)
+      M05 : desactivación giro (parada cabezal)
+
+M06   Cambio automático de herramienta (ATC)
+M30   Final de programa</span>
+</div>
+</div>
+
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">📑 CICLOS FIJOS G <span class="sarr">▼</span></button>
+<div class="sec-body">
+
+<p><b>★ G81 — Taladrado:</b></p>
+<span class="res-code">G81 G98 X30 Y0 Z2 I-15
+
+  G98 : retorno al plano de partida (más alto)
+  G99 : retorno al plano de referencia (intermedio, más rápido)
+  X,Y : coordenadas absolutas del centro del agujero
+  Z   : plano de REFERENCIA, inicio de mecanizado (cota positiva sobre la pieza)
+  I   : profundidad del agujero (cotas absolutas, NEGATIVO hacia -Z)</span>
+
+<p style="margin-top:14px"><b>★ G87 — Cajera RECTANGULAR (★ NO confundir con G88):</b></p>
+<span class="res-code">G87 G99 X10 Y10 Z5 I-20 J20 K20 B5 C5 D5 H300 L0.4
+
+  G98 / G99  : retorno
+  X, Y       : coordenadas absolutas del centro de la cajera
+  Z          : plano de referencia (positivo sobre pieza)
+  I          : profundidad cajera (cota absoluta, NEGATIVA)
+  J          : ★ SEMIBASE del rectángulo (X)  ← OJO: la MITAD del ancho
+  K          : ★ SEMIALTURA del rectángulo (Y) ← OJO: la MITAD del alto
+  B          : paso profundización Z por nivel (mm)
+  C          : paso radial (al hacer la espiral en XY, mm)
+  D          : distancia entre pieza y plano de referencia (Z)
+  H          : avance de acabado (última pasada)
+  L          : paso radial acabado (demasía/sobremedida)</span>
+
+<p style="margin-top:14px"><b>★ G88 — Cajera CIRCULAR (★ NO G89):</b></p>
+<span class="res-code">G88 G98 X0 Y0 Z10 I-12 J20 B4 C5 D5 H300 L0.4
+
+  G98 / G99  : retorno
+  X, Y       : coordenadas absolutas del centro de la cajera
+  Z          : plano de referencia
+  I          : profundidad cajera (NEGATIVA)
+  J          : ★ RADIO de la cajera  ← OJO: NO es diámetro, es radio
+  B, C, D, H, L : iguales que en G87</span>
+
+</div>
+</div>
+
+<div class="section-wrap s-resolucion sec-open">
+<button class="sec-btn" onclick="toggleSec(this)">⚠️ Diferencias con lo que estaba escrito antes <span class="sarr">▼</span></button>
+<div class="sec-body">
+<p>Tras revisar la chuleta del examen, los códigos correctos son:</p>
+<table class="t-datos">
+<tr><th>Concepto</th><th>Antes (incorrecto)</th><th>Chuleta UPV/EHU</th></tr>
+<tr><td>Cajera rectangular</td><td>G88 con J=ancho, K=alto</td><td><b>G87</b> con J=<b>semibase</b>, K=<b>semialtura</b></td></tr>
+<tr><td>Cajera circular</td><td>G89 con R=radio</td><td><b>G88</b> con <b>J=radio</b></td></tr>
+<tr><td>Definición subrutina</td><td>G20 N1.1 (etiqueta)</td><td><b>G22 N1 ... G24</b></td></tr>
+<tr><td>Llamada subrutina</td><td>G22 N1 (llamada)</td><td><b>G20 N1.k</b> con k repeticiones</td></tr>
+<tr><td>Espejo X (invierte X)</td><td>G65</td><td><b>G11</b></td></tr>
+<tr><td>Espejo Y (invierte Y)</td><td>G66</td><td><b>G12</b></td></tr>
+<tr><td>Compensación G41 vs G42</td><td>G42 = derecha del avance</td><td>G41 = pieza a la derecha (=fresa izquierda)<br>G42 = pieza a la izquierda (=fresa derecha)</td></tr>
+</table>
+</div>
+</div>
+
+</div>
+</main></div>
 
 
 
