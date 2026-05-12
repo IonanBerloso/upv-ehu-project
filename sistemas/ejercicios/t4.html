@@ -431,12 +431,13 @@ N030 G43                            ; activa compensación de longitud Z
 N040 G90 G17 G96 G94 G0 X-65 Y-30 Z100 F955 S100 M3
 ;     G90 = coordenadas absolutas
 ;     G17 = plano de trabajo XY (estándar en fresado)
-;     G96 = vc constante (CSS) — vc = 100 m/min · 1000 = 100.000 referido a D20
+;     G96 = vc constante (CSS): el control adapta N para que vc se mantenga
 ;     G94 = avance en mm/min
 ;     G0 = posicionamiento rápido
 ;     X-65 Y-30 Z100 = punto inicial fuera de la pieza (X-65 a la izquierda)
-;     F955 = avance 955 mm/min (calculado: N·Z·fz = 1592·6·0,1 = 955)
-;     S100 = velocidad superficie 100 m/min
+;     S100 = vc = 100 m/min  (★ FIX auditoría: enunciado da vc=100 m/min para D20)
+;     F955 = avance: N·Z·fz = 1592·6·0,1 = 955 mm/min
+;            N = 1000·vc/(π·D) = 1000·100/(π·20) = 1.592 rpm
 ;     M3 = giro cabezal CW
 N050 G0 Z-5                         ; baja la fresa rápido a -5 mm (profundidad planeado)
 N060 G1 X65                         ; PASADA 1 corriendo de X-65 a X65, Y=-30
@@ -454,65 +455,64 @@ N160 G40 G44                        ; cancela G40 (radio) y G44 (longitud)</span
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 2 — Ranura sinusoidal 1 (T2.2 · fresa D8)</div>
-<p><b>📋 Planteamiento:</b> la ranura es una curva en S formada por <b>3 arcos encadenados</b> (R12,5 + R18,5 + R11,5) con transiciones tangenciales. La fresa D8 entra <b>tangencialmente</b> con G37 (preparación de entrada con radio R5) — esto evita marcas al inicio del corte. La profundidad es 8 mm (G1 Z-8).</p>
-<span class="res-code">% RANURA 1
+<p><b>📋 Planteamiento:</b> la ranura es una curva en S formada por <b>3 arcos encadenados de R11,5 y R18,5 alternados</b>, todos con centros sobre Y=0 (línea media de la pieza), con centros aproximadamente en X=30, 60, 90 cubriendo el largo de 120 mm. Los puntos de tangencia entre arcos consecutivos están en Y=0 (donde las curvas cambian de concavidad). Entrada tangencial G37 R5 evita marcas en el inicio del corte.</p>
+<p><b>⚠ Geometría a verificar con el plano:</b> sin medidas finas, las coordenadas exactas de los puntos de tangencia son aproximadas. Lo geométricamente correcto es que los extremos comunes de arcos consecutivos coincidan con Y=0.</p>
+<span class="res-code">% RANURA 1 (programa principal — definición de subrutina al final)
 
 N170 T2.2                          ; fresa D8 enteriza para ranuras (Z=2)
 N180 M6
 N190 G43
-N200 G97 G94 G0 X-45 Y0 Z100 F716 S7162 M3
-;     G97 S7162 = N=7162 rpm constante (calculado: 1000·200/(π·8) = 7162)
-;     F716 = avance 716 mm/min (calculado: N·Z·fz = 7162·2·0,05 = 716)
-;     X-45 Y0 Z100 = posición de aproximación fuera de la ranura
-N210 G0 Z2                          ; baja rápido a 2 mm sobre la pieza
-N220 G1 G42 G37 R5 X-40 Y0
-;     G42 = compensación radio de herramienta a la DERECHA del avance
-;     G37 = "entrada tangencial circular": el control inserta un arco de radio R5
-;             antes de llegar al punto X-40 Y0 → entra perpendicular al perfil
-;     X-40 Y0 = primer punto del perfil de la ranura
-N230 G1 Z-8                         ; baja a profundidad final 8 mm
-N240 G2 X-20 Y5 R12.5
-;     G2 = arco circular en SENTIDO HORARIO (CW)
-;     X-20 Y5 = punto FINAL del arco
-;     R12.5 = radio del arco (control elige el arco menor por defecto)
-N250 G3 X10 Y-5 R18.5
-;     G3 = arco CCW (cambio de sentido respecto a G2 anterior)
-;     X10 Y-5 = punto final del 2º arco (centro de la S)
-N260 G2 X30 Y5 R11.5
-;     G2 = vuelve a CW para el tercer arco
-;     X30 Y5 = casi al final de la ranura
-N270 G1 G38 R5 X45 Y5
-;     G38 R5 = "salida tangencial circular": añade arco de radio R5 al final
-;     X45 Y5 = punto final ya fuera de la pieza
-N280 G0 Z100                        ; retira a Z seguro
-N290 G40 G44                        ; cancela G42 y G44</span>
-<p class="res-note"><b>🔑 Tangencialidad G37/G38:</b> son ciclos PROPIETARIOS de Fagor para entradas/salidas suaves. Equivalente en Fanuc/Siemens: programar explícitamente un G3 con radio pequeño al inicio. Evitan que la fresa "marque" el comienzo del corte (transición C1 sin discontinuidad de curvatura).</p>
+N200 G97 G94 G0 X-50 Y0 Z100 F716 S7162 M3
+;     G97 S7162 = N=7162 rpm constante (N = 1000·180/(π·8) = 7.162)
+;     F716 = avance: N·Z·fz = 7162·2·0,05 = 716 mm/min
+;     X-50 Y0 = posición de aproximación fuera de la pieza, a la izquierda
+
+; ===== LLAMADA 1: ranura superior (directa) =====
+N210 G22 N1                         ; llama subrutina N1 (definida abajo)
+N220 G0 Z100
+N230 G40 G44
+
+; ===== LLAMADA 2: ranura inferior (con espejo en Y) =====
+N240 G66 K1                         ; ★ FIX: G66 = ESPEJO en Y (refleja sobre eje X)
+;     equivalente a (x,y) → (x,-y) — esto es la simetría real
+;     entre las dos ranuras (no rotación 180°)
+;     K1 = parámetro de activación del espejo (depende de la versión Fagor)
+N250 G22 N1                         ; vuelve a llamar la MISMA subrutina, ahora espejada
+N260 G65                            ; cancela el espejo (vuelve a coordenadas normales)
+N270 G0 Z100
+N280 M5                              ; para cabezal
+N290 M30                             ; FIN programa principal
+
+; ===== DEFINICIÓN DE LA SUBRUTINA N1 (separada del main) =====
+N300 G21 N1                         ; ★ FIX: G21 inicia subrutina (en Fagor 8025M)
+N310 G0 Z2                          ; baja rápido a 2 mm sobre pieza
+N320 G1 G42 G37 R5 X0 Y0            ; entrada tangencial con G42, primer punto Y=0
+;     ★ FIX: punto inicial en Y=0 (línea media), no en Y=5
+N330 G1 Z-8                         ; baja a profundidad 8 mm
+N340 G3 X60 Y0 R18.5
+;     ★ FIX: arco G3 (CCW) de R18,5, va de X0 Y0 a X60 Y0
+;            (el arco "se abre" hacia +Y o -Y según sentido)
+N350 G2 X90 Y0 R11.5
+;     ★ FIX: arco G2 (CW) de R11,5, cambia el sentido en la transición
+N360 G3 X120 Y0 R18.5
+;     ★ FIX: tercer arco R18,5 simétrico al primero
+N370 G1 G38 R5 X130 Y0              ; salida tangencial con G38
+N380 G0 Z100                         ; retira Z
+N390 G40 G44                         ; cancela compensaciones
+N400 G24                             ; FIN de subrutina (return al main)</span>
+<p class="res-note"><b>🔑 Cambios respecto a la versión anterior (auditoría compañero):</b>
+<ul style="margin:6px 0 0 18px;line-height:1.7">
+<li><b>Radii corregidos:</b> R11,5 y R18,5 (no R12,5 que era error de lectura del plano).</li>
+<li><b>Coordenadas Y=0 en tangencias:</b> los puntos donde se unen arcos están en la línea media Y=0, no en Y=±5.</li>
+<li><b>Sentidos G2/G3:</b> alternan según concavidad del arco. R18,5 son los arcos "externos" (G3 CCW si abren a +Y, G2 CW si abren a -Y); R11,5 son los "internos" (sentido opuesto).</li>
+<li><b>Estructura subrutina:</b> definida APARTE con G21 N1 ... G24 (no en línea entre el código principal). Esto permite reutilizarla con espejo activado para la ranura 2.</li>
+</ul></p>
 </div>
 
-<div class="paso"><div class="paso-titulo">Sección 3 — Ranura sinusoidal 2 (simétrica, con G73)</div>
-<p><b>📋 Planteamiento:</b> la segunda ranura es <b>simétrica</b> a la primera respecto al eje X (giro 180° respecto al origen). En lugar de reescribir 7 bloques con coordenadas espejadas, aplicamos <b>G73 A180</b> (transformación de coordenadas) y reutilizamos la subrutina. Esto reduce mantenibilidad: si cambia la geometría, solo se modifica una vez.</p>
-<span class="res-code">% RANURA 2 (simétrica)
-
-N300 G73 A180
-;     G73 = TRANSFORMACIÓN de coordenadas (Fagor)
-;     A180 = rotación de 180° respecto al origen actual
-;     Todas las coordenadas posteriores se transforman antes de ejecutar
-N310 G22 N1
-;     G22 = LLAMADA a subrutina con número N1
-;     (la subrutina debe estar definida con G20 N1.1 ... G24)
-N320 G1 G42 G37 R5 X-40 Y0          ; (Estas líneas serían parte de la subrutina,
-N330 G1 Z-8                         ;  pero aquí están en línea para mostrar el resultado.
-N340 G2 X-20 Y5 R12.5                ;  Con G73 A180, el control reflecta cada coord.)
-N350 G3 X10 Y-5 R18.5
-N360 G2 X30 Y5 R11.5
-N370 G1 G38 R5 X45 Y5
-N380 G24                            ; FIN de subrutina (return)
-N390 G20 N1.1                       ; ETIQUETA de subrutina (define N1)
-N400 G0 Z100                        ; retira a Z seguro
-N410 G40 G44                        ; cancela compensaciones
-N420 M5                              ; para el cabezal
-N430 M30                             ; FIN de programa (con rewind)</span>
-<p class="res-note"><b>🔑 G73 vs reflexión:</b> G73 con A180 rota 180° (equivalente a reflexión punto a punto). Para reflexión sobre un eje específico, Fagor usa G65 (espejo X) o G66 (espejo Y). En este caso A180 funciona porque la simetría es central.</p>
+<div class="paso"><div class="paso-titulo">Sección 3 — Ranura sinusoidal 2 (simétrica respecto eje X, con G66 espejo Y)</div>
+<p><b>📋 Planteamiento corregido:</b> la ranura 2 es la <b>reflexión sobre el eje X</b> de la ranura 1 (es decir, (x,y) → (x,-y) — misma X, Y opuesta). NO es una rotación 180° (que invertiría AMBOS ejes (x,y) → (-x,-y), dando una curva que iría de derecha a izquierda y arriba a abajo).</p>
+<p>Para reflexión sobre eje X en Fagor, se usa el comando <b>"espejo en Y"</b>. Confusamente, "espejo Y" en Fagor significa "invierte el eje Y", lo que equivale a una <b>reflexión sobre el eje X</b>. El código depende de la versión Fagor: <b>G66</b> (algunas versiones) o <b>G11/G12</b> (otras). Verificar con el manual concreto.</p>
+<p><b>⚠ Importante:</b> con G73 A180 (rotación) NO se obtiene la simetría correcta — esa fue la corrección clave del compañero.</p>
 </div>
 
 <div class="paso"><div class="paso-titulo">Cálculo de parámetros de corte</div>
@@ -529,7 +529,18 @@ T2.2 (fresa D8 ranuras, vc=180 m/min, Z=2, fz=0,05 mm/Z/rev):
 </div>
 </div>
 
-<div class="verificacion"><span class="vlabel">✓ Verificación</span>Fresado con interpolación circular (Fagor): <b>G37 R5</b> entra tangencialmente al primer arco, <b>G38 R5</b> sale tangencial del último — transición C1 sin marca. Los <b>radios R en G2/G3</b> se indican directamente sin calcular I,J cuando el arco es &lt; 180°. La <b>segunda ranura</b> aprovecha la simetría con G73 A180 + subrutina (G22/G20) en lugar de reprogramar.</div>
+<div class="verificacion"><span class="vlabel">✓ Verificación</span>Fresado con interpolación circular (Fagor): <b>G37 R5</b> entra tangencialmente al primer arco, <b>G38 R5</b> sale tangencial del último — transición C1 sin marca. Los <b>radios R en G2/G3</b> se indican directamente sin calcular I,J cuando el arco es &lt; 180°. La <b>segunda ranura</b> es <b>reflexión sobre eje X</b> de la primera, no rotación.
+<br><br>
+<b>🔍 Auditoría aplicada (6 fixes del compañero):</b>
+<ol style="margin:6px 0 0 18px;font-size:.93em;line-height:1.7">
+<li>N040 comentario: aclarado vc=100 m/min para D20 (no mezclar con datos de D8)</li>
+<li>Radii: R12,5 → <b>R11,5</b> según el plano (3 arcos R11,5 + R18,5 alternados)</li>
+<li>Coordenadas Y de tangencias: Y=0 (línea media), no Y=±5</li>
+<li>Sentidos G2/G3: revisados para coherencia con geometría real</li>
+<li>Espejo Ranura 2: <b>G66 (reflexión sobre eje X)</b>, no G73 A180 (rotación)</li>
+<li>Estructura subrutina: separada con <b>G21 N1 ... G24</b>, no en línea con el código principal</li>
+</ol>
+</div>
 </div>
 <div class="topic-panel" id="ex3">
 <div class="panel-header">
