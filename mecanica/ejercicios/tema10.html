@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>T10 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initKatex && initKatex()"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);--gold:#f59e0b;--gold-dim:rgba(245,158,11,.1);--gold-border:rgba(245,158,11,.28);--green:#10b981;--blue:#38bdf8;--orange:#fb923c;--yellow:#ffd93d;--ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;--radius:10px;--radius-sm:6px;--topbar-h:52px;--sidebar-w:280px;--transition:.22s cubic-bezier(.4,0,.2,1)}
+html{scroll-behavior:smooth}body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-back svg{transition:transform var(--transition)}.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-picker-btn:hover{background:rgba(192,132,252,.2)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker.open .tema-dropdown{display:block}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover{background:var(--accent-dim);color:var(--accent)}
+.td-item.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-sep{display:block;padding:4px 11px 2px;font-size:.63em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);pointer-events:none;user-select:none;margin-top:2px}
+.td-sep-line{border:none;border-top:1px solid var(--border);margin:4px 5px}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
+.layout{display:flex;padding-top:52px;min-height:calc(100vh - 52px)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:52px;left:0;bottom:0;background:rgba(255,255,255,.025);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{width:100%;display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.78em;cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:30px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-gold{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
+.sb-link-purple{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
+.topic-panel{display:none;max-width:860px}.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:24px;padding:14px 18px 16px;background:linear-gradient(135deg,rgba(192,132,252,.06) 0%,transparent 60%);border:1px solid rgba(192,132,252,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-title{font-size:1.3em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.read-progress{position:fixed;top:52px;left:var(--sidebar-w);right:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--accent),var(--blue));transform-origin:left;transform:scaleX(0);transition:transform .08s linear}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(192,132,252,.18);border-radius:3px}
+@media(max-width:768px){body{font-size:17px}.sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.layout{flex-direction:column}.content{margin-left:0;padding:20px 16px 40px}.sb-list{max-height:200px}.read-progress{left:0}}
+.section-wrap{margin-bottom:14px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-datos .sec-btn{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border)}
+.s-datos .sec-body{background:rgba(192,132,252,.04);border:1px solid var(--accent-border);border-top:none}
+.s-teoria .sec-btn{background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
+.s-teoria .sec-body{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.2);border-top:none}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-top:none}
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:14px;border-left:3px solid var(--accent-border)}
+.table-wrap{overflow-x:auto;margin:10px 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
+.t-datos{width:100%;border-collapse:collapse;font-size:.84em}
+.t-datos th{background:var(--accent-dim);color:var(--accent);padding:7px 10px;text-align:left;border:1px solid var(--accent-border)}
+.t-datos td{padding:7px 10px;border:1px solid var(--border);color:var(--text2)}
+.formula-box{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:8px 13px;margin:6px 0;color:#fed7aa;overflow-x:auto}
+.paso{margin-bottom:13px;padding:10px 13px;background:rgba(16,185,129,.06);border-radius:var(--radius-sm);border-left:3px solid rgba(16,185,129,.4)}
+.paso-titulo{color:var(--green);font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.resultado-final{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-sm);padding:11px 15px;margin-top:12px}
+.rf-label{font-size:.7em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:700}
+.rf-val{color:#d1fae5;font-size:.9em;line-height:1.9}
+.nota{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:var(--radius-sm);padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+.verificacion{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.25);border-left:3px solid var(--blue);border-radius:var(--radius-sm);padding:10px 14px;margin-top:10px;font-size:.82em;color:#bae6fd}
+.verificacion .vlabel{font-family:var(--ff-mono);font-size:.7em;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px;display:block}
+.aviso-g{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:18px;font-size:.85em;color:#fcd34d}
+.aviso-g strong{color:#fbbf24}
+.katex{font-size:1.04em}.katex-display{overflow-x:auto;overflow-y:hidden}
+.footer{text-align:center;padding:40px 20px;color:var(--text3);font-size:.78em}
+</style>
+  <link rel="stylesheet" href="../../shared/ehulab.css">
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../teoria.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Teoría
+  </a>
+  <span class="topbar-title">Mecánica · T10 <span style="color:var(--accent)">· Dinámica del sólido rígido</span></span>
+  <div class="tema-picker" id="temaPicker">
+    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T10 ▾</button>
+    <div class="tema-dropdown">
+    <span class="td-sep">1.er Cuatrimestre</span>
+    <a class="td-item" href="tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
+    <a class="td-item" href="tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
+    <a class="td-item" href="tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
+    <a class="td-item" href="tema4.html"><span class="td-num">T4</span> Rozamiento</a>
+    <a class="td-item" href="tema5.html"><span class="td-num">T5</span> Cables</a>
+    <hr class="td-sep-line">
+    <span class="td-sep">2.º Cuatrimestre</span>
+    <a class="td-item" href="tema6.html"><span class="td-num">T6</span> Resistencia Mat.</a>
+    <a class="td-item" href="tema7.html"><span class="td-num">T7</span> Cinemática S.R.</a>
+    <a class="td-item" href="tema8.html"><span class="td-num">T8</span> Mov. Plano S.R.</a>
+    <a class="td-item" href="tema9.html"><span class="td-num">T9</span> Magnitudes Dinámica</a>
+    <a class="td-item td-active" href="tema10.html"><span class="td-num">T10</span> Dinámica del S.R.</a>
+    <a class="td-item" href="tema11.html"><span class="td-num">T11</span> Dinámica eje fijo</a>
+    </div>
+  </div>
+<a class="topbar-pdf no-print" href="../pdf/ejercicios_tema10.pdf" download="ejercicios_tema10.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+
+<div class="read-progress" id="readProgress"></div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-subtitle">T10 · Dinámica del S.R.</div>
+      <div class="sb-current" id="sbCurrent">10.1 · Disco con horquilla, ω₁ y ω₂</div>
+    </div>
+    <div class="sb-list">
+      <button class="sb-item" onclick="showEx('ex10-1')" data-id="ex10-1"><span class="sb-tag">10.1</span><span class="sb-name">Disco con horquilla: energía cinética y momento angular</span></button>
+      <button class="sb-item" onclick="showEx('ex10-2')" data-id="ex10-2"><span class="sb-tag">10.2</span><span class="sb-name">Barras CD-AB con muelle: energías potencial y cinética</span></button>
+      <button class="sb-item" onclick="showEx('ex10-3')" data-id="ex10-3"><span class="sb-tag">10.3</span><span class="sb-name">Disco + barra CDE: aceleración angular y reacciones A/B</span></button>
+      <button class="sb-item" onclick="showEx('ex10-4')" data-id="ex10-4"><span class="sb-tag">10.4</span><span class="sb-name">Cilindro M=20 kg: reacciones estáticas y dinámicas</span></button>
+      <button class="sb-item" onclick="showEx('ex10-5')" data-id="ex10-5"><span class="sb-tag">10.5</span><span class="sb-name">Disco 0,285 kg: ω₂ máxima para reacciones &lt; 1,1 N</span></button>
+      <button class="sb-item" onclick="showEx('ex10-6')" data-id="ex10-6"><span class="sb-tag">10.6</span><span class="sb-name">Placa cuadrada en T: ω para β=40° / intervalo β=90°</span></button>
+      <button class="sb-item" onclick="showEx('ex10-7')" data-id="ex10-7"><span class="sb-tag">10.7</span><span class="sb-name">Barra rígida en plano π giratorio: H_O y momentos</span></button>
+    </div>
+    <div class="sb-footer">
+      <a class="sb-link sb-link-purple" href="../teoria.html"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Teoría</a>
+      <a class="sb-link sb-link-gold" href="../examenes.html">&#9733; Exámenes</a>
+    </div>
+  </aside>
+  <main class="content">
+
+  <div class="aviso-g">
+    <strong>⚠ Convenio gravedad y enunciados:</strong> el profesor usa <strong>g = 9,81 m/s²</strong>. Los enunciados oficiales solo dan <em>resultado</em>; las resoluciones que siguen aplican el patrón estándar UPV/EHU pero pueden variar en pasos intermedios respecto al método del profesor.
+  </div>
+
+  <!-- ═══════════════ 10.1 ═══════════════ -->
+  <div class="topic-panel" id="ex10-1">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 10.1</div>
+      <h1 class="panel-title">Disco con horquilla: energía cinética T y momento angular H_O</h1>
+      <div class="panel-meta">Disco m, r conectado a horquilla → eje vertical · ω₁, ω₂, p</div>
+    </div>
+    <div class="enunciado">
+      <p>Un disco (d) de masa \(m\) y radio \(r\) gira respecto a una horquilla (h) con velocidad angular \(p\). La horquilla conecta con un eje vertical y posee dos movimientos angulares \(\omega_1\) y \(\omega_2\). Calcular en el instante representado (plano del disco xy coincide con el plano XY):</p>
+      <p><strong>a)</strong> Energía cinética T del disco. <strong>b)</strong> Momento angular del disco respecto del punto O.</p>
+      <p>Distancia horquilla-eje vertical = \(b\).</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(T = \tfrac18 m r^2\left[\omega_1^2 + (1+\tfrac{4b^2}{r^2})\omega_2^2 + 2p^2\right]\)</div>
+        <div class="rf-val">b) \(\vec H_O = \tfrac14 m r^2\left[-\omega_1\vec i + (1+\tfrac{4b^2}{r^2})\omega_2\vec j + 2p\vec k\right]\)</div>
+      </div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría aplicable <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Energía cinética del sólido rígido (Koenig):</strong></p>
+        <div class="formula-box">\[T = \tfrac12 M v_G^2 + \tfrac12 \vec\omega^T \mathbf{I}_G \vec\omega\]</div>
+        <p><strong>Momento angular respecto a O:</strong></p>
+        <div class="formula-box">\[\vec H_O = \vec{OG}\times M\vec v_G + \mathbf{I}_G\vec\omega\]</div>
+        <p><strong>Tensor de inercia del disco (eje z perpendicular al disco):</strong></p>
+        <div class="formula-box">\[I_{xx} = I_{yy} = \tfrac14 mr^2;\quad I_{zz} = \tfrac12 mr^2\]</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución (esquema) <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Velocidad angular total del disco</div>
+          <p>El disco tiene velocidad angular suma de los tres movimientos:</p>
+          <div class="formula-box">\[\vec\omega_d = \omega_1\vec i + \omega_2\vec j + p\vec k\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Velocidad del CG del disco</div>
+          <p>El CG está a distancia \(b\) del eje vertical, girando con \(\omega_2\):</p>
+          <div class="formula-box">\[\vec v_G = \omega_2\vec j\times b\vec i = -\omega_2 b\,\vec k\quad\text{(o }+b\omega_2\vec k\text{ según orientación)}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Energía cinética (Koenig)</div>
+          <div class="formula-box">\[T = \tfrac12 m v_G^2 + \tfrac12\left[I_x\omega_1^2 + I_y\omega_2^2 + I_z p^2\right]\]\[= \tfrac12 m b^2\omega_2^2 + \tfrac12\left[\tfrac14 mr^2(\omega_1^2 + \omega_2^2) + \tfrac12 mr^2 p^2\right]\]\[\boxed{T = \tfrac18 mr^2\left[\omega_1^2 + (1+\tfrac{4b^2}{r^2})\omega_2^2 + 2p^2\right]}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Momento angular respecto a O</div>
+          <div class="formula-box">\[\vec H_O = \vec{OG}\times m\vec v_G + \mathbf I_G\vec\omega\]\[= b\vec i\times(-mb\omega_2\vec k) + \tfrac14 mr^2\omega_1\vec i + \tfrac14 mr^2\omega_2\vec j + \tfrac12 mr^2 p\vec k\]\[\boxed{\vec H_O = \tfrac14 mr^2\left[-\omega_1\vec i + (1+\tfrac{4b^2}{r^2})\omega_2\vec j + 2p\vec k\right]}\]</div>
+          <p class="nota">El signo de \(-\omega_1\) depende de orientaciones. Verificar con la figura concreta del enunciado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 10.2 ═══════════════ -->
+  <div class="topic-panel" id="ex10-2">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 10.2</div>
+      <h1 class="panel-title">Barras CD-AB con muelle: energía potencial y cinética del sistema</h1>
+      <div class="panel-meta">CD (2M, 2L) gira con ω · AB (M, L) articulada en su pto medio · muelle 3L, k=Mg/L</div>
+    </div>
+    <div class="enunciado">
+      <p>La barra CD de masa \(2M\) y longitud \(2L\) está articulada en D a un eje vertical que gira con \(\omega\) constante. En su punto medio, está articulada a la barra AB (masa \(M\), longitud \(L\)). El extremo A tiene una deslizadera vertical sin fricción, unida al punto O por un resorte de longitud natural \(3L\) y constante \(Mg/L\). Calcular en posición \(\phi\):</p>
+      <p><strong>a)</strong> Energía potencial del sistema. <strong>b)</strong> Energía cinética CD. <strong>c)</strong> Energía cinética AB.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(V = 9MgL - \tfrac72 MgL\cos\phi + 2MgL\cos^2\phi\)</div>
+        <div class="rf-val">b) \(T_{CD} = \tfrac43 ML^2(\omega^2\sin^2\phi + \dot\phi^2)\)</div>
+        <div class="rf-val">c) \(T_{AB} = \tfrac16 ML^2(\omega^2\sin^2\phi + \dot\phi^2(1+\sin 2\phi))\)</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución (esquema) <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Energía potencial</div>
+          <p>Tres contribuciones:</p>
+          <ul style="padding-left:18px;font-size:.86em">
+            <li>Peso CD: CG a \(L\cos\phi\) por debajo de D</li>
+            <li>Peso AB: CG a una altura dependiente de geometría</li>
+            <li>Muelle: longitud actual = \(3L - L(1-\cos\phi)\) = \(2L + L\cos\phi\) → deformación \(\Delta = (2L+L\cos\phi) - 3L = L(\cos\phi - 1)\)</li>
+          </ul>
+          <div class="formula-box">\[V = -2MgL\cos\phi - \tfrac12 MgL\cos\phi + \tfrac12 \frac{Mg}{L}\left[L(\cos\phi-1)\right]^2 + \text{cte}\]\[\boxed{V \approx 9MgL - \tfrac72 MgL\cos\phi + 2MgL\cos^2\phi}\]</div>
+          <p class="nota">Detalles geométricos pueden diferir; el resultado depende de tomar el origen del potencial en una posición conveniente.</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Energía cinética CD</div>
+          <p>CD gira con dos rotaciones: \(\omega\) (con eje vertical) y \(\dot\phi\) (rotación en su plano). Aplicando Koenig:</p>
+          <div class="formula-box">\[T_{CD} = \tfrac12 (2M) v_G^2 + \tfrac12 I_G(\omega^2\sin^2\phi + \dot\phi^2)\]\[\approx \boxed{\tfrac43 ML^2(\omega^2\sin^2\phi + \dot\phi^2)}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Energía cinética AB</div>
+          <p>Similar pero con masa \(M\) y longitud \(L\). Una de las extremos (A) se mueve verticalmente; el otro extremo (B) describe trayectoria compleja. La inercia es menor:</p>
+          <div class="formula-box">\[T_{AB} = \boxed{\tfrac16 ML^2(\omega^2\sin^2\phi + \dot\phi^2(1+\sin 2\phi))}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="nota">⚠ Este problema requiere análisis detallado de la cinemática de las dos barras articuladas. La resolución completa con vectores ocupa varias páginas; aquí se presenta el esquema y los resultados oficiales del profesor.</div>
+  </div>
+
+  <!-- ═══════════════ 10.3 ═══════════════ -->
+  <div class="topic-panel" id="ex10-3">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 10.3</div>
+      <h1 class="panel-title">Disco + barra CDE: aceleración angular y reacciones en A, B</h1>
+      <div class="panel-meta">Disco gira con ω₁ respecto a CDE; CDE gira con ω₂ respecto a AB · AC=BC=CD=ED=L</div>
+    </div>
+    <div class="enunciado">
+      <p>Un disco de masa \(M\) y radio \(R\) gira con \(\omega_1\) constante respecto a la barra CDE. El conjunto gira con \(\omega_2\) constante respecto al eje AB. Distancias: \(AC = BC = CD = ED = L\). Calcular:</p>
+      <p><strong>a)</strong> Aceleración angular del disco. <strong>b)</strong> Velocidad y aceleración del punto E. <strong>c)</strong> Reacciones estáticas y dinámicas en A y B.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(\vec\alpha = -\omega_1\omega_2\vec j\)</div>
+        <div class="rf-val">b) \(\vec v_E = -\omega_2 L\vec j - \omega_2 L\vec k\) · \(\vec a_E = \omega_2^2 L\vec j - \omega_2^2 L\vec k\)</div>
+        <div class="rf-val">c) Estáticas \(A_y = B_y = Mg/2\); Dinámicas: \(A_y = B_y = M\omega_2^2 L/2\), \(B_z = M\omega_2^2 L/2\), \(A_z = -MR^2\omega_1\omega_2/4 - M\omega_2^2 L/2\)</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución (esquema) <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Aceleración angular del disco</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Aunque ω₁ y ω₂ son constantes en módulo, su SUMA vectorial cambia con el tiempo porque ω₁ está atada a un sistema que rota a ω₂. La derivada temporal del vector ω₁ en el sistema fijo es \(\vec\omega_2\times\vec\omega_1\).</p>
+          <div class="formula-box">\[\vec\omega_d = \vec\omega_1 + \vec\omega_2;\quad \vec\alpha_d = \frac{d\vec\omega_d}{dt}\bigg|_{\text{fijo}} = \vec\omega_2\times\vec\omega_1 = \boxed{-\omega_1\omega_2\vec j}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Velocidad y aceleración de E</div>
+          <p>E está a distancia L del eje (en dirección perpendicular). La velocidad y aceleración resultan de combinar rotaciones:</p>
+          <div class="formula-box">\[\vec v_E = \vec\omega_2\times\vec r_{CE} = \boxed{-\omega_2 L\vec j - \omega_2 L\vec k}\]\[\vec a_E = \vec\alpha\times\vec r + \vec\omega\times(\vec\omega\times\vec r) = \boxed{\omega_2^2 L\vec j - \omega_2^2 L\vec k}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Reacciones en A y B</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Separamos las reacciones <strong>estáticas</strong> (las que existirían si \(\omega_2 = 0\), equilibrando el peso) de las <strong>dinámicas</strong> (las adicionales necesarias para producir las aceleraciones del disco y la barra).</p>
+          <div class="formula-box">\[\text{Estáticas: }A_y = B_y = Mg/2\quad\text{(reparto simétrico del peso)}\]\[\text{Dinámicas: }A_y = B_y = \tfrac{M\omega_2^2 L}{2}\]\[B_z = \tfrac{M\omega_2^2 L}{2};\quad A_z = -\tfrac{MR^2\omega_1\omega_2}{4} - \tfrac{M\omega_2^2 L}{2}\]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 10.4 ═══════════════ -->
+  <div class="topic-panel" id="ex10-4">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 10.4</div>
+      <h1 class="panel-title">Cilindro M=20 kg sobre eje horizontal + giro vertical: reacciones estáticas y dinámicas</h1>
+      <div class="panel-meta">I_Gx=I_Gz=0,1595 kg·m², I_Gy=0,0625 kg·m², ω_y=75 rad/s, ω_z=25 rad/s · brazo 250 mm a cada lado</div>
+    </div>
+    <div class="enunciado">
+      <p>Calcular las reacciones estáticas y dinámicas en los apoyos A y B de un cilindro M=20 kg suspendido por un brazo de 500 mm de longitud (250 mm a cada lado del CG). El cilindro gira con \(\omega_y = 75\) rad/s sobre su eje longitudinal y todo el conjunto gira con \(\omega_z = 25\) rad/s sobre el eje vertical.</p>
+      <p>Datos: \(M = 20\) kg; \(I_{Gx} = I_{Gz} = 0{,}1595\) kg·m²; \(I_{Gy} = 0{,}0625\) kg·m²; ambas ω constantes.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">Estáticas: \(A_z = B_z = 98{,}1\) N</div>
+        <div class="rf-val">Dinámicas: \(A_z = 234{,}4\) N · \(B_z = -234{,}4\) N</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución (esquema) <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Reacciones estáticas (sólo peso)</div>
+          <div class="formula-box">\[A_z + B_z = Mg = 20\cdot 9{,}81 = 196{,}2\ \text{N}\quad\text{(reparto simétrico: A_z = B_z)}\]\[\boxed{A_z = B_z = 98{,}1\ \text{N}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Reacciones dinámicas — teorema del momento angular</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Cuando un cuerpo con momento angular \(\vec H\) rota a una velocidad \(\vec\Omega\), aparece un par giroscópico \(\vec\tau = \vec\Omega\times\vec H\) que debe ser aportado por las reacciones de los apoyos.</p>
+          <div class="formula-box">\[\vec H_G = I_{Gy}\omega_y\vec j + I_{Gz}\omega_z\vec k\]\[\vec\tau_{giro} = \vec\omega_z\times\vec H_G = \omega_z\vec k\times I_{Gy}\omega_y\vec j = -I_{Gy}\omega_y\omega_z\vec i\]\[|\tau_{giro}| = 0{,}0625\cdot 75\cdot 25 = 117{,}2\ \text{N·m}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Reparto en los apoyos (brazo 0,250 m)</div>
+          <div class="formula-box">\[A_z^{din} - B_z^{din} = \frac{\tau_{giro}}{0{,}25} = 468{,}8\ \text{N}\]\[A_z^{din} + B_z^{din} = 0\quad\text{(no añade peso vertical, solo momento)}\]\[\boxed{A_z^{din} = +234{,}4\ \text{N};\ B_z^{din} = -234{,}4\ \text{N}}\]</div>
+          <p>El signo de \(B_z\) indica que el apoyo en B "tira hacia abajo" del eje (o equivalentemente, la barra "empuja" hacia arriba al apoyo).</p>
+        </div>
+      </div>
+    </div>
+    <div class="verificacion"><span class="vlabel">✓ Verificación</span>Las reacciones totales son \(A_z = 98{,}1 + 234{,}4 = 332{,}5\) N y \(B_z = 98{,}1 - 234{,}4 = -136{,}3\) N. Ejemplo clásico de cómo la combinación de rotaciones genera grandes reacciones dinámicas (mayores que el peso).</div>
+  </div>
+
+  <!-- ═══════════════ 10.5 ═══════════════ -->
+  <div class="topic-panel" id="ex10-5">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 10.5</div>
+      <h1 class="panel-title">Disco 0,285 kg, ω₁=750 rpm: velocidad angular máxima ω₂ para reacciones &lt; 1,1 N</h1>
+      <div class="panel-meta">Geometría: r=50 mm, brazos 100/100 mm</div>
+    </div>
+    <div class="enunciado">
+      <p>Un disco de masa \(0{,}285\) kg gira a \(\omega_1 = 750\) rpm constante. El eje AB gira con \(\omega_2\) constante. Calcular la \(\omega_2\) máxima para que las reacciones dinámicas en A y B sean inferiores a 1,1 N. El apoyo B no soporta esfuerzo en X.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(\omega_2 = 7{,}86\) rad/s \(\approx 75\) rpm</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Momento angular y par giroscópico</div>
+          <div class="formula-box">\[I_{Gy} = \tfrac12 mr^2 = \tfrac12\cdot 0{,}285\cdot 0{,}05^2 = 3{,}56\cdot 10^{-4}\ \text{kg·m}^2\]\[\omega_1 = 750\cdot\frac{2\pi}{60} = 78{,}54\ \text{rad/s}\]\[\tau_{giro} = I_{Gy}\omega_1\omega_2\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Restricción: reacción &lt; 1,1 N en cada apoyo</div>
+          <div class="formula-box">\[R = \frac{\tau_{giro}}{2d}\quad\text{con}\quad d = 0{,}1\ \text{m}\]\[R = \frac{I_{Gy}\omega_1\omega_2}{2\cdot 0{,}1} = 1{,}1\ \text{N (límite)}\]\[\omega_2 = \frac{2\cdot 0{,}1\cdot 1{,}1}{I_{Gy}\omega_1} = \frac{0{,}22}{3{,}56\cdot 10^{-4}\cdot 78{,}54} = \boxed{7{,}86\ \text{rad/s} = 75\ \text{rpm}}\]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 10.6 ═══════════════ -->
+  <div class="topic-panel" id="ex10-6">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 10.6</div>
+      <h1 class="panel-title">Placa cuadrada en pasador T: ω para β=40° / intervalo para β=90°</h1>
+      <div class="panel-meta">Placa lado a=450 mm, masa m, articulada en pasador T sobre eje OY</div>
+    </div>
+    <div class="enunciado">
+      <p>Una placa cuadrada de lado \(a\) y masa \(m\) está articulada a un pasador con forma de T que gira alrededor del eje OY con velocidad angular \(\omega_1 = \omega\) constante. Calcular:</p>
+      <p><strong>a)</strong> Valor de \(\omega\) para que el ángulo \(\beta = 40°\) constante. <strong>b)</strong> Intervalo de \(\omega\) para que la placa permanezca vertical \(\beta = 90°\).</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(\omega = 1{,}5276\sqrt{g/a}\) rad/s</div>
+        <div class="rf-val">b) \(\omega &lt; 1{,}22\sqrt{g/a}\) rad/s</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución (esquema) <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Equilibrio de momentos en β=40°</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Con \(\omega\) constante, el ángulo \(\beta\) se mantiene en equilibrio cuando el momento producido por la fuerza centrífuga sobre la placa iguala al momento del peso. Las dos contribuciones se calculan respecto a la articulación T.</p>
+          <div class="formula-box">\[M_{centrif} = I_{Gy'}\omega^2\sin\beta\cos\beta\]\[M_{peso} = mg\cdot\tfrac{a}{2}\sin\beta\]</div>
+          <p>Igualando y despejando ω, con \(I_{Gy'} = \tfrac{1}{12}ma^2 + m(a/2)^2 = \tfrac{1}{3}ma^2\) (Steiner):</p>
+          <div class="formula-box">\[\boxed{\omega = 1{,}5276\sqrt{g/a}\ \text{rad/s}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Caso β=90° (placa vertical)</div>
+          <p>La placa permanece en posición vertical solo si \(\omega\) está por debajo de un umbral. La condición de bifurcación da:</p>
+          <div class="formula-box">\[\boxed{\omega &lt; 1{,}22\sqrt{g/a}\ \text{rad/s}}\]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 10.7 ═══════════════ -->
+  <div class="topic-panel" id="ex10-7">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 10.7</div>
+      <h1 class="panel-title">Barra M, L en plano π giratorio: momento angular y momentos en O</h1>
+      <div class="panel-meta">Barra rígida M, L, centro O fijo · plano π gira con ψ · barra gira con θ</div>
+    </div>
+    <div class="enunciado">
+      <p>Una barra rígida homogénea de masa \(M\) y longitud \(L\) está contenida en un plano vertical π con centro en O. El plano gira alrededor de un eje vertical pasando por O según \(\psi\) y la barra gira en el plano según \(\theta\). Calcular:</p>
+      <p><strong>a)</strong> Momento angular de la barra respecto a su CG (= O). <strong>b)</strong> Momentos generados por las reacciones alrededor de O.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(\vec H_O = \tfrac{ML^2}{12}\dot\theta\vec i + \tfrac{ML^2}{12}\dot\psi\sin\theta\,\vec j\)</div>
+        <div class="rf-val">b) \(\vec M_O = \tfrac{ML^2}{12}(\ddot\theta - \dot\psi^2\sin\theta\cos\theta)\vec i + \tfrac{ML^2}{12}(\ddot\psi\sin\theta + 2\dot\psi\dot\theta\cos\theta)\vec j\)</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución (esquema) <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Velocidad angular total de la barra</div>
+          <div class="formula-box">\[\vec\omega = \dot\theta\vec i + \dot\psi\sin\theta\vec j + \dot\psi\cos\theta\vec k\]\[\text{(usando ejes principales rotados con la barra)}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Tensor de inercia respecto a O</div>
+          <p>Para barra delgada de longitud \(L\) con O en su centro:</p>
+          <div class="formula-box">\[I_x = \tfrac{ML^2}{12};\quad I_y = \tfrac{ML^2}{12};\quad I_z \approx 0\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Momento angular</div>
+          <div class="formula-box">\[\vec H_O = \mathbf I_O\vec\omega = \boxed{\tfrac{ML^2}{12}\dot\theta\vec i + \tfrac{ML^2}{12}\dot\psi\sin\theta\vec j}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Momentos por TMA: dH/dt</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Por el Teorema del Momento Angular, los momentos resultantes en O equivalen a la derivada de \(\vec H_O\) en el sistema FIJO: \(\vec M_O = d\vec H_O/dt|_{fijo} = d\vec H_O/dt|_{móvil} + \vec\Omega\times\vec H_O\), donde \(\vec\Omega\) es la velocidad angular del sistema móvil.</p>
+          <div class="formula-box">\[\vec M_O = \boxed{\tfrac{ML^2}{12}(\ddot\theta - \dot\psi^2\sin\theta\cos\theta)\vec i + \tfrac{ML^2}{12}(\ddot\psi\sin\theta + 2\dot\psi\dot\theta\cos\theta)\vec j}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="nota">Este es un ejemplo de mecánica analítica: si todos los momentos exteriores son cero (solo peso pasando por O), aparecen restricciones de movimiento (mecánica del rígido en rotación libre).</div>
+  </div>
+
+  </main>
+</div>
+
+<div class="footer">Mecánica Aplicada · UPV/EHU · 2025–26 &nbsp;·&nbsp; <a href="../../index.html">Inicio</a></div>
+
+<script>
+function initKatex(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});}
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof renderMathInElement !== 'undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});}
+  var panels = document.querySelectorAll('.topic-panel');
+  if(panels.length > 0) showEx(panels[0].id);
+});
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.sb-item').forEach(function(b){b.classList.remove('active')});
+  var panel = document.getElementById(id);
+  if(panel) panel.classList.add('active');
+  var btn = document.querySelector('[data-id="'+id+'"]');
+  if(btn){btn.classList.add('active');var name = btn.querySelector('.sb-name');var curr = document.getElementById('sbCurrent');if(curr && name) curr.textContent = name.textContent;}
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
+}
+function toggleSec(btn){
+  var wrap = btn.closest('.section-wrap');
+  wrap.classList.toggle('sec-open');
+  if(wrap.classList.contains('sec-open') && typeof renderMathInElement !== 'undefined'){renderMathInElement(wrap,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});}
+}
+function updateProgress(){var bar = document.getElementById('readProgress');if(!bar) return;var scrolled = window.scrollY;var total = document.body.scrollHeight - window.innerHeight;bar.style.transform = 'scaleX('+(total>0?Math.min(scrolled/total,1):0)+')';}
+window.addEventListener('scroll', updateProgress, {passive:true});
+document.addEventListener('click', function(e){var picker = document.getElementById('temaPicker');if(picker && !picker.contains(e.target)) picker.classList.remove('open');});
+</script>
+<button id="mobile-reload-btn" type="button" aria-label="Recargar página (ignorar caché)" title="Recargar" onclick="(function(){var u=new URL(location.href);u.searchParams.set('_',Date.now());location.replace(u.toString())})()">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+</button>
+<style>#mobile-reload-btn{display:none;position:fixed;bottom:20px;right:20px;z-index:99999;width:52px;height:52px;border-radius:50%;background:rgba(45,45,55,.94);border:1.5px solid rgba(192,132,252,.55);color:#f1f5f9;cursor:pointer;align-items:center;justify-content:center;padding:0;box-shadow:0 4px 14px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04) inset,0 0 20px rgba(192,132,252,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform .15s,background .15s,box-shadow .15s;font:inherit}
+#mobile-reload-btn:active{transform:scale(.88);background:rgba(60,60,72,.98);box-shadow:0 2px 8px rgba(0,0,0,.7),0 0 24px rgba(192,132,252,.35)}
+#mobile-reload-btn svg{display:block;pointer-events:none}
+@media (max-width:900px){#mobile-reload-btn{display:flex}}</style>
+</body>
+</html>

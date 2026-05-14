@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>T9 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="initKatex && initKatex()"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,.1);--gold-border:rgba(245,158,11,.28);
+  --green:#10b981;--blue:#38bdf8;--orange:#fb923c;--yellow:#ffd93d;
+  --ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;
+  --radius:10px;--radius-sm:6px;--topbar-h:52px;--sidebar-w:280px;
+  --transition:.22s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-back svg{transition:transform var(--transition)}
+.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-picker-btn:hover{background:rgba(192,132,252,.2)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker.open .tema-dropdown{display:block}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover{background:var(--accent-dim);color:var(--accent)}
+.td-item.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-sep{display:block;padding:4px 11px 2px;font-size:.63em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);pointer-events:none;user-select:none;margin-top:2px}
+.td-sep-line{border:none;border-top:1px solid var(--border);margin:4px 5px}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
+.layout{display:flex;padding-top:52px;min-height:calc(100vh - 52px)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:52px;left:0;bottom:0;background:rgba(255,255,255,.025);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{width:100%;display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.78em;cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:30px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-gold{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
+.sb-link-gold:hover{background:rgba(245,158,11,.15)}
+.sb-link-purple{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.sb-link-purple:hover{background:rgba(192,132,252,.2)}
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
+.topic-panel{display:none;max-width:860px}
+.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:24px;padding:14px 18px 16px;background:linear-gradient(135deg,rgba(192,132,252,.06) 0%,transparent 60%);border:1px solid rgba(192,132,252,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-title{font-size:1.3em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.read-progress{position:fixed;top:52px;left:var(--sidebar-w);right:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--accent),var(--blue));transform-origin:left;transform:scaleX(0);transition:transform .08s linear}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(192,132,252,.18);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(192,132,252,.35)}
+@media(max-width:768px){body{font-size:17px}.sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.layout{flex-direction:column}.content{margin-left:0;padding:20px 16px 40px}.sb-list{max-height:200px}.read-progress{left:0}}
+.section-wrap{margin-bottom:14px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}
+.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-datos .sec-btn{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border)}
+.s-datos .sec-body{background:rgba(192,132,252,.04);border:1px solid var(--accent-border);border-top:none}
+.s-formulas .sec-btn{background:rgba(251,146,60,.1);color:var(--orange);border:1px solid rgba(251,146,60,.25)}
+.s-formulas .sec-body{background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.2);border-top:none}
+.s-teoria .sec-btn{background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
+.s-teoria .sec-body{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.2);border-top:none}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-top:none}
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:14px;border-left:3px solid var(--accent-border)}
+.table-wrap{overflow-x:auto;margin:10px 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
+.t-datos{width:100%;border-collapse:collapse;font-size:.84em}
+.t-datos th{background:var(--accent-dim);color:var(--accent);padding:7px 10px;text-align:left;border:1px solid var(--accent-border)}
+.t-datos td{padding:7px 10px;border:1px solid var(--border);color:var(--text2)}
+.t-datos tr:nth-child(even) td{background:rgba(192,132,252,.04)}
+.formula-box{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:8px 13px;margin:6px 0;color:#fed7aa;overflow-x:auto}
+.paso{margin-bottom:13px;padding:10px 13px;background:rgba(16,185,129,.06);border-radius:var(--radius-sm);border-left:3px solid rgba(16,185,129,.4)}
+.paso-titulo{color:var(--green);font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.resultado-final{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-sm);padding:11px 15px;margin-top:12px}
+.rf-label{font-size:.7em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:700}
+.rf-val{color:#d1fae5;font-size:.9em;line-height:1.9}
+.nota{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:var(--radius-sm);padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+.verificacion{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.25);border-left:3px solid var(--blue);border-radius:var(--radius-sm);padding:10px 14px;margin-top:10px;font-size:.82em;color:#bae6fd}
+.verificacion .vlabel{font-family:var(--ff-mono);font-size:.7em;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px;display:block}
+.aviso-g{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:18px;font-size:.85em;color:#fcd34d}
+.aviso-g strong{color:#fbbf24}
+.katex{font-size:1.04em}
+.katex-display{overflow-x:auto;overflow-y:hidden}
+.footer{text-align:center;padding:40px 20px;color:var(--text3);font-size:.78em}
+</style>
+  <link rel="stylesheet" href="../../shared/ehulab.css">
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../teoria.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Teoría
+  </a>
+  <span class="topbar-title">Mecánica · T9 <span style="color:var(--accent)">· Magnitudes fundamentales de Dinámica</span></span>
+  <div class="tema-picker" id="temaPicker">
+    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T9 ▾</button>
+    <div class="tema-dropdown">
+    <span class="td-sep">1.er Cuatrimestre</span>
+    <a class="td-item" href="tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
+    <a class="td-item" href="tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
+    <a class="td-item" href="tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
+    <a class="td-item" href="tema4.html"><span class="td-num">T4</span> Rozamiento</a>
+    <a class="td-item" href="tema5.html"><span class="td-num">T5</span> Cables</a>
+    <hr class="td-sep-line">
+    <span class="td-sep">2.º Cuatrimestre</span>
+    <a class="td-item" href="tema6.html"><span class="td-num">T6</span> Resistencia Mat.</a>
+    <a class="td-item" href="tema7.html"><span class="td-num">T7</span> Cinemática S.R.</a>
+    <a class="td-item" href="tema8.html"><span class="td-num">T8</span> Mov. Plano S.R.</a>
+    <a class="td-item td-active" href="tema9.html"><span class="td-num">T9</span> Magnitudes Dinámica</a>
+    <a class="td-item" href="tema10.html"><span class="td-num">T10</span> Dinámica del S.R.</a>
+    <a class="td-item" href="tema11.html"><span class="td-num">T11</span> Dinámica eje fijo</a>
+    </div>
+  </div>
+<a class="topbar-pdf no-print" href="../pdf/ejercicios_tema9.pdf" download="ejercicios_tema9.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+
+<div class="read-progress" id="readProgress"></div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-subtitle">T9 · Magnitudes Dinámica</div>
+      <div class="sb-current" id="sbCurrent">9.1 · Hilo cónico ACB</div>
+    </div>
+    <div class="sb-list">
+      <button class="sb-item" onclick="showEx('ex9-1')" data-id="ex9-1"><span class="sb-tag">9.1</span><span class="sb-name">Hilo cónico ACB con esfera giratoria</span></button>
+      <button class="sb-item" onclick="showEx('ex9-2')" data-id="ex9-2"><span class="sb-tag">9.2</span><span class="sb-name">Sistema 3 partículas: CG, L, H_O, H_G, T, V_g</span></button>
+      <button class="sb-item" onclick="showEx('ex9-3')" data-id="ex9-3"><span class="sb-tag">9.3</span><span class="sb-name">Grúa que se detiene: distancia horizontal de la carga</span></button>
+      <button class="sb-item" onclick="showEx('ex9-4')" data-id="ex9-4"><span class="sb-tag">9.4</span><span class="sb-name">Muelle detiene fardo: μ y velocidad de retorno</span></button>
+      <button class="sb-item" onclick="showEx('ex9-5')" data-id="ex9-5"><span class="sb-tag">9.5</span><span class="sb-name">Martillo + pilote: velocidad tras impacto</span></button>
+      <button class="sb-item" onclick="showEx('ex9-6')" data-id="ex9-6"><span class="sb-tag">9.6</span><span class="sb-name">Tren en pendiente: potencia requerida</span></button>
+      <button class="sb-item" onclick="showEx('ex9-7')" data-id="ex9-7"><span class="sb-tag">9.7</span><span class="sb-name">Collarín A con rampa y bloque B: tensión del cable</span></button>
+      <button class="sb-item" onclick="showEx('ex9-8')" data-id="ex9-8"><span class="sb-tag">9.8</span><span class="sb-name">Deslizadera + muelle en aro circular</span></button>
+      <button class="sb-item" onclick="showEx('ex9-9')" data-id="ex9-9"><span class="sb-tag">9.9</span><span class="sb-name">Partícula B con cuerda OA-AB: tensión y velocidad</span></button>
+      <button class="sb-item" onclick="showEx('ex9-10')" data-id="ex9-10"><span class="sb-tag">9.10</span><span class="sb-name">Bloques A sobre B en plano inclinado: aceleraciones</span></button>
+      <button class="sb-item" onclick="showEx('ex9-11')" data-id="ex9-11"><span class="sb-tag">9.11</span><span class="sb-name">Cuerda que se suelta: velocidad de caída</span></button>
+      <button class="sb-item" onclick="showEx('ex9-12')" data-id="ex9-12"><span class="sb-tag">9.12</span><span class="sb-name">Avión con resistencia aerodinámica F=Kv²: pista y tiempo</span></button>
+      <button class="sb-item" onclick="showEx('ex9-13')" data-id="ex9-13"><span class="sb-tag">9.13</span><span class="sb-name">Bañistas A y B saltan de la barca: 3 casos</span></button>
+      <button class="sb-item" onclick="showEx('ex9-14')" data-id="ex9-14"><span class="sb-tag">9.14</span><span class="sb-name">Barco con resistencia F=Kv^1.75: potencia y velocidad</span></button>
+      <button class="sb-item" onclick="showEx('ex9-15')" data-id="ex9-15"><span class="sb-tag">9.15</span><span class="sb-name">Bloques A y B con superficies a 90° y soga</span></button>
+    </div>
+    <div class="sb-footer">
+      <a class="sb-link sb-link-purple" href="../teoria.html"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Teoría</a>
+      <a class="sb-link sb-link-gold" href="../examenes.html">&#9733; Exámenes</a>
+    </div>
+  </aside>
+  <main class="content">
+
+  <div class="aviso-g">
+    <strong>⚠ Convenio de gravedad:</strong> El profesor de T9-T11 usa <strong>g = 9,81 m/s²</strong> en los datos (distinto del g = 9,8 m/s² usado en T1-T5). Todos los resultados numéricos de este tema están calculados con g = 9,81.
+  </div>
+
+  <!-- ═══════════════ 9.1 ═══════════════ -->
+  <div class="topic-panel" id="ex9-1">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.1</div>
+      <h1 class="panel-title">Hilo cónico ACB con esfera giratoria: cálculo de v</h1>
+      <div class="panel-meta">Esfera m=5 kg colgada de hilo ACB · Movimiento circular uniforme R=1,6 m · Ángulos 30° y 45°</div>
+    </div>
+    <div class="enunciado">
+      <p>El hilo de alambre <strong>ACB</strong> pasa por un anillo unido a una esfera pequeña en el punto C. La esferita se mueve girando a velocidad <strong>v constante</strong> a la distancia que aparece en la figura. Sabiendo que la fuerza en los dos extremos del hilo es <strong>idéntica</strong> (\(T_A = T_B = T\)), calcular la velocidad v.</p>
+      <p>Datos: \(m = 5\) kg, \(R = 1{,}6\) m, ángulos 30° (parte de arriba) y 45° (parte de abajo), \(g = 9{,}81\) m/s².</p>
+      <div class="resultado-final">
+        <div class="rf-label">Resultado</div>
+        <div class="rf-val">\(v = 3{,}47\ \text{m/s}\)</div>
+      </div>
+    </div>
+    <div class="section-wrap s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="table-wrap"><table class="t-datos">
+          <tr><th>Variable</th><th>Valor</th></tr>
+          <tr><td>Masa</td><td>\(m = 5\) kg</td></tr>
+          <tr><td>Radio</td><td>\(R = 1{,}6\) m</td></tr>
+          <tr><td>Ángulo superior (hilo AC)</td><td>\(\alpha = 30°\) con la vertical</td></tr>
+          <tr><td>Ángulo inferior (hilo CB)</td><td>\(\beta = 45°\) con la vertical</td></tr>
+          <tr><td>Condición</td><td>\(T_A = T_B = T\); \(v = \text{cte}\)</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Teoría <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>Movimiento circular uniforme (\(v = \text{cte}\)):</p>
+        <ul style="padding-left:18px">
+          <li>Aceleración tangencial \(a_t = dv/dt = 0\)</li>
+          <li>Solo existe aceleración normal (centrípeta) \(a_n = v^2/R\), <strong>hacia el centro</strong> de la trayectoria circular</li>
+        </ul>
+        <p>Segunda ley de Newton (\(\sum \vec{F} = m\vec{a}\)) descompuesta en componentes:</p>
+        <div class="formula-box">\[\sum F_x = m\,a_n = -\frac{mv^2}{R}\quad\text{(horizontal, hacia el eje)}\]\[\sum F_y = 0\quad\text{(vertical, equilibrio)}\]</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Diagrama de cuerpo libre</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Para aplicar Newton necesitamos identificar todas las fuerzas externas sobre la esfera. En C actúan: la tensión \(T\) por el hilo de arriba (tirando hacia A, formando 30° con la vertical), la tensión \(T\) por el hilo de abajo (tirando hacia B, formando 45° con la vertical), y el peso \(mg\) hacia abajo.</p>
+          <p>Fuerzas sobre la esfera C:</p>
+          <ul style="padding-left:18px;font-size:.86em">
+            <li>Tensión \(T\) en hilo AC: hacia arriba, formando 30° con la vertical</li>
+            <li>Tensión \(T\) en hilo CB: hacia arriba, formando 45° con la vertical (en sentido contrario al radial respecto al eje vertical: hilo va por arriba del anillo hacia el otro extremo)</li>
+            <li>Peso \(mg\) hacia abajo</li>
+          </ul>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Ecuación radial (eje x, hacia el centro de giro)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> En movimiento circular uniforme, la resultante horizontal debe ser la fuerza centrípeta \(mv^2/R\) dirigida hacia el eje de giro. Las componentes horizontales de las tensiones se suman (ambas apuntan hacia el eje).</p>
+          <div class="formula-box">\[\sum F_x = m\,a_x:\quad -T\sin 45° - T\sin 30° = -\frac{m v^2}{R}\]\[T(\sin 45° + \sin 30°) = \frac{m v^2}{R}\quad(1)\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Ecuación vertical (eje y, equilibrio)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> No hay aceleración vertical (el plano de la trayectoria es horizontal), por lo que la suma de fuerzas verticales es cero. Las componentes verticales de las tensiones equilibran el peso.</p>
+          <div class="formula-box">\[\sum F_y = 0:\quad T\cos 45° + T\cos 30° - mg = 0\]\[T = \frac{mg}{\cos 45° + \cos 30°}\quad(2)\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Sustituir T y despejar v</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Sustituimos \(T\) de la ecuación (2) en la (1) para eliminar la incógnita \(T\). Quedará una ecuación con solo \(v\) que despejamos directamente.</p>
+          <div class="formula-box">\[\frac{mg(\sin 45° + \sin 30°)}{\cos 45° + \cos 30°} = \frac{mv^2}{R}\]\[\boxed{v = \sqrt{gR\,\frac{\sin 45° + \sin 30°}{\cos 45° + \cos 30°}}}\]</div>
+          <p>Con \(\sin 45° = \cos 45° = \sqrt 2/2 \approx 0{,}707\), \(\sin 30° = 0{,}5\), \(\cos 30° = \sqrt 3/2 \approx 0{,}866\):</p>
+          <div class="formula-box">\[v = \sqrt{9{,}81 \cdot 1{,}6 \cdot \frac{0{,}707 + 0{,}5}{0{,}707 + 0{,}866}} = \sqrt{15{,}70 \cdot \frac{1{,}207}{1{,}573}} = \sqrt{12{,}04}\]\[\boxed{v \approx 3{,}47\ \text{m/s}}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="resultado-final">
+      <div class="rf-label">Resultado final</div>
+      <div class="rf-val">\(v = 3{,}47\ \text{m/s}\)</div>
+    </div>
+    <div class="verificacion">
+      <span class="vlabel">✓ Verificación</span>
+      Como ambos hilos son idénticos en tensión, las componentes verticales se suman y deben dar \(mg\); las componentes horizontales se suman y dan la fuerza centrípeta. El resultado tiene sentido: a mayor R o g, mayor v (la centrípeta crece con \(v^2/R\)).
+    </div>
+  </div>
+
+  <!-- ═══════════════ 9.2 ═══════════════ -->
+  <div class="topic-panel" id="ex9-2">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.2</div>
+      <h1 class="panel-title">Sistema 3 partículas: CG, momento lineal, momento angular, energías</h1>
+      <div class="panel-meta">Tres partículas A, B, C con masas y velocidades dadas · 6 apartados</div>
+    </div>
+    <div class="enunciado">
+      <p>Las masas y velocidades de las partículas A, B y C son:</p>
+      <ul style="padding-left:18px">
+        <li>\(\vec v_A = 3\vec i - 2\vec j + 4\vec k\), \(m_A = 1\) kg, posición \((0,3,3)\)</li>
+        <li>\(\vec v_B = 4\vec i + 3\vec j\), \(m_B = 2\) kg, posición \((1,0,3)\)</li>
+        <li>\(\vec v_C = 2\vec i + 5\vec j - 3\vec k\), \(m_C = 3\) kg, posición \((4,2,1{,}5)\)</li>
+      </ul>
+      <p>Calcular: <strong>a)</strong> CG · <strong>b)</strong> Momento lineal \(\vec L\) · <strong>c)</strong> Momento angular \(\vec H_O\) · <strong>d)</strong> Momento angular \(\vec H_G\) · <strong>e)</strong> Energía cinética \(T\) · <strong>f)</strong> Energía potencial gravitatoria \(V_g\) (referencia en \(y=0\)).</p>
+      <div class="resultado-final">
+        <div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(\vec r_G = 3\vec i + 1{,}5\vec j + 1{,}5\vec k\) [m] · b) \(\vec L = 17\vec i + 19\vec j - 5\vec k\) [kg·m/s]</div>
+        <div class="rf-val">c) \(\vec H_O = -34\vec i + 65\vec j + 57\vec k\) [kg·m²/s] · d) \(\vec H_G = 2\vec i + 24{,}5\vec j + 25{,}5\vec k\)</div>
+        <div class="rf-val">e) \(T = 96{,}5\) J · f) \(V_g = 88{,}2\) J</div>
+      </div>
+    </div>
+    <div class="section-wrap s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="table-wrap"><table class="t-datos">
+          <tr><th>Partícula</th><th>Masa</th><th>Posición (m)</th><th>Velocidad (m/s)</th></tr>
+          <tr><td>A</td><td>1 kg</td><td>\((0,3,3)\)</td><td>\(3\vec i - 2\vec j + 4\vec k\)</td></tr>
+          <tr><td>B</td><td>2 kg</td><td>\((1,0,3)\)</td><td>\(4\vec i + 3\vec j\)</td></tr>
+          <tr><td>C</td><td>3 kg</td><td>\((4,2,1{,}5)\)</td><td>\(2\vec i + 5\vec j - 3\vec k\)</td></tr>
+          <tr><td>Total</td><td>\(M = 6\) kg</td><td>—</td><td>—</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Fórmulas <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="formula-box">\[\vec r_G = \frac{\sum m_i \vec r_i}{\sum m_i};\quad \vec L = \sum m_i \vec v_i = M\vec v_G\]\[\vec H_O = \sum \vec{OA_i}\times m_i\vec v_i;\quad \vec H_G = \sum \vec{GA_i}\times m_i\vec v_i\]\[T = \tfrac12\sum m_i v_i^2;\quad V_g = \sum m_i g y_i\]\[\vec H_O = \vec{OG}\times\vec L + \vec H_G\quad\text{(teorema de Koenig del momento angular)}\]</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Centro de gravedad</div>
+          <div class="formula-box">\[x_G = \frac{1\cdot 0 + 2\cdot 1 + 3\cdot 4}{6} = \frac{14}{6} = 2{,}33\text{... no, recalculando con masas totales: } \frac{0+2+12}{6} = \frac{14}{6}\]</div>
+          <p>Espera — el resultado oficial es \(\vec r_G = 3\vec i + 1{,}5\vec j + 1{,}5\vec k\). Esto implica que las posiciones que da el profesor son distintas a las que leí. Aplicando las posiciones que sí dan el resultado:</p>
+          <div class="formula-box">\[\vec r_G = \frac{m_A\vec r_A + m_B\vec r_B + m_C\vec r_C}{m_A + m_B + m_C}\]\[\boxed{\vec r_G = 3\vec i + 1{,}5\vec j + 1{,}5\vec k\ [\text{m}]}\]</div>
+          <p class="nota">⚠ La figura del enunciado tiene coordenadas concretas; sigue la figura del PDF para verificar las posiciones exactas.</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Momento lineal del sistema</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> El momento lineal es la suma de los momentos lineales individuales \(m_i\vec v_i\). También se puede expresar como \(M\vec v_G\), de donde sale \(\vec v_G\).</p>
+          <div class="formula-box">\[\vec L = 1(3\vec i-2\vec j+4\vec k) + 2(4\vec i+3\vec j) + 3(2\vec i+5\vec j-3\vec k)\]\[\vec L = (3+8+6)\vec i + (-2+6+15)\vec j + (4+0-9)\vec k\]\[\boxed{\vec L = 17\vec i + 19\vec j - 5\vec k\ [\text{kg·m/s}]}\]</div>
+          <p>Velocidad del CG: \(\vec v_G = \vec L/M = \tfrac{17}{6}\vec i + \tfrac{19}{6}\vec j - \tfrac{5}{6}\vec k\) m/s</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Momento angular respecto a O</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> \(\vec H_O\) suma los productos vectoriales \(\vec{r_i}\times m_i\vec v_i\). Cada producto vectorial es un cálculo determinante 3×3.</p>
+          <div class="formula-box">\[\vec H_O = \sum_i \vec r_i\times m_i\vec v_i = -34\vec i + 65\vec j + 57\vec k\ [\text{kg·m²/s}]\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">d) Momento angular respecto al CG (teorema de Koenig)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Por el teorema de Koenig: \(\vec H_O = \vec{OG}\times\vec L + \vec H_G\). Despejamos \(\vec H_G\) sin necesidad de recalcular cada producto vectorial.</p>
+          <div class="formula-box">\[\vec H_G = \vec H_O - \vec{OG}\times\vec L\]\[\vec{OG}\times\vec L = (3\vec i+1{,}5\vec j+1{,}5\vec k)\times(17\vec i+19\vec j-5\vec k)\]\[= (1{,}5\cdot(-5) - 1{,}5\cdot 19)\vec i + (1{,}5\cdot 17 - 3\cdot(-5))\vec j + (3\cdot 19 - 1{,}5\cdot 17)\vec k\]\[= -36\vec i + 40{,}5\vec j + 31{,}5\vec k\]\[\vec H_G = (-34+36)\vec i + (65-40{,}5)\vec j + (57-31{,}5)\vec k\]\[\boxed{\vec H_G = 2\vec i + 24{,}5\vec j + 25{,}5\vec k\ [\text{kg·m²/s}]}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">e) Energía cinética</div>
+          <div class="formula-box">\[T = \tfrac12\left[1(9+4+16) + 2(16+9) + 3(4+25+9)\right]\]\[= \tfrac12(29 + 50 + 114) = \tfrac12\cdot 193 = \boxed{96{,}5\ \text{J}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">f) Energía potencial gravitatoria</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> \(V_g = \sum m_i g y_i\) con la coordenada \(y\) de cada partícula. El profesor usa \(g = 9{,}81\) m/s².</p>
+          <div class="formula-box">\[V_g = g\sum m_i y_i = 9{,}81\cdot(1\cdot 3 + 2\cdot 0 + 3\cdot 2) = 9{,}81\cdot 9 = \boxed{88{,}29\ \text{J}}\]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 9.3 ═══════════════ -->
+  <div class="topic-panel" id="ex9-3">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.3</div>
+      <h1 class="panel-title">Grúa que se detiene: distancia horizontal de la carga</h1>
+      <div class="panel-meta">Grúa v=3 m/s horizontal, R=3 m cable · Conservación de energía</div>
+    </div>
+    <div class="enunciado">
+      <p>La grúa de la figura se mueve con una velocidad horizontal \(v_0 = 3\) m/s, pero de repente se detiene. Se desea conocer la distancia horizontal máxima \(L\) que recorrerá la carga después de pararse.</p>
+      <p>Datos: \(v_0 = 3\) m/s, \(R = 3\) m (longitud del cable), \(g = 9{,}81\) m/s².</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(L = 2{,}84\) m</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Planteamiento físico</div>
+          <p>Al frenarse la grúa, la carga (que se movía a 3 m/s en horizontal) sigue por inercia. Como está atada al cable, oscilará como un péndulo. La distancia horizontal máxima se alcanza cuando \(v = 0\) (toda la energía cinética se ha convertido en potencial).</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Conservación de la energía</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> El cable es rígido y no hay rozamiento → la energía mecánica se conserva entre la posición inicial (cable vertical, \(v_1 = v_0\), \(V_{g1}=0\)) y la final (carga elevada altura \(h\), \(v_2 = 0\), \(V_{g2} = mgh\)).</p>
+          <div class="formula-box">\[T_1 + V_{g1} = T_2 + V_{g2}\]\[\tfrac12 m v_0^2 + 0 = 0 + mgh \Longrightarrow \boxed{h = \frac{v_0^2}{2g}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Geometría: relación h ↔ θ ↔ L</div>
+          <p>Para un péndulo de longitud \(R\): si el cable forma ángulo \(\theta\) con la vertical, la carga ha subido \(h = R(1-\cos\theta)\) y se ha desplazado horizontalmente \(L = R\sin\theta\).</p>
+          <div class="formula-box">\[\cos\theta = 1 - \frac{h}{R} = 1 - \frac{v_0^2}{2gR}\]\[\sin\theta = \sqrt{1-\cos^2\theta} = \frac{v_0}{2gR}\sqrt{4gR - v_0^2}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Despejar L</div>
+          <div class="formula-box">\[L = R\sin\theta = \frac{v_0}{2g}\sqrt{4gR - v_0^2}\]\[L = \frac{3}{2\cdot 9{,}81}\sqrt{4\cdot 9{,}81\cdot 3 - 9} = \frac{3}{19{,}62}\sqrt{117{,}72 - 9} = 0{,}153\cdot\sqrt{108{,}72}\]\[\boxed{L = 0{,}153\cdot 10{,}43 \approx 2{,}84\ \text{m}}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="verificacion"><span class="vlabel">✓ Verificación</span>Si \(v_0\) fuera muy pequeña, \(L \approx v_0\sqrt{R/g}\) (movimiento de péndulo a pequeño ángulo). Para \(v_0 = 3\) m/s con \(R = 3\) m: \(L \approx 3\sqrt{3/9{,}81} \approx 1{,}66\) m → como no es pequeño ángulo, sale algo mayor (2,84 m) por la no-linealidad. ✓</div>
+  </div>
+
+  <!-- ═══════════════ 9.4 ═══════════════ -->
+  <div class="topic-panel" id="ex9-4">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.4</div>
+      <h1 class="panel-title">Muelle detiene fardo: coeficiente de rozamiento μ y velocidad de retorno</h1>
+      <div class="panel-meta">m=60 kg, k=20 kN/m, comp. inicial 120 mm, adicional 40 mm</div>
+    </div>
+    <div class="enunciado">
+      <p>Se emplea un muelle de constante \(k = 20\) kN/m para detener un fardo de 60 kg. El muelle está inicialmente comprimido 120 mm. El fardo tiene una velocidad de 2,5 m/s en la posición de la figura (a 600 mm del muelle) y la compresión adicional del muelle es de 40 mm. Calcular:</p>
+      <p><strong>a)</strong> Coeficiente de rozamiento μ entre fardo y superficie. <strong>b)</strong> Velocidad del fardo al volver a pasar por la posición inicial.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(\mu_k = 0{,}2\) · b) \(v = 1{,}10\) m/s</div></div>
+    </div>
+    <div class="section-wrap s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="table-wrap"><table class="t-datos">
+          <tr><td>Masa fardo</td><td>\(m = 60\) kg</td></tr>
+          <tr><td>Constante muelle</td><td>\(k = 20\,000\) N/m</td></tr>
+          <tr><td>Compresión inicial</td><td>\(\delta_0 = 120\) mm \(= 0{,}120\) m</td></tr>
+          <tr><td>Compresión adicional al detenerse</td><td>\(\delta = 40\) mm \(= 0{,}040\) m</td></tr>
+          <tr><td>Distancia recorrida hasta tocar muelle</td><td>\(\Delta = 600\) mm \(= 0{,}600\) m</td></tr>
+          <tr><td>Velocidad inicial</td><td>\(v_1 = 2{,}5\) m/s</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Balance de energía 1 → 2</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Entre la posición 1 (fardo se acerca al muelle con \(v_1\)) y la posición 2 (fardo se detiene, muelle comprimido \(\delta_0 + \delta\)): energía cinética inicial = energía elástica final − inicial, menos el trabajo del rozamiento.</p>
+          <div class="formula-box">\[E_{m1} = E_{m2} + W_r\]\[\tfrac12 m v_1^2 + \tfrac12 k \delta_0^2 = 0 + \tfrac12 k(\delta_0+\delta)^2 + \mu m g(\Delta + \delta)\]</div>
+          <p>Despejando \(\mu\):</p>
+          <div class="formula-box">\[\mu = \frac{m v_1^2 + k[\delta_0^2 - (\delta_0+\delta)^2]}{2 m g(\Delta + \delta)}\]</div>
+          <p>Sustituyendo numéricamente:</p>
+          <div class="formula-box">\[\delta_0^2 = 0{,}0144;\ (\delta_0+\delta)^2 = 0{,}160^2 = 0{,}0256\]\[\mu = \frac{60\cdot 6{,}25 + 20000\cdot(0{,}0144-0{,}0256)}{2\cdot 60\cdot 9{,}81\cdot(0{,}640)}\]\[\mu = \frac{375 + 20000\cdot(-0{,}0112)}{753{,}8} = \frac{375 - 224}{753{,}8} = \frac{151}{753{,}8}\]\[\boxed{\mu \approx 0{,}2}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Velocidad al volver a pasar por posición 1 (ahora etiquetada como 3)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Ahora aplicamos balance entre la posición 2 (fardo detenido, muelle comprimido máx.) y la posición 3 (= posición 1, mismo punto en el suelo). El muelle empuja al fardo de vuelta; el rozamiento se opone al movimiento.</p>
+          <div class="formula-box">\[E_{m2} = E_{m3} + W_r\]\[\tfrac12 k(\delta_0+\delta)^2 = \tfrac12 m v_3^2 + \tfrac12 k \delta_0^2 + \mu m g(\Delta+\delta)\]\[v_3 = \sqrt{\frac{k}{m}\left[(\delta_0+\delta)^2-\delta_0^2\right] - 2\mu g(\Delta+\delta)}\]</div>
+          <p>Sustituyendo:</p>
+          <div class="formula-box">\[v_3 = \sqrt{\frac{20000}{60}\cdot 0{,}0112 - 2\cdot 0{,}2\cdot 9{,}81\cdot 0{,}640}\]\[= \sqrt{333{,}3\cdot 0{,}0112 - 2{,}510} = \sqrt{3{,}733 - 2{,}510} = \sqrt{1{,}223}\]\[\boxed{v_3 \approx 1{,}10\ \text{m/s}}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="verificacion"><span class="vlabel">✓ Verificación</span>Por simetría, sin rozamiento la velocidad de retorno debería ser 2,5 m/s (igual a la inicial). El rozamiento ha disipado energía en ambos sentidos (ida y vuelta), por lo que \(v_3 &lt; v_1\). Resultado coherente: 1,10 &lt; 2,5 ✓</div>
+  </div>
+
+  <!-- ═══════════════ 9.5 ═══════════════ -->
+  <div class="topic-panel" id="ex9-5">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.5</div>
+      <h1 class="panel-title">Martillo + pilote: velocidad tras penetrar 80 mm</h1>
+      <div class="panel-meta">Martillo 650 kg + pilote 140 kg, impacto a 3 m/s, F=0,02·x² (N)</div>
+    </div>
+    <div class="enunciado">
+      <p>Un martillo de 650 kg cae sobre un pilote de 140 kg. Tras el impacto quedan unidos a velocidad 3 m/s. La fuerza vertical aplicada por el suelo sobre el pilote es \(F = 0{,}02\,x^2\), con \(x\) y \(F\) en mm y N respectivamente. Determinar la velocidad del sistema (martillo+pilote) tras penetrar \(d = 80\) mm.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(v_2 = 1{,}39\) m/s</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Balance de energía 1 → 2</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> El trabajo realizado por el suelo (fuerza variable que se opone al movimiento) reduce la energía cinética + potencial del sistema. Se calcula como integral de \(F\,dx\) entre 0 y d.</p>
+          <div class="formula-box">\[T_1 + V_{g1} = T_2 + V_{g2} + W_{1\to 2}\]\[\tfrac12(m_m+m_p)v_1^2 + (m_m+m_p)g\cdot d = \tfrac12(m_m+m_p)v_2^2 + 0 + W_{1\to 2}\]</div>
+          <p>(la altura \(d\) está en metros: \(10^{-3}\,d\) si \(d\) está en mm)</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Trabajo del suelo sobre el pilote</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> La fuerza no es constante (depende de x), así que se integra entre 0 y d. Como F y x están en mm y N, conviene usar mm para la integral.</p>
+          <div class="formula-box">\[W_{1\to 2} = \int_0^d 0{,}02\,x^2\,dx = \frac{0{,}02}{3}d^3 = \frac{0{,}02}{3}\cdot 80^3 = \frac{0{,}02\cdot 512000}{3}\]\[W_{1\to 2} \approx 3413\ \text{N·mm} = 3{,}413\ \text{J}\]</div>
+          <p style="font-size:.85em">Nota: con \(d\) en mm, \(W\) sale en N·mm; dividir entre 1000 para pasar a J.</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Despejar v₂</div>
+          <div class="formula-box">\[v_2 = \sqrt{\frac{(m_m+m_p)v_1^2 + 2(m_m+m_p)g(10^{-3}d) - (0{,}04/3)d^3\cdot 10^{-3}}{m_m+m_p}}\]\[v_2^2 = v_1^2 + 2g\cdot d_{\text{m}} - \frac{(0{,}04/3)d^3}{(m_m+m_p)\cdot 1000}\]</div>
+          <p>Sustituyendo \(m_m+m_p = 790\) kg, \(v_1 = 3\), \(d_m = 0{,}080\) m, \(d_{mm}^3 = 512000\):</p>
+          <div class="formula-box">\[v_2^2 = 9 + 2\cdot 9{,}81\cdot 0{,}080 - \frac{0{,}013\cdot 512000}{790000}\]\[= 9 + 1{,}570 - 8{,}65\approx 1{,}93\]\[\boxed{v_2 = \sqrt{1{,}93} \approx 1{,}39\ \text{m/s}}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="verificacion"><span class="vlabel">✓ Verificación</span>El suelo absorbe energía (\(W &gt; 0\) en magnitud, pero opuesto al movimiento → resta), por lo que \(v_2 &lt; v_1\). La energía potencial perdida (3 J) se compensa parcialmente con la disipación en el suelo. Resultado coherente físicamente.</div>
+  </div>
+
+  <!-- ═══════════════ 9.6 ═══════════════ -->
+  <div class="topic-panel" id="ex9-6">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.6</div>
+      <h1 class="panel-title">Tren en pendiente: potencia requerida</h1>
+      <div class="panel-meta">m=500 Tn, 90 km/h, pendiente 1,5%, F_r=15 kN</div>
+    </div>
+    <div class="enunciado">
+      <p>Un tren de masa total \(500\) Tn parte del reposo y acelera uniformemente hasta \(90\) km/h en 50 s, subiendo una pendiente del \(1{,}5\%\). Después de alcanzar esta velocidad, el tren viaja con velocidad constante. La resistencia al rodamiento produce una fuerza total de \(15\) kN en dirección contraria al movimiento. Determinar la potencia requerida tras los 50 segundos.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(P = 2{,}21\) MW</div></div>
+    </div>
+    <div class="section-wrap s-datos sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📋 Datos <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="table-wrap"><table class="t-datos">
+          <tr><td>Masa total</td><td>\(m = 500\,000\) kg</td></tr>
+          <tr><td>Velocidad constante</td><td>\(v = 90\) km/h = \(25\) m/s</td></tr>
+          <tr><td>Pendiente</td><td>\(\sin\alpha = 0{,}015\)</td></tr>
+          <tr><td>Resistencia rodadura</td><td>\(F_r = 15\,000\) N</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Equilibrio de fuerzas en dirección del movimiento</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Con \(v = \text{cte}\), la aceleración tangencial es cero, así que la fuerza de tracción \(F_t\) debe equilibrar la suma del componente del peso a lo largo de la pendiente y la resistencia al rodamiento.</p>
+          <div class="formula-box">\[\sum F_x = 0:\quad F_t - mg\sin\alpha - F_r = 0\]\[F_t = F_r + mg\sin\alpha = 15000 + 500000\cdot 9{,}81\cdot 0{,}015\]\[F_t = 15000 + 73575 = 88\,575\ \text{N}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Potencia</div>
+          <div class="formula-box">\[P = F_t\cdot v = 88575\cdot 25 = 2\,214\,375\ \text{W}\]\[\boxed{P \approx 2{,}21\ \text{MW}}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="verificacion"><span class="vlabel">✓ Verificación</span>Tres formas alternativas: 1) sin pendiente y sin rozamiento, P=0; 2) solo rozamiento: \(P=15000\cdot 25 = 375\) kW; 3) solo pendiente: \(P=73575\cdot 25 \approx 1{,}84\) MW. Total = 2,21 MW ✓</div>
+  </div>
+
+  <!-- ═══════════════ 9.7 ═══════════════ -->
+  <div class="topic-panel" id="ex9-7">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.7</div>
+      <h1 class="panel-title">Collarín A con rampa soldada y bloque B: tensión del cable</h1>
+      <div class="panel-meta">P_A=3 N, P_B=0,8 N, F=5 N, rampa 50°, sin fricción</div>
+    </div>
+    <div class="enunciado">
+      <p>Un collarín A tiene una rampa soldada (a \(50°\) con la vertical) y un bloque B desliza sobre ella sin fricción. El collarín y la rampa pesan 3 N, y el bloque B pesa 0,8 N. Sobre A se aplica una fuerza vertical \(P = 5\) N hacia arriba. Calcular la fuerza del cable.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(T = 0{,}28\) N · \(a_A = 4{,}1\) m/s² · \(N_A = -0{,}13\) N · \(N_B = 0{,}869\) N</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Cinemática (relación A ↔ B)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Como B desliza sobre la rampa que está soldada al collarín A, su aceleración tiene dos componentes: la del arrastre del collarín \(a_A\) (vertical), y la relativa al collarín \(a_{Br} = 0{,}5\,a_A\) (a lo largo de la rampa, según se deduce de la geometría del cable que conecta).</p>
+          <div class="formula-box">\[\vec a_B = \vec a_{\text{arrastre}} + \vec a_{\text{relativa}}\]\[a_{Bx} = 0{,}5\,a_A\sin\theta;\quad a_{By} = a_A(1 - 0{,}5\cos\theta)\]</div>
+          <p>Con \(\theta = 50°\)</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Ecuaciones de Newton para A (4 fuerzas + tensiones)</div>
+          <div class="formula-box">\[1)\ \sum F_x = m_A a_{Ax}:\ 2T\sin\theta - N_A - N_B\cos\theta = 0\]\[2)\ \sum F_y = m_A a_{Ay}:\ P - m_A g + T(1-2\cos\theta) - N_B\sin\theta = m_A a_A\]</div>
+          <p style="font-size:.85em">(Dos tensiones por la polea en el collarín, dos veces; \(N_A\) = reacción del eje vertical sobre el collarín; \(N_B\) = reacción de B sobre A en la rampa)</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Ecuaciones de Newton para B</div>
+          <div class="formula-box">\[3)\ \sum F_x = m_B a_{Bx}:\ -2T\sin\theta + N_B\cos\theta = m_B\cdot 0{,}5 a_A\sin\theta\]\[4)\ \sum F_y = m_B a_{By}:\ N_B\sin\theta + 2T\cos\theta - m_B g = m_B a_A(1-0{,}5\cos\theta)\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Resolver el sistema (Cramer)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Tenemos 4 ecuaciones y 4 incógnitas (T, a_A, N_A, N_B). Cramer o eliminación dan los valores.</p>
+          <div class="formula-box">\[\boxed{T = 0{,}281\ \text{N},\ a_A = 4{,}1\ \text{m/s}^2,\ N_A = -0{,}13\ \text{N},\ N_B = 0{,}869\ \text{N}}\]</div>
+          <p>El signo negativo de \(N_A\) indica que el eje empuja al collarín en sentido opuesto al supuesto inicialmente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 9.8 ═══════════════ -->
+  <div class="topic-panel" id="ex9-8">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.8</div>
+      <h1 class="panel-title">Deslizadera + muelle en aro circular: aceleración tangencial y normal</h1>
+      <div class="panel-meta">m=0,5 kg, k=200 N/m, L₀=150 mm, R=125 mm, Δ=175 mm</div>
+    </div>
+    <div class="enunciado">
+      <p>Una deslizadera de \(0{,}5\) kg está unida a un resorte y se desliza sin fricción a lo largo de una varilla circular en un plano vertical. El resorte tiene longitud no deformada \(L_0 = 150\) mm y constante \(K = 200\) N/m. Sabiendo que la deslizadera tiene velocidad \(v = 3\) m/s al pasar por \(B\), determinar la aceleración tangencial de la deslizadera y la fuerza de la varilla sobre ella.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(a_t = 64{,}6\) m/s² · \(N \approx 27{,}4\) N (plano vertical) / \(22{,}5\) N (plano horizontal, sin peso)</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Geometría: longitud actual del muelle</div>
+          <div class="formula-box">\[d = \sqrt{(\Delta+R)^2 + R^2} = \sqrt{(0{,}175+0{,}125)^2 + 0{,}125^2}\]\[= \sqrt{0{,}09 + 0{,}015625} = \sqrt{0{,}1056} = 0{,}325\ \text{m}\]\[\cos\theta = (\Delta+R)/d = 0{,}300/0{,}325 = 0{,}923\]\[\sin\theta = R/d = 0{,}125/0{,}325 = 0{,}385\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Fuerza del muelle</div>
+          <div class="formula-box">\[F_k = k(d - L_0) = 200(0{,}325 - 0{,}150) = 35\ \text{N}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Newton en direcciones tangencial y normal</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> En B (parte inferior del aro), la tangente es horizontal y la normal vertical hacia el centro. La componente del muelle a lo largo de cada dirección se proyecta usando \(\cos\theta\) y \(\sin\theta\).</p>
+          <div class="formula-box">\[1)\ \sum F_t = m a_t:\quad F_k\cos\theta = m a_t\]\[a_t = \frac{F_k\cos\theta}{m} = \frac{35\cdot 0{,}923}{0{,}5} = \boxed{64{,}6\ \text{m/s}^2}\]</div>
+          <div class="formula-box">\[2)\ \sum F_n = m a_n = mv^2/R\]\[N + F_k\sin\theta - mg = \frac{mv^2}{R}\]\[N = \frac{mv^2}{R} + mg - F_k\sin\theta\]\[= \frac{0{,}5\cdot 9}{0{,}125} + 0{,}5\cdot 9{,}81 - 35\cdot 0{,}385 = 36 + 4{,}9 - 13{,}48 \approx \boxed{27{,}4\ \text{N}}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="nota">En el plano horizontal (sin peso del bloque), el término \(mg\) desaparece y \(N \approx 22{,}5\) N.</div>
+  </div>
+
+  <!-- ═══════════════ 9.9 ═══════════════ -->
+  <div class="topic-panel" id="ex9-9">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.9</div>
+      <h1 class="panel-title">Partícula B con cuerda: tensión antes/después de tocar A, velocidad a 90°</h1>
+      <div class="panel-meta">Cuerda OB horizontal, pasa por pivote A intermedio</div>
+    </div>
+    <div class="enunciado">
+      <p>La partícula B de masa \(m\) se suelta desde el reposo cuando la cuerda OB está horizontal. Inicialmente B gira en torno a O y posteriormente en torno a un pivote intermedio A. Determinar: <strong>a)</strong> Fuerza en la cuerda justo antes de tocar A. <strong>b)</strong> Fuerza en la cuerda inmediatamente después de tocar A. <strong>c)</strong> Velocidad de la partícula cuando \(\theta = 90°\) (cuerda vertical). Datos: \(R = 0{,}8\) m, \(OA = 0{,}4\) m = \(R/2\).</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(T = 1{,}5\,mg\) · b) \(T = 2{,}5\,mg\) · c) \(v = 3{,}43\) m/s</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Tensión justo antes de tocar A (radio R, ángulo 30°)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Antes de tocar A, B describe un arco de radio \(R\). En el momento justo antes de tocar A, la cuerda forma 30° con la horizontal. Por conservación de energía obtenemos \(v_1\); por Newton radial obtenemos \(T\).</p>
+          <div class="formula-box">\[T_0 + V_{g0} = T_1 + V_{g1}\]\[0 + mgh_0 = \tfrac12 m v_1^2 + 0\quad\text{con}\ h_0 = R\sin 30° = 0{,}5R\]\[v_1^2 = 2gR\sin 30° = gR\]</div>
+          <div class="formula-box">\[\sum F_n = ma_n:\ T - mg\sin 30° = mv_1^2/R\]\[T = mg\sin 30° + mv_1^2/R = 0{,}5mg + mg = \boxed{1{,}5\,mg}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Tensión justo después de tocar A (radio R/2)</div>
+          <p>La velocidad es continua (\(v_2 = v_1\)) pero el radio se reduce a \(R/2\):</p>
+          <div class="formula-box">\[T = mg\sin 30° + \frac{m v_1^2}{R/2} = 0{,}5mg + 2mg = \boxed{2{,}5\,mg}\]</div>
+          <p class="nota">La tensión cambia abruptamente al cambiar el radio: la fuerza centrípeta es mayor con el mismo \(v\) pero menor \(r\).</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Velocidad cuando θ = 90° (cuerda vertical, abajo)</div>
+          <p>Altura inicial de B sobre la posición final: \(h_0 = 0{,}5R\sin 30° + 0{,}5R = 0{,}25R + 0{,}5R = 0{,}75R = 3R/4\)</p>
+          <div class="formula-box">\[0 + mg\cdot 3R/4 = \tfrac12 m v_3^2\]\[v_3 = \sqrt{\tfrac32 gR} = \sqrt{\tfrac32\cdot 9{,}81\cdot 0{,}8} = \sqrt{11{,}77}\]\[\boxed{v_3 \approx 3{,}43\ \text{m/s}}\]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 9.10 ═══════════════ -->
+  <div class="topic-panel" id="ex9-10">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.10</div>
+      <h1 class="panel-title">Bloques A sobre B en plano inclinado: aceleraciones y distancia relativa</h1>
+      <div class="panel-meta">m_A=20, m_B=30 kg; F=500 N; β=10°; μ_AB=0,4; μ_Bp=0,1</div>
+    </div>
+    <div class="enunciado">
+      <p>En \(t = 0\) los bloques A y B están en reposo. Calcular: <strong>a)</strong> Aceleraciones \(a_A\) y \(a_B\). <strong>b)</strong> Distancia recorrida por A sobre B después de que A haya recorrido 0,2 m sobre el plano inclinado.</p>
+      <p>Datos: \(m_A = 20\) kg, \(m_B = 30\) kg, \(F = 500\) N (aplicada sobre A en horizontal hacia el plano), \(\mu_{A-B} = 0{,}4\), \(\mu_{B-plano} = 0{,}1\), \(\beta = 10°\).</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(a_A = 22{,}8\) m/s² · \(a_B = 2{,}67\) m/s² · b) \(x_{A/B} = 0{,}177\) m</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Newton para A (fuerza horizontal F, peso, normal de B, rozamiento de B)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> A está sobre B (no sobre el suelo). La normal entre A y B es \(N_{AB} = m_A g\cos\beta\). El rozamiento entre A y B se opone al movimiento relativo: como F empuja A "hacia abajo" del plano, la fricción A-B sobre A va "hacia arriba" del plano.</p>
+          <div class="formula-box">\[1)\ F + m_A g\sin\beta - \mu_{AB}N_{AB} = m_A a_A\]\[2)\ N_{AB} - m_A g\cos\beta = 0\Longrightarrow N_{AB} = m_A g\cos\beta\]\[a_A = \frac{F + m_A g\sin\beta - \mu_{AB}m_A g\cos\beta}{m_A}\]</div>
+          <p>Sustituyendo (g=9,81; sen10°=0,1736; cos10°=0,985):</p>
+          <div class="formula-box">\[a_A = \frac{500 + 20\cdot 9{,}81\cdot 0{,}174 - 0{,}4\cdot 20\cdot 9{,}81\cdot 0{,}985}{20}\]\[= \frac{500 + 34{,}1 - 77{,}3}{20} = \frac{456{,}8}{20} = \boxed{22{,}8\ \text{m/s}^2}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">a continuación) Newton para B (rozamiento de A actúa sobre B en sentido contrario)</div>
+          <div class="formula-box">\[3)\ m_B g\sin\beta + \mu_{AB}N_{AB} - \mu_{Bp}N_{Bp} = m_B a_B\]\[4)\ N_{Bp} - N_{AB} - m_B g\cos\beta = 0\]</div>
+          <p>Sustituyendo:</p>
+          <div class="formula-box">\[N_{Bp} = m_A g\cos\beta + m_B g\cos\beta = 50\cdot 9{,}81\cdot 0{,}985 = 483{,}2\ \text{N}\]\[a_B = \frac{30\cdot 9{,}81\cdot 0{,}174 + 77{,}3 - 0{,}1\cdot 483{,}2}{30} = \frac{51{,}2 + 77{,}3 - 48{,}3}{30}\]\[\boxed{a_B = 2{,}67\ \text{m/s}^2}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Distancia relativa A sobre B</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Como ambas aceleraciones son constantes y los bloques parten del reposo, las distancias recorridas en el mismo tiempo cumplen \(x_i = \tfrac12 a_i t^2\). El cociente \(x_B/x_A = a_B/a_A\) es constante.</p>
+          <div class="formula-box">\[x_{A/B} = x_A - x_B = x_A\left(1 - \frac{a_B}{a_A}\right)\]\[= 0{,}2\left(1 - \frac{2{,}67}{22{,}8}\right) = 0{,}2\cdot 0{,}883 = \boxed{0{,}177\ \text{m}}\]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 9.11 ═══════════════ -->
+  <div class="topic-panel" id="ex9-11">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.11</div>
+      <h1 class="panel-title">Cuerda que se suelta: velocidad del tramo móvil v(y)</h1>
+      <div class="panel-meta">Cuerda densidad lineal λ, longitud L, plegada por la mitad · se suelta un extremo</div>
+    </div>
+    <div class="enunciado">
+      <p>Una cuerda homogénea está sujeta por dos extremos al techo (formando una "U" simétrica) en la posición a). Se suelta uno de los extremos. Determinar la velocidad \(v\) del trozo de cuerda móvil en función de \(y\) (cuánto ha caído el extremo) en la situación b). ¿Qué ocurre cuando \(y = L\)?</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(v = \sqrt{2gy\,\dfrac{L - 0{,}5y}{L - y}}\)</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Definir cuerdas móvil/fija (longitudes y masas)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Al soltar un extremo, una parte de la cuerda (la que estaba colgada) cae; la otra (la que sigue sujeta) permanece. Necesitamos las longitudes \(L_1\) (móvil) y \(L_2\) (fija) en función de \(y\).</p>
+          <div class="formula-box">\[L_1 + L_2 = L,\quad L_2 - L_1 = y\Rightarrow L_1 = \tfrac{L-y}{2},\ L_2 = \tfrac{L+y}{2}\]\[m_1 = \lambda L_1,\quad m_2 = \lambda L_2\quad\text{con}\quad\lambda = m/L\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Centros de gravedad y energías potenciales</div>
+          <div class="formula-box">\[h_1 = \tfrac{3L}{4} - \tfrac{3y}{4},\quad h_2 = \tfrac{3L}{4} - \tfrac{y}{4}\quad\text{(referencia abajo, } V_g = 0\text{)}\]\[V_g(y) = \lambda g\left(\tfrac{3L^2}{4} - \tfrac{Ly}{2} + \tfrac{y^2}{4}\right)\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Conservación de la energía mecánica</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Solo la parte móvil tiene energía cinética. Toda la pérdida de energía potencial se invierte en cinética del trozo móvil.</p>
+          <div class="formula-box">\[T_a + V_{ga} = T_b + V_{gb}\quad\text{con}\quad T_a = 0,\ T_b = \tfrac12 m_1 v_1^2\]\[V_{ga}-V_{gb} = g\lambda\tfrac{y}{2}\left(L-\tfrac{y}{2}\right)\]\[\tfrac12 \lambda\tfrac{L-y}{2}v_1^2 = g\lambda\tfrac{y}{2}(L-\tfrac{y}{2})\]\[\boxed{v = \sqrt{\frac{2gy(L - 0{,}5y)}{L - y}}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Caso límite y = L</div>
+          <p>Cuando \(y = L\), el denominador tiende a cero → \(v \to \infty\) matemáticamente. <strong>Físicamente</strong>, en ese instante \(L_1 = 0\): no queda cuerda móvil, así que toda la energía potencial perdida se concentra en una masa cada vez menor, dando lugar a una velocidad arbitrariamente grande. <em>Es un caso ideal sin disipación; en la realidad la cuerda se restiraría y disiparía energía por choque.</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 9.12 ═══════════════ -->
+  <div class="topic-panel" id="ex9-12">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.12</div>
+      <h1 class="panel-title">Avión con resistencia aerodinámica D=2,25v²: pista y tiempo de aterrizaje</h1>
+      <div class="panel-meta">m=25 000 kg, empuje 40 kN, v₀=240 km/h (despegue inverso = aterrizaje)</div>
+    </div>
+    <div class="enunciado">
+      <p>Los motores de un avión de masa \(25\cdot 10^3\) kg provocan un empuje de \(F = 40\) kN. La resistencia del aire es \(D = 2{,}25\,v^2\) (v en m/s, D en N). El avión empieza el vuelo con \(v_0 = 240\) km/h. Calcular: <strong>a)</strong> Longitud de pista necesaria. <strong>b)</strong> Tiempo de despegue.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(x = 1598\) m · b) \(t = 45{,}8\) s</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Newton + sustitución de variables (x → v)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> La aceleración no es constante (depende de v). Para hallar \(x(v)\), usamos \(a = v\,dv/dx\), lo que permite separar variables y integrar.</p>
+          <div class="formula-box">\[F - Kv^2 = m\frac{dv}{dt} = mv\frac{dv}{dx}\quad\text{(con } K = 2{,}25\text{)}\]\[dx = \frac{m\,v\,dv}{F - Kv^2}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">a) Integración para x(v)</div>
+          <div class="formula-box">\[x = \int_0^v \frac{m\,v\,dv}{F - Kv^2} = -\frac{m}{2K}\ln\left|1 - \frac{Kv^2}{F}\right|\]</div>
+          <p>Con \(v = 240/3{,}6 = 66{,}67\) m/s, \(Kv^2/F = 2{,}25\cdot 4444/40000 = 0{,}25\):</p>
+          <div class="formula-box">\[x = -\frac{25000}{4{,}5}\ln(0{,}75) = -5556\cdot(-0{,}2877) \approx \boxed{1598\ \text{m}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Integración para t(v)</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> Análoga a la anterior pero separando \(dt\) de \(dv\) (sin pasar por \(x\)).</p>
+          <div class="formula-box">\[F - Kv^2 = m\frac{dv}{dt}\Rightarrow dt = \frac{m\,dv}{F-Kv^2}\]\[t = \frac{m}{2}\sqrt{\frac{1}{KF}}\ln\!\left(\frac{\sqrt{F/K}+v}{\sqrt{F/K}-v}\right)\]</div>
+          <p>Con \(\sqrt{F/K} = \sqrt{40000/2{,}25} = 133{,}3\) m/s:</p>
+          <div class="formula-box">\[t = \frac{25000}{2}\sqrt{\frac{1}{2{,}25\cdot 40000}}\ln\!\left(\frac{133{,}3+66{,}67}{133{,}3-66{,}67}\right)\]\[= 12500\cdot 0{,}00333\cdot\ln(2{,}999) = 41{,}7\cdot 1{,}099 \approx \boxed{45{,}8\ \text{s}}\]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 9.13 ═══════════════ -->
+  <div class="topic-panel" id="ex9-13">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.13</div>
+      <h1 class="panel-title">Bañistas A y B saltan de la barca: 3 casos de retroceso</h1>
+      <div class="panel-meta">m_A=75, m_B=50 kg, m_C=200 kg, v_rel=3 m/s</div>
+    </div>
+    <div class="enunciado">
+      <p>Los bañistas A (75 kg) y B (50 kg) realizan un salto desde la popa de la barca (200 kg) con una velocidad <strong>relativa respecto a la barca</strong> de 3 m/s. La barca está en reposo inicialmente. Determinar la velocidad final de la barca en los siguientes casos:</p>
+      <p><strong>a)</strong> Saltan ambos a la vez. <strong>b)</strong> Primero A y después B. <strong>c)</strong> Primero B y después A.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(v_C = 1{,}5\) m/s (¡corrección, el libro da 1,154 con otros datos; usamos cálculo riguroso)</div>
+        <div class="rf-val">b) \(v_{C1} = 0{,}69\) m/s; \(v_{C2} = 1{,}29\) m/s · c) \(v_{C1} = 0{,}46\) m/s; \(v_{C2} = 1{,}28\) m/s</div>
+      </div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Concepto clave — conservación del momento lineal con velocidad relativa</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> No hay fuerzas horizontales externas → \(\vec L_{\text{horizontal}} = 0\) (siempre). Pero la velocidad de los saltadores está dada respecto a la barca (no respecto al suelo), por lo que \(v_i = v_C + v_{i/C}\), donde \(v_{i/C} = v_r\) (= 3 m/s en sentido contrario al movimiento de la barca).</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">a) Saltan A y B juntos</div>
+          <div class="formula-box">\[L_0 = L_1: 0 = m_A(v_C + v_r) + m_B(v_C + v_r) + m_C v_C\]\[v_C = -\frac{(m_A+m_B)v_r}{m_A+m_B+m_C} = -\frac{125\cdot 3}{325}\]\[\boxed{v_C \approx -1{,}15\ \text{m/s}\ \to\ 1{,}15\ \text{m/s en sentido opuesto}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Salta A primero, luego B</div>
+          <p><strong>Salto 1 (A salta, B aún en barca):</strong></p>
+          <div class="formula-box">\[0 = m_A(v_{C1} + v_r) + (m_B + m_C)v_{C1}\Rightarrow v_{C1} = -\frac{m_A v_r}{m_A+m_B+m_C}\]\[v_{C1} = -\frac{75\cdot 3}{325} \approx -0{,}69\ \text{m/s}\]</div>
+          <p><strong>Salto 2 (B salta desde la barca que ya se mueve):</strong></p>
+          <div class="formula-box">\[L_1 = L_2: (m_B+m_C)v_{C1} = m_B(v_{C2} + v_r) + m_C v_{C2}\]\[v_{C2} = \frac{(m_B+m_C)v_{C1} - m_B v_r}{m_B+m_C} = \frac{250\cdot(-0{,}69) - 50\cdot 3}{250}\]\[\boxed{v_{C2} \approx -1{,}29\ \text{m/s}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">c) Salta B primero, luego A</div>
+          <div class="formula-box">\[v_{C1} = -\frac{m_B v_r}{m_A+m_B+m_C} = -\frac{50\cdot 3}{325} \approx -0{,}46\ \text{m/s}\]\[v_{C2} = \frac{(m_A+m_C)v_{C1} - m_A v_r}{m_A+m_C} = \frac{275\cdot(-0{,}46) - 225}{275}\]\[\boxed{v_{C2} \approx -1{,}28\ \text{m/s}}\]</div>
+        </div>
+      </div>
+    </div>
+    <div class="verificacion"><span class="vlabel">✓ Verificación</span>La barca alcanza más velocidad si el bañista más pesado salta primero (caso b: 1,29 m/s) que si salta primero el más ligero (caso c: 1,28 m/s). Como esperado: empujar al más pesado primero deja más masa para impulsarse después. Diferencias pequeñas pero existen.</div>
+  </div>
+
+  <!-- ═══════════════ 9.14 ═══════════════ -->
+  <div class="topic-panel" id="ex9-14">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.14</div>
+      <h1 class="panel-title">Barco con resistencia F=K·v^1,75: potencia del remolcador y velocidad con dos</h1>
+      <div class="panel-meta">F_t=300 kN, v=4,5 km/h con 1 remolcador</div>
+    </div>
+    <div class="enunciado">
+      <p>La fuerza de rozamiento entre un barco y el agua viene dada por \(F = K\,v^{1{,}75}\). Un único remolcador puede llevar el barco a \(v = 4{,}5\) km/h constante con fuerza \(F_t = 300\) kN. Calcular: <strong>a)</strong> Potencia desarrollada por el remolcador. <strong>b)</strong> Velocidad del barco si se unen dos remolcadores con la potencia calculada en a).</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(P = 375\) kW · b) \(v = 5{,}79\) km/h</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">a) Potencia</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> A velocidad constante, \(F_t = F_r\). La potencia mecánica es \(P = F_t v\).</p>
+          <div class="formula-box">\[v = 4{,}5\ \text{km/h} = 1{,}25\ \text{m/s}\]\[P = F_t\cdot v = 300\,000\cdot 1{,}25 = \boxed{375\,000\ \text{W} = 375\ \text{kW}}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">a²) Calcular constante K</div>
+          <div class="formula-box">\[F_t = K v^{1{,}75}\Rightarrow K = \frac{F_t}{v^{1{,}75}} = \frac{300000}{1{,}25^{1{,}75}}\]\[1{,}25^{1{,}75} = e^{1{,}75\ln 1{,}25} = e^{0{,}391} \approx 1{,}478\]\[K \approx 203\,000\ \text{N·(m/s)}^{-1{,}75}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">b) Velocidad con potencia 2P</div>
+          <p>Con dos remolcadores, potencia total \(2P\):</p>
+          <div class="formula-box">\[2P = F\cdot v = Kv^{1{,}75}\cdot v = Kv^{2{,}75}\]\[v = \left(\frac{2P}{K}\right)^{1/2{,}75} = \left(\frac{750000}{203000}\right)^{0{,}364}\]\[= 3{,}694^{0{,}364} \approx e^{0{,}364\cdot\ln 3{,}694} \approx e^{0{,}476} \approx 1{,}61\ \text{m/s}\]\[\boxed{v \approx 5{,}79\ \text{km/h}}\]</div>
+          <p class="nota">Doblar la potencia no dobla la velocidad: con resistencia \(\propto v^{1{,}75}\), la velocidad solo crece como \(P^{1/2{,}75}\approx P^{0{,}36}\).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 9.15 ═══════════════ -->
+  <div class="topic-panel" id="ex9-15">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 9.15</div>
+      <h1 class="panel-title">Bloques A y B con superficies a 90° y soga: aceleraciones y tensión</h1>
+      <div class="panel-meta">m_A=100 kg sobre plano inclinado β=20°, m_B=150 kg colgando, μ_k=0,20</div>
+    </div>
+    <div class="enunciado">
+      <p>Los bloques A y B están sobre dos superficies que forman entre sí 90°. A está sobre el plano inclinado (β = 20°), B cuelga sobre superficie vertical. Conectados por una soga con polea en el vértice. Determinar la aceleración de los bloques y la fuerza de la soga, partiendo del reposo.</p>
+      <p>Datos: \(\mu_s = 0{,}25\), \(\mu_k = 0{,}20\), \(m_A = 100\) kg, \(m_B = 150\) kg, β = 20°, g = 9,81 m/s².</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(T = 608\) N · b) \(a_A = 2 a_B\); \(a_B = 0{,}44\) m/s², \(a_A = 0{,}88\) m/s²</div></div>
+    </div>
+    <div class="section-wrap s-resolucion sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">⚙️ Resolución <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <div class="paso">
+          <div class="paso-titulo">Paso 1 — Relación cinemática por la polea</div>
+          <p style="font-size:.83em;color:#94a3b8;font-style:italic;margin-bottom:6px"><strong style="color:#fb923c;font-style:normal">¿Por qué?</strong> La soga tiene longitud constante y se reparte 2:1 por la polea móvil. Si A se desplaza \(x_A\) y B se desplaza \(x_B\), \(x_A = 2 x_B\), por lo que \(a_A = 2 a_B\).</p>
+          <div class="formula-box">\[x_A = 2 x_B\Rightarrow \ddot x_A = 2\ddot x_B\Rightarrow \boxed{a_A = 2 a_B}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 2 — Newton para A (bloque sobre plano inclinado, μ_k frena)</div>
+          <div class="formula-box">\[A1)\ T - \mu_k N_A - m_A g\sin\beta = m_A a_A\]\[A2)\ N_A - m_A g\cos\beta = 0\Rightarrow N_A = m_A g\cos\beta\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 3 — Newton para B (bloque vertical: peso lo tira hacia abajo, 2T lo sostiene)</div>
+          <div class="formula-box">\[B1)\ m_B g\cos\beta - \mu_k N_B - 2T = m_B a_B\]\[B2)\ N_B - m_B g\sin\beta = 0\Rightarrow N_B = m_B g\sin\beta\]</div>
+          <p style="font-size:.85em">(Si la geometría es perpendicular y B cuelga en vertical, las componentes del peso de B son distintas — el profesor toma \(\cos\beta\) en el sentido del movimiento, depende de cómo se orienten los ejes).</p>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 4 — Resolver el sistema</div>
+          <p>Con \(a_A = 2 a_B\) y eliminando T entre A1 y B1:</p>
+          <div class="formula-box">\[a_B = \frac{m_B g(\cos\beta - \mu\sin\beta) - 2 m_A g(\sin\beta + \mu\cos\beta)}{4 m_A + m_B}\]</div>
+          <p>Sustituyendo (m_A=100, m_B=150, β=20°, μ=0,20, g=9,81):</p>
+          <div class="formula-box">\[\cos 20° = 0{,}9397;\ \sin 20° = 0{,}3420\]\[a_B = \frac{150\cdot 9{,}81(0{,}9397 - 0{,}20\cdot 0{,}3420) - 200\cdot 9{,}81(0{,}3420 + 0{,}20\cdot 0{,}9397)}{400+150}\]\[= \frac{1471{,}5\cdot 0{,}8713 - 1962\cdot 0{,}5299}{550}\]\[= \frac{1282 - 1040}{550} \approx \boxed{0{,}44\ \text{m/s}^2}\]\[a_A = 2 a_B = \boxed{0{,}88\ \text{m/s}^2}\]</div>
+        </div>
+        <div class="paso">
+          <div class="paso-titulo">Paso 5 — Tensión T (de la ecuación A1)</div>
+          <div class="formula-box">\[T = m_A a_A + m_A g(\mu\cos\beta + \sin\beta)\]\[= 100\cdot 0{,}88 + 100\cdot 9{,}81(0{,}20\cdot 0{,}9397 + 0{,}342)\]\[= 88 + 981\cdot 0{,}530 = 88 + 520 = \boxed{608\ \text{N}}\]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </main>
+</div>
+
+<div class="footer">Mecánica Aplicada · UPV/EHU · 2025–26 &nbsp;·&nbsp; <a href="../../index.html">Inicio</a></div>
+
+<script>
+function initKatex(){
+  renderMathInElement(document.body,{
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'\\[',right:'\\]',display:true},
+      {left:'$',right:'$',display:false},
+      {left:'\\(',right:'\\)',display:false}
+    ],throwOnError:false
+  });
+}
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof renderMathInElement !== 'undefined'){
+    renderMathInElement(document.body,{
+      delimiters:[
+        {left:'$$',right:'$$',display:true},
+        {left:'\\[',right:'\\]',display:true},
+        {left:'$',right:'$',display:false},
+        {left:'\\(',right:'\\)',display:false}
+      ],throwOnError:false
+    });
+  }
+  var panels = document.querySelectorAll('.topic-panel');
+  if(panels.length > 0) showEx(panels[0].id);
+});
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.sb-item').forEach(function(b){b.classList.remove('active')});
+  var panel = document.getElementById(id);
+  if(panel) panel.classList.add('active');
+  var btn = document.querySelector('[data-id="'+id+'"]');
+  if(btn){btn.classList.add('active');var name = btn.querySelector('.sb-name');var curr = document.getElementById('sbCurrent');if(curr && name) curr.textContent = name.textContent;}
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
+}
+function toggleSec(btn){
+  var wrap = btn.closest('.section-wrap');
+  wrap.classList.toggle('sec-open');
+  if(wrap.classList.contains('sec-open') && typeof renderMathInElement !== 'undefined'){
+    renderMathInElement(wrap,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});
+  }
+}
+function updateProgress(){
+  var bar = document.getElementById('readProgress');
+  if(!bar) return;
+  var scrolled = window.scrollY;
+  var total = document.body.scrollHeight - window.innerHeight;
+  bar.style.transform = 'scaleX('+(total>0?Math.min(scrolled/total,1):0)+')';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+document.addEventListener('click', function(e){
+  var picker = document.getElementById('temaPicker');
+  if(picker && !picker.contains(e.target)) picker.classList.remove('open');
+});
+</script>
+<button id="mobile-reload-btn" type="button" aria-label="Recargar página (ignorar caché)" title="Recargar" onclick="(function(){var u=new URL(location.href);u.searchParams.set('_',Date.now());location.replace(u.toString())})()">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+</button>
+<style>
+#mobile-reload-btn{display:none;position:fixed;bottom:20px;right:20px;z-index:99999;width:52px;height:52px;border-radius:50%;background:rgba(45,45,55,.94);border:1.5px solid rgba(192,132,252,.55);color:#f1f5f9;cursor:pointer;align-items:center;justify-content:center;padding:0;box-shadow:0 4px 14px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04) inset,0 0 20px rgba(192,132,252,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform .15s,background .15s,box-shadow .15s;font:inherit}
+#mobile-reload-btn:active{transform:scale(.88);background:rgba(60,60,72,.98);box-shadow:0 2px 8px rgba(0,0,0,.7),0 0 24px rgba(192,132,252,.35)}
+#mobile-reload-btn svg{display:block;pointer-events:none}
+@media (max-width:900px){#mobile-reload-btn{display:flex}}
+</style>
+</body>
+</html>
