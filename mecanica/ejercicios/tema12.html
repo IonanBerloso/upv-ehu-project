@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#131313">
+<title>T12 · Ejercicios · Mecánica Aplicada · UPV/EHU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initKatex && initKatex()"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#131313;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;--accent:#c084fc;--accent-dim:rgba(192,132,252,.12);--accent-border:rgba(192,132,252,.28);--gold:#f59e0b;--gold-dim:rgba(245,158,11,.1);--gold-border:rgba(245,158,11,.28);--green:#10b981;--blue:#38bdf8;--orange:#fb923c;--yellow:#ffd93d;--ff:'Space Grotesk',system-ui,sans-serif;--ff-mono:'JetBrains Mono',monospace;--radius:10px;--radius-sm:6px;--topbar-h:52px;--sidebar-w:280px;--transition:.22s cubic-bezier(.4,0,.2,1)}
+html{scroll-behavior:smooth}body{font-family:var(--ff);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{color:#f1f5f9;font-weight:600}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:300;background:rgba(19,19,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;height:52px}
+.topbar-back{display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;color:var(--text2);font-size:.82em;font-weight:500;border-right:1px solid var(--border);transition:color var(--transition);white-space:nowrap;text-decoration:none}
+.topbar-back:hover{color:var(--accent);text-decoration:none}
+.topbar-back svg{transition:transform var(--transition)}.topbar-back:hover svg{transform:translateX(-3px)}
+.topbar-title{padding:0 16px;flex:1;font-size:.88em;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tema-picker{position:relative;margin-right:16px}
+.tema-picker-btn{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:20px;padding:4px 13px;font-size:.72em;font-weight:700;color:var(--accent);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:.15s;font-family:var(--ff)}
+.tema-picker-btn:hover{background:rgba(192,132,252,.2)}
+.tema-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);background:rgba(19,19,19,.98);border:1px solid var(--accent-border);border-radius:10px;padding:6px;min-width:220px;z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.85)}
+.tema-picker.open .tema-dropdown{display:block}
+.td-item{display:block;padding:7px 11px;border-radius:6px;font-size:.79em;text-decoration:none;transition:.15s;white-space:nowrap;font-weight:500;color:#e2e8f0}
+.td-item:hover{background:var(--accent-dim);color:var(--accent)}
+.td-item.td-active{color:var(--accent);background:var(--accent-dim);font-weight:700;pointer-events:none}
+.td-sep{display:block;padding:4px 11px 2px;font-size:.63em;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);pointer-events:none;user-select:none;margin-top:2px}
+.td-sep-line{border:none;border-top:1px solid var(--border);margin:4px 5px}
+.td-num{display:inline-block;width:24px;font-weight:700;color:var(--accent)}
+.layout{display:flex;padding-top:52px;min-height:calc(100vh - 52px)}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:52px;left:0;bottom:0;background:rgba(255,255,255,.025);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:12px 12px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sb-subtitle{font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:3px}
+.sb-current{font-size:.74em;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:1.1em}
+.sb-list{flex:1;overflow-y:auto;padding:5px 5px 16px}
+.sb-item{width:100%;display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:var(--radius-sm);background:none;border:1px solid transparent;color:var(--text2);font-family:var(--ff);font-size:.78em;cursor:pointer;text-align:left;transition:all var(--transition);margin-bottom:1px}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)}
+.sb-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;min-width:30px;color:inherit;opacity:.75;flex-shrink:0}
+.sb-name{flex:1;font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-footer{padding:7px 10px;border-top:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.sb-link{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);font-size:.76em;font-weight:600;text-decoration:none;transition:background var(--transition)}
+.sb-link-gold{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);color:var(--gold)}
+.sb-link-purple{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.content{flex:1;margin-left:var(--sidebar-w);padding:28px 40px 60px;min-width:0}
+.topic-panel{display:none;max-width:860px}.topic-panel.active{display:block;animation:tpFadeIn .18s ease forwards}
+@keyframes tpFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{margin-bottom:24px;padding:14px 18px 16px;background:linear-gradient(135deg,rgba(192,132,252,.06) 0%,transparent 60%);border:1px solid rgba(192,132,252,.18);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0}
+.panel-tag{font-family:var(--ff-mono);font-size:.68em;font-weight:700;color:var(--accent);opacity:.8;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.panel-title{font-size:1.3em;font-weight:700;color:#f1f5f9;letter-spacing:-.02em;line-height:1.3}
+.panel-meta{font-size:.78em;color:var(--text3);margin-top:5px}
+.read-progress{position:fixed;top:52px;left:var(--sidebar-w);right:0;height:2px;z-index:200;background:linear-gradient(90deg,var(--accent),var(--blue));transform-origin:left;transform:scaleX(0);transition:transform .08s linear}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(192,132,252,.18);border-radius:3px}
+@media(max-width:768px){body{font-size:17px}.sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border)}.layout{flex-direction:column}.content{margin-left:0;padding:20px 16px 40px}.sb-list{max-height:200px}.read-progress{left:0}}
+.section-wrap{margin-bottom:14px;border-radius:var(--radius-sm);overflow:hidden}
+.sec-btn{width:100%;text-align:left;padding:10px 13px;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:.86em;font-weight:600;letter-spacing:.3px;transition:var(--transition);display:flex;justify-content:space-between;align-items:center;font-family:var(--ff)}
+.sec-btn .sarr{transition:.2s;flex-shrink:0}.sec-open .sec-btn .sarr{transform:rotate(180deg)}
+.sec-body{display:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:13px 15px;font-size:.86em;line-height:1.75}
+.sec-open .sec-body{display:block}
+.s-datos .sec-btn{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-border)}
+.s-datos .sec-body{background:rgba(192,132,252,.04);border:1px solid var(--accent-border);border-top:none}
+.s-teoria .sec-btn{background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.25)}
+.s-teoria .sec-body{background:rgba(56,189,248,.05);border:1px solid rgba(56,189,248,.2);border-top:none}
+.s-resolucion .sec-btn{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+.s-resolucion .sec-body{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-top:none}
+.enunciado{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 15px;font-size:.87em;line-height:1.75;margin-bottom:14px;border-left:3px solid var(--accent-border)}
+.table-wrap{overflow-x:auto;margin:10px 0;border-radius:var(--radius-sm);border:1px solid var(--border)}
+.t-datos{width:100%;border-collapse:collapse;font-size:.84em}
+.t-datos th{background:var(--accent-dim);color:var(--accent);padding:7px 10px;text-align:left;border:1px solid var(--accent-border)}
+.t-datos td{padding:7px 10px;border:1px solid var(--border);color:var(--text2)}
+.formula-box{background:rgba(251,146,60,.06);border-left:3px solid var(--orange);border-radius:4px;padding:8px 13px;margin:6px 0;color:#fed7aa;overflow-x:auto}
+.paso{margin-bottom:13px;padding:10px 13px;background:rgba(16,185,129,.06);border-radius:var(--radius-sm);border-left:3px solid rgba(16,185,129,.4)}
+.paso-titulo{color:var(--green);font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.resultado-final{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-sm);padding:11px 15px;margin-top:12px}
+.rf-label{font-size:.7em;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:700}
+.rf-val{color:#d1fae5;font-size:.9em;line-height:1.9}
+.nota{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:var(--radius-sm);padding:8px 12px;font-size:.8em;color:var(--orange);margin-top:8px;font-style:italic}
+.verificacion{background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.25);border-left:3px solid var(--blue);border-radius:var(--radius-sm);padding:10px 14px;margin-top:10px;font-size:.82em;color:#bae6fd}
+.verificacion .vlabel{font-family:var(--ff-mono);font-size:.7em;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:4px;display:block}
+.aviso-g{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:18px;font-size:.85em;color:#fcd34d}
+.aviso-g strong{color:#fbbf24}
+.katex{font-size:1.04em}.katex-display{overflow-x:auto;overflow-y:hidden}
+.footer{text-align:center;padding:40px 20px;color:var(--text3);font-size:.78em}
+</style>
+  <link rel="stylesheet" href="../../shared/ehulab.css">
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-back" href="../teoria.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Teoría
+  </a>
+  <span class="topbar-title">Mecánica · T12 <span style="color:var(--accent)">· Dinámica del sólido con movimiento plano</span></span>
+  <div class="tema-picker" id="temaPicker">
+    <button class="tema-picker-btn" onclick="this.closest('.tema-picker').classList.toggle('open')">T12 ▾</button>
+    <div class="tema-dropdown">
+    <span class="td-sep">1.er Cuatrimestre</span>
+    <a class="td-item" href="tema1.html"><span class="td-num">T1</span> Cálculo Vectorial</a>
+    <a class="td-item" href="tema2.html"><span class="td-num">T2</span> Geometría de Masas</a>
+    <a class="td-item" href="tema3.html"><span class="td-num">T3</span> Estática del S.R.</a>
+    <a class="td-item" href="tema4.html"><span class="td-num">T4</span> Rozamiento</a>
+    <a class="td-item" href="tema5.html"><span class="td-num">T5</span> Cables</a>
+    <a class="td-item" href="tema6.html"><span class="td-num">T6</span> Resistencia Mat.</a>
+    <hr class="td-sep-line">
+    <span class="td-sep">2.º Cuatrimestre</span>
+    <a class="td-item" href="tema7.html"><span class="td-num">T7</span> Cinemática S.R.</a>
+    <a class="td-item" href="tema8.html"><span class="td-num">T8</span> Mov. Plano S.R.</a>
+    <a class="td-item" href="tema9.html"><span class="td-num">T9</span> Magnitudes Dinámica</a>
+    <a class="td-item" href="tema10.html"><span class="td-num">T10</span> Dinámica del S.R.</a>
+    <a class="td-item" href="tema11.html"><span class="td-num">T11</span> Dinámica eje fijo</a>
+    <a class="td-item td-active" href="tema12.html"><span class="td-num">T12</span> Mov. plano dinámico</a>
+    </div>
+  </div>
+<a class="topbar-pdf no-print" href="../pdf/ejercicios_tema12.pdf" download="ejercicios_tema12.pdf" title="Descargar PDF" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:100%;border-left:1px solid var(--border,rgba(255,255,255,.08));color:#c084fc;font-family:inherit;font-size:.78em;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:.15s;">
+<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h7l4 4v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10 1v4h4"/><path d="M5 9h6M5 12h6M5 6h2"/></svg>
+PDF</a></nav>
+
+<div class="read-progress" id="readProgress"></div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-subtitle">T12 · Mov. Plano Dinámico</div>
+      <div class="sb-current" id="sbCurrent">12.1 · Engranaje + barra</div>
+    </div>
+    <div class="sb-list">
+      <button class="sb-item" onclick="showEx('ex12-1')" data-id="ex12-1"><span class="sb-tag">12.1</span><span class="sb-name">Engranaje rodando + barra articulada: v_B tras 90°</span></button>
+      <button class="sb-item" onclick="showEx('ex12-2')" data-id="ex12-2"><span class="sb-tag">12.2</span><span class="sb-name">Barra ACB guiada por bloques en ranuras: P y R_A</span></button>
+      <button class="sb-item" onclick="showEx('ex12-3')" data-id="ex12-3"><span class="sb-tag">12.3</span><span class="sb-name">Dos ruedas dentadas + barra: α y a_B</span></button>
+      <button class="sb-item" onclick="showEx('ex12-4')" data-id="ex12-4"><span class="sb-tag">12.4</span><span class="sb-name">Viga con cable que se rompe: a_B y C_y</span></button>
+      <button class="sb-item" onclick="showEx('ex12-5')" data-id="ex12-5"><span class="sb-tag">12.5</span><span class="sb-name">Barra AB en ranuras con muelle: ω y v_B</span></button>
+      <button class="sb-item" onclick="showEx('ex12-6')" data-id="ex12-6"><span class="sb-tag">12.6</span><span class="sb-name">Barra colgada de C con fuerza P: α y reacción</span></button>
+      <button class="sb-item" onclick="showEx('ex12-7')" data-id="ex12-7"><span class="sb-tag">12.7</span><span class="sb-name">Varilla soldada a disco con muelle: ω tras 90°</span></button>
+      <button class="sb-item" onclick="showEx('ex12-8')" data-id="ex12-8"><span class="sb-tag">12.8</span><span class="sb-name">Placa ABCD con alambre BH que se corta</span></button>
+      <button class="sb-item" onclick="showEx('ex12-9')" data-id="ex12-9"><span class="sb-tag">12.9</span><span class="sb-name">Masas A y B con biela y dos muelles: v_A, v_B</span></button>
+      <button class="sb-item" onclick="showEx('ex12-10')" data-id="ex12-10"><span class="sb-tag">12.10</span><span class="sb-name">Entramado 3 barras: reacciones en A y D</span></button>
+      <button class="sb-item" onclick="showEx('ex12-11')" data-id="ex12-11"><span class="sb-tag">12.11</span><span class="sb-name">Barra AB articulada en AC: fuerza P y reacción</span></button>
+      <button class="sb-item" onclick="showEx('ex12-12')" data-id="ex12-12"><span class="sb-tag">12.12</span><span class="sb-name">Barras BD-EF soldadas + eslabones: F_B y F_D</span></button>
+      <button class="sb-item" onclick="showEx('ex12-13')" data-id="ex12-13"><span class="sb-tag">12.13</span><span class="sb-name">Barras AB y AC en V soldadas: a_B y A_y</span></button>
+      <button class="sb-item" onclick="showEx('ex12-14')" data-id="ex12-14"><span class="sb-tag">12.14</span><span class="sb-name">Barra AB con disco y muelle: 5 magnitudes</span></button>
+      <button class="sb-item" onclick="showEx('ex12-15')" data-id="ex12-15"><span class="sb-tag">12.15</span><span class="sb-name">Disco con muelle horizontal: aceleración inicial de A</span></button>
+      <button class="sb-item" onclick="showEx('ex12-16')" data-id="ex12-16"><span class="sb-tag">12.16</span><span class="sb-name">Barra AB + masa puntual + muelle + barra BD: k y N</span></button>
+      <button class="sb-item" onclick="showEx('ex12-17')" data-id="ex12-17"><span class="sb-tag">12.17</span><span class="sb-name">Disco rueda + barra AB en corredera vertical: ω_d, α_d</span></button>
+      <button class="sb-item" onclick="showEx('ex12-18')" data-id="ex12-18"><span class="sb-tag">12.18</span><span class="sb-name">Rectificado mesa-disco: ω₃, α₃, par motor T</span></button>
+      <button class="sb-item" onclick="showEx('ex12-19')" data-id="ex12-19"><span class="sb-tag">12.19</span><span class="sb-name">Cuadrado ABCD colgado de barra OA: α₂/α₁ y reacción A</span></button>
+      <button class="sb-item" onclick="showEx('ex12-20')" data-id="ex12-20"><span class="sb-tag">12.20</span><span class="sb-name">Disco + barra + muelle: T inicial y ω tras 90°</span></button>
+    </div>
+    <div class="sb-footer">
+      <a class="sb-link sb-link-purple" href="../teoria.html"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Teoría</a>
+      <a class="sb-link sb-link-gold" href="../examenes.html">&#9733; Exámenes</a>
+    </div>
+  </aside>
+  <main class="content">
+
+  <div class="aviso-g">
+    <strong>⚠ Tema clave del 2.º cuatrimestre:</strong> T12 es el tema más probable del examen. Combina cinemática (T7-T8) con dinámica (T9-T11). Convenio: <strong>g = 9,81 m/s²</strong>. Las resoluciones siguen el patrón estándar UPV/EHU (TML + TMA en G); el profesor solo da los resultados oficiales.
+  </div>
+
+  <!-- ═══════════════ 12.1 ═══════════════ -->
+  <div class="topic-panel" id="ex12-1">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.1</div>
+      <h1 class="panel-title">Engranaje rodando sobre pista dentada + barra articulada</h1>
+      <div class="panel-meta">Engranaje (2) m=3,2 kg, k_G=60 mm, radio L/2=BE · Barra (1) m=2,4 kg, L=160 mm · Suelta del reposo · Pedido: v_B tras girar AB 90°</div>
+    </div>
+    <div class="enunciado">
+      <p>El engranaje (2) de radio \(L/2\) (=BE) tiene masa \(3{,}2\) kg y radio de giro central \(60\) mm. Rueda sobre la pista dentada fija (3) y está articulado en su centro B a la barra (1), de masa \(2{,}4\) kg y longitud \(L=160\) mm. Si el sistema se suelta del reposo en la posición mostrada, calcular la velocidad del punto B después de que la barra AB haya girado 90°.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(v_B = 1{,}542\) m/s</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Conservación de energía</strong>: T₁ + V_g1 = T₂ + V_g2.</p>
+        <div class="formula-box">\[T = \tfrac12 m_1 v_{G1}^2 + \tfrac12 I_{G1}\omega_1^2 + \tfrac12 m_2 v_B^2 + \tfrac12 I_{G2}\omega_2^2\]</div>
+        <p>Como el engranaje rueda sin deslizar sobre la pista, \(v_B = (L/2)\omega_2\). La barra AB articulada en A → \(v_B = L\omega_1\). De aquí \(\omega_2 = 2\omega_1\). El CG de la barra está a L/2, con velocidad \(v_B/2\).</p>
+        <p>Caída del CG barra: el CG cae \(L/2\) (desde horizontal a vertical). El CG engranaje (= B) cae \(L\).</p>
+        <div class="formula-box">\[m_1 g(L/2) + m_2 g L = \tfrac12 m_1(v_B/2)^2 + \tfrac12 (m_1 L^2/12)\omega_1^2 + \tfrac12 m_2 v_B^2 + \tfrac12 m_2 k_G^2 \omega_2^2\]</div>
+        <p>Sustituyendo \(\omega_1 = v_B/L\), \(\omega_2 = 2v_B/L\), \(k_G = 60\) mm: despeje numérico → \(\boxed{v_B \approx 1{,}542\ \text{m/s}}\).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.2 ═══════════════ -->
+  <div class="topic-panel" id="ex12-2">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.2</div>
+      <h1 class="panel-title">Barra ACB guiada por bloques en ranuras inclinadas: P y reacción A</h1>
+      <div class="panel-meta">Barra uniforme masa M · ranura A horizontal 30° · ranura C vertical · α opuesta horario</div>
+    </div>
+    <div class="enunciado">
+      <p>La barra uniforme ACB de masa M está guiada por dos bloques sin masa que deslizan sin rozamiento. Una fuerza P aplicada en A hace que la barra parta del reposo con aceleración angular α opuesta al sentido horario. Calcular: <strong>a)</strong> Fuerza P. <strong>b)</strong> Reacción en A.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(P = M\!\left(\sqrt{3}\,g + \tfrac{13}{12}L\alpha\right)\) · b) \(R_A = M\!\left(g + \tfrac{\sqrt{3}}{4}L\alpha\right)\)</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Cinemática</strong>: la barra está restringida en A (mueve a lo largo de ranura 30°) y en C (mueve vertical). Análisis de velocidades/aceleraciones a través del CG.</p>
+        <p><strong>Dinámica plana</strong>: \(\sum F_x = m a_{Gx}\), \(\sum F_y = m a_{Gy}\), \(\sum M_G = I_G\alpha\) con \(I_G = mL^2/12\).</p>
+        <p>Resolución del sistema (3 ecuaciones, incógnitas P, R_A, ...) da los resultados oficiales.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.3 ═══════════════ -->
+  <div class="topic-panel" id="ex12-3">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.3</div>
+      <h1 class="panel-title">Dos ruedas dentadas + barra AB: aceleración angular y a_B</h1>
+      <div class="panel-meta">Ruedas (1) fija + (2) m=5 kg, k_G=75 mm · Barra (3) AB 200 mm, 3 kg · Suelta del reposo</div>
+    </div>
+    <div class="enunciado">
+      <p>Dos ruedas dentadas (1) y (2) engranan y están conectadas mediante la barra (3) AB uniforme de longitud 200 mm. El engranaje (2) tiene masa 5 kg y radio de giro central 75 mm. La barra AB tiene masa 3 kg. Si el sistema se suelta desde el reposo, calcular: <strong>a)</strong> aceleración angular del engranaje (2). <strong>b)</strong> aceleración del punto B.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(\alpha_2 = 36{,}17\) rad/s² · b) \(a_B = 7{,}23\) m/s²</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Restricción cinemática</strong>: el engranaje (2) rueda sobre el (1) sin deslizar. La barra AB articulada en A al engranaje (1) y en B al engranaje (2). a_B relaciona α_2 con la geometría del par.</p>
+        <p>TML + TMA en G_2 + ecuación de barra AB → sistema cerrado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.4 ═══════════════ -->
+  <div class="topic-panel" id="ex12-4">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.4</div>
+      <h1 class="panel-title">Viga uniforme con cable que se rompe: a_B y reacción en C</h1>
+      <div class="panel-meta">Viga L, peso W · pasador en C (a L/4 de A) · cable en B se rompe</div>
+    </div>
+    <div class="enunciado">
+      <p>Una viga uniforme de longitud L y peso W está sostenida por un pasador en C (a L/4 de A) y un cable en B. El cable se rompe repentinamente. Calcular: <strong>a)</strong> aceleración del extremo B. <strong>b)</strong> Reacción en el soporte del pasador C.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(a_B = \dfrac{9g}{7}\) · b) \(C_y = \dfrac{4}{7}Wg\)</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Justo tras romper</strong>: ω=0, solo hay α. La viga rota alrededor del pasador C. TMA en C: \(\sum M_C = I_C\alpha\) con \(I_C = I_G + m d^2\) (Steiner) donde d = L/4.</p>
+        <div class="formula-box">\[I_C = \tfrac{mL^2}{12} + m\left(\tfrac{L}{4}\right)^2 = mL^2\left(\tfrac{1}{12}+\tfrac{1}{16}\right) = \tfrac{7mL^2}{48}\]\[mg\cdot\tfrac{L}{4} = I_C\alpha \Rightarrow \alpha = \tfrac{12g}{7L}\]\[a_B = \alpha\cdot\tfrac{3L}{4} = \tfrac{9g}{7}\]</div>
+        <p>Reacción en C: \(\sum F_y = m a_{Gy}\) → \(W - C_y = m\cdot \alpha\cdot(L/4) = m\cdot\tfrac{12g}{7L}\cdot\tfrac{L}{4} = \tfrac{3mg}{7}\) → \(C_y = W - \tfrac{3W}{7} = \tfrac{4W}{7}\) = \(\tfrac{4Wg}{7}\) (cuidado con unidades: si W ya es peso en N, C_y = 4W/7. Si el resultado oficial dice 4/7·Wg, entonces W es masa).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.5 ═══════════════ -->
+  <div class="topic-panel" id="ex12-5">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.5</div>
+      <h1 class="panel-title">Barra AB en ranuras + muelle: velocidad angular y v_B</h1>
+      <div class="panel-meta">Barra 4 kg, 635 mm · k=525 N/m · θ inicial=50°, final=0°</div>
+    </div>
+    <div class="enunciado">
+      <p>Los extremos de la barra AB (4 kg, 635 mm) están obligados a moverse por ranuras horizontal (A) y vertical (B). El muelle en A (k=525 N/m) tiene tensión nula cuando θ=0°. Si se suelta en reposo con θ=50°, calcular ω y v_B cuando θ=0°.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(\omega = 3{,}836\) rad/s · \(v_B = 2{,}436\) m/s</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Conservación de energía</strong> con T inicial = 0, V_g = mgh_CG, V_elast = ½k(Δx)².</p>
+        <p>Cuando θ=0° (barra horizontal), v_B vertical y v_A=0 → CIR en A → v_G = v_B/2 y ω = v_B/L.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.6 ═══════════════ -->
+  <div class="topic-panel" id="ex12-6">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.6</div>
+      <h1 class="panel-title">Barra colgada de C con fuerza P en B: aceleración angular y reacción</h1>
+      <div class="panel-meta">Barra 4 kg, L=900 mm · articulación C a r=225 mm de A · P=75 N horiz. en B</div>
+    </div>
+    <div class="enunciado">
+      <p>Barra uniforme L=900 mm, 4 kg cuelga de una articulación C. Fuerza P=75 N horizontal en el extremo B. Distancia r de C al CG es 225 mm. Calcular: <strong>a)</strong> aceleración angular. <strong>b)</strong> Reacción en C.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(\alpha = -107{,}14\) rad/s² · b) \(C_x = -21{,}43\) N, \(C_y = 39{,}24\) N</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>TMA en C: \(\sum M_C = I_C\alpha\) con \(I_C = mL^2/12 + m r^2\).</p>
+        <p>TML horizontal y vertical para C_x, C_y, considerando que el CG describe un arco alrededor de C (a_G centrípeta = 0 inicial + tangencial = α·r).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.7 ═══════════════ -->
+  <div class="topic-panel" id="ex12-7">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.7</div>
+      <h1 class="panel-title">Varilla soldada a disco con muelle: ω tras 90°</h1>
+      <div class="panel-meta">Varilla 5 kg, 500 mm · Disco 3 kg, R=125 mm · Muelle k=80 N/m no deformado horiz.</div>
+    </div>
+    <div class="enunciado">
+      <p>La varilla (1) de 5 kg está soldada al disco uniforme de 3 kg que gira sobre un pasador en A. El resorte (k=80 N/m) está unido al disco y no deformado cuando AB está horizontal. Suelta del reposo, calcular ω tras girar 90°.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(\omega = 6{,}98\) rad/s</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Conservación de energía</strong>. Inicial: barra horizontal, ω=0, V_g referido al disco. Final (90°): barra vertical hacia abajo, energía cinética rotacional, V_g del CG, V_elast del muelle estirado por πR/2 (cuarto de circunferencia).</p>
+        <div class="formula-box">\[0 + (m_v g\cdot L/2 + 0) = \tfrac12 I_A \omega^2 + 0 + \tfrac12 k(\pi R/2)^2\]</div>
+        <p>donde \(I_A\) suma momentos de inercia de varilla + disco respecto al pasador A.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.8 ═══════════════ -->
+  <div class="topic-panel" id="ex12-8">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.8</div>
+      <h1 class="panel-title">Placa ABCD con alambre BH que se corta</h1>
+      <div class="panel-meta">Placa 8 kg, 500×200 mm · Barras (1) y (2) a 30° iguales · Alambre BH</div>
+    </div>
+    <div class="enunciado">
+      <p>La placa delgada ABCD (8 kg) está sostenida por alambre BH y dos barras articuladas (1) y (2) de igual longitud desconocida. En el instante en que se corta BH, hallar: <strong>a)</strong> Aceleración de A, B, C, D. <strong>b)</strong> Fuerza en E y F.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(a_A = -8{,}44\) m/s² · b) \(F = -48{,}7\) N</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Caso clásico de paralelogramo articulado</strong>: las barras (1) y (2) iguales y paralelas hacen que la placa traslade (sin rotación). Todos los puntos tienen la misma aceleración.</p>
+        <p>TML + TMA en G da las fuerzas en las barras.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.9 ═══════════════ -->
+  <div class="topic-panel" id="ex12-9">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.9</div>
+      <h1 class="panel-title">Masas A y B con biela y dos muelles: dos casos</h1>
+      <div class="panel-meta">A y B 75 kg cada una · Biela L=300 mm · 2 muelles k=900 N/m en B · A baja 25 mm</div>
+    </div>
+    <div class="enunciado">
+      <p>Masas A y B (75 kg cada una) en ranuras sin rozamiento, conectadas por biela ligera L=300 mm. B en dos muelles k=900 N/m (reposo cuando biela vertical). Calcular v_A y v_B cuando A baja 25 mm en: <strong>a)</strong> biela sin masa. <strong>b)</strong> biela 10 kg.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(v_A = 0{,}152\), \(v_B = 0{,}350\) m/s</div>
+        <div class="rf-val">b) \(v_A = 0{,}165\), \(v_B = 0{,}379\) m/s</div>
+      </div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Conservación de energía</strong>: T₁ + V_g1 + V_e1 = T₂ + V_g2 + V_e2. Cinemática de biela rígida relaciona v_A (vertical) y v_B (horizontal) según el ángulo θ. Caso b) añade energía cinética de la biela (½ I_G ω_biela² + ½ m_b v_Gb²).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.10 ═══════════════ -->
+  <div class="topic-panel" id="ex12-10">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.10</div>
+      <h1 class="panel-title">Entramado articulado de 3 barras: reacciones en A y D</h1>
+      <div class="panel-meta">Barra AB ω₁=2 rad/s, α₁=3 rad/s² · M₁=4, M₂=3, M₃=6 kg · AB=0,6, BC=0,5, CD=1 m</div>
+    </div>
+    <div class="enunciado">
+      <p>Entramado articulado de tres barras. La barra AB tiene ω₁=2 rad/s y α₁=3 rad/s². Calcular reacciones en A y D.</p>
+      <p>Datos: M₁=4, M₂=3, M₃=6 kg; AB=0,6, BC=0,5, CD=1 m.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(A_x = 7{,}92\), \(A_y = 110{,}7\), \(D_x = 6{,}96\), \(D_y = 31{,}23\) N</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p><strong>Cinemática</strong>: con ω₁ y α₁ dados, calcular v_B, a_B, luego ω₂, α₂ (BC), ω₃, α₃ (CD).</p>
+        <p><strong>Dinámica</strong>: DSL de cada barra. 3 ecuaciones (Σ F_x, Σ F_y, Σ M_G) por barra → 9 ecuaciones, 9 incógnitas (A_x, A_y, B_x, B_y, C_x, C_y, D_x, D_y, ...).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.11 ═══════════════ -->
+  <div class="topic-panel" id="ex12-11">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.11</div>
+      <h1 class="panel-title">Barra AB articulada en AC con fuerza P en B: P y reacción</h1>
+      <div class="panel-meta">Barra AB 6 kg, 1,5 m · AC despreciable · Altura AC=1,2 m · a_B=3 m/s² izq</div>
+    </div>
+    <div class="enunciado">
+      <p>Barra uniforme 6 kg AB articulada en su extremo A a la barra AC de peso despreciable; en B desliza sin rozamiento por suelo. Parte del reposo con aceleración a_B=3 m/s² hacia la izquierda por fuerza P. Calcular: <strong>a)</strong> Valor de P. <strong>b)</strong> Fuerza que AC ejerce sobre AB.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(P = 26{,}76\) N · b) \(A_x = 17{,}76\) N</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.12 ═══════════════ -->
+  <div class="topic-panel" id="ex12-12">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.12</div>
+      <h1 class="panel-title">Barras BD y EF soldadas + eslabones: fuerzas (1) y (2)</h1>
+      <div class="panel-meta">BD, EF 2 kg cada una · Soldadas en E · Eslabones (1) y (2) a 60° · Suelta del reposo</div>
+    </div>
+    <div class="enunciado">
+      <p>Dos barras uniformes BD y EF (2 kg cada una) están unidas rígidamente en el punto E y ligadas a dos eslabones (1) y (2) sin masa. Calcular las fuerzas en las barras (1) y (2) tras soltar desde el reposo. G es CG de la estructura.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(F_B = -2{,}27\) N · \(F_D = -31{,}70\) N</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.13 ═══════════════ -->
+  <div class="topic-panel" id="ex12-13">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.13</div>
+      <h1 class="panel-title">Barras AB y AC en V soldadas: a_B y reacción A</h1>
+      <div class="panel-meta">Barras 3 kg, 600 mm cada una · 30°-30° con horizontal · Soltadas en reposo</div>
+    </div>
+    <div class="enunciado">
+      <p>Dos barras AB y AC (3 kg, 600 mm cada una) soldadas en A. Sueltas en reposo, calcular justo antes del inicio del movimiento: <strong>1)</strong> Aceleración de B. <strong>2)</strong> Reacción en A.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(a_B = 12{,}74\) m/s² · b) \(A_y = 25{,}75\) N</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.14 ═══════════════ -->
+  <div class="topic-panel" id="ex12-14">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.14</div>
+      <h1 class="panel-title">Barra horizontal + disco apoyado + muelle a 45°: 5 magnitudes</h1>
+      <div class="panel-meta">Barra AB M, 4R · Muelle OA k=Mg/(2R) a 45° · Disco M, R sin rozam · Hilo BC se corta</div>
+    </div>
+    <div class="enunciado">
+      <p>Barra AB masa M, 4R suspendida en plano vertical por hilo BC y muelle ideal OA (k=Mg/(2R), 45° con vertical). Sobre punto medio se apoya disco M, R sin rozamiento. En equilibrio horizontal, se corta BC. Determinar (justo antes de iniciarse el movimiento):</p>
+      <p><strong>a)</strong> aceleración punto medio barra. <strong>b)</strong> α barra. <strong>c)</strong> aceleración centro disco. <strong>d)</strong> α disco. <strong>e)</strong> Reacción entre disco y barra.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(\vec a_{G,b} = -\tfrac{g}{2}\vec j\) m/s² · b) \(\vec\alpha_b = -\tfrac{3g}{2R}\vec k\) rad/s²</div>
+        <div class="rf-val">c) \(\vec a_{G,d} = -g\vec i - \tfrac{g}{2}\vec j\) · d) \(\vec\alpha_d = 0\) · e) \(N = \tfrac{Mg}{2}\)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.15 ═══════════════ -->
+  <div class="topic-panel" id="ex12-15">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.15</div>
+      <h1 class="panel-title">Disco con muelle horizontal y rozamiento: aceleración inicial de A</h1>
+      <div class="panel-meta">Disco M, R sobre suelo · Muelle k a centro G, δ=Mg/k · f=0,25</div>
+    </div>
+    <div class="enunciado">
+      <p>Disco circular homogéneo M, R apoyado verticalmente en suelo. Centro conectado a muelle k. Alargamiento δ=Mg/k. Suelta sin velocidad. Calcular aceleración inicial del punto A del disco (opuesto al contacto). \(f=0{,}25\).</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">\(\vec a_A = \tfrac{5g}{4}\vec i\) m/s²</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.16 ═══════════════ -->
+  <div class="topic-panel" id="ex12-16">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.16</div>
+      <h1 class="panel-title">Barra AB con masa puntual + muelle + barra BD: k y N</h1>
+      <div class="panel-meta">Barra AB M, 3L · Masa puntual M sobre barra · Muelle AC k · Barra rígida BD</div>
+    </div>
+    <div class="enunciado">
+      <p>Barra AB (M, 3L) soporta masa puntual M (sin rozamiento). Sistema en equilibrio por muelle AC (k) y barra rígida BD (soporta Mg). Determinar: <strong>a)</strong> constante k en equilibrio. <strong>b)</strong> Reacción masa-barra inmediatamente tras eliminar BD.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(k = \dfrac{3Mg}{L}\) · b) \(N = \dfrac{9Mg}{5}\)</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.17 ═══════════════ -->
+  <div class="topic-panel" id="ex12-17">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.17</div>
+      <h1 class="panel-title">Disco rueda + barra AB en corredera vertical: ω_d, α_d</h1>
+      <div class="panel-meta">Disco M, R sin deslizar · Barra M, L articulada en disco · Barra inicial 60° con vertical</div>
+    </div>
+    <div class="enunciado">
+      <p>Disco homogéneo M, R rueda sin deslizar en suelo. Barra AB (M, L) articulada en centro del disco; otro extremo en corredera vertical fija. Posición inicial: AB a 60° con vertical. Suelta del reposo. Calcular: <strong>a)</strong> ω del disco cuando AB se coloca vertical. <strong>b)</strong> DSL inicial. <strong>c)</strong> α del disco al inicio.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(\omega_d = \sqrt{\dfrac{3gL}{11R^2}}\) · c) \(\alpha_d = \dfrac{3\sqrt{3}\,g}{17R}\)</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.18 ═══════════════ -->
+  <div class="topic-panel" id="ex12-18">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.18</div>
+      <h1 class="panel-title">Proceso de rectificado mesa-disco: ω₃, α₃, par motor T</h1>
+      <div class="panel-meta">Disco 5 m₂=5 kg, R=0,5 m · Barra (3) AB 3 m sin masa · Mesa-pieza (4) 5 kg · ω₂=4, α₂=8</div>
+    </div>
+    <div class="enunciado">
+      <p>Proceso de rectificado: herramienta-disco (5) aplica F=1 kN vertical sobre conjunto pieza-mesa (4) de m₄=5 kg. Mesa articulada a barra AB (3) sin masa, articulada en A a la periferia del disco (2) m₂=5 kg, R=0,5 m. Disco gira con ω₂=4 rad/s, α₂=8 rad/s². Calcular: <strong>a)</strong> ω₃, α₃ de la barra. <strong>b)</strong> DSL. <strong>c)</strong> Par motor T sobre disco.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(\omega_3 = 0\), \(\alpha_3 = \tfrac{2\sqrt{3}R}{3L}\omega_2^2\) · c) \(T = \left(\tfrac{3\alpha_2}{2} + \tfrac{\sqrt{3}\omega_2^2}{3}\right)MR^2\)</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.19 ═══════════════ -->
+  <div class="topic-panel" id="ex12-19">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.19</div>
+      <h1 class="panel-title">Cuadrado ABCD colgado de barra OA + hilo: α₂/α₁ y reacción A</h1>
+      <div class="panel-meta">Cuadrado M, 2L · Barra OA M, L · Hilo h se corta · I_G placa = (2/3)ML²</div>
+    </div>
+    <div class="enunciado">
+      <p>Cuadrado ABCD (2) M, 2L colgado del techo por barra OA (1) M, L articulada en A y O, y un hilo h. Se corta el hilo. En el instante siguiente: <strong>a)</strong> relación α₂/α₁. <strong>b)</strong> DSL con ecuaciones. <strong>c)</strong> Reacción en A.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div>
+        <div class="rf-val">a) \(\dfrac{\alpha_2}{\alpha_1} = -\dfrac{4}{3}\) (\(\alpha_1 = \tfrac{9g}{23L}\), \(\alpha_2 = -\tfrac{12g}{23L}\))</div>
+        <div class="rf-val">c) \(A_x = \dfrac{3Mg}{23}\), \(A_y = -\dfrac{11Mg}{23}\)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ 12.20 ═══════════════ -->
+  <div class="topic-panel" id="ex12-20">
+    <div class="panel-header">
+      <div class="panel-tag">Ejercicio 12.20</div>
+      <h1 class="panel-title">Disco + barra + muelle: T inicial y ω tras 90°</h1>
+      <div class="panel-meta">Disco M=10 kg, R=0,5 m, ω=5 rad/s horario · Barra M=10 kg, L=2R · Muelle k=100 N/m</div>
+    </div>
+    <div class="enunciado">
+      <p>Sistema: disco (M=10 kg, R=0,5 m) gira con ω=5 rad/s horario en pasador O. Barra AB (M=10 kg, L=2R) articulada al disco en A y a deslizadera vertical en B. Muelle ideal (L₀=0, k=100 N/m) entre suelo y punto diametralmente opuesto a A. Calcular: <strong>a)</strong> Energía cinética inicial. <strong>b)</strong> ω cuando el disco ha girado 90°.</p>
+      <div class="resultado-final"><div class="rf-label">Resultado</div><div class="rf-val">a) \(T_1 = 26{,}042\) J · b) \(\omega_2 = 1{,}3\) rad/s</div></div>
+    </div>
+    <div class="section-wrap s-teoria sec-open">
+      <button class="sec-btn" onclick="toggleSec(this)">📐 Método <span class="sarr">▼</span></button>
+      <div class="sec-body">
+        <p>T₁: ½ I_O ω² disco + ½ m v_G² barra + ½ I_G ω_barra². Aplicando conservación con cambio de altura del CG de la barra y compresión del muelle → ω₂ tras 90°.</p>
+      </div>
+    </div>
+  </div>
+
+  </main>
+</div>
+
+<div class="footer">Mecánica Aplicada · UPV/EHU · 2025–26 &nbsp;·&nbsp; <a href="../../index.html">Inicio</a></div>
+
+<script>
+function initKatex(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});}
+document.addEventListener('DOMContentLoaded', function(){
+  if(typeof renderMathInElement !== 'undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});}
+  var panels = document.querySelectorAll('.topic-panel');
+  if(panels.length > 0) showEx(panels[0].id);
+});
+function showEx(id){
+  document.querySelectorAll('.topic-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.sb-item').forEach(function(b){b.classList.remove('active')});
+  var panel = document.getElementById(id);
+  if(panel) panel.classList.add('active');
+  var btn = document.querySelector('[data-id="'+id+'"]');
+  if(btn){btn.classList.add('active');var name = btn.querySelector('.sb-name');var curr = document.getElementById('sbCurrent');if(curr && name) curr.textContent = name.textContent;}
+  window.scrollTo({top:0,behavior:'instant'});
+  updateProgress();
+}
+function toggleSec(btn){
+  var wrap = btn.closest('.section-wrap');
+  wrap.classList.toggle('sec-open');
+  if(wrap.classList.contains('sec-open') && typeof renderMathInElement !== 'undefined'){renderMathInElement(wrap,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});}
+}
+function updateProgress(){var bar = document.getElementById('readProgress');if(!bar) return;var scrolled = window.scrollY;var total = document.body.scrollHeight - window.innerHeight;bar.style.transform = 'scaleX('+(total>0?Math.min(scrolled/total,1):0)+')';}
+window.addEventListener('scroll', updateProgress, {passive:true});
+document.addEventListener('click', function(e){var picker = document.getElementById('temaPicker');if(picker && !picker.contains(e.target)) picker.classList.remove('open');});
+</script>
+<button id="mobile-reload-btn" type="button" aria-label="Recargar página (ignorar caché)" title="Recargar" onclick="(function(){var u=new URL(location.href);u.searchParams.set('_',Date.now());location.replace(u.toString())})()">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+</button>
+<style>#mobile-reload-btn{display:none;position:fixed;bottom:20px;right:20px;z-index:99999;width:52px;height:52px;border-radius:50%;background:rgba(45,45,55,.94);border:1.5px solid rgba(192,132,252,.55);color:#f1f5f9;cursor:pointer;align-items:center;justify-content:center;padding:0;box-shadow:0 4px 14px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04) inset,0 0 20px rgba(192,132,252,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform .15s,background .15s,box-shadow .15s;font:inherit}
+#mobile-reload-btn:active{transform:scale(.88);background:rgba(60,60,72,.98);box-shadow:0 2px 8px rgba(0,0,0,.7),0 0 24px rgba(192,132,252,.35)}
+#mobile-reload-btn svg{display:block;pointer-events:none}
+@media (max-width:900px){#mobile-reload-btn{display:flex}}</style>
+</body>
+</html>
