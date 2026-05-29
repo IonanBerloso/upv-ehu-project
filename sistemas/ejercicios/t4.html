@@ -19,7 +19,7 @@
   --border2:rgba(255,255,255,.12);
   --text:#e2e8f0;
   --text2:#94a3b8;
-  --text3:#64748b;
+  --text3:#7d8a99;
   --accent:#ffd93d;
   --accent-dim:rgba(255,217,61,.10);
   --accent-border:rgba(255,217,61,.25);
@@ -823,13 +823,13 @@ N370 G1 G38 R5 X130 Y0              ; salida tangencial con G38
 N380 G0 Z100                         ; retira Z
 N390 G40 G44                         ; cancela compensaciones
 N400 G24                             ; ★ FIX chuleta: G24 = FIN de la subrutina (return al main)</span>
-<p class="res-note"><b>🔑 Cambios respecto a la versión anterior (auditoría compañero):</b>
+<div class="res-note"><b>🔑 Cambios respecto a la versión anterior (auditoría compañero):</b>
 <ul style="margin:6px 0 0 18px;line-height:1.7">
 <li><b>Radii corregidos:</b> R11,5 y R18,5 (no R12,5 que era error de lectura del plano).</li>
 <li><b>Coordenadas Y=0 en tangencias:</b> los puntos donde se unen arcos están en la línea media Y=0, no en Y=±5.</li>
 <li><b>Sentidos G2/G3:</b> alternan según concavidad del arco. R18,5 son los arcos "externos" (G3 CCW si abren a +Y, G2 CW si abren a -Y); R11,5 son los "internos" (sentido opuesto).</li>
 <li><b>Estructura subrutina (chuleta UPV/EHU):</b> definida APARTE con <b>G22 N1 ... G24</b> y llamada con <b>G20 N1.k</b> (donde k = nº repeticiones). Esto permite reutilizarla con espejo G12 activado para la ranura 2.</li>
-</ul></p>
+</ul></div>
 </div>
 
 <div class="paso"><div class="paso-titulo">Sección 3 — Ranura sinusoidal 2 (simétrica eje X · G12 espejo Y según chuleta)</div>
@@ -942,12 +942,12 @@ N230 G2 I-40 J0
 N240 G38 R10 X60 Y0                 ; salida tangencial
 N250 G0 Z100                        ; retira a Z seguro
 N260 G40 G44                        ; cancela compensaciones</span>
-<p class="res-note"><b>🔑 Regla de compensación CONTORNO EXTERIOR vs INTERIOR:</b>
+<div class="res-note"><b>🔑 Regla de compensación CONTORNO EXTERIOR vs INTERIOR:</b>
 <ul style="margin:6px 0 0 18px;line-height:1.7">
 <li>Contorneando POR FUERA (la fresa elimina lo que sobra alrededor de la pieza): G41 + recorrido CW, o G42 + CCW.</li>
 <li>Contorneando POR DENTRO (cajera): G42 + recorrido CW, o G41 + CCW.</li>
 <li>Regla nemotécnica: la <b>compensación es siempre HACIA EL LADO DEL MATERIAL A RETIRAR</b>.</li>
-</ul></p>
+</ul></div>
 <p class="res-note"><b>⚠ Limitación:</b> incluso con G41 corregido, este código solo recorre el CONTORNO del Ø80 una vez → deja una ranura de ancho D=20 mm. Para VACIAR las 4 esquinas hasta el cuadrado 100×100, hace falta o bien hacer múltiples pasadas en espiral, o usar ciclo de "cajera con isla" (G88 con parámetro de isla), o programar las 4 esquinas como cajeras triangulares separadas. Esta complicación se sale del alcance del ejercicio básico, pero el código actual NO vacía las esquinas.</p>
 </div>
 

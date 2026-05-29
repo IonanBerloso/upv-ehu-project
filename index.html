@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080808">
-<meta name="description" content="UPV/EHU — Engineering Command Center — Mecánica de Fluidos, Mecánica Aplicada y Sistemas de Producción">
+<meta name="description" content="UPV/EHU — Engineering Command Center — Mecánica de Fluidos y Sistemas de Producción">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
   --bg:#080808; --s1:#0d0d0d; --s2:#121212; --s3:#181818;
   --line:rgba(255,255,255,0.055);
   --line-g:rgba(0,255,157,0.12);
-  --txt:#cdd6e0; --txt2:#617080; --txt3:#303d4a;
+  --txt:#cdd6e0; --txt2:#8b97a6; --txt3:#7c8896;
   --mono:'JetBrains Mono',monospace;
   --ui:'Space Grotesk',sans-serif;
   --r:276.5; /* 2π×44 */
@@ -521,20 +521,21 @@ body::after{
   </div>
   <div class="tb-right">
     <div class="tb-terminal">
-      SYS <em>ONLINE</em> · 09 APR 2026<div class="cursor"></div>
+      SYS <em>ONLINE</em> · <span id="tb-date">--</span><div class="cursor"></div>
     </div>
     <div class="hud">
       <span class="hud-lbl">Examen</span>
       <span class="hud-n" id="hud-d">--</span><span class="hud-u">D</span>
       <span class="hud-n" id="hud-h">--</span><span class="hud-u">H</span>
       <span class="hud-n" id="hud-m">--</span><span class="hud-u">M</span>
-      <span class="hud-sub">Fluidos · 28 May</span>
+      <span class="hud-sub">Fluidos · 22 Jun</span>
     </div>
     <div class="online"><div class="online-dot"></div>Online</div>
   </div>
 </header>
 
 <!-- ═══════════════ SHELL ═══════════════ -->
+<a class="skip-link" href="#main-scroll">Saltar al contenido</a>
 <div class="shell">
 
   <!-- ╔══ MECÁNICA APLICADA OCULTA TEMPORALMENTE (profesor enfermo · sin examen) ══╗
@@ -550,6 +551,16 @@ body::after{
     { display: none !important; }
   </style>
 
+  <style id="a11y-fixes">
+    /* Navegación del dashboard como <button> accesible, con el aspecto de .nav */
+    button.nav{ background:none; border:0; width:100%; text-align:left; font:inherit; cursor:pointer; color:inherit; }
+    /* Skip-link visible solo al recibir foco */
+    .skip-link{ position:absolute; left:-9999px; top:0; z-index:100000; background:var(--purple,#b47fff); color:#000; padding:10px 16px; border-radius:0 0 8px 0; font:600 14px/1 var(--ui,sans-serif); }
+    .skip-link:focus{ left:0; }
+    /* Foco visible para navegación por teclado */
+    a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-visible{ outline:2px solid var(--cyan,#00f0ff); outline-offset:2px; }
+  </style>
+
   <!-- ═══ SIDEBAR ═══ -->
   <aside class="sidebar">
     <div class="sb-head">
@@ -560,14 +571,14 @@ body::after{
     <div class="sb-next">
       <div class="sb-next-lbl">Próximo examen</div>
       <div class="sb-next-name">Mecánica de Fluidos</div>
-      <div class="sb-next-cd"><span id="sb-d">--</span>D <span id="sb-h">--</span>H · 28 Mayo 9:00h</div>
+      <div class="sb-next-cd"><span id="sb-d">--</span>D <span id="sb-h">--</span>H · 22 Junio 15:00h</div>
     </div>
 
     <div class="sb-cat">Sistema</div>
-    <div class="nav active" onclick="scrollToTop()"><span class="nav-ic">▣</span>Dashboard</div>
-    <div class="nav" onclick="openPlan()"><span class="nav-ic">◈</span>Plan de Estudio</div>
-    <div class="nav" onclick="openPlanAndScroll('stats')"><span class="nav-ic">◉</span>Progreso</div>
-    <div class="nav" onclick="openPlanAndScroll('tools')"><span class="nav-ic">◎</span>Herramientas</div>
+    <button type="button" class="nav active" onclick="scrollToTop()" aria-current="page"><span class="nav-ic">▣</span>Dashboard</button>
+    <button type="button" class="nav" onclick="openPlan()"><span class="nav-ic">◈</span>Plan de Estudio</button>
+    <button type="button" class="nav" onclick="openPlanAndScroll('stats')"><span class="nav-ic">◉</span>Progreso</button>
+    <button type="button" class="nav" onclick="openPlanAndScroll('tools')"><span class="nav-ic">◎</span>Herramientas</button>
 
     <div class="sb-cat">Asignaturas</div>
     <div class="nav c-c"><span class="nav-ic">◆</span>Mecánica de Fluidos</div>
@@ -585,7 +596,7 @@ body::after{
 
     <!-- INICIO MECÁNICA SIDEBAR · oculta temporalmente — descomentar este bloque para restaurar
     <div class="nav c-p" style="margin-top:3px"><span class="nav-ic">◆</span>Mecánica Aplicada</div>
-    <a class="sub" href="mecanica/teoria.html">Teoría T1–T12</a>
+    <a class="sub" href="mecanica/teoria.html">Teoría T1–T8</a>
     <a class="sub" href="mecanica/ejercicios/">Ejercicios</a>
     <a class="sub" href="mecanica/examenes.html">Exámenes resueltos</a>
     FIN MECÁNICA SIDEBAR -->
@@ -634,7 +645,7 @@ body::after{
       </div>
       <div class="alert-divider"></div>
       <div class="alert-body">
-        <div class="alert-main">Próximo examen · <span class="alert-hi">Mecánica de Fluidos</span> — 28 de mayo</div>
+        <div class="alert-main">Próximo examen · <span class="alert-hi">Mecánica de Fluidos</span> — 22 de junio</div>
         <div class="alert-sub">Sistemas de Producción · 10 Jun</div>
       </div>
       <div class="alert-badge">PRIORITARIO</div>
@@ -689,7 +700,7 @@ body::after{
             <div class="tr" data-keys="f-16"><div class="dot d-queue"></div>Bombas hidráulicas · T25<span class="tbadge tb-q">—</span></div>
           </div>
           <div class="cd-strip" style="margin:9px 17px;border-color:rgba(var(--cr),.12)">
-            <span class="cd-lbl">Examen · 28 May 9:00</span>
+            <span class="cd-lbl">Examen · 22 Jun 15:00</span>
             <div class="cd-nums">
               <span class="cd-n" style="color:var(--cyan);text-shadow:0 0 8px rgba(var(--cr),.6)" id="cd-f-d">--</span><span class="cd-u">D</span>
               <span class="cd-n" style="color:var(--cyan);text-shadow:0 0 8px rgba(var(--cr),.6)" id="cd-f-h">--</span><span class="cd-u">H</span>
@@ -952,10 +963,10 @@ body::after{
     <div id="stats">
       <div class="sh"><span class="sh-txt">Estadísticas globales</span><div class="sh-line"></div></div>
       <div class="stats-grid" style="margin-top:12px">
-        <div class="sstat sg"><div class="ss-num">3</div><div class="ss-lbl">Asignaturas</div></div>
+        <div class="sstat sg"><div class="ss-num">2</div><div class="ss-lbl">Asignaturas</div></div>
         <div class="sstat sc"><div class="ss-num">161+</div><div class="ss-lbl">Ejercicios resueltos</div></div>
-        <div class="sstat sp"><div class="ss-num">18</div><div class="ss-lbl">Exámenes reales</div></div>
-        <div class="sstat sa"><div class="ss-num" id="stat-days">49</div><div class="ss-lbl">Días al examen 1</div></div>
+        <div class="sstat sp"><div class="ss-num">15</div><div class="ss-lbl">Exámenes reales</div></div>
+        <div class="sstat sa"><div class="ss-num" id="stat-days">--</div><div class="ss-lbl">Días al examen 1</div></div>
       </div>
     </div>
 
@@ -1151,13 +1162,13 @@ function scrollToSection(id){
 ══════════════════════════════ */
 (function(){
   var exams = [
-    { target: new Date('2026-05-28T09:00:00'),
+    { target: new Date('2026-06-22T15:00:00+02:00'),   // Fluidos reprogramado (antes 28 May)
       d:'cd-f-d', h:'cd-f-h', m:'cd-f-m', s:'cd-f-s',
       hd:'hud-d', hh:'hud-h', hm:'hud-m',
       sb_d:'sb-d', sb_h:'sb-h',
       alert:'alert-days', stat:'stat-days' },
-    { target: new Date('2026-06-05T09:00:00'), d:'cd-m-d', h:'cd-m-h', m:'cd-m-m', s:'cd-m-s' },
-    { target: new Date('2026-06-10T09:00:00'), d:'cd-s-d', h:'cd-s-h', m:'cd-s-m', s:'cd-s-s' }
+    // Mecánica retirada del índice: su cuenta atrás queda desactivada.
+    { target: new Date('2026-06-10T09:00:00+02:00'), d:'cd-s-d', h:'cd-s-h', m:'cd-s-m', s:'cd-s-s' }
   ];
   function pad(n){ return String(n).padStart(2,'0'); }
   function set(id, v){ var el=document.getElementById(id); if(el) el.textContent=v; }
@@ -1166,26 +1177,37 @@ function scrollToSection(id){
     var now = Date.now();
     exams.forEach(function(e, i){
       var diff = e.target - now;
+      var passed = diff <= 0;
       if(diff < 0) diff = 0;
       var d = Math.floor(diff/86400000);
       var h = Math.floor((diff%86400000)/3600000);
       var m2 = Math.floor((diff%3600000)/60000);
       var s2 = Math.floor((diff%60000)/1000);
-      set(e.d, pad(d)); set(e.h, pad(h)); set(e.m, pad(m2)); if(e.s) set(e.s, pad(s2));
+      if(passed){
+        set(e.d,'--'); set(e.h,'--'); set(e.m,'--'); if(e.s) set(e.s,'--');
+      } else {
+        set(e.d, pad(d)); set(e.h, pad(h)); set(e.m, pad(m2)); if(e.s) set(e.s, pad(s2));
+      }
       if(i === 0){
-        set(e.hd, pad(d)); set(e.hh, pad(h)); set(e.hm, pad(m2));
-        set(e.sb_d, pad(d)); set(e.sb_h, pad(h));
-        set(e.alert, d);
-        set(e.stat, d);
+        if(passed){
+          set(e.hd,'--'); set(e.hh,'--'); set(e.hm,'--');
+          set(e.sb_d,'--'); set(e.sb_h,'--');
+          set(e.alert,'—'); set(e.stat,'—');
+        } else {
+          set(e.hd, pad(d)); set(e.hh, pad(h)); set(e.hm, pad(m2));
+          set(e.sb_d, pad(d)); set(e.sb_h, pad(h));
+          set(e.alert, d); set(e.stat, d);
+        }
       }
     });
-    // Clock in sidebar
+    // Clock in sidebar + fecha del topbar
     var now2 = new Date();
+    var fecha = now2.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
     var cl = document.getElementById('sb-clock');
     if(cl){
-      cl.textContent = now2.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}).toUpperCase()
-        + ' · ' + pad(now2.getHours()) + ':' + pad(now2.getMinutes()) + ' UTC+2';
+      cl.textContent = fecha + ' · ' + pad(now2.getHours()) + ':' + pad(now2.getMinutes()) + ' UTC+2';
     }
+    set('tb-date', fecha);
   }
   tick();
   setInterval(tick, 1000);
@@ -1209,6 +1231,7 @@ window.addEventListener('beforeinstallprompt', function(e){
 });
 installBtn.addEventListener('click', function(){
   banner.style.display='none';
+  if(!deferredPrompt) return;
   deferredPrompt.prompt();
   deferredPrompt.userChoice.then(function(){ deferredPrompt=null; });
 });
