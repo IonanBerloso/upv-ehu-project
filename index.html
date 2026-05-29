@@ -537,6 +537,19 @@ body::after{
 <!-- ═══════════════ SHELL ═══════════════ -->
 <div class="shell">
 
+  <!-- ╔══ MECÁNICA APLICADA OCULTA TEMPORALMENTE (profesor enfermo · sin examen) ══╗
+       No se ha borrado nada: la carpeta mecanica/ y todo su contenido siguen intactos.
+       Para RESTAURARLA: (1) borra este bloque <style id="hide-mecanica">, y
+       (2) descomenta el grupo de la barra lateral (busca "MECÁNICA SIDEBAR" más abajo),
+       (3) revierte los contadores 02/02 → 03/03 y / 25 → / 37 si quieres. -->
+  <style id="hide-mecanica">
+    #ptab-m,        /* pestaña "Mecánica" del plan de estudio */
+    #pp-m,          /* panel de temas de Mecánica */
+    #lib-mecanica,  /* enlace al libro PDF de Mecánica */
+    .scard.sm       /* tarjeta de Mecánica en el dashboard */
+    { display: none !important; }
+  </style>
+
   <!-- ═══ SIDEBAR ═══ -->
   <aside class="sidebar">
     <div class="sb-head">
@@ -570,10 +583,12 @@ body::after{
     <a class="sub" href="fluidos/auditorias/bloque-t14-t15.html" style="color:#a78bfa">📋 Playbook T14-T15</a>
     <a class="sub" href="fluidos/auditorias/bloque-t16.html" style="color:#a78bfa">📋 Playbook T16</a>
 
+    <!-- INICIO MECÁNICA SIDEBAR · oculta temporalmente — descomentar este bloque para restaurar
     <div class="nav c-p" style="margin-top:3px"><span class="nav-ic">◆</span>Mecánica Aplicada</div>
     <a class="sub" href="mecanica/teoria.html">Teoría T1–T12</a>
     <a class="sub" href="mecanica/ejercicios/">Ejercicios</a>
     <a class="sub" href="mecanica/examenes.html">Exámenes resueltos</a>
+    FIN MECÁNICA SIDEBAR -->
 
     <div class="nav c-a" style="margin-top:3px"><span class="nav-ic">◆</span>Sistemas de Producción</div>
     <a class="sub" href="sistemas/teoria.html">Teoría</a>
@@ -620,14 +635,14 @@ body::after{
       <div class="alert-divider"></div>
       <div class="alert-body">
         <div class="alert-main">Próximo examen · <span class="alert-hi">Mecánica de Fluidos</span> — 28 de mayo</div>
-        <div class="alert-sub">Mecánica Aplicada · 5 Jun &nbsp;·&nbsp; Sistemas de Producción · 10 Jun</div>
+        <div class="alert-sub">Sistemas de Producción · 10 Jun</div>
       </div>
       <div class="alert-badge">PRIORITARIO</div>
     </div>
 
     <!-- ── CARDS ── -->
     <div>
-      <div class="sh"><span class="sh-txt">Asignaturas activas</span><div class="sh-line"></div><span class="sh-n">03/03</span></div>
+      <div class="sh"><span class="sh-txt">Asignaturas activas</span><div class="sh-line"></div><span class="sh-n">02/02</span></div>
       <div class="cards-grid" style="margin-top:12px">
 
         <!-- FLUIDOS -->
@@ -813,7 +828,7 @@ body::after{
         <div class="plan-head" onclick="togglePlan()">
           <div class="plan-badge">Plan activo · Checklist por tema</div>
           <div class="plan-head-meta">
-            <span id="plan-global-count">— / 37 marcados</span>
+            <span id="plan-global-count">— / 25 marcados</span>
             <span class="plan-chev" id="planChev">▼</span>
           </div>
         </div>
@@ -1003,8 +1018,8 @@ function updateProgress(sub){
 }
 
 function updateGlobalCount(){
-  var total = PLAN_TOTAL.f + PLAN_TOTAL.m + PLAN_TOTAL.s;
-  var done = countDone('f') + countDone('m') + countDone('s');
+  var total = PLAN_TOTAL.f + PLAN_TOTAL.s;            /* Mecánica oculta: excluida del total */
+  var done = countDone('f') + countDone('s');         /* Mecánica oculta: excluida del total */
   var el = document.getElementById('plan-global-count');
   if(el) el.textContent = done + ' / ' + total + ' marcados';
 }
